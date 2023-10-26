@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products,Inc.,All rights Reserved.
+* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
 * 
 * This software is protected by copyright laws of the United States and
 * of foreign countries. This material may also be protected by patent laws
@@ -13,22 +13,22 @@
 * The above copyright notice and this permission notice shall be included
 * in all copies or substantial portions of the Software.
 *
-* THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
-* OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
-* OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
-* ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 * OTHER DEALINGS IN THE SOFTWARE.
 *
-* Except as contained in this notice,the name of Maxim Integrated
-* Products,Inc. shall not be used except as stated in the Maxim Integrated
-* Products,Inc. Branding Policy.
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
 *
 * The mere transfer of this software does not imply any licenses
-* of trade secrets,proprietary technology,copyrights,patents,
-* trademarks,maskwork rights,or any other form of intellectual
-* property whatsoever. Maxim Integrated Products,Inc. retains all
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
 *******************************************************************************
 */
@@ -80,61 +80,61 @@
 #define FDT_F_PICC_MIN_TOLERANCE_EARLY ((42 * 64) - 16)
 
 mml_nfc_pcd_analog_params_matrix_t evkit_antenna_112x76_matrix = {
-    .fd_thresholds = { 180,170,140 },
-    .fd_dyn_trigger_a = { 125,125,125 },
-    .fd_dyn_math_a = { IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I },
-    .fd_dyn_trigger_b = { 125,125,125 },
-    .fd_dyn_math_b = { IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I },
-    .fd_dyn_trigger_f = { 100,100,100 },
-    .fd_dyn_math_f = { IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I },
-    .fd_dyn_trigger_v = { 125,125,125 },
-    .fd_dyn_math_v = { IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I },
-    .fd_dyn_sttm_a = { 0x00000000,0x00000000,0x00000000 },
-    .fd_dyn_stfm_a = { 0x7F000000,0x7F000000,0x7F000000 },
-    .fd_dyn_sttm_bfv = { 0x06060606,0x06060606,0x06060606 },
-    .fd_dyn_stfm_bfv = { 0x7F060606,0x7F060606,0x7F060606 },
-    .fd_dyn_gain = { 12,12,12 },
-    .fd_dyn_atten = { 0x1F,0x1F,0x1F }
+    .fd_thresholds = { 180, 170, 140 },
+    .fd_dyn_trigger_a = { 125, 125, 125 },
+    .fd_dyn_math_a = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_trigger_b = { 125, 125, 125 },
+    .fd_dyn_math_b = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_trigger_f = { 100, 100, 100 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 125, 125, 125 },
+    .fd_dyn_math_v = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x06060606, 0x06060606, 0x06060606 },
+    .fd_dyn_stfm_bfv = { 0x7F060606, 0x7F060606, 0x7F060606 },
+    .fd_dyn_gain = { 12, 12, 12 },
+    .fd_dyn_atten = { 0x1F, 0x1F, 0x1F }
 };
 
 mml_nfc_pcd_analog_params_matrix_t custom_antenna_65x65_matrix = {
-    .fd_thresholds = { 220,195,180,160,120,50 },
-    .fd_dyn_trigger_a = { 45,45,50,85,100,120 },
-    .fd_dyn_math_a = { IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I,
+    .fd_thresholds = { 220, 195, 180, 160, 120, 50 },
+    .fd_dyn_trigger_a = { 45, 45, 50, 85, 100, 120 },
+    .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
                        IQ_MATH_CH_I },
-    .fd_dyn_trigger_b = { 60,60,60,20,20,20 },
-    .fd_dyn_math_b = { IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I,
+    .fd_dyn_trigger_b = { 60, 60, 60, 20, 20, 20 },
+    .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
                        IQ_MATH_CH_I },
-    .fd_dyn_trigger_f = { 40,35,25 },
-    .fd_dyn_math_f = { IQ_MATH_CH_I,IQ_MATH_CH_I,IQ_MATH_CH_I },
-    .fd_dyn_trigger_v = { 40,35,25 },
-    .fd_dyn_math_v = { IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I,IQ_MATH_Q_MINUS_I },
-    .fd_dyn_sttm_a = { 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000 },
-    .fd_dyn_stfm_a = { 0x7F000000,0x7F000000,0x7F000000,0x7F000000,0x7F000000,0x7F000000 },
-    .fd_dyn_sttm_bfv = { 0x0D0D0D0D,0x0B0B0B0B,0x0B0B0B0B,0x0B0B0B0B,0x08080808,0x06060606 },
-    .fd_dyn_stfm_bfv = { 0x7F0D0D0D,0x7F0B0B0B,0x7F0B0B0B,0x7F0B0B0B,0x7F080808,0x7F5A5550 },
-    .fd_dyn_gain = { 12,12,12,12,12,12 },
-    .fd_dyn_atten = { 0x1F,0x1F,0x1F,0x1F,0x1F,0x1F }
+    .fd_dyn_trigger_f = { 40, 35, 25 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 40, 35, 25 },
+    .fd_dyn_math_v = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x0D0D0D0D, 0x0B0B0B0B, 0x0B0B0B0B, 0x0B0B0B0B, 0x08080808, 0x06060606 },
+    .fd_dyn_stfm_bfv = { 0x7F0D0D0D, 0x7F0B0B0B, 0x7F0B0B0B, 0x7F0B0B0B, 0x7F080808, 0x7F5A5550 },
+    .fd_dyn_gain = { 12, 12, 12, 12, 12, 12 },
+    .fd_dyn_atten = { 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F }
 };
 
 /*
 mml_nfc_pcd_analog_params_matrix_t custom_antenna_65x65_matrix = {
-    .fd_thresholds          = {255,170,160,125},
-    .fd_dyn_trigger_a       = { 45, 45, 45},
-    .fd_dyn_math_a          = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_trigger_b       = { 125,125,125},
-    .fd_dyn_trigger_b       = { 35, 35, 35},
-    .fd_dyn_math_b          = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_trigger_f       = { 40, 35, 25},
-    .fd_dyn_math_f          = { IQ_MATH_CH_I,     IQ_MATH_CH_I,     IQ_MATH_CH_I},
-    .fd_dyn_trigger_v       = { 40, 35, 25},
-    .fd_dyn_math_v          = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_sttm_a          = { 0x00000000,0x00000000,0x00000000},
-    .fd_dyn_stfm_a          = { 0x7F000000,0x7F000000,0x7F000000},
-    .fd_dyn_sttm_bfv        = { 0x06060606,0x06060606,0x06060606},
-    .fd_dyn_stfm_bfv        = { 0x7F060606,0x7F060606,0x7F060606},
-    .fd_dyn_gain            = { 12, 12,  12},
-    .fd_dyn_atten           = { 0x1F,0x1F, 0x1F}
+    .fd_thresholds          = {255, 170, 160, 125},
+    .fd_dyn_trigger_a       = { 45,  45,  45},
+    .fd_dyn_math_a          = { IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I},
+    .fd_dyn_trigger_b       = { 125, 125, 125},
+    .fd_dyn_trigger_b       = { 35,  35,  35},
+    .fd_dyn_math_b          = { IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I},
+    .fd_dyn_trigger_f       = { 40,  35,  25},
+    .fd_dyn_math_f          = { IQ_MATH_CH_I,       IQ_MATH_CH_I,       IQ_MATH_CH_I},
+    .fd_dyn_trigger_v       = { 40,  35,  25},
+    .fd_dyn_math_v          = { IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I},
+    .fd_dyn_sttm_a          = { 0x00000000, 0x00000000, 0x00000000},
+    .fd_dyn_stfm_a          = { 0x7F000000, 0x7F000000, 0x7F000000},
+    .fd_dyn_sttm_bfv        = { 0x06060606, 0x06060606, 0x06060606},
+    .fd_dyn_stfm_bfv        = { 0x7F060606, 0x7F060606, 0x7F060606},
+    .fd_dyn_gain            = { 12,   12,    12},
+    .fd_dyn_atten           = { 0x1F, 0x1F,  0x1F}
 };
 */
 
@@ -163,7 +163,7 @@ int32_t trim_ro_to_rtc(void)
         return ret_val;
     }
 
-    // Bits: [9:8] MU[1:0]  - How quickly it allowed to tune,provides some hysteresis
+    // Bits: [9:8] MU[1:0]  - How quickly it allowed to tune, provides some hysteresis
     //           2 LDTRM    - Allows it to actually use the trim?  unclear
     //           1 ACRUN    - Runs the autocal
     //           0 ACEN     - Enabled the autocal block.  Unclear why need this and run
@@ -171,7 +171,7 @@ int32_t trim_ro_to_rtc(void)
 
     // At this point it should run until disabled.
 
-    // Wait a bit to let autocal run,see if it did anything.
+    // Wait a bit to let autocal run, see if it did anything.
     mml_nfc_pcd_task_sleep(100);
 
     if ((*nbbfcr1_reg & 0xFF80000) == 0) {
@@ -200,7 +200,7 @@ uint8_t get_key_press(void)
     key_press = MXC_UART_ReadCharacter(MXC_UART0);
 
     // Echo the key back
-    MXC_UART_WriteCharacter(MXC_UART0,key_press);
+    MXC_UART_WriteCharacter(MXC_UART0, key_press);
 
     return key_press;
 }
@@ -227,7 +227,7 @@ int32_t key_has_been_pressed(void)
 
     status = MXC_UART_GetRXFIFOAvailable(MXC_UART0);
 
-    // Eat random keypresses,to avoid bad menu interactions
+    // Eat random keypresses, to avoid bad menu interactions
     MXC_UART_ClearRXFIFO(MXC_UART0);
 
     // If we have any available then a key has been pressed
@@ -254,9 +254,9 @@ int32_t dte_get_input_string(char *input_string)
         }
 
         if ((key_press == '\b') && (char_count > 0)) {
-            // backspace,back up one character
+            // backspace, back up one character
             // NOTE: we sent the terminal one backspace already
-            // but now we want to clear out the character,so put ' ' and then another '\b'
+            // but now we want to clear out the character, so put ' ' and then another '\b'
             printf(" \b");
             char_count--;
             continue;
@@ -271,7 +271,7 @@ int32_t dte_get_input_string(char *input_string)
     return char_count;
 }
 
-int32_t dte_get_int_val_raw(int32_t exp_char_count,int32_t min_val)
+int32_t dte_get_int_val_raw(int32_t exp_char_count, int32_t min_val)
 {
     int32_t char_count = 0;
     int32_t input_int = 0;
@@ -280,7 +280,7 @@ int32_t dte_get_int_val_raw(int32_t exp_char_count,int32_t min_val)
         char_count = dte_get_input_string(input_buffer);
 
         if (char_count > exp_char_count) {
-            printf("\nMax characters allowed %ld try again\n",exp_char_count);
+            printf("\nMax characters allowed %ld try again\n", exp_char_count);
             return -1;
         }
 
@@ -290,31 +290,31 @@ int32_t dte_get_int_val_raw(int32_t exp_char_count,int32_t min_val)
     }
 
     // Get actual data
-    sscanf(input_buffer,"%d",&input_int);
+    sscanf(input_buffer, "%d", &input_int);
 
     if (char_count > exp_char_count) {
-        printf("\nMax characters allowed %ld try again\n",exp_char_count);
+        printf("\nMax characters allowed %ld try again\n", exp_char_count);
         return -1;
     }
 
     return input_int;
 }
 
-int32_t dte_get_int_val(char name[],int32_t exp_char_count,int32_t min_val,int32_t max_val)
+int32_t dte_get_int_val(char name[], int32_t exp_char_count, int32_t min_val, int32_t max_val)
 {
     int32_t new_value = 0;
 
-    printf("Enter an new %s value from %ld to %ld\n",name,min_val,max_val);
+    printf("Enter an new %s value from %ld to %ld\n", name, min_val, max_val);
     printf("=> ");
 
-    new_value = dte_get_int_val_raw(exp_char_count,min_val);
+    new_value = dte_get_int_val_raw(exp_char_count, min_val);
 
     if ((new_value < min_val) || (new_value > max_val)) {
         printf("Value not in allowed range try again\n");
         return -1;
     }
 
-    printf("New %s value: %ld\n",name,new_value);
+    printf("New %s value: %ld\n", name, new_value);
 
     return new_value;
 }
@@ -332,7 +332,7 @@ int32_t dte_get_math_val(char name[])
         printf("5. IQ_MATH_I_PLUS_Q\n");
         printf("=> ");
 
-        new_value = dte_get_int_val_raw(1,1);
+        new_value = dte_get_int_val_raw(1, 1);
 
         if ((new_value < 1) || (new_value > 5)) {
             printf("Selection not in allowed range try again\n");
@@ -341,7 +341,7 @@ int32_t dte_get_math_val(char name[])
         }
     }
 
-    printf("New %s selection: ",name);
+    printf("New %s selection: ", name);
 
     switch (new_value) {
     case 1:
@@ -368,7 +368,7 @@ int32_t dte_get_math_val(char name[])
 
 void show_current_field_loading_level(void)
 {
-    // Displays both the current sensed field level,and the current threshold
+    // Displays both the current sensed field level, and the current threshold
     uint8_t sensed_threshold = 0;
     uint32_t field_sensed = 0;
     uint8_t current_field_level = 0;
@@ -406,7 +406,7 @@ void show_current_field_loading_level(void)
 
         mml_nfc_pcd_find_current_field_loading(&current_field_level);
 
-        printf("\b\b\b\b\b\b\b\b\b\b\b\b%3d index: %d",current_field_level,sensed_threshold);
+        printf("\b\b\b\b\b\b\b\b\b\b\b\b%3d index: %d", current_field_level, sensed_threshold);
 
         mml_nfc_pcd_task_sleep(FIELD_LOAD_DELAY_MS);
     }
@@ -487,7 +487,7 @@ void print_matrix_header(void)
     int i;
     printf("\nStep Index:                 ");
     for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-        printf("%8d | ",i);
+        printf("%8d | ", i);
     }
     printf("\n");
     for (i = 0; i < MATRIX_HORIZONTAL_NUM_TICKS; i++) {
@@ -499,14 +499,14 @@ void print_matrix_header(void)
     printf("\n");
 }
 
-void get_analog_math_value(uint8_t val_array[],char name[])
+void get_analog_math_value(uint8_t val_array[], char name[])
 {
-    int i,j;
+    int i, j;
     int new_val = 0;
     char val_string[64];
     uint8_t key_press = 0;
 
-    printf("Enter index to change,or 'A' for all\n");
+    printf("Enter index to change, or 'A' for all\n");
     printf("=> ");
 
     while (1) {
@@ -523,13 +523,13 @@ void get_analog_math_value(uint8_t val_array[],char name[])
     if ((key_press == 'A') || (key_press == 'a')) {
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
-            printf("%s",name);
+            printf("%s", name);
             for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
                 print_comb_math(val_array[j]);
             }
             printf("\n");
 
-            snprintf(val_string,sizeof(val_string),"value for index %d",i);
+            snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
             new_val = dte_get_math_val(val_string);
 
@@ -538,13 +538,13 @@ void get_analog_math_value(uint8_t val_array[],char name[])
     } else {
         i = key_press - '0';
         print_matrix_header();
-        printf("%s",name);
+        printf("%s", name);
         for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
             print_comb_math(val_array[j]);
         }
         printf("\n");
 
-        snprintf(val_string,sizeof(val_string),"value for index %d",i);
+        snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
         new_val = dte_get_math_val(val_string);
 
@@ -552,15 +552,15 @@ void get_analog_math_value(uint8_t val_array[],char name[])
     }
 }
 
-void get_hex_analog_matrix_value(uint32_t val_array[],char name[])
+void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
 {
-    int i,j;
+    int i, j;
     uint32_t new_val = 0;
     char val_string[64];
     uint8_t key_press = 0;
     int scan_status = 0;
 
-    printf("Enter index to change,or 'A' for all\n");
+    printf("Enter index to change, or 'A' for all\n");
     printf("=> ");
 
     while (1) {
@@ -577,19 +577,19 @@ void get_hex_analog_matrix_value(uint32_t val_array[],char name[])
     if ((key_press == 'A') || (key_press == 'a')) {
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
-            printf("%s",name);
+            printf("%s", name);
             for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
-                printf("%08X | ",val_array[j]);
+                printf("%08X | ", val_array[j]);
             }
             printf("\n");
 
-            snprintf(val_string,sizeof(val_string),"value for index %d",i);
+            snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
             do {
                 printf("Enter an new value in HEX with no 0x\n");
                 printf("=> ");
                 dte_get_input_string(input_buffer);
-                scan_status = sscanf(input_buffer,"%X",&new_val);
+                scan_status = sscanf(input_buffer, "%X", &new_val);
             } while (scan_status != 1);
 
             val_array[i] = new_val;
@@ -599,34 +599,34 @@ void get_hex_analog_matrix_value(uint32_t val_array[],char name[])
 
         print_matrix_header();
 
-        printf("%s",name);
+        printf("%s", name);
         for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
-            printf("%08X | ",val_array[j]);
+            printf("%08X | ", val_array[j]);
         }
         printf("\n");
 
-        snprintf(val_string,sizeof(val_string),"value for index %d",i);
+        snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
         do {
             printf("Enter an new value in HEX with no 0x\n");
             printf("=> ");
             dte_get_input_string(input_buffer);
-            scan_status = sscanf(input_buffer,"%X",&new_val);
+            scan_status = sscanf(input_buffer, "%X", &new_val);
         } while (scan_status != 1);
 
         val_array[i] = new_val;
     }
 }
 
-void get_analog_matrix_value(uint8_t val_array[],char name[],int32_t exp_char_count,
-                             int32_t min_val,int32_t max_val)
+void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_count,
+                             int32_t min_val, int32_t max_val)
 {
-    int i,j;
+    int i, j;
     int new_val = 0;
     char val_string[64];
     uint8_t key_press = 0;
 
-    printf("Enter index to change,or 'A' for all\n");
+    printf("Enter index to change, or 'A' for all\n");
     printf("=> ");
 
     while (1) {
@@ -643,16 +643,16 @@ void get_analog_matrix_value(uint8_t val_array[],char name[],int32_t exp_char_co
     if ((key_press == 'A') || (key_press == 'a')) {
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
-            printf("%s",name);
+            printf("%s", name);
             for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
-                printf("     %3d | ",val_array[j]);
+                printf("     %3d | ", val_array[j]);
             }
             printf("\n");
 
-            snprintf(val_string,sizeof(val_string),"value for index %d",i);
+            snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
             do {
-                new_val = dte_get_int_val(val_string,exp_char_count,min_val,max_val);
+                new_val = dte_get_int_val(val_string, exp_char_count, min_val, max_val);
             } while (new_val == -1);
 
             val_array[i] = new_val;
@@ -662,16 +662,16 @@ void get_analog_matrix_value(uint8_t val_array[],char name[],int32_t exp_char_co
 
         print_matrix_header();
 
-        printf("%s",name);
+        printf("%s", name);
         for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
-            printf("     %3d | ",val_array[j]);
+            printf("     %3d | ", val_array[j]);
         }
         printf("\n");
 
-        snprintf(val_string,sizeof(val_string),"value for index %d",i);
+        snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
         do {
-            new_val = dte_get_int_val(val_string,exp_char_count,min_val,max_val);
+            new_val = dte_get_int_val(val_string, exp_char_count, min_val, max_val);
         } while (new_val == -1);
 
         val_array[i] = new_val;
@@ -802,7 +802,7 @@ void force_rf_settings_update(void)
         status = mml_nfc_pcd_transceive(trans_params);
 
         if ((status != MML_NFC_PCD_E_SUCCESS) && (status != MML_NFC_PCD_E_TIMEOUT)) {
-            printf("Error during attempt to set RF for protocol: %d\n",status);
+            printf("Error during attempt to set RF for protocol: %d\n", status);
             printf("Press any key to continue...\n");
             get_key_press_no_echo();
         } else {
@@ -840,7 +840,7 @@ void dte_analog_settings()
 
         printf("FD Thresholds:              ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_thresholds[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_thresholds[i]);
         }
         printf("\n");
 
@@ -871,22 +871,22 @@ void dte_analog_settings()
         printf("\n");
         printf("FD Dynamic STTM_A:          ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%08X | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[i]);
+            printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[i]);
         }
         printf("\n");
         printf("FD Dynamic STFM_A:          ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%08X | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[i]);
+            printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[i]);
         }
         printf("\n");
         printf("FD Dynamic STTM_BFV:        ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%08X | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[i]);
+            printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[i]);
         }
         printf("\n");
         printf("FD Dynamic STFM_BFV:        ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%08X | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[i]);
+            printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[i]);
         }
 
         printf("\n");
@@ -894,17 +894,17 @@ void dte_analog_settings()
         printf("\n");
         printf("FD Dynamic Trigger Level A: ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[i]);
         }
         printf("\n");
         printf("FD Dynamic Trigger Level B: ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b[i]);
         }
         printf("\n");
         printf("FD Dynamic Trigger Level F: ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f[i]);
         }
 
         printf("\n");
@@ -912,17 +912,17 @@ void dte_analog_settings()
         printf("\n");
         printf("FD Dynamic Trigger Level V: ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v[i]);
         }
         printf("\n");
         printf("FD Dynamic Gain:            ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain[i]);
         }
         printf("\n");
         printf("FD Dynamic Attenuation:     ");
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
-            printf("%8d | ",mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten[i]);
+            printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten[i]);
         }
         printf("\n");
         print_matrix_spacer();
@@ -966,7 +966,7 @@ void dte_analog_settings()
             // FD Thresholds
         case '1':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_thresholds,
-                                    "FD Thresholds               ",3,0,255);
+                                    "FD Thresholds               ", 3, 0, 255);
             break;
             // FD Dynamic STTM_A
         case '6':
@@ -992,7 +992,7 @@ void dte_analog_settings()
         case 'A':
         case 'a':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a,
-                                    "FD Dynamic Trigger A        ",3,0,127);
+                                    "FD Dynamic Trigger A        ", 3, 0, 127);
             break;
             // FD Dynamic Math A
         case '2':
@@ -1003,7 +1003,7 @@ void dte_analog_settings()
         case 'B':
         case 'b':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b,
-                                    "FD Dynamic Trigger B        ",3,0,127);
+                                    "FD Dynamic Trigger B        ", 3, 0, 127);
             break;
             // FD Dynamic Math B
         case '3':
@@ -1014,7 +1014,7 @@ void dte_analog_settings()
         case 'F':
         case 'f':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f,
-                                    "FD Dynamic Trigger F        ",3,0,127);
+                                    "FD Dynamic Trigger F        ", 3, 0, 127);
             break;
             // FD Dynamic Math F
         case '4':
@@ -1025,7 +1025,7 @@ void dte_analog_settings()
         case 'V':
         case 'v':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v,
-                                    "FD Dynamic Trigger V        ",3,0,127);
+                                    "FD Dynamic Trigger V        ", 3, 0, 127);
             break;
             // FD Dynamic Math V
         case '5':
@@ -1036,13 +1036,13 @@ void dte_analog_settings()
         case 'G':
         case 'g':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain,
-                                    "FD Dynamic Gain             ",2,0,12);
+                                    "FD Dynamic Gain             ", 2, 0, 12);
             break;
             // FD Dynamic Attenuation
         case 'R':
         case 'r':
             get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten,
-                                    "FD Dynamic Attenuation      ",2,0,0x1F);
+                                    "FD Dynamic Attenuation      ", 2, 0, 0x1F);
             break;
             // FD Display
         case 'T':
@@ -1074,7 +1074,7 @@ void dte_settings(void)
         clear_screen();
 
         printf("Maxim Settings Menu\n");
-        printf("Logging Level: %ld\n",g_logging_level);
+        printf("Logging Level: %ld\n", g_logging_level);
 
         printf("A. View or Change Analog Settings\n");
         printf("N. Select Antenna and Set Analog Defaults\n");
@@ -1164,8 +1164,8 @@ void dte_get_loop_params(int32_t *num_loops)
 
     while (1) {
         clear_screen();
-        printf("Loop Setting: Num Loops: %ld\n",*num_loops);
-        printf("Enter an new number of loops (1-9999),then press enter\n");
+        printf("Loop Setting: Num Loops: %ld\n", *num_loops);
+        printf("Enter an new number of loops (1-9999), then press enter\n");
         printf("=> ");
 
         while (char_count < 5) {
@@ -1176,7 +1176,7 @@ void dte_get_loop_params(int32_t *num_loops)
             }
 
             if ((key_press < '0') || (key_press > '9')) {
-                printf("\nInvalid digit,only 0-9 allowed.\n");
+                printf("\nInvalid digit, only 0-9 allowed.\n");
                 printf("Press any key to retry...\n");
                 get_key_press_no_echo();
                 return;
@@ -1200,12 +1200,12 @@ void dte_get_loop_params(int32_t *num_loops)
     // Back up to last actual digit
     char_count--;
 
-    for (i = 1; char_count >= 0; char_count--,i *= 10) {
+    for (i = 1; char_count >= 0; char_count--, i *= 10) {
         temp_count += (loop_input[char_count] - '0') * i;
     }
 
     if ((temp_count < 0) || (temp_count > 9999)) {
-        printf("Not an allowed number of loops,not changing\n");
+        printf("Not an allowed number of loops, not changing\n");
         printf("Press any key to retry...\n");
         get_key_press_no_echo();
         return;
@@ -1213,7 +1213,7 @@ void dte_get_loop_params(int32_t *num_loops)
 
     *num_loops = temp_count;
 
-    printf("New Number of Loops: %ld\n",*num_loops);
+    printf("New Number of Loops: %ld\n", *num_loops);
     printf("Press any key to continue...\n");
     get_key_press_no_echo();
 
@@ -1229,7 +1229,7 @@ void dte_do_analog_polling(int32_t num_loops)
            num_loops);
 
     for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
-        printf("\nAnalogue %ld\n",i);
+        printf("\nAnalogue %ld\n", i);
 
         if (singleemvl1exchange(key_has_been_pressed)) {
             nfc_reset();
@@ -1250,7 +1250,7 @@ void dte_do_reset(int32_t num_loops)
         }
 
         nfc_pcd_reset_wait();
-        printf("\nReset Loop Status: Num Loops: %ld,Count: %ld\n",num_loops,i);
+        printf("\nReset Loop Status: Num Loops: %ld, Count: %ld\n", num_loops, i);
         nfc_reset();
     }
     printf("Press any key to continue...\n");
@@ -1268,9 +1268,9 @@ void dte_do_wupa(int32_t num_loops)
         }
 
         nfc_pcd_reset_wait();
-        printf("\nWUPA Loop Status: Num Loops: %ld,Count: %ld\n",num_loops,i);
+        printf("\nWUPA Loop Status: Num Loops: %ld, Count: %ld\n", num_loops, i);
         printf("WUPA ->\n");
-        ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA,dte_buffer,WAKEUP_NOTRETRY);
+        ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, dte_buffer, WAKEUP_NOTRETRY);
         if (ret == ISO14443_3_ERR_SUCCESS) {
             printf("ATQA <-\n");
         }
@@ -1294,7 +1294,7 @@ void dte_do_rats(int32_t num_loops)
         }
 
         nfc_pcd_reset_wait();
-        printf("\nRATS Loop Status: Num Loops: %ld,Count: %ld\n",num_loops,i);
+        printf("\nRATS Loop Status: Num Loops: %ld, Count: %ld\n", num_loops, i);
 
         printf("ANTICOLISION ->\n");
         ret = iso_14443_3a_collision_detect();
@@ -1337,9 +1337,9 @@ void dte_do_wupb(int32_t num_loops)
         }
 
         nfc_pcd_reset_wait();
-        printf("\nWUPB Loop Status: Num Loops: %ld,Count: %ld\n",num_loops,i);
+        printf("\nWUPB Loop Status: Num Loops: %ld, Count: %ld\n", num_loops, i);
         printf("WUPB ->\n");
-        ret = iso_14443_3b_cmd_req_wup(dte_buffer,&atq_len,WAKEUP_NOTRETRY);
+        ret = iso_14443_3b_cmd_req_wup(dte_buffer, &atq_len, WAKEUP_NOTRETRY);
         if (ret == ISO14443_3_ERR_SUCCESS) {
             printf("ATQB <-\n");
         }
@@ -1363,7 +1363,7 @@ void dte_do_attrib(int32_t num_loops)
         }
 
         nfc_pcd_reset_wait();
-        printf("\nATTRIB Loop Status: Num Loops: %ld,Count: %ld\n",num_loops,i);
+        printf("\nATTRIB Loop Status: Num Loops: %ld, Count: %ld\n", num_loops, i);
 
         printf("ANTICOLISION ->\n");
         ret = iso_14443_3b_collision_detect();
@@ -1428,7 +1428,7 @@ uint32_t decode_pbm_type(uint8_t sak)
             if (sak & 0x20) {
                 // Bit 6 == 1
                 // This version requires RATS etc
-                // Is must therefore be compliant,so we should not be here
+                // Is must therefore be compliant, so we should not be here
                 // Do nothing
                 return PBM_TYPE_UNKNOWN;
             } else {
@@ -1439,9 +1439,9 @@ uint32_t decode_pbm_type(uint8_t sak)
     }
 }
 
-// This function assumes a PBM card has been found and identified,and the requested block authenticated
+// This function assumes a PBM card has been found and identified, and the requested block authenticated
 // This function only supports PBM Classic cards
-int32_t pbm_create_value_block(uint8_t block_num,uint32_t value)
+int32_t pbm_create_value_block(uint8_t block_num, uint32_t value)
 {
     uint8_t val_blk_buffer[16];
 
@@ -1464,11 +1464,11 @@ int32_t pbm_create_value_block(uint8_t block_num,uint32_t value)
     val_blk_buffer[14] = block_num;
     val_blk_buffer[15] = ~block_num;
 
-    return pbm_write_block(block_num,val_blk_buffer);
+    return pbm_write_block(block_num, val_blk_buffer);
 }
 
 // Decode working time specified by ATQC
-void show_response_time(uint8_t PMm_val,int32_t n)
+void show_response_time(uint8_t PMm_val, int32_t n)
 {
     int32_t T_us = 302;
     int32_t A = PMm_val & 0x7;
@@ -1476,12 +1476,12 @@ void show_response_time(uint8_t PMm_val,int32_t n)
     int32_t E = (PMm_val >> 6) & 0x3;
     int32_t time = 0;
 
-    time = T_us * ((B + 1) * n + (A + 1)) * pow(4,E);
+    time = T_us * ((B + 1) * n + (A + 1)) * pow(4, E);
 
-    printf("%ldus\n",time);
+    printf("%ldus\n", time);
 }
 
-void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params,int32_t do_reset)
+void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params, int32_t do_reset)
 {
     int32_t response = 0;
 
@@ -1515,7 +1515,7 @@ void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params,int32_t do_reset
         }
 
         if (sent % 50 == 0) {
-            printf("  [ %2ld/ 50] %3ld%%\n",row_passed,((row_passed * 100) / 50));
+            printf("  [ %2ld/ 50] %3ld%%\n", row_passed, ((row_passed * 100) / 50));
             row_passed = 0;
         }
 
@@ -1525,7 +1525,7 @@ void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params,int32_t do_reset
     }
 
     nfc_reset();
-    printf("\n\n(TOTAL) [%4ld/%4ld].... %3ld.%02ld%%\n\n",passed,sent,((passed * 100) / sent),
+    printf("\n\n(TOTAL) [%4ld/%4ld].... %3ld.%02ld%%\n\n", passed, sent, ((passed * 100) / sent),
            (((passed * 10000) / sent) - (((passed * 100) / sent) * 100)));
     poweroff_operatingfield();
 }
@@ -1547,7 +1547,7 @@ void type_a_loop_test(void)
     trans_params.rx_buf = receive_buffer;
     trans_params.rx_len = &receive_len;
 
-    // Loop test resets after every command,so we must enforce our powerup delay (5ms)
+    // Loop test resets after every command, so we must enforce our powerup delay (5ms)
     // 5ms / (1/13560000) => 5ms / 73.746ns = 67,800fc
     trans_params.delay_till_send = 67800;
 
@@ -1556,13 +1556,13 @@ void type_a_loop_test(void)
     trans_params.timeout = 2712000;
     trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
 
-    printf("\n\nSending 1000 WUPA,with 200ms timeout\n\n");
-    raw_loop_test(trans_params,1);
+    printf("\n\nSending 1000 WUPA, with 200ms timeout\n\n");
+    raw_loop_test(trans_params, 1);
 }
 
 void type_b_loop_test(void)
 {
-    uint8_t send_buffer_wupb[3] = { 0x05,0x00,0x08 };
+    uint8_t send_buffer_wupb[3] = { 0x05, 0x00, 0x08 };
     int32_t send_len_wupb = 3;
 
     uint8_t *receive_buffer = GetCommonBuffer();
@@ -1577,7 +1577,7 @@ void type_b_loop_test(void)
     trans_params.rx_buf = receive_buffer;
     trans_params.rx_len = &receive_len;
 
-    // Loop test resets after every command,so we must enforce our powerup delay (5ms)
+    // Loop test resets after every command, so we must enforce our powerup delay (5ms)
     // 5ms / (1/13560000) => 5ms / 73.746ns = 67,800fc
     trans_params.delay_till_send = 67800;
 
@@ -1586,14 +1586,14 @@ void type_b_loop_test(void)
     trans_params.timeout = 2712000;
     trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
 
-    printf("\n\nSending 1000 WUPB,with 200ms timeout\n\n");
-    raw_loop_test(trans_params,1);
+    printf("\n\nSending 1000 WUPB, with 200ms timeout\n\n");
+    raw_loop_test(trans_params, 1);
 }
 
 void type_f_loop_test(void)
 {
     int32_t reqc_buf_len = 6;
-    uint8_t reqc_buf[6] = { 0x06,0x00,0xFF,0xFF,0x00,0x00 };
+    uint8_t reqc_buf[6] = { 0x06, 0x00, 0xFF, 0xFF, 0x00, 0x00 };
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
@@ -1608,16 +1608,16 @@ void type_f_loop_test(void)
     trans_params.rx_len = &receive_len;
     trans_params.delay_till_send = ISO14443_FDT_MIN;
 
-    // ATQC should start in Slot 0,This should happen by the time detailed below.  Currently using Trfw
-    // from ISO18092 section 11.1.1,RF Waiting Time,as the margin for detection of ATQC.  Alternatively,
-    // we could delay till the very end of Slot 0,but this does not seem strict enough.
-    // NOTE: RF driver times from end of TX to end of SYNC code,start of LEN byte.  So we need to add
+    // ATQC should start in Slot 0, This should happen by the time detailed below.  Currently using Trfw
+    // from ISO18092 section 11.1.1, RF Waiting Time, as the margin for detection of ATQC.  Alternatively,
+    // we could delay till the very end of Slot 0, but this does not seem strict enough.
+    // NOTE: RF driver times from end of TX to end of SYNC code, start of LEN byte.  So we need to add
     // this additional time to the timeout.  8 bytes at 64fc per bit.
     //
-    // Td = (512 * 64fc = 32768),Time to LEN (T2len) =  (8 * 8 * 64fc = 4096),Trfw = (512fc)
+    // Td = (512 * 64fc = 32768), Time to LEN (T2len) =  (8 * 8 * 64fc = 4096), Trfw = (512fc)
     // Td + T2len + Trfw => 32768 + 4096 + 512 => 37367
     //
-    // For RW_RW_Kiteisyo polling loop test,timeout desired is 200ms
+    // For RW_RW_Kiteisyo polling loop test, timeout desired is 200ms
     // 200ms / (1/13560000) => 200ms / 73.746ns = 2,712,000
     trans_params.timeout = 2712000;
 
@@ -1626,8 +1626,8 @@ void type_f_loop_test(void)
     //   be ready to receive preamble is (42 x 64 - 16)/fc ~197us
     trans_params.early_limit = FDT_F_PICC_MIN_TOLERANCE_EARLY;
 
-    printf("\n\nSending 1000 REQC,with 200ms timeout\n\n");
-    raw_loop_test(trans_params,0);
+    printf("\n\nSending 1000 REQC, with 200ms timeout\n\n");
+    raw_loop_test(trans_params, 0);
 }
 
 #define ATQC_LEN 18
@@ -1647,7 +1647,7 @@ void type_f_commands(void)
     int32_t response = 0;
 
     int32_t reqc_buf_len = 6;
-    uint8_t reqc_buf[6] = { 0x06,0x00,0xFF,0xFF,0x00,0x00 };
+    uint8_t reqc_buf[6] = { 0x06, 0x00, 0xFF, 0xFF, 0x00, 0x00 };
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
@@ -1662,13 +1662,13 @@ void type_f_commands(void)
     trans_params.rx_len = &receive_len;
     trans_params.delay_till_send = ISO14443_FDT_MIN;
 
-    // ATQC should start in Slot 0,This should happen by the time detailed below.  Currently using Trfw
-    // from ISO18092 section 11.1.1,RF Waiting Time,as the margin for detection of ATQC.  Alternatively,
-    // we could delay till the very end of Slot 0,but this does not seem strict enough.
-    // NOTE: RF driver times from end of TX to end of SYNC code,start of LEN byte.  So we need to add
+    // ATQC should start in Slot 0, This should happen by the time detailed below.  Currently using Trfw
+    // from ISO18092 section 11.1.1, RF Waiting Time, as the margin for detection of ATQC.  Alternatively,
+    // we could delay till the very end of Slot 0, but this does not seem strict enough.
+    // NOTE: RF driver times from end of TX to end of SYNC code, start of LEN byte.  So we need to add
     // this additional time to the timeout.  8 bytes at 64fc per bit.
     //
-    // Td = (512 * 64fc = 32768),Time to LEN (T2len) =  (8 * 8 * 64fc = 4096),Trfw = (512fc)
+    // Td = (512 * 64fc = 32768), Time to LEN (T2len) =  (8 * 8 * 64fc = 4096), Trfw = (512fc)
     // Td + T2len + Trfw => 32768 + 4096 + 512 => 37367
     trans_params.timeout = 37367;
 
@@ -1697,36 +1697,36 @@ void type_f_commands(void)
             printf("\n\n");
 
             if (response == MML_NFC_PCD_E_SUCCESS) {
-                printf("Got a response,length in bytes: %ld\n",receive_len);
+                printf("Got a response, length in bytes: %ld\n", receive_len);
 
-                hexdump(DBG_LVL_NON,receive_buffer,receive_len,1);
+                hexdump(DBG_LVL_NON, receive_buffer, receive_len, 1);
 
                 printf("ATQC breakdown:\n\n");
 
                 if (receive_buffer[ATQC_LEN_OFFSET] != ATQC_LEN) {
-                    printf("ATQC length invalid,expected: %d got: %d\n",ATQC_LEN,
+                    printf("ATQC length invalid, expected: %d got: %d\n", ATQC_LEN,
                            receive_buffer[ATQC_LEN_OFFSET]);
                 } else {
                     printf("ATQC Length valid\n");
                 }
 
                 if (receive_buffer[ATQC_COMMAND_CODE_OFFSET] != ATQC_COMMAND_CODE) {
-                    printf("ATQC Command Code invalid,expected: %d got: %d\n",ATQC_COMMAND_CODE,
+                    printf("ATQC Command Code invalid, expected: %d got: %d\n", ATQC_COMMAND_CODE,
                            receive_buffer[ATQC_COMMAND_CODE_OFFSET]);
                 } else {
                     printf("ATQC Command Code valid\n");
                 }
 
                 printf("NFCID2: ");
-                hexdump(DBG_LVL_NON,&receive_buffer[ATQC_NFCID2_OFFSET],ATQC_NFCID2_LEN,1);
+                hexdump(DBG_LVL_NON, &receive_buffer[ATQC_NFCID2_OFFSET], ATQC_NFCID2_LEN, 1);
 
                 printf("PAD (PMm): ");
-                hexdump(DBG_LVL_NON,&receive_buffer[ATQC_PAD_OFFSET],ATQC_PAD_LEN,1);
+                hexdump(DBG_LVL_NON, &receive_buffer[ATQC_PAD_OFFSET], ATQC_PAD_LEN, 1);
 
-                printf("    IC Code: 0x%02X%02X\n",receive_buffer[ATQC_ID_COD_BYTE_1_OFFSET],
+                printf("    IC Code: 0x%02X%02X\n", receive_buffer[ATQC_ID_COD_BYTE_1_OFFSET],
                        receive_buffer[ATQC_ID_COD_BYTE_2_OFFSET]);
                 printf("Request Service Command (Per Service [n]): ");
-                show_response_time(receive_buffer[ATQC_RESPONSE_TIME_OFFSET],1);
+                show_response_time(receive_buffer[ATQC_RESPONSE_TIME_OFFSET], 1);
             } else { // (response != MML_NFC_PCD_E_SUCCESS)
                 printf("Invalid Response: ");
 
@@ -1739,7 +1739,7 @@ void type_f_commands(void)
                 } else if (response == MML_NFC_PCD_E_BAD_PARAM) {
                     printf("Bad Parameter\n");
                 } else {
-                    printf("Un-Decoded error code: %ld\n",response);
+                    printf("Un-Decoded error code: %ld\n", response);
                 }
             }
             poweroff_operatingfield();
@@ -1783,9 +1783,9 @@ void type_v_inventory_test(mml_nfc_pcd_transceive_params_t trans_params)
 
     if (response == MML_NFC_PCD_E_SUCCESS) {
         if (*trans_params.rx_len == 10) {
-            printf("Got a response,length in bytes: %ld\n",*trans_params.rx_len);
+            printf("Got a response, length in bytes: %ld\n", *trans_params.rx_len);
 
-            hexdump(DBG_LVL_NON,trans_params.rx_buf,*trans_params.rx_len,1);
+            hexdump(DBG_LVL_NON, trans_params.rx_buf, *trans_params.rx_len, 1);
 
             if (trans_params.rx_buf[0] & 0x1) {
                 printf("Card Reported Error\n");
@@ -1801,19 +1801,19 @@ void type_v_inventory_test(mml_nfc_pcd_transceive_params_t trans_params)
                 get_key_press();
                 return;
             }
-            printf("DSFID: 0x%02x\n",trans_params.rx_buf[1]);
+            printf("DSFID: 0x%02x\n", trans_params.rx_buf[1]);
             printf("UID Is : ");
             for (int i = 0; i < 8; i++) {
                 v_uid[i] = trans_params.rx_buf[i + 2];
-                printf("0x%02x ",v_uid[i]);
+                printf("0x%02x ", v_uid[i]);
             }
 
             printf("\n");
         } else {
-            printf("Apparently,we have success. However,expect 10 bytes but only got: %d\n",
+            printf("Apparently, we have success. However, expect 10 bytes but only got: %d\n",
                    *trans_params.rx_len);
             printf("Received data");
-            hexdump(DBG_LVL_NON,trans_params.rx_buf,*trans_params.rx_len,1);
+            hexdump(DBG_LVL_NON, trans_params.rx_buf, *trans_params.rx_len, 1);
         }
 
     } else {
@@ -1830,7 +1830,7 @@ void type_v_inventory_test(mml_nfc_pcd_transceive_params_t trans_params)
         } else if (response == MML_NFC_PCD_E_INVALID_CRC) {
             printf("Bad CRC\n");
         } else {
-            printf("Un-Decoded error code: %ld\n",response);
+            printf("Un-Decoded error code: %ld\n", response);
         }
     }
     poweroff_operatingfield();
@@ -1841,7 +1841,7 @@ void type_v_inventory_test(mml_nfc_pcd_transceive_params_t trans_params)
 void type_v_commands(void)
 {
     int32_t inventory_buf_len = 3;
-    uint8_t inventory_buf[3] = { 0x26,0x01,0x00 }; // Flags,Inventory OpCode,Optional AFI
+    uint8_t inventory_buf[3] = { 0x26, 0x01, 0x00 }; // Flags, Inventory OpCode, Optional AFI
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
@@ -1861,27 +1861,27 @@ void type_v_commands(void)
         clear_screen();
 
         printf("Type V Commands\n");
-        printf("1. Inventory 100% Mod,1of4,Single Sub,High Data Rate\n");
-        printf("2. Inventory 100% Mod,1of4,Single Sub,Low Data Rate\n");
-        printf("3. Inventory 100% Mod,1of4,Dual Sub,High Data Rate\n");
-        printf("4. Inventory 100% Mod,1of4,Dual Sub,Low Data Rate\n");
+        printf("1. Inventory 100% Mod, 1of4, Single Sub, High Data Rate\n");
+        printf("2. Inventory 100% Mod, 1of4, Single Sub, Low Data Rate\n");
+        printf("3. Inventory 100% Mod, 1of4, Dual Sub, High Data Rate\n");
+        printf("4. Inventory 100% Mod, 1of4, Dual Sub, Low Data Rate\n");
         printf("\n");
-        printf("5. Inventory 100% Mod,1of256,Single Sub,High Data Rate\n");
-        printf("6. Inventory 100% Mod,1of256,Single Sub,Low Data Rate\n");
-        printf("7. Inventory 100% Mod,1of256,Dual Sub,High Data Rate\n");
-        printf("8. Inventory 100% Mod,1of256,Dual Sub,Low Data Rate\n");
+        printf("5. Inventory 100% Mod, 1of256, Single Sub, High Data Rate\n");
+        printf("6. Inventory 100% Mod, 1of256, Single Sub, Low Data Rate\n");
+        printf("7. Inventory 100% Mod, 1of256, Dual Sub, High Data Rate\n");
+        printf("8. Inventory 100% Mod, 1of256, Dual Sub, Low Data Rate\n");
 
         printf("\n\n");
 
-        printf("9. Inventory 10% Mod,1of4,Single Sub,High Data Rate\n");
-        printf("A. Inventory 10% Mod,1of4,Single Sub,Low Data Rate\n");
-        printf("B. Inventory 10% Mod,1of4,Dual Sub,High Data Rate\n");
-        printf("C. Inventory 10% Mod,1of4,Dual Sub,Low Data Rate\n");
+        printf("9. Inventory 10% Mod, 1of4, Single Sub, High Data Rate\n");
+        printf("A. Inventory 10% Mod, 1of4, Single Sub, Low Data Rate\n");
+        printf("B. Inventory 10% Mod, 1of4, Dual Sub, High Data Rate\n");
+        printf("C. Inventory 10% Mod, 1of4, Dual Sub, Low Data Rate\n");
         printf("\n");
-        printf("D. Inventory 10% Mod,1of256,Single Sub,High Data Rate\n");
-        printf("E. Inventory 10% Mod,1of256,Single Sub,Low Data Rate\n");
-        printf("F. Inventory 10% Mod,1of256,Dual Sub,High Data Rate\n");
-        printf("G. Inventory 10% Mod,1of256,Dual Sub,Low Data Rate\n");
+        printf("D. Inventory 10% Mod, 1of256, Single Sub, High Data Rate\n");
+        printf("E. Inventory 10% Mod, 1of256, Single Sub, Low Data Rate\n");
+        printf("F. Inventory 10% Mod, 1of256, Dual Sub, High Data Rate\n");
+        printf("G. Inventory 10% Mod, 1of256, Dual Sub, Low Data Rate\n");
 
         printf("\n");
 
@@ -2023,13 +2023,13 @@ void type_v_commands(void)
         case 'T':
         case 't':
             printf("\nCRC Test\n");
-            uint8_t crc_test_buf[4] = { 0x01,0x02,0x03,0x04 };
+            uint8_t crc_test_buf[4] = { 0x01, 0x02, 0x03, 0x04 };
             uint8_t crc1 = 0;
             uint8_t crc2 = 0;
-            mml_nfc_pcd_compute_crc(PROTOCOL_ISO15693_100_1OF4_SINGLE_HIGH,crc_test_buf,4,&crc2,
+            mml_nfc_pcd_compute_crc(PROTOCOL_ISO15693_100_1OF4_SINGLE_HIGH, crc_test_buf, 4, &crc2,
                                     &crc1);
             printf("Input: 1,2,3,4\n");
-            printf("CRC: 0x%0X%0X\n",crc1,crc2);
+            printf("CRC: 0x%0X%0X\n", crc1, crc2);
             printf("Press any key to continue...\n");
             get_key_press();
             break;
@@ -2056,7 +2056,7 @@ void pbm_commands(void)
     int32_t uid_start = 0;
     int32_t uid_end = 0;
     int32_t status = 0;
-    uid_storage_t uid_store = { { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },0 };
+    uid_storage_t uid_store = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0 };
     uint32_t uid = 0;
     // Default PBM Key
     uint64_t current_key = 0xFFFFFFFFFFFFll;
@@ -2071,12 +2071,12 @@ void pbm_commands(void)
         clear_screen();
 
         printf("PBM Command Menu\n\n");
-        printf("Current UID: 0x%08lX,Current Block: %d,INC/DEC Value: %ld\n",uid,
-               current_block_num,current_value_num);
+        printf("Current UID: 0x%08lX, Current Block: %d, INC/DEC Value: %ld\n", uid,
+               current_block_num, current_value_num);
         printf("\nPOLLING AND AUTHENTICATE COMMANDS\n");
         printf("(P) Poll for PBM Cards          (H) Halt\n");
         printf("(A) Authenticate Block          (X) Re-Authenticate Block\n");
-        printf("\nGENERIC BLOCK COMMANDS [%d]\n",current_block_num);
+        printf("\nGENERIC BLOCK COMMANDS [%d]\n", current_block_num);
         printf("(B) Change Current Block        (F) Erase Block (Fill with 0x00s)\n");
         printf("(R) Read Block                  (W) Write Block\n");
         printf("\nVALUE BLOCK COMMANDS\n");
@@ -2129,7 +2129,7 @@ void pbm_commands(void)
                     uid_start = 10;
                     uid_end = 14;
                 } else {
-                    printf("Invalid UID detected,should be length of 5,10,or 15 including "
+                    printf("Invalid UID detected, should be length of 5, 10, or 15 including "
                            "the BCC\n");
                     break;
                 }
@@ -2165,25 +2165,25 @@ void pbm_commands(void)
             break;
         case 'A':
         case 'a':
-            // once a card has been polled,we can authenticate for a block with it's key,
+            // once a card has been polled, we can authenticate for a block with it's key,
             // which gets us into the encrypted communication process so we can do other commands
             // this uses current_block_num (set by 'B') and the current_key
             printf("\nBlock Authenticate\n");
 
             if (uid == 0) {
-                printf("\nUID is 0,Poll for a valid card first\n");
+                printf("\nUID is 0, Poll for a valid card first\n");
                 printf("Press any key to continue...\n");
                 get_key_press_no_echo();
                 break;
             }
 
-            status = pbm_authenticate_block(uid,current_block_num,current_key,PBM_KEY_A,
+            status = pbm_authenticate_block(uid, current_block_num, current_key, PBM_KEY_A,
                                             FIRST_TIME_AUTH);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to authenticate. Error: %ld\n",status);
+                printf("Failed to authenticate. Error: %ld\n", status);
             } else {
-                printf("Authentication for block %d successful.\n",current_block_num);
+                printf("Authentication for block %d successful.\n", current_block_num);
             }
 
             printf("Press any key to continue...\n");
@@ -2191,12 +2191,12 @@ void pbm_commands(void)
             break;
         case 'B':
         case 'b':
-            // switch to another block on the card,this only changes the block we are pointing at
+            // switch to another block on the card, this only changes the block we are pointing at
             // NOTE: you need to re-authenticate to actually send commands to the new block
-            printf("\nCurrent KEY: 0x%012llX\n",current_key);
+            printf("\nCurrent KEY: 0x%012llX\n", current_key);
             printf("\nEnter new block to use\n");
 
-            new_val = dte_get_int_val("Pbm Block",3,0,256);
+            new_val = dte_get_int_val("Pbm Block", 3, 0, 256);
 
             if ((new_val < 0) || (new_val > 256)) {
                 printf("\nInvalid selection try again.\n");
@@ -2208,18 +2208,18 @@ void pbm_commands(void)
             break;
         case 'R':
         case 'r':
-            // read the data for a block,this requires that you are authenticated
+            // read the data for a block, this requires that you are authenticated
             // this uses current_block_num (set by 'B')
-            printf("\nRead Block: %d\n",current_block_num);
+            printf("\nRead Block: %d\n", current_block_num);
 
-            status = pbm_read_block(current_block_num,data_buffer);
+            status = pbm_read_block(current_block_num, data_buffer);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to read block. Error: %ld\n",status);
+                printf("Failed to read block. Error: %ld\n", status);
             } else {
                 printf("Successful read block. Data:");
 
-                hexdump(DBG_LVL_NON,data_buffer,16,1);
+                hexdump(DBG_LVL_NON, data_buffer, 16, 1);
             }
 
             printf("Press any key to continue...\n");
@@ -2227,9 +2227,9 @@ void pbm_commands(void)
             break;
         case 'W':
         case 'w':
-            // write data to a block,this requires that you are authenticated
+            // write data to a block, this requires that you are authenticated
             // this uses current_block_num (set by 'B')
-            printf("\nWrite Block: %d\n",current_block_num);
+            printf("\nWrite Block: %d\n", current_block_num);
 
             for (i = 0; i < 8; i++) {
                 data_buffer[i] = 0;
@@ -2244,10 +2244,10 @@ void pbm_commands(void)
             data_buffer[14] = 0x45;
             data_buffer[15] = 0x67;
 
-            status = pbm_write_block(current_block_num,data_buffer);
+            status = pbm_write_block(current_block_num, data_buffer);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to Write block. Error: %ld\n",status);
+                printf("Failed to Write block. Error: %ld\n", status);
             } else {
                 printf("Successfully wrote block.\n");
             }
@@ -2257,13 +2257,13 @@ void pbm_commands(void)
             break;
         case 'H':
         case 'h':
-            // send the HALT command to a card,it should ignore us until we re-poll it
+            // send the HALT command to a card, it should ignore us until we re-poll it
             printf("\nHALT\n");
 
             status = pbm_halt();
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to Halt. Error: %ld\n",status);
+                printf("Failed to Halt. Error: %ld\n", status);
             } else {
                 printf("Successfully Halted.\n");
             }
@@ -2273,15 +2273,15 @@ void pbm_commands(void)
             break;
         case 'V':
         case 'v':
-            // create a formatted value block,uses PBM formatting
+            // create a formatted value block, uses PBM formatting
             // NOTE: you need to be authenticated for the block to use this command
             // this uses the current_block_num (set by 'B') and the current_value_num (set by 'C')
             printf("\nCreate Value Block\n");
 
-            status = pbm_create_value_block(current_block_num,current_value_num);
+            status = pbm_create_value_block(current_block_num, current_value_num);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to create value block. Error: %ld\n",status);
+                printf("Failed to create value block. Error: %ld\n", status);
             } else {
                 printf("Successfully Created Value Block.\n");
             }
@@ -2291,24 +2291,24 @@ void pbm_commands(void)
             break;
         case 'X':
         case 'x':
-            // re-authenticate to a new block,requires the correct key to be in 'current_key'
+            // re-authenticate to a new block, requires the correct key to be in 'current_key'
             // the uses current_block_num (set by 'B')
             printf("\nBlock Re-Authenticate\n");
 
             if (uid == 0) {
-                printf("\nUID is 0,Poll for a valid card first\n");
+                printf("\nUID is 0, Poll for a valid card first\n");
                 printf("Press any key to continue...\n");
                 get_key_press_no_echo();
                 break;
             }
 
-            status = pbm_authenticate_block(uid,current_block_num,current_key,PBM_KEY_A,
+            status = pbm_authenticate_block(uid, current_block_num, current_key, PBM_KEY_A,
                                             ALREADY_AUTHORIZED_AUTH);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to re-authenticate. Error: %ld\n",status);
+                printf("Failed to re-authenticate. Error: %ld\n", status);
             } else {
-                printf("Re-Authentication for block %d successful.\n",current_block_num);
+                printf("Re-Authentication for block %d successful.\n", current_block_num);
             }
 
             printf("Press any key to continue...\n");
@@ -2316,14 +2316,14 @@ void pbm_commands(void)
             break;
         case 'D':
         case 'd':
-            // send the decrement command for the current block,requires that you are authenticated.
+            // send the decrement command for the current block, requires that you are authenticated.
             // this uses the current_block_num (set by 'B') and the current_value_num (set by 'C')
             printf("\nDecrement Value Block\n");
 
-            status = pbm_decrement_block(current_block_num,current_value_num);
+            status = pbm_decrement_block(current_block_num, current_value_num);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to decrement block. Error: %ld\n",status);
+                printf("Failed to decrement block. Error: %ld\n", status);
             } else {
                 printf("Successfully decremented Block.\n");
             }
@@ -2333,14 +2333,14 @@ void pbm_commands(void)
             break;
         case 'I':
         case 'i':
-            // send the increment command for the current block,requires that you are authenticated.
+            // send the increment command for the current block, requires that you are authenticated.
             // this uses the current_block_num (set by 'B') and the current_value_num (set by 'C')
             printf("\nIncrement Value Block\n");
 
-            status = pbm_increment_block(current_block_num,current_value_num);
+            status = pbm_increment_block(current_block_num, current_value_num);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to increment block. Error: %ld\n",status);
+                printf("Failed to increment block. Error: %ld\n", status);
             } else {
                 printf("Successfully incremented Block.\n");
             }
@@ -2350,14 +2350,14 @@ void pbm_commands(void)
             break;
         case 'S':
         case 's':
-            // send the restore command for the current block,requires that you are authenticated
+            // send the restore command for the current block, requires that you are authenticated
             // this uses current_block_num (set by 'B')
             printf("\nRestore Value Block\n");
 
             status = pbm_restore_block(current_block_num);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to restore block. Error: %ld\n",status);
+                printf("Failed to restore block. Error: %ld\n", status);
             } else {
                 printf("Successfully restored Block.\n");
             }
@@ -2367,14 +2367,14 @@ void pbm_commands(void)
             break;
         case 'T':
         case 't':
-            // send the transfer command for the current block,requires that you are authenticated
+            // send the transfer command for the current block, requires that you are authenticated
             // this uses current_block_num (set by 'B')
             printf("\nTransfer Value Block\n");
 
             status = pbm_transfer_block(current_block_num);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to transfer block. Error: %ld\n",status);
+                printf("Failed to transfer block. Error: %ld\n", status);
             } else {
                 printf("Successfully transfered Block.\n");
             }
@@ -2384,11 +2384,11 @@ void pbm_commands(void)
             break;
         case 'C':
         case 'c':
-            // change the value (current_value_num) used by the value block command for increment,decrement
+            // change the value (current_value_num) used by the value block command for increment, decrement
             printf("\nChange Value\n");
-            printf("\nCurrent Value: %ld\n",current_value_num);
+            printf("\nCurrent Value: %ld\n", current_value_num);
 
-            new_val = dte_get_int_val("Pbm Value",10,0,0x7FFFFFF);
+            new_val = dte_get_int_val("Pbm Value", 10, 0, 0x7FFFFFF);
 
             if ((new_val < 0) || (new_val > 0x7FFFFFFF)) {
                 printf("\nInvalid selection try again.\n");
@@ -2401,7 +2401,7 @@ void pbm_commands(void)
             break;
         case 'K':
         case 'k':
-            printf("\nWrite Trailer for Key B: %d\n",current_block_num);
+            printf("\nWrite Trailer for Key B: %d\n", current_block_num);
 
             for (i = 0; i < 8; i++) {
                 data_buffer[i] = 0;
@@ -2417,9 +2417,9 @@ void pbm_commands(void)
 
             // KEY A will remain the only key to write trailer C1-3 of b001
             // DISALLOWED.  If B can be read it CANNOT serve for auth.  Auth will pass but all memory accesses will fail
-            //  So,we need to use another mode,so use b100,Key B can write both a and b,but A and B can write Access
+            //  So, we need to use another mode, so use b100, Key B can write both a and b, but A and B can write Access
             // KEY B will have SOLE Write permission for block 2 of current sector (where trailer is block 3) C1-3 of b100
-            // C10,C11,C20,C21,C30,C31 will remain 0,so Transport Configuration (Key A or B has full access)
+            // C10, C11, C20, C21, C30, C31 will remain 0, so Transport Configuration (Key A or B has full access)
             // /C2      /C1
             //  C1      /C3
             //  C3       C2
@@ -2449,10 +2449,10 @@ void pbm_commands(void)
             data_buffer[14] = (current_key_b >> 8) & 0xFF;
             data_buffer[15] = (current_key_b >> 0) & 0xFF;
 
-            status = pbm_write_block(current_block_num,data_buffer);
+            status = pbm_write_block(current_block_num, data_buffer);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to Write block. Error: %ld\n",status);
+                printf("Failed to Write block. Error: %ld\n", status);
             } else {
                 printf("Successfully wrote block.\n");
             }
@@ -2466,19 +2466,19 @@ void pbm_commands(void)
             printf("\nBlock Authenticate with B\n");
 
             if (uid == 0) {
-                printf("\nUID is 0,Poll for a valid card first\n");
+                printf("\nUID is 0, Poll for a valid card first\n");
                 printf("Press any key to continue...\n");
                 get_key_press_no_echo();
                 break;
             }
 
-            status = pbm_authenticate_block(uid,current_block_num,current_key_b,PBM_KEY_B,
+            status = pbm_authenticate_block(uid, current_block_num, current_key_b, PBM_KEY_B,
                                             FIRST_TIME_AUTH);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to authenticate. Error: %ld\n",status);
+                printf("Failed to authenticate. Error: %ld\n", status);
             } else {
-                printf("Authentication for block %d successful.\n",current_block_num);
+                printf("Authentication for block %d successful.\n", current_block_num);
             }
 
             printf("Press any key to continue...\n");
@@ -2490,19 +2490,19 @@ void pbm_commands(void)
             printf("\nBlock Re-Authenticate Key B\n");
 
             if (uid == 0) {
-                printf("\nUID is 0,Poll for a valid card first\n");
+                printf("\nUID is 0, Poll for a valid card first\n");
                 printf("Press any key to continue...\n");
                 get_key_press_no_echo();
                 break;
             }
 
-            status = pbm_authenticate_block(uid,current_block_num,current_key_b,PBM_KEY_B,
+            status = pbm_authenticate_block(uid, current_block_num, current_key_b, PBM_KEY_B,
                                             ALREADY_AUTHORIZED_AUTH);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to re-authenticate. Error: %ld\n",status);
+                printf("Failed to re-authenticate. Error: %ld\n", status);
             } else {
-                printf("Re-Authentication for block %d successful.\n",current_block_num);
+                printf("Re-Authentication for block %d successful.\n", current_block_num);
             }
 
             printf("Press any key to continue...\n");
@@ -2511,16 +2511,16 @@ void pbm_commands(void)
         case 'F':
         case 'f':
             // erase a block by filling with all 0
-            printf("\nErase Block (Fill with 0x00s)\n: %d\n",current_block_num);
+            printf("\nErase Block (Fill with 0x00s)\n: %d\n", current_block_num);
 
             for (i = 0; i < 16; i++) {
                 data_buffer[i] = 0;
             }
 
-            status = pbm_write_block(current_block_num,data_buffer);
+            status = pbm_write_block(current_block_num, data_buffer);
 
             if (status != PBM_SUCCESS) {
-                printf("Failed to Erase block. Error: %ld\n",status);
+                printf("Failed to Erase block. Error: %ld\n", status);
             } else {
                 printf("Successfully Erased block.\n");
             }
@@ -2551,28 +2551,28 @@ int32_t singleemvl1transac_a(callback_check_for_loop_termination_t callback)
 {
     uint8_t send_buffer_wupa[1] = { 0x52 };
     int32_t send_len_wupa = 1;
-    uint8_t send_buffer_hlta[2] = { 0x50,0x00 };
+    uint8_t send_buffer_hlta[2] = { 0x50, 0x00 };
     int32_t send_len_hlta = 2;
-    uint8_t send_buffer_wupb[3] = { 0x05,0x00,0x08 };
+    uint8_t send_buffer_wupb[3] = { 0x05, 0x00, 0x08 };
     int32_t send_len_wupb = 3;
-    uint8_t send_buffer_anticol[2] = { 0x93,0x20 };
+    uint8_t send_buffer_anticol[2] = { 0x93, 0x20 };
     int32_t send_len_anticol = 2;
-    uint8_t send_buffer_sel[7] = { 0x93,0x70,0x27,0xe9,0x3b,0x11,0xe4 };
+    uint8_t send_buffer_sel[7] = { 0x93, 0x70, 0x27, 0xe9, 0x3b, 0x11, 0xe4 };
     int32_t send_len_sel = 7;
-    uint8_t send_buffer_rats[2] = { 0xe0,0x80 };
+    uint8_t send_buffer_rats[2] = { 0xe0, 0x80 };
     int32_t send_len_rats = 2;
-    uint8_t send_buffer_iblock1[21] = { 0x02,0x00,0xA4,0x04,0x00,0x0E,0x32,
-                                        0x50,0x41,0x59,0x2E,0x53,0x59,0x53,
-                                        0x2E,0x44,0x44,0x46,0x30,0x31,0x00 };
+    uint8_t send_buffer_iblock1[21] = { 0x02, 0x00, 0xA4, 0x04, 0x00, 0x0E, 0x32,
+                                        0x50, 0x41, 0x59, 0x2E, 0x53, 0x59, 0x53,
+                                        0x2E, 0x44, 0x44, 0x46, 0x30, 0x31, 0x00 };
     int32_t send_len_iblock1 = 21;
-    uint8_t send_buffer_iblock2[19] = { 0x03,0x00,0xA4,0x04,0x00,0x0C,0x01,0x02,0x03,0x04,
-                                        0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x00 };
+    uint8_t send_buffer_iblock2[19] = { 0x03, 0x00, 0xA4, 0x04, 0x00, 0x0C, 0x01, 0x02, 0x03, 0x04,
+                                        0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x00 };
     int32_t send_len_iblock2 = 19;
 
     uint8_t *receive_buffer = GetCommonBuffer();
     uint32_t receive_len;
 
-    // If callback for early termination exists,call it
+    // If callback for early termination exists, call it
     if (callback) {
         if (callback()) {
             mml_nfc_pcd_task_sleep(KEYPRESS_RETURN_DELAY_MS);
@@ -2661,22 +2661,22 @@ int32_t singleemvl1transac_b(callback_check_for_loop_termination_t callback)
 {
     uint8_t send_buffer_wupa[1] = { 0x52 };
     int32_t send_len_wupa = 1;
-    uint8_t send_buffer_wupb[3] = { 0x05,0x00,0x08 };
+    uint8_t send_buffer_wupb[3] = { 0x05, 0x00, 0x08 };
     int32_t send_len_wupb = 3;
-    uint8_t send_buffer_attrib[9] = { 0x1D,0x46,0xB5,0xC7,0xA0,0x00,0x08,0x01,0x00 };
+    uint8_t send_buffer_attrib[9] = { 0x1D, 0x46, 0xB5, 0xC7, 0xA0, 0x00, 0x08, 0x01, 0x00 };
     int32_t send_len_attrib = 9;
-    uint8_t send_buffer_iblock1[21] = { 0x02,0x00,0xA4,0x04,0x00,0x0E,0x32,
-                                        0x50,0x41,0x59,0x2E,0x53,0x59,0x53,
-                                        0x2E,0x44,0x44,0x46,0x30,0x31,0x00 };
+    uint8_t send_buffer_iblock1[21] = { 0x02, 0x00, 0xA4, 0x04, 0x00, 0x0E, 0x32,
+                                        0x50, 0x41, 0x59, 0x2E, 0x53, 0x59, 0x53,
+                                        0x2E, 0x44, 0x44, 0x46, 0x30, 0x31, 0x00 };
     int32_t send_len_iblock1 = 21;
-    uint8_t send_buffer_iblock2[19] = { 0x03,0x00,0xA4,0x04,0x00,0x0C,0x01,0x02,0x03,0x04,
-                                        0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x00 };
+    uint8_t send_buffer_iblock2[19] = { 0x03, 0x00, 0xA4, 0x04, 0x00, 0x0C, 0x01, 0x02, 0x03, 0x04,
+                                        0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x00 };
     int32_t send_len_iblock2 = 19;
 
     uint8_t *receive_buffer = GetCommonBuffer();
     uint32_t receive_len;
 
-    // If callback for early termination exists,call it
+    // If callback for early termination exists, call it
     if (callback) {
         if (callback()) {
             mml_nfc_pcd_task_sleep(KEYPRESS_RETURN_DELAY_MS);
@@ -2751,7 +2751,7 @@ void dte_do_transac_a(void)
 
     while (1) {
         mml_nfc_pcd_task_sleep(PAUSE_TRANSAC_MS);
-        printf("\nTransaction A Send Count: %ld\n",i++);
+        printf("\nTransaction A Send Count: %ld\n", i++);
 
         if (singleemvl1transac_a(key_has_been_pressed)) {
             break;
@@ -2771,7 +2771,7 @@ void dte_do_transac_b(void)
 
     while (1) {
         mml_nfc_pcd_task_sleep(PAUSE_TRANSAC_MS);
-        printf("\nTransaction B Send Count: %ld\n",i++);
+        printf("\nTransaction B Send Count: %ld\n", i++);
 
         if (singleemvl1transac_b(key_has_been_pressed)) {
             break;
@@ -2789,8 +2789,8 @@ void dte_analogue(void)
     while (1) {
         clear_screen();
         printf("TTA L1: Analogue Menu\n");
-        printf("Loop Setting: Num Loops: %ld\n",num_loops);
-        printf("\n! NOTE: by Default Num Loops is 0,Which is Infinite Looping !\n\n");
+        printf("Loop Setting: Num Loops: %ld\n", num_loops);
+        printf("\n! NOTE: by Default Num Loops is 0, Which is Infinite Looping !\n\n");
         printf("Halt test sequences by pressing any key\n");
         printf("Carrier Status: ");
         if (carrier_on) {
@@ -2961,7 +2961,7 @@ void dte_digital(void)
             printf("\n!Test will loop forever until any key is pressed to stop test!\n\n");
             poweron_operatingfield();
             while (1) {
-                printf("\n\nDig %ld\n",i++);
+                printf("\n\nDig %ld\n", i++);
 
                 if (singleemvl1exchange(key_has_been_pressed)) {
                     break;
@@ -3009,7 +3009,7 @@ void dte_interop(void)
             printf("\n!Test will loop forever until any key is pressed to stop test!\n\n");
             poweron_operatingfield();
             while (1) {
-                printf("\n\nInterop %ld\n",i++);
+                printf("\n\nInterop %ld\n", i++);
 
                 if (singleemvl1interopexchange(key_has_been_pressed)) {
                     break;
@@ -3051,9 +3051,9 @@ void dte(void)
         poweroff_operatingfield();
 
         printf("Maxim Integrated MAX32572 EMV L1 DTE Main Menu\n\n");
-        printf("HW Version: %s\n",PCD_HW_VER);
-        printf("SW Version: %s\n",PCD_SW_VER);
-        printf("FW Checksum: %s\n",PCD_FW_SUM);
+        printf("HW Version: %s\n", PCD_HW_VER);
+        printf("SW Version: %s\n", PCD_SW_VER);
+        printf("FW Checksum: %s\n", PCD_FW_SUM);
 
         printf("\nSelect Application to continue:\n");
         printf("1. TTA L1: Analogue\n");
@@ -3106,11 +3106,11 @@ void emvl1_main_loop(void)
 
     // Disable line buffering for this serial menu driven DTE
     //  avoid may calls to fflush();
-    setvbuf(stdout,NULL,_IONBF,0);
+    setvbuf(stdout, NULL, _IONBF, 0);
 
     if (trim_ro_to_rtc() != E_SUCCESS) {
         printf("Failed to trim Ring Oscillator.\n");
-        printf("Timing accuracy suspect,may result in communications failures.\n");
+        printf("Timing accuracy suspect, may result in communications failures.\n");
 
         printf("Press any key to continue...\n");
         get_key_press_no_echo();

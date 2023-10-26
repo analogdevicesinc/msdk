@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices,Inc.
+ * Copyright 2023 Analog Devices, Inc.
  *
- * Licensed under the Apache License,Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -130,13 +130,13 @@ void UARTx_IRQHandler(void)
  *
  * ===========================================================
  */
-void vCmdLineTask_cb(mxc_uart_req_t *req,int error)
+void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
 {
     BaseType_t xHigherPriorityTaskWoken;
 
     /* Wake the task */
     xHigherPriorityTaskWoken = pdFALSE;
-    vTaskNotifyGiveFromISR(cmd_task_id,&xHigherPriorityTaskWoken);
+    vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
@@ -163,7 +163,7 @@ void vCmdLineTask(void *pvParameters)
     BaseType_t xMore;
     mxc_uart_req_t async_read_req;
 
-    memset(buffer,0,CMD_LINE_BUF_SIZE);
+    memset(buffer, 0, CMD_LINE_BUF_SIZE);
     index = 0;
 
     /* Register available CLI commands */
@@ -172,7 +172,7 @@ void vCmdLineTask(void *pvParameters)
     /* Enable UARTx interrupt */
     NVIC_ClearPendingIRQ(UARTx_IRQn);
     NVIC_DisableIRQ(UARTx_IRQn);
-    NVIC_SetPriority(UARTx_IRQn,1);
+    NVIC_SetPriority(UARTx_IRQn, 1);
     NVIC_EnableIRQ(UARTx_IRQn);
 
     /* Async read will be used to wake process */
@@ -196,7 +196,7 @@ void vCmdLineTask(void *pvParameters)
             vTaskDelay(portMAX_DELAY);
         }
         /* Hang here until ISR wakes us for a character */
-        ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         /* Check that we have a valid character */
         if (async_read_req.rxCnt > 0) {
@@ -221,9 +221,9 @@ void vCmdLineTask(void *pvParameters)
                     buffer[index] = 0x00;
                     /* Evaluate */
                     do {
-                        xMore = FreeRTOS_CLIProcessCommand(buffer,output,OUTPUT_BUF_SIZE);
-                        /* If xMore == pdTRUE,then output buffer contains no null
-						 * termination,so we know it is OUTPUT_BUF_SIZE. If pdFALSE,we can
+                        xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
+                        /* If xMore == pdTRUE, then output buffer contains no null
+						 * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
 						 * use strlen.
 						 */
                         for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
@@ -244,25 +244,25 @@ void vCmdLineTask(void *pvParameters)
                     fflush(stdout);
                 }
                 uartReadLen = 1;
-                /* If more characters are ready,process them here */
+                /* If more characters are ready, process them here */
 
                 if (ConsoleUART->stat & MXC_F_UART_STAT_RXEMPTY) { // Prevent dropping characters
                     MXC_Delay(200);
                 }
             } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
-                     (MXC_UART_Read(ConsoleUART,(uint8_t *)&tmp,&uartReadLen) == 0));
+                     (MXC_UART_Read(ConsoleUART, (uint8_t *)&tmp, &uartReadLen) == 0));
         }
     }
 }
 
 //******************************************************************************
-int flash_verify(uint32_t address,uint32_t length,uint32_t *data)
+int flash_verify(uint32_t address, uint32_t length, uint32_t *data)
 {
     volatile uint32_t *ptr;
 
-    for (ptr = (uint32_t *)address; ptr < (uint32_t *)(address + length); ptr++,data++) {
+    for (ptr = (uint32_t *)address; ptr < (uint32_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
-            printf("Verify failed at 0x%x (0x%x != 0x%x)\n",(unsigned int)ptr,(unsigned int)*ptr,
+            printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
                    (unsigned int)*data);
             return E_UNKNOWN;
         }
@@ -272,16 +272,16 @@ int flash_verify(uint32_t address,uint32_t length,uint32_t *data)
 }
 
 //******************************************************************************
-int flash_write(uint32_t startaddr,uint32_t length,uint32_t *data)
+int flash_write(uint32_t startaddr, uint32_t length, uint32_t *data)
 {
-    int error_status,i = 0;
+    int error_status, i = 0;
 
     // Check if flash controller is busy
     if (MXC_FLC0->flsh_cn & MXC_F_FLC_FLSH_CN_PEND) {
         return E_BUSY;
     }
 
-    if (!check_erased(startaddr,length)) {
+    if (!check_erased(startaddr, length)) {
         return E_INVALID;
     }
 
@@ -289,10 +289,10 @@ int flash_write(uint32_t startaddr,uint32_t length,uint32_t *data)
 
     for (uint32_t testaddr = startaddr; i < length; testaddr += 4) {
         // Write a word
-        error_status = MXC_FLC_Write(testaddr,4,&data[i]);
-        LOGV("Write addr 0x%08X: %c\r\n",testaddr,data[i]);
+        error_status = MXC_FLC_Write(testaddr, 4, &data[i]);
+        LOGV("Write addr 0x%08X: %c\r\n", testaddr, data[i]);
         if (error_status != E_NO_ERROR) {
-            printf("Failure in writing a word : error %i addr: 0x%08x\n",error_status,testaddr);
+            printf("Failure in writing a word : error %i addr: 0x%08x\n", error_status, testaddr);
             return error_status;
         }
         i++;
@@ -300,26 +300,26 @@ int flash_write(uint32_t startaddr,uint32_t length,uint32_t *data)
 
     MXC_ICC_Enable();
 
-    return flash_verify(startaddr,length,data);
+    return flash_verify(startaddr, length, data);
 }
 
 // *****************************************************************************
-int flash_read(uint32_t startaddr,uint32_t length,uint8_t *data)
+int flash_read(uint32_t startaddr, uint32_t length, uint8_t *data)
 {
     for (int i = 0; i < length; i++) {
         uint32_t addr = startaddr + i * 4;
         data[i] = *(uint32_t *)addr;
         if (data[i] == 0xFF) {
-            LOGV("Read addr 0x%08X: %s\r\n",addr,"empty");
+            LOGV("Read addr 0x%08X: %s\r\n", addr, "empty");
         } else {
-            LOGV("Read addr 0x%08X: %c\r\n",addr,data[i]);
+            LOGV("Read addr 0x%08X: %c\r\n", addr, data[i]);
         }
     }
     return E_NO_ERROR;
 }
 
 // *****************************************************************************
-int check_mem(uint32_t startaddr,uint32_t length,uint32_t data)
+int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
     uint32_t *ptr;
 
@@ -332,9 +332,9 @@ int check_mem(uint32_t startaddr,uint32_t length,uint32_t data)
 }
 
 //******************************************************************************
-int check_erased(uint32_t startaddr,uint32_t length)
+int check_erased(uint32_t startaddr, uint32_t length)
 {
-    return check_mem(startaddr,length,0xFFFFFFFF);
+    return check_mem(startaddr, length, 0xFFFFFFFF);
 }
 
 //******************************************************************************
@@ -353,7 +353,7 @@ void sfe_init(void)
 }
 
 //******************************************************************************
-uint32_t calculate_crc(uint32_t *array,uint32_t length)
+uint32_t calculate_crc(uint32_t *array, uint32_t length)
 {
     int err;
 
@@ -361,9 +361,9 @@ uint32_t calculate_crc(uint32_t *array,uint32_t length)
     if (flash_cpy == NULL) {
         return E_INVALID;
     }
-    memcpy(flash_cpy,array,MXC_FLASH_PAGE_SIZE);
+    memcpy(flash_cpy, array, MXC_FLASH_PAGE_SIZE);
 
-    mxc_ctb_crc_req_t crc_req = { (uint8_t *)flash_cpy,MXC_FLASH_PAGE_SIZE,0 };
+    mxc_ctb_crc_req_t crc_req = { (uint8_t *)flash_cpy, MXC_FLASH_PAGE_SIZE, 0 };
 
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC);
     MXC_CTB_CRC_SetPoly(POLY);
@@ -379,8 +379,8 @@ uint32_t calculate_crc(uint32_t *array,uint32_t length)
 int main(void)
 {
     printf("\n\n*************** Flash Control CLI Example ***************\n");
-    printf("\nThis example demonstrates the CLI commands feature of FreeRTOS,various features");
-    printf("\nof the Flash Controller (page erase and write),and how to use the CTB to");
+    printf("\nThis example demonstrates the CLI commands feature of FreeRTOS, various features");
+    printf("\nof the Flash Controller (page erase and write), and how to use the CTB to");
     printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n\n");
 
     NVIC_SetRAM();
@@ -390,9 +390,9 @@ int main(void)
     flash_init();
 
     /* Configure task */
-    if ((xTaskCreate(vCmdLineTask,(const char *)"CmdLineTask",
-                     configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE,NULL,
-                     tskIDLE_PRIORITY + 1,&cmd_task_id) != pdPASS)) {
+    if ((xTaskCreate(vCmdLineTask, (const char *)"CmdLineTask",
+                     configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
+                     tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
         printf("xTaskCreate() failed to create a task.\n");
     } else {
         /* Start scheduler */

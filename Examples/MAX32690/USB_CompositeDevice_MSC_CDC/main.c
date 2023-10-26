@@ -124,7 +124,7 @@ static volatile int usb_read_complete;
 
 /* Functions to control "disk" memory. See msc.h for definitions. */
 static const msc_mem_t mem = { mscmem_Init, mscmem_Start, mscmem_Stop, mscmem_Ready,
-                               mscmem_Size, mscmem_Read, mscmem_Write };
+                               mscmem_Size, mscmem_Read,  mscmem_Write };
 
 /**
  * User-supplied function to delay usec micro-seconds

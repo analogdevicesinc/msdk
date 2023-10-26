@@ -1,32 +1,32 @@
 /*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  * Description: Communications Device Class ACM (Serial Port) over USB
@@ -117,9 +117,9 @@ static uint32_t getSector(uint32_t num)
             /* Was it written to after it was read from memory? */
             if (sectorDirty) {
                 /* Erase the old data. */
-                MX25_Erase(sectorNum << MX25_SECTOR_SIZE_SHIFT,MX25_Erase_4K);
+                MX25_Erase(sectorNum << MX25_SECTOR_SIZE_SHIFT, MX25_Erase_4K);
                 /* Write the new */
-                MX25_Program_Page(sectorNum << MX25_SECTOR_SIZE_SHIFT,sector,MX25_SECTOR_SIZE,
+                MX25_Program_Page(sectorNum << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE,
                                   MXC_SPIXF_WIDTH);
                 /* Mark data as clean */
                 sectorDirty = 0;
@@ -128,7 +128,7 @@ static uint32_t getSector(uint32_t num)
 
         /* Requesting a new valid sector? */
         if (num != INVALID_SECTOR) {
-            MX25_Read(num << MX25_SECTOR_SIZE_SHIFT,sector,MX25_SECTOR_SIZE,MXC_SPIXF_WIDTH);
+            MX25_Read(num << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE, MXC_SPIXF_WIDTH);
             sectorDirty = 0;
             sectorNum = num;
         }
@@ -165,7 +165,7 @@ uint32_t mscmem_Size(void)
 }
 
 /******************************************************************************/
-int mscmem_Read(uint32_t lba,uint8_t *buffer)
+int mscmem_Read(uint32_t lba, uint8_t *buffer)
 {
     uint32_t addr;
 
@@ -180,13 +180,13 @@ int mscmem_Read(uint32_t lba,uint8_t *buffer)
     /* Get the offset into the current sector */
     addr = getSectorAddr(lba);
 
-    memcpy(buffer,sector + addr,LBA_SIZE);
+    memcpy(buffer, sector + addr, LBA_SIZE);
 
     return 0;
 }
 
 /******************************************************************************/
-int mscmem_Write(uint32_t lba,uint8_t *buffer)
+int mscmem_Write(uint32_t lba, uint8_t *buffer)
 {
     uint32_t addr;
 
@@ -201,7 +201,7 @@ int mscmem_Write(uint32_t lba,uint8_t *buffer)
     /* Get the offset into the current sector */
     addr = getSectorAddr(lba);
 
-    memcpy(sector + addr,buffer,LBA_SIZE);
+    memcpy(sector + addr, buffer, LBA_SIZE);
     sectorDirty = 1;
 
     return 0;
@@ -215,7 +215,7 @@ int mscmem_Start()
         mscmem_Init();
     }
 
-    /* Check if the initialization succeeded. If it has,start running. */
+    /* Check if the initialization succeeded. If it has, start running. */
     if (initialized) {
         running = 1;
     }
@@ -255,7 +255,7 @@ int mscmem_Init()
     if (!initialized) {
         initialized = 1;
 #if (ERASE_MEMORY_ON_INIT)
-        memset(mem,0,sizeof(mem));
+        memset(mem, 0, sizeof(mem));
 #endif
     }
 
@@ -269,24 +269,24 @@ uint32_t mscmem_Size(void)
 }
 
 /******************************************************************************/
-int mscmem_Read(uint32_t lba,uint8_t *buffer)
+int mscmem_Read(uint32_t lba, uint8_t *buffer)
 {
     if (lba >= NUM_PAGES) {
         return 1;
     }
 
-    memcpy(buffer,mem[lba],LBA_SIZE);
+    memcpy(buffer, mem[lba], LBA_SIZE);
     return 0;
 }
 
 /******************************************************************************/
-int mscmem_Write(uint32_t lba,uint8_t *buffer)
+int mscmem_Write(uint32_t lba, uint8_t *buffer)
 {
     if (lba >= NUM_PAGES) {
         return 1;
     }
 
-    memcpy(mem[lba],buffer,LBA_SIZE);
+    memcpy(mem[lba], buffer, LBA_SIZE);
     return 0;
 }
 
@@ -298,7 +298,7 @@ int mscmem_Start()
         mscmem_Init();
     }
 
-    /* Check if the RAM has been initialized. If it has,start running. */
+    /* Check if the RAM has been initialized. If it has, start running. */
     if (initialized) {
         running = 1;
     }

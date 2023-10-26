@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices,Inc.
+ * Copyright 2023 Analog Devices, Inc.
  *
- * Licensed under the Apache License,Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -73,7 +73,7 @@ void SFE_Reset()
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -102,7 +102,7 @@ void SFE_ID(uint8_t *id)
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -115,8 +115,8 @@ void SFE_ID(uint8_t *id)
     }
 }
 
-void SFE_FlashWrite(uint8_t *txdata,uint32_t length,uint32_t address,uint32_t command,
-                    spi_width_t width,spi_address_t addrMode)
+void SFE_FlashWrite(uint8_t *txdata, uint32_t length, uint32_t address, uint32_t command,
+                    spi_width_t width, spi_address_t addrMode)
 {
     uint8_t cmd[5] = { 0 };
     uint8_t flashCmd[4] = { 0 };
@@ -192,7 +192,7 @@ void SFE_FlashWrite(uint8_t *txdata,uint32_t length,uint32_t address,uint32_t co
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -212,7 +212,7 @@ void SFE_FlashWrite(uint8_t *txdata,uint32_t length,uint32_t address,uint32_t co
     master_req.rxData = NULL;
     master_req.txData = flashCmd;
 
-    status = MXC_SPI_SetWidth(MASTER_SPI,width);
+    status = MXC_SPI_SetWidth(MASTER_SPI, width);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -269,7 +269,7 @@ void SFE_FlashWrite(uint8_t *txdata,uint32_t length,uint32_t address,uint32_t co
     }
 }
 
-void SFE_RAMWrite(uint8_t *txdata,uint32_t length,uint32_t address,spi_width_t width,
+void SFE_RAMWrite(uint8_t *txdata, uint32_t length, uint32_t address, spi_width_t width,
                   spi_address_t addrMode)
 {
     uint8_t cmd[5] = { 0 };
@@ -325,7 +325,7 @@ void SFE_RAMWrite(uint8_t *txdata,uint32_t length,uint32_t address,spi_width_t w
         //return -1;
     }
 
-    printf("\nWrite cmd: 0x%x\n",cmd[0]);
+    printf("\nWrite cmd: 0x%x\n", cmd[0]);
 
     // Initialize spi_reqest struct for Master
     if (addrMode) {
@@ -343,7 +343,7 @@ void SFE_RAMWrite(uint8_t *txdata,uint32_t length,uint32_t address,spi_width_t w
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -361,7 +361,7 @@ void SFE_RAMWrite(uint8_t *txdata,uint32_t length,uint32_t address,spi_width_t w
     master_req.rxData = NULL;
     master_req.txLen = length;
 
-    status = MXC_SPI_SetWidth(MASTER_SPI,width);
+    status = MXC_SPI_SetWidth(MASTER_SPI, width);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -376,7 +376,7 @@ void SFE_RAMWrite(uint8_t *txdata,uint32_t length,uint32_t address,spi_width_t w
     }
 }
 
-void SFE_Read(uint8_t *rxdata,uint32_t length,uint32_t address,spi_width_t width,
+void SFE_Read(uint8_t *rxdata, uint32_t length, uint32_t address, spi_width_t width,
               spi_address_t addrMode)
 {
     uint8_t cmd[5] = { 0 };
@@ -426,7 +426,7 @@ void SFE_Read(uint8_t *rxdata,uint32_t length,uint32_t address,spi_width_t width
         printf("Invalid SPI width\r\n");
     }
 
-    printf("\nRead cmd: 0x%x\n",cmd[0]);
+    printf("\nRead cmd: 0x%x\n", cmd[0]);
 
     // Initialize spi_reqest struct for Master
     if (addrMode) {
@@ -446,7 +446,7 @@ void SFE_Read(uint8_t *rxdata,uint32_t length,uint32_t address,spi_width_t width
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -476,7 +476,7 @@ void SFE_Read(uint8_t *rxdata,uint32_t length,uint32_t address,spi_width_t width
             master_req.ssDeassert = 0;
         }
 
-        status = MXC_SPI_SetWidth(MASTER_SPI,width);
+        status = MXC_SPI_SetWidth(MASTER_SPI, width);
 
         if (status != E_NO_ERROR) {
             printf("\nError Setting data width\r\n");
@@ -495,7 +495,7 @@ void SFE_Read(uint8_t *rxdata,uint32_t length,uint32_t address,spi_width_t width
     master_req.rxData = rxdata;
     master_req.rxLen = length;
 
-    status = MXC_SPI_SetWidth(MASTER_SPI,width);
+    status = MXC_SPI_SetWidth(MASTER_SPI, width);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -526,7 +526,7 @@ void SFE_4ByteModeEnable()
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");
@@ -557,7 +557,7 @@ void SFE_4ByteModeDisable()
     master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
-    int status = MXC_SPI_SetWidth(MASTER_SPI,SPI_WIDTH_01);
+    int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
 
     if (status != E_NO_ERROR) {
         printf("\nError Setting data width\r\n");

@@ -51,7 +51,7 @@
 /**
  * @file    main.c
  * @brief   A basic getting started program for the RISCV, run from the ARM core.
- * @details RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins,
+ * @details RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins, 
             and start the RISCV core.
  */
 

@@ -120,21 +120,21 @@ mml_nfc_pcd_analog_params_matrix_t custom_antenna_65x65_matrix = {
 /*
 mml_nfc_pcd_analog_params_matrix_t custom_antenna_65x65_matrix = {
     .fd_thresholds          = {255, 170, 160, 125},
-    .fd_dyn_trigger_a       = { 45, 45, 45},
-    .fd_dyn_math_a          = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
+    .fd_dyn_trigger_a       = { 45,  45,  45},
+    .fd_dyn_math_a          = { IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I},
     .fd_dyn_trigger_b       = { 125, 125, 125},
-    .fd_dyn_trigger_b       = { 35, 35, 35},
-    .fd_dyn_math_b          = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_trigger_f       = { 40, 35, 25},
-    .fd_dyn_math_f          = { IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I},
-    .fd_dyn_trigger_v       = { 40, 35, 25},
-    .fd_dyn_math_v          = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
+    .fd_dyn_trigger_b       = { 35,  35,  35},
+    .fd_dyn_math_b          = { IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I},
+    .fd_dyn_trigger_f       = { 40,  35,  25},
+    .fd_dyn_math_f          = { IQ_MATH_CH_I,       IQ_MATH_CH_I,       IQ_MATH_CH_I},
+    .fd_dyn_trigger_v       = { 40,  35,  25},
+    .fd_dyn_math_v          = { IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I,  IQ_MATH_Q_MINUS_I},
     .fd_dyn_sttm_a          = { 0x00000000, 0x00000000, 0x00000000},
     .fd_dyn_stfm_a          = { 0x7F000000, 0x7F000000, 0x7F000000},
     .fd_dyn_sttm_bfv        = { 0x06060606, 0x06060606, 0x06060606},
     .fd_dyn_stfm_bfv        = { 0x7F060606, 0x7F060606, 0x7F060606},
-    .fd_dyn_gain            = { 12,  12,   12},
-    .fd_dyn_atten           = { 0x1F, 0x1F, 0x1F}
+    .fd_dyn_gain            = { 12,   12,    12},
+    .fd_dyn_atten           = { 0x1F, 0x1F,  0x1F}
 };
 */
 

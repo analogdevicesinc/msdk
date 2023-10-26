@@ -188,7 +188,7 @@ static int32_t emvl1interopapduloop(void)
     // NOTE: need to have a large enough buffer here to handle loopback commands as large as 256 bytes,
     //  plus some header/footer bytes.
     uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
-                           'S', 'Y', 'S', '.', 'D', 'D', 'F', '0', '1', 0x00 };
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
     int32_t capdulen = 20;
 
     //do apdu.
@@ -235,7 +235,7 @@ static int32_t emvl1interopapduloop(void)
             hexdump(DBG_LVL_LOG, rapdu, rapdulen, 0);
         }
 
-        //pre next capdu, no status
+        //pre next capdu,no status
         memcpy(capdu, rapdu, rapdulen - 2);
         capdulen = rapdulen - 2;
     } while (1);
@@ -258,7 +258,7 @@ static int32_t emvl1apduloop(void)
     // NOTE: need to have a large enough buffer here to handle loopback commands as large as 256 bytes,
     //  plus some header/footer bytes.
     uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
-                           'S', 'Y', 'S', '.', 'D', 'D', 'F', '0', '1', 0x00 };
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
     int32_t capdulen = 20;
 
     //do apdu.
@@ -308,7 +308,7 @@ static int32_t emvl1apduloop(void)
             hexdump(DBG_LVL_LOG, rapdu, rapdulen, 0);
         }
 
-        //pre next capdu, no status
+        //pre next capdu,no status
         memcpy(capdu, rapdu, rapdulen - 2);
         capdulen = rapdulen - 2;
     } while (1);

@@ -12,13 +12,13 @@
  *
  * Target Processor: Cortex-M4/Cortex-M3
  *
-* Redistribution and use in source and binary forms,with or without
-* modification,are permitted provided that the following conditions
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
 * are met:
 *   - Redistributions of source code must retain the above copyright
-*     notice,this list of conditions and the following disclaimer.
+*     notice, this list of conditions and the following disclaimer.
 *   - Redistributions in binary form must reproduce the above copyright
-*     notice,this list of conditions and the following disclaimer in
+*     notice, this list of conditions and the following disclaimer in
 *     the documentation and/or other materials provided with the
 *     distribution.
 *   - Neither the name of ARM LIMITED nor the names of its contributors
@@ -26,16 +26,16 @@
 *     software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,INCLUDING,BUT NOT
-* LIMITED TO,THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
 * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,INDIRECT,
-* INCIDENTAL,SPECIAL,EXEMPLARY,OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE,DATA,OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY,WHETHER IN CONTRACT,STRICT
-* LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE,EVEN IF ADVISED OF THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
  * -------------------------------------------------------------------- */
 
@@ -63,7 +63,7 @@
  * a length of 29 points.
  * The MATLAB code to generate the filter coefficients is shown below:
  * <pre>
- *     h = fir1(28,6/24);
+ *     h = fir1(28, 6/24);
  * </pre>
  * The first argument is the "order" of the filter and is always one less than the desired length.
  * The second argument is the normalized cutoff frequency.  This is in the range 0 (DC) to 1.0 (Nyquist).
@@ -176,26 +176,26 @@ static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1];
 
 /* ----------------------------------------------------------------------
 ** FIR Coefficients buffer generated using fir1() MATLAB function.
-** fir1(28,6/24)
+** fir1(28, 6/24)
 ** ------------------------------------------------------------------- */
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = {
-    -0.0018225230f,-0.0015879294f,+0.0000000000f,+0.0036977508f,
-    +0.0080754303f,+0.0085302217f,-0.0000000000f,-0.0173976984f,
-    -0.0341458607f,-0.0333591565f,+0.0000000000f,+0.0676308395f,
-    +0.1522061835f,+0.2229246956f,+0.2504960933f,+0.2229246956f,
-    +0.1522061835f,+0.0676308395f,+0.0000000000f,-0.0333591565f,
-    -0.0341458607f,-0.0173976984f,-0.0000000000f,+0.0085302217f,
-    +0.0080754303f,+0.0036977508f,+0.0000000000f,-0.0015879294f,
-    -0.0018225230f,0.0f,         0.0f,         0.0f
+    -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f,
+    +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f,
+    -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f,
+    +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f,
+    +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f,
+    -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
+    +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f,
+    -0.0018225230f, 0.0f,           0.0f,           0.0f
 };
 #else
 const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = {
-    -0.0018225230f,-0.0015879294f,+0.0000000000f,+0.0036977508f,+0.0080754303f,+0.0085302217f,
-    -0.0000000000f,-0.0173976984f,-0.0341458607f,-0.0333591565f,+0.0000000000f,+0.0676308395f,
-    +0.1522061835f,+0.2229246956f,+0.2504960933f,+0.2229246956f,+0.1522061835f,+0.0676308395f,
-    +0.0000000000f,-0.0333591565f,-0.0341458607f,-0.0173976984f,-0.0000000000f,+0.0085302217f,
-    +0.0080754303f,+0.0036977508f,+0.0000000000f,-0.0015879294f,-0.0018225230f
+    -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f, +0.0080754303f, +0.0085302217f,
+    -0.0000000000f, -0.0173976984f, -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f,
+    +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f, +0.1522061835f, +0.0676308395f,
+    +0.0000000000f, -0.0333591565f, -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
+    +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f, -0.0018225230f
 };
 #endif
 
@@ -217,21 +217,21 @@ int main(void)
     uint32_t i;
     arm_fir_instance_f32 S;
     arm_status status;
-    float32_t *inputF32,*outputF32;
+    float32_t *inputF32, *outputF32;
 
     /* Initialize input and output buffer pointers */
     inputF32 = &testInput_f32_1kHz_15kHz[0];
     outputF32 = &testOutput[0];
 
     /* Call FIR init function to initialize the instance structure. */
-    arm_fir_init_f32(&S,NUM_TAPS,(float32_t *)&firCoeffs32[0],&firStateF32[0],blockSize);
+    arm_fir_init_f32(&S, NUM_TAPS, (float32_t *)&firCoeffs32[0], &firStateF32[0], blockSize);
 
     /* ----------------------------------------------------------------------
   ** Call the FIR process function for every blockSize samples
   ** ------------------------------------------------------------------- */
 
     for (i = 0; i < numBlocks; i++) {
-        arm_fir_f32(&S,inputF32 + (i * blockSize),outputF32 + (i * blockSize),blockSize);
+        arm_fir_f32(&S, inputF32 + (i * blockSize), outputF32 + (i * blockSize), blockSize);
     }
 
     /* ----------------------------------------------------------------------
@@ -239,7 +239,7 @@ int main(void)
   ** in MATLAB.
   ** ------------------------------------------------------------------- */
 
-    snr = arm_snr_f32(&refOutput[0],&testOutput[0],TEST_LENGTH_SAMPLES);
+    snr = arm_snr_f32(&refOutput[0], &testOutput[0], TEST_LENGTH_SAMPLES);
 
     status = (snr < SNR_THRESHOLD_F32) ? ARM_MATH_TEST_FAILURE : ARM_MATH_SUCCESS;
 

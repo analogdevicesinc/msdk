@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices,Inc.
+ * Copyright 2023 Analog Devices, Inc.
  *
- * Licensed under the Apache License,Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -51,7 +51,7 @@
 /**
  * @file        main.c
  * @brief       DMA Example
- * @details     This runs through two DMA examples,first being memory-to-memory,
+ * @details     This runs through two DMA examples, first being memory-to-memory,
  *              second being a transfer with reload and callback.
  */
 
@@ -74,11 +74,11 @@ volatile int flag = 0;
 int channels[MAX_CHANNEL];
 
 /***** Functions *****/
-void my_int_func(int a,int b)
+void my_int_func(int a, int b)
 {
     int flags;
     flags = MXC_DMA_ChannelGetFlags(mychannel);
-    MXC_DMA_ChannelClearFlags(mychannel,flags);
+    MXC_DMA_ChannelClearFlags(mychannel, flags);
 }
 
 void memCpyComplete(void *dest)
@@ -100,7 +100,7 @@ int example1(void)
     int i = 0;
 
     //Initialize data before transfer
-    uint8_t *srcdata,*dstdata;
+    uint8_t *srcdata, *dstdata;
     srcdata = (uint8_t *)malloc(MAX_SIZE);
     dstdata = (uint8_t *)malloc(MAX_SIZE);
 
@@ -116,12 +116,12 @@ int example1(void)
         fail += 1;
     } else {
         flag = 0;
-        MXC_DMA_MemCpy(dstdata,srcdata,MAX_SIZE,memCpyComplete);
+        MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
 
         while (flag == 0) {}
 
         //Validate
-        if (memcmp(srcdata,dstdata,MAX_SIZE) != 0) {
+        if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
             printf("Data mismatch.\n");
             fail += 1;
         } else {
@@ -140,10 +140,10 @@ int example2(void)
     int fail = 0;
     printf("\nTransfer with Reload and Callback.\n");
 
-    int i,retval;
+    int i, retval;
 
     //Init data
-    uint8_t *srcdata,*dstdata,*srcdata2,*dstdata2;
+    uint8_t *srcdata, *dstdata, *srcdata2, *dstdata2;
     srcdata = (uint8_t *)malloc(MAX_SIZE);
     dstdata = (uint8_t *)malloc(MAX_SIZE);
     srcdata2 = (uint8_t *)malloc(MAX_SIZE);
@@ -184,7 +184,7 @@ int example2(void)
     advConfig.pssel = MXC_DMA_PRESCALE_DISABLE;
     advConfig.burst_size = 32;
 
-    MXC_DMA_ConfigChannel(config,firstTransfer);
+    MXC_DMA_ConfigChannel(config, firstTransfer);
     MXC_DMA_AdvConfigChannel(advConfig);
 
     mxc_dma_srcdst_t secondTransfer;
@@ -201,12 +201,12 @@ int example2(void)
         printf("Failed MXC_DMA_SetReload.\n");
     }
 
-    MXC_DMA_SetCallback(mychannel,my_int_func);
+    MXC_DMA_SetCallback(mychannel, my_int_func);
     MXC_DMA_EnableInt(mychannel);
     MXC_DMA_Start(mychannel);
 
     // Validate
-    if (memcmp(srcdata,dstdata,MAX_SIZE) != 0 || memcmp(srcdata2,dstdata2,MAX_SIZE) != 0) {
+    if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 || memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
         fail += 1;
     } else {

@@ -17,27 +17,27 @@
     >>!   outside of the FreeRTOS kernel.                                   !<<
     ***************************************************************************
 
-    FreeRTOS is distributed in the hope that it will be useful,  but WITHOUT ANY
+    FreeRTOS is distributed in the hope that it will be useful, but WITHOUT ANY
     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
     FOR A PARTICULAR PURPOSE.  Full license text is available on the following
     link: http://www.freertos.org/a00114.html
 
     ***************************************************************************
      *                                                                       *
-     *    FreeRTOS provides completely free yet professionally developed,     *
-     *    robust,  strictly quality controlled,  supported,  and cross          *
-     *    platform software that is more than just the market leader,  it     *
+     *    FreeRTOS provides completely free yet professionally developed,    *
+     *    robust, strictly quality controlled, supported, and cross          *
+     *    platform software that is more than just the market leader, it     *
      *    is the industry's de facto standard.                               *
      *                                                                       *
      *    Help yourself get started quickly while simultaneously helping     *
      *    to support the FreeRTOS project by purchasing a FreeRTOS           *
-     *    tutorial book,  reference manual,  or both:                          *
+     *    tutorial book, reference manual, or both:                          *
      *    http://www.FreeRTOS.org/Documentation                              *
      *                                                                       *
     ***************************************************************************
 
     http://www.FreeRTOS.org/FAQHelp.html - Having a problem?  Start by reading
-    the FAQ page "My application does not run,  what could be wrong?".  Have you
+    the FAQ page "My application does not run, what could be wrong?".  Have you
     defined configASSERT()?
 
     http://www.FreeRTOS.org/support - In return for receiving this top quality
@@ -46,19 +46,19 @@
 
     http://www.FreeRTOS.org/training - Investing in training allows your team to
     be as productive as possible as early as possible.  Now you can receive
-    FreeRTOS training directly from Richard Barry,  CEO of Real Time Engineers
-    Ltd,  and the world's leading authority on the world's leading RTOS.
+    FreeRTOS training directly from Richard Barry, CEO of Real Time Engineers
+    Ltd, and the world's leading authority on the world's leading RTOS.
 
     http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
-    including FreeRTOS+Trace - an indispensable productivity tool,  a DOS
-    compatible FAT file system,  and our tiny thread aware UDP/IP stack.
+    including FreeRTOS+Trace - an indispensable productivity tool, a DOS
+    compatible FAT file system, and our tiny thread aware UDP/IP stack.
 
     http://www.FreeRTOS.org/labs - Where new FreeRTOS products go to incubate.
-    Come and try FreeRTOS+TCP,  our new open source TCP/IP stack for FreeRTOS.
+    Come and try FreeRTOS+TCP, our new open source TCP/IP stack for FreeRTOS.
 
     http://www.OpenRTOS.com - Real Time Engineers ltd. license FreeRTOS to High
     Integrity Systems ltd. to sell under the OpenRTOS brand.  Low cost OpenRTOS
-    licenses offer ticketed support,  indemnification and commercial middleware.
+    licenses offer ticketed support, indemnification and commercial middleware.
 
     http://www.SafeRTOS.com - High Integrity Systems also provide a safety
     engineered and independently SIL3 certified version for use in safety and
@@ -87,55 +87,55 @@ extern int disable_tickless;
  * Defines a command that returns a table showing the state of each task at the
  * time the command is called.
  */
-static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                       const char *pcCommandString);
 
 /*
  * Define a command which reports how long the scheduler has been operating (uptime)
  *
  */
-static BaseType_t prvUptimeCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvUptimeCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                    const char *pcCommandString);
 
 /*
  * Defines a command that expects exactly three parameters.  Each of the three
  * parameter are echoed back one at a time.
  */
-static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                                const char *pcCommandString);
 
 /*
  * Defines a command that can take a variable number of parameters.  Each
  * parameter is echoed back one at a time.
  */
-static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                           const char *pcCommandString);
 
 /* Enable or disable tickless operation */
-static BaseType_t prvTickless(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
                               const char *pcCommandString);
 
 /* Structure that defines the "ps" command line command. */
 static const CLI_Command_Definition_t xTaskStats = {
-    "ps",  /* The command string to type. */
+    "ps", /* The command string to type. */
     "\r\nps:\r\n Displays a table showing the state of each FreeRTOS task\r\n\r\n",
-    prvTaskStatsCommand,  /* The function to run. */
+    prvTaskStatsCommand, /* The function to run. */
     0 /* No parameters are expected. */
 };
 
 /* Structure that defines the "uptime" command line command. */
 static const CLI_Command_Definition_t xUptime = {
-    "uptime",  /* The command string to type. */
+    "uptime", /* The command string to type. */
     "\r\nuptime:\r\n Displays the uptime of the FreeRTOS system\r\n\r\n",
-    prvUptimeCommand,  /* The function to run. */
+    prvUptimeCommand, /* The function to run. */
     0 /* No parameters are expected. */
 };
 
 /* Structure that defines the "tickless" command line command. */
 static const CLI_Command_Definition_t xTickless = {
-    "tickless",  /* The command string to type. */
+    "tickless", /* The command string to type. */
     "\r\ntickless <0/1>:\r\n Disable (0) or enable (1) tick-less operation\r\n\r\n",
-    prvTickless,  /* The function to run. */
+    prvTickless, /* The function to run. */
     1 /* One parameter expected */
 };
 
@@ -144,10 +144,10 @@ takes exactly three parameters that the command simply echos back one at a
 time. */
 static const CLI_Command_Definition_t xThreeParameterEcho = {
     "echo_3_parameters",
-    "\r\necho_3_parameters <param1> <param2> <param3>:\r\n Expects three parameters,  echos each in "
+    "\r\necho_3_parameters <param1> <param2> <param3>:\r\n Expects three parameters, echos each in "
     "turn\r\n\r\n",
-    prvThreeParameterEchoCommand,  /* The function to run. */
-    3 /* Three parameters are expected,  which can take any value. */
+    prvThreeParameterEchoCommand, /* The function to run. */
+    3 /* Three parameters are expected, which can take any value. */
 };
 
 /* Structure that defines the "echo_parameters" command line command.  This
@@ -155,8 +155,8 @@ takes a variable number of parameters that the command simply echos back one at
 a time. */
 static const CLI_Command_Definition_t xParameterEcho = {
     "echo_parameters",
-    "\r\necho_parameters <...>:\r\n Take variable number of parameters,  echos each in turn\r\n\r\n",
-    prvParameterEchoCommand,  /* The function to run. */
+    "\r\necho_parameters <...>:\r\n Take variable number of parameters, echos each in turn\r\n\r\n",
+    prvParameterEchoCommand, /* The function to run. */
     -1 /* The user can enter any number of commands. */
 };
 
@@ -173,30 +173,30 @@ void vRegisterCLICommands(void)
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                       const char *pcCommandString)
 {
     const char *const pcHeader = "Task          State  Priority  Stack  "
                                  "#\r\n************************************************\r\n";
 
-    /* Remove compile time warnings about unused parameters,  and check the
-    write buffer is not NULL.  NOTE - for simplicity,  this example assumes the
-    write buffer length is adequate,  so does not check for buffer overflows. */
+    /* Remove compile time warnings about unused parameters, and check the
+    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+    write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
 
     /* Generate a table of task stats. */
-    snprintf(pcWriteBuffer,  xWriteBufferLen,  "%s",  pcHeader);
+    snprintf(pcWriteBuffer, xWriteBufferLen, "%s", pcHeader);
     vTaskList(pcWriteBuffer + strlen(pcHeader));
 
-    /* There is no more data to return after this single string,  so return
+    /* There is no more data to return after this single string, so return
     pdFALSE. */
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvUptimeCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvUptimeCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                    const char *pcCommandString)
 {
     TickType_t ticks;
@@ -204,11 +204,11 @@ static BaseType_t prvUptimeCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
     ticks = xTaskGetTickCount();
 
 #if configUSE_TICKLESS_IDLE
-    pcWriteBuffer += snprintf(pcWriteBuffer,  xWriteBufferLen,
-                              "Uptime is 0x%08x (%u ms)\r\nMXC_WUT->cnt is %u\r\n",  ticks,
-                              ticks / portTICK_PERIOD_MS,  MXC_WUT->cnt);
+    pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen,
+                              "Uptime is 0x%08x (%u ms)\r\nMXC_WUT->cnt is %u\r\n", ticks,
+                              ticks / portTICK_PERIOD_MS, MXC_WUT->cnt);
 #else
-    pcWriteBuffer += snprintf(pcWriteBuffer,  xWriteBufferLen,  "Uptime is 0x%08x (%u ms)\r\n",  ticks,
+    pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen, "Uptime is 0x%08x (%u ms)\r\n", ticks,
                               ticks / portTICK_PERIOD_MS);
 #endif
 
@@ -217,16 +217,16 @@ static BaseType_t prvUptimeCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                                const char *pcCommandString)
 {
     const char *pcParameter;
-    BaseType_t lParameterStringLength,  xReturn;
+    BaseType_t lParameterStringLength, xReturn;
     static BaseType_t lParameterNumber = 0;
 
-    /* Remove compile time warnings about unused parameters,  and check the
-    write buffer is not NULL.  NOTE - for simplicity,  this example assumes the
-    write buffer length is adequate,  so does not check for buffer overflows. */
+    /* Remove compile time warnings about unused parameters, and check the
+    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+    write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
@@ -234,7 +234,7 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer,  size_t xWri
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
         entered just a header string is returned. */
-        snprintf(pcWriteBuffer,  xWriteBufferLen,  "The three parameters were:\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The three parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
         back. */
@@ -246,18 +246,18 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer,  size_t xWri
     } else {
         /* Obtain the parameter string. */
         pcParameter = FreeRTOS_CLIGetParameter(
-            pcCommandString,  /* The command string itself. */
-            lParameterNumber,  /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            lParameterNumber, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */);
 
         /* Sanity check something was returned. */
         configASSERT(pcParameter);
 
         /* Return the parameter string. */
-        memset(pcWriteBuffer,  0x00,  xWriteBufferLen);
-        snprintf(pcWriteBuffer,  xWriteBufferLen,  "%d: ",  (int)lParameterNumber);
-        strncat(pcWriteBuffer,  pcParameter,  lParameterStringLength);
-        strncat(pcWriteBuffer,  "\r\n",  3);
+        memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
+        strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
+        strncat(pcWriteBuffer, "\r\n", 3);
 
         /* If this is the last of the three parameters then there are no more
         strings to return after this one. */
@@ -277,16 +277,16 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer,  size_t xWri
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                           const char *pcCommandString)
 {
     const char *pcParameter;
-    BaseType_t lParameterStringLength,  xReturn;
+    BaseType_t lParameterStringLength, xReturn;
     static BaseType_t lParameterNumber = 0;
 
-    /* Remove compile time warnings about unused parameters,  and check the
-    write buffer is not NULL.  NOTE - for simplicity,  this example assumes the
-    write buffer length is adequate,  so does not check for buffer overflows. */
+    /* Remove compile time warnings about unused parameters, and check the
+    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+    write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
@@ -294,7 +294,7 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBuf
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
         entered just a header string is returned. */
-        snprintf(pcWriteBuffer,  xWriteBufferLen,  "The parameters were:\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
         back. */
@@ -306,16 +306,16 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBuf
     } else {
         /* Obtain the parameter string. */
         pcParameter = FreeRTOS_CLIGetParameter(
-            pcCommandString,  /* The command string itself. */
-            lParameterNumber,  /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            lParameterNumber, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */);
 
         if (pcParameter != NULL) {
             /* Return the parameter string. */
-            memset(pcWriteBuffer,  0x00,  xWriteBufferLen);
-            snprintf(pcWriteBuffer,  xWriteBufferLen,  "%d: ",  (int)lParameterNumber);
-            strncat(pcWriteBuffer,  pcParameter,  lParameterStringLength);
-            strncat(pcWriteBuffer,  "\r\n",  3);
+            memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+            snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
+            strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
+            strncat(pcWriteBuffer, "\r\n", 3);
 
             /* There might be more parameters to return after this one. */
             xReturn = pdTRUE;
@@ -336,29 +336,29 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer,  size_t xWriteBuf
     return xReturn;
 }
 
-static BaseType_t prvTickless(char *pcWriteBuffer,  size_t xWriteBufferLen,
+static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
                               const char *pcCommandString)
 {
     const char *pcParameter;
     BaseType_t lParameterStringLength;
 
     /* Get parameter */
-    pcParameter = FreeRTOS_CLIGetParameter(pcCommandString,  1,  &lParameterStringLength);
+    pcParameter = FreeRTOS_CLIGetParameter(pcCommandString, 1, &lParameterStringLength);
     if (pcParameter != NULL) {
         if (pcParameter[0] == '0') {
             disable_tickless = 1;
             pcWriteBuffer +=
-                snprintf(pcWriteBuffer,  xWriteBufferLen,  "Tick-less mode disabled\r\n");
+                snprintf(pcWriteBuffer, xWriteBufferLen, "Tick-less mode disabled\r\n");
         } else if (pcParameter[0] == '1') {
-            pcWriteBuffer += snprintf(pcWriteBuffer,  xWriteBufferLen,  "Tick-less mode enabled\r\n");
+            pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen, "Tick-less mode enabled\r\n");
             disable_tickless = 0;
         } else {
-            pcWriteBuffer += snprintf(pcWriteBuffer,  xWriteBufferLen,
+            pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen,
                                       "Must supply 0 (Disable) or 1 (Enable)\r\n");
         }
     } else {
         pcWriteBuffer +=
-            snprintf(pcWriteBuffer,  xWriteBufferLen,  "Must supply 0 (Disable) or 1 (Enable)\r\n");
+            snprintf(pcWriteBuffer, xWriteBufferLen, "Must supply 0 (Disable) or 1 (Enable)\r\n");
     }
 
     return pdFALSE;

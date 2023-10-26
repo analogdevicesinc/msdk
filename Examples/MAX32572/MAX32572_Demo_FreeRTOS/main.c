@@ -191,7 +191,7 @@ int main(void)
     printf("Please follow instruction on TFT Display\n");
     printf("Note:\n"
            "\tMSR: VBAT_SEL need to be connected to 3.3V, VDD_MSR need to be connected\n"
-           "\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B), \n"
+           "\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B),\n"
            "\t      To configure 5V mode:\n"
            "\t          1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
            "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"

@@ -282,7 +282,7 @@ int main(void)
     MXC_ICC_Disable();
 
     /*
-    Disable Flash ECC. Because this example uses 32-bit flash writes,
+    Disable Flash ECC. Because this example uses 32-bit flash writes, 
     ECC must be disabled.Only 128-bit writes are supported when ECC
     is enabled.
     */

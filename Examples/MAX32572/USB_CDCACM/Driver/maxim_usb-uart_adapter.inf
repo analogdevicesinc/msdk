@@ -4,20 +4,20 @@ Class=Ports
 ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
 Provider=%Maxim%
 LayoutFile=layout.inf
-DriverVer=02/20/2015, 1.0.0000.0
+DriverVer=02/20/2015,1.0.0000.0
 CatalogFile=maxim_usb-uart_adapter.cat
 
 [Manufacturer]
-%Maxim%=Maxim_Serial, NT, NTamd64
+%Maxim%=Maxim_Serial,NT,NTamd64
 
 [DestinationDirs]
 DefaultDestDir = 12
 
 [Maxim_Serial.NT]
-%DESCRIPTION%=Maxim_SerialInstall, USB\VID_0B6A&PID_003C
+%DESCRIPTION%=Maxim_SerialInstall,USB\VID_0B6A&PID_003C
 
 [Maxim_Serial.NTamd64]
-%DESCRIPTION%=Maxim_SerialInstall, USB\VID_0B6A&PID_003C
+%DESCRIPTION%=Maxim_SerialInstall,USB\VID_0B6A&PID_003C
 
 [Maxim_SerialInstall.NT]
 Include=mdmcpq.inf
@@ -25,9 +25,9 @@ CopyFiles=FakeModemCopyFileSection
 AddReg=Maxim_SerialInstall.NT.AddReg
 
 [Maxim_SerialInstall.NT.AddReg]
-HKR, , DevLoader, , *ntkern
-HKR, , NTMPDriver, , usbser.sys
-HKR, , EnumPropPages32, , "MsPorts.dll, SerialPortPropPageProvider"
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
 
 [Maxim_SerialInstall.NT.Services]
 AddService=usbser, 0x00000002, DriverServiceInst

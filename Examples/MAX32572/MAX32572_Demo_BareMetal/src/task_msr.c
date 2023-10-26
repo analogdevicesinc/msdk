@@ -215,11 +215,11 @@ int msr_tick(char *msg, int *msg_len)
 /* ADC errors */
 #if 0
                 if (adc9_err & ADCERR_OVERRUN) {
-                    COPY_MESSAGE("Err = ADC9 overrun", msg, msg_len);
+                    COPY_MESSAGE("Err = ADC9 overrun",  msg, msg_len);
                 } else if (adc9_err & ADCERR_SHIFT) {
-                    COPY_MESSAGE("Err = ADC9 channels shifted", msg, msg_len);
+                    COPY_MESSAGE("Err = ADC9 channels shifted",  msg, msg_len);
                 } else if (adc9_err & ADCERR_INCOMPLETE) {
-                    COPY_MESSAGE("Err = ADC9 conversion incomplete", msg, msg_len);
+                    COPY_MESSAGE("Err = ADC9 conversion incomplete",  msg, msg_len);
                 }
 #endif
             break;

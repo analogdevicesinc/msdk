@@ -1,35 +1,35 @@
 /* *****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-07-18 13:53:37 -0500 (Wed,18 Jul 2018) $
+ * $Date: 2018-07-18 13:53:37 -0500 (Wed, 18 Jul 2018) $
  * $Revision: 36256 $
  *
  **************************************************************************** */
@@ -65,38 +65,38 @@ static volatile int usb_read_complete;
 
 /* This EP assignment must match the Configuration Descriptor */
 static msc_cfg_t msc_cfg = {
-    1,/* EP OUT */
-    MXC_USBHS_MAX_PACKET,/* OUT max packet size */
-    2,/* EP IN */
-    MXC_USBHS_MAX_PACKET,/* IN max packet size */
+    1, /* EP OUT */
+    MXC_USBHS_MAX_PACKET, /* OUT max packet size */
+    2, /* EP IN */
+    MXC_USBHS_MAX_PACKET, /* IN max packet size */
 };
 
 static const msc_idstrings_t ids = {
-    "MAXIM",/* Vendor string.  Maximum of 8 bytes */
-    "MSC Example",/* Product string.  Maximum of 16 bytes */
+    "MAXIM", /* Vendor string.  Maximum of 8 bytes */
+    "MSC Example", /* Product string.  Maximum of 16 bytes */
     "1.0" /* Version string.  Maximum of 4 bytes */
 };
 
 /* This EP assignment must match the Configuration Descriptor */
 static acm_cfg_t acm_cfg = {
-    3,/* EP OUT */
-    MXC_USBHS_MAX_PACKET,/* OUT max packet size */
-    4,/* EP IN */
-    MXC_USBHS_MAX_PACKET,/* IN max packet size */
-    5,/* EP Notify */
-    MXC_USBHS_MAX_PACKET,/* Notify max packet size */
+    3, /* EP OUT */
+    MXC_USBHS_MAX_PACKET, /* OUT max packet size */
+    4, /* EP IN */
+    MXC_USBHS_MAX_PACKET, /* IN max packet size */
+    5, /* EP Notify */
+    MXC_USBHS_MAX_PACKET, /* Notify max packet size */
 };
 
 /* Functions to control "disk" memory. See msc.h for definitions. */
 static const msc_mem_t mem = {
-    mscmem_Init,mscmem_Start,mscmem_Stop,mscmem_Ready,mscmem_Size,mscmem_Read,mscmem_Write,
+    mscmem_Init, mscmem_Start, mscmem_Stop, mscmem_Ready, mscmem_Size, mscmem_Read, mscmem_Write,
 };
 
 /* **** Function Prototypes **** */
-static int setconfigCallback(MXC_USB_SetupPkt *sud,void *cbdata);
-static int setfeatureCallback(MXC_USB_SetupPkt *sud,void *cbdata);
-static int clrfeatureCallback(MXC_USB_SetupPkt *sud,void *cbdata);
-static int eventCallback(maxusb_event_t evt,void *data);
+static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata);
+static int setfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata);
+static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata);
+static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static int usbReadCallback(void);
@@ -111,7 +111,7 @@ static void echoUSB(void);
  */
 void delay_us(unsigned int usec)
 {
-    /* mxc_delay() takes unsigned long,so can't use it directly */
+    /* mxc_delay() takes unsigned long, so can't use it directly */
     MXC_Delay(usec);
 }
 
@@ -158,24 +158,24 @@ int main(void)
     }
 
     /* Register enumeration data */
-    enum_register_descriptor(ENUM_DESC_DEVICE,(uint8_t *)&composite_device_descriptor,0);
-    enum_register_descriptor(ENUM_DESC_CONFIG,(uint8_t *)&composite_config_descriptor,0);
-    enum_register_descriptor(ENUM_DESC_STRING,lang_id_desc,0);
-    enum_register_descriptor(ENUM_DESC_STRING,mfg_id_desc,1);
-    enum_register_descriptor(ENUM_DESC_STRING,prod_id_desc,2);
-    enum_register_descriptor(ENUM_DESC_STRING,serial_id_desc,3);
-    enum_register_descriptor(ENUM_DESC_STRING,cdcacm_func_desc,4);
-    enum_register_descriptor(ENUM_DESC_STRING,msc_func_desc,5);
+    enum_register_descriptor(ENUM_DESC_DEVICE, (uint8_t *)&composite_device_descriptor, 0);
+    enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t *)&composite_config_descriptor, 0);
+    enum_register_descriptor(ENUM_DESC_STRING, lang_id_desc, 0);
+    enum_register_descriptor(ENUM_DESC_STRING, mfg_id_desc, 1);
+    enum_register_descriptor(ENUM_DESC_STRING, prod_id_desc, 2);
+    enum_register_descriptor(ENUM_DESC_STRING, serial_id_desc, 3);
+    enum_register_descriptor(ENUM_DESC_STRING, cdcacm_func_desc, 4);
+    enum_register_descriptor(ENUM_DESC_STRING, msc_func_desc, 5);
 
     /* Handle configuration */
-    enum_register_callback(ENUM_SETCONFIG,setconfigCallback,NULL);
+    enum_register_callback(ENUM_SETCONFIG, setconfigCallback, NULL);
 
     /* Handle feature set/clear */
-    enum_register_callback(ENUM_SETFEATURE,setfeatureCallback,NULL);
-    enum_register_callback(ENUM_CLRFEATURE,clrfeatureCallback,NULL);
+    enum_register_callback(ENUM_SETFEATURE, setfeatureCallback, NULL);
+    enum_register_callback(ENUM_CLRFEATURE, clrfeatureCallback, NULL);
 
     /* Initialize the class driver */
-    if (msc_init(&composite_config_descriptor.msc_interface_descriptor,&ids,&mem) != 0) {
+    if (msc_init(&composite_config_descriptor.msc_interface_descriptor, &ids, &mem) != 0) {
         printf("msc_init() failed\n");
 
         while (1) {}
@@ -188,9 +188,9 @@ int main(void)
     }
 
     /* Register callbacks */
-    MXC_USB_EventEnable(MAXUSB_EVENT_NOVBUS,eventCallback,NULL);
-    MXC_USB_EventEnable(MAXUSB_EVENT_VBUS,eventCallback,NULL);
-    acm_register_callback(ACM_CB_READ_READY,usbReadCallback);
+    MXC_USB_EventEnable(MAXUSB_EVENT_NOVBUS, eventCallback, NULL);
+    MXC_USB_EventEnable(MAXUSB_EVENT_VBUS, eventCallback, NULL);
+    acm_register_callback(ACM_CB_READ_READY, usbReadCallback);
 
     usb_read_complete = 0;
 
@@ -210,26 +210,26 @@ int main(void)
 
         if (event_flags) {
             /* Display events */
-            if (MXC_GETBIT(&event_flags,MAXUSB_EVENT_NOVBUS)) {
-                MXC_CLRBIT(&event_flags,MAXUSB_EVENT_NOVBUS);
+            if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_NOVBUS)) {
+                MXC_CLRBIT(&event_flags, MAXUSB_EVENT_NOVBUS);
                 printf("VBUS Disconnect\n");
-            } else if (MXC_GETBIT(&event_flags,MAXUSB_EVENT_VBUS)) {
-                MXC_CLRBIT(&event_flags,MAXUSB_EVENT_VBUS);
+            } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_VBUS)) {
+                MXC_CLRBIT(&event_flags, MAXUSB_EVENT_VBUS);
                 printf("VBUS Connect\n");
-            } else if (MXC_GETBIT(&event_flags,MAXUSB_EVENT_BRST)) {
-                MXC_CLRBIT(&event_flags,MAXUSB_EVENT_BRST);
+            } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_BRST)) {
+                MXC_CLRBIT(&event_flags, MAXUSB_EVENT_BRST);
                 printf("Bus Reset\n");
-            } else if (MXC_GETBIT(&event_flags,MAXUSB_EVENT_SUSP)) {
-                MXC_CLRBIT(&event_flags,MAXUSB_EVENT_SUSP);
+            } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_SUSP)) {
+                MXC_CLRBIT(&event_flags, MAXUSB_EVENT_SUSP);
                 printf("Suspended\n");
-            } else if (MXC_GETBIT(&event_flags,MAXUSB_EVENT_DPACT)) {
-                MXC_CLRBIT(&event_flags,MAXUSB_EVENT_DPACT);
+            } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_DPACT)) {
+                MXC_CLRBIT(&event_flags, MAXUSB_EVENT_DPACT);
                 printf("Resume\n");
-            } else if (MXC_GETBIT(&event_flags,EVENT_ENUM_COMP)) {
-                MXC_CLRBIT(&event_flags,EVENT_ENUM_COMP);
+            } else if (MXC_GETBIT(&event_flags, EVENT_ENUM_COMP)) {
+                MXC_CLRBIT(&event_flags, EVENT_ENUM_COMP);
                 printf("Enumeration complete.\n");
-            } else if (MXC_GETBIT(&event_flags,EVENT_REMOTE_WAKE)) {
-                MXC_CLRBIT(&event_flags,EVENT_REMOTE_WAKE);
+            } else if (MXC_GETBIT(&event_flags, EVENT_REMOTE_WAKE)) {
+                MXC_CLRBIT(&event_flags, EVENT_REMOTE_WAKE);
                 printf("Remote Wakeup\n");
             }
         }
@@ -263,7 +263,7 @@ int usbShutdownCallback()
 
 /* ************************************************************************** */
 
-static int setfeatureCallback(MXC_USB_SetupPkt *sud,void *cbdata)
+static int setfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     if (sud->wValue == FEAT_REMOTE_WAKE) {
         remote_wake_en = 1;
@@ -277,7 +277,7 @@ static int setfeatureCallback(MXC_USB_SetupPkt *sud,void *cbdata)
 
 /* ************************************************************************** */
 
-static int clrfeatureCallback(MXC_USB_SetupPkt *sud,void *cbdata)
+static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     if (sud->wValue == FEAT_REMOTE_WAKE) {
         remote_wake_en = 0;
@@ -307,13 +307,13 @@ static void usbAppWakeup(void)
 
 /* ************************************************************************** */
 
-static int setconfigCallback(MXC_USB_SetupPkt *sud,void *cbdata)
+static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     /* Confirm the configuration value */
     if (sud->wValue == composite_config_descriptor.config_descriptor.bConfigurationValue) {
         //      on++;
         configured = 1;
-        MXC_SETBIT(&event_flags,EVENT_ENUM_COMP);
+        MXC_SETBIT(&event_flags, EVENT_ENUM_COMP);
         msc_cfg.out_ep = composite_config_descriptor.endpoint_descriptor_1.bEndpointAddress & 0x7;
         msc_cfg.out_maxpacket = composite_config_descriptor.endpoint_descriptor_1.wMaxPacketSize;
         msc_cfg.in_ep = composite_config_descriptor.endpoint_descriptor_2.bEndpointAddress & 0x7;
@@ -341,10 +341,10 @@ static int setconfigCallback(MXC_USB_SetupPkt *sud,void *cbdata)
 
 /* ************************************************************************** */
 
-static int eventCallback(maxusb_event_t evt,void *data)
+static int eventCallback(maxusb_event_t evt, void *data)
 {
     /* Set event flag */
-    MXC_SETBIT(&event_flags,evt);
+    MXC_SETBIT(&event_flags, evt);
 
     switch (evt) {
     case MAXUSB_EVENT_NOVBUS:
@@ -361,9 +361,9 @@ static int eventCallback(maxusb_event_t evt,void *data)
 
     case MAXUSB_EVENT_VBUS:
         MXC_USB_EventClear(MAXUSB_EVENT_BRST);
-        MXC_USB_EventEnable(MAXUSB_EVENT_BRST,eventCallback,NULL);
+        MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
         MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
-        MXC_USB_EventEnable(MAXUSB_EVENT_SUSP,eventCallback,NULL);
+        MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
         MXC_USB_Connect();
         usbAppSleep();
         break;
@@ -404,14 +404,14 @@ static void echoUSB(void)
         }
 
         // Read the data from USB
-        if (acm_read(buffer,chars) != chars) {
+        if (acm_read(buffer, chars) != chars) {
             printf("acm_read() failed\n");
             return;
         }
 
         // Echo it back
         if (acm_present()) {
-            if (acm_write(buffer,chars) != chars) {
+            if (acm_write(buffer, chars) != chars) {
                 printf("acm_write() failed\n");
             }
         }

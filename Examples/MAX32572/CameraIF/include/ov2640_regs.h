@@ -4,7 +4,7 @@
  * Copyright (c) 2013-2019 Ibrahim Abdelkader <iabdalkader@openmv.io>
  * Copyright (c) 2013-2019 Kwabena W. Agyeman <kwagyeman@openmv.io>
  *
- * This work is licensed under the MIT license,see the file LICENSE for details.
+ * This work is licensed under the MIT license, see the file LICENSE for details.
  *
  * OV2640 register definitions.
  */
@@ -190,7 +190,7 @@
 #define COM8_AGC_EN         0x04 /* AGC Auto/Manual control selection */
 #define COM8_AEC_EN         0x01 /* Auto/Manual Exposure control */
 #define COM8_SET(x)         (COM8_DEFAULT|x)
-#define COM8_SET_AEC(r,x)  (((r)&0xFE)|((x)&1))
+#define COM8_SET_AEC(r, x)  (((r)&0xFE)|((x)&1))
 
 #define COM9                0x14 /* AGC gain ceiling */
 #define COM9_DEFAULT        0x08
@@ -206,44 +206,44 @@
 #define CTRL1_AWB           0x08 /* Enable AWB */
 
 #define VV                  0x26
-#define VV_AGC_TH_SET(h,l) ((h << 4)|(l&0x0F))
+#define VV_AGC_TH_SET(h, l) ((h << 4)|(l&0x0F))
 
 #define REG32               0x32
 #define REG32_UXGA          0x36
 #define REG32_SVGA          0x09
 #define REG32_CIF           0x00
 
-#define VAL_SET(x,mask,rshift,lshift) ((((x) >> rshift) & mask) << lshift)
+#define VAL_SET(x, mask, rshift, lshift) ((((x) >> rshift) & mask) << lshift)
 
-#define CTRLI_V_DIV_SET(x)      VAL_SET(x,0x3,0,3)
-#define CTRLI_H_DIV_SET(x)      VAL_SET(x,0x3,0,0)
+#define CTRLI_V_DIV_SET(x)      VAL_SET(x, 0x3, 0, 3)
+#define CTRLI_H_DIV_SET(x)      VAL_SET(x, 0x3, 0, 0)
 
-#define SIZEL_HSIZE8_11_SET(x)  VAL_SET(x,0x1,11,6)
-#define SIZEL_HSIZE8_SET(x)     VAL_SET(x,0x7,0,3)
-#define SIZEL_VSIZE8_SET(x)     VAL_SET(x,0x7,0,0)
+#define SIZEL_HSIZE8_11_SET(x)  VAL_SET(x, 0x1, 11, 6)
+#define SIZEL_HSIZE8_SET(x)     VAL_SET(x, 0x7, 0, 3)
+#define SIZEL_VSIZE8_SET(x)     VAL_SET(x, 0x7, 0, 0)
 
-#define HSIZE8_SET(x)           VAL_SET(x,0xFF,3,0)
-#define VSIZE8_SET(x)           VAL_SET(x,0xFF,3,0)
+#define HSIZE8_SET(x)           VAL_SET(x, 0xFF, 3, 0)
+#define VSIZE8_SET(x)           VAL_SET(x, 0xFF, 3, 0)
 
-#define HSIZE_SET(x)            VAL_SET(x,0xFF,2,0)
-#define VSIZE_SET(x)            VAL_SET(x,0xFF,2,0)
+#define HSIZE_SET(x)            VAL_SET(x, 0xFF, 2, 0)
+#define VSIZE_SET(x)            VAL_SET(x, 0xFF, 2, 0)
 
-#define XOFFL_SET(x)            VAL_SET(x,0xFF,0,0)
-#define YOFFL_SET(x)            VAL_SET(x,0xFF,0,0)
+#define XOFFL_SET(x)            VAL_SET(x, 0xFF, 0, 0)
+#define YOFFL_SET(x)            VAL_SET(x, 0xFF, 0, 0)
 
-#define VHYX_VSIZE_SET(x)       VAL_SET(x,0x1,(8+2),7)
-#define VHYX_HSIZE_SET(x)       VAL_SET(x,0x1,(8+2),3)
-#define VHYX_YOFF_SET(x)        VAL_SET(x,0x3,8,4)
-#define VHYX_XOFF_SET(x)        VAL_SET(x,0x3,8,0)
+#define VHYX_VSIZE_SET(x)       VAL_SET(x, 0x1, (8+2), 7)
+#define VHYX_HSIZE_SET(x)       VAL_SET(x, 0x1, (8+2), 3)
+#define VHYX_YOFF_SET(x)        VAL_SET(x, 0x3, 8, 4)
+#define VHYX_XOFF_SET(x)        VAL_SET(x, 0x3, 8, 0)
 
-#define TEST_HSIZE_SET(x)       VAL_SET(x,0x1,(9+2),7)
+#define TEST_HSIZE_SET(x)       VAL_SET(x, 0x1, (9+2), 7)
 
-#define ZMOW_OUTW_SET(x)        VAL_SET(x,0xFF,2,0)
-#define ZMOH_OUTH_SET(x)        VAL_SET(x,0xFF,2,0)
+#define ZMOW_OUTW_SET(x)        VAL_SET(x, 0xFF, 2, 0)
+#define ZMOH_OUTH_SET(x)        VAL_SET(x, 0xFF, 2, 0)
 
-#define ZMHH_ZSPEED_SET(x)      VAL_SET(x,0x0F,0,4)
-#define ZMHH_OUTH_SET(x)        VAL_SET(x,0x1,(8+2),2)
-#define ZMHH_OUTW_SET(x)        VAL_SET(x,0x3,(8+2),0)
+#define ZMHH_ZSPEED_SET(x)      VAL_SET(x, 0x0F, 0, 4)
+#define ZMHH_OUTH_SET(x)        VAL_SET(x, 0x1, (8+2), 2)
+#define ZMHH_OUTW_SET(x)        VAL_SET(x, 0x3, (8+2), 0)
 
 #endif // (ACTIVE_CAMERA == CAM_OV2640)
 

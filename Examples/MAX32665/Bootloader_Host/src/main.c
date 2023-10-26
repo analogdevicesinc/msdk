@@ -171,8 +171,8 @@ int main(void)
     terminal_printf("you need to update terminal.c and platform_max32665.c files\r\n");
     terminal_printf("\r\n");
     terminal_printf("\tHW Pins\r\n");
-    terminal_printf("\tI2C:    SCL(P0.6),   SDA(P0.7)  (Note: I2C requires pullup resistor) \r\n");
-    terminal_printf("\tSPI:    MISO(P0.17), MOSI(P0.18), SCK(P0.19), SS(P0.16)\r\n");
+    terminal_printf("\tI2C:    SCL(P0.6),    SDA(P0.7)  (Note: I2C requires pullup resistor) \r\n");
+    terminal_printf("\tSPI:    MISO(P0.17),  MOSI(P0.18),  SCK(P0.19),  SS(P0.16)\r\n");
 #if defined(BOARD_FTHR) || defined(BOARD_FTHR2)
     terminal_printf("\tTarget: RESET(P0.20), MFIO(P0.21)\r\n");
 #else

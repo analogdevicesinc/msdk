@@ -4,7 +4,7 @@
  * Copyright (c) 2013-2019 Ibrahim Abdelkader <iabdalkader@openmv.io>
  * Copyright (c) 2013-2019 Kwabena W. Agyeman <kwagyeman@openmv.io>
  *
- * This work is licensed under the MIT license,see the file LICENSE for details.
+ * This work is licensed under the MIT license, see the file LICENSE for details.
  *
  * OV7725 register definitions.
  */
@@ -42,9 +42,9 @@
 #define COM3_TRI_CLOCK          0x04 /* Tri-state option for output clock at power-down period */
 #define COM3_TRI_DATA           0x02 /* Tri-state option for output data at power-down period  */
 #define COM3_COLOR_BAR          0x01 /* Sensor color bar test pattern output enable            */
-#define COM3_SET_CBAR(r,x)     ((r&0xFE)|((x&1) << 0))
-#define COM3_SET_MIRROR(r,x)   ((r&0xBF)|((x&1) << 6))
-#define COM3_SET_FLIP(r,x)     ((r&0x7F)|((x&1) << 7))
+#define COM3_SET_CBAR(r, x)     ((r&0xFE)|((x&1) << 0))
+#define COM3_SET_MIRROR(r, x)   ((r&0xBF)|((x&1) << 6))
+#define COM3_SET_FLIP(r, x)     ((r&0x7F)|((x&1) << 7))
 #define COM3_GET_CBAR(r)        ((r>>0)&1)
 #define COM3_GET_MIRROR(r)      ((r>>6)&1)
 #define COM3_GET_FLIP(r)        ((r>>7)&1)
@@ -95,8 +95,8 @@
 #define COM7_FMT_P_BAYER        0x01 /* Output format Processed Bayer RAW */
 #define COM7_FMT_RGB            0x02 /* Output format RGB        */
 #define COM7_FMT_R_BAYER        0x03 /* Output format Bayer RAW  */
-#define COM7_SET_FMT(r,x)      ((r&0xFC)|((x&0x3) << 0))
-#define COM7_SET_RES(r,x)      ((r&0xBF)|(x))
+#define COM7_SET_FMT(r, x)      ((r&0xFC)|((x&0x3) << 0))
+#define COM7_SET_RES(r, x)      ((r&0xBF)|(x))
 #define COM7_GET_FMT(r)         (r&0x03)
 
 #define COM8                    0x13 /* Common Control 8              */
@@ -109,9 +109,9 @@
 #define COM8_AGC_EN             0x04 /* AGC Enable */
 #define COM8_AWB_EN             0x02 /* AWB Enable */
 #define COM8_AEC_EN             0x01 /* AEC Enable */
-#define COM8_SET_AGC(r,x)      ((r&0xFB)|((x&0x1) << 2))
-#define COM8_SET_AWB(r,x)      ((r&0xFD)|((x&0x1) << 1))
-#define COM8_SET_AEC(r,x)      ((r&0x7E)|((x&0x1) << 7)|((x&0x1) << 0))
+#define COM8_SET_AGC(r, x)      ((r&0xFB)|((x&0x1) << 2))
+#define COM8_SET_AWB(r, x)      ((r&0xFD)|((x&0x1) << 1))
+#define COM8_SET_AEC(r, x)      ((r&0x7E)|((x&0x1) << 7)|((x&0x1) << 0))
 
 #define COM9                    0x14 /* Common Control 9 */
 #define COM9_HISTO_AVG          0x80 /* Histogram or average based AEC/AGC selection */
@@ -122,7 +122,7 @@
 #define COM9_AGC_GAIN_32x       0x40 /* Automatic Gain Ceiling 32x */
 #define COM9_DROP_VSYNC         0x04 /* Drop VSYNC output of corrupt frame */
 #define COM9_DROP_HREF          0x02 /* Drop HREF output of corrupt frame  */
-#define COM9_SET_AGC(r,x)      ((r&0x8F)|((x&0x07) << 4))
+#define COM9_SET_AGC(r, x)      ((r&0x8F)|((x&0x07) << 4))
 
 #define COM10                   0x15 /* Common Control 10 */
 #define COM10_NEGATIVE          0x80 /* Output negative data */
@@ -158,7 +158,7 @@
 #define AEW                     0x24 /* AGC/AEC - Stable Operating Region (Upper Limit) */
 #define AEB                     0x25 /* AGC/AEC - Stable Operating Region (Lower Limit) */
 #define VPT                     0x26 /* AGC/AEC Fast Mode Operating Region */
-#define REG28                   0x28 /* Selection on the number of dummy rows,N */
+#define REG28                   0x28 /* Selection on the number of dummy rows, N */
 #define HOUTSIZE                0x29 /* Horizontal Data Output Size MSBs (2 LSBs at register EXHCH[1:0]) */
 #define EXHCH                   0x2A /* Dummy Pixel Insert MSB */
 #define EXHCL                   0x2B /* Dummy Pixel Insert LSB */
@@ -197,9 +197,9 @@
 #define TGT_GR                  0x45 /* BLC Gr Channel Target Value   */
 
 #define LC_CTR                  0x46 /* Lens Correction Control */
-#define LC_CTR_RGB_COMP_1       0x00 /* R,G,and B channel compensation coefficient is set by LC_COEF (0x49) */
-#define LC_CTR_RGB_COMP_3       0x04 /* R,G,and B channel compensation coefficient is set by registers */
-                                     /*  LC_COEFB (0x4B),LC_COEF (0x49),and LC_COEFR (0x4C),respectively */
+#define LC_CTR_RGB_COMP_1       0x00 /* R, G, and B channel compensation coefficient is set by LC_COEF (0x49) */
+#define LC_CTR_RGB_COMP_3       0x04 /* R, G, and B channel compensation coefficient is set by registers */
+                                     /*  LC_COEFB (0x4B), LC_COEF (0x49), and LC_COEFR (0x4C), respectively */
 #define LC_CTR_EN               0x01 /* Lens correction enable */
 #define LC_XC                   0x47 /* X Coordinate of Lens Correction Center Relative to Array Center */
 #define LC_YC                   0x48 /* Y Coordinate of Lens Correction Center Relative to Array Center */
@@ -249,7 +249,7 @@
 #define DSP_CTRL3_SCAL1_PWDN    0x04 /* Scaling module power down control 1     */
 #define DSP_CTRL3_SCAL2_PWDN    0x02 /* Scaling module power down control 2     */
 #define DSP_CTRL3_INTRP_PWDN    0x01 /* Interpolation module power down control */
-#define DSP_CTRL3_SET_CBAR(r,x)    ((r&0xDF)|((x&1) << 5))
+#define DSP_CTRL3_SET_CBAR(r, x)    ((r&0xDF)|((x&1) << 5))
 
 #define DSP_CTRL4               0x67 /* DSP Control Byte 4          */
 #define DSP_CTRL4_YUV_RGB       0x00 /* Output selection YUV or RGB */

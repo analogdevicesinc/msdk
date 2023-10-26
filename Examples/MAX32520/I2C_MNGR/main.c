@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices,Inc.
+ * Copyright 2023 Analog Devices, Inc.
  *
- * Licensed under the Apache License,Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -108,9 +108,9 @@ uint8_t eeprom1_tx_buf[TX_BUF_LEN];
 /******************************************************************************/
 /* Functions */
 /******************************************************************************/
-void execute_transaction(i2c_mngr_txn_t *t,uint32_t loop_interval)
+void execute_transaction(i2c_mngr_txn_t *t, uint32_t loop_interval)
 {
-    int error,cnt = 0;
+    int error, cnt = 0;
 
     // Spin until I2C transaction performed
     do {
@@ -121,7 +121,7 @@ void execute_transaction(i2c_mngr_txn_t *t,uint32_t loop_interval)
 
     // Check for errors in transaction
     if (error != E_NO_ERROR) {
-        printf("Transaction failed with error: %i\n",error);
+        printf("Transaction failed with error: %i\n", error);
     }
 
     // Delay task if wait time hasn't exceeded task execution period
@@ -147,7 +147,7 @@ void vEEPROM0_Task(void *pvParameters)
                                .rx_len = RX_BUF_LEN };
 
         // Do EEPROM0 read
-        execute_transaction(&txn,EEPROM0_TRANSACTION_INTERVAL_MS);
+        execute_transaction(&txn, EEPROM0_TRANSACTION_INTERVAL_MS);
     }
 }
 
@@ -168,7 +168,7 @@ void vEEPROM1_Task(void *pvParameters)
                                .rx_len = RX_BUF_LEN };
 
         // Do EEPROM1 read
-        execute_transaction(&txn,EEPROM1_TRANSACTION_INTERVAL_MS);
+        execute_transaction(&txn, EEPROM1_TRANSACTION_INTERVAL_MS);
     }
 }
 
@@ -177,9 +177,9 @@ int main(void)
     printf("\n\n***************** I2C Transaction Manager Demo *****************\n");
     printf("Data is read from EEPROM0 every %dms with an I2C bus frequency\n",
            EEPROM0_TRANSACTION_INTERVAL_MS);
-    printf("of %dHz. And data is read from EEPROM1 every %dms with an\n",EEPROM0_BUS_SPEED,
+    printf("of %dHz. And data is read from EEPROM1 every %dms with an\n", EEPROM0_BUS_SPEED,
            EEPROM1_TRANSACTION_INTERVAL_MS);
-    printf("I2C bus frequency of %dHz.\n\n",EEPROM1_BUS_SPEED);
+    printf("I2C bus frequency of %dHz.\n\n", EEPROM1_BUS_SPEED);
 
     printf("LED0 is toggled each time the read from EEPROM0 is executed and\n");
     printf("LED1 is toggled each time the read from EEPROM1 is executed.\n\n");
@@ -188,10 +188,10 @@ int main(void)
     I2C_MNGR_Init();
 
     /* Configure tasks */
-    if ((xTaskCreate(vEEPROM0_Task,(const char *)"EEPROM0",configMINIMAL_STACK_SIZE,NULL,
-                     tskIDLE_PRIORITY + 1,NULL) != pdPASS) ||
-        (xTaskCreate(vEEPROM1_Task,(const char *)"EEPROM1",configMINIMAL_STACK_SIZE,NULL,
-                     tskIDLE_PRIORITY + 1,NULL) != pdPASS)) {
+    if ((xTaskCreate(vEEPROM0_Task, (const char *)"EEPROM0", configMINIMAL_STACK_SIZE, NULL,
+                     tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
+        (xTaskCreate(vEEPROM1_Task, (const char *)"EEPROM1", configMINIMAL_STACK_SIZE, NULL,
+                     tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
         printf("xTaskCreate() failed to create a task.\n");
     } else {
         /* Start scheduler */

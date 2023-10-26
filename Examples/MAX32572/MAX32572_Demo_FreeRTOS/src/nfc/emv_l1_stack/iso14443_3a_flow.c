@@ -92,7 +92,7 @@ uint8_t get_last_sak()
 }
 
 /*
-   new version the PCD shall not examine the ATQ RFU bits, only check b5~b8 of byte2
+   new version the PCD shall not examine the ATQ RFU bits,only check b5~b8 of byte2
  */
 static int32_t check_atq(uint8_t *atq, uint32_t *uid_level)
 {

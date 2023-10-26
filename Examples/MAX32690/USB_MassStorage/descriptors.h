@@ -188,23 +188,23 @@ __attribute__((aligned(4))) uint8_t lang_id_desc[] = {
 __attribute__((aligned(4))) uint8_t mfg_id_desc[] = {
     0x22, /* bLength */
     0x03, /* bDescriptorType */
-    'M', 0, 'a', 0, 'x', 0, 'i', 0, 'm', 0, ' ', 0, 'I', 0, 'n', 0,
-    't', 0, 'e', 0, 'g', 0, 'r', 0, 'a', 0, 't', 0, 'e', 0, 'd', 0,
+    'M',  0, 'a', 0, 'x', 0, 'i', 0, 'm', 0, ' ', 0, 'I', 0, 'n', 0,
+    't',  0, 'e', 0, 'g', 0, 'r', 0, 'a', 0, 't', 0, 'e', 0, 'd', 0,
 };
 
 __attribute__((aligned(4))) uint8_t prod_id_desc[] = {
     0x38, /* bLength */
     0x03, /* bDescriptorType */
-    'M', 0, 'A', 0, 'X', 0, 'U', 0, 'S', 0, 'B', 0, ' ', 0, 'M', 0, 'a', 0,
-    's', 0, 's', 0, ' ', 0, 'S', 0, 't', 0, 'o', 0, 'r', 0, 'a', 0, 'g', 0,
-    'e', 0, ' ', 0, 'E', 0, 'x', 0, 'a', 0, 'm', 0, 'p', 0, 'l', 0, 'e', 0,
+    'M',  0, 'A', 0, 'X', 0, 'U', 0, 'S', 0, 'B', 0, ' ', 0, 'M', 0, 'a', 0,
+    's',  0, 's', 0, ' ', 0, 'S', 0, 't', 0, 'o', 0, 'r', 0, 'a', 0, 'g', 0,
+    'e',  0, ' ', 0, 'E', 0, 'x', 0, 'a', 0, 'm', 0, 'p', 0, 'l', 0, 'e', 0,
 };
 
 /* Not currently used (see device descriptor), but could be enabled if desired */
 __attribute__((aligned(4)))
 uint8_t serial_id_desc[] = { 26, /* bLength */
                              0x03, /* bDescriptorType */
-                             '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
-                             '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '1', 0 };
+                             '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
+                             '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '1', 0 };
 
 #endif // EXAMPLES_MAX32690_USB_MASSSTORAGE_DESCRIPTORS_H_
