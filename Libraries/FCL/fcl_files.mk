@@ -54,8 +54,8 @@ ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
 
-TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
-TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
+TARGET_UC := $(subst m, M, $(subst a, A, $(subst x, X, $(TARGET))))
+TARGET_LC := $(subst M, m, $(subst A, a, $(subst X, x, $(TARGET))))
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
@@ -130,4 +130,4 @@ FCL_C_FILES += $(sort $(wildcard $(FCL_DIR)/src/*.c))
  # ownership rights.
  #
  ##############################################################################
-FCL_H_FILES +=  $(wildcard $(addsuffix /*.h,$(FCL_INCLUDE_DIR)))
+FCL_H_FILES +=  $(wildcard $(addsuffix /*.h, $(FCL_INCLUDE_DIR)))

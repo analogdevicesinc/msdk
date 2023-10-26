@@ -1,7 +1,7 @@
 function initResizable()
 {
   var cookie_namespace = 'doxygen';
-  var sidenav,navtree,content,header,collapsed,collapsedWidth=0,barWidth=6,desktop_vp=768,titleHeight;
+  var sidenav, navtree, content, header, collapsed, collapsedWidth=0, barWidth=6, desktop_vp=768, titleHeight;
 
   function readCookie(cookie)
   {
@@ -37,7 +37,7 @@ function initResizable()
     var windowWidth = $(window).width() + "px";
     var sidenavWidth = $(sidenav).outerWidth();
     content.css({marginLeft:parseInt(sidenavWidth)+"px"});
-    writeCookie('width',sidenavWidth-barWidth, null);
+    writeCookie('width', sidenavWidth-barWidth, null);
   }
 
   function restoreWidth(navWidth)
