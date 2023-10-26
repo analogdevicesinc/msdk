@@ -40,21 +40,21 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <string.h>
-
-#include <MAX32xxx.h>
+#include "mxc_device.h"
+#include "gpio.h"
 
 /***** Definitions *****/
 #define MXC_GPIO_PORT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_16
+#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_31
 
-#define MXC_GPIO_PORT_OUT MXC_GPIO0
-#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_17
+#define MXC_GPIO_PORT_OUT MXC_GPIO1
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_30
 
-#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_18
+#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO1
+#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_29
 
-#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_19
+#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO1
+#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_31
 
 /***** Globals *****/
 
@@ -73,9 +73,10 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt_status;
 
     printf("\n\n************************* GPIO Example ***********************\n\n");
-    printf("1. This example reads P0.16 and outputs the same state onto P0.17.\n");
-    printf("2. An interrupt is set up on P0.18 . P0.19 toggles when that\n");
-    printf("   interrupt occurs.\n\n");
+    printf("1. This example reads P0.31 (PB0) and outputs the same state onto\n");
+    printf("   P1.30 (LED0).\n");
+    printf("2. An interrupt is set up on P0.18 (PB1). P0.19 (LED1) is toggled\n");
+    printf("   when that interrupt occurs.\n\n");
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
     gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
@@ -87,7 +88,7 @@ int main(void)
     MXC_GPIO_Config(&gpio_interrupt_status);
 
     /*
-     *   Set up interrupt on P1.07.
+     *   Set up interrupt pin.
      *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
      *     reads high when button is not pressed.
      */
@@ -128,11 +129,11 @@ int main(void)
     while (1) {
         /* Read state of the input pin. */
         if (MXC_GPIO_InGet(gpio_in.port, gpio_in.mask)) {
-            /* Input pin was high, set the output pin. */
-            MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-        } else {
-            /* Input pin was low, clear the output pin. */
+            /* PB0 pressed, turn off LED0. */
             MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
+        } else {
+            /* PB0 pressed, turn on LED0. */
+            MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
         }
     }
 
