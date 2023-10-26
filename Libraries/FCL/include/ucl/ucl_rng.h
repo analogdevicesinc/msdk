@@ -52,5 +52,5 @@
 #define LIBRARIES_FCL_INCLUDE_UCL_UCL_RNG_H_
 
 int __API__ ucl_rng_read(u8* rand, u32 rand_byteLen);
- 
+
 #endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_RNG_H_

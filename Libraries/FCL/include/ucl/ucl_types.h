@@ -48,12 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_FCL_INCLUDE_UCL_UCL_TYPE_H_
-#define LIBRARIES_FCL_INCLUDE_UCL_UCL_TYPE_H_
+#ifndef LIBRARIES_FCL_INCLUDE_UCL_UCL_TYPES_H_
+#define LIBRARIES_FCL_INCLUDE_UCL_UCL_TYPES_H_
+
+#include <stdint.h>
 
 typedef unsigned int u32;
-typedef unsigned short u16;
+typedef uint16_t u16;
 typedef unsigned char u8;
-typedef unsigned long long u64;
+typedef uint64_t u64;
 
-#endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_TYPE_H_
+#endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_TYPES_H_

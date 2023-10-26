@@ -1,6 +1,55 @@
-/* sha3.h */
-#ifndef LIBRARIES_FCL_INCLUDE_UCL_SHA3_H
-#define LIBRARIES_FCL_INCLUDE_UCL_SHA3_H
+/******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************
+ *
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
+
+#ifndef LIBRARIES_FCL_INCLUDE_UCL_UCL_SHA3_H_
+#define LIBRARIES_FCL_INCLUDE_UCL_UCL_SHA3_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,12 +120,12 @@ typedef struct sha3_context_ {
       u64 s[SHA3_SPONGE_WORDS];
       u8 sb[SHA3_SPONGE_WORDS * 8];
     };
-    int byteIndex;         /* 0..7--the next byte after the set one
-                                 * (starts from 0; 0--none are buffered) */
-    int wordIndex;         /* 0..24--the next word to integrate input
-                                 * (starts from 0) */
-    int capacityWords;     /* the double size of the hash output in
-                                 * words (e.g. 16 for Keccak 512) */
+    int byteIndex;         // 0..7--the next byte after the set one
+                           //   (starts from 0; 0--none are buffered)
+    int wordIndex;         // 0..24--the next word to integrate input
+                           //   (starts from 0)
+    int capacityWords;     // The double size of the hash output in
+                          //     words (e.g. 16 for Keccak 512)
 } ucl_sha3_ctx_t;
 
   // methods for calculating the hash function
@@ -262,4 +311,4 @@ typedef struct sha3_context_ {
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif // LIBRARIES_FCL_INCLUDE_UCL_SHA3_H_
+#endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_SHA3_H_

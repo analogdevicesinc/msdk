@@ -51,10 +51,11 @@
 #ifndef LIBRARIES_FCL_INCLUDE_UCL_BIGNUM_ECDSA_GENERIC_API_H_
 #define LIBRARIES_FCL_INCLUDE_UCL_BIGNUM_ECDSA_GENERIC_API_H_
 
+#include <stdint.h>
 #include "ucl/ucl_config.h"
 #include "ucl/ucl_types.h"
 
-#define DOUBLE_DIGIT unsigned long long int
+#define DOUBLE_DIGIT uint64_t
 #define MAX_DIGIT 0xFFFFFFFF
 #define HALF_DIGIT 0xFFFF
 #define MAX_DIGITS 65

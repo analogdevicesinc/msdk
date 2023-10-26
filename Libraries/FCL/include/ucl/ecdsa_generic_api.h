@@ -95,8 +95,8 @@
  * ECDSA is the implementation of the DSA in ECC
 */
 
-#ifndef LIBRARIES_FCL_INCLUDE_UCL_ECDSA_GENERIC_API_NEW_H_
-#define LIBRARIES_FCL_INCLUDE_UCL_ECDSA_GENERIC_API_NEW_H_
+#ifndef LIBRARIES_FCL_INCLUDE_UCL_ECDSA_GENERIC_API_H_
+#define LIBRARIES_FCL_INCLUDE_UCL_ECDSA_GENERIC_API_H_
 
 #include "ucl/ucl_config.h"
 #include "ucl/ucl_types.h"

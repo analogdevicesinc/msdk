@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices,Inc.
+ * Copyright 2023 Analog Devices, Inc.
  *
- * Licensed under the Apache License,Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted,free of charge,to any person obtaining a
+ * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction,including without limitation
- * the rights to use,copy,modify,merge,publish,distribute,sublicense,
- * and/or sell copies of the Software,and to permit persons to whom the
- * Software is furnished to do so,subject to the following conditions:
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
- * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
- * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
- * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice,the name of Maxim Integrated
- * Products,Inc. shall not be used except as stated in the Maxim Integrated
- * Products,Inc. Branding Policy.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets,proprietary technology,copyrights,patents,
- * trademarks,maskwork rights,or any other form of intellectual
- * property whatsoever. Maxim Integrated Products,Inc. retains all
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -60,17 +60,17 @@
 #include <ucl/ucl_retdefs.h>
 #include <string.h>
 
-// for all u32* numbers,digit[0] is the least significent digit
-void bignum_d2us(u8 *a,u32 len,u32 *b,u32 digits)
+// for all u32* numbers, digit[0] is the least significent digit
+void bignum_d2us(u8 *a, u32 len, u32 *b, u32 digits)
 {
     u32 t;
     int j;
     int i;
     u32 u;
 
-    for (i = 0,j = (int)len - 1; i < (int)digits && j >= 0; i++) {
+    for (i = 0, j = (int)len - 1; i < (int)digits && j >= 0; i++) {
         t = b[i];
-        for (u = 0; j >= 0 && u < (int)DIGIT_BITS; j--,u += 8)
+        for (u = 0; j >= 0 && u < (int)DIGIT_BITS; j--, u += 8)
         a[j] = (u8)(t >> u);
     }
 
@@ -79,16 +79,16 @@ void bignum_d2us(u8 *a,u32 len,u32 *b,u32 digits)
     }
 }
 
-void bignum_us2d(u32 *a,u32 digits,u8 *b,u32 len)
+void bignum_us2d(u32 *a, u32 digits, u8 *b, u32 len)
 {
     u32 t;
-    int j,i;
+    int j, i;
     int u;
 
-    for (i = 0,j = (int)len - 1; i < (int)digits && j >= 0; i++) {
+    for (i = 0, j = (int)len - 1; i < (int)digits && j >= 0; i++) {
         t = 0;
 
-        for (u = 0; j >= 0 && u < (int)DIGIT_BITS; j--,u += 8) {
+        for (u = 0; j >= 0 && u < (int)DIGIT_BITS; j--, u += 8) {
             t | = ((u32)b[j]) << (u32)u;
         }
 
@@ -100,7 +100,7 @@ void bignum_us2d(u32 *a,u32 digits,u8 *b,u32 len)
     }
 }
 
-u32 bignum_digits(u32 *N,u32 tn)
+u32 bignum_digits(u32 *N, u32 tn)
 {
     int i;
     for (i = (int)(tn-1); i >= 0; i--) {
@@ -113,7 +113,7 @@ u32 bignum_digits(u32 *N,u32 tn)
 }
 
 // e = 0 except e[0] = f
-void bignum_copydigit(u32 *E,u32 F,u32 tE)
+void bignum_copydigit(u32 *E, u32 F, u32 tE)
 {
   int i;
   for (i = (int)(tE-1); i != 0; i--)
@@ -122,7 +122,7 @@ void bignum_copydigit(u32 *E,u32 F,u32 tE)
 }
 
 // e = 0
-void bignum_copyzero(u32 *E,u32 tE)
+void bignum_copyzero(u32 *E, u32 tE)
 {
     int i;
 
@@ -134,7 +134,7 @@ void bignum_copyzero(u32 *E,u32 tE)
 }
 
 // e = f
-void bignum_copy(u32 *E,u32 *F,u32 tE)
+void bignum_copy(u32 *E, u32 *F, u32 tE)
 {
     int i;
     for (i = (int)(tE-1); i != 0; i--) {
@@ -147,7 +147,7 @@ void bignum_copy(u32 *E,u32 *F,u32 tE)
 u32 bignum_digitbits(u32 a)
 {
     int i;
-    for (i = 0; i < (int)DIGIT_BITS; i++,a >>= 1) {
+    for (i = 0; i < (int)DIGIT_BITS; i++, a >>= 1) {
         if (a == 0) {
             break;
         }
@@ -156,7 +156,7 @@ u32 bignum_digitbits(u32 a)
     return((u32)i);
 }
 
-int bignum_cmp(u32 *a,u32 *b,u32 s)
+int bignum_cmp(u32 *a, u32 *b, u32 s)
 {
     int i;
 
@@ -173,7 +173,7 @@ int bignum_cmp(u32 *a,u32 *b,u32 s)
     return(0);
 }
 
-int bignum_cmp_zero(u32 *a,int s)
+int bignum_cmp_zero(u32 *a, int s)
 {
     int i;
 
@@ -186,7 +186,7 @@ int bignum_cmp_zero(u32 *a,int s)
     return(0);
 }
 
-void bignum_scalarmult(u32 *c,u32 a,u32 b)
+void bignum_scalarmult(u32 *c, u32 a, u32 b)
 {
     union u {
         DOUBLE_DIGIT result;
@@ -199,18 +199,18 @@ void bignum_scalarmult(u32 *c,u32 a,u32 b)
     c[1] = n.t[1];
 }
 
-void bignum_scalardiv(u32 *a,u32 b[2],u32 c)
+void bignum_scalardiv(u32 *a, u32 b[2], u32 c)
 {
     DOUBLE_DIGIT t;
     t = (((DOUBLE_DIGIT)b[1]) << DIGIT_BITS) ^ ((DOUBLE_DIGIT)b[0]);
     *a = (u32)(t/c);
 }
 
-// w = x+y,ret(carry)
+// w = x+y, ret(carry)
 
-u32 bignum_sub(u32 *w,u32 *x,u32 *y,u32 digits)
+u32 bignum_sub(u32 *w, u32 *x, u32 *y, u32 digits)
 {
-    u32 wi,borrow = 0;
+    u32 wi, borrow = 0;
     int i;
 
     for (i = 0; i < (int)digits; i++) {
@@ -225,9 +225,9 @@ u32 bignum_sub(u32 *w,u32 *x,u32 *y,u32 digits)
     return(borrow);
 }
 
-u32 bignum_add(u32 *w,u32 *x,u32 *y,u32 digits)
+u32 bignum_add(u32 *w, u32 *x, u32 *y, u32 digits)
 {
-    u32 wi,carry;
+    u32 wi, carry;
     int i;
 
     wi = x[0];
@@ -246,7 +246,7 @@ u32 bignum_add(u32 *w,u32 *x,u32 *y,u32 digits)
     return(carry);
 }
 
-void scalarmult(u32 *r0,u32 *r1,u32 *r2,u32 a,u32 b)
+void scalarmult(u32 *r0, u32 *r1, u32 *r2, u32 a, u32 b)
 {
     DOUBLE_DIGIT p = (DOUBLE_DIGIT)a * b;
     DOUBLE_DIGIT r01 = ((DOUBLE_DIGIT)(*r1) << DIGIT_BITS) | *r0;
@@ -256,15 +256,15 @@ void scalarmult(u32 *r0,u32 *r1,u32 *r2,u32 a,u32 b)
     *r0 = (u32)r01;
 }
 
-void bignum_mult_scfo(u32 *t,u32 *a,u32 *b,u32 n)
+void bignum_mult_scfo(u32 *t, u32 *a, u32 *b, u32 n)
 {
     u32 r0 = 0;
     u32 r1 = 0;
     u32 r2 = 0;
-    int i,k;
+    int i, k;
     for (k = 0; k < (int)n; ++k) {
         for (i = 0; i <= k; ++i)
-        scalarmult(&r0,&r1,&r2,a[i],b[k-i]);
+        scalarmult(&r0, &r1, &r2, a[i], b[k-i]);
         t[k] = r0;
         r0 = r1;
         r1 = r2;
@@ -273,7 +273,7 @@ void bignum_mult_scfo(u32 *t,u32 *a,u32 *b,u32 n)
 
     for (k = (int)n; k < (int)n*2 - 1; ++k) {
         for (i = (k + 1) - (int)n; i < (int)n; ++i)
-        scalarmult(&r0,&r1,&r2,a[i],b[k-i]);
+        scalarmult(&r0, &r1, &r2, a[i], b[k-i]);
         t[k] = r0;
         r0 = r1;
         r1 = r2;
@@ -283,19 +283,19 @@ void bignum_mult_scfo(u32 *t,u32 *a,u32 *b,u32 n)
     t[n*2 - 1] = r0;
 }
 
-void bignum_mult(u32 *t,u32 *a,u32 *b,u32 n)
+void bignum_mult(u32 *t, u32 *a, u32 *b, u32 n)
 {
-    bignum_mult_scfo(t,a,b,n);
+    bignum_mult_scfo(t, a, b, n);
 }
 
-void bignum_multscalar(u32 *t,u32 a,u32 *b,u32 n)
+void bignum_multscalar(u32 *t, u32 a, u32 *b, u32 n)
 {
     int j;
     u32 bDigits;
     u32 carry;
-    DOUBLE_DIGIT de,re;
-    bDigits = bignum_digits(b,n);
-    bignum_copyzero(t,2*n);
+    DOUBLE_DIGIT de, re;
+    bDigits = bignum_digits(b, n);
+    bignum_copyzero(t, 2*n);
 
     if (a != 0) {
         carry = 0;
@@ -310,18 +310,18 @@ void bignum_multscalar(u32 *t,u32 a,u32 *b,u32 n)
     }
 }
 
-void bignum_square_opt(u32 *a,u32 *b,u32 digits)
+void bignum_square_opt(u32 *a, u32 *b, u32 digits)
 {
-    u32 t[2*MAX_DIGITS],tmp[2],carry,carrynext,carryover;
-    u32 bDigits,c0,c1;
-    int i,j;
+    u32 t[2*MAX_DIGITS], tmp[2], carry, carrynext, carryover;
+    u32 bDigits, c0, c1;
+    int i, j;
 
-    bignum_copyzero(t,(u32)2 * digits);
-    bDigits = bignum_digits(b,digits);
+    bignum_copyzero(t, (u32)2 * digits);
+    bDigits = bignum_digits(b, digits);
 
     for (i = 0; i < (int)bDigits; i++) {
-        for (carry = carrynext = 0,j = 0; j < i; j++) {
-            bignum_scalarmult(tmp,b[i],b[j]);
+        for (carry = carrynext = 0, j = 0; j < i; j++) {
+            bignum_scalarmult(tmp, b[i], b[j]);
             c0 = tmp[0];
             c1 = tmp[1];
 
@@ -356,7 +356,7 @@ void bignum_square_opt(u32 *a,u32 *b,u32 digits)
             carrynext = carryover;
         }
 
-        bignum_scalarmult(tmp,b[i],b[i]);
+        bignum_scalarmult(tmp, b[i], b[i]);
         c0 = tmp[0];
         c1 = tmp[1];
         t[i+i] += carry;
@@ -399,17 +399,17 @@ void bignum_square_opt(u32 *a,u32 *b,u32 digits)
         }
     }
 
-    bignum_copy(a,t,(u32)2 * digits);
+    bignum_copy(a, t, (u32)2 * digits);
 }
 
-void bignum_square(u32 *a,u32 *b,u32 digits)
+void bignum_square(u32 *a, u32 *b, u32 digits)
 {
-    bignum_square_opt(a,b,digits);
+    bignum_square_opt(a, b, digits);
 }
 
-u32 bignum_subscalarmult(u32 *a,u32 *b,u32 c,u32 *d,u32 digits)
+u32 bignum_subscalarmult(u32 *a, u32 *b, u32 c, u32 *d, u32 digits)
 {
-    u32 borrow = 0,di,ai,bi,t[2],val;
+    u32 borrow = 0, di, ai, bi, t[2], val;
     int i;
 
     if (c == 0) {
@@ -418,7 +418,7 @@ u32 bignum_subscalarmult(u32 *a,u32 *b,u32 c,u32 *d,u32 digits)
 
     for (i = 0; i < (int)digits; i++) {
         di = d[i];
-        bignum_scalarmult(t,c,di);
+        bignum_scalarmult(t, c, di);
         ai = a[i];
         bi = b[i];
         ai = bi - borrow;
@@ -443,9 +443,9 @@ u32 bignum_subscalarmult(u32 *a,u32 *b,u32 c,u32 *d,u32 digits)
     return(borrow);
 }
 
-u32 bignum_leftshift(u32 *a,u32 *b,u32 c,u32 digits)
+u32 bignum_leftshift(u32 *a, u32 *b, u32 c, u32 digits)
 {
-    u32 bi,borrow,t,m,p;
+    u32 bi, borrow, t, m, p;
     int i;
 
     if (c < DIGIT_BITS) {
@@ -492,9 +492,9 @@ u32 bignum_leftshift(u32 *a,u32 *b,u32 c,u32 digits)
     return(borrow);
 }
 
-u32 bignum_rightshift(u32 *a,u32 *b,u32 c,u32 digits)
+u32 bignum_rightshift(u32 *a, u32 *b, u32 c, u32 digits)
 {
-    u32 bi,borrow,t,m,p;
+    u32 bi, borrow, t, m, p;
     int i;
 
     if (c < DIGIT_BITS) {
@@ -536,38 +536,38 @@ u32 bignum_rightshift(u32 *a,u32 *b,u32 c,u32 digits)
     return(borrow);
 }
 
-void bignum_divide(u32 *a,u32 *b,u32 *c,u32 cDigits,u32 *d,u32 dDigits)
+void bignum_divide(u32 *a, u32 *b, u32 *c, u32 cDigits, u32 *d, u32 dDigits)
 {
-    u32 ai,cc[2*MAX_DIGITS+1],dd[MAX_DIGITS],t;
+    u32 ai, cc[2*MAX_DIGITS+1], dd[MAX_DIGITS], t;
     int i;
-    u32 ddDigits,shift;
+    u32 ddDigits, shift;
 
-    ddDigits = bignum_digits(d,dDigits);
+    ddDigits = bignum_digits(d, dDigits);
     if (ddDigits == 0) {
         return;
     }
 
     shift = DIGIT_BITS - bignum_digitbits(d[ddDigits-1]);
-    bignum_copyzero(cc,ddDigits);
-    cc[cDigits] = bignum_leftshift(cc,c,shift,cDigits);
-    bignum_leftshift(dd,d,shift,ddDigits);
+    bignum_copyzero(cc, ddDigits);
+    cc[cDigits] = bignum_leftshift(cc, c, shift, cDigits);
+    bignum_leftshift(dd, d, shift, ddDigits);
     t = dd[ddDigits-1];
 
     if (NULL != a) {
-        bignum_copyzero(a,cDigits);
+        bignum_copyzero(a, cDigits);
     }
 
     for (i = (int)(cDigits-ddDigits); i >= 0; i--) {
         if (t == MAX_DIGIT) {
             ai = cc[i+(int)ddDigits];
         } else {
-            bignum_scalardiv(&ai,&cc[i+(int)ddDigits-1],t + 1);
+            bignum_scalardiv(&ai, &cc[i+(int)ddDigits-1], t + 1);
         }
 
-        cc[i+(int)ddDigits] -= bignum_subscalarmult(&cc[i],&cc[i],ai,dd,ddDigits);
-        while (cc[i+(int)ddDigits] || (bignum_cmp(&cc[i],dd,ddDigits) >= 0)) {
+        cc[i+(int)ddDigits] -= bignum_subscalarmult(&cc[i], &cc[i], ai, dd, ddDigits);
+        while (cc[i+(int)ddDigits] || (bignum_cmp(&cc[i], dd, ddDigits) >= 0)) {
             ai++;
-            cc[i+(int)ddDigits] -= bignum_sub(&cc[i],&cc[i],dd,ddDigits);
+            cc[i+(int)ddDigits] -= bignum_sub(&cc[i], &cc[i], dd, ddDigits);
         }
 
         if (NULL != a) {
@@ -576,40 +576,40 @@ void bignum_divide(u32 *a,u32 *b,u32 *c,u32 cDigits,u32 *d,u32 dDigits)
     }
 
     if (b != NULL) {
-        bignum_copyzero(b,dDigits);
-        bignum_rightshift(b,cc,shift,ddDigits);
+        bignum_copyzero(b, dDigits);
+        bignum_rightshift(b, cc, shift, ddDigits);
     }
 }
 
-int bignum_modmult(u32 *r,u32 *a,u32 *b,u32 *m,u32 k)
+int bignum_modmult(u32 *r, u32 *a, u32 *b, u32 *m, u32 k)
 {
     u32 mult[2*MAX_DIGITS];
 
-    bignum_mult(mult,a,b,k);
-    bignum_mod(r,mult,2*k,m,k);
+    bignum_mult(mult, a, b, k);
+    bignum_mod(r, mult, 2*k, m, k);
 
     return(UCL_OK);
 }
 
-void bignum_modadd(u32 *r,u32 *a,u32 *b,u32 *m,u32 k)
+void bignum_modadd(u32 *r, u32 *a, u32 *b, u32 *m, u32 k)
 {
     u32 add[MAX_DIGITS+1];
 
-    add[k] = bignum_add(add,a,b,k);
-    bignum_mod(r,add,k+1,m,k);
+    add[k] = bignum_add(add, a, b, k);
+    bignum_mod(r, add, k+1, m, k);
 }
 
-void bignum_mod(u32 *b,u32 *c,u32 cDigits,u32 *d,u32 dDigits)
+void bignum_mod(u32 *b, u32 *c, u32 cDigits, u32 *d, u32 dDigits)
 {
-    u32 copy_a[2*MAX_DIGITS],ddDigits;
+    u32 copy_a[2*MAX_DIGITS], ddDigits;
 
-    ddDigits = bignum_digits(d,dDigits);
-    bignum_divide(NULL,copy_a,c,cDigits,d,ddDigits);
-    bignum_copyzero(b,dDigits);
-    bignum_copy(b,copy_a,ddDigits);
+    ddDigits = bignum_digits(d, dDigits);
+    bignum_divide(NULL, copy_a, c, cDigits, d, ddDigits);
+    bignum_copyzero(b, dDigits);
+    bignum_copy(b, copy_a, ddDigits);
 }
 
-int bignum_isnul(u32 *A,u32 tA)
+int bignum_isnul(u32 *A, u32 tA)
 {
     int i;
 
@@ -622,19 +622,19 @@ int bignum_isnul(u32 *A,u32 tA)
     return(1);
 }
 
-void bignum_div(u32 *quot,u32 *b,u32 *c,u32 cDigits,u32 *d,u32 dDigits)
+void bignum_div(u32 *quot, u32 *b, u32 *c, u32 cDigits, u32 *d, u32 dDigits)
 {
-    u32 copy_a[2*MAX_DIGITS],ddDigits;
+    u32 copy_a[2*MAX_DIGITS], ddDigits;
     int i;
 
-    ddDigits = bignum_digits(d,dDigits);
+    ddDigits = bignum_digits(d, dDigits);
     if (ddDigits == 0) {
         return;
     }
 
-    bignum_divide(quot,copy_a,c,cDigits,d,ddDigits);
+    bignum_divide(quot, copy_a, c, cDigits, d, ddDigits);
     if (b != NULL) {
-        bignum_copy(b,copy_a,ddDigits);
+        bignum_copy(b, copy_a, ddDigits);
 
         for (i = (int)ddDigits; i < (int)dDigits; i++) {
             b[i] = 0;
@@ -642,58 +642,58 @@ void bignum_div(u32 *quot,u32 *b,u32 *c,u32 cDigits,u32 *d,u32 dDigits)
     }
 }
 
-void bignum_modinv(u32 *x,u32 *a0,u32 *b0,u32 digits)
+void bignum_modinv(u32 *x, u32 *a0, u32 *b0, u32 digits)
 {
-    u32 u[MAX_DIGITS],v[MAX_DIGITS];
-    u32 a[MAX_DIGITS+1],c[MAX_DIGITS+1];
-    bignum_copy(u,a0,digits);
-    bignum_copy(v,b0,digits);
-    bignum_copydigit(a,1,digits);
-    bignum_copyzero(c,digits);
+    u32 u[MAX_DIGITS], v[MAX_DIGITS];
+    u32 a[MAX_DIGITS+1], c[MAX_DIGITS+1];
+    bignum_copy(u, a0, digits);
+    bignum_copy(v, b0, digits);
+    bignum_copydigit(a, 1, digits);
+    bignum_copyzero(c, digits);
 
-    while (!bignum_isnul(u,digits)) {
-        //while u is even,so lsb is 0
+    while (!bignum_isnul(u, digits)) {
+        //while u is even, so lsb is 0
         while ((u[0] & 1) == 0) {
-            bignum_rightshift(u,u,1,digits);
+            bignum_rightshift(u, u, 1, digits);
             //if a is even
             if ((a[0] & 1) == 0) {
-                bignum_rightshift(a,a,1,digits);
+                bignum_rightshift(a, a, 1, digits);
             } else {
-                a[digits] = bignum_add(a,a,b0,digits);
-                bignum_rightshift(a,a,1,digits+1);
+                a[digits] = bignum_add(a, a, b0, digits);
+                bignum_rightshift(a, a, 1, digits+1);
             }
         }
 
         //while v is even
         while ((v[0] & 1) == 0) {
-            bignum_rightshift(v,v,1,digits);
+            bignum_rightshift(v, v, 1, digits);
             //if c is even
             if ((c[0] & 1) == 0) {
-                bignum_rightshift(c,c,1,digits);
+                bignum_rightshift(c, c, 1, digits);
             } else {
-                c[digits] = bignum_add(c,c,b0,digits);
-                bignum_rightshift(c,c,1,digits+1);
+                c[digits] = bignum_add(c, c, b0, digits);
+                bignum_rightshift(c, c, 1, digits+1);
             }
         }
 
-        if (bignum_cmp(u,v,digits) >= 0) {
-            bignum_sub(u,u,v,digits);
+        if (bignum_cmp(u, v, digits) >= 0) {
+            bignum_sub(u, u, v, digits);
 
-            if (bignum_cmp(a,c,digits) < 0) {
-                bignum_add(a,a,b0,digits);
+            if (bignum_cmp(a, c, digits) < 0) {
+                bignum_add(a, a, b0, digits);
             }
 
-            bignum_sub(a,a,c,digits);
+            bignum_sub(a, a, c, digits);
         } else {
-            bignum_sub(v,v,u,digits);
+            bignum_sub(v, v, u, digits);
 
-            if (bignum_cmp(c,a,digits) < 0) {
-                bignum_add(c,c,b0,digits);
+            if (bignum_cmp(c, a, digits) < 0) {
+                bignum_add(c, c, b0, digits);
             }
 
-            bignum_sub(c,c,a,digits);
+            bignum_sub(c, c, a, digits);
         }
     }
 
-    bignum_copy(x,c,digits);
+    bignum_copy(x, c, digits);
 }
