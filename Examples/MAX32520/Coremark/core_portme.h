@@ -45,7 +45,7 @@
  */
 typedef unsigned int CORE_TICKS;
 
-/* Definitions : COMPILER_VERSION, COMPILER_FLAGS, MEM_LOCATION
+/* Definitions : COMPILER_VERSION,COMPILER_FLAGS,MEM_LOCATION
 	Initialize these strings per platform
 */
 #ifndef COMPILER_VERSION
@@ -63,10 +63,10 @@ typedef unsigned int CORE_TICKS;
 #endif
 
 /* Data Types :
-	To avoid compiler issues, define the data types that need ot be used for 8b, 16b and 32b in <core_portme.h>.
+	To avoid compiler issues,define the data types that need ot be used for 8b,16b and 32b in <core_portme.h>.
 
 	*Imprtant* :
-	ee_ptr_int needs to be the data type used to hold pointers, otherwise coremark may fail!!!
+	ee_ptr_int needs to be the data type used to hold pointers,otherwise coremark may fail!!!
 */
 typedef signed short ee_s16;
 typedef unsigned short ee_u16;
@@ -113,7 +113,7 @@ typedef unsigned int ee_size_t;
 	N>1 - will execute N copies in parallel.
 
 	Note :
-	If this flag is defined to more then 1, an implementation for launching parallel contexts must be defined.
+	If this flag is defined to more then 1,an implementation for launching parallel contexts must be defined.
 
 	Two sample implementations are provided. Use <USE_PTHREAD> or <USE_FORK> to enable them.
 
@@ -145,7 +145,7 @@ typedef unsigned int ee_size_t;
 	Needed if platform does not support returning a value from main.
 
 	Valid values :
-	0 - main returns an int, and return value will be 0.
+	0 - main returns an int,and return value will be 0.
 	1 - platform does not support returning a value from main
 */
 #ifndef MAIN_HAS_NORETURN
@@ -153,7 +153,7 @@ typedef unsigned int ee_size_t;
 #endif
 
 /* Variable : default_num_contexts
-	Not used for this simple port, must cintain the value 1.
+	Not used for this simple port,must cintain the value 1.
 */
 extern ee_u32 default_num_contexts;
 
@@ -162,7 +162,7 @@ typedef struct CORE_PORTABLE_S {
 } core_portable;
 
 /* target specific init/fini */
-void portable_init(core_portable *p, int *argc, char *argv[]);
+void portable_init(core_portable *p,int *argc,char *argv[]);
 void portable_fini(core_portable *p);
 
 #if !defined(PROFILE_RUN) && !defined(PERFORMANCE_RUN) && !defined(VALIDATION_RUN)

@@ -3,7 +3,7 @@
 
   <SchemaVersion>2.1</SchemaVersion>
 
-  <Header>### uVision Project, (C) Keil Software</Header>
+  <Header>### uVision Project,(C) Keil Software</Header>
 
   <Targets>
     <Target>
@@ -333,7 +333,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--diag_suppress=1295,1296 --library_type=microlib</MiscControls>
-              <Define>TARGET=MAX32630, TARGET_REV=0x4132, BOARD=EvKit_V1</Define>
+              <Define>TARGET=MAX32630,TARGET_REV=0x4132,BOARD=EvKit_V1</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>

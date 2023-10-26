@@ -251,10 +251,10 @@ extern "C" {
     (1172) /**< Time when PICC is to respond during activation to PCD command. EMV spec 4.21.  @note we don't care about last bit value, timestamp happens the same regardless. */
 #define ISO14443_FDT_A_EARLY_LIMIT \
     (ISO14443_FDT_A_PICC_MIN -     \
-     128) /**< Defines the Deaf Time before which any response from PICC is ignored.  EMV spec 4.8.1.3 as FDTa,picc,min - 128fc */
+     128) /**< Defines the Deaf Time before which any response from PICC is ignored.  EMV spec 4.8.1.3 as FDTa, picc, min - 128fc */
 #define ISO14443_FWT_A_ACT         \
     (ISO14443_FDT_A_PICC_MIN + 1 + \
-     6) /**< FWT max during activation = FDTa,picc,min + 1fc + .4us (5.424fc, round up to 6) */
+     6) /**< FWT max during activation = FDTa, picc, min + 1fc + .4us (5.424fc, round up to 6) */
 
 #define ISO14443_FDT_B_EXTRA_MARGIN \
     0 /**< Provide a bit of allowed margin on reception timing.  Relaxes early limit, and timeout.  Units are fc */
@@ -272,7 +272,7 @@ extern "C" {
 #define ISO14443_FDT_MIN \
     (6780) /**< minimum FDT in 'fc' units, (frame delay time) between PICC and pcd new command */
 
-// This is added to long timings in excess of 100,000
+// This is added to long timings in excess of 100, 000
 #define CRYSTAL_PPM_MARGIN_MULTIPLIER 20
 #define CRYSTAL_PPM_MARGIN_DIVISOR 1000000
 

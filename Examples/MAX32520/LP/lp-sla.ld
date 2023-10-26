@@ -1,61 +1,61 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
 
 MEMORY {
-    CSPI (rw)  : ORIGIN = 0x10000000, LENGTH = 0x9000 /* 33kB CSPI reserved. */
-    HEADER (rx): ORIGIN = 0x1000C000, LENGTH = 0x100 /* 256B SLA Header, start on next page */
-    FLASH (rx) : ORIGIN = 0x1000C100, LENGTH = 0x1F3F00 /* Remainder of 2MB flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 64k /* Prevent hardfault in LP example by forcing linker to only use SRAM0 and SRAM1. */
+    CSPI (rw)  : ORIGIN = 0x10000000,LENGTH = 0x9000 /* 33kB CSPI reserved. */
+    HEADER (rx): ORIGIN = 0x1000C000,LENGTH = 0x100 /* 256B SLA Header,start on next page */
+    FLASH (rx) : ORIGIN = 0x1000C100,LENGTH = 0x1F3F00 /* Remainder of 2MB flash */
+    SRAM (rwx) : ORIGIN = 0x20000000,LENGTH = 64k /* Prevent hardfault in LP example by forcing linker to only use SRAM0 and SRAM1. */
 }
 
-/* Added Oct 9, 2018 to go to correct reset vector. */
+/* Added Oct 9,2018 to go to correct reset vector. */
 ENTRY(Reset_Handler)
 PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
 PROVIDE_HIDDEN( _SLA_Size = _endimage - __end_header );
@@ -98,7 +98,7 @@ SECTIONS {
 
     .data :
     {
-        _data = ALIGN(., 4);
+        _data = ALIGN(.,4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
         *(.flashprog*)      /* Flash program */
@@ -125,7 +125,7 @@ SECTIONS {
         KEEP(*(.fini_array))
         PROVIDE_HIDDEN (__fini_array_end = .);
 
-        _edata = ALIGN(., 4);
+        _edata = ALIGN(.,4);
 
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
@@ -136,7 +136,7 @@ SECTIONS {
         KEEP(*(.sb_sla_trailer))
         /* Align image with 16 byte boundary to conform to flash encryption block size. */
         FILL(0xDEADC0DE);
-        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
+        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So,we use LONG. */
         LONG(0xDEADC0DE);
         . = ALIGN(16);
     }  > FLASH
@@ -153,16 +153,16 @@ SECTIONS {
         _bss = .;
         *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
         *(COMMON)
-        _ebss = ALIGN(., 4);
+        _ebss = ALIGN(.,4);
     } > SRAM
 
-    /* Set stack top to end of RAM, and stack limit move down by
+    /* Set stack top to end of RAM,and stack limit move down by
      * size of stack_dummy section */
     __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
     /* .stack_dummy section doesn't contains any symbols. It is only
-     * used for linker to calculate size of stack sections, and assign
+     * used for linker to calculate size of stack sections,and assign
      * values to stack symbols later */
     .stack_dummy (COPY):
     {
@@ -179,5 +179,5 @@ SECTIONS {
     PROVIDE(__stack = __StackTop);
 
     /* Check if data + heap + stack exceeds RAM limit */
-    ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
+    ASSERT(__StackLimit >= _ebss,"region RAM overflowed with stack")
 }

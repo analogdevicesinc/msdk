@@ -18,7 +18,7 @@
 * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF					 
 * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.		 
 * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES			 
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,		 
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 		 
 * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR		 
 * OTHER DEALINGS IN THE SOFTWARE.												 
 *																				 
@@ -27,7 +27,7 @@
 * Products, Inc. Branding Policy.												 
 *																				 
 * The mere transfer of this software does not imply any licenses				 
-* of trade secrets, proprietary technology, copyrights, patents,				 
+* of trade secrets, proprietary technology, copyrights, patents, 				 
 * trademarks, maskwork rights, or any other form of intellectual				 
 * property whatsoever. Maxim Integrated Products, Inc. retains all				 
 * ownership rights.															 

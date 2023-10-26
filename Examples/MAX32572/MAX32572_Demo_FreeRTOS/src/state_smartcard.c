@@ -58,7 +58,7 @@ static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = { 0 };
 
 static text_t text_msg[] = {
     { (char *)input_buf, 0 }, { (char *)"Insert a card", 13 }, { (char *)"SMARTCARD", 9 },
-    { (char *)"Smart", 5 },   { (char *)"card", 4 },           { (char *)"ATR:", 4 },
+    { (char *)"Smart", 5 },  { (char *)"card", 4 },          { (char *)"ATR:", 4 },
 };
 
 static text_t *text_line = &text_msg[0];

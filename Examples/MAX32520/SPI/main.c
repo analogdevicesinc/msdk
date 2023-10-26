@@ -7,50 +7,50 @@
 
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -76,7 +76,7 @@
 #error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."
 #endif
 #if ((MASTERSYNC && MASTERASYNC) || (MASTERASYNC && MASTERDMA) || (MASTERDMA && MASTERSYNC))
-#error "You must select either MASTERSYNC or MASTERASYNC or MASTERDMA, not all 3."
+#error "You must select either MASTERSYNC or MASTERASYNC or MASTERDMA,not all 3."
 #endif
 
 /***** Definitions *****/
@@ -111,14 +111,14 @@ void DMA1_IRQHandler(void)
     DMA_FLAG = 1;
 }
 
-void SPI_Callback(mxc_spi_req_t *req, int error)
+void SPI_Callback(mxc_spi_req_t *req,int error)
 {
     SPI_FLAG = error;
 }
 
 int main(void)
 {
-    int i, j, retVal;
+    int i,j,retVal;
     uint16_t temp;
     mxc_spi_req_t req;
 
@@ -127,7 +127,7 @@ int main(void)
     printf("MOSI (P0.12) pins.  Connect these two pins together.  This demo shows SPI\n");
     printf("sending different bit sizes each run through. \n");
 
-    printf("\nThis demo shows Asynchronous, Synchronous and DMA transaction for SPI1\n");
+    printf("\nThis demo shows Asynchronous,Synchronous and DMA transaction for SPI1\n");
 
     for (i = 1; i < 17; i++) {
         if (i == 1) { // Sending out 2 to 16 bits
@@ -139,13 +139,13 @@ int main(void)
         }
 
         // Configure the peripheral
-        retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED);
+        retVal = MXC_SPI_Init(SPI,1,0,1,0,SPI_SPEED);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
         }
 
-        memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
+        memset(rx_data,0x0,DATA_LEN * sizeof(uint16_t));
 
         //SPI Request
         req.spi = SPI;
@@ -160,17 +160,17 @@ int main(void)
         req.completeCB = (spi_complete_cb_t)SPI_Callback;
         SPI_FLAG = 1;
 
-        retVal = MXC_SPI_SetDataSize(SPI, i);
+        retVal = MXC_SPI_SetDataSize(SPI,i);
 
         if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
+            printf("\nSPI SET DATASIZE ERROR: %d\n",retVal);
             return retVal;
         }
 
-        retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
+        retVal = MXC_SPI_SetWidth(SPI,SPI_WIDTH_STANDARD);
 
         if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
+            printf("\nSPI SET WIDTH ERROR: %d\n",retVal);
             return retVal;
         }
 
@@ -179,7 +179,7 @@ int main(void)
 #endif
 
 #if MASTERASYNC
-        MXC_NVIC_SetVector(SPI_IRQ, SPI1_IRQHandler);
+        MXC_NVIC_SetVector(SPI_IRQ,SPI1_IRQHandler);
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 
@@ -225,17 +225,17 @@ int main(void)
 
         // Compare Sent data vs Received data
         // Printf needs the Uart turned on since they share the same pins
-        if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
-            printf("\n-->%2d Bits Transaction Failed\n", i);
+        if (memcmp(rx_data,tx_data,sizeof(tx_data)) != 0) {
+            printf("\n-->%2d Bits Transaction Failed\n",i);
             return E_BAD_STATE;
         } else {
-            printf("\n-->%2d Bits Transaction Successful\n", i);
+            printf("\n-->%2d Bits Transaction Successful\n",i);
         }
 
         retVal = MXC_SPI_Shutdown(SPI);
 
         if (retVal != E_NO_ERROR) {
-            printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
+            printf("\n-->SPI SHUTDOWN ERROR: %d\n",retVal);
             return retVal;
         }
     }

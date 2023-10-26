@@ -24,12 +24,12 @@ volatile ee_s32 seed4_volatile = ITERATIONS;
 volatile ee_s32 seed5_volatile = 0;
 /* Porting : Timing functions
 	How to capture time and convert to seconds must be ported to whatever is supported by the platform.
-	e.g. Read value from on board RTC, read value from cpu clock cycles performance counter etc.
+	e.g. Read value from on board RTC,read value from cpu clock cycles performance counter etc.
 	Sample implementation for standard time.h and windows.h definitions included.
 */
 
-/** Define Host specific (POSIX), or target specific global time variables. */
-static unsigned int start_time_val, stop_time_val;
+/** Define Host specific (POSIX),or target specific global time variables. */
+static unsigned int start_time_val,stop_time_val;
 
 /* Function : start_time
 	This function will be called right before starting the timed portion of the benchmark.
@@ -43,7 +43,7 @@ extern void *_text;
 
 void start_time(void)
 {
-    printf("\n\nSystemCoreClock %u\n", (unsigned int)SystemCoreClock);
+    printf("\n\nSystemCoreClock %u\n",(unsigned int)SystemCoreClock);
 
     MXC_ICC->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_CACHE_EN;
     if (MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_CACHE_EN) {
@@ -66,7 +66,7 @@ void stop_time(void)
 /* Function : get_time
 	Return an abstract "ticks" number that signifies time on the system.
 
-	Actual value returned may be cpu cycles, milliseconds or any other value,
+	Actual value returned may be cpu cycles,milliseconds or any other value,
 	as long as it can be converted to seconds by <time_in_secs>.
 	This methodology is taken to accomodate any hardware or simulated platform.
 	The sample implementation returns millisecs by default,
@@ -94,7 +94,7 @@ ee_u32 default_num_contexts = 1;
 	Target specific initialization code
 	Test for some common mistakes.
 */
-void portable_init(core_portable *p, int *argc, char *argv[])
+void portable_init(core_portable *p,int *argc,char *argv[])
 {
     if (sizeof(ee_ptr_int) != sizeof(ee_u8 *)) {
         ee_printf("ERROR! Please define ee_ptr_int to a type that holds a pointer!\n");

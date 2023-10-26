@@ -148,7 +148,7 @@ int32_t iso_14443_3b_collision_detect_response(uint8_t *atqb_resp, int32_t *atqb
     if (patqb->proinfo.pro_type & 0x08)
         return ISO14443_3_ERR_PROTOCOL;
 
-    /*FO,CID NAD support*/
+    /*FO, CID NAD support*/
     if (patqb->proinfo.fo & 0x01)
         cid = 1;
     if (patqb->proinfo.fo & 0x02)

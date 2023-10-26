@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
+* Copyright (C) Maxim Integrated Products,Inc.,All rights Reserved.
 * 
 * This software is protected by copyright laws of the United States and
 * of foreign countries. This material may also be protected by patent laws
@@ -13,22 +13,22 @@
 * The above copyright notice and this permission notice shall be included
 * in all copies or substantial portions of the Software.
 *
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+* OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+* OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+* ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 * OTHER DEALINGS IN THE SOFTWARE.
 *
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
+* Except as contained in this notice,the name of Maxim Integrated
+* Products,Inc. shall not be used except as stated in the Maxim Integrated
+* Products,Inc. Branding Policy.
 *
 * The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
+* of trade secrets,proprietary technology,copyrights,patents,
+* trademarks,maskwork rights,or any other form of intellectual
+* property whatsoever. Maxim Integrated Products,Inc. retains all
 * ownership rights.
 *******************************************************************************
 */
@@ -62,16 +62,16 @@
 
 #define ACK 0
 #define NAK 1
-#define PCB_I(b5, b1) (0x2 | b1 | (b5 << 4))
-#define PCB_R(nak, b1) (0xA2 | b1 | (nak << 4))
+#define PCB_I(b5,b1) (0x2 | b1 | (b5 << 4))
+#define PCB_R(nak,b1) (0xA2 | b1 | (nak << 4))
 #define PCB_S(b56) (0xC0 | (b56 << 4))
 
-typedef enum { False = 0, True } Bool;
+typedef enum { False = 0,True } Bool;
 
 #define PCBLEN 1
 #define CRCLEN 2
 
-const uint16_t FSCTable[9] = { 16, 24, 32, 40, 48, 64, 96, 128, 256 };
+const uint16_t FSCTable[9] = { 16,24,32,40,48,64,96,128,256 };
 const uint16_t *FSDTable = FSCTable;
 
 static uint8_t gPCDSeqNum = 0;
@@ -86,31 +86,31 @@ void seqnuminit(void)
     gPCDSeqNum = 0;
 }
 
-static int32_t nfc_pcd_transceive_withpcb(uint8_t SPCB, uint8_t *RPCB, uint8_t protocol,
-                                          uint8_t frametype, uint8_t *tx_buf, int32_t tx_len,
-                                          uint8_t *rx_buf, int32_t *rx_len, uint32_t timeout)
+static int32_t nfc_pcd_transceive_withpcb(uint8_t SPCB,uint8_t *RPCB,uint8_t protocol,
+                                          uint8_t frametype,uint8_t *tx_buf,int32_t tx_len,
+                                          uint8_t *rx_buf,int32_t *rx_len,uint32_t timeout)
 {
-    int32_t ret, slen = 0;
-    uint8_t sbuf[MAX_BUFFER_LEN], rbuf[MAX_BUFFER_LEN];
+    int32_t ret,slen = 0;
+    uint8_t sbuf[MAX_BUFFER_LEN],rbuf[MAX_BUFFER_LEN];
     uint32_t rlen = MAX_BUFFER_LEN;
 
     sbuf[slen++] = SPCB;
     if (tx_len > 0) {
-        memcpy(sbuf + 1, tx_buf, tx_len);
+        memcpy(sbuf + 1,tx_buf,tx_len);
         slen += tx_len;
     }
 
     debug("trans TX: ");
-    hexdump(DBG_LVL_DBG, sbuf, slen, 1);
+    hexdump(DBG_LVL_DBG,sbuf,slen,1);
 
-    ret = nfc_pcd_transceive(protocol, frametype, sbuf, slen, rbuf, &rlen, timeout);
+    ret = nfc_pcd_transceive(protocol,frametype,sbuf,slen,rbuf,&rlen,timeout);
 
     if (ret != ISO14443_3_ERR_SUCCESS) {
         return ret;
     }
 
     full_debug("trans RX: ");
-    hexdump(DBG_LVL_FDB, rbuf, (rlen + CRCLEN), 0);
+    hexdump(DBG_LVL_FDB,rbuf,(rlen + CRCLEN),0);
 
     /*4.7.3.1 (protocol error) if it receives a frame with more than FSD data bytes,2 bytes crc not include of rx_buf*/
     if (rlen > (uint32_t)(FSDTable[FSDI_DEFAULT_VALUE] - CRCLEN))
@@ -120,7 +120,7 @@ static int32_t nfc_pcd_transceive_withpcb(uint8_t SPCB, uint8_t *RPCB, uint8_t p
         return ISO14443_3_ERR_PROTOCOL;
 
     *RPCB = rbuf[0];
-    memcpy(rx_buf, (rbuf + 1), rlen - 1);
+    memcpy(rx_buf,(rbuf + 1),rlen - 1);
     *rx_len = rlen - 1;
 
     return ISO14443_3_ERR_SUCCESS;
@@ -155,7 +155,7 @@ rapdu_len(in):
 Return:
 Status of excute.
  ****************************************************************/
-int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rapdu_len)
+int32_t SendAPDU(uint8_t *capdu,int32_t capdu_len,uint8_t *rapdu,int32_t *rapdu_len)
 {
     int32_t sendiblocklen; /*send length of one I-Block*/
 
@@ -167,7 +167,7 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
     uint8_t rSINF; /*one byte INF of S-Block*/
     int8_t morechain; /*more chain for I-Block*/
 
-    uint32_t fwt, fwttmp; /*frame wait time*/
+    uint32_t fwt,fwttmp; /*frame wait time*/
     uint8_t WTXM = 0; /*10.2.2 1~59*/
     uint8_t rbuf[MAX_BUFFER_LEN]; /*receive buffer*/
     uint16_t fsc; /*Table 5.17,get from FSCI  16~256(FSCI 0~8)bytes*/
@@ -191,14 +191,14 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
         morechain = capdu_len ? 1 : 0;
 
         //10.3.4.1 The first block shall be sent by the PCD.
-        ret = nfc_pcd_transceive_withpcb(PCB_I(morechain, gPCDSeqNum), &readPCB, ATS.Pro_Type,
-                                         FT_STANDARD_CRC_EMD, capdu, sendiblocklen, rbuf, &readLen,
+        ret = nfc_pcd_transceive_withpcb(PCB_I(morechain,gPCDSeqNum),&readPCB,ATS.Pro_Type,
+                                         FT_STANDARD_CRC_EMD,capdu,sendiblocklen,rbuf,&readLen,
                                          fwt);
 
         retry = MAXRETRY_SENDBLOCK;
         iblockresend = 0;
         while (retry--) {
-            /*10.3.2.1 When an I-block indicating chaining is received, the block shall be acknowledged by an R(ACK) block.*/
+            /*10.3.2.1 When an I-block indicating chaining is received,the block shall be acknowledged by an R(ACK) block.*/
             if (ret == ISO14443_3_ERR_SUCCESS) {
                 switch (BLOCKTYPE(readPCB)) {
                     /*I Block*/
@@ -215,7 +215,7 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
 
                         break;
                     }
-                    error("10.3.2.1 readPCB %x %d\n", ISEQNUM(readPCB), readPCB);
+                    error("10.3.2.1 readPCB %x %d\n",ISEQNUM(readPCB),readPCB);
                     ret = ISO14443_3_ERR_PROTOCOL;
                     break;
 
@@ -256,17 +256,17 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                         if (iblockresend > MAXRESENDIBLOCK) {
                             /*10.3.4.4 max resend 2 time.*/
                             while (1) {}
-                            error("IBlock resend max 2 times %d\n", retry);
+                            error("IBlock resend max 2 times %d\n",retry);
                             ret = ISO14443_3_ERR_PROTOCOL;
                             break;
                         } else {
-                            warning("IBlock resend R(ACK) #%d\n", iblockresend);
+                            warning("IBlock resend R(ACK) #%d\n",iblockresend);
                             /*resend last i block.*/
                             iblockresend++;
                             retry++;
-                            ret = nfc_pcd_transceive_withpcb(PCB_I(morechain, gPCDSeqNum), &readPCB,
-                                                             ATS.Pro_Type, FT_STANDARD_CRC_EMD,
-                                                             capdu, sendiblocklen, rbuf, &readLen,
+                            ret = nfc_pcd_transceive_withpcb(PCB_I(morechain,gPCDSeqNum),&readPCB,
+                                                             ATS.Pro_Type,FT_STANDARD_CRC_EMD,
+                                                             capdu,sendiblocklen,rbuf,&readLen,
                                                              fwt);
                             continue;
                         }
@@ -296,9 +296,9 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                                          ISO14443_FWT_MAX;
 
                             //send back same 1 byte INF  to comfirm picc.
-                            ret = nfc_pcd_transceive_withpcb(readPCB, &readPCB, ATS.Pro_Type,
-                                                             FT_STANDARD_CRC_EMD, &rSINF, 1, rbuf,
-                                                             &readLen, fwttmp);
+                            ret = nfc_pcd_transceive_withpcb(readPCB,&readPCB,ATS.Pro_Type,
+                                                             FT_STANDARD_CRC_EMD,&rSINF,1,rbuf,
+                                                             &readLen,fwttmp);
 
                             if (ret != ISO14443_3_ERR_SUCCESS)
                                 break;
@@ -348,7 +348,7 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                 return ret;
             }
 
-            debug("iblock tx retry: %d, iblockresend: %d\n", retry, iblockresend);
+            debug("iblock tx retry: %d,iblockresend: %d\n",retry,iblockresend);
 
             if ((retry) || (iblockresend == MAXRESENDIBLOCK)) {
                 if (ret == ISO14443_3_ERR_TIMEOUT) {
@@ -369,10 +369,10 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                 }
 
                 //send nak for timeout
-                debug("RNAK %d\n", retry);
+                debug("RNAK %d\n",retry);
                 /*10.3.5.3 send RNAK to picc*/
-                ret = nfc_pcd_transceive_withpcb(PCB_R(NAK, gPCDSeqNum), &readPCB, ATS.Pro_Type,
-                                                 FT_STANDARD_CRC_EMD, NULL, 0, rbuf, &readLen, fwt);
+                ret = nfc_pcd_transceive_withpcb(PCB_R(NAK,gPCDSeqNum),&readPCB,ATS.Pro_Type,
+                                                 FT_STANDARD_CRC_EMD,NULL,0,rbuf,&readLen,fwt);
             }
         }
 
@@ -390,9 +390,9 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
     /*start to receive response.*/
     while (1) {
         if (readLen > 0) {
-            memcpy(rapdu + *rapdu_len, rbuf, readLen);
+            memcpy(rapdu + *rapdu_len,rbuf,readLen);
             *rapdu_len += readLen;
-            debug("*rapdu_len: %d\n", *rapdu_len);
+            debug("*rapdu_len: %d\n",*rapdu_len);
         }
 
         /*10.3.3.3 */
@@ -400,9 +400,9 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
 
         // Check whether there are morechain chained APDU responses blocks
         if (CHAINING(readPCB)) {
-            //10.3.2.1 When an I-block indicating chaining is received, the block shall be acknowledged by an R(ACK) block.
-            ret = nfc_pcd_transceive_withpcb(PCB_R(ACK, gPCDSeqNum), &readPCB, ATS.Pro_Type,
-                                             FT_STANDARD_CRC_EMD, NULL, 0, rbuf, &readLen, fwt);
+            //10.3.2.1 When an I-block indicating chaining is received,the block shall be acknowledged by an R(ACK) block.
+            ret = nfc_pcd_transceive_withpcb(PCB_R(ACK,gPCDSeqNum),&readPCB,ATS.Pro_Type,
+                                             FT_STANDARD_CRC_EMD,NULL,0,rbuf,&readLen,fwt);
 
             /*you have 3 chances to retry one block. */
             retry = MAXRETRY_SENDBLOCK;
@@ -477,9 +477,9 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                                      ISO14443_FWT_MAX;
 
                         /*send back same 1 byte INF  to comfirm picc.*/
-                        ret = nfc_pcd_transceive_withpcb(readPCB, &readPCB, ATS.Pro_Type,
-                                                         FT_STANDARD_CRC_EMD, &rSINF, 1, rbuf,
-                                                         &readLen, fwttmp);
+                        ret = nfc_pcd_transceive_withpcb(readPCB,&readPCB,ATS.Pro_Type,
+                                                         FT_STANDARD_CRC_EMD,&rSINF,1,rbuf,
+                                                         &readLen,fwttmp);
 
                         break;
                     default:
@@ -497,9 +497,9 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
 
                     if (--retry) {
                         /*send RACK block*/
-                        ret = nfc_pcd_transceive_withpcb(PCB_R(ACK, gPCDSeqNum), &readPCB,
-                                                         ATS.Pro_Type, FT_STANDARD_CRC_EMD, NULL, 0,
-                                                         rbuf, &readLen, fwt);
+                        ret = nfc_pcd_transceive_withpcb(PCB_R(ACK,gPCDSeqNum),&readPCB,
+                                                         ATS.Pro_Type,FT_STANDARD_CRC_EMD,NULL,0,
+                                                         rbuf,&readLen,fwt);
                     }
                 } else {
                     error("protocol or other error during chaining\n");

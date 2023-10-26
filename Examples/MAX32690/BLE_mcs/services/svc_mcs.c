@@ -130,7 +130,7 @@ static const attsAttr_t mcsList[] = {
 
 /* Test group structure */
 static attsGroup_t svcMcsGroup = { NULL, (attsAttr_t *)mcsList, NULL,
-                                   NULL, MCS_START_HDL,         MCS_END_HDL };
+                                   NULL, MCS_START_HDL,        MCS_END_HDL };
 
 /*************************************************************************************************/
 /*!

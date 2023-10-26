@@ -6,50 +6,50 @@
 
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -80,7 +80,7 @@
 void gpio_isr(void *cbdata)
 {
     mxc_gpio_cfg_t *cfg = cbdata;
-    MXC_GPIO_OutToggle(cfg->port, cfg->mask);
+    MXC_GPIO_OutToggle(cfg->port,cfg->mask);
 }
 
 int main(void)
@@ -106,7 +106,7 @@ int main(void)
 
     /*
      *   Set up interrupt on P1.07.
-     *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
+     *   Switch on EV kit is open when non-pressed,and grounded when pressed.  Use an internal pull-up so pin
      *     reads high when button is not pressed.
      */
     gpio_interrupt.port = MXC_GPIO_PORT_INTERRUPT_IN;
@@ -116,14 +116,14 @@ int main(void)
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
     gpio_interrupt.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_interrupt);
-    MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, &gpio_interrupt_status);
-    MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
-    MXC_GPIO_EnableInt(gpio_interrupt.port, gpio_interrupt.mask);
+    MXC_GPIO_RegisterCallback(&gpio_interrupt,gpio_isr,&gpio_interrupt_status);
+    MXC_GPIO_IntConfig(&gpio_interrupt,MXC_GPIO_INT_FALLING);
+    MXC_GPIO_EnableInt(gpio_interrupt.port,gpio_interrupt.mask);
     NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_INTERRUPT_IN)));
 
     /*
      *   Setup input pin.
-     *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
+     *   Switch on EV kit is open when non-pressed,and grounded when pressed.  Use an internal pull-up so pin
      *     reads high when button is not pressed.
      */
     gpio_in.port = MXC_GPIO_PORT_IN;
@@ -145,12 +145,12 @@ int main(void)
 
     while (1) {
         /* Read state of the input pin. */
-        if (MXC_GPIO_InGet(gpio_in.port, gpio_in.mask)) {
-            /* Input pin was high, set the output pin. */
-            MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+        if (MXC_GPIO_InGet(gpio_in.port,gpio_in.mask)) {
+            /* Input pin was high,set the output pin. */
+            MXC_GPIO_OutSet(gpio_out.port,gpio_out.mask);
         } else {
-            /* Input pin was low, clear the output pin. */
-            MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
+            /* Input pin was low,clear the output pin. */
+            MXC_GPIO_OutClr(gpio_out.port,gpio_out.mask);
         }
     }
 

@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -71,7 +71,7 @@
 typedef struct {
     unsigned int locks; /* # of locks left */
     unsigned int unlocks; /* # of unlocks left */
-    unsigned int locked; /* 1 if part is locked, 0 if unlocked */
+    unsigned int locked; /* 1 if part is locked,0 if unlocked */
 } debug_status_t;
 
 /***** Globals *****/
@@ -81,8 +81,8 @@ volatile unsigned int advance;
 unsigned int debug_status(debug_status_t *ptr);
 
 /*
- * Locks the debug port, and returns E_SUCCESS if successful.
- * The parameter permanent, if non-zero, will cause the lock to be permanent,
+ * Locks the debug port,and returns E_SUCCESS if successful.
+ * The parameter permanent,if non-zero,will cause the lock to be permanent,
  * even if unlock/lock cycles have not been exhausted.
  *
  */
@@ -99,52 +99,52 @@ int debug_lock(unsigned int permanent)
         /* Already locked */
         result = E_SUCCESS;
     } else {
-        /* Not locked, but could we? */
+        /* Not locked,but could we? */
         if (st.locks == 0) {
             /* Nope */
             result = E_BAD_STATE;
         } else {
             MXC_FLC_UnlockInfoBlock(0x10800000);
 
-            /* Otherwise, can lock it with one of the words */
+            /* Otherwise,can lock it with one of the words */
             if ((*lock0 & 0x0000ffff) == 0x0000ffff) {
                 word = 0xffffa5a5;
-                result = MXC_FLC_Write((uint32_t)lock0, 4, &word);
+                result = MXC_FLC_Write((uint32_t)lock0,4,&word);
 
                 if (permanent && (result == E_NO_ERROR)) {
                     word = 0x7fffffff;
                     /* Write the 64th bit to a zero */
-                    result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
+                    result = MXC_FLC_Write((uint32_t)lock1,4,&word);
                 }
             } else {
                 if ((*lock0 & 0xffff0000) == 0xffff0000) {
                     word = 0x5a5affff;
-                    result = MXC_FLC_Write((uint32_t)lock0, 4, &word);
+                    result = MXC_FLC_Write((uint32_t)lock0,4,&word);
 
                     if (permanent && (result == E_NO_ERROR)) {
                         /* Write the 64th bit to a zero */
                         word = 0x7fffffff;
-                        result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
+                        result = MXC_FLC_Write((uint32_t)lock1,4,&word);
                     }
                 } else {
                     if ((*lock1 & 0x0000ffff) == 0x0000ffff) {
                         if (permanent) {
                             /* Write the 64th bit to a zero */
                             word = 0x7fffa5a5;
-                            result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
+                            result = MXC_FLC_Write((uint32_t)lock1,4,&word);
                         } else {
                             word = 0xffffa5a5;
-                            result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
+                            result = MXC_FLC_Write((uint32_t)lock1,4,&word);
                         }
                     } else {
                         if ((*lock1 & 0xffff0000) == 0xffff0000) {
                             if (permanent) {
                                 /* Write the 64th bit to a zero */
                                 word = 0x5a5affff;
-                                result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
+                                result = MXC_FLC_Write((uint32_t)lock1,4,&word);
                             } else {
                                 word = 0xda5affff;
-                                result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
+                                result = MXC_FLC_Write((uint32_t)lock1,4,&word);
                             }
                         } else {
                             /* Should not get here */
@@ -162,8 +162,8 @@ int debug_lock(unsigned int permanent)
 }
 
 /*
- * Unlocks the debug port, and returns E_SUCCESS if successful.
- * The parameter permanent, if non-zero, will cause the unlock to be permanent,
+ * Unlocks the debug port,and returns E_SUCCESS if successful.
+ * The parameter permanent,if non-zero,will cause the unlock to be permanent,
  * even if unlock/lock cycles have not been exhausted.
  *
  */
@@ -186,32 +186,32 @@ int debug_unlock(unsigned int permanent)
             result = E_BAD_STATE;
         } else {
             MXC_FLC_UnlockInfoBlock(0x10800000);
-            /* Otherwise, can unlock -- be thorough about finding all lock words */
+            /* Otherwise,can unlock -- be thorough about finding all lock words */
             result = E_UNKNOWN;
 
             if ((*lock0 & 0x0000ffff) != 0x0000ffff) {
                 tmp = (*lock0) & 0xffff0000;
-                result = MXC_FLC_Write((uint32_t)lock0, 4, &tmp);
+                result = MXC_FLC_Write((uint32_t)lock0,4,&tmp);
             }
 
             if ((*lock0 & 0xffff0000) != 0xffff0000) {
                 tmp = (*lock0) & 0x0000ffff;
-                result = MXC_FLC_Write((uint32_t)lock0, 4, &tmp);
+                result = MXC_FLC_Write((uint32_t)lock0,4,&tmp);
             }
 
             if ((*lock1 & 0x0000ffff) != 0x0000ffff) {
                 tmp = (*lock1) & 0xffff0000;
-                result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
+                result = MXC_FLC_Write((uint32_t)lock1,4,&tmp);
             }
 
             if ((*lock1 & 0xffff0000) != 0xffff0000) {
                 tmp = (*lock1) & 0x8000ffff;
-                result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
+                result = MXC_FLC_Write((uint32_t)lock1,4,&tmp);
             }
 
             if (permanent) {
                 tmp = (*lock1) & 0x7fffffff;
-                result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
+                result = MXC_FLC_Write((uint32_t)lock1,4,&tmp);
             }
 
             MXC_FLC_LockInfoBlock(0x10800000);
@@ -226,12 +226,12 @@ unsigned int debug_status(debug_status_t *ptr)
 {
     volatile uint32_t *lock0 = (uint32_t *)0x10800030;
     volatile uint32_t *lock1 = (uint32_t *)0x10800034;
-    unsigned int locks, unlocks, locked;
+    unsigned int locks,unlocks,locked;
 
     locked = locks = unlocks = 0;
     MXC_FLC_UnlockInfoBlock(0x10800000);
 
-    printf("[debug] lock1: 0x%08x lock0: 0x%08x\n", *lock1, *lock0);
+    printf("[debug] lock1: 0x%08x lock0: 0x%08x\n",*lock1,*lock0);
 
     /* Check lower half-words */
     switch ((*lock0) & 0xffff) {
@@ -330,7 +330,7 @@ int main(void)
     debug_status_t x;
     int y;
 
-    PB_RegisterCallback(0, pushbutton);
+    PB_RegisterCallback(0,pushbutton);
     __enable_irq();
 
     printf("\n\n***** " TOSTRING(TARGET) " Debug Lock-out Example *****\n");
@@ -346,8 +346,8 @@ int main(void)
         LED_On(1);
     }
 
-    printf("debug_status = %d\n", y);
-    printf("Locks left = %u, Unlocks left = %u, Debug port locked = %u\n", x.locks, x.unlocks,
+    printf("debug_status = %d\n",y);
+    printf("Locks left = %u,Unlocks left = %u,Debug port locked = %u\n",x.locks,x.unlocks,
            x.locked);
 
     printf("\nPress button (SW2) to lock/unlock part.\n");
@@ -357,14 +357,14 @@ int main(void)
             printf("Button pressed.\n");
             printf(" -- BEFORE -- \n");
             y = debug_status(&x);
-            printf("Locks left = %u, Unlocks left = %u, Debug port locked = %u\n", x.locks,
-                   x.unlocks, x.locked);
+            printf("Locks left = %u,Unlocks left = %u,Debug port locked = %u\n",x.locks,
+                   x.unlocks,x.locked);
 
             if (y) {
                 printf("Debug port LOCKED. Unlocking port.\n");
 
                 if (!x.unlocks) {
-                    printf("NOTE: Won't succeed, either because no more unlocks left or permanent "
+                    printf("NOTE: Won't succeed,either because no more unlocks left or permanent "
                            "bit set.\n");
                 }
 
@@ -374,7 +374,7 @@ int main(void)
                 printf("Debug port unlocked. Locking port.\n");
 
                 if (!x.locks) {
-                    printf("NOTE: Won't succeed, either because no more locks left or permanent "
+                    printf("NOTE: Won't succeed,either because no more locks left or permanent "
                            "bit set.\n");
                 }
 
@@ -384,8 +384,8 @@ int main(void)
 
             printf(" -- AFTER -- \n");
             y = debug_status(&x);
-            printf("Locks left = %u, Unlocks left = %u, Debug port locked = %u\n", x.locks,
-                   x.unlocks, x.locked);
+            printf("Locks left = %u,Unlocks left = %u,Debug port locked = %u\n",x.locks,
+                   x.unlocks,x.locked);
 
             /* Visually display locked (RED) or unlocked (GREEN) */
             if (y) {
@@ -396,7 +396,7 @@ int main(void)
                 LED_On(1);
             }
 
-            printf("This change will take effect after RSTN (SW1) is pressed, or a power cycle of "
+            printf("This change will take effect after RSTN (SW1) is pressed,or a power cycle of "
                    "the EV Kit.\n");
             printf("\nPress button (SW2) to lock/unlock part.\n");
             /* Debounce */

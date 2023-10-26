@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -77,7 +77,7 @@
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
 /*
-    ^ Points to last page in flash, which is guaranteed to be unused by this small example.
+    ^ Points to last page in flash,which is guaranteed to be unused by this small example.
     For larger applications it's recommended to reserve a dedicated flash region by creating
     a modified linkerfile.
 */
@@ -101,7 +101,7 @@ void button_handler()
 void sfe_init(void)
 {
     MXC_SFE_Init();
-    MXC_SFE_SetFlashAddress(TEST_ADDRESS, TEST_ADDRESS + MXC_FLASH_PAGE_SIZE);
+    MXC_SFE_SetFlashAddress(TEST_ADDRESS,TEST_ADDRESS + MXC_FLASH_PAGE_SIZE);
 }
 
 //******************************************************************************
@@ -144,12 +144,12 @@ void setup_irqs(void)
     2) ISRs should be set to execute out of RAM with NVIC_SetRAM()
 
     This example demonstrates method #1.  Any code modifying
-    flash is executed from a critical block, and the FLC
+    flash is executed from a critical block,and the FLC
     interrupts will trigger afterwards.
     */
 
     // NVIC_SetRAM(); // Execute ISRs out of SRAM (for use with #2 above)
-    MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
+    MXC_NVIC_SetVector(FLC0_IRQn,FLC0_IRQHandler); // Assign ISR
     NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
 
     __enable_irq();
@@ -163,27 +163,27 @@ void setup_irqs(void)
 int write_test_pattern()
 {
     int err;
-    // A flash address must be in the erased state before writing to it, because the
+    // A flash address must be in the erased state before writing to it,because the
     // flash controller can only write a 1 -> 0.
     // See the microcontroller's User Guide for more details.
-    printf("Erasing page 64 of flash (addr 0x%x)...\n", TEST_ADDRESS);
+    printf("Erasing page 64 of flash (addr 0x%x)...\n",TEST_ADDRESS);
     err = MXC_FLC_PageErase(TEST_ADDRESS);
     if (err) {
-        printf("Failed with error code %i\n", TEST_ADDRESS, err);
+        printf("Failed with error code %i\n",TEST_ADDRESS,err);
         return err;
     }
 
-    printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
-    err = MXC_FLC_Write32(TEST_ADDRESS, MAGIC);
+    printf("Writing magic value 0x%x to address 0x%x...\n",MAGIC,TEST_ADDRESS);
+    err = MXC_FLC_Write32(TEST_ADDRESS,MAGIC);
     if (err) {
-        printf("Failed to write magic value to 0x%x with error code %i!\n", TEST_ADDRESS, err);
+        printf("Failed to write magic value to 0x%x with error code %i!\n",TEST_ADDRESS,err);
         return err;
     }
 
     printf("Writing test pattern...\n");
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
         /*  
-            A single flash page is organized into 4096 128-bit "words", but is still 
+            A single flash page is organized into 4096 128-bit "words",but is still 
             byte-addressible.  Increment the address by 4 bytes to write in 32-bit 
             chunks.  
             
@@ -191,9 +191,9 @@ int write_test_pattern()
             function below handles the technicalities of inserting the 32-bit value 
             into a 128-bit word without modifying the rest of the word.
         */
-        err = MXC_FLC_Write32(addr, TEST_VALUE);
+        err = MXC_FLC_Write32(addr,TEST_VALUE);
         if (err) {
-            printf("Failed write on address 0x%x with error code %i\n", addr, err);
+            printf("Failed write on address 0x%x with error code %i\n",addr,err);
             return err;
         }
     }
@@ -209,11 +209,11 @@ int validate_test_pattern()
     printf("Verifying test pattern...\n");
     uint32_t readval = 0;
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
-        MXC_FLC_Read(addr, &readval, 4);
+        MXC_FLC_Read(addr,&readval,4);
         if (readval != TEST_VALUE) {
             printf(
                 "Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n",
-                addr, err, TEST_VALUE, readval);
+                addr,err,TEST_VALUE,readval);
             return E_ABORT;
         }
     }
@@ -229,9 +229,9 @@ int validate_test_pattern_erase()
     printf("Verifying test pattern erase...\n");
     uint32_t readval = 0;
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
-        MXC_FLC_Read(addr, &readval, 4);
+        MXC_FLC_Read(addr,&readval,4);
         if (readval == TEST_VALUE) {
-            printf("Failed to verify erase at address 0x%x with error code %i!", addr, err);
+            printf("Failed to verify erase at address 0x%x with error code %i!",addr,err);
             return E_ABORT;
         }
     }
@@ -245,9 +245,9 @@ int erase_magic()
     /*
         To modify a location in flash that has already been written to,
         that location must first be restored to its erased state.
-        However, the flash controller only supports erasing a full page
+        However,the flash controller only supports erasing a full page
         at a time.
-        Therefore, the entire page must be buffered, erased, then modified.
+        Therefore,the entire page must be buffered,erased,then modified.
     */
     int err;
     uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = {
@@ -255,12 +255,12 @@ int erase_magic()
     }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
     printf("Buffering page...\n");
-    MXC_FLC_Read(TEST_ADDRESS, buffer, MXC_FLASH_PAGE_SIZE);
+    MXC_FLC_Read(TEST_ADDRESS,buffer,MXC_FLASH_PAGE_SIZE);
 
     printf("Erasing page...\n");
     err = MXC_FLC_PageErase(TEST_ADDRESS);
     if (err) {
-        printf("Failed to erase page 0x%x with error code %i!\n", TEST_ADDRESS, err);
+        printf("Failed to erase page 0x%x with error code %i!\n",TEST_ADDRESS,err);
         return err;
     }
 
@@ -269,15 +269,15 @@ int erase_magic()
 
     printf("Re-writing from buffer...\n");
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
-        err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i, buffer[i]);
+        err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i,buffer[i]);
         if (err) {
-            printf("Failed at address 0x%x with error code %i\n", (TEST_ADDRESS + 4) * i, err);
+            printf("Failed at address 0x%x with error code %i\n",(TEST_ADDRESS + 4) * i,err);
             return err;
         }
     }
     uint32_t magic = 0;
-    MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
-    printf("New magic value: 0x%x\n", magic);
+    MXC_FLC_Read(TEST_ADDRESS,&magic,4);
+    printf("New magic value: 0x%x\n",magic);
     return err;
 }
 
@@ -290,7 +290,7 @@ int main(void)
     printf("\n\n***** Flash Control Example *****\n");
 #ifndef BOARD_MAX32520FTHR
     printf("Press SW2 to continue...\n\n");
-    PB_RegisterCallback(0, (pb_callback)button_handler);
+    PB_RegisterCallback(0,(pb_callback)button_handler);
 
     while (!button_pressed) {
         LED_On(LED1);
@@ -315,7 +315,7 @@ int main(void)
     MXC_ICC_Disable();
 
     uint32_t magic = 0;
-    MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
+    MXC_FLC_Read(TEST_ADDRESS,&magic,4);
 
     if (magic != MAGIC) { // Starting example for the first time.
         // clang-format off
@@ -334,7 +334,7 @@ int main(void)
 
         printf("\nNow reset or power cycle the board...\n");
     } else { // Starting example after reset or power cycle
-        printf("** Magic value 0x%x found at address 0x%x! **\n\n", MAGIC, TEST_ADDRESS);
+        printf("** Magic value 0x%x found at address 0x%x! **\n\n",MAGIC,TEST_ADDRESS);
         printf("(Flash modifications have survived a reset and/or power cycle.)\n\n");
 
         err = validate_test_pattern();

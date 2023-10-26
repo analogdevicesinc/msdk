@@ -48,7 +48,7 @@
 #include "sdma_regs.h"
 
 /*********************************      DEFINES      *************************/
-/* Select SDMA instance to run MSR on {0,1} */
+/* Select SDMA instance to run MSR on {0, 1} */
 #define MSR_SDMA_INSTANCE (0)
 
 #if MSR_SDMA_INSTANCE == 0
@@ -245,11 +245,11 @@ void vGetMSRTask(void *pvParameters)
                     /* ADC errors */
 #if 0
                         if (adc9_err & ADCERR_OVERRUN) {
-                            COPY_MESSAGE("Err = ADC9 overrun",  msgMSR.pcMessage, msgMSR.len);
+                            COPY_MESSAGE("Err = ADC9 overrun", msgMSR.pcMessage, msgMSR.len);
                         } else if (adc9_err & ADCERR_SHIFT) {
-                            COPY_MESSAGE("Err = ADC9 channels shifted",  msgMSR.pcMessage, msgMSR.len);
+                            COPY_MESSAGE("Err = ADC9 channels shifted", msgMSR.pcMessage, msgMSR.len);
                         } else if (adc9_err & ADCERR_INCOMPLETE) {
-                            COPY_MESSAGE("Err = ADC9 conversion incomplete",  msgMSR.pcMessage, msgMSR.len);
+                            COPY_MESSAGE("Err = ADC9 conversion incomplete", msgMSR.pcMessage, msgMSR.len);
                         }
 #endif
                     break;

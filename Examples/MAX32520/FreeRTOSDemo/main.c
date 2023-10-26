@@ -1,49 +1,49 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -112,9 +112,9 @@ mxc_uart_regs_t *ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 
 /* =| vTask0 |============================================
  *
- * This task blinks LED0 at a 0.5Hz rate, and does not
+ * This task blinks LED0 at a 0.5Hz rate,and does not
  *  drift due to the use of vTaskDelayUntil(). It may have
- *  jitter, however, due to any higher-priority task or
+ *  jitter,however,due to any higher-priority task or
  *  interrupt causing delays in scheduling.
  *
  * =======================================================
@@ -128,7 +128,7 @@ void vTask0(void *pvParameters)
     xLastWakeTime = xTaskGetTickCount();
 
     while (1) {
-        if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
+        if (xSemaphoreTake(xGPIOmutex,portMAX_DELAY) == pdTRUE) {
             if (x == LED_OFF) {
                 LED_On(0);
                 x = LED_ON;
@@ -142,15 +142,15 @@ void vTask0(void *pvParameters)
         }
 
         /* Wait 1 second until next run */
-        vTaskDelayUntil(&xLastWakeTime, configTICK_RATE_HZ);
+        vTaskDelayUntil(&xLastWakeTime,configTICK_RATE_HZ);
     }
 }
 
 /* =| vTask1 |============================================
  *
- * This task blinks LED1 at a 0.5Hz rate, and does not
+ * This task blinks LED1 at a 0.5Hz rate,and does not
  *  drift due to the use of vTaskDelayUntil(). It may have
- *  jitter, however, due to any higher-priority task or
+ *  jitter,however,due to any higher-priority task or
  *  interrupt causing delays in scheduling.
  *
  * =======================================================
@@ -164,7 +164,7 @@ void vTask1(void *pvParameters)
     xLastWakeTime = xTaskGetTickCount();
 
     while (1) {
-        if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
+        if (xSemaphoreTake(xGPIOmutex,portMAX_DELAY) == pdTRUE) {
             if (x == LED_OFF) {
                 LED_On(1);
                 x = LED_ON;
@@ -178,7 +178,7 @@ void vTask1(void *pvParameters)
         }
 
         /* Wait 1 second until next run */
-        vTaskDelayUntil(&xLastWakeTime, configTICK_RATE_HZ);
+        vTaskDelayUntil(&xLastWakeTime,configTICK_RATE_HZ);
     }
 }
 
@@ -198,8 +198,8 @@ void vTickTockTask(void *pvParameters)
 
     while (1) {
         ticks = xTaskGetTickCount();
-        printf("Uptime is 0x%08x (%u seconds)\n", ticks, ticks / configTICK_RATE_HZ);
-        vTaskDelayUntil(&xLastWakeTime, (configTICK_RATE_HZ * 60));
+        printf("Uptime is 0x%08x (%u seconds)\n",ticks,ticks / configTICK_RATE_HZ);
+        vTaskDelayUntil(&xLastWakeTime,(configTICK_RATE_HZ * 60));
     }
 }
 
@@ -223,17 +223,17 @@ void UART0_IRQHandler(void)
  *
  * ===========================================================
  */
-void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
+void vCmdLineTask_cb(mxc_uart_req_t *req,int error)
 {
     BaseType_t xHigherPriorityTaskWoken;
 
     /* Wake the task */
     xHigherPriorityTaskWoken = pdFALSE;
-    vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
+    vTaskNotifyGiveFromISR(cmd_task_id,&xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
-static void prvProcessInput(char *pBufCmdLine, unsigned int *pIdxCmdLine, unsigned char cReadChar)
+static void prvProcessInput(char *pBufCmdLine,unsigned int *pIdxCmdLine,unsigned char cReadChar)
 {
     unsigned int uTransLen;
     BaseType_t xMore;
@@ -261,10 +261,10 @@ static void prvProcessInput(char *pBufCmdLine, unsigned int *pIdxCmdLine, unsign
 
         /* Evaluate */
         do {
-            xMore = FreeRTOS_CLIProcessCommand(pBufCmdLine, output, OUTPUT_BUF_SIZE);
+            xMore = FreeRTOS_CLIProcessCommand(pBufCmdLine,output,OUTPUT_BUF_SIZE);
 
-            /* If xMore == pdTRUE, then output buffer contains no null termination, so
-              *  we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can use strlen.
+            /* If xMore == pdTRUE,then output buffer contains no null termination,so
+              *  we know it is OUTPUT_BUF_SIZE. If pdFALSE,we can use strlen.
               */
             for (uTransLen = 0; uTransLen < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output));
                  uTransLen++) {
@@ -314,19 +314,19 @@ void vCmdLineTask(void *pvParameters)
     mxc_uart_req_t async_read_req;
 #endif /* USE_ASYNC_UART */
 
-    memset(bufCmdLine, 0, CMD_LINE_BUF_SIZE);
+    memset(bufCmdLine,0,CMD_LINE_BUF_SIZE);
     idxCmdLine = 0;
 
     /* Register available CLI commands */
     vRegisterCLICommands();
 
     /* Configure wake-up for GPIO pin corresponding to the UART RX line */
-    // LP_ConfigGPIOWakeUpDetect(&console_uart_rx, 0, LP_WEAK_PULL_UP);
+    // LP_ConfigGPIOWakeUpDetect(&console_uart_rx,0,LP_WEAK_PULL_UP);
 
     /* Enable UART0 interrupt */
     NVIC_ClearPendingIRQ(UART0_IRQn);
     NVIC_DisableIRQ(UART0_IRQn);
-    NVIC_SetPriority(UART0_IRQn, 1);
+    NVIC_SetPriority(UART0_IRQn,1);
     NVIC_EnableIRQ(UART0_IRQn);
 
 #ifdef USE_ASYNC_UART
@@ -355,18 +355,18 @@ void vCmdLineTask(void *pvParameters)
         }
 
         /* Hang here until ISR wakes us for a character */
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
 
         /* Check that we have a valid character */
         if (async_read_req.rxCnt > 0) {
             do {
                 /* Process character */
-                prvProcessInput(&bufCmdLine[0], &idxCmdLine, cReadChar);
+                prvProcessInput(&bufCmdLine[0],&idxCmdLine,cReadChar);
 
-                /* If more characters are ready, process them here */
+                /* If more characters are ready,process them here */
                 uTransLen = 1;
             } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
-                     MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART), (uint8_t *)&cReadChar,
+                     MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART),(uint8_t *)&cReadChar,
                                    (int *)&uTransLen));
         }
 
@@ -375,11 +375,11 @@ void vCmdLineTask(void *pvParameters)
         while (MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) == 0) {}
 
         uTransLen = 1;
-        uTransLen = MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART), (uint8_t *)&cReadChar,
+        uTransLen = MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART),(uint8_t *)&cReadChar,
                                   (int *)&uTransLen);
 
         /* Process character */
-        prvProcessInput(&bufCmdLine[0], &idxCmdLine, cReadChar);
+        prvProcessInput(&bufCmdLine[0],&idxCmdLine,cReadChar);
 #endif /* USE_ASYNC_UART */
     }
 }
@@ -417,7 +417,7 @@ int freertos_permit_lp1(void)
 
 /* =| main |==============================================
  *
- * This program demonstrates FreeRTOS tasks, mutexes,
+ * This program demonstrates FreeRTOS tasks,mutexes,
  *  and the FreeRTOS+CLI extension.
  *
  * =======================================================
@@ -425,7 +425,7 @@ int freertos_permit_lp1(void)
 int main(void)
 {
     /* Print banner (RTOS scheduler not running) */
-    printf("\n-=- %s FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
+    printf("\n-=- %s FreeRTOS (%s) Demo -=-\n",STRING(TARGET),tskKERNEL_VERSION_NUMBER);
 
     /* Create mutexes */
     xGPIOmutex = xSemaphoreCreateMutex();
@@ -434,15 +434,15 @@ int main(void)
         printf("xSemaphoreCreateMutex failed to create a mutex.\n");
     } else {
         /* Configure task */
-        if ((xTaskCreate(vTask0, (const char *)"Task0", configMINIMAL_STACK_SIZE, NULL,
-                         tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(vTask1, (const char *)"Task1", configMINIMAL_STACK_SIZE, NULL,
-                         tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(vTickTockTask, (const char *)"TickTock", 2 * configMINIMAL_STACK_SIZE,
-                         NULL, tskIDLE_PRIORITY + 2, NULL) != pdPASS) ||
-            (xTaskCreate(vCmdLineTask, (const char *)"CmdLineTask",
-                         configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                         tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
+        if ((xTaskCreate(vTask0,(const char *)"Task0",configMINIMAL_STACK_SIZE,NULL,
+                         tskIDLE_PRIORITY + 1,NULL) != pdPASS) ||
+            (xTaskCreate(vTask1,(const char *)"Task1",configMINIMAL_STACK_SIZE,NULL,
+                         tskIDLE_PRIORITY + 1,NULL) != pdPASS) ||
+            (xTaskCreate(vTickTockTask,(const char *)"TickTock",2 * configMINIMAL_STACK_SIZE,
+                         NULL,tskIDLE_PRIORITY + 2,NULL) != pdPASS) ||
+            (xTaskCreate(vCmdLineTask,(const char *)"CmdLineTask",
+                         configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE,NULL,
+                         tskIDLE_PRIORITY + 1,&cmd_task_id) != pdPASS)) {
             printf("xTaskCreate() failed to create a task.\n");
         } else {
             /* Start scheduler */

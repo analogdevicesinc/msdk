@@ -7,50 +7,50 @@
 
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright 2023 Analog Devices,Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License,Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
+ * Unless required by applicable law or agreed to in writing,software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
+ * Permission is hereby granted,free of charge,to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * to deal in the Software without restriction,including without limitation
+ * the rights to use,copy,modify,merge,publish,distribute,sublicense,
+ * and/or sell copies of the Software,and to permit persons to whom the
+ * Software is furnished to do so,subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -104,10 +104,10 @@ int main(void)
     printf("\n************************ SPI Master-Slave Example ************************\n");
     printf("This example sends data between two SPI peripherals in the MAX32520.\n");
     printf("SPI%d is configured as the slave and SPI%d is configured as the master.\n",
-           MXC_SPI_GET_IDX(SPI_SLAVE), MXC_SPI_GET_IDX(SPI_MASTER));
-    printf("Each SPI peripheral sends 1024 bytes on the SPI bus. If the data received\n", DATA_LEN);
-    printf("by each SPI instance matches the data sent by the other instance, the\n");
-    printf("green LED will illuminate, otherwise the red LED will illuminate.\n\n");
+           MXC_SPI_GET_IDX(SPI_SLAVE),MXC_SPI_GET_IDX(SPI_MASTER));
+    printf("Each SPI peripheral sends 1024 bytes on the SPI bus. If the data received\n",DATA_LEN);
+    printf("by each SPI instance matches the data sent by the other instance,the\n");
+    printf("green LED will illuminate,otherwise the red LED will illuminate.\n\n");
 #ifndef BOARD_MAX32520FTHR
     printf("Press SW2 to begin transaction.\n\n");
     while (!PB_Get(0)) {}
@@ -121,30 +121,30 @@ int main(void)
         master_tx[i] = i;
         slave_tx[i] = i;
     }
-    memset(master_rx, 0x0, DATA_LEN * sizeof(uint8_t));
-    memset(slave_rx, 0x0, DATA_LEN * sizeof(uint8_t));
+    memset(master_rx,0x0,DATA_LEN * sizeof(uint8_t));
+    memset(slave_rx,0x0,DATA_LEN * sizeof(uint8_t));
 
     /***** Configure master *****/
     MXC_GPIO_Config(&gpio_cfg_spi1_ss1);
-    if (MXC_SPI_Init(SPI_MASTER, 1, 0, 1, (1 << SPI_MASTER_SSIDX), SPI_SPEED) != E_NO_ERROR) {
+    if (MXC_SPI_Init(SPI_MASTER,1,0,1,(1 << SPI_MASTER_SSIDX),SPI_SPEED) != E_NO_ERROR) {
         printf("\nSPI MASTER INITIALIZATION ERROR\n");
         while (1) {}
     }
 
-    MXC_SPI_SetDataSize(SPI_MASTER, DATA_SIZE);
-    MXC_SPI_SetWidth(SPI_MASTER, SPI_WIDTH_STANDARD);
+    MXC_SPI_SetDataSize(SPI_MASTER,DATA_SIZE);
+    MXC_SPI_SetWidth(SPI_MASTER,SPI_WIDTH_STANDARD);
 
     /***** Configure slave *****/
     MXC_GPIO_Config(&gpio_cfg_spi0_ss0);
-    if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, (1 << SPI_SLAVE_SSIDX), SPI_SPEED) != E_NO_ERROR) {
+    if (MXC_SPI_Init(SPI_SLAVE,0,0,1,(1 << SPI_SLAVE_SSIDX),SPI_SPEED) != E_NO_ERROR) {
         printf("\nSPI SLAVE INITIALIZATION ERROR\n");
         while (1) {}
     }
 
-    MXC_SPI_SetDataSize(SPI_SLAVE, DATA_SIZE);
-    MXC_SPI_SetWidth(SPI_SLAVE, SPI_WIDTH_STANDARD);
+    MXC_SPI_SetDataSize(SPI_SLAVE,DATA_SIZE);
+    MXC_SPI_SetWidth(SPI_SLAVE,SPI_WIDTH_STANDARD);
 
-    MXC_NVIC_SetVector(SPI_SLAVE_IRQ, SPI_Slave_IRQHandler);
+    MXC_NVIC_SetVector(SPI_SLAVE_IRQ,SPI_Slave_IRQHandler);
     NVIC_EnableIRQ(SPI_SLAVE_IRQ);
 
     /***** Initialize Transaction Parameters *****/
@@ -175,11 +175,11 @@ int main(void)
     MXC_SPI_MasterTransaction(&master_req);
 
     /***** Verify Results *****/
-    if (memcmp(slave_rx, master_tx, sizeof(master_tx)) != 0) { // Master->Slave
+    if (memcmp(slave_rx,master_tx,sizeof(master_tx)) != 0) { // Master->Slave
         printf("\nSlave failed to receive data.\n");
         LED_On(0);
         return E_COMM_ERR;
-    } else if (memcmp(master_rx, slave_tx, sizeof(slave_tx)) != 0) { // Slave->Master
+    } else if (memcmp(master_rx,slave_tx,sizeof(slave_tx)) != 0) { // Slave->Master
         printf("\nMaster failed to receive data.\n");
         LED_On(0);
         return E_COMM_ERR;

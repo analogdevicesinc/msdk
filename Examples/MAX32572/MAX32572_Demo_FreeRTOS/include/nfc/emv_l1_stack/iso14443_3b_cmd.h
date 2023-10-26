@@ -106,12 +106,12 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len, uint8_t doretry
  * @param[in] inf   Pointer to INF data used to create the ATTRIB command
  * @param[in] inf_len   Number of bytes in the INF data to be used
  * @param[in] timeout   Timeout for receiving the response from the PICC
- * @param[in,out] attrib_resp   Buffer to save attrib response. No bounds checking is done on this
+ * @param[in, out] attrib_resp   Buffer to save attrib response. No bounds checking is done on this
  *                      buffer other than verifying it is not NULL.  Per EMV Book D,
  *                      ATTRIB_RESP has a basic length of 1 byte, but may optionally contain
  *                      a higher layer response of indeterminate length.  For maximal saftey
  *                      a buffer of 256 bytes is recommended.
- * @param[in,out] attrib_resp_len Number of bytes written to attrib_resp
+ * @param[in, out] attrib_resp_len Number of bytes written to attrib_resp
  *
  * @return  The following @ref NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES
  * @retval  #ISO14443_3_ERR_SUCCESS

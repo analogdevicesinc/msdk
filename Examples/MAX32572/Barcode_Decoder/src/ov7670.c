@@ -252,7 +252,7 @@ static const uint8_t qvga_ov7670[][2] = {
     { 0x72, 0x11 }, // downsample by 2
     { 0x73, 0xf1 }, // divide by 2
     { REG_HSTART, 0x16 }, { REG_HSTOP, 0x04 }, { REG_HREF, 0x24 }, { REG_VSTRT, 0x02 },
-    { REG_VSTOP, 0x7a },  { REG_VREF, 0x0a },  { 0xff, 0xff }, /* END MARKER */
+    { REG_VSTOP, 0x7a }, { REG_VREF, 0x0a }, { 0xff, 0xff }, /* END MARKER */
 };
 
 static const uint8_t qqvga_ov7670[][2] = {
@@ -260,7 +260,7 @@ static const uint8_t qqvga_ov7670[][2] = {
     { 0x72, 0x22 }, // downsample by 4
     { 0x73, 0xf2 }, // divide by 4
     { REG_HSTART, 0x16 }, { REG_HSTOP, 0x04 }, { REG_HREF, 0xa4 }, { REG_VSTRT, 0x02 },
-    { REG_VSTOP, 0x7a },  { REG_VREF, 0x0a },  { 0xff, 0xff }, /* END MARKER */
+    { REG_VSTOP, 0x7a }, { REG_VREF, 0x0a }, { 0xff, 0xff }, /* END MARKER */
 };
 
 static const uint8_t yuv422_ov7670[][2] = {

@@ -136,7 +136,7 @@ static int32_t do_ppse(ppse_response_t *resp)
 {
     int32_t ret;
     uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
-                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
+                           'S', 'Y', 'S', '.', 'D', 'D', 'F', '0', '1', 0x00 };
     int32_t capdulen = 20;
 
     logging("CAPDU ");

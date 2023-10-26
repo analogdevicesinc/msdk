@@ -7,7 +7,7 @@
 
 __attribute__((section(".bin_storage_img"))) __attribute__((__used__)) __attribute__((aligned(2)))
 const unsigned char SansSerif16x16[] = {
-    33,   16,   16,   2, // number of bytes per character; horizontal size in pixels; vertical size in pixels; number of bytes per vertical line
+    33,  16,  16,  2, // number of bytes per character; horizontal size in pixels; vertical size in pixels; number of bytes per vertical line
     0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Code for char

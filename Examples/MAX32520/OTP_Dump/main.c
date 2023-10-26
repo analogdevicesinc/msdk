@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products,Inc.,All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -13,22 +13,22 @@
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS
+ * OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM,DAMAGES
+ * OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,
+ * ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Except as contained in this notice,the name of Maxim Integrated
+ * Products,Inc. shall not be used except as stated in the Maxim Integrated
+ * Products,Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * of trade secrets,proprietary technology,copyrights,patents,
+ * trademarks,maskwork rights,or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products,Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
@@ -63,7 +63,7 @@
 #define OTP_USER_AREA_SIZE 0x2000
 
 /***** Static Functions *****/
-static void dump_section(unsigned int address, unsigned int length)
+static void dump_section(unsigned int address,unsigned int length)
 {
     unsigned int i;
     volatile uint32_t *addr = (uint32_t *)address;
@@ -75,7 +75,7 @@ static void dump_section(unsigned int address, unsigned int length)
 
     for (i = 0; i < length; i++) {
         if (!(i % 4)) {
-            printf("\n0x%08x:", (unsigned int)addr);
+            printf("\n0x%08x:",(unsigned int)addr);
         }
 
         // add extra space
@@ -83,7 +83,7 @@ static void dump_section(unsigned int address, unsigned int length)
             printf("   ");
         }
 
-        printf(" %08x", *addr);
+        printf(" %08x",*addr);
         addr++;
     }
 
@@ -105,7 +105,7 @@ static int write_test(void)
     // find free slot
     while (addr < end_addr) {
         if (*addr == 0xffffffff) {
-            printf("\n\nFree Addr: 0x%X\n", (uint32_t)addr);
+            printf("\n\nFree Addr: 0x%X\n",(uint32_t)addr);
             break;
         }
 
@@ -118,10 +118,10 @@ static int write_test(void)
     }
 
     if (ret == 0) {
-        ret = MXC_FLC_Write32((uint32_t)addr, test_val);
+        ret = MXC_FLC_Write32((uint32_t)addr,test_val);
 
         if (ret) {
-            printf("FLC Write Error: %d\n", ret);
+            printf("FLC Write Error: %d\n",ret);
         }
     }
 
@@ -131,7 +131,7 @@ static int write_test(void)
     if (ret == 0) {
         /* Dump user section */
         printf("\n\n***** After Write OTP Section *****\n");
-        dump_section((unsigned int)addr, 32);
+        dump_section((unsigned int)addr,32);
     }
 
     return ret;
@@ -146,11 +146,11 @@ int main(void)
 
     /* Dump manufacturer section */
     printf("\n\n***** MANUFACTURER AREA *****\n");
-    dump_section(OTP_MANUFACTURER_AREA, 1024);
+    dump_section(OTP_MANUFACTURER_AREA,1024);
 
     /* Dump user section */
     printf("\n\n***** USER AREA *****\n");
-    dump_section(OTP_USER_AREA, 1024);
+    dump_section(OTP_USER_AREA,1024);
 
 #if WITH_WRITE_TEST
     // run write test

@@ -168,21 +168,21 @@ __attribute__((aligned(4))) uint8_t lang_id_desc[] = {
 __attribute__((aligned(4))) uint8_t mfg_id_desc[] = {
     0x22, /* bLength */
     0x03, /* bDescriptorType */
-    'M',  0, 'a', 0, 'x', 0, 'i', 0, 'm', 0, ' ', 0, 'I', 0, 'n', 0,
-    't',  0, 'e', 0, 'g', 0, 'r', 0, 'a', 0, 't', 0, 'e', 0, 'd', 0,
+    'M', 0, 'a', 0, 'x', 0, 'i', 0, 'm', 0, ' ', 0, 'I', 0, 'n', 0,
+    't', 0, 'e', 0, 'g', 0, 'r', 0, 'a', 0, 't', 0, 'e', 0, 'd', 0,
 };
 
 __attribute__((aligned(4))) uint8_t prod_id_desc[] = {
     0x22, /* bLength */
     0x03, /* bDescriptorType */
-    'M',  0, 'A', 0, 'X', 0, '3', 0, '2', 0, '6', 0, '5', 0, '0', 0,
-    ' ',  0, 'C', 0, 'D', 0, 'C', 0, '-', 0, 'A', 0, 'C', 0, 'M', 0,
+    'M', 0, 'A', 0, 'X', 0, '3', 0, '2', 0, '6', 0, '5', 0, '0', 0,
+    ' ', 0, 'C', 0, 'D', 0, 'C', 0, '-', 0, 'A', 0, 'C', 0, 'M', 0,
 };
 
 /* Not currently used (see device descriptor), but could be enabled if desired */
 __attribute__((aligned(4))) uint8_t serial_id_desc[] = { 0x14, /* bLength */
                                                          0x03, /* bDescriptorType */
-                                                         '0',  0, '0', 0, '0', 0, '0', 0, '0', 0,
-                                                         '0',  0, '0', 0, '0', 0, '1', 0 };
+                                                         '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
+                                                         '0', 0, '0', 0, '0', 0, '1', 0 };
 
 #endif // EXAMPLES_MAX32572_USB_CDCACM_DESCRIPTORS_H_

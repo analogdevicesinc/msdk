@@ -132,7 +132,7 @@ static const attsAttr_t secDatList[] = {
 
 /* Secured Data group structure */
 static attsGroup_t svcSecDatGroup = { NULL, (attsAttr_t *)secDatList, NULL,
-                                      NULL, SEC_DATA_START_HDL,       SEC_DATA_END_HDL };
+                                      NULL, SEC_DATA_START_HDL,      SEC_DATA_END_HDL };
 
 /*************************************************************************************************/
 /*!

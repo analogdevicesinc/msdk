@@ -17,7 +17,7 @@
           <Vendor>Maxim</Vendor>
           <PackID>Maxim.MAX32630.0.0.0-1.alpha</PackID>
           <PackURL>http://dal-mac-cware.maxim-ic.com/tools/pack/</PackURL>
-          <Cpu>IRAM(0x20000000,0x00020000) IROM(0x00000000,0x00200000) CPUTYPE("Cortex-M4") FPU2 CLOCK(96000000) ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000, 0x00020000) IROM(0x00000000, 0x00200000) CPUTYPE("Cortex-M4") FPU2 CLOCK(96000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0MAX32630 -FS00 -FL0200000 -FP0($$Device:MAX32630$Flash\MAX32630.FLM))</FlashDriverDll>
@@ -332,7 +332,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--diag_suppress=1295,1296 --library_type=microlib</MiscControls>
+              <MiscControls>--diag_suppress=1295, 1296 --library_type=microlib</MiscControls>
               <Define>TARGET=MAX32630, TARGET_REV=0x4132, BOARD=EvKit_V1</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>

@@ -380,7 +380,7 @@ void RTC_IRQHandler(void)
 
 /**
  * @brief   main()
- * @detials This program demonstrates FreeRTOS tasks, mutexes, 
+ * @detials This program demonstrates FreeRTOS tasks, mutexes,
  *          and the FreeRTOS+CLI extension.
  */
 int main(void)

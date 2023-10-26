@@ -12,13 +12,13 @@
 *
 * Target Processor: Cortex-M4/Cortex-M3
 *
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
+* Redistribution and use in source and binary forms,with or without
+* modification,are permitted provided that the following conditions
 * are met:
 *   - Redistributions of source code must retain the above copyright
-*     notice, this list of conditions and the following disclaimer.
+*     notice,this list of conditions and the following disclaimer.
 *   - Redistributions in binary form must reproduce the above copyright
-*     notice, this list of conditions and the following disclaimer in
+*     notice,this list of conditions and the following disclaimer in
 *     the documentation and/or other materials provided with the
 *     distribution.
 *   - Neither the name of ARM LIMITED nor the names of its contributors
@@ -26,16 +26,16 @@
 *     software without specific prior written permission.
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,INCLUDING,BUT NOT
+* LIMITED TO,THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
 * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,INDIRECT,
+* INCIDENTAL,SPECIAL,EXEMPLARY,OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE,DATA,OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY,WHETHER IN CONTRACT,STRICT
+* LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE,EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
  * -------------------------------------------------------------------- */
 
@@ -49,8 +49,8 @@
  * \par Description
  * \par
  * Demonstrates the calculation of the maximum energy bin in the frequency
- * domain of the input signal with the use of Complex FFT, Complex
- * Magnitude, and Maximum functions.
+ * domain of the input signal with the use of Complex FFT,Complex
+ * Magnitude,and Maximum functions.
  *
  * \par Algorithm:
  * \par
@@ -62,7 +62,7 @@
  * \image html FFTBin.gif "Block Diagram"
  * \par
  * The figure below shows the time domain signal of 10 kHz signal with
- * uniformly distributed white noise, and the next figure shows the input
+ * uniformly distributed white noise,and the next figure shows the input
  * in the frequency domain. The bin with maximum energy corresponds to 10 kHz signal.
  * \par
  * \image html FFTBinInput.gif "Input signal in Time domain"
@@ -116,7 +116,7 @@ uint32_t doBitReverse = 1;
 arm_cfft_instance_f32 varInstCfftF32;
 
 /* Reference index at which max energy of bin ocuurs */
-uint32_t refIndex = 213, testIndex = 0;
+uint32_t refIndex = 213,testIndex = 0;
 
 /* ----------------------------------------------------------------------
 * Max magnitude FFT Bin test
@@ -129,17 +129,17 @@ int main(void)
 
     status = ARM_MATH_SUCCESS;
 
-    status = arm_cfft_init_f32(&varInstCfftF32, fftSize);
+    status = arm_cfft_init_f32(&varInstCfftF32,fftSize);
 
     /* Process the data through the CFFT/CIFFT module */
-    arm_cfft_f32(&varInstCfftF32, testInput_f32_10khz, ifftFlag, doBitReverse);
+    arm_cfft_f32(&varInstCfftF32,testInput_f32_10khz,ifftFlag,doBitReverse);
 
     /* Process the data through the Complex Magnitude Module for
   calculating the magnitude at each bin */
-    arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
+    arm_cmplx_mag_f32(testInput_f32_10khz,testOutput,fftSize);
 
     /* Calculates maxValue and returns corresponding BIN value */
-    arm_max_f32(testOutput, fftSize, &maxValue, &testIndex);
+    arm_max_f32(testOutput,fftSize,&maxValue,&testIndex);
 
     status = (testIndex != refIndex) ? ARM_MATH_TEST_FAILURE : ARM_MATH_SUCCESS;
 

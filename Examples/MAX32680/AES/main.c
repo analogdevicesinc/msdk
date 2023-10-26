@@ -71,7 +71,7 @@
 //(equal to or greater than MXC_AES_DATA_LENGTH)
 
 /***** Globals *****/
-uint32_t inputData[MXC_AES_DATA_LENGTH] = { 0x873AC125, 0x2F45A7C8, 0x3EB7190,  0x486FA931,
+uint32_t inputData[MXC_AES_DATA_LENGTH] = { 0x873AC125, 0x2F45A7C8, 0x3EB7190, 0x486FA931,
                                             0x94AE56F2, 0x89B4D0C1, 0x2F45A7C8, 0x3EB7190 };
 uint32_t encryptedData[MXC_AES_ENC_DATA_LENGTH] = { 0 };
 uint32_t decryptedData[MXC_AES_DATA_LENGTH] = { 0 };
