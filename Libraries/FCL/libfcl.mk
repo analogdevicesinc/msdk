@@ -73,8 +73,8 @@ ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
 
-TARGET_UC := $(subst m, M, $(subst a, A, $(subst x, X, $(TARGET))))
-TARGET_LC := $(subst M, m, $(subst A, a, $(subst X, x, $(TARGET))))
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 $(info $(TARGET_UC))
 
 

@@ -230,7 +230,7 @@ function SearchBox(name, resultsPath, inFrame, label)
 
   this.SelectItemSet = function(id)
   {
-    var i, j=0;
+    var i,j=0;
     var win=this.DOMSearchSelectWindow();
     for (i=0;i<win.childNodes.length;i++)
     {
@@ -584,7 +584,7 @@ function SearchResults(name)
       return this.lastKey!=0;
     }
 
-    this.Nav = function(evt, itemIndex)
+    this.Nav = function(evt,itemIndex)
     {
       var e  = (evt) ? evt : window.event; // for IE
       if (e.keyCode==13) return true;
@@ -662,7 +662,7 @@ function SearchResults(name)
       return false;
     }
 
-    this.NavChild = function(evt, itemIndex, childIndex)
+    this.NavChild = function(evt,itemIndex,childIndex)
     {
       var e  = (evt) ? evt : window.event; // for IE
       if (e.keyCode==13) return true;
@@ -706,17 +706,17 @@ function SearchResults(name)
     }
 }
 
-function setKeyActions(elem, action)
+function setKeyActions(elem,action)
 {
-  elem.setAttribute('onkeydown', action);
-  elem.setAttribute('onkeypress', action);
-  elem.setAttribute('onkeyup', action);
+  elem.setAttribute('onkeydown',action);
+  elem.setAttribute('onkeypress',action);
+  elem.setAttribute('onkeyup',action);
 }
 
-function setClassAttr(elem, attr)
+function setClassAttr(elem,attr)
 {
-  elem.setAttribute('class', attr);
-  elem.setAttribute('className', attr);
+  elem.setAttribute('class',attr);
+  elem.setAttribute('className',attr);
 }
 
 function createResults()
@@ -726,43 +726,43 @@ function createResults()
   {
     var id = searchData[e][0];
     var srResult = document.createElement('div');
-    srResult.setAttribute('id', 'SR_'+id);
-    setClassAttr(srResult, 'SRResult');
+    srResult.setAttribute('id','SR_'+id);
+    setClassAttr(srResult,'SRResult');
     var srEntry = document.createElement('div');
-    setClassAttr(srEntry, 'SREntry');
+    setClassAttr(srEntry,'SREntry');
     var srLink = document.createElement('a');
-    srLink.setAttribute('id', 'Item'+e);
-    setKeyActions(srLink, 'return searchResults.Nav(event, '+e+')');
-    setClassAttr(srLink, 'SRSymbol');
+    srLink.setAttribute('id','Item'+e);
+    setKeyActions(srLink,'return searchResults.Nav(event,'+e+')');
+    setClassAttr(srLink,'SRSymbol');
     srLink.innerHTML = searchData[e][1][0];
     srEntry.appendChild(srLink);
     if (searchData[e][1].length==2) // single result
     {
-      srLink.setAttribute('href', searchData[e][1][1][0]);
+      srLink.setAttribute('href',searchData[e][1][1][0]);
       if (searchData[e][1][1][1])
       {
-       srLink.setAttribute('target', '_parent');
+       srLink.setAttribute('target','_parent');
       }
       var srScope = document.createElement('span');
-      setClassAttr(srScope, 'SRScope');
+      setClassAttr(srScope,'SRScope');
       srScope.innerHTML = searchData[e][1][1][2];
       srEntry.appendChild(srScope);
     }
     else // multiple results
     {
-      srLink.setAttribute('href', 'javascript:searchResults.Toggle("SR_'+id+'")');
+      srLink.setAttribute('href','javascript:searchResults.Toggle("SR_'+id+'")');
       var srChildren = document.createElement('div');
-      setClassAttr(srChildren, 'SRChildren');
+      setClassAttr(srChildren,'SRChildren');
       for (var c=0; c<searchData[e][1].length-1; c++)
       {
         var srChild = document.createElement('a');
-        srChild.setAttribute('id', 'Item'+e+'_c'+c);
-        setKeyActions(srChild, 'return searchResults.NavChild(event, '+e+', '+c+')');
-        setClassAttr(srChild, 'SRScope');
-        srChild.setAttribute('href', searchData[e][1][c+1][0]);
+        srChild.setAttribute('id','Item'+e+'_c'+c);
+        setKeyActions(srChild,'return searchResults.NavChild(event,'+e+','+c+')');
+        setClassAttr(srChild,'SRScope');
+        srChild.setAttribute('href',searchData[e][1][c+1][0]);
         if (searchData[e][1][c+1][1])
         {
-         srChild.setAttribute('target', '_parent');
+         srChild.setAttribute('target','_parent');
         }
         srChild.innerHTML = searchData[e][1][c+1][2];
         srChildren.appendChild(srChild);
@@ -780,8 +780,8 @@ function init_search()
   for (var key in indexSectionLabels)
   {
     var link = document.createElement('a');
-    link.setAttribute('class', 'SelectItem');
-    link.setAttribute('onclick', 'searchBox.OnSelectItem('+key+')');
+    link.setAttribute('class','SelectItem');
+    link.setAttribute('onclick','searchBox.OnSelectItem('+key+')');
     link.href='javascript:void(0)';
     link.innerHTML='<span class="SelectionMark">&#160;</span>'+indexSectionLabels[key];
     results.appendChild(link);

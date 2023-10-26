@@ -1,29 +1,14 @@
 /******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- ******************************************************************************
- *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -47,9 +32,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-
-#ifndef LIBRARIES_FCL_INCLUDE_UCL_UCL_DEFS_H_
-#define LIBRARIES_FCL_INCLUDE_UCL_UCL_DEFS_H_
+#ifndef _UCL_DEFS_H_
+#define _UCL_DEFS_H_
 
 /** @defgroup UCL_DEFINITIONS Definitions
  *
@@ -124,7 +108,7 @@
  */
 #define UCL_CIPHER_DECRYPT_EEE 0x3
 
-#define UCL_CIPHER_MODE_LAST    UCL_CIPHER_DECRYPT_EEE
+#define UCL_CIPHER_MODE_LAST	UCL_CIPHER_DECRYPT_EEE
 
 /*==============================================================================
  * ASN1
@@ -181,15 +165,15 @@
 #define UCL_NO_PRECOMP_TRICK 0
 #define UCL_PRECOMP_TRICK 1
 #define UCL_PRECOMP_FULL_TRICK 2
-#define UCL_PRECOMP_MASK 7//so 3 bits: 9, 10, 11
-#define UCL_PRECOMP_TRICK_MASK 7// so 3 bits: 12, 13, 14
-#define UCL_INPUT_MASK 3//so 2 bits: 7, 8
-#define UCL_CURVE_MASK 15//so 4 bits: 3, 4, 5, 6
-#define UCL_HASH_MASK 7//so 3 bits: 0, 1, 2
+#define UCL_PRECOMP_MASK 7//so 3 bits: 9,10,11
+#define UCL_PRECOMP_TRICK_MASK 7// so 3 bits: 12,13,14
+#define UCL_INPUT_MASK 3//so 2 bits: 7,8
+#define UCL_CURVE_MASK 15//so 4 bits: 3,4,5,6
+#define UCL_HASH_MASK 7//so 3 bits: 0,1,2
 #define UCL_HASH_SHIFT 0
 #define UCL_CURVE_SHIFT 3
 #define UCL_INPUT_SHIFT 7
 #define UCL_PRECOMP_SHIFT 9
 #define UCL_PRECOMP_TRICK_SHIFT 12
 
-#endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_DEFS_H_
+#endif /*_UCL_DEFS_H_*/

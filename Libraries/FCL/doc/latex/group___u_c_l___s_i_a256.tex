@@ -2,32 +2,32 @@
 \label{group___u_c_l___s_i_a256}\index{S\+I\+A256@{S\+I\+A256}}
 \subsection*{Data Structures}
 \begin{DoxyCompactItemize}
-\item
+\item 
 struct \hyperlink{group___u_c_l___s_i_a256_structucl__sia256__ctx}{ucl\+\_\+sia256\+\_\+ctx}
 \end{DoxyCompactItemize}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
-\item
+\item 
 \#define \hyperlink{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}{U\+C\+L\+\_\+\+S\+I\+A256}~0
-\item
+\item 
 \#define \hyperlink{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}~64
-\item
+\item 
 \#define \hyperlink{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}~8
 \end{DoxyCompactItemize}
 \subsection*{List of types}
 \begin{DoxyCompactItemize}
-\item
+\item 
 typedef struct \hyperlink{group___u_c_l___s_i_a256_structucl__sia256__ctx}{ucl\+\_\+sia256\+\_\+ctx} \hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}
 \end{DoxyCompactItemize}
 \subsection*{List of functions}
 \begin{DoxyCompactItemize}
-\item
+\item 
 int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}{ucl\+\_\+sia256} (u8 $\ast$hash, u8 $\ast$data, u32 data\+\_\+byte\+Len)
-\item
+\item 
 int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}{ucl\+\_\+sia256\+\_\+core} (\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$context, u8 $\ast$data, u32 data\+\_\+byte\+Len)
-\item
+\item 
 int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}{ucl\+\_\+sia256\+\_\+finish} (u8 $\ast$hash, \hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$context)
-\item
+\item 
 int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}{ucl\+\_\+sia256\+\_\+init} (\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$context)
 \end{DoxyCompactItemize}
 
@@ -52,19 +52,19 @@ S\+I\+A-\/256 is a data-\/digest algorithm and a modified component of the Stand
 \Hypertarget{group___u_c_l___s_i_a256_structucl__sia256__ctx}
 \subsubsection{struct ucl\+\_\+sia256\+\_\+ctx}
 {\bfseries The S\+I\+A256 context}. This structure is associated to the \textquotesingle{}step by step\textquotesingle{} process. \begin{DoxyFields}{Data Fields}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_a3aaaf77cfeea088172a742d19d1f9bcb}\label{group___u_c_l___s_i_a256_a3aaaf77cfeea088172a742d19d1f9bcb}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_a3aaaf77cfeea088172a742d19d1f9bcb}\label{group___u_c_l___s_i_a256_a3aaaf77cfeea088172a742d19d1f9bcb}} 
 u8&
 buffer\mbox{[}64\mbox{]}&
 Buffer. \\
 \hline
 
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_a9d40863406b2429b1f43c9b90cff5cf5}\label{group___u_c_l___s_i_a256_a9d40863406b2429b1f43c9b90cff5cf5}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_a9d40863406b2429b1f43c9b90cff5cf5}\label{group___u_c_l___s_i_a256_a9d40863406b2429b1f43c9b90cff5cf5}} 
 u32&
 count\mbox{[}2\mbox{]}&
 Counter in bits. \\
 \hline
 
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_a7e2cf91d535966783b7d74bd0e891de9}\label{group___u_c_l___s_i_a256_a7e2cf91d535966783b7d74bd0e891de9}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_a7e2cf91d535966783b7d74bd0e891de9}\label{group___u_c_l___s_i_a256_a7e2cf91d535966783b7d74bd0e891de9}} 
 u32&
 state\mbox{[}8\mbox{]}&
 Intermediate and then final hash. \\
@@ -74,41 +74,41 @@ Intermediate and then final hash. \\
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}\label{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}\label{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}} 
 \index{S\+I\+A256@{S\+I\+A256}!U\+C\+L\+\_\+\+S\+I\+A256@{U\+C\+L\+\_\+\+S\+I\+A256}}
 \index{U\+C\+L\+\_\+\+S\+I\+A256@{U\+C\+L\+\_\+\+S\+I\+A256}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{U\+C\+L\+\_\+\+S\+I\+A256}{UCL\_SIA256}}
 {\footnotesize\ttfamily \#define U\+C\+L\+\_\+\+S\+I\+A256~0}
 
-{\bfseries Hash size}. Byte size of the output of S\+I\+A256. \mbox{\Hypertarget{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}\label{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}}
+{\bfseries Hash size}. Byte size of the output of S\+I\+A256. \mbox{\Hypertarget{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}\label{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}} 
 \index{S\+I\+A256@{S\+I\+A256}!U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}}
 \index{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}{UCL\_SIA256\_BLOCKSIZE}}
 {\footnotesize\ttfamily \#define U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE~64}
 
-{\bfseries Core block size}. Byte size of a S\+I\+A256 core block. \mbox{\Hypertarget{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}\label{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}}
+{\bfseries Core block size}. Byte size of a S\+I\+A256 core block. \mbox{\Hypertarget{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}\label{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}} 
 \index{S\+I\+A256@{S\+I\+A256}!U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}}
 \index{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}{UCL\_SIA256\_HASHW32SIZE}}
 {\footnotesize\ttfamily \#define U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE~8}
 
-{\bfseries Hash size}. 32-\/bits word size of the output of S\+I\+A256.
+{\bfseries Hash size}. 32-\/bits word size of the output of S\+I\+A256. 
 
 \subsection{Typedef Documentation}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}\label{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}\label{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}} 
 \index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+ctx\+\_\+t@{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}}
 \index{ucl\+\_\+sia256\+\_\+ctx\+\_\+t@{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}{ucl\_sia256\_ctx\_t}}
 {\footnotesize\ttfamily typedef struct \hyperlink{group___u_c_l___s_i_a256_structucl__sia256__ctx}{ucl\+\_\+sia256\+\_\+ctx} \hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}}
 
-{\bfseries The S\+I\+A256 context}.
+{\bfseries The S\+I\+A256 context}. 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}\label{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}\label{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}} 
 \index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256@{ucl\+\_\+sia256}}
 \index{ucl\+\_\+sia256@{ucl\+\_\+sia256}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{ucl\+\_\+sia256()}{ucl\_sia256()}}
-{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256 (\begin{DoxyParamCaption}\item[{u8 $\ast$}]{hash, }\item[{u8 $\ast$}]{data, }\item[{u32}]{data\+\_\+byte\+Len }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256 (\begin{DoxyParamCaption}\item[{u8 $\ast$}]{hash,  }\item[{u8 $\ast$}]{data,  }\item[{u32}]{data\+\_\+byte\+Len }\end{DoxyParamCaption})}
 
 {\bfseries S\+I\+A256}. The complete process of S\+I\+A256.
 
@@ -134,17 +134,17 @@ Error code
 {\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga3ed78d658471831fff1612d8d0affb88}{U\+C\+L\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+O\+U\+T\+P\+UT}} & if {\ttfamily hash} is \#\+N\+U\+LL \\
 \hline
 \end{DoxyRetVals}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}\label{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}\label{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}} 
 \index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+core@{ucl\+\_\+sia256\+\_\+core}}
 \index{ucl\+\_\+sia256\+\_\+core@{ucl\+\_\+sia256\+\_\+core}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+core()}{ucl\_sia256\_core()}}
-{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+core (\begin{DoxyParamCaption}\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context, }\item[{u8 $\ast$}]{data, }\item[{u32}]{data\+\_\+byte\+Len }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+core (\begin{DoxyParamCaption}\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context,  }\item[{u8 $\ast$}]{data,  }\item[{u32}]{data\+\_\+byte\+Len }\end{DoxyParamCaption})}
 
 {\bfseries S\+I\+A256 Core}. The core of S\+I\+A256.
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in, out}  & {\em context} & Pointer to the context \\
+\mbox{\tt in,out}  & {\em context} & Pointer to the context \\
 \hline
 \mbox{\tt in}  & {\em data} & Pointer to the data \\
 \hline
@@ -164,11 +164,11 @@ Error code
 {\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga6ffb73da20c781dcb7f3004102c93aec}{U\+C\+L\+\_\+\+N\+OP}} & if {\ttfamily data\+\_\+byte\+Len} = 0 or if {\ttfamily data} is the pointer \#\+N\+U\+LL \\
 \hline
 \end{DoxyRetVals}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}\label{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}\label{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}} 
 \index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+finish@{ucl\+\_\+sia256\+\_\+finish}}
 \index{ucl\+\_\+sia256\+\_\+finish@{ucl\+\_\+sia256\+\_\+finish}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+finish()}{ucl\_sia256\_finish()}}
-{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+finish (\begin{DoxyParamCaption}\item[{u8 $\ast$}]{hash, }\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+finish (\begin{DoxyParamCaption}\item[{u8 $\ast$}]{hash,  }\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context }\end{DoxyParamCaption})}
 
 {\bfseries S\+I\+A256 Finish}. Finish the process of S\+I\+A256.
 
@@ -179,7 +179,7 @@ Hash byte length is equal to 32
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt out}  & {\em hash} & Pointer to the digest \\
 \hline
-\mbox{\tt in, out}  & {\em context} & Pointer to the context\\
+\mbox{\tt in,out}  & {\em context} & Pointer to the context\\
 \hline
 \end{DoxyParams}
 \begin{DoxyWarning}{Warning}
@@ -197,7 +197,7 @@ Error code
 {\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga0ce984d38effddf33eb42be5ff3d87cf}{U\+C\+L\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+I\+N\+P\+UT}} & if {\ttfamily context} is the pointer \#\+N\+U\+LL \\
 \hline
 \end{DoxyRetVals}
-\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}\label{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}\label{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}} 
 \index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+init@{ucl\+\_\+sia256\+\_\+init}}
 \index{ucl\+\_\+sia256\+\_\+init@{ucl\+\_\+sia256\+\_\+init}!S\+I\+A256@{S\+I\+A256}}
 \subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+init()}{ucl\_sia256\_init()}}
@@ -207,7 +207,7 @@ Error code
 
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\tt in, out}  & {\em context} & Pointer to the context\\
+\mbox{\tt in,out}  & {\em context} & Pointer to the context\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

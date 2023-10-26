@@ -12,12 +12,12 @@
 
   \item {E\+M\+V-\/\+Level 1 Smart Card}, \hyperpage{41}
     \subitem {pci\+\_\+smartcard\+\_\+config}, \hyperpage{41}
-    \subitem {pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU},
-        \hyperpage{41}
-    \subitem {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion},
-        \hyperpage{42}
-    \subitem {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal},
-        \hyperpage{42}
+    \subitem {pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}, 
+		\hyperpage{41}
+    \subitem {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}, 
+		\hyperpage{42}
+    \subitem {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}, 
+		\hyperpage{42}
 
   \indexspace
 
@@ -29,11 +29,11 @@
   \indexspace
 
   \item {I/\+O A\+PI}, \hyperpage{35}
-    \subitem {ssbx\+\_\+display\+\_\+display\+\_\+image},
-        \hyperpage{35}
+    \subitem {ssbx\+\_\+display\+\_\+display\+\_\+image}, 
+		\hyperpage{35}
     \subitem {ssbx\+\_\+display\+\_\+prompt}, \hyperpage{35}
-    \subitem {ssbx\+\_\+display\+\_\+write\+\_\+message},
-        \hyperpage{36}
+    \subitem {ssbx\+\_\+display\+\_\+write\+\_\+message}, 
+		\hyperpage{36}
     \subitem {ssbx\+\_\+touch\+\_\+get\+\_\+entry}, \hyperpage{36}
 
   \indexspace
@@ -51,16 +51,16 @@
 
   \indexspace
 
-  \item {Operating system, drivers, C library, other libraries...},
-        \hyperpage{28}
+  \item {Operating system, drivers, C library, other libraries...}, 
+		\hyperpage{28}
 
   \indexspace
 
-  \item {P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security},
-        \hyperpage{40}
+  \item {P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security}, 
+		\hyperpage{40}
   \item {P\+I\+N handling}, \hyperpage{43}
-    \subitem {pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key},
-        \hyperpage{43}
+    \subitem {pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key}, 
+		\hyperpage{43}
     \subitem {pci\+\_\+get\+\_\+online\+\_\+pin}, \hyperpage{44}
     \subitem {pci\+\_\+pin\+\_\+entry}, \hyperpage{44}
     \subitem {pci\+\_\+verify\+\_\+offline\+\_\+pin}, \hyperpage{45}
@@ -88,8 +88,8 @@
 
   \indexspace
 
-  \item {Secure Sandbox services (\+Generic Security functions)},
-        \hyperpage{30}
+  \item {Secure Sandbox services (\+Generic Security functions)}, 
+		\hyperpage{30}
   \item {Security Monitor}, \hyperpage{29}
   \item {ssbx\+\_\+display\+\_\+display\+\_\+image}
     \subitem {I/\+O A\+PI}, \hyperpage{35}
@@ -127,14 +127,14 @@
   \item {u\+Visor A\+PI}, \hyperpage{47}
     \subitem {check\+\_\+acl}, \hyperpage{51}
     \subitem {rpc\+\_\+fncall\+\_\+waitfor}, \hyperpage{52}
-    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG},
-        \hyperpage{49}
-    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE},
-        \hyperpage{49}
-    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL},
-        \hyperpage{50}
-    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE},
-        \hyperpage{50}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}, 
+		\hyperpage{49}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}, 
+		\hyperpage{49}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}, 
+		\hyperpage{50}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}, 
+		\hyperpage{50}
     \subitem {uvisor\+\_\+box\+\_\+id\+\_\+self}, \hyperpage{52}
     \subitem {uvisor\+\_\+box\+\_\+namespace}, \hyperpage{52}
     \subitem {uvisor\+\_\+box\+\_\+signingkey}, \hyperpage{53}

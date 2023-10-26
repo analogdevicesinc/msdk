@@ -1,6 +1,6 @@
 /* sha3.h */
-#ifndef LIBRARIES_FCL_INCLUDE_UCL_SHA3_H
-#define LIBRARIES_FCL_INCLUDE_UCL_SHA3_H
+#ifndef _UCL_SHA3_H
+#define _UCL_SHA3_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,7 +21,6 @@ extern "C" {
 #define UCL_SHA3_256 10
 #define UCL_SHA3_384 11
 #define UCL_SHA3_512 12
-
 /**
  * SHA3 Algorithm context.
  */
@@ -54,14 +53,14 @@ extern "C" {
 
 typedef struct sha3_ctx
 {
-    /* 1600 bits algorithm hashing state */
-    u64 hash[UCL_SHA3_MAX_PERMSIZE];
-    /* 1536-bit buffer for leftovers */
-    u64 message[UCL_SHA3_MAXQRATE_QWORDS];
-    /* count of bytes in the message[] buffer */
-    u32 rest;
-    /* size of a message block processed at once */
-    u32 block_size;
+	/* 1600 bits algorithm hashing state */
+	u64 hash[UCL_SHA3_MAX_PERMSIZE];
+	/* 1536-bit buffer for leftovers */
+	u64 message[UCL_SHA3_MAXQRATE_QWORDS];
+	/* count of bytes in the message[] buffer */
+	u32 rest;
+	/* size of a message block processed at once */
+	u32 block_size;
 } sha3_ctx;
 
 #define SHA3_SPONGE_WORDS (((1600)/8/*bits to byte*/)/sizeof(u64))
@@ -80,12 +79,12 @@ typedef struct sha3_context_ {
 } ucl_sha3_ctx_t;
 
   // methods for calculating the hash function
- 
+  
 /*============================================================================*/
 /** <b>SHA3-224 Init</b>.
  * The initialisation of SHA3-224.
  *
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @return Error code
  *
@@ -99,7 +98,7 @@ typedef struct sha3_context_ {
 /** <b>SHA3-256 Init</b>.
  * The initialisation of SHA3-256.
  *
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @return Error code
  *
@@ -113,7 +112,7 @@ typedef struct sha3_context_ {
 /** <b>SHA3-384 Init</b>.
  * The initialisation of SHA3-384.
  *
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @return Error code
  *
@@ -127,7 +126,7 @@ typedef struct sha3_context_ {
 /** <b>SHA3-512 Init</b>.
  * The initialisation of SHA3-512.
  *
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @return Error code
  *
@@ -141,7 +140,7 @@ typedef struct sha3_context_ {
 /** <b>SHA3 Core</b>.
  * The core of SHA3, common to all SHA3 hash functions.
  *
- * @param[in, out] context      Pointer to the context
+ * @param[in,out] context      Pointer to the context
  * @param[in]     data         Pointer to the data
  * @param[in]     data_byteLen Data byte length
  *
@@ -163,7 +162,7 @@ typedef struct sha3_context_ {
  * @pre Hash byte length is equal to 28/32/48 or 64 bytes
  *
  * @param[out]    hash Pointer to the digest
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @warning #ucl_sha3_*_init and #ucl_sha3_core must be processed before.
  *
@@ -176,7 +175,7 @@ typedef struct sha3_context_ {
  * @ingroup UCL_SHA3
  */
 
-  int ucl_sha3_finish(u8 *hash, ucl_sha3_ctx_t *ctx);
+  int ucl_sha3_finish(u8 *hash,ucl_sha3_ctx_t *ctx);
 
 /*============================================================================*/
 /** <b>SHA3-224</b>.
@@ -196,7 +195,7 @@ typedef struct sha3_context_ {
  * @ingroup UCL_SHA3
  */
 
-  int ucl_sha3_224(u8 *digest, u8 *msg, u32 msg_Len);
+  int ucl_sha3_224(u8 *digest,u8 *msg,u32 msg_Len);
 
 /*============================================================================*/
 /** <b>SHA3-256</b>.
@@ -215,7 +214,7 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_256(u8 *digest, u8 *msg, u32 msg_Len);
+  int ucl_sha3_256(u8 *digest,u8 *msg,u32 msg_Len);
 
 /*============================================================================*/
 /** <b>SHA3-384</b>.
@@ -234,7 +233,7 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_384(u8 *digest, u8 *msg, u32 msg_Len);
+  int ucl_sha3_384(u8 *digest,u8 *msg,u32 msg_Len);
 
 /*============================================================================*/
 /** <b>SHA3-512</b>.
@@ -253,13 +252,13 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_512(u8 *digest, u8 *msg, u32 msg_Len);
+  int ucl_sha3_512(u8 *digest,u8 *msg,u32 msg_Len);
   int  ucl_shake128_init(ucl_sha3_ctx_t *ctx);
   int  ucl_shake256_init(ucl_sha3_ctx_t *ctx);
-  int ucl_shake_finish(u8 *hash, ucl_sha3_ctx_t *ctx);
+  int ucl_shake_finish(u8 *hash,ucl_sha3_ctx_t *ctx);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif // LIBRARIES_FCL_INCLUDE_UCL_SHA3_H_
+#endif /* _UCL_SHA3_H */

@@ -2,22 +2,22 @@
 \label{group__pcibx__sc}\index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
 \subsection*{List of functions}
 \begin{DoxyCompactItemize}
-\item
+\item 
 int \hyperlink{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e}{pci\+\_\+smartcard\+\_\+config} (S\+C\+A\+R\+D\+\_\+\+C\+O\+NF sconf)
-\begin{DoxyCompactList}\small\item\em Configures the Smart Card communication. \end{DoxyCompactList}\item
-int \hyperlink{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU} (unsigned char A\+P\+D\+U\+\_\+\+Res\mbox{[}$\, $\mbox{]}, unsigned int $\ast$A\+P\+D\+U\+\_\+\+Res\+\_\+len, unsigned int timeout, unsigned char A\+P\+D\+U\+\_\+\+Req\mbox{[}$\, $\mbox{]}, unsigned int $\ast$A\+P\+D\+U\+\_\+\+Req\+\_\+len)
-\begin{DoxyCompactList}\small\item\em Performs an A\+P\+DU exchange with the smart card. This function conforms to the E\+M\+V-\/\+Level 1 specification. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Configures the Smart Card communication. \end{DoxyCompactList}\item 
+int \hyperlink{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU} (unsigned char A\+P\+D\+U\+\_\+\+Res\mbox{[}$\,$\mbox{]}, unsigned int $\ast$A\+P\+D\+U\+\_\+\+Res\+\_\+len, unsigned int timeout, unsigned char A\+P\+D\+U\+\_\+\+Req\mbox{[}$\,$\mbox{]}, unsigned int $\ast$A\+P\+D\+U\+\_\+\+Req\+\_\+len)
+\begin{DoxyCompactList}\small\item\em Performs an A\+P\+DU exchange with the smart card. This function conforms to the E\+M\+V-\/\+Level 1 specification. \end{DoxyCompactList}\item 
 int \hyperlink{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba}{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion} (unsigned int timeout)
-\begin{DoxyCompactList}\small\item\em Wait for the smart card being inserted. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Wait for the smart card being inserted. \end{DoxyCompactList}\item 
 int \hyperlink{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb}{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal} (unsigned int timeout)
 \begin{DoxyCompactList}\small\item\em Wait for the smart card being removed. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-This of module is in charge of handling communication with Smart Cards while conforming to the E\+MV Level-\/1 specification.
+This of module is in charge of handling communication with Smart Cards while conforming to the E\+MV Level-\/1 specification. 
 
 \subsection{Function Documentation}
-\hypertarget{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e}{}\label{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e}
+\hypertarget{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e}{}\label{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e} 
 \index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+config@{pci\+\_\+smartcard\+\_\+config}}
 \index{pci\+\_\+smartcard\+\_\+config@{pci\+\_\+smartcard\+\_\+config}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
 \subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+config()}{pci\_smartcard\_config()}}
@@ -25,7 +25,7 @@ This of module is in charge of handling communication with Smart Cards while con
 
 
 
-Configures the Smart Card communication.
+Configures the Smart Card communication. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -33,17 +33,17 @@ Configures the Smart Card communication.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-See error codes
+See error codes 
 \end{DoxyReturn}
-\hypertarget{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}{}\label{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}
+\hypertarget{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}{}\label{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0} 
 \index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU@{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}}
 \index{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU@{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
 \subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+D\+U()}{pci\_smartcard\_transact\_APDU()}}
-{\footnotesize\ttfamily int pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU (\begin{DoxyParamCaption}\item[{unsigned char}]{A\+P\+D\+U\+\_\+\+Res\mbox{[}$\, $\mbox{]}, }\item[{unsigned int $\ast$}]{A\+P\+D\+U\+\_\+\+Res\+\_\+len, }\item[{unsigned int}]{timeout, }\item[{unsigned char}]{A\+P\+D\+U\+\_\+\+Req\mbox{[}$\, $\mbox{]}, }\item[{unsigned int $\ast$}]{A\+P\+D\+U\+\_\+\+Req\+\_\+len }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU (\begin{DoxyParamCaption}\item[{unsigned char}]{A\+P\+D\+U\+\_\+\+Res\mbox{[}$\,$\mbox{]},  }\item[{unsigned int $\ast$}]{A\+P\+D\+U\+\_\+\+Res\+\_\+len,  }\item[{unsigned int}]{timeout,  }\item[{unsigned char}]{A\+P\+D\+U\+\_\+\+Req\mbox{[}$\,$\mbox{]},  }\item[{unsigned int $\ast$}]{A\+P\+D\+U\+\_\+\+Req\+\_\+len }\end{DoxyParamCaption})}
 
 
 
-Performs an A\+P\+DU exchange with the smart card. This function conforms to the E\+M\+V-\/\+Level 1 specification.
+Performs an A\+P\+DU exchange with the smart card. This function conforms to the E\+M\+V-\/\+Level 1 specification. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -59,9 +59,9 @@ Performs an A\+P\+DU exchange with the smart card. This function conforms to the
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-See error codes
+See error codes 
 \end{DoxyReturn}
-\hypertarget{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba}{}\label{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba}
+\hypertarget{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba}{}\label{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba} 
 \index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}}
 \index{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
 \subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion()}{pci\_smartcard\_wait\_card\_insertion()}}
@@ -69,7 +69,7 @@ See error codes
 
 
 
-Wait for the smart card being inserted.
+Wait for the smart card being inserted. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -77,9 +77,9 @@ Wait for the smart card being inserted.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-See error codes
+See error codes 
 \end{DoxyReturn}
-\hypertarget{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb}{}\label{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb}
+\hypertarget{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb}{}\label{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb} 
 \index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}}
 \index{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
 \subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal()}{pci\_smartcard\_wait\_card\_removal()}}
@@ -87,7 +87,7 @@ See error codes
 
 
 
-Wait for the smart card being removed.
+Wait for the smart card being removed. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -95,5 +95,5 @@ Wait for the smart card being removed.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-See error codes
+See error codes 
 \end{DoxyReturn}

@@ -2,56 +2,56 @@
 \label{group__hypervisor}\index{u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsection*{Data Structures}
 \begin{DoxyCompactItemize}
-\item
+\item 
 struct \hyperlink{group__hypervisor_struct_uvisor_box_acl_item}{Uvisor\+Box\+Acl\+Item}
 \end{DoxyCompactItemize}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
-\item
-\#define \hyperlink{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}(box\+\_\+nameconst Uv\+Box\+Acl\+Item module\+\_\+acl\+\_\+listuint32\+\_\+t module\+\_\+stack\+\_\+size, struct \+\_\+\+\_\+your\+\_\+context, verif\+\_\+key\+\_\+id)
-\begin{DoxyCompactList}\small\item\em Secure box configuration. \end{DoxyCompactList}\item
+\item 
+\#define \hyperlink{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}(box\+\_\+nameconst Uv\+Box\+Acl\+Item module\+\_\+acl\+\_\+listuint32\+\_\+t module\+\_\+stack\+\_\+size,  struct \+\_\+\+\_\+your\+\_\+context,  verif\+\_\+key\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Secure box configuration. \end{DoxyCompactList}\item 
 \#define \hyperlink{group__hypervisor_gafe52bfcc466d459d149c63966c2f4a58}{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}(static const char const namespace)
-\begin{DoxyCompactList}\small\item\em Specify the namespace for a box. C/\+C++ pre-\/processor macro (pseudo-\/function) \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Specify the namespace for a box. C/\+C++ pre-\/processor macro (pseudo-\/function) \end{DoxyCompactList}\item 
 \#define \hyperlink{group__hypervisor_ga7cb080278fc7d660addf9bbff6d3f2da}{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}(uvisor\+\_\+mode)
-\begin{DoxyCompactList}\small\item\em Set mode for the u\+Visor \mbox{[}temporary\mbox{]}. \end{DoxyCompactList}\item
-\#define \hyperlink{group__hypervisor_gae90f548ce110da855610f79301aafe34}{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}(uvisor\+\_\+mode, const Uv\+Box\+Acl main\+\_\+box\+\_\+acl\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Set mode for the u\+Visor \mbox{[}temporary\mbox{]}. \end{DoxyCompactList}\item 
+\#define \hyperlink{group__hypervisor_gae90f548ce110da855610f79301aafe34}{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}(uvisor\+\_\+mode,  const Uv\+Box\+Acl main\+\_\+box\+\_\+acl\+\_\+list)
 \begin{DoxyCompactList}\small\item\em Set mode for the u\+Visor and provide background A\+C\+Ls for the main box. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{List of types}
 \begin{DoxyCompactItemize}
-\item
+\item 
 typedef uint32\+\_\+t \hyperlink{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9}{Uvisor\+Box\+Acl}
 \end{DoxyCompactItemize}
 \subsection*{List of functions}
 \begin{DoxyCompactItemize}
-\item
+\item 
 int \hyperlink{group__hypervisor_ga6e7f7b03367daefa2cbcb7e4f0538ba7}{check\+\_\+acl} (uint32\+\_\+t $\ast$p\+\_\+acl, uint32\+\_\+t keyindex)
-\begin{DoxyCompactList}\small\item\em Hook called by u\+Visor during loading of secure boxes. \end{DoxyCompactList}\item
-int \hyperlink{group__hypervisor_gafdaf52538986a558e934eab65221731e}{rpc\+\_\+fncall\+\_\+waitfor} (const T\+F\+N\+\_\+\+Ptr fn\+\_\+ptr\+\_\+array\mbox{[}$\, $\mbox{]}, size\+\_\+t fn\+\_\+count, int $\ast$box\+\_\+id\+\_\+caller, uint32\+\_\+t timeout\+\_\+ms)
-\begin{DoxyCompactList}\small\item\em Handle incoming R\+PC, setting the parameter box\+\_\+id\+\_\+caller to the caller box ID. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Hook called by u\+Visor during loading of secure boxes. \end{DoxyCompactList}\item 
+int \hyperlink{group__hypervisor_gafdaf52538986a558e934eab65221731e}{rpc\+\_\+fncall\+\_\+waitfor} (const T\+F\+N\+\_\+\+Ptr fn\+\_\+ptr\+\_\+array\mbox{[}$\,$\mbox{]}, size\+\_\+t fn\+\_\+count, int $\ast$box\+\_\+id\+\_\+caller, uint32\+\_\+t timeout\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Handle incoming R\+PC, setting the parameter box\+\_\+id\+\_\+caller to the caller box ID. \end{DoxyCompactList}\item 
 int \hyperlink{group__hypervisor_gab099ca7d08f626791039573dbff14af5}{uvisor\+\_\+box\+\_\+id\+\_\+self} (void)
-\begin{DoxyCompactList}\small\item\em Get the ID of the current box. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Get the ID of the current box. \end{DoxyCompactList}\item 
 int \hyperlink{group__hypervisor_gab605e738e6bc828cd9efb6eacca79685}{uvisor\+\_\+box\+\_\+namespace} (int box\+\_\+id, char $\ast$box\+\_\+namespace, size\+\_\+t length)
-\begin{DoxyCompactList}\small\item\em Copy the namespace of the specified box to the provided buffer. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Copy the namespace of the specified box to the provided buffer. \end{DoxyCompactList}\item 
 int \hyperlink{group__hypervisor_ga82e5cbff1a1a26974ed1e5f493607cf2}{uvisor\+\_\+box\+\_\+signingkey} (int box\+\_\+id, int $\ast$keyindex)
-\begin{DoxyCompactList}\small\item\em Get the signing key ID of the specified box, hence its box privilege. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Get the signing key ID of the specified box, hence its box privilege. \end{DoxyCompactList}\item 
 void \hyperlink{group__hypervisor_gaa02ff863ab222f97723b60e59f6d92d8}{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Clear pending status of I\+R\+Qn. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Clear pending status of I\+R\+Qn. \end{DoxyCompactList}\item 
 void \hyperlink{group__hypervisor_ga7beb8d1fe68378367bcb8085a2d16cd5}{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Disable I\+R\+Qn for the currently active box. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Disable I\+R\+Qn for the currently active box. \end{DoxyCompactList}\item 
 void \hyperlink{group__hypervisor_ga3dd01fda80a57db36a78994d0cae91ee}{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Enable I\+R\+Qn for the currently active box. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Enable I\+R\+Qn for the currently active box. \end{DoxyCompactList}\item 
 int \hyperlink{group__hypervisor_ga880e3229f62cfff1c638c5dd6a1e9050}{v\+I\+R\+Q\+\_\+\+Get\+Level} (void)
-\begin{DoxyCompactList}\small\item\em Get level of currently active I\+R\+Qn, if any. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Get level of currently active I\+R\+Qn, if any. \end{DoxyCompactList}\item 
 uint32\+\_\+t \hyperlink{group__hypervisor_gad450b31ead2ec4f7bb2dbe07ebcfd8e7}{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Get pending status of I\+R\+Qn. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Get pending status of I\+R\+Qn. \end{DoxyCompactList}\item 
 uint32\+\_\+t \hyperlink{group__hypervisor_ga3da0be917ac42157f0d33e3e1412379b}{v\+I\+R\+Q\+\_\+\+Get\+Priority} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Get priority level of I\+R\+Qn. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Get priority level of I\+R\+Qn. \end{DoxyCompactList}\item 
 uint32\+\_\+t \hyperlink{group__hypervisor_gaaa9c852e90077dd4c553240d769b3658}{v\+I\+R\+Q\+\_\+\+Get\+Vector} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Get the I\+SR registered for I\+R\+Qn. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Get the I\+SR registered for I\+R\+Qn. \end{DoxyCompactList}\item 
 void \hyperlink{group__hypervisor_gab5570c2fa5a04a3a183cdef960a43c6b}{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ} (uint32\+\_\+t irqn)
-\begin{DoxyCompactList}\small\item\em Set pending status of I\+R\+Qn. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Set pending status of I\+R\+Qn. \end{DoxyCompactList}\item 
 void \hyperlink{group__hypervisor_ga3c725e15df2f30fdaed9f1873a7eebdf}{v\+I\+R\+Q\+\_\+\+Set\+Priority} (uint32\+\_\+t irqn, uint32\+\_\+t priority)
-\begin{DoxyCompactList}\small\item\em Set priority level of I\+R\+Qn. \end{DoxyCompactList}\item
+\begin{DoxyCompactList}\small\item\em Set priority level of I\+R\+Qn. \end{DoxyCompactList}\item 
 void \hyperlink{group__hypervisor_ga3bf7917bc9150d1b91bec5d41962ff13}{v\+I\+R\+Q\+\_\+\+Set\+Vector} (uint32\+\_\+t irqn, uint32\+\_\+t vector)
 \begin{DoxyCompactList}\small\item\em Register an I\+SR to the currently active box. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -105,19 +105,19 @@ Here you can find detailed documentation for\+:
 \hypertarget{group__hypervisor_struct_uvisor_box_acl_item}{}
 \subsubsection{struct Uvisor\+Box\+Acl\+Item}
 \{ item\+\_\+description \} \begin{DoxyFields}{Data Fields}
-\hypertarget{group__hypervisor_ae5e1b8a311ba7d63a3380828d266bc82}{}\label{group__hypervisor_ae5e1b8a311ba7d63a3380828d266bc82}
+\hypertarget{group__hypervisor_ae5e1b8a311ba7d63a3380828d266bc82}{}\label{group__hypervisor_ae5e1b8a311ba7d63a3380828d266bc82} 
 \hyperlink{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9}{Uvisor\+Box\+Acl}&
 acl&
 \\
 \hline
 
-\hypertarget{group__hypervisor_aebb70c2aab3407a9f05334c47131a43b}{}\label{group__hypervisor_aebb70c2aab3407a9f05334c47131a43b}
+\hypertarget{group__hypervisor_aebb70c2aab3407a9f05334c47131a43b}{}\label{group__hypervisor_aebb70c2aab3407a9f05334c47131a43b} 
 uint32\+\_\+t&
 length&
 \\
 \hline
 
-\hypertarget{group__hypervisor_a8cb9377ef5ed00f632f5744aa51f7b81}{}\label{group__hypervisor_a8cb9377ef5ed00f632f5744aa51f7b81}
+\hypertarget{group__hypervisor_a8cb9377ef5ed00f632f5744aa51f7b81}{}\label{group__hypervisor_a8cb9377ef5ed00f632f5744aa51f7b81} 
 const volatile void $\ast$&
 start&
 \\
@@ -127,15 +127,15 @@ start&
 
 
 \subsection{Macro Definition Documentation}
-\hypertarget{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}{}\label{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}
+\hypertarget{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}{}\label{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}}
 \index{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}{UVISOR\_BOX\_CONFIG}}
-{\footnotesize\ttfamily \#define U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG(\begin{DoxyParamCaption}\item[{}]{box\+\_\+nameconst Uv\+Box\+Acl\+Item module\+\_\+acl\+\_\+listuint32\+\_\+tmodule\+\_\+stack\+\_\+size, }\item[{}]{struct \+\_\+\+\_\+your\+\_\+context, }\item[{}]{verif\+\_\+key\+\_\+id }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \#define U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG(\begin{DoxyParamCaption}\item[{}]{box\+\_\+nameconst Uv\+Box\+Acl\+Item module\+\_\+acl\+\_\+listuint32\+\_\+tmodule\+\_\+stack\+\_\+size,  }\item[{}]{struct \+\_\+\+\_\+your\+\_\+context,  }\item[{}]{verif\+\_\+key\+\_\+id }\end{DoxyParamCaption})}
 
 
 
-Secure box configuration.
+Secure box configuration. 
 
 C/\+C++ pre-\/processor macro (pseudo-\/function)
 
@@ -162,7 +162,7 @@ Example\+: ``` \#include \char`\"{}uvisor-\/lib/uvisor-\/lib.\+h\char`\"{}
 
 // Configure the secure box compartment. U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE(\char`\"{}com.\+example.\+my-\/box-\/name\char`\"{}); U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG(my\+\_\+box\+\_\+name, g\+\_\+box\+\_\+acl, B\+O\+X\+\_\+\+S\+T\+A\+C\+K\+\_\+\+S\+I\+ZE, Box\+Context);
 
-``` \hypertarget{group__hypervisor_gafe52bfcc466d459d149c63966c2f4a58}{}\label{group__hypervisor_gafe52bfcc466d459d149c63966c2f4a58}
+``` \hypertarget{group__hypervisor_gafe52bfcc466d459d149c63966c2f4a58}{}\label{group__hypervisor_gafe52bfcc466d459d149c63966c2f4a58} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}}
 \index{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}{UVISOR\_BOX\_NAMESPACE}}
@@ -170,7 +170,7 @@ Example\+: ``` \#include \char`\"{}uvisor-\/lib/uvisor-\/lib.\+h\char`\"{}
 
 
 
-Specify the namespace for a box. C/\+C++ pre-\/processor macro (pseudo-\/function)
+Specify the namespace for a box. C/\+C++ pre-\/processor macro (pseudo-\/function) 
 
 
 \begin{DoxyParams}{Parameters}
@@ -185,15 +185,15 @@ If you don\textquotesingle{}t have a reverse domain name, use a G\+U\+ID string 
 
 Use of this configuration macro before U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG is required. If you do not wish to give your box a namespace, specify N\+U\+LL as the namespace to create an anonymous box.
 
-Example\+:
+Example\+: 
 \begin{DoxyCode}
 \textcolor{preprocessor}{#include "uvisor-lib/uvisor-lib.h"}
 
 \textcolor{comment}{// Configure the secure box.}
 \hyperlink{group__hypervisor_gafe52bfcc466d459d149c63966c2f4a58}{UVISOR\_BOX\_NAMESPACE}(\textcolor{stringliteral}{"com.example.my-box-name"});
-\hyperlink{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}{UVISOR\_BOX\_CONFIG}(my\_box\_name, UVISOR\_BOX\_STACK\_SIZE);
+\hyperlink{group__hypervisor_ga6143739a0475a71e8002f540de3c53f0}{UVISOR\_BOX\_CONFIG}(my\_box\_name, UVISOR\_BOX\_STACK\_SIZE); 
 \end{DoxyCode}
- \hypertarget{group__hypervisor_ga7cb080278fc7d660addf9bbff6d3f2da}{}\label{group__hypervisor_ga7cb080278fc7d660addf9bbff6d3f2da}
+ \hypertarget{group__hypervisor_ga7cb080278fc7d660addf9bbff6d3f2da}{}\label{group__hypervisor_ga7cb080278fc7d660addf9bbff6d3f2da} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}}
 \index{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}{UVISOR\_SET\_MODE}}
@@ -201,7 +201,7 @@ Example\+:
 
 
 
-Set mode for the u\+Visor \mbox{[}temporary\mbox{]}.
+Set mode for the u\+Visor \mbox{[}temporary\mbox{]}. 
 
 C/\+C++ pre-\/processor macro (object declaration)
 
@@ -231,16 +231,16 @@ Example\+:
 
 \begin{DoxyEnumerate}
 \item This macro is only needed temporarily (u\+Visor disabled by default) and will be removed in the future.
-\item This macro must be used only once in the top level yotta executable.
-\end{DoxyEnumerate}\hypertarget{group__hypervisor_gae90f548ce110da855610f79301aafe34}{}\label{group__hypervisor_gae90f548ce110da855610f79301aafe34}
+\item This macro must be used only once in the top level yotta executable. 
+\end{DoxyEnumerate}\hypertarget{group__hypervisor_gae90f548ce110da855610f79301aafe34}{}\label{group__hypervisor_gae90f548ce110da855610f79301aafe34} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}}
 \index{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}{UVISOR\_SET\_MODE\_ACL}}
-{\footnotesize\ttfamily \#define U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL(\begin{DoxyParamCaption}\item[{}]{uvisor\+\_\+mode, }\item[{}]{const Uv\+Box\+Aclmain\+\_\+box\+\_\+acl\+\_\+list }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \#define U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL(\begin{DoxyParamCaption}\item[{}]{uvisor\+\_\+mode,  }\item[{}]{const Uv\+Box\+Aclmain\+\_\+box\+\_\+acl\+\_\+list }\end{DoxyParamCaption})}
 
 
 
-Set mode for the u\+Visor and provide background A\+C\+Ls for the main box.
+Set mode for the u\+Visor and provide background A\+C\+Ls for the main box. 
 
 C/\+C++ pre-\/processor macro (object declaration)
 
@@ -263,9 +263,9 @@ Example\+:
 \textcolor{preprocessor}{#include "uvisor-lib/uvisor-lib.h"}
 \textcolor{comment}{// Create background ACLs for the main box. }
 \textcolor{keyword}{static} \textcolor{keyword}{const} UvBoxAclItem g\_background\_acl[] = \{
-  \{UART0,      \textcolor{keyword}{sizeof}(*UART0), UVISOR\_TACL\_PERIPHERAL\},
-  \{UART1,      \textcolor{keyword}{sizeof}(*UART1), UVISOR\_TACL\_PERIPHERAL\},
-  \{PIT,        \textcolor{keyword}{sizeof}(*PIT),  UVISOR\_TACL\_PERIPHERAL\},
+  \{UART0,       \textcolor{keyword}{sizeof}(*UART0), UVISOR\_TACL\_PERIPHERAL\},
+  \{UART1,       \textcolor{keyword}{sizeof}(*UART1), UVISOR\_TACL\_PERIPHERAL\},
+  \{PIT,         \textcolor{keyword}{sizeof}(*PIT),   UVISOR\_TACL\_PERIPHERAL\},
 \};
 
 \textcolor{comment}{// Set the uVisor mode. }
@@ -278,28 +278,28 @@ Example\+:
 
 \begin{DoxyEnumerate}
 \item This macro is only needed temporarily (u\+Visor disabled by default) and will be removed in the future.
-\item This macro must be used only once in the top level yotta executable.
+\item This macro must be used only once in the top level yotta executable. 
 \end{DoxyEnumerate}
 
 \subsection{Typedef Documentation}
-\hypertarget{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9}{}\label{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9}
+\hypertarget{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9}{}\label{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!Uvisor\+Box\+Acl@{Uvisor\+Box\+Acl}}
 \index{Uvisor\+Box\+Acl@{Uvisor\+Box\+Acl}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{Uvisor\+Box\+Acl}{UvisorBoxAcl}}
 {\footnotesize\ttfamily typedef uint32\+\_\+t \hyperlink{group__hypervisor_ga1527b3a7e3df3007490669cbd26b4fe9}{Uvisor\+Box\+Acl}}
 
-\{ item\+\_\+description \}
+\{ item\+\_\+description \} 
 
 \subsection{Function Documentation}
-\hypertarget{group__hypervisor_ga6e7f7b03367daefa2cbcb7e4f0538ba7}{}\label{group__hypervisor_ga6e7f7b03367daefa2cbcb7e4f0538ba7}
+\hypertarget{group__hypervisor_ga6e7f7b03367daefa2cbcb7e4f0538ba7}{}\label{group__hypervisor_ga6e7f7b03367daefa2cbcb7e4f0538ba7} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!check\+\_\+acl@{check\+\_\+acl}}
 \index{check\+\_\+acl@{check\+\_\+acl}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{check\+\_\+acl()}{check\_acl()}}
-{\footnotesize\ttfamily int check\+\_\+acl (\begin{DoxyParamCaption}\item[{uint32\+\_\+t $\ast$}]{p\+\_\+acl, }\item[{uint32\+\_\+t}]{keyindex }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int check\+\_\+acl (\begin{DoxyParamCaption}\item[{uint32\+\_\+t $\ast$}]{p\+\_\+acl,  }\item[{uint32\+\_\+t}]{keyindex }\end{DoxyParamCaption})}
 
 
 
-Hook called by u\+Visor during loading of secure boxes.
+Hook called by u\+Visor during loading of secure boxes. 
 
 It is the responsibility of the platform developer to implement this function to restrict A\+C\+Ls based on the box privilege of the box being loaded.
 
@@ -311,17 +311,17 @@ It is the responsibility of the platform developer to implement this function to
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-0 if the A\+CL conforms to the A\+CL policy
+0 if the A\+CL conforms to the A\+CL policy 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_gafdaf52538986a558e934eab65221731e}{}\label{group__hypervisor_gafdaf52538986a558e934eab65221731e}
+\hypertarget{group__hypervisor_gafdaf52538986a558e934eab65221731e}{}\label{group__hypervisor_gafdaf52538986a558e934eab65221731e} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!rpc\+\_\+fncall\+\_\+waitfor@{rpc\+\_\+fncall\+\_\+waitfor}}
 \index{rpc\+\_\+fncall\+\_\+waitfor@{rpc\+\_\+fncall\+\_\+waitfor}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{rpc\+\_\+fncall\+\_\+waitfor()}{rpc\_fncall\_waitfor()}}
-{\footnotesize\ttfamily int rpc\+\_\+fncall\+\_\+waitfor (\begin{DoxyParamCaption}\item[{const T\+F\+N\+\_\+\+Ptr}]{fn\+\_\+ptr\+\_\+array\mbox{[}$\, $\mbox{]}, }\item[{size\+\_\+t}]{fn\+\_\+count, }\item[{int $\ast$}]{box\+\_\+id\+\_\+caller, }\item[{uint32\+\_\+t}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int rpc\+\_\+fncall\+\_\+waitfor (\begin{DoxyParamCaption}\item[{const T\+F\+N\+\_\+\+Ptr}]{fn\+\_\+ptr\+\_\+array\mbox{[}$\,$\mbox{]},  }\item[{size\+\_\+t}]{fn\+\_\+count,  }\item[{int $\ast$}]{box\+\_\+id\+\_\+caller,  }\item[{uint32\+\_\+t}]{timeout\+\_\+ms }\end{DoxyParamCaption})}
 
 
 
-Handle incoming R\+PC, setting the parameter box\+\_\+id\+\_\+caller to the caller box ID.
+Handle incoming R\+PC, setting the parameter box\+\_\+id\+\_\+caller to the caller box ID. 
 
 When deciding which memory to provide for rpc\+\_\+fncall\+\_\+waitfor to use when writing {\ttfamily box\+\_\+id\+\_\+caller}, strongly prefer thread local storage when multiple threads in a box can handle incoming R\+PC.
 
@@ -337,9 +337,9 @@ When deciding which memory to provide for rpc\+\_\+fncall\+\_\+waitfor to use wh
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-\{ description\+\_\+of\+\_\+the\+\_\+return\+\_\+value \}
+\{ description\+\_\+of\+\_\+the\+\_\+return\+\_\+value \} 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_gab099ca7d08f626791039573dbff14af5}{}\label{group__hypervisor_gab099ca7d08f626791039573dbff14af5}
+\hypertarget{group__hypervisor_gab099ca7d08f626791039573dbff14af5}{}\label{group__hypervisor_gab099ca7d08f626791039573dbff14af5} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!uvisor\+\_\+box\+\_\+id\+\_\+self@{uvisor\+\_\+box\+\_\+id\+\_\+self}}
 \index{uvisor\+\_\+box\+\_\+id\+\_\+self@{uvisor\+\_\+box\+\_\+id\+\_\+self}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{uvisor\+\_\+box\+\_\+id\+\_\+self()}{uvisor\_box\_id\_self()}}
@@ -347,20 +347,20 @@ When deciding which memory to provide for rpc\+\_\+fncall\+\_\+waitfor to use wh
 
 
 
-Get the ID of the current box.
+Get the ID of the current box. 
 
 \begin{DoxyReturn}{Returns}
-The ID of the current box
+The ID of the current box 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_gab605e738e6bc828cd9efb6eacca79685}{}\label{group__hypervisor_gab605e738e6bc828cd9efb6eacca79685}
+\hypertarget{group__hypervisor_gab605e738e6bc828cd9efb6eacca79685}{}\label{group__hypervisor_gab605e738e6bc828cd9efb6eacca79685} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!uvisor\+\_\+box\+\_\+namespace@{uvisor\+\_\+box\+\_\+namespace}}
 \index{uvisor\+\_\+box\+\_\+namespace@{uvisor\+\_\+box\+\_\+namespace}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{uvisor\+\_\+box\+\_\+namespace()}{uvisor\_box\_namespace()}}
-{\footnotesize\ttfamily int uvisor\+\_\+box\+\_\+namespace (\begin{DoxyParamCaption}\item[{int}]{box\+\_\+id, }\item[{char $\ast$}]{box\+\_\+namespace, }\item[{size\+\_\+t}]{length }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int uvisor\+\_\+box\+\_\+namespace (\begin{DoxyParamCaption}\item[{int}]{box\+\_\+id,  }\item[{char $\ast$}]{box\+\_\+namespace,  }\item[{size\+\_\+t}]{length }\end{DoxyParamCaption})}
 
 
 
-Copy the namespace of the specified box to the provided buffer.
+Copy the namespace of the specified box to the provided buffer. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -372,7 +372,7 @@ Copy the namespace of the specified box to the provided buffer.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Return how many bytes were copied into box\+\_\+namespace.
+Return how many bytes were copied into box\+\_\+namespace. 
 \end{DoxyReturn}
 
 \begin{DoxyRetVals}{Return values}
@@ -383,15 +383,15 @@ Return how many bytes were copied into box\+\_\+namespace.
 {\em U\+V\+I\+S\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+C\+E\+\_\+\+A\+N\+O\+N\+Y\+M\+O\+US} & if the box is anonymous. \\
 \hline
 \end{DoxyRetVals}
-\hypertarget{group__hypervisor_ga82e5cbff1a1a26974ed1e5f493607cf2}{}\label{group__hypervisor_ga82e5cbff1a1a26974ed1e5f493607cf2}
+\hypertarget{group__hypervisor_ga82e5cbff1a1a26974ed1e5f493607cf2}{}\label{group__hypervisor_ga82e5cbff1a1a26974ed1e5f493607cf2} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!uvisor\+\_\+box\+\_\+signingkey@{uvisor\+\_\+box\+\_\+signingkey}}
 \index{uvisor\+\_\+box\+\_\+signingkey@{uvisor\+\_\+box\+\_\+signingkey}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{uvisor\+\_\+box\+\_\+signingkey()}{uvisor\_box\_signingkey()}}
-{\footnotesize\ttfamily int uvisor\+\_\+box\+\_\+signingkey (\begin{DoxyParamCaption}\item[{int}]{box\+\_\+id, }\item[{int $\ast$}]{keyindex }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int uvisor\+\_\+box\+\_\+signingkey (\begin{DoxyParamCaption}\item[{int}]{box\+\_\+id,  }\item[{int $\ast$}]{keyindex }\end{DoxyParamCaption})}
 
 
 
-Get the signing key ID of the specified box, hence its box privilege.
+Get the signing key ID of the specified box, hence its box privilege. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -401,14 +401,14 @@ Get the signing key ID of the specified box, hence its box privilege.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Status of execution
+Status of execution 
 \end{DoxyReturn}
 
 \begin{DoxyRetVals}{Return values}
 {\em U\+V\+I\+S\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+B\+O\+X\+\_\+\+ID} & if the provided box ID is invalid. \\
 \hline
 \end{DoxyRetVals}
-\hypertarget{group__hypervisor_gaa02ff863ab222f97723b60e59f6d92d8}{}\label{group__hypervisor_gaa02ff863ab222f97723b60e59f6d92d8}
+\hypertarget{group__hypervisor_gaa02ff863ab222f97723b60e59f6d92d8}{}\label{group__hypervisor_gaa02ff863ab222f97723b60e59f6d92d8} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ}}
 \index{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+R\+Q()}{vIRQ\_ClearPendingIRQ()}}
@@ -416,14 +416,14 @@ Status of execution
 
 
 
-Clear pending status of I\+R\+Qn.
+Clear pending status of I\+R\+Qn. 
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em irqn} & I\+R\+Qn \\
 \hline
 \end{DoxyParams}
-\hypertarget{group__hypervisor_ga7beb8d1fe68378367bcb8085a2d16cd5}{}\label{group__hypervisor_ga7beb8d1fe68378367bcb8085a2d16cd5}
+\hypertarget{group__hypervisor_ga7beb8d1fe68378367bcb8085a2d16cd5}{}\label{group__hypervisor_ga7beb8d1fe68378367bcb8085a2d16cd5} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ}}
 \index{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Disable\+I\+R\+Q()}{vIRQ\_DisableIRQ()}}
@@ -431,14 +431,14 @@ Clear pending status of I\+R\+Qn.
 
 
 
-Disable I\+R\+Qn for the currently active box.
+Disable I\+R\+Qn for the currently active box. 
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em irqn} & I\+R\+Qn \\
 \hline
 \end{DoxyParams}
-\hypertarget{group__hypervisor_ga3dd01fda80a57db36a78994d0cae91ee}{}\label{group__hypervisor_ga3dd01fda80a57db36a78994d0cae91ee}
+\hypertarget{group__hypervisor_ga3dd01fda80a57db36a78994d0cae91ee}{}\label{group__hypervisor_ga3dd01fda80a57db36a78994d0cae91ee} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ}}
 \index{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Enable\+I\+R\+Q()}{vIRQ\_EnableIRQ()}}
@@ -446,14 +446,14 @@ Disable I\+R\+Qn for the currently active box.
 
 
 
-Enable I\+R\+Qn for the currently active box.
+Enable I\+R\+Qn for the currently active box. 
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em irqn} & I\+R\+Qn \\
 \hline
 \end{DoxyParams}
-\hypertarget{group__hypervisor_ga880e3229f62cfff1c638c5dd6a1e9050}{}\label{group__hypervisor_ga880e3229f62cfff1c638c5dd6a1e9050}
+\hypertarget{group__hypervisor_ga880e3229f62cfff1c638c5dd6a1e9050}{}\label{group__hypervisor_ga880e3229f62cfff1c638c5dd6a1e9050} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Level@{v\+I\+R\+Q\+\_\+\+Get\+Level}}
 \index{v\+I\+R\+Q\+\_\+\+Get\+Level@{v\+I\+R\+Q\+\_\+\+Get\+Level}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Get\+Level()}{vIRQ\_GetLevel()}}
@@ -461,12 +461,12 @@ Enable I\+R\+Qn for the currently active box.
 
 
 
-Get level of currently active I\+R\+Qn, if any.
+Get level of currently active I\+R\+Qn, if any. 
 
 \begin{DoxyReturn}{Returns}
-The priority level of the currently active I\+R\+Qn, if any; -\/1 otherwise
+The priority level of the currently active I\+R\+Qn, if any; -\/1 otherwise 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_gad450b31ead2ec4f7bb2dbe07ebcfd8e7}{}\label{group__hypervisor_gad450b31ead2ec4f7bb2dbe07ebcfd8e7}
+\hypertarget{group__hypervisor_gad450b31ead2ec4f7bb2dbe07ebcfd8e7}{}\label{group__hypervisor_gad450b31ead2ec4f7bb2dbe07ebcfd8e7} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ}}
 \index{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+R\+Q()}{vIRQ\_GetPendingIRQ()}}
@@ -474,7 +474,7 @@ The priority level of the currently active I\+R\+Qn, if any; -\/1 otherwise
 
 
 
-Get pending status of I\+R\+Qn.
+Get pending status of I\+R\+Qn. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -482,9 +482,9 @@ Get pending status of I\+R\+Qn.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-pending status of I\+R\+Qn
+pending status of I\+R\+Qn 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_ga3da0be917ac42157f0d33e3e1412379b}{}\label{group__hypervisor_ga3da0be917ac42157f0d33e3e1412379b}
+\hypertarget{group__hypervisor_ga3da0be917ac42157f0d33e3e1412379b}{}\label{group__hypervisor_ga3da0be917ac42157f0d33e3e1412379b} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Priority@{v\+I\+R\+Q\+\_\+\+Get\+Priority}}
 \index{v\+I\+R\+Q\+\_\+\+Get\+Priority@{v\+I\+R\+Q\+\_\+\+Get\+Priority}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Get\+Priority()}{vIRQ\_GetPriority()}}
@@ -492,7 +492,7 @@ pending status of I\+R\+Qn
 
 
 
-Get priority level of I\+R\+Qn.
+Get priority level of I\+R\+Qn. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -500,9 +500,9 @@ Get priority level of I\+R\+Qn.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The priority level of I\+R\+Qn, if available; 0 otherwise
+The priority level of I\+R\+Qn, if available; 0 otherwise 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_gaaa9c852e90077dd4c553240d769b3658}{}\label{group__hypervisor_gaaa9c852e90077dd4c553240d769b3658}
+\hypertarget{group__hypervisor_gaaa9c852e90077dd4c553240d769b3658}{}\label{group__hypervisor_gaaa9c852e90077dd4c553240d769b3658} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Vector@{v\+I\+R\+Q\+\_\+\+Get\+Vector}}
 \index{v\+I\+R\+Q\+\_\+\+Get\+Vector@{v\+I\+R\+Q\+\_\+\+Get\+Vector}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Get\+Vector()}{vIRQ\_GetVector()}}
@@ -510,7 +510,7 @@ The priority level of I\+R\+Qn, if available; 0 otherwise
 
 
 
-Get the I\+SR registered for I\+R\+Qn.
+Get the I\+SR registered for I\+R\+Qn. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -518,9 +518,9 @@ Get the I\+SR registered for I\+R\+Qn.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The I\+SR registered for I\+R\+Qn, if present; 0 otherwise
+The I\+SR registered for I\+R\+Qn, if present; 0 otherwise 
 \end{DoxyReturn}
-\hypertarget{group__hypervisor_gab5570c2fa5a04a3a183cdef960a43c6b}{}\label{group__hypervisor_gab5570c2fa5a04a3a183cdef960a43c6b}
+\hypertarget{group__hypervisor_gab5570c2fa5a04a3a183cdef960a43c6b}{}\label{group__hypervisor_gab5570c2fa5a04a3a183cdef960a43c6b} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ}}
 \index{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+R\+Q()}{vIRQ\_SetPendingIRQ()}}
@@ -528,22 +528,22 @@ The I\+SR registered for I\+R\+Qn, if present; 0 otherwise
 
 
 
-Set pending status of I\+R\+Qn.
+Set pending status of I\+R\+Qn. 
 
 
 \begin{DoxyParams}[1]{Parameters}
 \mbox{\tt in}  & {\em irqn} & I\+R\+Qn \\
 \hline
 \end{DoxyParams}
-\hypertarget{group__hypervisor_ga3c725e15df2f30fdaed9f1873a7eebdf}{}\label{group__hypervisor_ga3c725e15df2f30fdaed9f1873a7eebdf}
+\hypertarget{group__hypervisor_ga3c725e15df2f30fdaed9f1873a7eebdf}{}\label{group__hypervisor_ga3c725e15df2f30fdaed9f1873a7eebdf} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Set\+Priority@{v\+I\+R\+Q\+\_\+\+Set\+Priority}}
 \index{v\+I\+R\+Q\+\_\+\+Set\+Priority@{v\+I\+R\+Q\+\_\+\+Set\+Priority}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Set\+Priority()}{vIRQ\_SetPriority()}}
-{\footnotesize\ttfamily void v\+I\+R\+Q\+\_\+\+Set\+Priority (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{irqn, }\item[{uint32\+\_\+t}]{priority }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void v\+I\+R\+Q\+\_\+\+Set\+Priority (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{irqn,  }\item[{uint32\+\_\+t}]{priority }\end{DoxyParamCaption})}
 
 
 
-Set priority level of I\+R\+Qn.
+Set priority level of I\+R\+Qn. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -552,15 +552,15 @@ Set priority level of I\+R\+Qn.
 \mbox{\tt in}  & {\em priority} & Priority level (minimum\+: 1) \\
 \hline
 \end{DoxyParams}
-\hypertarget{group__hypervisor_ga3bf7917bc9150d1b91bec5d41962ff13}{}\label{group__hypervisor_ga3bf7917bc9150d1b91bec5d41962ff13}
+\hypertarget{group__hypervisor_ga3bf7917bc9150d1b91bec5d41962ff13}{}\label{group__hypervisor_ga3bf7917bc9150d1b91bec5d41962ff13} 
 \index{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Set\+Vector@{v\+I\+R\+Q\+\_\+\+Set\+Vector}}
 \index{v\+I\+R\+Q\+\_\+\+Set\+Vector@{v\+I\+R\+Q\+\_\+\+Set\+Vector}!u\+Visor A\+PI@{u\+Visor A\+PI}}
 \subsubsection{\texorpdfstring{v\+I\+R\+Q\+\_\+\+Set\+Vector()}{vIRQ\_SetVector()}}
-{\footnotesize\ttfamily void v\+I\+R\+Q\+\_\+\+Set\+Vector (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{irqn, }\item[{uint32\+\_\+t}]{vector }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void v\+I\+R\+Q\+\_\+\+Set\+Vector (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{irqn,  }\item[{uint32\+\_\+t}]{vector }\end{DoxyParamCaption})}
 
 
 
-Register an I\+SR to the currently active box.
+Register an I\+SR to the currently active box. 
 
 
 \begin{DoxyParams}[1]{Parameters}

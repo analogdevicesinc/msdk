@@ -47,13 +47,13 @@
  # ownership rights.
  #
  ##############################################################################
-
+ 
 ifeq "$(FCL_DIR)" ""
 $(error FCL_DIR must be specified")
 endif
 
-TARGET_UC := $(subst m, M, $(subst a, A, $(subst x, X, $(TARGET))))
-TARGET_LC := $(subst M, m, $(subst A, a, $(subst X, x, $(TARGET))))
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 # Specify the library variant.
 ifeq "$(MFLOAT_ABI)" "hardfp"
@@ -97,7 +97,7 @@ export FCL_BUILD_DIR
 LIBS += ${FCL_BUILD_DIR}/${FCL_LIB}
 # Add rule to build the Driver Library
 ${FCL_BUILD_DIR}/${FCL_LIB}: ${FCL_C_FILES} ${FCL_H_FILES}
-    $(MAKE) -f ${FCL_DIR}/libfcl.mk  lib BUILD_DIR=${FCL_BUILD_DIR}
+	$(MAKE) -f ${FCL_DIR}/libfcl.mk  lib BUILD_DIR=${FCL_BUILD_DIR} 
 
 clean.fcl:
 ###############################################################################
@@ -149,4 +149,4 @@ clean.fcl:
  # ownership rights.
  #
  ##############################################################################
-    @rm -rf ${FCL_BUILD_DIR}/*
+	@rm -rf ${FCL_BUILD_DIR}/*

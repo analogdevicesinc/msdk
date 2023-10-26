@@ -1,20 +1,20 @@
-function initMenu(relPath, searchEnabled, serverSide, searchPage, search) {
-  function makeTree(data, relPath) {
+function initMenu(relPath,searchEnabled,serverSide,searchPage,search) {
+  function makeTree(data,relPath) {
     var result='';
     if ('children' in data) {
       result+='<ul>';
       for (var i in data.children) {
         result+='<li><a href="'+relPath+data.children[i].url+'">'+
                                 data.children[i].text+'</a>'+
-                                makeTree(data.children[i], relPath)+'</li>';
+                                makeTree(data.children[i],relPath)+'</li>';
       }
       result+='</ul>';
     }
     return result;
   }
 
-  $('#main-nav').append(makeTree(menudata, relPath));
-  $('#main-nav').children(':first').addClass('sm sm-dox').attr('id', 'main-menu');
+  $('#main-nav').append(makeTree(menudata,relPath));
+  $('#main-nav').children(':first').addClass('sm sm-dox').attr('id','main-menu');
   if (searchEnabled) {
     if (serverSide) {
       $('#main-menu').append('<li style="float:right"><div id="MSearchBox" class="MSearchBoxInactive"><div class="left"><form id="FSearchBox" action="'+searchPage+'" method="get"><img id="MSearchSelect" src="'+relPath+'search/mag.png" alt=""/><input type="text" id="MSearchField" name="query" value="'+search+'" size="20" accesskey="S" onfocus="searchBox.OnSearchFieldFocus(true)" onblur="searchBox.OnSearchFieldFocus(false)"></form></div><div class="right"></div></div></li>');

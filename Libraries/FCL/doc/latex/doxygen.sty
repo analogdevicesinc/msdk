@@ -273,10 +273,10 @@
     \tabulinesep=1mm%
     \par%
     \ifthenelse{\equal{#1}{}}%
-      {\begin{longtabu} spread 0pt [l]{|X[-1, l]|X[-1, l]|}}% name + description
+      {\begin{longtabu} spread 0pt [l]{|X[-1,l]|X[-1,l]|}}% name + description
     {\ifthenelse{\equal{#1}{1}}%
-      {\begin{longtabu} spread 0pt [l]{|X[-1, l]|X[-1, l]|X[-1, l]|}}% in/out + name + desc
-      {\begin{longtabu} spread 0pt [l]{|X[-1, l]|X[-1, l]|X[-1, l]|X[-1, l]|}}% in/out + type + name + desc
+      {\begin{longtabu} spread 0pt [l]{|X[-1,l]|X[-1,l]|X[-1,l]|}}% in/out + name + desc
+      {\begin{longtabu} spread 0pt [l]{|X[-1,l]|X[-1,l]|X[-1,l]|X[-1,l]|}}% in/out + type + name + desc
     }
     \multicolumn{2}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray} #2}\\[1ex]%
     \hline%
@@ -293,7 +293,7 @@
 \newenvironment{DoxyFields}[1]{%
     \tabulinesep=1mm%
     \par%
-    \begin{longtabu} spread 0pt [l]{|X[-1, r]|X[-1, l]|X[-1, l]|}%
+    \begin{longtabu} spread 0pt [l]{|X[-1,r]|X[-1,l]|X[-1,l]|}%
     \multicolumn{3}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray} #1}\\[1ex]%
     \hline%
     \endfirsthead%
@@ -309,7 +309,7 @@
 \newenvironment{DoxyEnumFields}[1]{%
     \tabulinesep=1mm%
     \par%
-    \begin{longtabu} spread 0pt [l]{|X[-1, r]|X[-1, l]|}%
+    \begin{longtabu} spread 0pt [l]{|X[-1,r]|X[-1,l]|}%
     \multicolumn{2}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray} #1}\\[1ex]%
     \hline%
     \endfirsthead%
@@ -323,7 +323,7 @@
 
 % Used for parameters within a detailed function description
 \newenvironment{DoxyParamCaption}{%
-  \renewcommand{\item}[2][]{\\ \hspace*{2.0cm} ##1 {\em ##2}}%
+  \renewcommand{\item}[2][]{\\ \hspace*{2.0cm} ##1 {\em ##2}}% 
 }{%
 }
 
@@ -331,7 +331,7 @@
 \newenvironment{DoxyRetVals}[1]{%
     \tabulinesep=1mm%
     \par%
-    \begin{longtabu} spread 0pt [l]{|X[-1, r]|X[-1, l]|}%
+    \begin{longtabu} spread 0pt [l]{|X[-1,r]|X[-1,l]|}%
     \multicolumn{2}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray} #1}\\[1ex]%
     \hline%
     \endfirsthead%
@@ -347,7 +347,7 @@
 \newenvironment{DoxyExceptions}[1]{%
     \tabulinesep=1mm%
     \par%
-    \begin{longtabu} spread 0pt [l]{|X[-1, r]|X[-1, l]|}%
+    \begin{longtabu} spread 0pt [l]{|X[-1,r]|X[-1,l]|}%
     \multicolumn{2}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray} #1}\\[1ex]%
     \hline%
     \endfirsthead%
@@ -363,7 +363,7 @@
 \newenvironment{DoxyTemplParams}[1]{%
     \tabulinesep=1mm%
     \par%
-    \begin{longtabu} spread 0pt [l]{|X[-1, r]|X[-1, l]|}%
+    \begin{longtabu} spread 0pt [l]{|X[-1,r]|X[-1,l]|}%
     \multicolumn{2}{l}{\hspace{-6pt}\bfseries\fontseries{bc}\selectfont\color{darkgray} #1}\\[1ex]%
     \hline%
     \endfirsthead%
@@ -459,7 +459,7 @@
 
 % Used when hyperlinks are turned off
 \newcommand{\doxyref}[3]{%
-  \textbf{#1} (\textnormal{#2}\, \pageref{#3})%
+  \textbf{#1} (\textnormal{#2}\,\pageref{#3})%
 }
 
 % Used to link to a table when hyperlinks are turned on
@@ -477,17 +477,17 @@
 \newcommand{\rcurly}{\}}
 
 % Colors used for syntax highlighting
-\definecolor{comment}{rgb}{0.5, 0.0, 0.0}
-\definecolor{keyword}{rgb}{0.0, 0.5, 0.0}
-\definecolor{keywordtype}{rgb}{0.38, 0.25, 0.125}
-\definecolor{keywordflow}{rgb}{0.88, 0.5, 0.0}
-\definecolor{preprocessor}{rgb}{0.5, 0.38, 0.125}
-\definecolor{stringliteral}{rgb}{0.0, 0.125, 0.25}
-\definecolor{charliteral}{rgb}{0.0, 0.5, 0.5}
-\definecolor{vhdldigit}{rgb}{1.0, 0.0, 1.0}
-\definecolor{vhdlkeyword}{rgb}{0.43, 0.0, 0.43}
-\definecolor{vhdllogic}{rgb}{1.0, 0.0, 0.0}
-\definecolor{vhdlchar}{rgb}{0.0, 0.0, 0.0}
+\definecolor{comment}{rgb}{0.5,0.0,0.0}
+\definecolor{keyword}{rgb}{0.0,0.5,0.0}
+\definecolor{keywordtype}{rgb}{0.38,0.25,0.125}
+\definecolor{keywordflow}{rgb}{0.88,0.5,0.0}
+\definecolor{preprocessor}{rgb}{0.5,0.38,0.125}
+\definecolor{stringliteral}{rgb}{0.0,0.125,0.25}
+\definecolor{charliteral}{rgb}{0.0,0.5,0.5}
+\definecolor{vhdldigit}{rgb}{1.0,0.0,1.0}
+\definecolor{vhdlkeyword}{rgb}{0.43,0.0,0.43}
+\definecolor{vhdllogic}{rgb}{1.0,0.0,0.0}
+\definecolor{vhdlchar}{rgb}{0.0,0.0,0.0}
 
 % Color used for table heading
 \newcommand{\tableheadbgcolor}{lightgray}%

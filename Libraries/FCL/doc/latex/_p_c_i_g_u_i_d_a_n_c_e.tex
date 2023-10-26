@@ -124,7 +124,7 @@ In order to add a new box (every instance of box\+\_\+\+N\+A\+ME below must be r
 
 \begin{DoxyEnumerate}
 \item create a new folder box\+\_\+\+N\+A\+ME in ./sources (or in a sub folder located under ./sources).
-\item create a file sourcefile.\+cpp containing\+:
+\item create a file sourcefile.\+cpp containing\+: 
 \begin{DoxyCode}
 \textcolor{preprocessor}{  #include "uvisor-lib/uvisor-lib.h"}
 \textcolor{preprocessor}{  #include "mbed.h"}
@@ -161,7 +161,7 @@ UVISOR\_BOX\_CONFIG(BOX\_NAME, my\_acl, 1024, box\_context, SIGNING\_KEY\_XXXXX)
 
 \item in the above, replace S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+X\+X\+X\+XX by the appropriate signing key identifier (one of S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+FW, S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+T\+R\+U\+S\+T\+ED, S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+O\+T\+H\+ER)
 \item extend the file ./mbed-\/os/target/\+T\+A\+R\+G\+E\+T\+\_\+\+Maxim/common/max325xx.ld.\+inc
-\item below the marker \char`\"{}\+S\+E\+C\+U\+R\+E B\+O\+X\+E\+S\char`\"{}, add this set of definitions\+:
+\item below the marker \char`\"{}\+S\+E\+C\+U\+R\+E B\+O\+X\+E\+S\char`\"{}, add this set of definitions\+: 
 \begin{DoxyCode}
 .text.box\_NAME\_cfg :
  \{
@@ -185,9 +185,9 @@ UVISOR\_BOX\_CONFIG(BOX\_NAME, my\_acl, 1024, box\_context, SIGNING\_KEY\_XXXXX)
  \_\_end\_box\_NAME             = LOADADDR(.data.box\_NAME\_datainit)+SIZEOF(.data.box\_NAME\_datainit);
 \end{DoxyCode}
 
-\item Modify the top Makefile\+: in the target {\ttfamily \%.elf.\+signed\+: \%.elf Makefile}, add an additional line\+:
+\item Modify the top Makefile\+: in the target {\ttfamily \%.elf.\+signed\+: \%.elf Makefile}, add an additional line\+: 
 \begin{DoxyCode}
-$(call signmodule, box\_NAME, $(SIGNINGKEY\_XXX\_PEM), $(TEMPDIR)$\{<F\}.temp)
+$(call signmodule,box\_NAME,$(SIGNINGKEY\_XXX\_PEM),$(TEMPDIR)$\{<F\}.temp)
 \end{DoxyCode}
  Replace S\+I\+G\+N\+I\+N\+G\+K\+E\+Y\+\_\+\+X\+X\+X\+\_\+\+P\+EM by the appropriate file name that contains the private signing key.
 \end{DoxyEnumerate}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_fwsign}{}\subsection{Firmware signature}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_fwsign}
@@ -256,7 +256,7 @@ Mitigation of fuzzing is also implemented\+:
 The provided solution ensures the minimal software configuration through the use of G\+CC\textquotesingle{}s options\+:
 \begin{DoxyItemize}
 \item -\/fdata-\/sections -\/ffunction-\/sections for compiling
-\item -\/\+Wl, --gc-\/section for linking
+\item -\/\+Wl,--gc-\/section for linking
 \end{DoxyItemize}
 
 The above options eliminates dead code. Hence, by definition, only the strictly useful code is embedded in the final binary.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_crypto}{}\subsection{Cryptographic services}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_crypto}
@@ -304,5 +304,5 @@ Adaptation of the Deeptrust for P\+CI to a new platform requires the following s
 \item Implement remote communication link for online transactions
 \end{DoxyItemize}
 \item Development of the client application(s) leveraging the P\+CI security services and secure sandbox services
-\item Integration of other third party applications
+\item Integration of other third party applications 
 \end{DoxyItemize}

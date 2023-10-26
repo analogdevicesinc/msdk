@@ -27,11 +27,9 @@
  * Purpose : SIA256
  *
  *==========================================================================*/
-
-#ifndef LIBRARIES_FCL_INCLUDE_UCL_UCL_SIA256_H_
-#define LIBRARIES_FCL_INCLUDE_UCL_UCL_SIA256_H_
-
 #ifndef PROFILE_2
+#ifndef _UCL_SIA256_H_
+#define _UCL_SIA256_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -132,7 +130,7 @@ int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen);
 /** <b>SIA256 Init</b>.
  * The initialisation of SIA256.
  *
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @return Error code
  *
@@ -148,7 +146,7 @@ int __API__ ucl_sia256_init(ucl_sia256_ctx_t *context);
 /** <b>SIA256 Core</b>.
  * The core of SIA256.
  *
- * @param[in, out] context      Pointer to the context
+ * @param[in,out] context      Pointer to the context
  * @param[in]     data         Pointer to the data
  * @param[in]     data_byteLen Data byte length
  *
@@ -173,7 +171,7 @@ int __API__ ucl_sia256_core(ucl_sia256_ctx_t *context, u8 *data,
  * @pre Hash byte length is equal to 32
  *
  * @param[out]    hash Pointer to the digest
- * @param[in, out] context Pointer to the context
+ * @param[in,out] context Pointer to the context
  *
  * @warning #ucl_sia256_init and #ucl_sia256_core must be processed before.
  *
@@ -190,8 +188,7 @@ int __API__ ucl_sia256_finish(u8 *hash, ucl_sia256_ctx_t *context);
 
 #ifdef __cplusplus
 }
-#endif /* __cplusplus__  */
+#endif /* _ cplusplus  */
 
+#endif /* _UCL_SIA256_H_ */
 #endif//PROFILE2
-
-#endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_SIA256_H_
