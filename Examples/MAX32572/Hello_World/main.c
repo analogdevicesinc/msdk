@@ -39,11 +39,7 @@
 
 /***** Includes *****/
 #include <stdio.h>
-#include <stdint.h>
-#include "mxc_device.h"
 #include "led.h"
-#include "pb.h"
-#include "board.h"
 #include "mxc_delay.h"
 
 /***** Definitions *****/
@@ -55,7 +51,7 @@
 // *****************************************************************************
 int main(void)
 {
-    int count = 0;
+	int count = 0;
 
     printf("Hello World!\n");
 
