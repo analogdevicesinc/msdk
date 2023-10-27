@@ -136,7 +136,10 @@ void MXC_ADC_SetExtScale(mxc_adc_scale_t scale)
 {
     MXC_ADC_RevA_SetExtScale((mxc_adc_reva_regs_t *)MXC_ADC, scale);
 }
-
+void MXC_ADC_RefSelect(mxc_adc_ref_t ref)
+{
+    MXC_ADC_RevA_RefSelect((mxc_adc_reva_regs_t *)MXC_ADC, ref);
+}
 void MXC_ADC_EnableMonitor(mxc_adc_monitor_t monitor)
 {
     MXC_ADC_RevA_EnableMonitor((mxc_adc_reva_regs_t *)MXC_ADC, monitor);
