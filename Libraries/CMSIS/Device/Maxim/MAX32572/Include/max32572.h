@@ -687,7 +687,7 @@ typedef enum {
 #define MXC_SPI0                        ((mxc_spi_regs_t *)MXC_BASE_SPI0)
 #define MXC_BASE_SPI1                   ((uint32_t)0x40047000UL)
 #define MXC_SPI1                        ((mxc_spi_regs_t *)MXC_BASE_SPI1)
-// SPI2 does not exist.
+// SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
 #define MXC_BASE_SPI3                   ((uint32_t)0x400BE000UL)
 #define MXC_SPI3                        ((mxc_spi_regs_t *)MXC_BASE_SPI3)
 
@@ -698,10 +698,8 @@ typedef enum {
 
 #define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : (i) == 3 ? MXC_SPI3 : 0)
 
-#ifndef __riscv
 #define MXC_SPI_GET_IRQ(i) \
     (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 3 ? SPI3_IRQn : 0)
-#endif // __riscv
 
 /******************************************************************************/
 /*                                                                       TRNG */
