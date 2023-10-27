@@ -4,6 +4,7 @@
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 /******************************************************************************
+/******************************************************************************
  *
  * Copyright 2023 Analog Devices, Inc.
  *
@@ -21,7 +22,7 @@
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
