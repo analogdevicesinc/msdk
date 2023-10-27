@@ -68,6 +68,16 @@
        <description>ADC Reference Select</description>
        <bitRange>[4:4]</bitRange>
        <access>read-write</access>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>MXC_ADC_REF_INT</name>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>MXC_ADC_REF_EXT</name>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>ref_scale</name>

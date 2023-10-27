@@ -427,13 +427,13 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             reqselRx = MXC_DMA_REQUEST_SPI1RX;
             break;
         case 2:
-            reqselTx = MXC_DMA_REQUEST_SPI2RX;
+            reqselRx = MXC_DMA_REQUEST_SPI2RX;
             break;
         case 3:
-            reqselTx = MXC_DMA_REQUEST_SPI3RX;
+            reqselRx = MXC_DMA_REQUEST_SPI3RX;
             break;
         case 4:
-            reqselTx = MXC_DMA_REQUEST_SPI4RX;
+            reqselRx = MXC_DMA_REQUEST_SPI4RX;
             break;
         default:
             return E_BAD_PARAM;
