@@ -16,7 +16,7 @@
  *
  ******************************************************************************
  *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45,24 +45,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright © 2009 Innova Card.
- * All Rights Reserved. Do not disclose.
- *
- * This software is the confidential and proprietary information of
- * Innova Card ("Confidential Information"). You siall not
- * disclose such Confidential Information and siall use it only in
- * accordance with the terms of the license agreement you entered
- * into with Innova Card.
- *
- * Innova Card makes no representations or warranties about the suitability of
- * the software, either express or implied, including but not limited to
- * the implied warranties of merchantability, fitness for a particular purpose,
- * or non-infrigement. Innova Card siall not be liable for any damages suffered
- * by licensee as the result of using, modifying or distributing this software
- * or its derivatives.
  *
  ******************************************************************************/
 
