@@ -51,10 +51,11 @@
 
 /* ************************************************************************** */
 
-// Max 3 Possible Target Select Options per SPI instance
+// Max 4 Possible Target Select Options per SPI instance
 #define MXC_SPI_TS0_MASK_POS (0)
 #define MXC_SPI_TS1_MASK_POS (1)
 #define MXC_SPI_TS2_MASK_POS (2)
+#define MXC_SPI_TS3_MASK_POS (3)
 
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
                  int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)
@@ -109,8 +110,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
             break;
 
         case MXC_SPI_INTERFACE_QUAD:
-            temp_cfg = gpio_cfg_spi0_quad;
-            break;
+            return E_NOT_SUPPORTED;
 
         case MXC_SPI_INTERFACE_3WIRE:
             temp_cfg = gpio_cfg_spi0_3wire;
@@ -149,8 +149,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
             break;
 
         case MXC_SPI_INTERFACE_QUAD:
-            temp_cfg = gpio_cfg_spi1_quad;
-            break;
+            return E_NOT_SUPPORTED;
 
         case MXC_SPI_INTERFACE_3WIRE:
             temp_cfg = gpio_cfg_spi1_3wire;
@@ -549,11 +548,17 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
     if (use_dma_tx) {
         switch (spi_num) {
         case 0:
-            tx_reqsel = MXC_DMA_REQUEST_SPI1TX;
+            tx_reqsel = MXC_DMA_REQUEST_SPI0TX;
             break;
 
         case 1:
-            tx_reqsel = MXC_DMA_REQUEST_SPI0TX;
+            tx_reqsel = MXC_DMA_REQUEST_SPI1TX;
+            break;
+
+        // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
+
+        case 3:
+            tx_reqsel = MXC_DMA_REQUEST_SPI3TX;
             break;
 
         default:
@@ -564,11 +569,17 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
     if (use_dma_rx) {
         switch (spi_num) {
         case 0:
-            rx_reqsel = MXC_DMA_REQUEST_SPI1RX;
+            rx_reqsel = MXC_DMA_REQUEST_SPI0RX;
             break;
 
         case 1:
-            rx_reqsel = MXC_DMA_REQUEST_SPI0RX;
+            rx_reqsel = MXC_DMA_REQUEST_SPI1RX;
+            break;
+
+        // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
+
+        case 3:
+            rx_reqsel = MXC_DMA_REQUEST_SPI3RX;
             break;
 
         default:

@@ -167,7 +167,6 @@ struct _mxc_spi_pins_t {
     bool ss0;                   ///< Target select pin 0.
     bool ss1;                   ///< Target select pin 1.
     bool ss2;                   ///< Target select pin 2.
-    bool ss3;
 
     bool vddioh;                ///< VDDIOH Select
 
@@ -178,6 +177,7 @@ struct _mxc_spi_pins_t {
     bool sdio3;                 ///< SDIO3 pin
 
     mxc_gpio_drvstr_t drvstr;   ///< Drive strength setting
+    bool ss3;
 };
 
 typedef struct {
