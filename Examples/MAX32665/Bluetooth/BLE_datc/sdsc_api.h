@@ -56,8 +56,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_BLE_DATC_SDSC_API_H_
-#define EXAMPLES_MAX32665_BLE_DATC_SDSC_API_H_
+#ifndef EXAMPLES_MAX32665_BLUETOOTH_BLE_DATC_SDSC_API_H_
+#define EXAMPLES_MAX32665_BLUETOOTH_BLE_DATC_SDSC_API_H_
 
 #include "att_api.h"
 
@@ -95,4 +95,4 @@ void SecDatSvcDiscover(dmConnId_t connId, uint16_t *pHdlList);
 };
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_DATC_SDSC_API_H_
+#endif // EXAMPLES_MAX32665_BLUETOOTH_BLE_DATC_SDSC_API_H_

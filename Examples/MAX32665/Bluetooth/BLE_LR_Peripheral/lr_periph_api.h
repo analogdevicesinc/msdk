@@ -8,7 +8,7 @@
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
  * 
- *  Paritial Copyright (c) 2023 Analog Devices, Inc.
+ *  Paritial Copright (c) 2022-2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
-#define EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
+
+#ifndef EXAMPLES_MAX32665_BLUETOOTH_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
+#define EXAMPLES_MAX32665_BLUETOOTH_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
 
 #include "wsf_os.h"
 
@@ -81,4 +82,4 @@ void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
+#endif // EXAMPLES_MAX32665_BLUETOOTH_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_

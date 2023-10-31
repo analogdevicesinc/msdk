@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_TERMINAL_H_
-#define EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_TERMINAL_H_
+#ifndef EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_INCLUDE_TERMINAL_H_
+#define EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_INCLUDE_TERMINAL_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -70,4 +70,4 @@ void terminal_hexdump(const char *title, char *buf, unsigned int len);
 int terminal_read_num(unsigned int timeout);
 int terminal_select_from_list(const char *title, const list_t *items, int nb_items, int nb_col);
 
-#endif // EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_TERMINAL_H_
+#endif // EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_INCLUDE_TERMINAL_H_
