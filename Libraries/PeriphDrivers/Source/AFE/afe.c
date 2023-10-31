@@ -764,7 +764,7 @@ static int afe_setup_non_por(void)
     // mask all bits but st_dis, or hart_en bits.
     read_val &= (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
 
-    if (device_version >= MXC_MAX32675_REV_B4) {
+    if (device_version >= MXC_AFE_VERSION_POST_RESET) {
         // ST_DIS MUST be set, and HART_EN MAY be set
         if ((read_val !=
              (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) &&
@@ -810,7 +810,7 @@ int afe_setup(mxc_tmr_regs_t *tmr)
     // NEW on ME16-0D, ensure reset is released for the AFE via GRC
     //  Reset could be active due to SW error recovery.
     //
-    if (device_version >= MXC_MAX32675_REV_B4) {
+    if (device_version >= MXC_AFE_VERSION_POST_RESET) {
         MXC_GCR->rst1 &= ~MXC_F_GCR_RST1_AFE;
     }
 

@@ -531,6 +531,44 @@ void hart_sap_enable_request(uint32_t state)
     }
 }
 
+int hart_reset_check_and_handle(void)
+{
+    int retval = E_NO_ERROR;
+    uint32_t read_val = 0;
+    uint32_t masked_read_val = 0;
+
+    // Check to see if HART is still enabled after a reset
+    retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // MASK off all status bits but HART_EN and ST_DIS
+    masked_read_val = read_val & (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
+
+    // If BOTH HART_EN and ST_DIS are set, then a NON-POR reset has occurred.
+    //  in this case we need to clear ST_DIS to allow the HART state machine to proceed
+    //  normally.
+    if (masked_read_val == (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) {
+
+        // Both HART_EN and ST_DIS are set. (NON POR reset indicated)
+
+        // Clear State Machine Disable
+        read_val &= ~MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS;
+
+        retval = afe_write_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, read_val);
+        if (retval != E_NO_ERROR) {
+            return retval;
+        }
+    }
+    else {
+        // HART_EN or ST_DIS are clear. (Normal, POR behavior)
+    }
+
+    return E_SUCCESS;
+
+}
+
 // TODO(ADI): Consider adding some parameters to this function to specify
 //  clock divider settings. Complicated due to differences in MAX32675 and
 //  MAX32680 divider output methodologies.
@@ -862,6 +900,17 @@ int hart_uart_setup(uint32_t test_mode)
         if (retval != E_NO_ERROR) {
             return E_COMM_ERR;
         }
+    }
+
+    //
+    // In the case a NON POR reset occurred we must clear ST_DIS to allow normal
+    //  HART state machine behavior.  This is designed to prevent the HART state
+    //  machine from operating when a reset occurs, but leaves the internal and
+    //  external biases enabled.
+    //
+    retval = hart_reset_check_and_handle();
+    if (retval != E_NO_ERROR) {
+        return retval;
     }
 
     //
