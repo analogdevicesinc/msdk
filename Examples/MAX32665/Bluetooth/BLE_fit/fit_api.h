@@ -2,11 +2,13 @@
 /*!
  *  \file
  *
- *  \brief  Proprietary data transfer server sample application.
+ *  \brief  Fitness sample application interface.
  *
- *  Copyright (c) 2012-2018 Arm Ltd. All Rights Reserved.
+ *  Copyright (c) 2011-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
+ *
+ *  Partial Copyright (c) 2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,13 +23,21 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef EXAMPLES_MAX32665_BLE_DATS_DATS_API_H_
-#define EXAMPLES_MAX32665_BLE_DATS_DATS_API_H_
+#ifndef EXAMPLES_MAX32665_BLE_FIT_FIT_API_H_
+#define EXAMPLES_MAX32665_BLE_FIT_FIT_API_H_
 
 #include "wsf_os.h"
 
 #ifdef __cplusplus
 extern "C" {
+#endif
+
+/**************************************************************************************************
+  Macros
+**************************************************************************************************/
+
+#ifndef FIT_CONN_MAX
+#define FIT_CONN_MAX 1
 #endif
 
 /**************************************************************************************************
@@ -40,7 +50,7 @@ extern "C" {
  *  \return None.
  */
 /*************************************************************************************************/
-void DatsStart(void);
+void FitStart(void);
 
 /*************************************************************************************************/
 /*!
@@ -51,7 +61,7 @@ void DatsStart(void);
  *  \return None.
  */
 /*************************************************************************************************/
-void DatsHandlerInit(wsfHandlerId_t handlerId);
+void FitHandlerInit(wsfHandlerId_t handlerId);
 
 /*************************************************************************************************/
 /*!
@@ -63,10 +73,10 @@ void DatsHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
+void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_DATS_DATS_API_H_
+#endif // EXAMPLES_MAX32665_BLE_FIT_FIT_API_H_

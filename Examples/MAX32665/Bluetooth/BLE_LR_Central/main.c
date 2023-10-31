@@ -1,24 +1,26 @@
 /*************************************************************************************************/
 /*!
  * @file    main.c
- * @brief   Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
-*
-*  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
-*
-*  Copyright (c) 2019 Packetcraft, Inc.
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*/
+ * @brief   Long range demo on a central device
+ *
+ *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
+ * 
+ *  Copyright (c) 2019 Packetcraft, Inc.
+ *
+ *  Partial Copyright (c) 2023 Analog Devices, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 /*************************************************************************************************/
 
 #include <string.h>
@@ -58,7 +60,7 @@
 #include "pal_timer.h"
 #include "pal_sys.h"
 
-#include "fit_api.h"
+#include "lr_central_api.h"
 #include "app_ui.h"
 
 /**************************************************************************************************
@@ -67,14 +69,14 @@
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
-#define DEFAULT_TX_POWER 0 /* dBm */
+#define DEFAULT_TX_POWER 4 /* dBm */
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 16 } };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -82,12 +84,14 @@ static LlRtCfg_t mainLlRtCfg;
 
 volatile int wutTrimComplete;
 
+extern uint8_t appCodedPhyDemo;
+
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
 
 /*! \brief  Stack initialization for app. */
-extern void StackInitFit(void);
+extern void StackInitDatc(void);
 
 /*************************************************************************************************/
 /*!
@@ -219,6 +223,11 @@ int main(void)
     */
     mainBbRtCfg.clkPpm = 20;
 
+    /* Increase the default ACL buffer size and count */
+    mainLlRtCfg.numTxBufs = 8;
+    mainLlRtCfg.numRxBufs = 8;
+    mainLlRtCfg.maxAclLen = 256;
+
     /* Set the default connection power level */
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 #endif
@@ -231,6 +240,12 @@ int main(void)
 
     mainWsfInit();
     AppTerminalInit();
+
+    APP_TRACE_INFO0("==========================================");
+    APP_TRACE_INFO0("Long distance scanner demo (CODED PHY S=8)");
+    APP_TRACE_INFO1("BT_VER=%d", BT_VER);
+    APP_TRACE_INFO0("==========================================");
+    appCodedPhyDemo = 1;
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();
@@ -267,8 +282,8 @@ int main(void)
     PalBbDisable();
 #endif
 
-    StackInitFit();
-    FitStart();
+    StackInitDatc();
+    DatcStart();
 
     WsfOsEnterMainLoop();
 

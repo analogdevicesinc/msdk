@@ -1,24 +1,26 @@
 /*************************************************************************************************/
 /*!
  * @file    main.c
- * @brief   Simple BLE Data Server for unformatted data exchange.
-*
-*  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
-*
-*  Copyright (c) 2019 Packetcraft, Inc.
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License.
-*/
+ * @brief   Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
+ *
+ *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
+ *
+ *  Copyright (c) 2019 Packetcraft, Inc.
+ *
+ *  Partial Copyright (c) 2023 Analog Devices, Inc.)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 /*************************************************************************************************/
 
 #include <string.h>
@@ -48,8 +50,6 @@
 #include "wut.h"
 #include "rtc.h"
 #include "trimsir_regs.h"
-#include "pal_timer.h"
-#include "pal_sys.h"
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 #include "ll_init_api.h"
@@ -57,8 +57,10 @@
 
 #include "pal_bb.h"
 #include "pal_cfg.h"
+#include "pal_timer.h"
+#include "pal_sys.h"
 
-#include "dats_api.h"
+#include "fit_api.h"
 #include "app_ui.h"
 
 /**************************************************************************************************
@@ -74,7 +76,7 @@
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 16 } };
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -87,7 +89,7 @@ volatile int wutTrimComplete;
 **************************************************************************************************/
 
 /*! \brief  Stack initialization for app. */
-extern void StackInitDats(void);
+extern void StackInitFit(void);
 
 /*************************************************************************************************/
 /*!
@@ -141,7 +143,6 @@ void WUT_IRQHandler(void)
 {
     MXC_WUT_Handler();
     PalTimerIRQCallBack();
-    NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 
 /*************************************************************************************************/
@@ -234,7 +235,6 @@ int main(void)
     AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-
     WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
@@ -269,8 +269,8 @@ int main(void)
     PalBbDisable();
 #endif
 
-    StackInitDats();
-    DatsStart();
+    StackInitFit();
+    FitStart();
 
     WsfOsEnterMainLoop();
 
