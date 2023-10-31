@@ -98,4 +98,3 @@ void ssd1306_set_buffer_pixel_util(uint8_t *buf, uint16_t buf_w, uint32_t buf_ma
                                    uint16_t y, uint8_t color, uint8_t is_opaque);
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_SSD1306_H_
-
