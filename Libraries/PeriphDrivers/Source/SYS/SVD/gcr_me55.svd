@@ -495,12 +495,6 @@
             </enumeratedValues>
           </field>
           <field derivedFrom="ERFO_EN">
-            <name>ERTCO_EN</name>
-            <description>32 kHz Oscillator Enable.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="ERFO_EN">
             <name>ISO_EN</name>
             <description>60 MHz Internal Oscillator Enable.</description>
             <bitOffset>18</bitOffset>
@@ -993,12 +987,6 @@
             <name>RAM6LS_EN</name>
             <description>System RAM 6 Light Sleep Mode.</description>
             <bitOffset>22</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="RAM0LS_EN">
-            <name>ICCLS_EN</name>
-            <description>ICache RAM Light Sleep Mode.</description>
-            <bitOffset>24</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
