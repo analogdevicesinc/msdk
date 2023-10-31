@@ -1440,7 +1440,7 @@ void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
         }
 
         /* Call the callback */
-        MXC_I2C_RevA_AsyncCallback(i2c, E_COMM_ERR);
+        MXC_I2C_RevA_AsyncCallback(i2c, E_NO_ERROR);
 
         /* Clear the async state */
         MXC_I2C_RevA_AsyncStop(i2c);
