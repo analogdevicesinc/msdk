@@ -147,6 +147,23 @@ struct _mxc_uart_req_t {
 /* ************************************************************************* */
 
 /**
+ * @brief   Set the UART pin mapping to use.  This should be called *before* MXC_UART_Init!
+ * 
+ * @param   uart  Pointer to UART registers to set the pin mapping for
+ * @param   pin_mapping  Pin mapping to use (i.e. UART0A, UART0B).  See datasheet for mapping assignments.
+ * @return  E_NO_ERROR if successful, error code otherwise.
+ */
+int MXC_UART_SetPinMapping(mxc_uart_regs_t *uart, sys_map_t pin_mapping);
+
+/**
+ * @brief   Get the current UART pin mapping to use.
+ * 
+ * @param   uart  Pointer to UART registers to get the pin mapping for
+ * @return  The current pin mapping.
+ */
+sys_map_t MXC_UART_GetPinMapping(mxc_uart_regs_t *uart);
+
+/**
  * @brief   Initialize and enable UART peripheral.
  * 
  * This function initializes everything necessary to call a UART transaction function.
