@@ -503,6 +503,57 @@ static int hart_uart_pins_idle_mode(void)
     return retval;
 }
 
+
+static int hart_uart_pins_external_test_mode_state(void)
+{
+    int retval = 0;
+    mxc_gpio_cfg_t hart_pin;
+
+    // RTS Input to AFE, LOW is transmit mode, so Pulling Up
+    hart_pin.port = HART_RTS_GPIO_PORT;
+    hart_pin.mask = HART_RTS_GPIO_PIN;
+    hart_pin.pad  = MXC_GPIO_PAD_PULL_UP;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // CD output from AFE, Tristate
+    hart_pin.port = HART_CD_GPIO_PORT;
+    hart_pin.mask = HART_CD_GPIO_PIN;
+    hart_pin.pad  = MXC_GPIO_PAD_NONE;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // IN input to AFE, pulling Up
+    hart_pin.port = HART_IN_GPIO_PORT;
+    hart_pin.mask = HART_IN_GPIO_PIN;
+    hart_pin.pad  = MXC_GPIO_PAD_PULL_UP;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // IN output from AFE, Tristate
+    hart_pin.port = HART_OUT_GPIO_PORT;
+    hart_pin.mask = HART_OUT_GPIO_PIN;
+    hart_pin.pad  = MXC_GPIO_PAD_NONE;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
+
 void hart_rts_transmit_mode(void)
 {
     MXC_GPIO_OutClr(HART_RTS_GPIO_PORT, HART_RTS_GPIO_PIN);
@@ -878,21 +929,40 @@ int hart_uart_setup(uint32_t test_mode)
         // Test mode is required for physical layer test to output constant bit
         // Frequencies.
 
-        // Force mode for constant transmit.
-        retval = setup_hart_in_pin();
-        if (retval != E_NO_ERROR) {
-            return retval;
-        }
-
         if (test_mode == HART_TEST_MODE_TX_1200) {
+            // Force mode for constant transmit.
+            retval = setup_hart_in_pin();
+            if (retval != E_NO_ERROR) {
+                return retval;
+            }
+
             // Set (1) means 1200 signal
             MXC_GPIO_OutSet(HART_IN_GPIO_PORT, HART_IN_GPIO_PIN);
-        } else {
+
+            hart_rts_transmit_mode(); // start transmit
+        } else if (test_mode == HART_TEST_MODE_TX_2200) {
+            // Force mode for constant transmit.
+            retval = setup_hart_in_pin();
+            if (retval != E_NO_ERROR) {
+                return retval;
+            }
+
             // Clear (0) means 2200 signal
             MXC_GPIO_OutClr(HART_IN_GPIO_PORT, HART_IN_GPIO_PIN);
+
+            hart_rts_transmit_mode(); // start transmit
+        } else if (test_mode == HART_TEST_MODE_EXTERNAL) {
+            // Allow HART UART pins to be driven externally
+            retval = hart_uart_pins_external_test_mode_state();
+
+            if (retval != E_NO_ERROR) {
+                return retval;
+            }
+        } else {
+            // Unknown Mode
+            return E_BAD_PARAM;
         }
 
-        hart_rts_transmit_mode(); // start transmit
     } else {
         hart_rts_receive_mode();
 
