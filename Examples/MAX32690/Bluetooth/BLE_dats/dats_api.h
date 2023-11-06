@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef EXAMPLES_MAX32690_BLE_DATS_DATS_API_H_
-#define EXAMPLES_MAX32690_BLE_DATS_DATS_API_H_
+#ifndef EXAMPLES_MAX32690_BLUETOOTH_BLE_DATS_DATS_API_H_
+#define EXAMPLES_MAX32690_BLUETOOTH_BLE_DATS_DATS_API_H_
 
 #include "wsf_os.h"
 
@@ -69,4 +69,4 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif // EXAMPLES_MAX32690_BLE_DATS_DATS_API_H_
+#endif // EXAMPLES_MAX32690_BLUETOOTH_BLE_DATS_DATS_API_H_

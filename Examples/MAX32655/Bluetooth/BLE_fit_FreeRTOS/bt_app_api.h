@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef EXAMPLES_MAX32655_BLE_FIT_FREERTOS_API_H_
-#define EXAMPLES_MAX32655_BLE_FIT_FREERTOS_API_H_
+#ifndef EXAMPLES_MAX32655_BLUETOOTH_BLE_FIT_FREERTOS_API_H_
+#define EXAMPLES_MAX32655_BLUETOOTH_BLE_FIT_FREERTOS_API_H_
 
 #include "wsf_os.h"
 
@@ -73,4 +73,4 @@ void AppEventHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif // EXAMPLES_MAX32655_BLE_FIT_FREERTOS_API_H_
+#endif // EXAMPLES_MAX32655_BLUETOOTH_BLE_FIT_FREERTOS_API_H_

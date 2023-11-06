@@ -17,8 +17,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_
-#define EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_
+#ifndef EXAMPLES_MAX32655_BLUETOOTH_BLE_MCS_PROFILES_MCS_MCS_API_H_
+#define EXAMPLES_MAX32655_BLUETOOTH_BLE_MCS_PROFILES_MCS_MCS_API_H_
 
 #include "wsf_types.h"
 #include "att_api.h"
@@ -113,4 +113,4 @@ void McsButtonCheckStop(dmConnId_t connId);
 };
 #endif
 
-#endif // EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_
+#endif // EXAMPLES_MAX32655_BLUETOOTH_BLE_MCS_PROFILES_MCS_MCS_API_H_

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32650_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
-#define EXAMPLES_MAX32650_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32650_USB_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
+#define EXAMPLES_MAX32650_USB_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -470,4 +470,4 @@ __attribute__((aligned(4))) uint8_t msc_func_desc[] = {
     'g',  0,   'e', 0,   ' ', 0,   'D', 0,   'e', 0,   'v', 0,   'i', 0,   'c', 0,   'e', 0,
 };
 
-#endif // EXAMPLES_MAX32650_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
+#endif // EXAMPLES_MAX32650_USB_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_

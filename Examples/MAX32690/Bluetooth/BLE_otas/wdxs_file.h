@@ -17,8 +17,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef EXAMPLES_MAX32690_BLE_OTAS_WDXS_FILE_H_
-#define EXAMPLES_MAX32690_BLE_OTAS_WDXS_FILE_H_
+#ifndef EXAMPLES_MAX32690_BLUETOOTH_BLE_OTAS_WDXS_FILE_H_
+#define EXAMPLES_MAX32690_BLUETOOTH_BLE_OTAS_WDXS_FILE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,4 +90,4 @@ void initHeader(fileHeader_t *header);
 }
 #endif
 
-#endif // EXAMPLES_MAX32690_BLE_OTAS_WDXS_FILE_H_
+#endif // EXAMPLES_MAX32690_BLUETOOTH_BLE_OTAS_WDXS_FILE_H_
