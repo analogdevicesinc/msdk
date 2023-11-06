@@ -4,7 +4,7 @@
  *
  *  \brief  Maxim Custom service server.
  *
- *  Copyright (c) 2012-2019 Arm Ltd. All Rights Reserved.
+ *  Copyright (c) 2012-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copright (c) 2022-2023 Analog Devices, Inc.
  *

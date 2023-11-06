@@ -5,15 +5,20 @@
  *  \brief  Wireless Data Exchange profile implementation - File Example.
  *
  *  Copyright (c) 2013-2018 Arm Ltd. All Rights Reserved.
- *  ARM Ltd. confidential and proprietary.
  *
- *  IMPORTANT.  Your use of this file is governed by a Software License Agreement
- *  ("Agreement") that must be accepted in order to download or otherwise receive a
- *  copy of this file.  You may not use or copy this file for any purpose other than
- *  as described in the Agreement.  If you do not agree to all of the terms of the
- *  Agreement do not use this file and delete all copies in your possession or control;
- *  if you do not have a copy of the Agreement, you must contact ARM Ltd. prior
- *  to any use, copying or further distribution of this software.
+ *  Partial Copyright (c) 2022-2023 Analog Devices, Inc.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 /*************************************************************************************************/
 
@@ -64,7 +69,6 @@ static uint8_t wdxsFileErase(uint8_t *address, uint32_t size);
 static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
-
 static fileHeader_t fileHeader = { .fileCRC = 0, .fileLen = 0 };
 wsfEfsHandle_t otaFileHdl;
 
@@ -172,9 +176,9 @@ static void wdxsFileWriteMessage(uint32_t address, uint32_t size, const uint8_t 
 void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     int err;
-    static const unsigned writeBufLen = 256;
+    static const unsigned kWriteBufLen = 256;
     uint32_t writeAddress, writeLen;
-    uint32_t writeBuf[writeBufLen / sizeof(uint32_t)];
+    uint32_t writeBuf[kWriteBufLen / sizeof(uint32_t)];
     uint8_t *pBuf;
     wsfHandlerId_t retHandler;
     wsfMsgHdr_t *queueMsg;
@@ -192,7 +196,7 @@ void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         memcpy(&writeLen, &pBuf[sizeof(uint32_t)], sizeof(uint32_t));
 
         /* Make sure message doesn't overflow */
-        WSF_ASSERT(writeLen <= writeBufLen);
+        WSF_ASSERT(writeLen <= kWriteBufLen);
 
         /* Align the data */
         memcpy(writeBuf, &pBuf[2 * sizeof(uint32_t)], writeLen);

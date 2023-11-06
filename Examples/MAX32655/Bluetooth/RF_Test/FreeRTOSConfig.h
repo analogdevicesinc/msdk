@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_RF_TEST_FREERTOSCONFIG_H_
-#define EXAMPLES_MAX32655_RF_TEST_FREERTOSCONFIG_H_
+#ifndef EXAMPLES_MAX32655_BLUETOOTH_RF_TEST_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32655_BLUETOOTH_RF_TEST_FREERTOSCONFIG_H_
 
 #include <stdint.h>
 #include "max32655.h"
@@ -145,4 +145,4 @@ void vPostSleepProcessing(uint32_t);
 /* Overides FreeRTOS+CLI help command formatting*/
 #define configUSE_CUSTOM_HELP_COMMAND 1
 
-#endif // EXAMPLES_MAX32655_RF_TEST_FREERTOSCONFIG_H_
+#endif // EXAMPLES_MAX32655_BLUETOOTH_RF_TEST_FREERTOSCONFIG_H_
