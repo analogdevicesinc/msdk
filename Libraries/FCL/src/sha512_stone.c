@@ -91,7 +91,7 @@ void sha512_stone(u64 hash[8], u64 stone[16])
     int i;
     u64 W[80];
     u64 A, B, C, D, E, F, G, H, T1, T2;
- 
+
     A = hash[0];
     B = hash[1];
     C = hash[2];

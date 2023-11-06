@@ -85,4 +85,4 @@ void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_MCS_MCS_APP_API_H_
+#endif // EXAMPLES_MAX32665_BLUETOOTH_BLE_MCS_MCS_APP_API_H_

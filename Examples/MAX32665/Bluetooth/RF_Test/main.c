@@ -445,7 +445,7 @@ static void processConsoleRX(uint8_t rxByte)
     receivedChar = rxByte;
     keyBoardSequenceBuff[i++ % 3] = rxByte;
 
-    // TODO put all of this in command line task
+    // TODO(BLE): put all of this in command line task
     /* if received esc character start escape sequence counter */
     if (rxByte == 27)
         escCounter++;
@@ -672,7 +672,7 @@ void txTestTask(void *pvParameters)
     static int res = 0xff;
     uint32_t notifVal = 0;
     tx_config_t testConfig;
-    char str[80];
+    char str[80] = "";
     while (1) {
         /* Wait for notification to initiate TX/RX */
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
@@ -680,9 +680,9 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            sprintf(str, "Transmit RF channel %d on Freq %dMHz bytes/pkt : ", testConfig.channel,
+            snprintf(str, sizeof(str), "Transmit RF channel %d on Freq %dMHz bytes/pkt : ", testConfig.channel,
                     getFreqFromRfChannel(testConfig.channel), packetLen);
-            strcat(str, (const char *)getPacketTypeStr());
+            snprintf(str, sizeof(str), "%s%s", str, (const char *)getPacketTypeStr());
         } else {
             sprintf(str, "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
                     getFreqFromRfChannel(testConfig.channel));
@@ -725,7 +725,8 @@ void sweepTestTask(void *pvParameters)
 
         char str[6] = "";
 
-        strcat(str, (const char *)getPhyStr(phy));
+        snprintf(str, sizeof(str), "%s", (const char *)getPhyStr(phy));
+
         /* sweep channels */
         for (int i = sweepConfig.start_channel; i <= sweepConfig.end_channel; i++) {
             APP_TRACE_INFO3(
@@ -796,7 +797,8 @@ void setPhy(uint8_t newPhy)
 {
     phy = newPhy;
     char str[20] = "> Phy now set to ";
-    strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
+    snprintf(str, sizeof(str), "%s%s", "> Phy now set to ", 
+                (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
                 (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
                 (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
                 (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
@@ -823,7 +825,7 @@ void setPacketType(uint8_t type)
 /*************************************************************************************************/
 void setTxPower(int8_t power)
 {
-    // TODO : validate value
+    // TODO(BLE): validate value
     txPower = power;
     llc_api_set_txpower((int8_t)power);
     LlSetAdvTxPower((int8_t)power);

@@ -79,7 +79,7 @@ static void kcf(u64 state[25])
     u64 t, c[5];
 
     //I(chi(Pi(ro(theta(
-    for (round = 0; round < N_ROUNDS; round++) {   
+    for (round = 0; round < N_ROUNDS; round++) {
         // Theta
         for (i = 0; i < 5; i++) {
             c[i] = state[i] ^ state[i + 5] ^ state[i + 10] ^ state[i + 15] ^ state[i + 20];
@@ -87,7 +87,7 @@ static void kcf(u64 state[25])
 
         for (i = 0; i < 5; i++) {
             t = c[(i + 4) % 5] ^ (u64)ROTL64(c[(i + 1) % 5], 1);
-     
+
             for (j = 0; j < 25; j += 5) {
                 state[j + i] ^ = t;
             }
@@ -201,16 +201,16 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
 
     if (len < old_tail) {
         while (len--) {
-            ctx->saved | = (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
+            ctx->saved |= (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
         }
-     
+
         return(UCL_OK);
     }
 
     if (old_tail) {
         len -= old_tail;
         while (old_tail--)
-        ctx->saved | = (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
+        ctx->saved |= (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
         ctx->s[ctx->wordIndex] ^ = ctx->saved;
         ctx->byteIndex = 0;
         ctx->saved = 0;
@@ -233,7 +233,7 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
     }
 
     while (tail--) {
-        ctx->saved | = (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
+        ctx->saved |= (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
     }
 
     return(UCL_OK);

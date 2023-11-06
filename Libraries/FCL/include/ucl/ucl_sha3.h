@@ -128,8 +128,8 @@ typedef struct sha3_context_ {
                           //     words (e.g. 16 for Keccak 512)
 } ucl_sha3_ctx_t;
 
-  // methods for calculating the hash function
- 
+// methods for calculating the hash function
+
 /*============================================================================*/
 /** <b>SHA3-224 Init</b>.
  * The initialisation of SHA3-224.
@@ -143,7 +143,8 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_224_init(ucl_sha3_ctx_t *ctx);
+int ucl_sha3_224_init(ucl_sha3_ctx_t *ctx);
+
 /*============================================================================*/
 /** <b>SHA3-256 Init</b>.
  * The initialisation of SHA3-256.
@@ -157,7 +158,8 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_256_init(ucl_sha3_ctx_t *ctx);
+int ucl_sha3_256_init(ucl_sha3_ctx_t *ctx);
+
 /*============================================================================*/
 /** <b>SHA3-384 Init</b>.
  * The initialisation of SHA3-384.
@@ -171,7 +173,8 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_384_init(ucl_sha3_ctx_t *ctx);
+int ucl_sha3_384_init(ucl_sha3_ctx_t *ctx);
+
 /*============================================================================*/
 /** <b>SHA3-512 Init</b>.
  * The initialisation of SHA3-512.
@@ -185,7 +188,8 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_512_init(ucl_sha3_ctx_t *ctx);
+int ucl_sha3_512_init(ucl_sha3_ctx_t *ctx);
+
 /*============================================================================*/
 /** <b>SHA3 Core</b>.
  * The core of SHA3, common to all SHA3 hash functions.
@@ -204,7 +208,8 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
- int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8* msg, u32 size);
+int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8* msg, u32 size);
+
 /*============================================================================*/
 /** <b>SHA3 Finish</b>.
  * Finish the process of SHA3, common to all SHA3 hash functions.
@@ -224,8 +229,7 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-
-  int ucl_sha3_finish(u8 *hash, ucl_sha3_ctx_t *ctx);
+int ucl_sha3_finish(u8 *hash, ucl_sha3_ctx_t *ctx);
 
 /*============================================================================*/
 /** <b>SHA3-224</b>.
@@ -244,8 +248,7 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-
-  int ucl_sha3_224(u8 *digest, u8 *msg, u32 msg_Len);
+int ucl_sha3_224(u8 *digest, u8 *msg, u32 msg_Len);
 
 /*============================================================================*/
 /** <b>SHA3-256</b>.
@@ -264,7 +267,7 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_256(u8 *digest, u8 *msg, u32 msg_Len);
+int ucl_sha3_256(u8 *digest, u8 *msg, u32 msg_Len);
 
 /*============================================================================*/
 /** <b>SHA3-384</b>.
@@ -283,7 +286,7 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_384(u8 *digest, u8 *msg, u32 msg_Len);
+int ucl_sha3_384(u8 *digest, u8 *msg, u32 msg_Len);
 
 /*============================================================================*/
 /** <b>SHA3-512</b>.
@@ -302,10 +305,11 @@ typedef struct sha3_context_ {
  *
  * @ingroup UCL_SHA3
  */
-  int ucl_sha3_512(u8 *digest, u8 *msg, u32 msg_Len);
-  int  ucl_shake128_init(ucl_sha3_ctx_t *ctx);
-  int  ucl_shake256_init(ucl_sha3_ctx_t *ctx);
-  int ucl_shake_finish(u8 *hash, ucl_sha3_ctx_t *ctx);
+int ucl_sha3_512(u8 *digest, u8 *msg, u32 msg_Len);
+
+int  ucl_shake128_init(ucl_sha3_ctx_t *ctx);
+int  ucl_shake256_init(ucl_sha3_ctx_t *ctx);
+int ucl_shake_finish(u8 *hash, ucl_sha3_ctx_t *ctx);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -89,7 +89,7 @@ void bignum_us2d(u32 *a, u32 digits, u8 *b, u32 len)
         t = 0;
 
         for (u = 0; j >= 0 && u < (int)DIGIT_BITS; j--, u += 8) {
-            t | = ((u32)b[j]) << (u32)u;
+            t |= ((u32)b[j]) << (u32)u;
         }
 
         a[i] = t;

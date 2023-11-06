@@ -56,14 +56,14 @@
 #include "ucl/ucl_defs.h"
 #include "ucl/ucl_retdefs.h"
 
-#define ROTR(x, n)   ( ( (x) >> (n)) | ( (x) << (32 - n) ) )
-#define SHR(x, n)    ( (x) >> (n) )
-#define CH(x, y, z)   ( (z) ^ ((x) & ( (y) ^ (z) ) ))
-#define MAJ(x, y, z)  ( ( (x) & (y) ) ^ ( (x) & (z) ) ^ ( (y) & (z) ) )
-#define SIGMA0(x)   ( ROTR(x, 2) ^ ROTR(x, 13) ^ ROTR(x, 22) )
-#define SIGMA1(x)   ( ROTR(x, 6) ^ ROTR(x, 11) ^ ROTR(x, 25) )
-#define GAMMA0(x)   ( ROTR(x, 7) ^ ROTR(x, 18) ^ SHR(x, 3) )
-#define GAMMA1(x)   ( ROTR(x, 17) ^ ROTR(x, 19) ^ SHR(x, 10) )
+#define ROTR(x, n)      (((x) >> (n)) | ((x) << (32 - n)))
+#define SHR(x, n)       ((x) >> (n))
+#define CH(x, y, z)     ((z) ^ ((x) & ((y) ^ (z))))
+#define MAJ(x, y, z)    (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
+#define SIGMA0(x)       (ROTR(x, 2) ^ ROTR(x, 13) ^ ROTR(x, 22))
+#define SIGMA1(x)       (ROTR(x, 6) ^ ROTR(x, 11) ^ ROTR(x, 25))
+#define GAMMA0(x)       (ROTR(x, 7) ^ ROTR(x, 18) ^ SHR(x, 3))
+#define GAMMA1(x)       (ROTR(x, 17) ^ ROTR(x, 19) ^ SHR(x, 10))
 #define ROUND(a, b, c, e, f, g, h, i)                            \
                 T1 = h + SIGMA1(e) + CH(e, f, g) + K[i] + W[i];  \
                 T2 = SIGMA0(a) + MAJ(a, b, c);

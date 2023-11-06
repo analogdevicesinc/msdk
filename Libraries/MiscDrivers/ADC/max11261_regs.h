@@ -55,8 +55,8 @@
  *
  ******************************************************************************/
 
-#ifndef MAX11261_REGS_H_
-#define MAX11261_REGS_H_
+#ifndef LIBRARIES_MISCDRIVERS_ADC_MAX11261_REGS_H_
+#define LIBRARIES_MISCDRIVERS_ADC_MAX11261_REGS_H_
 
 /**
  * @ingroup  max11261_commands
@@ -713,4 +713,4 @@
 
 /**@} end of group MAX11261_LIMIT_HIGH5_Register */
 
-#endif /* MAX11261_REGS_H_ */
+#endif // LIBRARIES_MISCDRIVERS_ADC_MAX11261_REGS_H_

@@ -69,8 +69,7 @@ int ucl_rng_read(u8 *rand, u32 rand_byteLen)
     u8 output[32], input[16];
     u8 blocksize;
     blocksize = 16;
-     
- 
+
     for (msgi = 0; msgi < (int)rand_byteLen;) {
         for (j = 0; j < blocksize; j++) {
             input[j] = pseudo[j];

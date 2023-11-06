@@ -54,8 +54,8 @@
  *
  ******************************************************************************/
 
-#ifndef MAX11261_H_
-#define MAX11261_H_
+#ifndef LIBRARIES_MISCDRIVERS_ADC_MAX11261_H_
+#define LIBRARIES_MISCDRIVERS_ADC_MAX11261_H_
 
 #include <stdint.h>
 
@@ -598,4 +598,4 @@ int max11261_adc_result(max11261_adc_result_t *res, int count);
  */
 int max11261_adc_convert(void);
 
-#endif /* MAX11261_H_ */
+#endif // LIBRARIES_MISCDRIVERS_ADC_MAX11261_H_

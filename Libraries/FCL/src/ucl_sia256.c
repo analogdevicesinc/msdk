@@ -469,7 +469,6 @@ void sha256_hashblock(u8* message, u32 lastblock)
             sha1functionselect++;
             sha1counter = 0;
         }
-
     }
 
     if (!lastblock) {

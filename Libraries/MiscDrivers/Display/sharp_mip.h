@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_MISCDRIVERS__DISPLAY_SHARP_MIP_H_
-#define LIBRARIES_MISCDRIVERS__DISPLAY_SHARP_MIP_H_
+#ifndef LIBRARIES_MISCDRIVERS_DISPLAY_SHARP_MIP_H_
+#define LIBRARIES_MISCDRIVERS_DISPLAY_SHARP_MIP_H_
 
 #include <stdio.h>
 #include <stdint.h>
