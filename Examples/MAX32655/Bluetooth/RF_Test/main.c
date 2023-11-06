@@ -728,7 +728,8 @@ void sweepTestTask(void *pvParameters)
 
         char str[6] = "";
 
-        strcat(str, (const char *)getPhyStr(phy));
+        snprintf(str, sizeof(str), "%s", (const char *)getPhyStr(phy));
+
         /* sweep channels */
         for (int i = sweepConfig.start_channel; i <= sweepConfig.end_channel; i++) {
             APP_TRACE_INFO3(

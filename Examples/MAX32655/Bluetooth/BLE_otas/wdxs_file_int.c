@@ -74,7 +74,6 @@ wsfEfsHandle_t otaFileHdl;
 
 /* Use the second half of the flash space for scratch space */
 static const wsfEfsMedia_t WDXS_FileMedia = {
-
     /*   uint32_t                startAddress;  Start address. */ ((uint32_t)&_flash_update),
     /*   uint32_t                endAddress;    End address. */ ((uint32_t)&_eflash_update),
     /*   uint32_t                pageSize;      Page size. */ MXC_FLASH_PAGE_SIZE,
