@@ -180,16 +180,16 @@ int test_ecdsa_curves(void)
     char curve_name[MAX_CURVE][20];
     char hash_name[MAX_HASH_FUNCTIONS][20];
 
-    sprintf(hash_name[UCL_SHA256], sizeof("sha256"), "%s", "sha256");
-    sprintf(hash_name[UCL_SHA384], sizeof("sha384"), "%s", "sha384");
-    sprintf(hash_name[UCL_SHA512], sizeof("sha512"), "%s", "sha512");
-    sprintf(curve_name[SECP192R1], sizeof("p192r1"), "%s", "p192r1");
-    sprintf(curve_name[SECP256R1], sizeof("p256r1"), "%s", "p256r1");
-    sprintf(curve_name[SECP384R1], sizeof("p384r1"), "%s", "p384r1");
-    sprintf(curve_name[SECP521R1], sizeof("p521r1"), "%s", "p521r1");
-    sprintf(curve_name[BP256R1], sizeof("bp256r1"), "%s", "bp256r1");
-    sprintf(curve_name[BP384R1], sizeof("bp384r1"), "%s", "bp384r1");
-    sprintf(curve_name[BP512R1], sizeof("bp512r1"), "%s", "bp512r1");
+    snprintf(hash_name[UCL_SHA256], sizeof("sha256"), "%s", "sha256");
+    snprintf(hash_name[UCL_SHA384], sizeof("sha384"), "%s", "sha384");
+    snprintf(hash_name[UCL_SHA512], sizeof("sha512"), "%s", "sha512");
+    snprintf(curve_name[SECP192R1], sizeof("p192r1"), "%s", "p192r1");
+    snprintf(curve_name[SECP256R1], sizeof("p256r1"), "%s", "p256r1");
+    snprintf(curve_name[SECP384R1], sizeof("p384r1"), "%s", "p384r1");
+    snprintf(curve_name[SECP521R1], sizeof("p521r1"), "%s", "p521r1");
+    snprintf(curve_name[BP256R1], sizeof("bp256r1"), "%s", "bp256r1");
+    snprintf(curve_name[BP384R1], sizeof("bp384r1"), "%s", "bp384r1");
+    snprintf(curve_name[BP512R1], sizeof("bp512r1"), "%s", "bp512r1");
 
 #ifdef VERBOSE
     PRINTF("TEST ECDSA curves\n");

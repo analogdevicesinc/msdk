@@ -355,7 +355,7 @@ void printHistory(bool upArrow)
 void cls(void)
 {
     char str[7];
-    sprintf(str, "\033[2J");
+    snprintf(str, sizeof(str), "%s", "\033[2J");
     WsfBufIoWrite((const uint8_t *)str, 5);
     clearScreen = false;
 }
@@ -377,10 +377,10 @@ void prompt(void)
         return;
 
     if (activeTest) {
-        sprintf(str, "\r\n(active test) cmd:");
+        snprintf(str, sizeof(str), "%s", "\r\n(active test) cmd:");
         len = 21;
     } else {
-        sprintf(str, "\r\ncmd:");
+        snprintf(str, sizeof(str), "%s", "\r\ncmd:");
         len = 7;
     }
 
@@ -607,26 +607,27 @@ void vCmdLineTask(void *pvParameters)
                             WsfBufIoWrite((const uint8_t *)backspace, sizeof(backspace));
                         }
                         fflush(stdout);
-                    } else if (tmp == 0x09)
-                    /* tab hint */
-                    {
+
+                    } else if (tmp == 0x09) {
+                        /* tab hint */
                         printHint(inputBuffer);
 
-                    }
-                    /*since freq hop does not allow user to see what they are typing, simply typing
-                  'e' without the need to press enter willl stop the frequency hopping test */
-                    else if ((char)tmp == 'e' && activeTest == BLE_FHOP_TEST) {
+                    } else if ((char)tmp == 'e' && activeTest == BLE_FHOP_TEST) {
+                        /* since freq hop does not allow user to see what they are typing, simply typing
+                         * 'e' without the need to press enter willl stop the frequency hopping test */
                         LlEndTest(NULL);
                         MXC_TMR_Stop(MXC_TMR2);
                         activeTest = NO_TEST;
 
                         xSemaphoreGive(rfTestMutex);
                         prompt();
+
                     } else if (tmp == 0x03) {
                         /* ^C abort */
                         bufferIndex = 0;
                         APP_TRACE_INFO0("^C");
                         prompt();
+
                     } else if ((tmp == '\r') || (tmp == '\n')) {
                         historyQueue.queuePointer = historyQueue.head;
                         if (strlen(inputBuffer) > 0) {
@@ -644,6 +645,7 @@ void vCmdLineTask(void *pvParameters)
                                 }
                             } while (xMore != pdFALSE);
                         }
+
                         /* New prompt */
                         bufferIndex = 0;
                         memset(inputBuffer, 0x00, 100);
@@ -680,15 +682,16 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            snprintf(str, sizeof(str), "Transmit RF channel %d on Freq %dMHz bytes/pkt : ", testConfig.channel,
+            snprintf(str, sizeof(str), "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : ", testConfig.channel,
                     getFreqFromRfChannel(testConfig.channel), packetLen);
             snprintf(str, sizeof(str), "%s%s", str, (const char *)getPacketTypeStr());
         } else {
-            sprintf(str, "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
+            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
                     getFreqFromRfChannel(testConfig.channel));
         }
-        strcat(str, " : ");
-        strcat(str, (const char *)getPhyStr(phy));
+
+        snprintf(str, sizeof(str), "%s%s", str, " : ");
+        snprintf(str, sizeof(str), "%s%s", str, (const char *)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
@@ -797,7 +800,7 @@ void setPhy(uint8_t newPhy)
 {
     phy = newPhy;
     char str[20] = "> Phy now set to ";
-    snprintf(str, sizeof(str), "%s%s", "> Phy now set to ", 
+    snprintf(str, sizeof(str), "%s%s", "> Phy now set to ",
                 (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
                 (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
                 (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
