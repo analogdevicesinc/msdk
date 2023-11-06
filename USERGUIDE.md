@@ -2298,6 +2298,7 @@ Once enabled, the following [build configuration variables](#build-configuration
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `FATFS_VERSION`            | Specify the version of [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) to use | FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the [version](http://elm-chan.org/fsw/ff/updates.html) to use.  Acceptable values are `ff13` (R0.13), `ff14` (R0.14b), or `ff15` (R0.15) |
+| `SDHC_CLK_FREQ`            | Sets the clock freq. for the SDHC library (Hz) | Sets the target clock frequency in units of Hz (Default is 40Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues. |
 
 ---
 
