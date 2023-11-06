@@ -43,13 +43,20 @@
 #include "tft_utils.h"
 #include "example_config.h"
 #include "post_process.h"
+#ifdef BOARD_EVKIT_V1
+#include "bitmap.h"
+#include "tft_ssd2119.h"
+#endif
+#ifdef BOARD_FTHR_REVA
+#include "tft_ili9341.h"
+#endif
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
 static int font = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
-static int font = (int)&SansSerif16x16[0];
+static int font = (int)&Liberation_Sans16x16[0];
 #endif
 
 static text_t label_text[] = {

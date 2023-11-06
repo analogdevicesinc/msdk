@@ -12,6 +12,8 @@
 # **********************************************************
 
 # Add your config here!
+# Uncomment the line below to build for the MAX78000FTHR
+#BOARD=FTHR_RevA
 
 IPATH += resources
 

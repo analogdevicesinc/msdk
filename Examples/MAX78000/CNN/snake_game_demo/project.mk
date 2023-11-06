@@ -11,6 +11,10 @@
 
 # **********************************************************
 
+# Add your config here!
+# Uncomment the line below to build for the MAX78000FTHR
+#BOARD=FTHR_RevA
+
 # Set a higher optimization level.  The increased performance
 # is required for the CameraIF DMA code to work within the
 # timing requirements of the Parallel Camera Interface.

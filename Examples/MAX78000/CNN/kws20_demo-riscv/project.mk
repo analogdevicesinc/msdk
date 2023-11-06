@@ -5,17 +5,27 @@
 # For instructions on how to use this system, see
 # https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
-# **********************************************************
+# Uncomment the line below to build for the MAX78000FTHR
+#BOARD=FTHR_RevA
+
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
+MXC_OPTIMIZE_CFLAGS = -O2
 
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
 PROJ_CFLAGS+=-DENABLE_TFT
+IPATH += TFT/evkit/
+VPATH += TFT/evkit/
 endif
 
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
 #PROJ_CFLAGS+=-DENABLE_TFT
+IPATH += TFT/fthr
+VPATH += TFT/fthr
 endif
 
 ifeq ($(BOARD),CAM01_RevA)

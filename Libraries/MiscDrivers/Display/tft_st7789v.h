@@ -139,11 +139,11 @@ extern const unsigned char img_4_rgb565[];
 extern const unsigned char image_pattern_rgb565[];
 extern const unsigned char logo_rgb565[];
 // Fonts
-extern const unsigned char Arial12x12[];
-extern const unsigned char Arial24x23[];
-extern const unsigned char Arial28x28[];
-extern const unsigned char SansSerif19x19[];
-extern const unsigned char SansSerif16x16[];
+extern const unsigned char Liberation_Sans12x12[];
+extern const unsigned char Liberation_Sans16x16[];
+extern const unsigned char Liberation_Sans19x19[];
+extern const unsigned char Liberation_Sans24x24[];
+extern const unsigned char Liberation_Sans28x28[];
 
 /*
     SPI Transport layer functions

@@ -80,8 +80,8 @@ int font_2 = urw_gothic_12_white_bg_grey;
 #ifdef BOARD_FTHR_REVA
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 const char classes[CNN_NUM_OUTPUTS][10] = { "Paper", "Rock", "Scissors" };
@@ -460,7 +460,7 @@ int main(void)
     memset(buff, ' ', TFT_BUFF_SIZE);
     TFT_Print(buff, 55, 50, font_1, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
     TFT_Print(buff, 30, 90, font_2, snprintf(buff, sizeof(buff), "Rock-Paper-Scissors Game"));
-    TFT_Print(buff, 30, 130, font_1, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 10, 130, font_1, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
     int frame = 0;

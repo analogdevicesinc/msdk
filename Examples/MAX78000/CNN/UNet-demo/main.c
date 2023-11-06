@@ -87,8 +87,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #undef USE_SPIDATA // only supported in evkit
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 #define FT4222_CLK 60000000
@@ -522,7 +522,7 @@ int main(void)
     TFT_Print(buff, 5, 170, font_1,
               snprintf(buff, sizeof(buff), "Foliage(green), Unknown(black)  "));
 
-    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START    "));
+    TFT_Print(buff, 10, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START    "));
     while (!PB_Get(0)) {}
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
@@ -580,8 +580,8 @@ int main(void)
 
 #if !defined(USE_SPIDATA)
 
-        TFT_Print(buff, 20, 212, font_1,
-                  snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE "));
+        TFT_Print(buff, 0, 212, font_1,
+                  snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE"));
         while (!PB_Get(0)) {}
 #else
         SPI_FLAG = false;
