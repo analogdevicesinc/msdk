@@ -112,4 +112,3 @@ int st7735s_write_pixels(uint8_t *data, unsigned int len);
 int st7735s_xyloc(uint8_t row, uint8_t col);
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_
-

@@ -104,4 +104,3 @@
 #define urw_gothic_13_white_bg_grey 3
 
 #endif // EXAMPLES_MAX32690_TFT_DEMO_RESOURCES_BITMAP_H_
-

@@ -84,5 +84,3 @@ int MXC_OTP_RevA_Read32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
 #endif
 
 #endif //LIBRARIES_PERIPHDRIVERS_SOURCE_OTP_OTP_REVA_H_
-
-

@@ -22,7 +22,6 @@
  */
 /*************************************************************************************************/
 
-
 #ifndef EXAMPLES_MAX32665_BLUETOOTH_BLE_OTAS_WDXS_FILE_H_
 #define EXAMPLES_MAX32665_BLUETOOTH_BLE_OTAS_WDXS_FILE_H_
 

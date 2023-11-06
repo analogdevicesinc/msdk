@@ -22,7 +22,6 @@
  */
 /*************************************************************************************************/
 
-
 #ifndef EXAMPLES_MAX32665_BLUETOOTH_BLE_MCS_SERVICES_SVC_MCS_H_
 #define EXAMPLES_MAX32665_BLUETOOTH_BLE_MCS_SERVICES_SVC_MCS_H_
 

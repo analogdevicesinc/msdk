@@ -216,4 +216,3 @@ int infoblock_read(uint32_t offset, uint8_t *data, int length);
 #endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
-

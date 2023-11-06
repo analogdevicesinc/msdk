@@ -80,4 +80,3 @@ typedef struct {
 } display_comm_api;
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
-

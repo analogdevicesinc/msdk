@@ -76,7 +76,7 @@
 
 /******************************* Type Definitions ****************************/
 typedef int (*comm_read_t)(unsigned char *dst, unsigned int len, unsigned int to);
-typedef int (*comm_write_t)(const unsigned char *src, unsigned int len,unsigned int to);
+typedef int (*comm_write_t)(const unsigned char *src, unsigned int len, unsigned int to);
 
 typedef struct {
     comm_read_t read;

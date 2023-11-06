@@ -110,4 +110,3 @@ st7735s_regcfg_t cfaf128128b1_regcfg[] = {
 };
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_CFAF128128B1_H_
-
