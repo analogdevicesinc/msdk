@@ -682,12 +682,13 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            snprintf(str, sizeof(str), "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : ", testConfig.channel,
-                    getFreqFromRfChannel(testConfig.channel), packetLen);
+            snprintf(str, sizeof(str),
+                     "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : ", testConfig.channel,
+                     getFreqFromRfChannel(testConfig.channel), packetLen);
             snprintf(str, sizeof(str), "%s%s", str, (const char *)getPacketTypeStr());
         } else {
             snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
-                    getFreqFromRfChannel(testConfig.channel));
+                     getFreqFromRfChannel(testConfig.channel));
         }
 
         snprintf(str, sizeof(str), "%s%s", str, " : ");
@@ -801,11 +802,11 @@ void setPhy(uint8_t newPhy)
     phy = newPhy;
     char str[20] = "> Phy now set to ";
     snprintf(str, sizeof(str), "%s%s", "> Phy now set to ",
-                (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
-                (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
-                (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
-                (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
-                                                   "");
+             (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
+             (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
+             (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
+             (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
+                                                "");
     APP_TRACE_INFO1("%s", str);
 }
 /*************************************************************************************************/
