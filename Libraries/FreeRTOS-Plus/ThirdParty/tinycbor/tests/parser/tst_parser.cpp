@@ -1330,7 +1330,7 @@ void tst_Parser::checkedIntegers()
 
     int v2;
     err = cbor_value_get_int_checked(&w.first, &v2);
-    if (result.isNull() || expected <std::numeric_limits<int>::min() || expected > std::numeric_limits<int>::max()) {
+    if (result.isNull() || expected < std::numeric_limits<int>::min() || expected > std::numeric_limits<int>::max()) {
         QCOMPARE(err, CborErrorDataTooLarge);
     } else {
         QCOMPARE(int64_t(v2), expected);
