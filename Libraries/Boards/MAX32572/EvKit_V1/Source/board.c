@@ -84,8 +84,8 @@ __weak void GPIO0_IRQHandler(void)
 
 /******************************************************************************/
 /** 
- * NOTE: This weak definition is included to support Push Button interrupts in
- *       case the user does not define this interrupt handler in their application.
+ * NOTE: This weak definition is included to support Push Button/Touchscreen interrupts
+ *       in case the user does not define this interrupt handler in their application.
  **/
 __weak void GPIO1_IRQHandler(void)
 {
