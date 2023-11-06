@@ -3680,7 +3680,7 @@ void lodepng_color_stats_init(LodePNGColorStats* stats) {
   std::cout << "key_b: " << (int)p->key_b << ", ";
   std::cout << "alpha: " << (int)p->alpha << ", ";
   std::cout << "numcolors: " << (int)p->numcolors << ", ";
-  std::cout << "bits: " << (int)p->bits <<std::endl;
+  std::cout << "bits: " << (int)p->bits << std::endl;
 }*/
 
 /*Returns how many bits needed to represent given value (max 8 bit)*/
