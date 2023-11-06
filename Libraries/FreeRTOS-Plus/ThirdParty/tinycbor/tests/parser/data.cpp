@@ -55,9 +55,9 @@ void addIntegers()
     QTest::newRow("UINT32_MAX+1") << raw("\x1b\0\0\0\1\0\0\0\0") << Q_UINT64_C(4294967296) << Q_INT64_C(4294967296) << false << true;
     QTest::newRow("INT64_MAX") << raw("\x1b" "\x7f\xff\xff\xff" "\xff\xff\xff\xff")
                                 << quint64(std::numeric_limits<qint64>::max())
-                                << std::numeric_limits<qint64>::max() << false << true;
+                                <<std::numeric_limits<qint64>::max() << false << true;
     QTest::newRow("UINT64_MAX") << raw("\x1b" "\xff\xff\xff\xff" "\xff\xff\xff\xff")
-                                << std::numeric_limits<quint64>::max() << qint64(-123456) << false << false;
+                                <<std::numeric_limits<quint64>::max() << qint64(-123456) << false << false;
 
     // negative integers
     QTest::newRow("-1") << raw("\x20") << Q_UINT64_C(0) << Q_INT64_C(-1) << true << true;
@@ -76,13 +76,13 @@ void addIntegers()
                                << true << true;
     QTest::newRow("INT64_MIN") << raw("\x3b\x7f\xff\xff\xff""\xff\xff\xff\xff")
                                << quint64(std::numeric_limits<qint64>::max())
-                               << std::numeric_limits<qint64>::min()
+                               <<std::numeric_limits<qint64>::min()
                                << true << true;
     QTest::newRow("INT64_MIN-1") << raw("\x3b\x80\0\0\0""\0\0\0\0") << Q_UINT64_C(9223372036854775808) << qint64(-123456) << true << false;
     QTest::newRow("-UINT64_MAX") << raw("\x3b" "\xff\xff\xff\xff" "\xff\xff\xff\xfe")
                                  << (std::numeric_limits<quint64>::max() - 1) << qint64(-123456) << true << false;
     QTest::newRow("-UINT64_MAX+1") << raw("\x3b" "\xff\xff\xff\xff" "\xff\xff\xff\xff")
-                                   << std::numeric_limits<quint64>::max() << qint64(-123456) << true << false;
+                                   <<std::numeric_limits<quint64>::max() << qint64(-123456) << true << false;
 }
 
 void addColumns()

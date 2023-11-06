@@ -284,8 +284,8 @@ u32 sha_maj(u32 x, u32 y, u32 z)
 {
     u32 temp = x & y;
 
-    temp ^ = (x & z);
-    temp ^ = (y & z);
+    temp ^= (x & z);
+    temp ^= (y & z);
     return temp;  //(x & y) ^ (x & z) ^ (y & z);
 }
 

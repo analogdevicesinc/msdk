@@ -89,7 +89,7 @@ static void kcf(u64 state[25])
             t = c[(i + 4) % 5] ^ (u64)ROTL64(c[(i + 1) % 5], 1);
 
             for (j = 0; j < 25; j += 5) {
-                state[j + i] ^ = t;
+                state[j + i] ^= t;
             }
         }
 
@@ -109,12 +109,12 @@ static void kcf(u64 state[25])
             }
 
             for (i = 0; i < 5; i++) {
-                state[j + i] ^ = (~c[(i + 1) % 5]) & c[(i + 2) % 5];
+                state[j + i] ^= (~c[(i + 1) % 5]) & c[(i + 2) % 5];
             }
         }
 
         // Iota
-        state[0] ^ = kcf_rc[round];
+        state[0] ^= kcf_rc[round];
     }
 }
 
@@ -211,7 +211,7 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
         len -= old_tail;
         while (old_tail--)
         ctx->saved |= (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
-        ctx->s[ctx->wordIndex] ^ = ctx->saved;
+        ctx->s[ctx->wordIndex] ^= ctx->saved;
         ctx->byteIndex = 0;
         ctx->saved = 0;
         if (++ctx->wordIndex == ((int)SHA3_SPONGE_WORDS - ctx->capacityWords)) {
@@ -225,7 +225,7 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
 
     for (i = 0; i < words; i++, buf += sizeof(u64)) {
         const u64 t = (u64) (buf[0]) | ((u64) (buf[1]) << 8 * 1) | ((u64) (buf[2]) << 8 * 2) | ((u64) (buf[3]) << 8 * 3) | ((u64) (buf[4]) << 8 * 4) | ((u64) (buf[5]) << 8 * 5) | ((u64) (buf[6]) << 8 * 6) | ((u64) (buf[7]) << 8 * 7);
-        ctx->s[ctx->wordIndex] ^ = t;
+        ctx->s[ctx->wordIndex] ^= t;
         if (++ctx->wordIndex == ((int)SHA3_SPONGE_WORDS - ctx->capacityWords)){
             kcf(ctx->s);
             ctx->wordIndex = 0;
@@ -242,8 +242,8 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
 int ucl_sha3_finish(u8 *digest, ucl_sha3_ctx_t *ctx)
 {
     // SHA3 version
-    ctx->s[ctx->wordIndex] ^ = (ctx->saved ^ ((u64) ((u64) (0x02 | (1 << 2)) << ((ctx->byteIndex) * 8))));
-    ctx->s[(int)SHA3_SPONGE_WORDS - ctx->capacityWords - 1] ^ = (u64)0x8000000000000000UL;
+    ctx->s[ctx->wordIndex] ^= (ctx->saved ^ ((u64) ((u64) (0x02 | (1 << 2)) << ((ctx->byteIndex) * 8))));
+    ctx->s[(int)SHA3_SPONGE_WORDS - ctx->capacityWords - 1] ^= (u64)0x8000000000000000UL;
     kcf(ctx->s);
 
     int i;
@@ -288,9 +288,9 @@ int ucl_shake_finish(u8 *digest, ucl_sha3_ctx_t *ctx)
         return(UCL_INVALID_OUTPUT);
     }
 
-    ctx->s[ctx->wordIndex] ^ = (ctx->saved ^ ((u64) (0x1F) << ((ctx->byteIndex) * 8)));
+    ctx->s[ctx->wordIndex] ^= (ctx->saved ^ ((u64) (0x1F) << ((ctx->byteIndex) * 8)));
     i = (int)SHA3_SPONGE_WORDS - ctx->capacityWords - 1;
-    ctx->s[(int)SHA3_SPONGE_WORDS - ctx->capacityWords - 1] ^ = (u64)(0x8000000000000000UL);
+    ctx->s[(int)SHA3_SPONGE_WORDS - ctx->capacityWords - 1] ^= (u64)(0x8000000000000000UL);
     kcf(ctx->s);
 
     for (i = 0; i < (int)SHA3_SPONGE_WORDS; i++) {
