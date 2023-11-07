@@ -61,7 +61,9 @@
 #include <gpio.h>
 
 /************************************************************************************/
+#ifndef TS_MAX_BUTTONS
 #define TS_MAX_BUTTONS 16
+#endif
 #define TS_INVALID_KEY_CODE -1
 
 typedef enum {
