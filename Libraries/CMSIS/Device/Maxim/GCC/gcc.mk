@@ -14,10 +14,9 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  #
-###############################################################################
+ ##############################################################################
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # (now owned by Analog Devices, Inc.)
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -48,22 +47,27 @@
  # ownership rights.
  #
  ##############################################################################
- #
- # Copyright 2023 Analog Devices, Inc.
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #
- ##############################################################################
+
+# The build directory
+ifeq "$(BUILD_DIR)" ""
+BUILD_DIR=$(CURDIR)/build
+endif
+
+# Make sure VPATH has the location of any absolute paths given to SRCS
+# This allows users to specify SRCS += /absolute/path/to/file.c to add a single file to the build
+# without also having to add VPATH += /absolute/path/to
+# This is necessary because we create our object file definitions with OBJS_NOPATH.
+VPATH += $(sort $(abspath $(dir $(SRCS))))
+
+# Create output object file names
+SRCS_NOPATH := $(foreach NAME,$(SRCS),$(basename $(notdir $(NAME))).c)
+BINS_NOPATH := $(foreach NAME,$(BINS),$(basename $(notdir $(NAME))).bin)
+OBJS_NOPATH := $(SRCS_NOPATH:.c=.o)
+OBJS_NOPATH += $(BINS_NOPATH:.bin=.o)
+OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
+OBJS        += $(PROJ_OBJS)
+
+################################################################################
 # Get the operating system name.  If this is Cygwin, the .d files will be
 # munged to convert c: into /cygdrive/c so that "make" will be happy with the
 # auto-generated dependencies. Also if this is Cygwin, file paths for ARM GCC

@@ -17,7 +17,6 @@
 ;------------------------------------------------------------------------------
 ;
 ; Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
-; (now owned by Analog Devices, Inc.)
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a
 ; copy of this software and associated documentation files (the "Software"),
@@ -48,22 +47,43 @@
 ; ownership rights.
 ;
 ;------------------------------------------------------------------------------
-;
-; Copyright 2023 Analog Devices, Inc.
-;
-; Licensed under the Apache License, Version 2.0 (the "License");
-; you may not use this file except in compliance with the License.
-; You may obtain a copy of the License at
-;
-;     http://www.apache.org/licenses/LICENSE-2.0
-;
-; Unless required by applicable law or agreed to in writing, software
-; distributed under the License is distributed on an "AS IS" BASIS,
-; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-; See the License for the specific language governing permissions and
-; limitations under the License.
-;
-;------------------------------------------------------------------------------
+    MODULE  ?cstartup
+
+    ;; Forward declaration of sections.
+    SECTION CSTACK:DATA:NOROOT(3)
+
+    SECTION .intvec:CODE:NOROOT(2)
+
+    EXTERN  __iar_program_start
+    EXTERN  SysTick_Handler
+    EXTERN  __ICFEDIT_intvec_start__
+    PUBLIC  __vector_table
+    PUBLIC  __vector_table_modify
+    PUBLIC  __Vectors
+    PUBLIC  __Vectors_End
+    PUBLIC  __Vectors_Size
+    PUBLIC  __isr_vector
+
+    DATA
+__vector_table
+    DCD     sfe(CSTACK)
+    DCD    Reset_Handler         ; Reset Handler 
+    DCD    NMI_Handler           ; NMI Handler 
+    DCD    HardFault_Handler     ; Hard Fault Handler 
+    DCD    MemManage_Handler     ; MPU Fault Handler 
+    DCD    BusFault_Handler      ; Bus Fault Handler 
+    DCD    UsageFault_Handler    ; Usage Fault Handler 
+    DCD    0                     ; Reserved 
+    DCD    0                     ; Reserved 
+    DCD    0                     ; Reserved 
+    DCD    0                     ; Reserved 
+    DCD    SVC_Handler           ; SVCall Handler 
+    DCD    DebugMon_Handler      ; Debug Montor Handler
+    DCD    0                     ; Reserved 
+    DCD    PendSV_Handler        ; PendSV Handler 
+    DCD    SysTick_Handler       ; SysTick Handler 
+__vector_table_modify
+    /* Device-specific Interrupts */
     DCD PF_IRQHandler             /* 0x10  0x0040  16: Power Fail */
     DCD WDT0_IRQHandler           /* 0x11  0x0044  17: Watchdog 0 */
     DCD RSV02_IRQHandler          /* 0x12  0x0048  18: Reserved */

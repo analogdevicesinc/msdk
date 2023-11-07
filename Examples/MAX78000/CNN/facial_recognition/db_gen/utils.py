@@ -14,10 +14,9 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  #
-###############################################################################
+ ##############################################################################
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # (now owned by Analog Devices, Inc.)
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -48,22 +47,69 @@
  # ownership rights.
  #
  ##############################################################################
- #
- # Copyright 2023 Analog Devices, Inc.
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #
- ##############################################################################
+
+"""
+Utility functions to generate embeddings and I/O operations
+"""
+
+import os
+import csv
+import copy
+from collections import defaultdict
+import numpy as np
+import scipy
+import scipy.ndimage
+
+import matplotlib
+
+from matplotlib.image import imread
+import matplotlib.pyplot as plt
+from PIL import Image, ExifTags
+import torch
+import torchvision
+import torchvision.transforms.functional as VF
+
+def load_db(db_path, subj_name_file_path=None):
+    """Loads embeddings from binary file to a dictionary
+    """
+    subj_ids, subj_list, embedding_list = load_embedding_list(db_path)
+
+    if subj_name_file_path:
+        subj_name_map = load_subject_map(subj_name_file_path)
+    else:
+        subj_name_map = {}
+        for i in subj_ids:
+            subj_name_map[i] = ('%d' % i)
+
+    embedding_db = {}
+    for i in range(subj_list.size):
+        subj = subj_name_map[subj_list[i]]
+        if subj not in embedding_db:
+            embedding_db[subj] = {}
+            emb_no = 1
+        else:
+            emb_no = len(embedding_db[subj]) + 1
+        embedding_db[subj]['Embedding_%d' % emb_no] = {'emb': embedding_list[i, :], 'img': None}
+
+    return embedding_db
+
+
+def load_subject_map(path):
+    """Loads subject names to a dictionary
+    """
+    subj_name_map = {}
+    with open(path) as file:
+        data = csv.reader(file, delimiter=',')
+        for row in data:
+            subj_name_map[int(row[0])] = row[1]
+
+    return subj_name_map
+
+
+def load_embedding_list(db_path):
+    """Loads embeddings from binary file to lists
+    """
+    ##########################################
     # The data in order:
     #    1 byte : number of subjects   (S)
     #    2 bytes: length of embeddings (L)

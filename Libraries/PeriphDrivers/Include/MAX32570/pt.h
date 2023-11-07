@@ -2,10 +2,9 @@
  * @file    pt.h
  * @brief   Pulse Train data types, definitions and function prototypes.
  */
-/******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
+
+/* *****************************************************************************
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,26 +31,10 @@
  * The mere transfer of this software does not imply any licenses
  * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * property whatsoever. Maxim Integrated Products, Inc. retains allts
  * ownership rights.
  *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- ******************************************************************************/
+ ***************************************************************************** */
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_PT_H_

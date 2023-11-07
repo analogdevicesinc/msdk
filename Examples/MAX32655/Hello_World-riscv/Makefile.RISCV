@@ -14,10 +14,9 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  #
-###############################################################################
+ ##############################################################################
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # (now owned by Analog Devices, Inc.)
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -48,22 +47,100 @@
  # ownership rights.
  #
  ##############################################################################
- #
- # Copyright 2023 Analog Devices, Inc.
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #
- ##############################################################################
+
+# This is the name of the build output file
+ifeq "$(PROJECT)" ""
+PROJECT=max32655-riscv
+endif
+
+# Specify the target processor
+ifeq "$(TARGET)" ""
+TARGET=MAX32655
+endif
+
+# Create Target name variables
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
+
+# Select 'GCC' or 'IAR' compiler
+COMPILER=GCC
+
+# Specify the board used
+ifeq "$(BOARD)" ""
+BOARD=EvKit_V1
+#BOARD=FTHR_Apps_P1
+endif
+
+RISCV_CORE=RV32
+export RISCV_CORE
+
+# This is the path to the CMSIS root directory
+ifeq "$(MAXIM_PATH)" ""
+LIBS_DIR=../../../Libraries
+else
+LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
+endif
+
+CMSIS_ROOT=$(LIBS_DIR)/CMSIS
+
+#Use this for other library make files so they are all based off the same as root as the project
+export CMSIS_ROOT
+# Source files for this test (add path to VPATH below)
+SRCS  = main_riscv.c
+
+# Where to find source files for this test
+VPATH  = .
+ifeq "$(MAXIM_PATH)" ""
+VPATH += ../Common/
+else
+VPATH += /$(subst \,/,$(subst :,,$(MAXIM_PATH))/Examples/$(TARGET)/CNN/Common/)
+endif
+VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
+# Where to find header files for this test
+IPATH  = .
+ifeq "$(MAXIM_PATH)" ""
+IPATH += ../Common/
+else
+IPATH += /$(subst \,/,$(subst :,,$(MAXIM_PATH))/Examples/$(TARGET)/CNN/Common/)
+endif
+
+# Enable assertion checking for development
+PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
+
+# Specify STACK SIZE
+STACK_SIZE=1024
+#HEAP_SIZE=2048 
+
+# Specify RISCV MARCH and MABI (optional)
+#MARCH=rv32imc 
+#MABI=ilp32
+
+# RISC-V settings
+PROJ_CFLAGS+=-DRV32
+
+# Enable all warnings
+PROJ_CFLAGS+=-Wall -Wcast-align
+# Specify the target revision to override default
+# "A2" in ASCII
+# TARGET_REV=0x4132
+
+# Use this variables to specify and alternate tool path
+#TOOL_DIR=/usr/local/riscv-none-embed-gcc/8.3.0-1.1
+
+# Use these variables to add project specific tool options
+#PROJ_CFLAGS+=-D__FPU_PRESENT -DKINTEX_EMU
+#PROJ_LDFLAGS+=--specs=nano.specs
+
+# Point this variable to a startup file to override the default file
+#STARTUPFILE=startup_riscv_max32655.S
+
+# Override the default optimization level using this variable
+MXC_OPTIMIZE_CFLAGS=-O0
+
+# Point this variable to a linker file to override the default file
+LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_riscv.ld
+
+################################################################################
 # Include external library makefiles here
 
 # Include the BSP

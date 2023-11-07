@@ -16,10 +16,9 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  #
-###############################################################################
+ ##############################################################################
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # (now owned by Analog Devices, Inc.)
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -50,22 +49,48 @@
  # ownership rights.
  #
  ##############################################################################
+
+## BLE_hci.py
  #
- # Copyright 2023 Analog Devices, Inc.
+ # HCI Tool used to control a Bluetooth Controller through a serial port.
  #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
+
+import serial
+import sys
+import signal
+import codecs
+import argparse
+from argparse import RawTextHelpFormatter
+from time import sleep
+import datetime
+import struct
+import threading
+from termcolor import colored
+import readline
+
+
+# Setup the default serial port settings
+defaultBaud=115200
+defaultSP="/dev/ttyUSB0"
+defaultMonSP=""
+
+# Setup the default Bluetooth settings
+defaultAdvInterval="0x60"
+defaultScanInterval="0x100"
+
+defaultConnInterval="0x6" # 7.5 ms
+defaultSupTimeout="0x64" # 1 s
+
+defaultDevAddr="00:11:22:33:44:55"
+defaultInitAddr=defaultDevAddr
+
+# Magic value for the exit function to properly return
+exitFuncMagic=999
+
+## Convert integer to hex.
  #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #
- ##############################################################################
+ # Converts integer to hex with a given number of bits for sign extension.
+################################################################################
 def tohex(val, nbits):
   return hex((val + (1 << nbits)) % (1 << nbits))
 
