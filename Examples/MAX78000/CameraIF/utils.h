@@ -48,6 +48,7 @@
  * limitations under the License.
  *
  ******************************************************************************/
+
 #ifndef EXAMPLES_MAX78000_CAMERAIF_UTILS_H_
 #define EXAMPLES_MAX78000_CAMERAIF_UTILS_H_
 
