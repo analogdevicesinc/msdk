@@ -30,6 +30,7 @@ ifeq "$(BOARD)" "FTHR_RevA"
 #PROJ_CFLAGS+=-DTFT_ENABLE
 IPATH += TFT/fthr
 VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 # Enable the SDHC library

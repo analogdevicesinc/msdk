@@ -28,7 +28,7 @@ ifeq "$(BOARD)" "EvKit_V1"
 VPATH += TFT/evkit
 endif
 ifeq "$(BOARD)" "FTHR_RevA"
-VPATH += TFT/fthr/fonts
+FONTS = LiberationSans16x16
 endif
 
 IPATH += TFT/evkit

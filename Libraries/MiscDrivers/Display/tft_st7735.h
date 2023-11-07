@@ -43,6 +43,7 @@
 #include <stdint.h>
 #include <spi.h>
 #include <gpio.h>
+#include "fonts.h"
 
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 128
@@ -98,12 +99,7 @@ extern const unsigned char img_3_rgb565[];
 extern const unsigned char img_4_rgb565[];
 extern const unsigned char image_pattern_rgb565[];
 extern const unsigned char logo_rgb565[];
-// Fonts
-extern const unsigned char Liberation_Sans12x12[];
-extern const unsigned char Liberation_Sans16x16[];
-extern const unsigned char Liberation_Sans19x19[];
-extern const unsigned char Liberation_Sans24x24[];
-extern const unsigned char Liberation_Sans28x28[];
+
 // Board Specific Functions
 extern void TFT_SPI_Init(void);
 extern void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data);

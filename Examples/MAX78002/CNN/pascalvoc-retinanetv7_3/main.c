@@ -83,7 +83,7 @@ int main(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
     SystemCoreClockUpdate();
-    MXC_TFT_SetFont((int)&SansSerif16x16[0]);
+    MXC_TFT_SetFont((int)&Liberation_Sans16x16[0]);
     TFT_Print("Initializing...\n", 0, 0);
 
     printf("Waiting...\n");

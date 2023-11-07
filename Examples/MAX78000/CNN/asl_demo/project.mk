@@ -33,6 +33,7 @@ endif
 ifeq "$(BOARD)" "FTHR_RevA"
 IPATH += TFT/fthr
 VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 ifeq ($(BOARD),Aud01_RevA)

@@ -44,6 +44,7 @@ ifeq "$(BOARD)" "FTHR_RevA"
 LIB_SDHC = 1
 IPATH += TFT/fthr
 VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 ifeq ($(BOARD),CAM01_RevA)

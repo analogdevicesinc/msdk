@@ -26,6 +26,7 @@ ifeq "$(BOARD)" "FTHR_RevA"
 #PROJ_CFLAGS+=-DENABLE_TFT
 IPATH += TFT/fthr
 VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 ifeq ($(BOARD),CAM01_RevA)

@@ -41,6 +41,7 @@
 
 #include <stdint.h>
 #include "spi.h"
+#include "fonts.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -154,12 +155,6 @@ extern const unsigned char img_3_rgb565[];
 extern const unsigned char img_4_rgb565[];
 extern const unsigned char image_pattern_rgb565[];
 extern const unsigned char logo_rgb565[];
-// Fonts
-extern const unsigned char Liberation_Sans12x12[];
-extern const unsigned char Liberation_Sans16x16[];
-extern const unsigned char Liberation_Sans19x19[];
-extern const unsigned char Liberation_Sans24x24[];
-extern const unsigned char Liberation_Sans28x28[];
 
 /**
  * @brief      Initialize the TFT display
