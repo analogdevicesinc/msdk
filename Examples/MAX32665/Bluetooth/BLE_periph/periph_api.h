@@ -8,7 +8,7 @@
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
  *
- *  Partial Copyright (c) 2022-2023 Analog Devices, Inc.
+ *  Portions Copyright (c) 2022-2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
