@@ -1430,7 +1430,7 @@ void afe_dump_registers(uint32_t reg_bank)
     } // End of ADC HART Register Dump
 
     printf("\n\n");
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
@@ -1480,7 +1480,7 @@ void afe_dump_registers(uint32_t reg_bank)
  * limitations under the License.
  *
  ******************************************************************************/
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
@@ -1530,7 +1530,7 @@ void afe_dump_registers(uint32_t reg_bank)
  * limitations under the License.
  *
  ******************************************************************************/
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)

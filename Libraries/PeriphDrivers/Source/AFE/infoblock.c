@@ -189,7 +189,7 @@ int infoblock_read(uint32_t offset, uint8_t *data, int length)
     }
 
     return E_NO_ERROR;
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
@@ -239,7 +239,7 @@ int infoblock_read(uint32_t offset, uint8_t *data, int length)
  * limitations under the License.
  *
  ******************************************************************************/
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
@@ -289,7 +289,7 @@ int infoblock_read(uint32_t offset, uint8_t *data, int length)
  * limitations under the License.
  *
  ******************************************************************************/
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)

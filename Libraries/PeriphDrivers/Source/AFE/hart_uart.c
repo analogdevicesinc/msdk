@@ -1279,7 +1279,7 @@ int hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length, uint
     }
 
     return E_SUCCESS;
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
@@ -1329,7 +1329,7 @@ int hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length, uint
  * limitations under the License.
  *
  ******************************************************************************/
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
@@ -1379,7 +1379,7 @@ int hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length, uint
  * limitations under the License.
  *
  ******************************************************************************/
-/******************************************************************************
+    /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
