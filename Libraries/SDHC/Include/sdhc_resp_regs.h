@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2016-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
  * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
