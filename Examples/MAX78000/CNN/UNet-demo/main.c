@@ -579,7 +579,6 @@ int main(void)
                            (float)cnn_time / 1000));
 
 #if !defined(USE_SPIDATA)
-
         TFT_Print(buff, 0, 212, font_1,
                   snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE"));
         while (!PB_Get(0)) {}
@@ -587,7 +586,6 @@ int main(void)
         SPI_FLAG = false;
         spi_clear_interrupts(MXC_F_SPI_INTFL_SSA);
         spi_enable_interrupts(MXC_F_SPI_INTEN_SSA);
-
 #endif
         if (PB_Get(1)) {
             LED_On(LED1);
