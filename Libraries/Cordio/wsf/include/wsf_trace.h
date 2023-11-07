@@ -41,7 +41,7 @@ extern "C" {
 
 #ifndef WSF_TRACE_ENABLED
 /*! \brief      Trace enable flag (default is disabled, override with compile-time directive). */
-#define WSF_TRACE_ENABLED         FALSE
+#define WSF_TRACE_ENABLED         TRUE
 #endif
 
 #ifndef WSF_TOKEN_ENABLED
