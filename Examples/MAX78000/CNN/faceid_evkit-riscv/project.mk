@@ -7,35 +7,30 @@
 
 # **********************************************************
 
-# Add your config here!
-# Uncomment the line below to build for the MAX78000FTHR
+# Specify the board used
+ifeq "$(BOARD)" ""
+BOARD=EvKit_V1
 #BOARD=FTHR_RevA
-
-$(info Note: This project is designed and tested for the OV7692 only.)
-override CAMERA=OV7692
-
-# Set a higher optimization level.  The increased performance
-# is required for the CameraIF DMA code to work within the
-# timing requirements of the Parallel Camera Interface.
-MXC_OPTIMIZE_CFLAGS = -O2
+endif
 
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
 PROJ_CFLAGS+=-DROTATE_SCREEN=1
 PROJ_CFLAGS+=-DTFT_ENABLE
 PROJ_CFLAGS+=-DTS_ENABLE
-IPATH += TFT/evkit/resources
-VPATH += TFT/evkit/resources
 endif
 
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
-#PROJ_CFLAGS+=-DTFT_ENABLE
-IPATH += TFT/fthr
-VPATH += TFT/fthr
+#PROJ_CFLAGS+=-DENABLE_TFT
 FONTS = LiberationSans16x16
 endif
+
+# Set a higher optimization level to maximize performance
+MXC_OPTIMIZE_CFLAGS = -O2
+# Default optimization level for debugging purpose
+#MXC_OPTIMIZE_CFLAGS = -Og
 
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)

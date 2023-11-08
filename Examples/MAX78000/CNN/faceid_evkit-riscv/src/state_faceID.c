@@ -42,14 +42,7 @@
 #include "tmr.h"
 #include "cnn.h"
 #include "mxc_delay.h"
-#ifdef BOARD_FTHR_REVA
-#include "tft_ili9341.h"
-#endif
-#ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
-#include "tsc2046.h"
-#include "bitmap.h"
-#endif
+
 #define S_MODULE_NAME "state_faceid"
 
 /* **** Globals **** */
