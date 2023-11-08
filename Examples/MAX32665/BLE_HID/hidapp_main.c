@@ -27,6 +27,7 @@
 #include "util/bstream.h"
 #include "wsf_msg.h"
 #include "wsf_trace.h"
+#include "wsf_nvm.h"
 #include "wsf_assert.h"
 #include "wsf_os.h"
 #include "hci_api.h"
@@ -68,14 +69,37 @@ static const appSlaveCfg_t hidAppSlaveCfg =
   1,                                      /*! Maximum connections */
 };
 
+/*! SMP security parameter configuration 
+*
+*   I/O Capability Codes to be set for 
+*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
+*   when the MITM flag is set in Configurable security parameters above.
+*       -SMP_IO_DISP_ONLY         : Display only. 
+*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
+*       -SMP_IO_KEY_ONLY          : Keyboard only.
+*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
+*       -SMP_IO_KEY_DISP          : Keyboard display. 
+*/
+static const smpCfg_t hidAppSmpCfg = {
+    500, /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
+};
+
 /*! configurable parameters for security */
 static const appSecCfg_t hidAppSecCfg =
 {
-  DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG,    /*! Authentication and bonding flags */
-  0,                                      /*! Initiator key distribution flags */
-  DM_KEY_DIST_LTK,                        /*! Responder key distribution flags */
-  FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-  TRUE                                    /*! TRUE to initiate security upon connection */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
+    DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    TRUE  /*! TRUE to initiate security upon connection */
 };
 
 /*! configurable parameters for connection parameter update */
@@ -90,6 +114,14 @@ static const appUpdateCfg_t hidAppUpdateCfg =
   5                                       /*! Number of update attempts before giving up */
 };
 
+/*! ATT configurable parameters (increase MTU) */
+static const attCfg_t hidAppAttCfg = {
+    15, /* ATT server service discovery connection idle timeout in seconds */
+    241, /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4 /* number of queued prepare writes supported by server */
+};
+
 /*! battery measurement configuration */
 static const basCfg_t hidAppBasCfg =
 {
@@ -98,6 +130,9 @@ static const basCfg_t hidAppBasCfg =
   100       /*! Send battery level notification to peer when below this level. */
 };
 
+/*! local IRK */
+static uint8_t localIrk[] = { 0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
+                              0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85 };
 /**************************************************************************************************
   Advertising Data
 **************************************************************************************************/
@@ -410,6 +445,9 @@ struct
   uint8_t txFlags;                      /* transmit flags */
   uint8_t protocolMode;                 /* current protocol mode */
   uint8_t hostSuspended;                /* TRUE if host suspended */
+
+  appDbHdl_t resListRestoreHdl; /*! Resolving List last restored handle */
+  bool_t restoringResList; /*! Restoring resolving list from NVM */
 } hidAppCb;
 
 /*************************************************************************************************/
@@ -477,6 +515,7 @@ static void hidAppCccCback(attsCccEvt_t *pEvt)
   {
     /* Store value in device database. */
     AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
+    AppDbNvmStoreCccTbl(dbHdl);
   }
 }
 
@@ -505,6 +544,8 @@ static void hidAppOpen(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void hidAppSetup(dmEvt_t *pMsg)
 {
+  /* Initialize control information */
+  hidAppCb.restoringResList = FALSE;
   /* set advertising and scan response data for discoverable mode */
   AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(hidAppAdvDataDisc), (uint8_t *) hidAppAdvDataDisc);
   AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(hidAppScanDataDisc), (uint8_t *) hidAppScanDataDisc);
@@ -515,6 +556,76 @@ static void hidAppSetup(dmEvt_t *pMsg)
 
   /* start advertising; automatically set connectable/discoverable mode and bondable mode */
   AppAdvStart(APP_MODE_AUTO_INIT);
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Begin restoring the resolving list.
+ *
+ *  \param  pMsg    Pointer to DM callback event message.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void HidAppRestoreResolvingList(dmEvt_t *pMsg)
+{
+    /* Restore first device to resolving list in Controller. */
+    hidAppCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
+
+    if (hidAppCb.resListRestoreHdl == APP_DB_HDL_NONE) {
+        /* No device to restore.  Setup application. */
+        hidAppSetup(pMsg);
+    } else {
+        hidAppCb.restoringResList = TRUE;
+    }
+}
+/*************************************************************************************************/
+/*!
+*
+*  \brief  Add device to resolving list.
+*
+*  \param  dbHdl   Device DB record handle.
+*
+*  \return None.
+*/
+/*************************************************************************************************/
+static void HidAppPrivAddDevToResList(appDbHdl_t dbHdl)
+{
+    dmSecKey_t *pPeerKey;
+
+    /* if peer IRK present */
+    if ((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL) {
+        /* set advertising peer address */
+        AppSetAdvPeerAddr(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr);
+    }
+}
+
+/*************************************************************************************************/
+/*!
+*  \brief  Handle add device to resolving list indication.
+ *
+ *  \param  pMsg    Pointer to DM callback event message.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void HidAppPrivAddDevToResListInd(dmEvt_t *pMsg)
+{
+    /* Check if in the process of restoring the Device List from NV */
+    if (hidAppCb.restoringResList) {
+        /* Set the advertising peer address. */
+        HidAppPrivAddDevToResList(hidAppCb.resListRestoreHdl);
+
+        /* Retore next device to resolving list in Controller. */
+        hidAppCb.resListRestoreHdl = AppAddNextDevToResList(hidAppCb.resListRestoreHdl);
+
+        if (hidAppCb.resListRestoreHdl == APP_DB_HDL_NONE) {
+            /* No additional device to restore. Setup application. */
+            hidAppSetup(pMsg);
+        }
+    } else {
+        HidAppPrivAddDevToResList(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
+    }
 }
 
 /*************************************************************************************************/
@@ -1029,12 +1140,17 @@ static void hidAppProcMsg(dmEvt_t *pMsg)
     case DM_RESET_CMPL_IND:
       AttsCalculateDbHash();
       DmSecGenerateEccKeyReq();
-      hidAppSetup(pMsg);
+      AppDbNvmReadAll();
+      HidAppRestoreResolvingList(pMsg);
+      setAdvTxPower();
       uiEvent = APP_UI_RESET_CMPL;
       break;
 
     case DM_CONN_OPEN_IND:
       hidAppOpen(pMsg);
+      if (hidAppSecCfg.initiateSec) {
+            AppSlaveSecurityReq((dmConnId_t)pMsg->hdr.param);
+        }
       uiEvent = APP_UI_CONN_OPEN;
       break;
 
@@ -1044,6 +1160,7 @@ static void hidAppProcMsg(dmEvt_t *pMsg)
 
     case DM_SEC_PAIR_CMPL_IND:
       DmSecGenerateEccKeyReq();
+      AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
       uiEvent = APP_UI_SEC_PAIR_CMPL;
       break;
 
@@ -1071,6 +1188,10 @@ static void hidAppProcMsg(dmEvt_t *pMsg)
     case DM_SEC_COMPARE_IND:
       AppHandleNumericComparison(&pMsg->cnfInd);
       break;
+
+    case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
+        HidAppPrivAddDevToResListInd(pMsg);
+        break;
 
     case DM_PRIV_CLEAR_RES_LIST_IND:
       APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
@@ -1193,6 +1314,12 @@ static void hidAppReportInit(void)
 void HidAppHandlerInit(wsfHandlerId_t handlerId)
 {
   APP_TRACE_INFO0("HidAppHandlerInit");
+   uint8_t addr[6] = { 0 };
+    APP_TRACE_INFO0("DatsHandlerInit");
+    AppGetBdAddr(addr);
+    APP_TRACE_INFO6("MAC Addr: %02x:%02x:%02x:%02x:%02x:%02x", addr[5], addr[4], addr[3], addr[2],
+                    addr[1], addr[0]);
+    APP_TRACE_INFO1("Adv local name: %s", &hidAppScanDataDisc[2]);
 
   /* Initialize the control block */
   memset(&hidAppCb, 0, sizeof(hidAppCb));
@@ -1206,10 +1333,14 @@ void HidAppHandlerInit(wsfHandlerId_t handlerId)
   pAppAdvCfg = (appAdvCfg_t *) &hidAppAdvCfg;
   pAppSecCfg = (appSecCfg_t *) &hidAppSecCfg;
   pAppUpdateCfg = (appUpdateCfg_t *) &hidAppUpdateCfg;
-
+  pSmpCfg = (smpCfg_t *) &hidAppSmpCfg;
+  pAttCfg = (attCfg_t *) &hidAppAttCfg;
   /* Initialize application framework */
   AppSlaveInit();
   AppServerInit();
+
+  /* Set IRK for the local device */
+  DmSecSetLocalIrk(localIrk);
 
   /* initialize battery service server */
   BasInit(handlerId, (basCfg_t *) &hidAppBasCfg);
@@ -1347,6 +1478,7 @@ void HidAppStart(void)
   SvcBattAddGroup();
   SvcBattCbackRegister(BasReadCback, NULL);
 
+  WsfNvmInit();
 #endif /* HID_ATT_DYNAMIC */
 
   /* Set Service Changed CCCD index. */
@@ -1360,6 +1492,7 @@ void HidAppStart(void)
 
   /* Reset the device */
   DmDevReset();
+
 
 	//some where you have to set up the timer
 	/* Setup the erase handler */

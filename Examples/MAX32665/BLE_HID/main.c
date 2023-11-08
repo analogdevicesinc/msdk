@@ -88,7 +88,7 @@ volatile int wutTrimComplete;
 
 /*! \brief  Stack initialization for app. */
 extern void StackInitHid(void);
-
+extern void setAdvTxPower(void);
 /*************************************************************************************************/
 /*!
  *  \brief  Initialize WSF.
