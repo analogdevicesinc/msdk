@@ -246,6 +246,6 @@ void TFT_End(uint16_t words)
     MXC_TFT_ClearScreen();
     TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
     TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
-    TFT_Print(buff, 0, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif
