@@ -71,4 +71,3 @@ extern const unsigned char Liberation_Sans28x28[];
 #define font_char_table _font_char_table
 
 #endif
-
