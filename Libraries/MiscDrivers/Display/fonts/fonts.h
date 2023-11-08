@@ -70,4 +70,4 @@ extern const unsigned char Liberation_Sans28x28[];
  */
 #define font_char_table _font_char_table
 
-#endif  // LIBRARIES_MISCDRIVERS_DISPLAY_FONTS_FONTS_H_
+#endif // LIBRARIES_MISCDRIVERS_DISPLAY_FONTS_FONTS_H_
