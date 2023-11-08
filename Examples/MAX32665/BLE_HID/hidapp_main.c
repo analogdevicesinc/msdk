@@ -47,7 +47,11 @@
 #include "bas/bas_api.h"
 #include "hid/hid_api.h"
 #include "hidapp_api.h"
-
+#include "usb_hid_keys.h"
+	//these are to be define globally
+	wsfHandlerId_t myTimerHandlerId;
+	wsfTimer_t myTimer;
+	
 /**************************************************************************************************
   Configurable Parameters
 **************************************************************************************************/
@@ -1272,6 +1276,33 @@ void HidAppTest(void)
  *  \return None.
  */
 /*************************************************************************************************/
+	//this is the callback to the timer
+	void myTimerHandlerCB(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+	{
+		uint32_t delayStart_ms = 100;
+    static uint8_t button = KEY_A;
+    //static uint8_t button[6] ;
+		// //do stuff
+    if(AppConnIsOpen() != DM_CONN_ID_NONE)
+    {
+      if (button > KEY_Z)
+      {
+        button = KEY_ENTER;
+        hidAppKeyboardReportEvent(0, &button, 1);
+        button = KEY_A;
+      }
+      else
+      {
+        hidAppKeyboardReportEvent(0, &button, 1);
+        button++;
+      }
+     }
+    //kick off timer again
+    WsfTimerStartMs(&myTimer, delayStart_ms);
+  
+	}
+
+
 void HidAppStart(void)
 {
 #ifdef HID_ATT_DYNAMIC
@@ -1329,4 +1360,12 @@ void HidAppStart(void)
 
   /* Reset the device */
   DmDevReset();
+
+	//some where you have to set up the timer
+	/* Setup the erase handler */
+	myTimerHandlerId = WsfOsSetNextHandler(myTimerHandlerCB);
+	myTimer.handlerId = myTimerHandlerId;
+
+	// somewhere you have to start the timer
+	WsfTimerStartMs(&myTimer, 100);
 }
