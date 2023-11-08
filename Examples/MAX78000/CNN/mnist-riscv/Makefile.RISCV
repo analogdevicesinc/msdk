@@ -83,7 +83,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 IPATH  = .
 
 # Enable all warnings
-PROJ_CFLAGS+=-Wall -Wcast-align -DMXC_ASSERT_ENABLE -DRV32
+PROJ_CFLAGS+=-Wall -Wcast-align -DMXC_ASSERT_ENABLE -DRV32 
 
 # Specify STACK SIZE
 STACK_SIZE=1024
