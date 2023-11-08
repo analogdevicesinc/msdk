@@ -20,3 +20,5 @@ endif
 
 IPATH += resources
 VPATH += resources/tft_demo
+
+FONTS = LiberationSans16x16

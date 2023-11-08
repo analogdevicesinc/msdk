@@ -114,7 +114,7 @@ int main(void)
 
     MXC_TFT_SetBackGroundColor(WHITE);
 
-    MXC_TFT_SetFont((int)&SansSerif16x16[0]);
+    MXC_TFT_SetFont((int)&Liberation_Sans16x16[0]);
 
     error = MXC_RTC_Init(0, 0);
     if (error != E_NO_ERROR) {
