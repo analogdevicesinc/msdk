@@ -91,25 +91,25 @@ void TFT_test(void)
         MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Liberation_Sans12x12[0]); // Use Arial 12x12 font
+        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Liberation_Sans12x12[0]);
         TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Liberation_Sans12x12[0]);
         TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Liberation_Sans12x12[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Liberation_Sans24x24[0]); // Use Arial 24x23 font
+        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Liberation_Sans24x24[0]);
         TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Liberation_Sans24x24[0]);
         TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Liberation_Sans24x24[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Liberation_Sans28x28[0]); // Use Arial 28x28 font
+        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Liberation_Sans28x28[0]);
         TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Liberation_Sans28x28[0]);
         TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Liberation_Sans28x28[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 80, (int)&Liberation_Sans16x16[0]); // Use Sans Serif 16x16 font
+        TFT_Print(buff, sizeof(buff), 3, 80, (int)&Liberation_Sans16x16[0]);
         TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&Liberation_Sans16x16[0]);
         TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&Liberation_Sans16x16[0]);
         MXC_Delay(1000000);
