@@ -171,7 +171,7 @@
           </field>
           <!-- FIELD 10 SOFTWARE OUTPUT ENABLE -->
           <field>
-            <name>BB_EN</name>
+            <name>BB_MODE</name>
             <description>Software Output Enable.</description>
             <bitRange>[10:10]</bitRange>
             <access>read-write</access>
@@ -1310,12 +1310,12 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CODE</name>
+            <name>MST_CODE</name>
             <description>Master Code.</description>
             <bitRange>[10:8]</bitRange>
           </field>
           <field>
-            <name>IGN_ACK</name>
+            <name>MST_IGN_ACK</name>
             <description>Master Ignore Acknowledge.</description>
             <bitRange>[12:12]</bitRange>
           </field>

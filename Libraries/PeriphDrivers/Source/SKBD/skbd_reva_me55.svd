@@ -101,7 +101,7 @@
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>AUTOSCAN_EN</name>
+            <name>AUTOEN</name>
             <description>Automatic Keyboard Scan Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -118,8 +118,8 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="AUTOSCAN_EN">
-            <name>AUTOCLEAR</name>
+          <field derivedFrom="AUTOEN">
+            <name>CLEAR</name>
             <description>Auto Clear Bit</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>

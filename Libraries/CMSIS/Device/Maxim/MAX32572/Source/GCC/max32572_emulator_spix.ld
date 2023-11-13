@@ -29,43 +29,44 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-12-18 15:37:22 -0600 (Tue, 18 Dec 2018) $ 
- * $Revision: 40072 $
+ * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
+ * $Revision: 22594 $
  *
  ******************************************************************************/
 
 MEMORY {
-    ROM (rx) : ORIGIN = 0x00000000, LENGTH = 64K
-    SPIXIP (rx) : ORIGIN = 0x08000000, LENGTH = 128M
-    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 432K*/
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /*32kB SRAM0 */
-    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00048000 /* 288kB SRAM, leaving last 32kB for openocd work area */
+    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB "ROM" */
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256kB "FLASH" */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x000BE000 /* 760kB SRAM */
+
+    XIP_0 (rx)   : ORIGIN = 0x08000000, LENGTH = 0x00010000
+    XIP_1 (rx)   : ORIGIN = 0x08010000, LENGTH = 0x00010000
+    XIP_2 (rx)   : ORIGIN = 0x08020000, LENGTH = 0x00010000
+    XIP_SLEEP (rx)   : ORIGIN = 0x08030000, LENGTH = 0x00010000    
 }
 
 SECTIONS {
-
-    .romcode :
+    .rom :
     {
-        //_text = .;
+        KEEP(*(.rom_vector))
+        *(.rom_handlers*)
+    } > ROM
+
+    .text :
+    {
+        _text = .;
         KEEP(*(.isr_vector))
-        KEEP(*(.Reset))
-        
+        *(.text*)    /* program code */
+        *(.rodata*)  /* read-only data: "const" */
+
         KEEP(*(.init))
         KEEP(*(.fini))
 
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
-        //_etext = .;
-    } > ROM
-    
-    .text :
-    {
-        _text = .;
-        *(.text*)    /* program code */
-        *(.rodata*)  /* read-only data: "const" */
         _etext = .;
-    } > SPIXIP
-    
+    } > FLASH
+
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :
@@ -73,13 +74,14 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > ROM
+    } > FLASH
 
     .data :
     {
         _data = ALIGN(., 4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
-        KEEP(*(.spix_config*))    /* SPIX configuration functions need to be run from SRAM */
+        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
+        *(.flashprog*)      /* Flash program */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -103,8 +105,36 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>SPIXIP
+    } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
+
+    .xip_0 :  AT(0x10000)
+    {
+        _XIP_START_0 = .;
+        *(.xip_0*)
+        _XIP_END_0 = .;
+    } > XIP_0
+
+    .xip_1 :  AT(0x11000)
+    {
+        _XIP_START_1 = .;
+        *(.xip_1*)
+        _XIP_END_1 = .;
+    } > XIP_1
+
+    .xip_2 : AT(0x12000)
+    {
+        _XIP_START_2 = .;
+        *(.xip_2*)
+        _XIP_END_2 = .;
+    } > XIP_2
+
+    .xip_sleep : AT(0x13000)
+    {
+        _XIP_START_SLEEP = .;
+        *(.xip_sleep*)
+        _XIP_END_SLEEP = .;
+    } > XIP_SLEEP
 
     .bss :
     {

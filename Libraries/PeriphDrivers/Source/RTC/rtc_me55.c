@@ -76,7 +76,7 @@ int MXC_RTC_Stop(void)
 int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
 {
     // Enable clock
-    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
 
     return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, ssec);
 }

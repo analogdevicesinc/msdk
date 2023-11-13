@@ -49,59 +49,59 @@ void MXC_TMR_RevA_Init(mxc_tmr_reva_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 
     // Set the prescaler
     switch (cfg->pres) {
-    case MXC_TMR_PRES_1:
+    case TMR_PRES_1:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV1);
         break;
 
-    case MXC_TMR_PRES_2:
+    case TMR_PRES_2:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV2);
         break;
 
-    case MXC_TMR_PRES_4:
+    case TMR_PRES_4:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV4);
         break;
 
-    case MXC_TMR_PRES_8:
+    case TMR_PRES_8:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV8);
         break;
 
-    case MXC_TMR_PRES_16:
+    case TMR_PRES_16:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV16);
         break;
 
-    case MXC_TMR_PRES_32:
+    case TMR_PRES_32:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV32);
         break;
 
-    case MXC_TMR_PRES_64:
+    case TMR_PRES_64:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV64);
         break;
 
-    case MXC_TMR_PRES_128:
+    case TMR_PRES_128:
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV128);
         break;
 
-    case MXC_TMR_PRES_256:
+    case TMR_PRES_256:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
         tmr->cn &= ~(MXC_S_TMR_REVA_CN_PRES_DIV1);
         break;
 
-    case MXC_TMR_PRES_512:
+    case TMR_PRES_512:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV4);
         break;
 
-    case MXC_TMR_PRES_1024:
+    case TMR_PRES_1024:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV8);
         break;
 
-    case MXC_TMR_PRES_2048:
+    case TMR_PRES_2048:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV16);
         break;
 
-    case MXC_TMR_PRES_4096:
+    case TMR_PRES_4096:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
         tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV32);
         break;
@@ -221,7 +221,7 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, uint32_t us)
 
     // Initialize the timer in one-shot mode
     cfg.pres = prescale;
-    cfg.mode = MXC_TMR_MODE_ONESHOT;
+    cfg.mode = TMR_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
 
@@ -244,7 +244,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = MXC_TMR_UNIT_NANOSEC;
+        *units = TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
 
@@ -252,7 +252,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = MXC_TMR_UNIT_MICROSEC;
+        *units = TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
 
@@ -260,7 +260,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = MXC_TMR_UNIT_MILLISEC;
+        *units = TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
 
@@ -268,7 +268,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = MXC_TMR_UNIT_SEC;
+        *units = TMR_UNIT_SEC;
         return E_NO_ERROR;
     }
 

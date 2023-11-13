@@ -37,6 +37,7 @@
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_pins.h"
+//#include "max32570.h"
 #include "mxc_sys.h"
 
 /* **** Definitions **** */

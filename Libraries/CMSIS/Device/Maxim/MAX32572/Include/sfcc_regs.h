@@ -2,7 +2,6 @@
  * @file    sfcc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SFCC Peripheral Module.
  * @note    This file is @generated.
- * @ingroup sfcc_registers
  */
 
 /******************************************************************************

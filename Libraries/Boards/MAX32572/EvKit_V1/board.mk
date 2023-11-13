@@ -44,9 +44,12 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += tsc2046.c
-SRCS += tft_ssd2119.c
+# SRCS += tft.c
 
-MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
+# PROJ_CFLAGS+=-DEXT_FLASH_MX25
+
+# MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
+MISC_DRIVERS_DIR ?= $(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source

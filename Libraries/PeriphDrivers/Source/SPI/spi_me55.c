@@ -69,11 +69,11 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_GPIO_Config(&gpio_cfg_spi1);
-#ifdef MXC_SPI3
-    } else if (spi == MXC_SPI3) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI3);
-        MXC_GPIO_Config(&gpio_cfg_spi3);
+#ifdef MXC_SPI2
+    } else if (spi == MXC_SPI2) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI2);
+        MXC_GPIO_Config(&gpio_cfg_spi2);
 #endif
     } else {
         return E_NO_DEVICE;
@@ -95,8 +95,8 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
     } else if (spi == MXC_SPI1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
-    } else if (spi == MXC_SPI3) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI3);
+    } else if (spi == MXC_SPI2) {
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI2);
     } else {
         return E_INVALID;
     }
@@ -113,7 +113,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 {
     if (spi == MXC_SPI0 || spi == MXC_SPI1) {
         return PeripheralClock;
-    } else if (spi == MXC_SPI3) {
+    } else if (spi == MXC_SPI2) {
         uint32_t clk_sel = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
                            MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
         switch (clk_sel) {
@@ -302,8 +302,8 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             reqselTx = MXC_DMA_REQUEST_SPI1TX;
             break;
 
-        case 3:
-            reqselTx = MXC_DMA_REQUEST_SPI3TX;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2TX;
             break;
 
         default:
@@ -321,8 +321,8 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             reqselRx = MXC_DMA_REQUEST_SPI1RX;
             break;
 
-        case 3:
-            reqselRx = MXC_DMA_REQUEST_SPI3RX;
+        case 2:
+            reqselRx = MXC_DMA_REQUEST_SPI2RX;
             break;
 
         default:
@@ -363,8 +363,8 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
             reqselTx = MXC_DMA_REQUEST_SPI1TX;
             break;
 
-        case 3:
-            reqselTx = MXC_DMA_REQUEST_SPI3TX;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2TX;
             break;
 
         default:
@@ -382,8 +382,8 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
             reqselRx = MXC_DMA_REQUEST_SPI1RX;
             break;
 
-        case 3:
-            reqselRx = MXC_DMA_REQUEST_SPI3RX;
+        case 2:
+            reqselRx = MXC_DMA_REQUEST_SPI2RX;
             break;
 
         default:

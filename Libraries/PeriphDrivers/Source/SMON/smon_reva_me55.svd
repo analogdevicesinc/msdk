@@ -334,9 +334,9 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TAMPOUT_EN</name>
-            <description>Tamper Output Enable.</description>
-            <bitOffset>7</bitOffset>
+            <name>DFD_STDBY_EN</name>
+            <description>Digital Fault Dector Stand by Enable</description>
+            <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
@@ -356,12 +356,6 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
-          </field>
-          <field>
-            <name>HITEMP_SEL</name>
-            <description>High Temperature Detection Select.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>VCORELO_EN</name>
@@ -1308,7 +1302,7 @@
         <access>read-only</access>
         <fields>
           <field>
-            <name>EXTSCTRL</name>
+            <name>EXTSCTRL_ST</name>
             <description>External Sensor Control Register Status.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1326,7 +1320,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>INTSCTRL</name>
+            <name>INTSCTRL_ST</name>
             <description>Internal Sensor Control Register Status.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1344,7 +1338,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SECALM</name>
+            <name>SECALM_ST</name>
             <description>Security Alarm Register Status.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1362,7 +1356,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MEUCTRL</name>
+            <name>MEUCTRL_ST</name>
             <description>Security Alarm Register Status.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1394,7 +1388,7 @@
           </field>
           <field>
             <name>SDBYTE_EN</name>
-            <description>Self-Destruct Byte Enable.</description>
+            <description>Self-Destruct Byte ENable.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
           </field>

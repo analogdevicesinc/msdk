@@ -32,20 +32,30 @@
  * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
  * $Revision: 22594 $
  *
- ******************************************************************************/ 
-
+ ******************************************************************************/
+ /* Allocate space if SDMA_SIZE is defined at the start of SRAM*/
+ 
 MEMORY {
-    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 64K
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0006C000 /* 432kB SRAM */
-    SPIX (rx)  : ORIGIN = 0x08000000, LENGTH = 128M
+    SPIX (rx)  		: ORIGIN = 0x08000000, 				LENGTH = 128M
+    SRAM (rwx) 		: ORIGIN = 0x20000000,				LENGTH = 0x00060000
+    SRAM_RV (rwx)   : ORIGIN = 0x20060000,              LENGTH = 0x0000C000
 }
 
+/* Added Oct 9, 2018 to go to correct reset vector. */
+ENTRY(Reset_Handler)
+PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
+PROVIDE_HIDDEN( _SLA_Size = _endimage - __end_header );
+PROVIDE( _SLA_Size_SWAP = (((_SLA_Size) >> 24) | (((_SLA_Size) & 0x00FF0000) >> 8) | (((_SLA_Size) & 0x0000FF00) << 8) | ((_SLA_Size) << 24)));
+
+/* Sections Definitions */
 SECTIONS {
-    .rom :
+	 .sla_header : ALIGN(4)
     {
-        KEEP(*(.rom_vector))
-        *(.rom_handlers*)
-    } > ROM
+	FILL(0xFF)
+		KEEP(*(.sb_sla_header)) /* Header for ROM code */ 
+		 __end_header = . ;
+		. = ALIGN(512);
+    } > SPIX /*HEADER*/
 
     .text :
     {
@@ -60,7 +70,13 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > SPIX
+    } > SPIX /*FLASH*/
+
+	
+    .ARM.extab :
+    {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
+    } > SPIX /*FLASH*/
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -69,13 +85,26 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > ROM
+    } > SPIX /*FLASH*/
 
+    /* This section will keep the SPIX data until loaded into the external device */
+    /* Upon initialization of SPIX (user code needs to do this) */
+    .xip_section :
+    {
+        KEEP(*(.xip_section*))
+    } > SPIX AT>SPIX /*FLASH*/
+
+    __load_start_xip = LOADADDR(.xip_section);
+    __load_length_xip = SIZEOF(.xip_section);
+    
     .data :
     {
         _data = ALIGN(., 4);
-        *(.data*)           /* read-write initialized data: initialized global variable */
+        *(vtable)
+        *(.data*)           /*read-write initialized data: initialized global variable*/
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
+        *(.flashprog*)      /* Flash program */
+        
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -99,14 +128,40 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>SPIX
+    } > SRAM AT>SPIX /*FLASH*/
     __load_data = LOADADDR(.data);
+    _enddata = LOADADDR(.data)+SIZEOF(.data);
 
+    /* RISCV SRAM section */
+    .sram_rv :
+    {
+        _data_rv = ALIGN(., 4);
+        *(.sram_rv*)
+        _edata_rv = ALIGN(., 4);
+    } > SRAM_RV
+
+    .sb_sla_trailer : AT(_enddata)
+    {
+        KEEP(*(.sb_sla_trailer))
+        /* Align image with 16 byte boundary to conform to flash encryption block size. */
+        FILL(0xDEADC0DE);
+        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
+        LONG(0xDEADC0DE);
+        . = ALIGN(16);
+    }  > SPIX /*FLASH*/
+    _endimage = LOADADDR(.sb_sla_trailer)+SIZEOF(.sb_sla_trailer);
+    .sig :
+    {
+        KEEP(*(.sig))
+        LONG(0xDEADBEEF);
+
+    }  > SPIX /*FLASH*/
+    
     .bss :
     {
         . = ALIGN(4);
         _bss = .;
-        *(.bss*)     /* read-write zero initialized data: uninitialzed global variable */
+        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM

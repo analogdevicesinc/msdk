@@ -48,13 +48,8 @@
 #define MXC_I2C_FASTPLUS_SPEED 1000000
 
 /* **** Variable Declaration **** */
-<<<<<<< HEAD
-uint32_t interruptCheck = MXC_F_I2C_INTFL0_RD_ADDR_MATCH | MXC_F_I2C_INTFL0_WR_ADDR_MATCH |
-                          MXC_F_I2C_INTFL0_DNR_ERR;
-=======
 uint32_t interruptCheck = MXC_F_I2C_INT_FL0_RD_ADDR_MATCH | MXC_F_I2C_INT_FL0_WR_ADDR_MATCH |
                           MXC_F_I2C_INT_FL0_ADDR_MATCH | MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER;
->>>>>>> main
 
 /* **** Function Prototypes **** */
 
