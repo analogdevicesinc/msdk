@@ -36,9 +36,10 @@
  /* Allocate space if SDMA_SIZE is defined at the start of SRAM*/
  
 MEMORY {
-    SPIX (rx)  		: ORIGIN = 0x08000000, 				LENGTH = 128M
-    SRAM (rwx) 		: ORIGIN = 0x20000000,				LENGTH = 0x00060000
-    SRAM_RV (rwx)   : ORIGIN = 0x20060000,              LENGTH = 0x0000C000
+    ROM (rx)      : ORIGIN = 0x00000000, LENGTH = 64K
+    SPIX (rx)     : ORIGIN = 0x08000000, LENGTH = 128M
+    SRAM (rwx)    : ORIGIN = 0x20000000, LENGTH = 0x00060000 /* Total: 432kB SRAM */
+    SRAM_RV (rwx) : ORIGIN = 0x20060000, LENGTH = 0x0000C000
 }
 
 /* Added Oct 9, 2018 to go to correct reset vector. */
@@ -49,7 +50,15 @@ PROVIDE( _SLA_Size_SWAP = (((_SLA_Size) >> 24) | (((_SLA_Size) & 0x00FF0000) >> 
 
 /* Sections Definitions */
 SECTIONS {
-	 .sla_header : ALIGN(4)
+    .sla_header: ALIGN(4)
+    {
+        FILL(0xFF)
+        KEEP(*(.sb_sla_header)) /* Header for ROM code */
+        __end_header = .;
+        . = ALIGN(512);
+    } > SPIX
+
+    .rom :
     {
 	FILL(0xFF)
 		KEEP(*(.sb_sla_header)) /* Header for ROM code */ 
@@ -78,6 +87,11 @@ SECTIONS {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > SPIX /*FLASH*/
 
+    .ARM.extab :
+    {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
+    } > SPIX
+
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :
@@ -92,16 +106,15 @@ SECTIONS {
     .xip_section :
     {
         KEEP(*(.xip_section*))
-    } > SPIX AT>SPIX /*FLASH*/
-
+    } > SPIX AT>SPIX
     __load_start_xip = LOADADDR(.xip_section);
     __load_length_xip = SIZEOF(.xip_section);
-    
+
     .data :
     {
         _data = ALIGN(., 4);
         *(vtable)
-        *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
         *(.flashprog*)      /* Flash program */
         
@@ -130,7 +143,31 @@ SECTIONS {
         _edata = ALIGN(., 4);
     } > SRAM AT>SPIX /*FLASH*/
     __load_data = LOADADDR(.data);
-    _enddata = LOADADDR(.data)+SIZEOF(.data);
+    __end_data = LOADADDR(.data)+SIZEOF(.data);
+
+    .sram_rv :
+    {
+        _data_rv = ALIGN(., 4);
+        *(.sram_rv*)
+        _edata_rv = ALIGN(., 4);
+    } > SRAM_RV
+
+    .sb_sla_trailer : AT(__end_data)
+    {
+        KEEP(*(.sb_sla_trailer))
+        /* Align image with 16-byte boundary to conform to flash encryption block size. */
+        FILL(0xDEADC0DE);
+        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
+        LONG(0xDEADC0DE);
+        . = ALIGN(16);
+    }  > SPIX
+    __end_image = LOADADDR(.sb_sla_trailer)+SIZEOF(.sb_sla_trailer);
+
+    .sig :
+    {
+        KEEP(*(.sig))
+        LONG(0xDEADBEEF);
+    }  > SPIX
 
     /* RISCV SRAM section */
     .sram_rv :
@@ -161,7 +198,7 @@ SECTIONS {
     {
         . = ALIGN(4);
         _bss = .;
-        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
+        *(.bss*)     /* read-write zero-initialized data: uninitialized global variable */
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM

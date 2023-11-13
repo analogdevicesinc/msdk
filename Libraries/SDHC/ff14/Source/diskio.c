@@ -14,6 +14,14 @@
 /* Definitions of physical drive number for each drive */
 #define DEV_SD      0   /* Example: Map MMC/SD card to physical drive 1 */
 
+#ifndef SDHC_CLK_FREQ
+/* For non-native SDHC, a SPI is used to emulate the SDHC hardware.  In 
+that case, sdhc_lib.h is not included and we need to redefine a default speed
+here. */
+#define SDHC_CLK_FREQ 40000000
+#endif
+#define SPI_SPEED SDHC_CLK_FREQ
+
 #ifdef NATIVE_SDHC
 
 /* # of times to check for a card, should be > 1 to detect both SD and MMC */
@@ -384,7 +392,7 @@ static void init_mmc()
     pins.sdio2 = false;
     pins.sdio3 = false;
     pins.vddioh = true;
-    MXC_SPI_Init(mmc_spi, 1, 0, 0, 0, 400000, pins);
+    MXC_SPI_Init(mmc_spi, 1, 0, 0, 0, SPI_SPEED, pins);
 	MXC_SPI_SetDataSize(mmc_spi, 8);
 	MXC_SPI_SetDefaultTXData(mmc_spi, 0xFF);
 
