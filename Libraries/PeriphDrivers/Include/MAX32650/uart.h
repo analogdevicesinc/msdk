@@ -607,19 +607,23 @@ void MXC_UART_DMACallback(int ch, int error);
  *
  * @param      uart    The uart
  * @param[in]  retVal  The ret value
+ * 
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-void MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal);
-void MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
-void MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
+int MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal);
+int MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
+int MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
 
 /**
  * @brief   stop any async callbacks
  *
  * @param   uart  The uart
+ * 
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-void MXC_UART_AsyncStop(mxc_uart_regs_t *uart);
-void MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart);
-void MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart);
+int MXC_UART_AsyncStop(mxc_uart_regs_t *uart);
+int MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart);
+int MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Abort any asynchronous requests in progress.
@@ -629,10 +633,12 @@ void MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart);
  * has been terminated.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * 
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-void MXC_UART_AbortAsync(mxc_uart_regs_t *uart);
-void MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart);
-void MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart);
+int MXC_UART_AbortAsync(mxc_uart_regs_t *uart);
+int MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart);
+int MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart);
 
 /**
  * @brief      UART interrupt handler.

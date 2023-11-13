@@ -45,5 +45,6 @@ int usbio_writefifo(unsigned int reg, uint8_t *data, unsigned int num);
 
 #ifdef __cplusplus
 }
+#endif
 
 #endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USBIO_MAXQ_H_
