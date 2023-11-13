@@ -32,6 +32,7 @@
  ******************************************************************************/
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
@@ -76,7 +77,7 @@ unsigned int g_x, g_y = 0;
 // Global touchscreen event flag that can be polled by applications if needed.
 // The application should clear it to 0 if used.
 // It is set to 1 eve
-int ts_event = FALSE;
+int ts_event = false;
 
 /********************************* Static Functions **************************/
 static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
@@ -147,7 +148,7 @@ static void tsHandler(void)
     MXC_TS_Stop();
 
     if (tsGetXY((uint16_t *)&g_x, (uint16_t *)&g_y)) {
-        ts_event = TRUE;
+        ts_event = true;
         if (pressed_key == 0) { // wait until prev key process
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
@@ -256,7 +257,7 @@ int MXC_TS_GetTSEvent()
 
 void MXC_TS_ClearTSEvent()
 {
-    ts_event = FALSE;
+    ts_event = false;
 }
 
 int MXC_TS_AddButton(int x0, int y0, int x1, int y1, int on_press_expected_code)
