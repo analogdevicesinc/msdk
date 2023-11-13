@@ -621,8 +621,8 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
         return E_NULL_PTR;
     }
 
-    if (states[uart_num].auto_dma_handlers) {
-        /* Acquire channel */
+    if (states[uart_num].auto_dma_handlers && states[uart_num].channelRx < 0) {
+        /* Acquire channel if we don't have one already */
 #if MXC_DMA_INSTANCES > 1
         channel = MXC_DMA_AcquireChannel(dma);
 #else
@@ -753,8 +753,8 @@ unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_re
         return E_NULL_PTR;
     }
 
-    if (states[uart_num].auto_dma_handlers) {
-        /* Acquire channel */
+    if (states[uart_num].auto_dma_handlers && states[uart_num].channelTx < 0) {
+        /* Acquire channel if we don't have one already */
 #if TARGET_NUM == 32665
         channel = MXC_DMA_AcquireChannel(dma);
 #else
