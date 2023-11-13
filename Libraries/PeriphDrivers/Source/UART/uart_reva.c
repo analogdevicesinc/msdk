@@ -104,13 +104,12 @@ int MXC_UART_RevA_Init(mxc_uart_reva_regs_t *uart, unsigned int baud)
     MXC_UART_SetFrequency((mxc_uart_regs_t *)uart, baud);
 
     // Initialize state struct
-    for (int i = 0; i < MXC_UART_INSTANCES; i++) {
-        states[i].channelRx = -1;
-        states[i].channelTx = -1;
-        states[i].tx_req = NULL;
-        states[i].rx_req = NULL;
-        states[i].auto_dma_handlers = false;
-    }
+    unsigned int i = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    states[i].channelRx = -1;
+    states[i].channelTx = -1;
+    states[i].tx_req = NULL;
+    states[i].rx_req = NULL;
+    states[i].auto_dma_handlers = false;
 
     return E_NO_ERROR;
 }
@@ -624,7 +623,7 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
 
     if (states[uart_num].auto_dma_handlers) {
         /* Acquire channel */
-#if TARGET_NUM == 32665
+#if MXC_DMA_INSTANCES > 1
         channel = MXC_DMA_AcquireChannel(dma);
 #else
         channel = MXC_DMA_AcquireChannel();
@@ -689,8 +688,7 @@ unsigned int MXC_UART_RevA_WriteTXFIFO(mxc_uart_reva_regs_t *uart, unsigned char
 int MXC_UART_RevA_SetAutoDMAHandlers(mxc_uart_reva_regs_t *uart, bool enable)
 {
     int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
-    if (n < 0)
-        return E_BAD_PARAM;
+    MXC_ASSERT(n >= 0);
 
     states[n].auto_dma_handlers = enable;
 

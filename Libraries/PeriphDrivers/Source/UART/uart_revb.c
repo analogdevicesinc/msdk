@@ -101,13 +101,12 @@ int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_r
     }
 
     // Initialize state struct
-    for (int i = 0; i < MXC_UART_INSTANCES; i++) {
-        states[i].channelRx = -1;
-        states[i].channelTx = -1;
-        states[i].tx_req = NULL;
-        states[i].rx_req = NULL;
-        states[i].auto_dma_handlers = false;
-    }
+    unsigned int i = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    states[i].channelRx = -1;
+    states[i].channelTx = -1;
+    states[i].tx_req = NULL;
+    states[i].rx_req = NULL;
+    states[i].auto_dma_handlers = false;
 
     return E_NO_ERROR;
 }
@@ -946,8 +945,7 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
 int MXC_UART_RevB_SetAutoDMAHandlers(mxc_uart_revb_regs_t *uart, bool enable)
 {
     int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
-    if (n < 0)
-        return E_BAD_PARAM;
+    MXC_ASSERT(n >= 0);
 
     states[n].auto_dma_handlers = enable;
 
