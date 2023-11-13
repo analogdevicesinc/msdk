@@ -51,9 +51,9 @@
 #include "mxc_sys.h"
 #include "nvic_table.h"
 
-#ifdef LIB_BOARD
+// #ifdef LIB_BOARD
 #include "board.h"
-#endif
+// #endif
 
 /*
  *  Peripheral Driver Includes
