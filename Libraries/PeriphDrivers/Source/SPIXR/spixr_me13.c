@@ -218,7 +218,7 @@ int MXC_SPIXR_Busy(void)
 
 int MXC_SPIXR_Init(mxc_spixr_cfg_t *cfg)
 {
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SCACHE);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SRCC);
 
     /* The crypto clock needs to be turned on for crypto to work. */
     if ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ISO_EN) == 0) {
@@ -232,7 +232,7 @@ int MXC_SPIXR_Init(mxc_spixr_cfg_t *cfg)
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CTB);
 
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIPD);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIP);
 
     MXC_GPIO_Config(&gpio_cfg_spixr_P0); //Configure GPIO for spid
     MXC_GPIO_Config(&gpio_cfg_spixr_P1); //Configure GPIO for spid
@@ -242,8 +242,8 @@ int MXC_SPIXR_Init(mxc_spixr_cfg_t *cfg)
 
 int MXC_SPIXR_Shutdown(void)
 {
-    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SCACHE);
-    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIPD);
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SRCC);
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIP);
 
     return MXC_SPIXR_RevA_Shutdown((mxc_spixr_reva_regs_t *)MXC_SPIXR);
 }

@@ -121,32 +121,32 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     // Configure the pad
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
-        gpio->pad_cfg1 &= ~cfg->mask;
-        gpio->pad_cfg2 &= ~cfg->mask;
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_WEAK_PULL_UP:
-        gpio->pad_cfg1 |= cfg->mask;
-        gpio->pad_cfg2 &= ~cfg->mask;
-        gpio->ps &= ~cfg->mask;
+        gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
-        gpio->pad_cfg1 |= cfg->mask;
-        gpio->pad_cfg2 &= ~cfg->mask;
-        gpio->ps |= cfg->mask;
+        gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-        gpio->pad_cfg1 &= ~cfg->mask;
-        gpio->pad_cfg2 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->pad_cfg1 &= ~cfg->mask;
-        gpio->pad_cfg2 |= cfg->mask;
-        gpio->ps |= cfg->mask;
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     default:

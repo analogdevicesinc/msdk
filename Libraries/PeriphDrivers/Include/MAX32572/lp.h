@@ -298,11 +298,6 @@ void MXC_LP_SysRam6LightSleepEnable(void);
 void MXC_LP_ICacheXIPLightSleepEnable(void);
 
 /**
- * @brief Enable Icache 0 in light sleep
- */
-void MXC_LP_ICache0LightSleepEnable(void);
-
-/**
  * @brief Enable Crypto in light sleep
  */
 void MXC_LP_CryptoLightSleepEnable(void);
@@ -321,6 +316,11 @@ void MXC_LP_ROM0LightSleepEnable(void);
  * @brief Enable ROM 1 in light sleep
  */
 void MXC_LP_ROM1LightSleepEnable(void);
+
+/**
+ * @brief Enable MAA in light sleep
+ */
+void MXC_LP_MAALightSleepEnable(void);
 
 /**
  * @brief Disable System Ram 0 in light sleep
@@ -358,11 +358,6 @@ void MXC_LP_SysRam6LightSleepDisable(void);
 void MXC_LP_SysRam3LightSleepDisable(void);
 
 /**
- * @brief Disable Icache 0 in light sleep
- */
-void MXC_LP_ICache0LightSleepDisable(void);
-
-/**
  * @brief Disable Icache XIP in light sleep
  */
 void MXC_LP_ICacheXIPLightSleepDisable(void);
@@ -386,6 +381,11 @@ void MXC_LP_ROM0LightSleepDisable(void);
  * @brief Disable ROM 1 in light sleep
  */
 void MXC_LP_ROM1LightSleepDisable(void);
+
+/**
+ * @brief Disable MAA in light sleep
+ */
+void MXC_LP_MAALightSleepDisable(void);
 
 /**
  * @brief Shutdown System Ram 0
@@ -466,6 +466,16 @@ void MXC_LP_ICacheXIPShutdown(void);
  * @brief PowerUp Internal Cache XIP
  */
 void MXC_LP_ICacheXIPPowerUp(void);
+
+/**
+ * @brief Shutdown Crypto
+ */
+void MXC_LP_CryptoShutdown(void);
+
+/**
+ * @brief PowerUp Crypto
+ */
+void MXC_LP_CryptoPowerUp(void);
 
 /**
  * @brief Shutdown USB FIFO

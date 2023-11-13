@@ -148,7 +148,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ADC_DIVSEL</name>
+            <name>DIVSEL</name>
             <description>Scales the external inputs, all inputs are scaled the same</description>
             <bitRange>[18:17]</bitRange>
             <access>read-write</access>
@@ -325,19 +325,33 @@
           <field>
             <name>CH_SEL</name>
             <description>ADC Channel Select</description>
-            <bitRange>[28:24]</bitRange>
+            <bitRange>[27:24]</bitRange>
             <access>read-write</access>
           </field>
           <field>
             <name>CH_LO_LIMIT_EN</name>
             <description>Low Limit Monitoring Enable</description>
-            <bitRange>[29:29]</bitRange>
+            <bitRange>[28:28]</bitRange>
             <access>read-write</access>
           </field>
           <field>
             <name>CH_HI_LIMIT_EN</name>
             <description>High Limit Monitoring Enable</description>
-            <bitRange>[30:30]</bitRange>
+            <bitRange>[29:29]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DECCNT</name>
+        <description>ADC Decimation Count.</description>
+        <addressOffset>0x0020</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DELAY</name>
+            <description>Delay.</description>
+            <bitRange>[31:0]</bitRange>
             <access>read-write</access>
           </field>
         </fields>

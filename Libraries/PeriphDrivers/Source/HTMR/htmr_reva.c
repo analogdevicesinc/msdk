@@ -208,7 +208,7 @@ int MXC_HTMR_RevA_SetLongAlarm(mxc_htmr_reva_regs_t *htmr, uint32_t ras)
         return E_BUSY;
     }
 
-    htmr->ras = (ras << MXC_F_HTMR_RAS_RAS_POS) & MXC_F_HTMR_RAS_RAS;
+    htmr->ras = (ras << MXC_F_HTMR_REVA_RAS_RAS_POS) & MXC_F_HTMR_REVA_RAS_RAS;
 
     if (MXC_HTMR_EnableInt((mxc_htmr_regs_t *)htmr, MXC_F_HTMR_REVA_CTRL_ADE) == E_BUSY) {
         return E_BUSY;
@@ -227,7 +227,7 @@ int MXC_HTMR_RevA_SetShortAlarm(mxc_htmr_reva_regs_t *htmr, uint32_t rssa)
         return E_BUSY;
     }
 
-    htmr->rssa = (rssa << MXC_F_HTMR_RSSA_RSSA_POS) & MXC_F_HTMR_RSSA_RSSA;
+    htmr->rssa = (rssa << MXC_F_HTMR_REVA_RSSA_RSSA_POS) & MXC_F_HTMR_REVA_RSSA_RSSA;
 
     if (MXC_HTMR_EnableInt((mxc_htmr_regs_t *)htmr, MXC_F_HTMR_REVA_CTRL_ASE) == E_BUSY) {
         return E_BUSY;

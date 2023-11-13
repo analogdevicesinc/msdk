@@ -41,6 +41,9 @@
 
 #include "gpio.h"
 
+// Pin mapping to use (i.e. UART0A, UART0B)
+typedef enum { MAP_A, MAP_B } sys_map_t;
+
 /***** Global Variables *****/
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_extclk;
@@ -55,12 +58,21 @@ extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
+extern const mxc_gpio_cfg_t gpio_cfg_uart0b;
+extern const mxc_gpio_cfg_t gpio_cfg_uart0b_flow;
+extern const mxc_gpio_cfg_t gpio_cfg_uart0b_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable;
+extern const mxc_gpio_cfg_t gpio_cfg_uart1b;
+extern const mxc_gpio_cfg_t gpio_cfg_uart1b_flow;
+extern const mxc_gpio_cfg_t gpio_cfg_uart1b_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
+extern const mxc_gpio_cfg_t gpio_cfg_uart2b;
+extern const mxc_gpio_cfg_t gpio_cfg_uart2b_flow;
+extern const mxc_gpio_cfg_t gpio_cfg_uart2b_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;

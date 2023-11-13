@@ -86,7 +86,7 @@ typedef enum {
     MXC_SYS_RESET1_SPIXIP = (MXC_F_GCR_RST1_SPIXIP_POS + 32), /**< Reset SPIXIP */
     MXC_SYS_RESET1_SPIXIPM = (MXC_F_GCR_RST1_SPIXIPM_POS + 32), /**< Reset SPIXIPM */
     MXC_SYS_RESET1_WDT1 = (MXC_F_GCR_RST1_WDT1_POS + 32), /**< Reset WDT1 */
-    MXC_SYS_RESET1_SPI2 = (MXC_F_GCR_RST1_SPI2_POS + 32), /**< Reset SPI2 */
+    MXC_SYS_RESET1_SPI3 = (MXC_F_GCR_RST1_SPI3_POS + 32), /**< Reset SPI3 */
     MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC */
     MXC_SYS_RESET1_UART3 = (MXC_F_GCR_RST1_UART3_POS + 32), /**< Reset UART3 */
     MXC_SYS_RESET1_SKBD = (MXC_F_GCR_RST1_SKBD_POS + 32), /**< Reset SKBD */
@@ -158,10 +158,8 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_WDT0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_WDT0 clock */
     MXC_SYS_PERIPH_CLOCK_WDT1 =
         (MXC_F_GCR_PCLKDIS1_WDT1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_WDT1 clock */
-    MXC_SYS_PERIPH_CLOCK_ICACHEXIP =
-        (MXC_F_GCR_PCLKDIS1_ICCXIP_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_ICACHEXIP clock */
-    MXC_SYS_PERIPH_CLOCK_SPI2 =
-        (MXC_F_GCR_PCLKDIS1_SPI2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SPI2 clock */
+    MXC_SYS_PERIPH_CLOCK_SPI3 =
+        (MXC_F_GCR_PCLKDIS1_SPI3_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SPI3 clock */
     MXC_SYS_PERIPH_CLOCK_UART3 =
         (MXC_F_GCR_PCLKDIS1_UART3_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART3 clock */
     MXC_SYS_PERIPH_CLOCK_MSRADC =
@@ -378,11 +376,6 @@ uint8_t MXC_SYS_GetRev(void);
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
-
-/**
- * @brief Returns the clock rate (in Hz) of the Risc-V core.
- */
-uint32_t MXC_SYS_RiscVClockRate(void);
 
 #ifdef __cplusplus
 }
