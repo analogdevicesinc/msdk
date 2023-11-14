@@ -1,5 +1,5 @@
 /**
- * @file    MAX32xxx.h
+ * @file    mxc.h
  * @brief   Includes all the required dependancies.
  */
 
@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_H_
 
 //
 #include "mxc_device.h"
@@ -76,4 +76,4 @@
 #include "uart.h"
 #include "wdt.h"
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_H_

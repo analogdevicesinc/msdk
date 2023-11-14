@@ -4,7 +4,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36,8 +36,9 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
+/* Define to prevent redundant inclusion */
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WDT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WDT_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -114,17 +115,15 @@ typedef struct {
 /* **** Function Prototypes **** */
 
 /**
- * @brief       Initialize the Watchdog Timer
- * @note        On default this function enables WDT peripheral clock.
- *              if you wish to manage clock and gpio related things in upper level instead of here.
- *              Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
- *              By this flag this function will remove clock and gpio related codes from file.
+ * @brief Initialize the Watchdog Timer
+ * @note  On default this function enables WDT peripheral clock.
+ *        if you wish to manage clock and gpio related things in upper level instead of here.
+ *        Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *        By this flag this function will remove clock and gpio related codes from file.
  * 
- * @param       wdt      Pointer to the watchdog registers, has no effect incase of
- *                       MSDK_NO_GPIO_CLK_INIT has been defined.
+ * @param       wdt     Pointer to the watchdog registers
  * @param       cfg     watchdog configuration
- *
- * @return      See \ref MXC_Error_Codes for the list of error codes.
+ * @return      See \ref MXC_Error_Codes for the list of error codes. 
  */
 int MXC_WDT_Init(mxc_wdt_regs_t *wdt, mxc_wdt_cfg_t *cfg);
 
@@ -223,4 +222,4 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WDT_H_

@@ -111,4 +111,13 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts1;
 extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts2;
 extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts3;
 
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain0;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain1;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain2;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain3;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain4;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain5;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
+
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_PINS_H_
