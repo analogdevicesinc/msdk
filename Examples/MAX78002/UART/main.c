@@ -57,16 +57,9 @@
 
 /***** Globals *****/
 volatile int READ_FLAG;
-volatile int DMA_FLAG;
 
 /***** Functions *****/
-#ifdef DMA
-void DMA_Handler(void)
-{
-    MXC_DMA_Handler();
-    DMA_FLAG = 0;
-}
-#else
+#ifndef DMA
 void UART1_Handler(void)
 {
     MXC_UART_AsyncHandler(MXC_UART1);
@@ -99,11 +92,7 @@ int main(void)
 
     memset(RxData, 0x0, BUFF_SIZE);
 
-#ifdef DMA
-    MXC_DMA_ReleaseChannel(0);
-    MXC_NVIC_SetVector(DMA0_IRQn, DMA_Handler);
-    NVIC_EnableIRQ(DMA0_IRQn);
-#else
+#ifndef DMA
     NVIC_ClearPendingIRQ(UART1_IRQn);
     NVIC_DisableIRQ(UART1_IRQn);
     MXC_NVIC_SetVector(UART1_IRQn, UART1_Handler);
@@ -125,6 +114,12 @@ int main(void)
 
     printf("-->UART Initialized\n\n");
 
+#ifdef DMA
+    // Automatically set up DMA handlers/ISRs
+    MXC_UART_SetAutoDMAHandlers(READING_UART, true);
+    MXC_UART_SetAutoDMAHandlers(WRITING_UART, true);
+#endif
+
     mxc_uart_req_t read_req;
     read_req.uart = MXC_UART1;
     read_req.rxData = RxData;
@@ -142,8 +137,7 @@ int main(void)
     write_req.callback = NULL;
 
     READ_FLAG = 1;
-    DMA_FLAG = 1;
-
+    MXC_UART_ClearRXFIFO(MXC_UART1); // Clear any previously pending data
 #ifdef DMA
     error = MXC_UART_TransactionDMA(&read_req);
 #else
@@ -164,20 +158,14 @@ int main(void)
         return error;
     }
 
-#ifdef DMA
-
-    while (DMA_FLAG) {}
-
-#else
-
     while (READ_FLAG) {}
 
     if (READ_FLAG != E_NO_ERROR) {
-        printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
+        printf("-->Error from UART read callback; %d\n", READ_FLAG);
         fail++;
     }
 
-#endif
+    printf("-->Transaction complete\n\n");
 
     if ((error = memcmp(RxData, TxData, BUFF_SIZE)) != 0) {
         printf("-->Error verifying Data: %d\n", error);
