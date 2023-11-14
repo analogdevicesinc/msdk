@@ -35,7 +35,7 @@ std_msgs__msg__Header outcoming_ping;
 std_msgs__msg__Header incoming_pong;
 
 sensor_msgs__msg__Image outgoing_image;
-// uint8_t image_data_buffer[160 * 120 * 3];
+uint8_t image_data_buffer[160 * 120 * 3];
 
 int device_id;
 int seq_no;
@@ -108,6 +108,28 @@ void image_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
     camera_get_image(&raw, &imgLen, &w, &h);
 
+    uint8_t *data = NULL;
+    unsigned int row_buffer_size = camera_get_stream_buffer_size();
+    unsigned int j = 0;
+
+	camera_start_capture_image();
+	LED_On(0);
+	while (!camera_is_image_rcv()) {
+        if ((data = get_camera_stream_buffer()) != NULL) {
+			LED_Toggle(1);
+            for (int i = 0; i < camera_get_stream_buffer_size(); i += 2) {
+                // RGB565 to packed 24-bit RGB
+                image_data_buffer[j + 2] = (*(data + i) & 0xF8); // Red
+                image_data_buffer[j + 1] = (*(data + i) << 5) | ((*((data + i) + 1) & 0xE0) >> 3); // Green
+                image_data_buffer[j] = (*((data + i) + 1) << 3); // Blue
+				j += 3;
+            }
+            // Release buffer in time for next row
+            release_camera_stream_buffer();
+        }
+    }
+	LED_Off(0);
+
     if (timer != NULL) {
         // Fill message header
         seq_no = rand();
@@ -129,8 +151,8 @@ void image_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
         outgoing_image.step = outgoing_image.width * 3;
         outgoing_image.is_bigendian = 0;
 
-        outgoing_image.data.data = raw;
-        outgoing_image.data.size = w*h*2;
+        outgoing_image.data.data = image_data_buffer;
+        outgoing_image.data.size = w*h*3;
 
         int error = rcl_publish(&image_publisher, (const void*)&outgoing_image, NULL);
 
@@ -164,7 +186,7 @@ void appMain(void *argument)
 
 	// Create a 2 seconds ping timer,
 	rcl_timer_t timer;
-	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), image_timer_callback));
+	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(5000), image_timer_callback));
 
 
 	// Create executor
@@ -197,6 +219,7 @@ void appMain(void *argument)
     outgoing_image.encoding.data = outgoing_image_encoding_buffer;
     outgoing_image.encoding.capacity = STRING_BUFFER_LEN;
     outgoing_image.data.capacity = 160 * 120 * 3;
+    outgoing_image.data.data = image_data_buffer;
 
 	device_id = rand();
 
@@ -218,7 +241,7 @@ void appMain(void *argument)
     }
     printf("Camera ID detected: %04x\n", id);
 
-    ret = camera_setup(160, 120, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA,
+    ret = camera_setup(160, 120, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        camera_dma_channel); // RGB565
 
 	while(1){
