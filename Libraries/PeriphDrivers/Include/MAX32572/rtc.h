@@ -59,7 +59,7 @@ extern "C" {
  */
 
 #define MXC_RTC_MAX_SSEC (MXC_F_RTC_SSEC_SSEC + 1)
-#define MXC_RTC_TRIM_TMR_IRQ MXC_F_TMR_INTFL_IRQ_A
+#define MXC_RTC_TRIM_TMR_IRQ MXC_F_TMR_INTFL_IRQ
 
 /* **** Definitions **** */
 /**
