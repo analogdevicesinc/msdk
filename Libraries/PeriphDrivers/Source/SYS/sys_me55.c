@@ -474,4 +474,18 @@ uint8_t MXC_SYS_GetRev(void)
 
     // return serialNumber[0];
 }
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_RiscVClockRate(void)
+{
+    // // If in LPM mode and the PCLK is selected as the RV32 clock source,
+    // if(((MXC_GCR->pm & MXC_F_GCR_PM_MODE) == MXC_S_GCR_PM_MODE_LPM) &&
+    //    (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LPMCLKSEL)) {
+    //     return ISO_FREQ;
+    // } else {
+        // return PeripheralClock;
+        return SystemCoreClock;
+    // }
+}
+
 /**@} end of mxc_sys */

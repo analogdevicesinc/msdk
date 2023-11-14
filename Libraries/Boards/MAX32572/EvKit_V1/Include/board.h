@@ -54,7 +54,7 @@ extern "C" {
 #ifdef LED_OFF
 #undef LED_OFF
 #endif
-#define LED_OFF 0 /// Override inactive state of LEDs
+#define LED_OFF 1 /// Override inactive state of LEDs
 
 #ifdef LED_ON
 #undef LED_ON
