@@ -326,23 +326,23 @@ LDFLAGS=-mthumb                                                                \
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
-RWX_SEGMENTS_SUPPORTED ?=
-ifeq "$(RWX_SEGMENTS_SUPPORTED)" "" # -------------------------------------
+ARM_RWX_SEGMENTS_SUPPORTED ?=
+ifeq "$(ARM_RWX_SEGMENTS_SUPPORTED)" "" # -------------------------------------
 # Print the linker's help string and parse it for --no-warn-rwx-segments
 # Note we invoke the linker through the compiler "-Xlinker" because ld may not
 # be on the path, and that's how we invoke the linker for our implicit rules
 LINKER_OPTIONS := $(shell $(CC) -Xlinker --help)
 ifneq "$(findstring --no-warn-rwx-segments,$(LINKER_OPTIONS))" ""
-RWX_SEGMENTS_SUPPORTED := 1
+ARM_RWX_SEGMENTS_SUPPORTED := 1
 else
-RWX_SEGMENTS_SUPPORTED := 0
+ARM_RWX_SEGMENTS_SUPPORTED := 0
 endif
 
 # export the variable for sub-make calls, so we don't need to interact with the shell again (it's slow).
-export RWX_SEGMENTS_SUPPORTED
+export ARM_RWX_SEGMENTS_SUPPORTED
 endif # ------------------------------------------------------------------
 
-ifeq "$(RWX_SEGMENTS_SUPPORTED)" "1"
+ifeq "$(ARM_RWX_SEGMENTS_SUPPORTED)" "1"
 LDFLAGS += -Xlinker --no-warn-rwx-segments
 endif
 
