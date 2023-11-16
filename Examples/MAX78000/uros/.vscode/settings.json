@@ -15,7 +15,7 @@
     },
     
     "target":"MAX78000",
-    "board":"FTHR_RevA",
+    "board":"CAM02_RevA",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -88,7 +88,16 @@
         "time.h": "c",
         "freertos.h": "c",
         "portable.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "error_handling.h": "c",
+        "rclc.h": "c",
+        "executor.h": "c",
+        "logging_macros.h": "c",
+        "continous_serialization.h": "c",
+        "header.h": "c",
+        "region_of_interest.h": "c",
+        "region_of_interest__type_support.h": "c",
+        "region_of_interest__struct.h": "c"
     }
 }
 
