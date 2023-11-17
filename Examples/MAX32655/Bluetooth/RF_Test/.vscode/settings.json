@@ -53,6 +53,8 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/include",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V"
@@ -69,6 +71,9 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V"

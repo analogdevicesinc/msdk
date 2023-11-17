@@ -53,10 +53,10 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
         "${config:MAXIM_PATH}/Libraries/littlefs",
-        "${config:MAXIM_PATH}/Libraries/littlefs/bd",
-        "${config:MAXIM_PATH}/Libraries/CLI/inc",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/littlefs/bd"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -70,11 +70,11 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
-        "${config:MAXIM_PATH}/Libraries/littlefs",
-        "${config:MAXIM_PATH}/Libraries/littlefs/bd",
-        "${config:MAXIM_PATH}/Libraries/CLI/src",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
+        "${config:MAXIM_PATH}/Libraries/littlefs",
+        "${config:MAXIM_PATH}/Libraries/littlefs/bd"
     ],
     "C_Cpp.default.defines": [
         
