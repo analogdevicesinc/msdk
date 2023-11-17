@@ -62,6 +62,11 @@ $(info Loaded project.mk)
 RISCV_CORE=RV32
 export RISCV_CORE
 
+ifeq "$(MAXIM_PATH)" ""
+DEPTH := ../../../../
+MAXIM_PATH := $(abspath $(DEPTH))
+endif
+
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
 LIBS_DIR=../../../../Libraries

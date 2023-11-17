@@ -59,6 +59,11 @@ COMPILER=GCC
 include ./project.mk
 $(info Loaded project.mk)
 
+ifeq "$(MAXIM_PATH)" ""
+DEPTH := ../../../../
+MAXIM_PATH := $(abspath $(DEPTH))
+endif
+
 RISCV_CORE=RV32
 export RISCV_CORE
 
