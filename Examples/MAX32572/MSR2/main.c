@@ -54,7 +54,7 @@
  * @file    main.c
  * @brief   Magnetic Stripe Reader ARM
  *
- * @details This example demonstrates basic MSR functionality
+ * @details This example demonstrates MSR reading 2-track (bank) cards
  */
 
 /***** Includes *****/
@@ -64,23 +64,6 @@
 #include "riscv_rom.h"
 
 /***** Definitions *****/
-
-/*  Select RISC-V memory access wait state setting
-    Options: slow (0) or fast (1)
-*/
-#define FAST_WS  (0)
-
-/*  Select RISC-V code starting point
-    Options: execute ROM code (1) or execute SRAM code (0)
-    If ROM code selected then RISC-V code in SRAM will be ignored
-    If SRAM code selected, it may call functions in ROM code
-*/
-#define RUN_RISCV_ROM_ONLY (0)
-
-/*  Select communication channel between RISCV and ARM
-    Options: use IRQ_RISCV (1) or use shared SRAM location (0)
-*/
-#define USE_IRQ_FOR_READY_SIGNAL_FROM_RISCV (0)
 
 /* RISC-V related memory wait state control bits */
 #define MEMCTRL_RISCV_WS (MXC_F_GCR_MEMCTRL_SRAM5_WS \
@@ -99,7 +82,7 @@ uint32_t riscv_text_addr = {
 };
 
 int swipe_complete;
-int swp_cnt, tr1_cnt, tr2_cnt, tr3_cnt;
+int swp_cnt, tr1_cnt, tr2_cnt;
 
 
 /***** Functions *****/
@@ -118,7 +101,7 @@ void RISCV_IRQHandler(void)
 // *****************************************************************************
 int main(void)
 {
-    printf("\nARM: *********** MSR Example ***********\n");
+    printf("\nARM: *********** MSR Example (2-track version) ***********\n");
 
     /* Load RISCV image from FLASH to SRAM */
     {
@@ -129,29 +112,14 @@ int main(void)
         }
     }
 
-#if FAST_WS
     /* Set fast wait state (_WS = 0) */
     MXC_GCR -> memctrl &= ~MEMCTRL_RISCV_WS;
-#else
-    /* Set slow wait state (_WS = 1) */
-    MXC_GCR -> memctrl |=  MEMCTRL_RISCV_WS;
-#endif
 
-
-#if RUN_RISCV_ROM_ONLY
-    /* Run RV ROM code */
-    MXC_FCR->urvbootaddr = RV_START_ROM; /* Set RISC-V boot address */
-#else
     /* Run RV code in SRAM */
     MXC_FCR->urvbootaddr = riscv_text_addr; /* Set RISC-V boot address */
-#endif
 
-
-#if USE_IRQ_FOR_READY_SIGNAL_FROM_RISCV
-    msr_cfg |= MSR_CFG_CM4IRQ_ENABLE;
-#else
+    /* Get complete signal via shared SRAM */
     msr_cfg &= ~MSR_CFG_CM4IRQ_ENABLE;
-#endif
 
     /* Init ARM side application */
     msr_ctrl = 0;
@@ -159,7 +127,6 @@ int main(void)
     swp_cnt = 0;
     tr1_cnt = 0;
     tr2_cnt = 0;
-    tr3_cnt = 0;
 
     printf("ARM: Starting RISC-V at %08x, %s %s \n", MXC_FCR->urvbootaddr,__DATE__,__TIME__);
     NVIC_EnableIRQ(RISCV_IRQn);
@@ -171,12 +138,7 @@ int main(void)
     MXC_GCR->pclkdis1 &= ~MXC_F_GCR_PCLKDIS1_CPU1; /* enable RISCV clock */
 
     /* wait for MSR READY signal from RV */
-#if USE_IRQ_FOR_READY_SIGNAL_FROM_RISCV
-    while (!swipe_complete) { MXC_Delay(MSEC(10)); }
-    swipe_complete = FALSE;
-#else
     while (!msr_ctrl) { MXC_Delay(MSEC(10)); } /* RISCV will set non-0 when ready */
-#endif
 
     printf("ARM: RISC-V MSR ROM version %d.%d started and ready\n"
             , msr_version_hi, msr_version_lo);
@@ -190,66 +152,14 @@ int main(void)
         swp_cnt++;
         printf("\nARM: Waiting for swipe %d...\n", swp_cnt);
 
-        /*  This will demonstrate ARM-to-RISCV communication options:
-            ARM can initiate swipe by IRQ_CM4 or by writing shared SRAM
-            RISCV can signal swipe complete by IRQ_RISCV or by writing shared SRAM
-            Following code will rotate through these four options
-            Real application need only one of the four options
-         */
-        switch (swp_cnt & 0x03) {
-
-        case 0:
-            /*  ARM initiates swipe by writing shared SRAM
-                RISCV signals swipe complete by writing shared SRAM
-            */
-            msr_cfg &= ~MSR_CFG_CM4IRQ_ENABLE;  /* disable IRQ when swipe complete */
-            msr_ctrl = 0;                       /* initiate swipe */
-            /* Wait for swipe complete signal. RISCV will set non-zero value */
-            while (!msr_ctrl) { MXC_Delay(MSEC(10)); }
-            print_swipe(msr_decoded_track);
-            printf(" Swipe was initiated by SRAM, complete by SRAM\n");
-            break;
-
-        case 1:
-            /*  ARM initiates swipe by writing shared SRAM
-                RISCV signals swipe complete by IRQ_RISCV
-            */
-            msr_cfg |= MSR_CFG_CM4IRQ_ENABLE;   /* enable IRQ when swipe complete */
-            msr_ctrl = 0;                       /* initiate swipe */
-            /* Wait for swipe complete signal. RISCV will fire IRQ */
-            while (!swipe_complete) { MXC_Delay(MSEC(10)); }
-            swipe_complete = FALSE;
-            print_swipe(msr_decoded_track);
-            printf(" Swipe was initiated by SRAM, complete by IRQ_RISCV\n");
-            break;
-
-        case 2:
-            /*  ARM initiates swipe by IRQ_CM4
-                RISCV signals swipe complete by writing shared SRAM
-            */
-            msr_cfg &= ~MSR_CFG_CM4IRQ_ENABLE;  /* disable IRQ when swipe complete */
-            MXC_SEMA -> irq0 |= MXC_F_SEMA_IRQ0_CM4_IRQ + MXC_F_SEMA_IRQ0_EN;   /* initiate swipe */
-            while (msr_ctrl) { MXC_Delay(MSEC(10)); } /* make sure RISCV is busy swiping */
-            /* Wait for swipe complete signal. RISCV will set non-zero value */
-            while (!msr_ctrl) { MXC_Delay(MSEC(10)); }
-            print_swipe(msr_decoded_track);
-            printf(" Swipe was initiated by IRQ_CM4, complete by SRAM\n");
-            break;
-
-        case 3:
-            /*  ARM initiates swipe by IRQ_CM4
-                RISCV signals swipe complete by IRQ_RISCV
-            */
-            msr_cfg |= MSR_CFG_CM4IRQ_ENABLE;   /* enable IRQ when swipe complete */
-            MXC_SEMA -> irq0 |= MXC_F_SEMA_IRQ0_CM4_IRQ + MXC_F_SEMA_IRQ0_EN;   /* initiate swipe */
-            while (msr_ctrl) { MXC_Delay(MSEC(10)); } /* make sure RISCV is busy swiping */
-            /* Wait for swipe complete signal. RISCV will fire IRQ */
-            while (!swipe_complete) { MXC_Delay(MSEC(10)); }
-            swipe_complete = FALSE;
-            print_swipe(msr_decoded_track);
-            printf(" Swipe was initiated by IRQ_CM4, complete by IRQ_RISCV\n");
-            break;
-        }
+        /*  ARM initiates swipe by writing shared SRAM
+            RISCV signals swipe complete by writing shared SRAM
+        */
+        msr_cfg &= ~MSR_CFG_CM4IRQ_ENABLE;  /* disable IRQ when swipe complete */
+        msr_ctrl = 0;                       /* initiate swipe */
+        /* Wait for swipe complete signal. RISCV will set non-zero value */
+        while (!msr_ctrl) { MXC_Delay(MSEC(10)); }
+        print_swipe(msr_decoded_track);
 
         MXC_Delay(MSEC(100)); /* delay (to avoid back to back swipes) */
     }
@@ -267,7 +177,7 @@ void print_swipe(volatile msr_decoded_track_t *decoded_swipe)
     if (msr_ctrl_exit_code == GETSWIPE_OK) {
         /* swipe complete OK, print track information */
 
-        for (int ii = 0; ii < 3; ii++) {
+        for (int ii = 0; ii < 2; ii++) {
             printf(" === Track %u === ", ii+1);
             err = decoded_swipe[ii].error_code;
 
@@ -317,9 +227,8 @@ void print_swipe(volatile msr_decoded_track_t *decoded_swipe)
     /* count successfully decoded tracks */
     if (decoded_swipe[0].error_code == MSR_ERR_OK) tr1_cnt++;
     if (decoded_swipe[1].error_code == MSR_ERR_OK) tr2_cnt++;
-    if (decoded_swipe[2].error_code == MSR_ERR_OK) tr3_cnt++;
-    printf(" Total (%d-%d-%d) successful tracks in %d swipes\n",
-                tr1_cnt, tr2_cnt, tr3_cnt, swp_cnt);
+    printf(" Total (%d-%d-0) successful tracks in %d swipes\n",
+                tr1_cnt, tr2_cnt, swp_cnt);
 
     fflush(stdout);
 }

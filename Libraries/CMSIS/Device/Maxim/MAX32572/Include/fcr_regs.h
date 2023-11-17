@@ -94,6 +94,7 @@ typedef struct {
     __IO uint32_t urvctrl;              /**< <tt>\b 0x14:</tt> FCR URVCTRL Register */
     __R  uint32_t rsv_0x18;
     __IO uint32_t gp;                   /**< <tt>\b 0x1C:</tt> FCR GP Register */
+    __IO uint32_t msradc9;              /**< <tt>\b 0x20:</tt> FCR MSRADC9 Register */
 } mxc_fcr_regs_t;
 
 /* Register offsets for module FCR */
@@ -110,6 +111,7 @@ typedef struct {
 #define MXC_R_FCR_URVBOOTADDR              ((uint32_t)0x00000010UL) /**< Offset from FCR Base Address: <tt> 0x0010</tt> */
 #define MXC_R_FCR_URVCTRL                  ((uint32_t)0x00000014UL) /**< Offset from FCR Base Address: <tt> 0x0014</tt> */
 #define MXC_R_FCR_GP                       ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */
+#define MXC_R_FCR_MSRADC9                  ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
 /**@} end of group fcr_registers */
 
 /**
@@ -224,6 +226,38 @@ typedef struct {
 #define MXC_F_FCR_GP_GP                                ((uint32_t)(0xFFFFFFFFUL << MXC_F_FCR_GP_GP_POS)) /**< GP_GP Mask */
 
 /**@} end of group FCR_GP_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_GP FCR_MSRADC9
+ * @brief    MSR ADC common mode trim register
+ * @{
+ */
+#define MXC_F_FCR_MSRADC9_R1_POS    (0) /**< MSR_R1 Position */
+#define MXC_F_FCR_MSRADC9_R1        ((uint32_t)(0x3 << MXC_F_FCR_MSRADC9_R1_POS)) /**< MSR_R1 Mask */
+#define MXC_V_FCR_MSRADC9_R1_0K     ((uint32_t)0x0) /**< 0K Value */
+#define MXC_S_FCR_MSRADC9_R1_0K     ((uint32_t)(MXC_V_FCR_MSRADC9_R1_0K << MXC_F_FCR_MSRADC9_R1_POS)) /**< 0K Setting */
+#define MXC_V_FCR_MSRADC9_R1_1P2K   ((uint32_t)0x1) /**< 1.2K Value */
+#define MXC_S_FCR_MSRADC9_R1_1P2K   ((uint32_t)(MXC_V_FCR_MSRADC9_R1_1P2K << MXC_F_FCR_MSRADC9_R1_POS)) /**< 1.2K Setting */
+#define MXC_V_FCR_MSRADC9_R1_2P4K   ((uint32_t)0x2) /**< 2.4K Value */
+#define MXC_S_FCR_MSRADC9_R1_2P4K   ((uint32_t)(MXC_V_FCR_MSRADC9_R1_2P4K << MXC_F_FCR_MSRADC9_R1_POS)) /**< 2.4K Setting */
+#define MXC_V_FCR_MSRADC9_R1_4P8K   ((uint32_t)0x3) /**< 4.8K Value */
+#define MXC_S_FCR_MSRADC9_R1_4P8K   ((uint32_t)(MXC_V_FCR_MSRADC9_R1_4P8K << MXC_F_FCR_MSRADC9_R1_POS)) /**< 4.8K Setting */
+
+#define MXC_F_FCR_MSRADC9_R2_POS    (2) /**< ADC9_R2_TR Position */
+#define MXC_F_FCR_MSRADC9_R2        ((uint32_t)(0x7 << MXC_F_FCR_MSRADC9_R2_POS)) /**< ADC9_R2_TR Mask */
+#define MXC_V_FCR_MSRADC9_R2_OPEN   ((uint32_t)0x0) /**< Open Value */
+#define MXC_S_FCR_MSRADC9_R2_OPEN   ((uint32_t)(MXC_V_FCR_MSRADC9_R2_OPEN << MXC_F_FCR_MSRADC9_R2_POS)) /**< Open Setting */
+#define MXC_V_FCR_MSRADC9_R2_3K     ((uint32_t)0x4) /**< 3K Value */
+#define MXC_S_FCR_MSRADC9_R2_3K     ((uint32_t)(MXC_V_FCR_MSRADC9_R2_3K << MXC_F_FCR_MSRADC9_R2_POS)) /**< 3K Setting */
+#define MXC_V_FCR_MSRADC9_R2_6K     ((uint32_t)0x5) /**< 6K Value */
+#define MXC_S_FCR_MSRADC9_R2_6K     ((uint32_t)(MXC_V_FCR_MSRADC9_R2_6K << MXC_F_FCR_MSRADC9_R2_POS)) /**< 6K Setting */
+#define MXC_V_FCR_MSRADC9_R2_12K    ((uint32_t)0x6) /**< 12K Value */
+#define MXC_S_FCR_MSRADC9_R2_12K    ((uint32_t)(MXC_V_FCR_MSRADC9_R2_12K << MXC_F_FCR_MSRADC9_R2_POS)) /**< 12K Setting */
+#define MXC_V_FCR_MSRADC9_R2_24K    ((uint32_t)0x7) /**< 24K Value */
+#define MXC_S_FCR_MSRADC9_R2_24K    ((uint32_t)(MXC_V_FCR_MSRADC9_R2_24K << MXC_F_FCR_MSRADC9_R2_POS)) /**< 24K Setting */
+
+/**@} end of group FCR_MSRADC9_Register */
 
 #ifdef __cplusplus
 }

@@ -515,6 +515,15 @@ typedef struct {
 #define MXC_F_GCR_MEMCTRL_SRAM_WS_POS                  4 /**< MEMCTRL_SRAM_WS Position */
 #define MXC_F_GCR_MEMCTRL_SRAM_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_SRAM_WS_POS)) /**< MEMCTRL_SRAM_WS Mask */
 
+#define MXC_F_GCR_MEMCTRL_SRAM5_WS_POS                 5 /**< MEMCTRL_SRAM_WS Position */
+#define MXC_F_GCR_MEMCTRL_SRAM5_WS                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_SRAM5_WS_POS)) /**< MEMCTRL_SRAM_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_SRAM6_WS_POS                 6 /**< MEMCTRL_SRAM_WS Position */
+#define MXC_F_GCR_MEMCTRL_SRAM6_WS                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_SRAM6_WS_POS)) /**< MEMCTRL_SRAM_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_ROM1_WS_POS                  7 /**< MEMCTRL_SRAM_WS Position */
+#define MXC_F_GCR_MEMCTRL_ROM1_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM1_WS_POS)) /**< MEMCTRL_SRAM_WS Mask */
+
 #define MXC_F_GCR_MEMCTRL_RAM0LS_EN_POS                16 /**< MEMCTRL_RAM0LS_EN Position */
 #define MXC_F_GCR_MEMCTRL_RAM0LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM0LS_EN_POS)) /**< MEMCTRL_RAM0LS_EN Mask */
 
