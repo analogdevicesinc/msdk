@@ -48,85 +48,54 @@
  * limitations under the License.
  *
  ******************************************************************************/
-
-/**
- * @file    main.c
- * @brief   read and write sdhc
- * @details This example uses the sdhc and ffat to read/write the file system on
- *          an SD card. The Fat library used supports long filenames (see ffconf.h)
- *          the max length is 256 characters. It uses the CLI library for taking user
- *          user commands.
- *
- *          You must connect an sd card to the sd card slot.
- */
+#ifndef EXAMPLES_MAX78002_SDHC_FAT_INCLUDE_APP_SDHC_H_
+#define EXAMPLES_MAX78002_SDHC_FAT_INCLUDE_APP_SDHC_H_
 
 /***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "board.h"
-#include "cli.h"
-#include "nvic_table.h"
-#include "sdhc.h"
-#include "uart.h"
-#include "user-cli.h"
-#include "sdhc_lib.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "gpio.h"
-#include "mxc_sys.h"
+#include "uart.h"
+#include "ff.h"
 
-mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO1, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT,
-                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+/***** Definitions *****/
 
-/******************************************************************************/
-int main(void)
-{
-    mxc_sdhc_cfg_t cfg;
-    int err;
-    printf("\n\n***** MAX78000 SDHC FAT Filesystem Example *****\n");
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define MAXLEN 256
 
-    // Enable Power To Card
-    printf("Enabling card power...\n");
-    MXC_GPIO_Config(&SDPowerEnablePin);
-    MXC_GPIO_OutClr(MXC_GPIO1, SDPowerEnablePin.mask);
+/***** FUNCTION PROTOTYPES *****/
 
-    // Initialize SDHC peripheral
-    printf("Initializing SDHC peripheral...\n");
-    cfg.bus_voltage = MXC_SDHC_Bus_Voltage_3_3;
-    cfg.block_gap = 0;
-    cfg.clk_div =
-        0x0b0; // Maximum divide ratio, frequency must be >= 400 kHz during Card Identification phase
-    if (MXC_SDHC_Init(&cfg) != E_NO_ERROR) {
-        printf("Unable to initialize SDHC driver.\n");
-        return 1;
-    }
+void generateMessage(unsigned length);
 
-    // wait for card to be inserted
-    printf("Waiting for card to be inserted...\n");
-    while (!MXC_SDHC_Card_Inserted()) {}
-    printf("Card inserted.\n");
+int mount();
 
-    // set up card to get it ready for a transaction
-    printf("Initializing card...\n");
-    if ((err = MXC_SDHC_Lib_InitCard(10)) == E_NO_ERROR) {
-        printf("Card Initialized.\n");
-    } else {
-        printf("SDHC Library initialization failed with error %i\n", err);
+int umount();
 
-        return -1;
-    }
+int formatSDHC();
 
-    if (MXC_SDHC_Lib_Get_Card_Type() == CARD_SDHC) {
-        printf("Card type: SDHC\n");
-    } else {
-        printf("Card type: MMC/eMMC\n");
-    }
+int getSize();
 
-    // Wait for any printfs to complete
-    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+int ls();
 
-    // Initialize CLI
-    if ((err = MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), user_commands, num_user_commands)) !=
-        E_NO_ERROR) {
-        return err;
-    }
+int createFile(char *file_name, unsigned int length);
 
-    // Run CLI
-    while (1) {}
-}
+int appendFile(char *file_name, unsigned int length);
+
+int mkdir(char *dir_name);
+
+int cd(char *dir_name);
+
+int deleteFile(char *file_name);
+
+int example();
+
+void waitCardInserted();
+
+#endif // EXAMPLES_MAX78002_SDHC_FAT_INCLUDE_APP_SDHC_H_

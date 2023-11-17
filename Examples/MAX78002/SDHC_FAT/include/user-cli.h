@@ -48,85 +48,38 @@
  * limitations under the License.
  *
  ******************************************************************************/
+#ifndef EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_USER_CLI_H_
+#define EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_USER_CLI_H_
 
-/**
- * @file    main.c
- * @brief   read and write sdhc
- * @details This example uses the sdhc and ffat to read/write the file system on
- *          an SD card. The Fat library used supports long filenames (see ffconf.h)
- *          the max length is 256 characters. It uses the CLI library for taking user
- *          user commands.
- *
- *          You must connect an sd card to the sd card slot.
- */
+/* -------------------------------------------------- */
+//                GLOBAL VARIABLE
+/* -------------------------------------------------- */
+extern const command_t user_commands[];
+extern const unsigned int num_user_commands;
 
-/***** Includes *****/
-#include "board.h"
-#include "cli.h"
-#include "nvic_table.h"
-#include "sdhc.h"
-#include "uart.h"
-#include "user-cli.h"
-#include "sdhc_lib.h"
-#include "gpio.h"
-#include "mxc_sys.h"
+/* -------------------------------------------------- */
+//             FUNCTION PROTOTYPES
+/* -------------------------------------------------- */
+int handle_size(int argc, char *argv[]);
 
-mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO1, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT,
-                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+int handle_format(int argc, char *argv[]);
 
-/******************************************************************************/
-int main(void)
-{
-    mxc_sdhc_cfg_t cfg;
-    int err;
-    printf("\n\n***** MAX78000 SDHC FAT Filesystem Example *****\n");
+int handle_mount(int argc, char *argv[]);
 
-    // Enable Power To Card
-    printf("Enabling card power...\n");
-    MXC_GPIO_Config(&SDPowerEnablePin);
-    MXC_GPIO_OutClr(MXC_GPIO1, SDPowerEnablePin.mask);
+int handle_ls(int argc, char *argv[]);
 
-    // Initialize SDHC peripheral
-    printf("Initializing SDHC peripheral...\n");
-    cfg.bus_voltage = MXC_SDHC_Bus_Voltage_3_3;
-    cfg.block_gap = 0;
-    cfg.clk_div =
-        0x0b0; // Maximum divide ratio, frequency must be >= 400 kHz during Card Identification phase
-    if (MXC_SDHC_Init(&cfg) != E_NO_ERROR) {
-        printf("Unable to initialize SDHC driver.\n");
-        return 1;
-    }
+int handle_mkdir(int argc, char *argv[]);
 
-    // wait for card to be inserted
-    printf("Waiting for card to be inserted...\n");
-    while (!MXC_SDHC_Card_Inserted()) {}
-    printf("Card inserted.\n");
+int handle_createfile(int argc, char *argv[]);
 
-    // set up card to get it ready for a transaction
-    printf("Initializing card...\n");
-    if ((err = MXC_SDHC_Lib_InitCard(10)) == E_NO_ERROR) {
-        printf("Card Initialized.\n");
-    } else {
-        printf("SDHC Library initialization failed with error %i\n", err);
+int handle_cd(int argc, char *argv[]);
 
-        return -1;
-    }
+int handle_add_data(int argc, char *argv[]);
 
-    if (MXC_SDHC_Lib_Get_Card_Type() == CARD_SDHC) {
-        printf("Card type: SDHC\n");
-    } else {
-        printf("Card type: MMC/eMMC\n");
-    }
+int handle_del(int argc, char *argv[]);
 
-    // Wait for any printfs to complete
-    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+int handle_fatfs(int argc, char *argv[]);
 
-    // Initialize CLI
-    if ((err = MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), user_commands, num_user_commands)) !=
-        E_NO_ERROR) {
-        return err;
-    }
+int handle_unmount(int argc, char *argv[]);
 
-    // Run CLI
-    while (1) {}
-}
+#endif // EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_USER_CLI_H_

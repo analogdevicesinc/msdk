@@ -53,9 +53,9 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/CLI/inc",
         "${config:MAXIM_PATH}/Libraries/SDHC/Include",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -69,9 +69,8 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/CLI/src",
+        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source"
     ],
     "C_Cpp.default.defines": [
         
