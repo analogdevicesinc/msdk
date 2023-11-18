@@ -37,6 +37,7 @@
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include/dsp&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Camera&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Display&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/EEPROM&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/LED&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/PMIC&quot;"/>
