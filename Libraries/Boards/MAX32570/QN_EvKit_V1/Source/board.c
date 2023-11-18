@@ -87,6 +87,16 @@ __weak void GPIO3_IRQHandler(void)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Touchscreen interrupt in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+/******************************************************************************/
 static int ext_flash_board_init(void)
 {
     int err;
