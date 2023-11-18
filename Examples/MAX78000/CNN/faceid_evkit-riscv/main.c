@@ -183,7 +183,7 @@ static int font = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
 static int bitmap = (int)&logo_rgb565[0];
-static int font = (int)&SansSerif16x16[0];
+static int font = (int)&font_char_table[0];
 #endif
 #endif
 

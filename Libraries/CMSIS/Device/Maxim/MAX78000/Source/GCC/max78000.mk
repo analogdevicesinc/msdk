@@ -118,6 +118,7 @@ _OS = macos
 endif
 
 endif
+
 ################################################################################
 
 # RISC-V Loader - compile a project for the RISC-V core

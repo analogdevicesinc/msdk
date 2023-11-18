@@ -122,3 +122,5 @@ IPATH += $(MISC_DRIVERS_DIR)/Display
 IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/Touchscreen
+
+include $(MISC_DRIVERS_DIR)/Display/fonts/fonts.mk

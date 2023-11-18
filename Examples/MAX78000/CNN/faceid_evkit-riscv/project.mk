@@ -24,6 +24,7 @@ endif
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
 #PROJ_CFLAGS+=-DENABLE_TFT
+FONTS = LiberationSans16x16
 endif
 
 # Set a higher optimization level to maximize performance

@@ -105,8 +105,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #undef USE_SPIDATA // only supported in evkit
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 #define FT4222_CLK 60000000
@@ -527,20 +527,14 @@ int main(void)
     MXC_TFT_SetBackGroundColor(4);
     //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
-
     TFT_Print(buff, 55, 30, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
-
     TFT_Print(buff, 15, 50, font_2, snprintf(buff, sizeof(buff), "U-Net Segmentation Demo      "));
-
     TFT_Print(buff, 120, 90, font_1, snprintf(buff, sizeof(buff), "Ver. 1.1.0                   "));
-
     TFT_Print(buff, 55, 130, font_1,
               snprintf(buff, sizeof(buff), "Building(red), Sky(blue)          "));
-
     TFT_Print(buff, 5, 170, font_1,
               snprintf(buff, sizeof(buff), "Foliage(green), Unknown(black)  "));
-
-    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START    "));
+    TFT_Print(buff, 10, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START    "));
     while (!PB_Get(0)) {}
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
@@ -552,9 +546,7 @@ int main(void)
 
 #if defined(USE_SPIDATA)
     spi_init();
-
     MXC_TFT_ClearScreen();
-
     TFT_Print(buff, 55, 40, font_1, snprintf(buff, sizeof(buff), "Waiting for SPI data ..."));
 #endif
     while (1) {
@@ -566,7 +558,8 @@ int main(void)
 
         MXC_TFT_ClearScreen();
 
-        //TFT_Print(buff, 5, 45, font_1, snprintf(buff, sizeof(buff), " Image        Mask      Overlay"));
+        //TFT_Print(buff, 5, 45, font_1,
+        //          snprintf(buff, sizeof(buff), " Image        Mask      Overlay"));
 
         // Reload bias after wakeup
         cnn_init(); // Bring state machine into consistent state
@@ -597,15 +590,12 @@ int main(void)
                            (float)cnn_time / 1000));
 
 #if !defined(USE_SPIDATA)
-
-        TFT_Print(buff, 20, 212, font_1,
-                  snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE "));
+        TFT_Print(buff, 0, 212, font_1, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE"));
         while (!PB_Get(0)) {}
 #else
         SPI_FLAG = false;
         spi_clear_interrupts(MXC_F_SPI_INTFL_SSA);
         spi_enable_interrupts(MXC_F_SPI_INTEN_SSA);
-
 #endif
         if (PB_Get(1)) {
             LED_On(LED1);

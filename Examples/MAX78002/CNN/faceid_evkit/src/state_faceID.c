@@ -93,8 +93,8 @@ static text_t screen_msg[] = {
     { (char *)"Process Time:", strlen("Process Time:") },
 };
 int bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif //#ifdef TFT_ENABLE
 
 static int8_t prev_decision = -2;
@@ -110,7 +110,7 @@ static void screen_faceID(void)
     MXC_TFT_SetBackGroundColor(4);
     // MXC_TFT_ShowImage(3, 5, bitmap);
 
-    MXC_TFT_PrintFont(98, 5, font_1, &screen_msg[0], NULL); // FACEID DEMO
+    MXC_TFT_PrintFont(50, 5, font_1, &screen_msg[0], NULL); // FACEID DEMO
     MXC_TFT_PrintFont(12, 240, font_1, &screen_msg[1], NULL); // Process Time:
     // texts
 #ifdef TS_ENABLE

@@ -90,7 +90,7 @@ int font = urw_gothic_12_grey_bg_white;
 #endif
 
 #ifdef BOARD_FTHR_REVA
-int font = (int)&SansSerif16x16[0];
+int font = (int)&Liberation_Sans16x16[0];
 #define COLOR RGB(RED_COLOR, GREEN_COLOR, BLUE_COLOR) // convert to RGB565
 #endif
 

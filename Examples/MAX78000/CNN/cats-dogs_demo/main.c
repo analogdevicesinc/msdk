@@ -98,8 +98,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #ifdef BOARD_FTHR_REVA
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 const char classes[CNN_NUM_OUTPUTS][10] = { "Cat", "Dog" };
@@ -505,7 +505,7 @@ int main(void)
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 55, 50, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
     TFT_Print(buff, 55, 90, font_1, snprintf(buff, sizeof(buff), "Cats-vs-Dogs Demo"));
-    TFT_Print(buff, 30, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 20, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
     printf("********** Press PB1(SW1) to capture an image **********\r\n");

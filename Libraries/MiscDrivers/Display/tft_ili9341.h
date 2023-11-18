@@ -61,6 +61,7 @@
 #include <stdint.h>
 #include <spi.h>
 #include <gpio.h>
+#include "fonts.h"
 
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 320
@@ -112,12 +113,6 @@ extern const unsigned char img_3_rgb565[];
 extern const unsigned char img_4_rgb565[];
 extern const unsigned char image_pattern_rgb565[];
 extern const unsigned char logo_rgb565[];
-// Fonts
-extern const unsigned char Arial12x12[];
-extern const unsigned char Arial24x23[];
-extern const unsigned char Arial28x28[];
-extern const unsigned char SansSerif19x19[];
-extern const unsigned char SansSerif16x16[];
 
 /************************************************************************************/
 

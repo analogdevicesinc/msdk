@@ -72,14 +72,14 @@ static text_t screen_msg[] = {
     { (char *)"Start DEMO", 10 },
 };
 
-static int font = (int)&SansSerif16x16[0];
+static int font = (int)&Liberation_Sans16x16[0];
 
 /********************************* Static Functions **************************/
 static void screen_faceID_home(void)
 {
     MXC_TFT_SetBackGroundColor(4);
 
-    MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL); // FACEID DEMO
+    MXC_TFT_PrintFont(50, 5, font, &screen_msg[0], NULL); // FACEID DEMO
     MXC_TFT_PrintFont(X_START + THICKNESS, Y_START + THICKNESS, font, &screen_msg[1],
                       NULL); // START DEMO
     // texts

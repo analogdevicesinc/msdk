@@ -77,6 +77,11 @@ COMPILER=GCC
 include ./project.mk
 $(info Loaded project.mk)
 
+ifeq "$(MAXIM_PATH)" ""
+DEPTH := ../../../../
+MAXIM_PATH := $(abspath $(DEPTH))
+endif
+
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
 LIBS_DIR=../../../../Libraries
@@ -96,8 +101,6 @@ SRCS += TFT/evkit/resources/all_imgs.c
 endif
 ifeq "$(BOARD)" "FTHR_RevA"
 SRCS += TFT/fthr/logo_rgb565.c
-SRCS += TFT/fthr/SansSerif16x16.c
-SRCS += TFT/fthr/SansSerif19x19.c
 endif
 SRCS += src/state.c
 SRCS += src/state_home.c

@@ -64,11 +64,11 @@
 #define TFT_BUFF_SIZE 32 // TFT buffer size
 
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&Arial12x12[0];
-int font_2 = (int)&Arial24x23[0];
-int font_3 = (int)&Arial28x28[0];
-int font_4 = (int)&SansSerif16x16[0];
-int font_5 = (int)&SansSerif19x19[0];
+int font_1 = (int)&Liberation_Sans12x12[0];
+int font_2 = (int)&Liberation_Sans24x24[0];
+int font_3 = (int)&Liberation_Sans28x28[0];
+int font_4 = (int)&Liberation_Sans16x16[0];
+int font_5 = (int)&Liberation_Sans19x19[0];
 const int font_5_width = 19;
 const int font_5_height = 19;
 unsigned int seed = 78002;

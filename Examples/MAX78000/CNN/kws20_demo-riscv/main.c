@@ -88,8 +88,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #endif
 #ifdef BOARD_FTHR_REVA
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 #endif
 

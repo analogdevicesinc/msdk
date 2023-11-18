@@ -92,3 +92,4 @@ IPATH += $(MISC_DRIVERS_DIR)/PMIC
 IPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 IPATH += $(MISC_DRIVERS_DIR)/CODEC
 
+include $(MISC_DRIVERS_DIR)/Display/fonts/fonts.mk

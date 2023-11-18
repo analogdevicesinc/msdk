@@ -55,7 +55,7 @@
 #include "camera.h"
 #include "labels.h"
 
-int font = (int)&SansSerif16x16[0];
+int font = (int)&Liberation_Sans16x16[0];
 
 void TFT_Print(char *str, int x, int y)
 {
