@@ -59,7 +59,12 @@
 
 /***** Globals *****/
 int g_sw_overhead = 0;
-#define TIME(x, output) {MXC_TMR_SW_Start(MXC_TMR0);(x);(elapsed) = MXC_TMR_SW_Stop(MXC_TMR0) - g_sw_overhead;}
+#define TIME(x, output)                                        \
+    {                                                          \
+        MXC_TMR_SW_Start(MXC_TMR0);                            \
+        (x);                                                   \
+        (elapsed) = MXC_TMR_SW_Stop(MXC_TMR0) - g_sw_overhead; \
+    }
 
 /***** Functions *****/
 
@@ -92,10 +97,7 @@ int main(void)
     g_sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
 
     // Benchmark internal memory write
-    TIME(
-        memset(tx_buffer, 0, TEST_SIZE),
-        elapsed
-    );
+    TIME(memset(tx_buffer, 0, TEST_SIZE), elapsed);
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
 
     // Initialize test pattern
@@ -114,18 +116,14 @@ int main(void)
     // =====================================================
     // Standard SPI
     printf("Test 1: Standard SPI write...\n");
-    TIME(
-        N01S830HA_write(TEST_ADDR, tx_buffer, TEST_SIZE), // SRAM Write
-        elapsed
-    );
+    TIME(N01S830HA_write(TEST_ADDR, tx_buffer, TEST_SIZE), // SRAM Write
+         elapsed);
     printf("\tDone (%i bytes in %ius)\n", TEST_SIZE, elapsed);
 
     // Read and validate
     printf("Test 2: Standard SPI read...\n");
-    TIME(
-        N01S830HA_read(TEST_ADDR, rx_buffer, TEST_SIZE), // SRAM Read
-        elapsed
-    )
+    TIME(N01S830HA_read(TEST_ADDR, rx_buffer, TEST_SIZE), // SRAM Read
+         elapsed)
     printf("\tRead finished (%i bytes in %ius)\n", TEST_SIZE, elapsed);
     printf("\tChecking for mismatches...\n");
     if (!validate(rx_buffer, tx_buffer, TEST_SIZE)) {
@@ -145,19 +143,15 @@ int main(void)
     printf("Test 3: QSPI write...\n");
 
     N01S830HA_enter_quadmode(); // Enter quad mode
-    
-    TIME(
-        N01S830HA_write(TEST_ADDR, tx_buffer, TEST_SIZE), // SRAM Write
-        elapsed
-    );
+
+    TIME(N01S830HA_write(TEST_ADDR, tx_buffer, TEST_SIZE), // SRAM Write
+         elapsed);
     printf("\tDone (%i bytes in %ius)\n", TEST_SIZE, elapsed);
 
     // Read and validate
     printf("Test 4: QSPI read...\n");
-    TIME(
-        N01S830HA_read(TEST_ADDR, rx_buffer, TEST_SIZE), // SRAM Read
-        elapsed
-    )
+    TIME(N01S830HA_read(TEST_ADDR, rx_buffer, TEST_SIZE), // SRAM Read
+         elapsed)
     printf("\tRead finished (%i bytes in %ius)\n", TEST_SIZE, elapsed);
     printf("\tChecking for mismatches...\n");
     if (!validate(rx_buffer, tx_buffer, TEST_SIZE)) {

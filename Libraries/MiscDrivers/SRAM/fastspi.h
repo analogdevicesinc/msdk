@@ -38,11 +38,11 @@
  * @brief   "fast" and optimized DMA SPI drivers for use alongside external SRAM drivers
  */
 
-#include "fastspi_config.h" 
+#include "fastspi_config.h"
 // NOTE: "fastspi_config.h should be implemented for each Board Support Package and placed in
 //       its include folder in Libraries/Boards
 
-#ifndef SPI 
+#ifndef SPI
 #error Missing fastspi_config.h definition 'SPI' to select SPI instance
 #endif
 

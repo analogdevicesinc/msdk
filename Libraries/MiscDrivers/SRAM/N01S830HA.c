@@ -49,7 +49,10 @@ MODE_t g_current_mode;
 int _g_err = E_NO_ERROR;
 // Error checking macro that can be used inside functions with an 'int' return
 // type
-#define ERR_CHECK(x) if ((_g_err = (x)) != E_NO_ERROR) { return (_g_err); }
+#define ERR_CHECK(x)                    \
+    if ((_g_err = (x)) != E_NO_ERROR) { \
+        return (_g_err);                \
+    }
 
 // =============================================================================
 
@@ -79,9 +82,9 @@ int N01S830HA_init()
     ERR_CHECK(N01S830HA_exit_quadmode()); // Protect against quad-mode lock-up
 
     // The first thing we need to do is disable the HOLD function, which
-    // is enabled by default.  There is a hardware (hold pin) and software 
+    // is enabled by default.  There is a hardware (hold pin) and software
     // (hold bit) component to this.
-    
+
     // Set the hold pin to the HIGH state.
     ERR_CHECK(MXC_GPIO_Config(&N01S830HA_hold_pin));
     MXC_GPIO_OutSet(N01S830HA_hold_pin.port, N01S830HA_hold_pin.mask);
@@ -89,7 +92,7 @@ int N01S830HA_init()
     ERR_CHECK(N01S830HA_write_mode_reg(0b1)); // Disable hold function
 
     // Now, validate that we were able to write to the mode register
-    // This is the closest thing we have to a "read id" or 
+    // This is the closest thing we have to a "read id" or
     // communication verification for this SRAM chip.
     uint8_t mode_reg;
     ERR_CHECK(N01S830HA_read_mode_reg(&mode_reg));
@@ -138,7 +141,8 @@ int N01S830HA_enter_quadmode()
     return E_NO_ERROR;
 }
 
-int N01S830HA_exit_quadmode() {
+int N01S830HA_exit_quadmode()
+{
     uint8_t tx_data = CMD_RESET_IO;
 
     ERR_CHECK(spi_enter_quadmode());
@@ -175,11 +179,12 @@ int N01S830HA_write_mode_reg(uint8_t val)
 {
     uint8_t data[2] = { CMD_WRITE_MODE_REG, val };
     ERR_CHECK(spi_transmit(data, 2, NULL, 0, true));
-    MXC_Delay(MXC_DELAY_USEC(100)); // Some small delay after updating the mode reg appears to be necessary.
+    MXC_Delay(MXC_DELAY_USEC(
+        100)); // Some small delay after updating the mode reg appears to be necessary.
     return E_NO_ERROR;
 }
 
-int N01S830HA_read_mode_reg(uint8_t* out)
+int N01S830HA_read_mode_reg(uint8_t *out)
 {
     uint8_t cmd = CMD_READ_MODE_REG;
     ERR_CHECK(spi_transmit(&cmd, 1, NULL, 0, false));

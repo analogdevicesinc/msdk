@@ -25,10 +25,10 @@
 // the port, pin, and vssel definitions above.
 
 static const mxc_gpio_cfg_t N01S830HA_hold_pin = { .port = N01S830HA_HOLD_PIN_PORT,
-                                           .mask = N01S830HA_HOLD_PIN_MASK,
-                                           .func = MXC_GPIO_FUNC_OUT,
-                                           .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
-                                           .vssel = N01S830HA_VSSEL };
+                                                   .mask = N01S830HA_HOLD_PIN_MASK,
+                                                   .func = MXC_GPIO_FUNC_OUT,
+                                                   .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
+                                                   .vssel = N01S830HA_VSSEL };
 #endif
 
 #endif // N01S830HA_CONFIG_H

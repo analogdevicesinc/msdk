@@ -55,11 +55,10 @@ uint8_t *g_tx_buffer;
 uint32_t g_rx_len;
 uint32_t g_tx_len;
 
-// Polling flags the application code can optionally 
+// Polling flags the application code can optionally
 static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
 static volatile bool g_master_done = 0;
-
 
 void DMA_TX_IRQHandler()
 {
@@ -204,9 +203,11 @@ int spi_init()
     fastspi_spi_pins.port->ds0 |= fastspi_spi_pins.mask;
     fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
-    SPI->ctrl0 = (0b0100 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
-                 MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
-                 MXC_F_SPI_CTRL0_EN; // Enable SPI
+    SPI->ctrl0 =
+        (0b0100
+         << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
+        MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
+        MXC_F_SPI_CTRL0_EN; // Enable SPI
 
     SPI->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS); // Set 8 bits per character
 
@@ -269,7 +270,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     if (txlen > 1) {
         // Configure TX DMA channel to fill the SPI TX FIFO
         SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
-                        (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
+                     (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
         SPI->fifo8[0] = src[0];
         // ^ Hardware requires writing the first byte into the FIFO manually.
         MXC_DMA->ch[g_tx_channel].src = (uint32_t)(src + 1);
@@ -318,7 +319,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
 
     // Wait for the transaction to complete.
     while (!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) &&
-            !(g_rx_done && (dest != NULL && rxlen > 0))) {
+           !(g_rx_done && (dest != NULL && rxlen > 0))) {
         /*
         The following polling is a safety fallback to catch any missed interrupts.
         This is especially common with extremely short transactions, where all 3 
@@ -337,7 +338,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     return E_SUCCESS;
 }
 
-int spi_exit_quadmode() 
+int spi_exit_quadmode()
 {
     return MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
 }

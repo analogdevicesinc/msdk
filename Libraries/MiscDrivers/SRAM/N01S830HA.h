@@ -55,7 +55,7 @@ extern const mxc_gpio_cfg_t N01S830HA_hold_pin;
 
 // =======================================================================================
 
-// SPI TRANSPORT LAYER 
+// SPI TRANSPORT LAYER
 // - Must be implemented externally (!)
 
 /**
@@ -186,6 +186,6 @@ int N01S830HA_write_mode_reg(uint8_t val);
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_read_mode_reg(uint8_t* out);
+int N01S830HA_read_mode_reg(uint8_t *out);
 
 #endif // EXAMPLES_MAX78000_QSPI_N01S830HA_H_
