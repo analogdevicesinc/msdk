@@ -189,7 +189,6 @@ int dma_init()
 
 int spi_init()
 {
-    // TODO(Jake): Add software-controlled slave select functionality
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
 
@@ -205,10 +204,7 @@ int spi_init()
     fastspi_spi_pins.port->ds0 |= fastspi_spi_pins.mask;
     fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
-    // TODO(Jake): Expose some of the config options below
-    // TODO(Jake): Move QSPI-SRAM specific options into aps6404.c
-
-    SPI->ctrl0 = (0b0100 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2
+    SPI->ctrl0 = (0b0100 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
                  MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
                  MXC_F_SPI_CTRL0_EN; // Enable SPI
 
