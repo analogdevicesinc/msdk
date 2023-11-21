@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78002_QSPI_FASTSPI_CONFIG_H_
-#define EXAMPLES_MAX78002_QSPI_FASTSPI_CONFIG_H_
+#ifndef LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
+#define LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
 
 /**
  * @file    fastspi_config.c
@@ -55,15 +55,16 @@
 
 // (*) Required GPIO definitions:
 static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = SPI_SS_PORT,
-                                           .mask = SPI_SS_PIN,
-                                           .func = MXC_GPIO_FUNC_ALT2, // ALT2 for SS2
-                                           .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
-                                           .vssel = SPI_VSSEL };
+                                               .mask = SPI_SS_PIN,
+                                               .func = MXC_GPIO_FUNC_ALT2, // ALT2 for SS2
+                                               .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
+                                               .vssel = SPI_VSSEL };
 
 static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = SPI_PINS_PORT,
-                                         .mask = SPI_PINS_MASK,
-                                         .func = MXC_GPIO_FUNC_ALT1,
-                                         .pad = MXC_GPIO_PAD_NONE,
-                                         .vssel = SPI_VSSEL };
+                                                 .mask = SPI_PINS_MASK,
+                                                 .func = MXC_GPIO_FUNC_ALT1,
+                                                 .pad = MXC_GPIO_PAD_NONE,
+                                                 .vssel = SPI_VSSEL };
 
-#endif // EXAMPLES_MAX78002_QSPI_FASTSPI_CONFIG_H_
+#endif // LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
+
