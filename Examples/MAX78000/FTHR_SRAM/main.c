@@ -33,8 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Demonstrates SRAM drivers for the N01S830HA on the MAX78000FTHR
  */
 
 /***** Includes *****/
