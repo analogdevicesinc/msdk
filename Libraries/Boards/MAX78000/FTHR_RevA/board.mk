@@ -65,8 +65,12 @@ SRCS += ov7692.c
 SRCS += sccb.c
 SRCS += max20303.c
 SRCS += max9867.c
+ifeq "$(RISCV_CORE)" ""
 SRCS += N01S830HA.c
 SRCS += fastspi.c
+else
+$(warning Warning: Skipping N01S830HA drivers for RISC-V core)
+endif
 
 PROJ_CFLAGS+=-DCAMERA_OV7692
 
