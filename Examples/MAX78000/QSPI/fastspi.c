@@ -55,13 +55,6 @@ uint8_t *g_tx_buffer;
 uint32_t g_rx_len;
 uint32_t g_tx_len;
 
-// A macro to convert a DMA channel number to an IRQn number
-#define GetIRQnForDMAChannel(x)           \
-    ((IRQn_Type)(((x) == 0) ? DMA0_IRQn : \
-                 ((x) == 1) ? DMA1_IRQn : \
-                 ((x) == 2) ? DMA2_IRQn : \
-                              DMA3_IRQn))
-
 void DMA_TX_IRQHandler()
 {
     volatile mxc_dma_ch_regs_t *ch =
@@ -175,13 +168,13 @@ int dma_init()
         (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE); // Enable CTZ and DIS interrupts
     MXC_DMA->inten |= (1 << g_rx_channel); // Enable DMA interrupts
 
-    MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_tx_channel), DMA_TX_IRQHandler);
-    NVIC_EnableIRQ(GetIRQnForDMAChannel(g_tx_channel));
-    NVIC_SetPriority(GetIRQnForDMAChannel(g_tx_channel), 0);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(g_tx_channel), DMA_TX_IRQHandler);
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(g_tx_channel));
+    NVIC_SetPriority(MXC_DMA_CH_GET_IRQ(g_tx_channel), 0);
 
-    MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_rx_channel), DMA_RX_IRQHandler);
-    NVIC_EnableIRQ(GetIRQnForDMAChannel(g_rx_channel));
-    NVIC_SetPriority(GetIRQnForDMAChannel(g_tx_channel), 0);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(g_rx_channel), DMA_RX_IRQHandler);
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(g_rx_channel));
+    NVIC_SetPriority(MXC_DMA_CH_GET_IRQ(g_tx_channel), 0);
 
     g_dma_initialized = true;
 
