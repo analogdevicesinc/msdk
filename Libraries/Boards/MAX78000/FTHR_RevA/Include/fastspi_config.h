@@ -67,4 +67,3 @@ static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = SPI_PINS_PORT,
                                                  .vssel = SPI_VSSEL };
 
 #endif // LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
-
