@@ -47,7 +47,6 @@ int g_rx_channel;
 int g_fill_dummy_bytes = 0;
 int g_dummy_len = 0;
 uint8_t g_dummy_byte = 0xFF;
-bool g_use_dma = false;
 
 bool g_dma_initialized = false;
 
@@ -131,18 +130,10 @@ void SPI_IRQHandler()
 
     if (status & MXC_F_SPI_INTFL_RX_THD) {
         SPI->intfl |= MXC_F_SPI_INTFL_RX_THD;
-        if (!g_use_dma) {
-            // RX threshold has been crossed, there's data to unload from the FIFO
-            processSPI();
-        }
     }
 
     if (status & MXC_F_SPI_INTFL_TX_THD) {
         SPI->intfl |= MXC_F_SPI_INTFL_TX_THD;
-        if (!g_use_dma) {
-            // TX threshold has been crossed, we need to refill the FIFO
-            processSPI();
-        }
     }
 }
 
@@ -249,8 +240,7 @@ int spi_init()
     return err;
 }
 
-int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert,
-                 bool use_dma, bool block)
+int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert)
 {
     g_tx_done = 0;
     g_rx_done = 0;
@@ -280,69 +270,38 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
                   MXC_F_SPI_DMA_DMA_RX_EN); // Disable FIFOs before clearing as recommended by UG
     SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH); // Clear the FIFOs
 
-    if (use_dma) {
-        g_use_dma = true;
-        // TX
-        if (txlen > 1) {
-            // Configure TX DMA channel to fill the SPI TX FIFO
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
-                         (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
-            SPI->fifo8[0] = src[0];
-            // ^ Hardware requires writing the first byte into the FIFO manually.
-            MXC_DMA->ch[g_tx_channel].src = (uint32_t)(src + 1);
-            MXC_DMA->ch[g_tx_channel].cnt = txlen - 1;
-            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_SRCINC;
-            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
-        } else if (txlen == 1) {
-            // Workaround for single-length transactions not triggering CTZ
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-            SPI->fifo8[0] = src[0]; // Write first byte into FIFO
-            g_tx_done = 1;
-        } else if (txlen == 0 && width == SPI_WIDTH_STANDARD) {
-            // Configure TX DMA channel to retransmit a dummy byte
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-            MXC_DMA->ch[g_tx_channel].src = (uint32_t)&g_dummy_byte;
-            MXC_DMA->ch[g_tx_channel].cnt = rxlen;
-            MXC_DMA->ch[g_tx_channel].ctrl &= ~MXC_F_DMA_CTRL_SRCINC;
-            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
-        }
+    // TX
+    if (txlen > 1) {
+        // Configure TX DMA channel to fill the SPI TX FIFO
+        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
+                        (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
+        SPI->fifo8[0] = src[0];
+        // ^ Hardware requires writing the first byte into the FIFO manually.
+        MXC_DMA->ch[g_tx_channel].src = (uint32_t)(src + 1);
+        MXC_DMA->ch[g_tx_channel].cnt = txlen - 1;
+        MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_SRCINC;
+        MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
+    } else if (txlen == 1) {
+        // Workaround for single-length transactions not triggering CTZ
+        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+        SPI->fifo8[0] = src[0]; // Write first byte into FIFO
+        g_tx_done = 1;
+    } else if (txlen == 0 && width == SPI_WIDTH_STANDARD) {
+        // Configure TX DMA channel to retransmit a dummy byte
+        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+        MXC_DMA->ch[g_tx_channel].src = (uint32_t)&g_dummy_byte;
+        MXC_DMA->ch[g_tx_channel].cnt = rxlen;
+        MXC_DMA->ch[g_tx_channel].ctrl &= ~MXC_F_DMA_CTRL_SRCINC;
+        MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
+    }
 
-        // RX
-        if (rxlen > 0) {
-            // Configure RX DMA channel to unload the SPI RX FIFO
-            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
-            MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
-            MXC_DMA->ch[g_rx_channel].cnt = rxlen;
-            MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
-        }
-
-    } else { // !use_dma
-        g_use_dma = false;
-        g_rx_buffer = dest;
-        g_tx_buffer = src;
-        g_rx_len = rxlen;
-        g_tx_len = txlen;
-
-        SPI->inten |= MXC_F_SPI_INTEN_MST_DONE;
-
-        if (txlen > 0) {
-            // Enable TX FIFO & TX Threshold crossed interrupt
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
-            SPI->inten |= MXC_F_SPI_INTEN_TX_THD;
-        }
-
-        if (rxlen > 0) {
-            // Enable RX FIFO & RX Threshold crossed interrupt
-            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN);
-            SPI->inten |= MXC_F_SPI_INTEN_RX_THD;
-        }
-
-        /*
-        This processSPI call fills the TX FIFO as much as possible
-        before launching the transaction.  Subsequent FIFO management will
-        be handled from the SPI_IRQHandler. 
-        */
-        processSPI();
+    // RX
+    if (rxlen > 0) {
+        // Configure RX DMA channel to unload the SPI RX FIFO
+        SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+        MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
+        MXC_DMA->ch[g_rx_channel].cnt = rxlen;
+        MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
     }
 
     // Start the SPI transaction
@@ -362,24 +321,33 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     else
         SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
 
-    if (block) {
-        while (!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) &&
-               !(g_rx_done && (dest != NULL && rxlen > 0))) {
-            /*
-            The following polling is a safety fallback to catch any missed interrupts.
-            This is especially common with extremely short transactions, where all 3 
-            interrupts may fire almost simultaneously.
-            */
-            if ((src != NULL && txlen > 0) && SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)
-                g_master_done = 1;
-            if ((src != NULL && txlen > 0) &&
-                MXC_DMA->ch[g_tx_channel].status & MXC_F_DMA_STATUS_CTZ_IF)
-                g_tx_done = 1;
-            if ((dest != NULL && rxlen > 0) &&
-                MXC_DMA->ch[g_rx_channel].status & MXC_F_DMA_STATUS_CTZ_IF)
-                g_rx_done = 1;
-        }
+    // Wait for the transaction to complete.
+    while (!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) &&
+            !(g_rx_done && (dest != NULL && rxlen > 0))) {
+        /*
+        The following polling is a safety fallback to catch any missed interrupts.
+        This is especially common with extremely short transactions, where all 3 
+        interrupts may fire almost simultaneously.
+        */
+        if ((src != NULL && txlen > 0) && SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)
+            g_master_done = 1;
+        if ((src != NULL && txlen > 0) &&
+            MXC_DMA->ch[g_tx_channel].status & MXC_F_DMA_STATUS_CTZ_IF)
+            g_tx_done = 1;
+        if ((dest != NULL && rxlen > 0) &&
+            MXC_DMA->ch[g_rx_channel].status & MXC_F_DMA_STATUS_CTZ_IF)
+            g_rx_done = 1;
     }
 
     return E_SUCCESS;
+}
+
+int spi_exit_quadmode() 
+{
+    return MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
+}
+
+int spi_enter_quadmode()
+{
+    return MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
 }

@@ -53,7 +53,8 @@ static const mxc_gpio_cfg_t spi_pins = { .port = SPI_PINS_PORT,
 
 // TODO(Jake):  Generalize to multiple SPI instances
 int spi_init();
-int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert,
-                 bool use_dma, bool block);
+int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert);
+int spi_exit_quadmode();
+int spi_enter_quadmode();
 
 #endif // EXAMPLES_MAX78002_QSPI_FASTSPI_H_
