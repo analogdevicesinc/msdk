@@ -523,8 +523,11 @@ static void appSlaveConnUpdate(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
   if (pAppUpdateCfg->idlePeriod != 0)
   {
-    /* if successful */
-    if (pMsg->hdr.status == HCI_SUCCESS)
+    const bool_t intervalInBetween =  pAppUpdateCfg->connIntervalMin <= pMsg->connUpdate.connInterval 
+    && pMsg->connUpdate.connInterval <= pAppUpdateCfg->connIntervalMax;
+    // intervalInBetween = TRUE;
+    /* if successful and we got an update using one of our requested values*/
+    if (pMsg->hdr.status == HCI_SUCCESS && intervalInBetween)
     {
       /* stop connection update timer */
       appConnUpdateTimerStop(pCb);
