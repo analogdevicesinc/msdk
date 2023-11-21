@@ -55,6 +55,12 @@ uint8_t *g_tx_buffer;
 uint32_t g_rx_len;
 uint32_t g_tx_len;
 
+// Polling flags the application code can optionally 
+static volatile bool g_tx_done = 0;
+static volatile bool g_rx_done = 0;
+static volatile bool g_master_done = 0;
+
+
 void DMA_TX_IRQHandler()
 {
     volatile mxc_dma_ch_regs_t *ch =

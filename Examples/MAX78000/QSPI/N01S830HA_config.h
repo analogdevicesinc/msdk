@@ -4,6 +4,7 @@
 #include "N01S830HA.h"
 #include "gpio.h"
 #include "mxc_device.h"
+#include "fastspi.h"
 
 #ifndef N01S830HA_HOLD_PIN_PORT
 #define N01S830HA_HOLD_PIN_PORT MXC_GPIO0

@@ -33,27 +33,78 @@
 #ifndef EXAMPLES_MAX78002_QSPI_FASTSPI_H_
 #define EXAMPLES_MAX78002_QSPI_FASTSPI_H_
 
-#include "fastspi_config.h"
+/**
+ * @file    fastspi.h
+ * @brief   "fast" and optimized DMA SPI drivers for use alongside external SRAM drivers
+ */
 
-static volatile bool g_tx_done = 0;
-static volatile bool g_rx_done = 0;
-static volatile bool g_master_done = 0;
+#include "fastspi_config.h" // <-- must be implemented for each Board Support Package
 
-static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = SPI_SS_PORT,
-                                           .mask = SPI_SS_PIN,
-                                           .func = MXC_GPIO_FUNC_ALT2, // ALT2 for SS2
-                                           .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
-                                           .vssel = SPI_VSSEL };
+#ifndef SPI 
+#error Missing fastspi_config.h definition 'SPI' to select SPI instance
+#endif
 
-static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = SPI_PINS_PORT,
-                                         .mask = SPI_PINS_MASK,
-                                         .func = MXC_GPIO_FUNC_ALT1,
-                                         .pad = MXC_GPIO_PAD_NONE,
-                                         .vssel = SPI_VSSEL };
+#ifndef SPI_SPEED
+#error Missing fastspi_config.h definition 'SPI_SPEED' to set SPI clock frequency
+#endif
 
-int spi_init();
-int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert);
-int spi_exit_quadmode();
-int spi_enter_quadmode();
+// These pin definitions should also be provided in the "fastspi_config.h" file
+extern const mxc_gpio_cfg_t fastspi_ss_pin;
+extern const mxc_gpio_cfg_t fastspi_spi_pins;
+
+/**
+ * @brief Initializes the SPI (Serial Peripheral Interface) module.
+ *
+ * This function initializes the SPI module with default settings. It must be
+ * called before any SPI transactions are performed.
+ *
+ * @return An integer status code. 0 indicates success, while a non-zero value
+ *         indicates an error during initialization.
+ */
+extern int spi_init();
+
+/**
+ * @brief Transmits and receives data using the SPI module.
+ *
+ * This function performs a full-duplex SPI transaction. It transmits data from
+ * the source buffer and receives data into the destination buffer. The lengths
+ * of the transmit and receive buffers are specified by txlen and rxlen
+ * parameters, respectively.
+ *
+ * @param[in]  src       Pointer to the source buffer containing data to be transmitted.
+ * @param[in]  txlen     Length of the data to be transmitted, in bytes.
+ * @param[out] dest      Pointer to the destination buffer to store received data.
+ * @param[in]  rxlen     Length of the data to be received, in bytes.
+ * @param[in]  deassert  Boolean indicating whether to deassert the CS (Chip Select) line
+ *                      after the transaction (true) or keep it asserted (false).
+ *
+ * @return An integer status code. 0 indicates success, while a non-zero value
+ *         indicates an error during the SPI transaction.
+ */
+extern int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert);
+
+/**
+ * @brief Exits the quad mode for SPI (Serial Peripheral Interface) communication.
+ *
+ * This function is used to exit the quad mode in SPI, if previously enabled.
+ * Quad mode typically allows for faster data transfer rates by utilizing
+ * multiple data lines for both input and output.
+ *
+ * @return An integer status code. 0 indicates success, while a non-zero value
+ *         indicates an error during the quad mode exit process.
+ */
+extern int spi_exit_quadmode();
+
+/**
+ * @brief Enters the quad mode for SPI (Serial Peripheral Interface) communication.
+ *
+ * This function is used to enter the quad mode in SPI, enabling the use of
+ * multiple data lines for both input and output, which can result in faster
+ * data transfer rates.
+ *
+ * @return An integer status code. 0 indicates success, while a non-zero value
+ *         indicates an error during the quad mode entry process.
+ */
+extern int spi_enter_quadmode();
 
 #endif // EXAMPLES_MAX78002_QSPI_FASTSPI_H_

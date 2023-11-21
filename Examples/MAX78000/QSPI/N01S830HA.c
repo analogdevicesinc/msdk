@@ -31,13 +31,12 @@
  *
  ******************************************************************************/
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h> // For memset
 #include "N01S830HA.h"
 #include "mxc_errors.h"
 #include "mxc_delay.h"
-#include "fastspi.h"
 #include "tmr.h"
-#include <stdio.h>
 
 enum MODE { STANDARD_MODE, QUAD_MODE };
 typedef enum MODE MODE_t;
