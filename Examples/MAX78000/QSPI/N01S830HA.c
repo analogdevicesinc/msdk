@@ -121,7 +121,7 @@ int N01S830HA_init()
 
     // Re-configure SPI pins now that the hold function has been disabled.
     // This allows us to use QSPI.
-    ERR_CHECK(MXC_GPIO_Config(&spi_pins));
+    ERR_CHECK(spi_init());
 
     return E_NO_ERROR;
 }

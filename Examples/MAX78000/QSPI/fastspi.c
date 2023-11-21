@@ -187,17 +187,17 @@ int spi_init()
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
 
-    int err = MXC_GPIO_Config(&spi_pins);
+    int err = MXC_GPIO_Config(&fastspi_spi_pins);
     if (err)
         return err;
 
-    err = MXC_GPIO_Config(&spi_ss_pin);
+    err = MXC_GPIO_Config(&fastspi_ss_pin);
     if (err)
         return err;
 
     // Set strongest possible drive strength for SPI pins
-    spi_pins.port->ds0 |= spi_pins.mask;
-    spi_pins.port->ds1 |= spi_pins.mask;
+    fastspi_spi_pins.port->ds0 |= fastspi_spi_pins.mask;
+    fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
     // TODO(Jake): Expose some of the config options below
     // TODO(Jake): Move QSPI-SRAM specific options into aps6404.c
