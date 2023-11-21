@@ -101,7 +101,7 @@ void processSPI()
     }
 }
 
-void SPI_IRQHandler()
+void FastSPI_IRQHandler()
 {
     uint32_t status = SPI->intfl;
 
@@ -119,7 +119,7 @@ void SPI_IRQHandler()
     }
 }
 
-int dma_init()
+int _dma_init()
 {
     if (g_dma_initialized)
         return E_NO_ERROR;
@@ -212,10 +212,10 @@ int spi_init()
         return err;
 
     NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
-    MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), SPI_IRQHandler);
+    MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), FastSPI_IRQHandler);
     NVIC_SetPriority(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), 0);
 
-    err = dma_init();
+    err = _dma_init();
 
     return err;
 }
