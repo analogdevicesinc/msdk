@@ -72,8 +72,8 @@ const mxc_gpio_cfg_t ts_busy_pin = { MXC_GPIO0, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN
 
 /******************************************************************************/
 /** 
- * NOTE: This weak definition is included to support Push Button interrupts in
- *       case the user does not define this interrupt handler in their application.
+ * NOTE: This weak definition is included to support Push Button/Touchscreen interrupts
+ *       in case the user does not define this interrupt handler in their application.
  **/
 __weak void GPIO0_IRQHandler(void)
 {

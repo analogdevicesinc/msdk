@@ -1,6 +1,8 @@
 # BLE_periph
 Refer to the [BLE_periph](../../../Libraries/Cordio/docs/Applications/BLE_periph.md) documentation in the Cordio Library.
 
+# NOTE: BLE_periph is a bare bones example with no security and is not guaranteed nor intended to work with Windows, IOS, Android, etc. The example is only designed to operate with other embedded devices with loose security requirements. For a more fully featured application, please checkout BLE_dat(c/s)
+
 ## Software
 
 ### Project Usage

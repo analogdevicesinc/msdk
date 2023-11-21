@@ -180,8 +180,7 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
 
 /**
  * @brief   Initialize and enable I2C peripheral.
- * @note    This function sets the I2C Speed to 100kHz,  if another speed is
- *          desired use the MXC_I2C_SetFrequency() function to set it.
+
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   masterMode  Whether to put the device in master or slave mode. Use

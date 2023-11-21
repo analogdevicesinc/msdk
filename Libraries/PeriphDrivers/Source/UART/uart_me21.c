@@ -40,6 +40,30 @@
 #include "mcr_regs.h"
 #include "dma.h"
 
+sys_map_t uart_pin_mapping[4] = { MAP_A, MAP_A, MAP_A, MAP_A };
+/* Note(JC):               ^ Ideally I use MXC_UART_INSTANCES here...
+                ... but initializing the default value is problematic then.
+*/
+
+int MXC_UART_SetPinMapping(mxc_uart_regs_t *uart, sys_map_t pin_mapping)
+{
+    if (MXC_UART_GET_IDX(uart) < 0) {
+        return E_BAD_PARAM;
+    }
+
+    uart_pin_mapping[MXC_UART_GET_IDX(uart)] = pin_mapping;
+    return E_NO_ERROR;
+}
+
+inline sys_map_t MXC_UART_GetPinMapping(mxc_uart_regs_t *uart)
+{
+    if (MXC_UART_GET_IDX(uart) < 0) {
+        return E_BAD_PARAM;
+    }
+
+    return uart_pin_mapping[MXC_UART_GET_IDX(uart)];
+}
+
 void MXC_UART_DMACallback(int ch, int error)
 {
     MXC_UART_RevB_DMACallback(ch, error);
@@ -58,6 +82,7 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int retval;
+    sys_map_t current_pin_mapping = MXC_UART_GetPinMapping(uart);
 
     retval = MXC_UART_Shutdown(uart);
 
@@ -96,22 +121,38 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
 
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
-        MXC_GPIO_Config(&gpio_cfg_uart0);
+        if (current_pin_mapping == MAP_A) {
+            MXC_GPIO_Config(&gpio_cfg_uart0);
+        } else if (current_pin_mapping == MAP_B) {
+            MXC_GPIO_Config(&gpio_cfg_uart0b);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
         break;
 
     case 1:
-        MXC_GPIO_Config(&gpio_cfg_uart1);
+        if (current_pin_mapping == MAP_A) {
+            MXC_GPIO_Config(&gpio_cfg_uart1);
+        } else if (current_pin_mapping == MAP_B) {
+            MXC_GPIO_Config(&gpio_cfg_uart1b);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
         break;
 
     case 2:
-        MXC_GPIO_Config(&gpio_cfg_uart2);
+        if (current_pin_mapping == MAP_A) {
+            MXC_GPIO_Config(&gpio_cfg_uart2);
+        } else if (current_pin_mapping == MAP_B) {
+            MXC_GPIO_Config(&gpio_cfg_uart2b);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
         break;
 
     case 3:
-        MXC_GPIO_Config(&gpio_cfg_uart3);
+        if (current_pin_mapping == MAP_A) {
+            MXC_GPIO_Config(&gpio_cfg_uart3);
+        } else if (current_pin_mapping == MAP_B) {
+            return E_BAD_PARAM; // UART 3 (LPUART0) does not have a map B
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
         MXC_MCR->lppioctrl |= (MXC_F_MCR_LPPIOCTRL_LPUART0_RX | MXC_F_MCR_LPPIOCTRL_LPUART0_TX);
         break;

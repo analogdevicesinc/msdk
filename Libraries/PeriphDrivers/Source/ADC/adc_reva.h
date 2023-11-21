@@ -76,6 +76,7 @@ int MXC_ADC_RevA_SetConversionSpeed(mxc_adc_reva_regs_t *adc, uint32_t hz);
 int MXC_ADC_RevA_GetConversionSpeed(uint8_t divider);
 void MXC_ADC_RevA_SetDataAlignment(mxc_adc_reva_regs_t *adc, int msbJustify);
 void MXC_ADC_RevA_SetExtScale(mxc_adc_reva_regs_t *adc, mxc_adc_scale_t scale);
+void MXC_ADC_RevA_RefSelect(mxc_adc_reva_regs_t *adc, mxc_adc_ref_t ref);
 void MXC_ADC_RevA_EnableMonitor(mxc_adc_reva_regs_t *adc, mxc_adc_monitor_t monitor);
 void MXC_ADC_RevA_DisableMonitor(mxc_adc_reva_regs_t *adc, mxc_adc_monitor_t monitor);
 void MXC_ADC_RevA_SetMonitorHighThreshold(mxc_adc_reva_regs_t *adc, mxc_adc_monitor_t monitor,
