@@ -169,9 +169,11 @@ int main(void)
         //  printf("mailbox ARM: %x\n",&mail_box[0]);
 
     while (1) {
-        int16_t max = 0; // soft_max output is 0->32767
-        int16_t max_index = -1;
+#ifdef ENABLE_TFT
         int i = 0;
+        int16_t max = 0; // soft_max output is 0->32767
+#endif
+        int16_t max_index;
 
         //LED_On(0);
         __WFI(); // Let RISC-V run

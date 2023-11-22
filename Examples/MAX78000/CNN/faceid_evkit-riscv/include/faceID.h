@@ -65,7 +65,7 @@
 #define IMAGE_READY 3
 #define RESULT_READY 4
 
-#define CAPTURE_X 70
+#define CAPTURE_X 50
 #define CAPTURE_Y 290
 #define SKIP_X 60
 #define SKIP_Y 290
