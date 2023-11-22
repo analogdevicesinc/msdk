@@ -196,7 +196,7 @@ To compile code with enabled TFT feature use following setting in project.mk:
 
 ```bash
 ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
+PROJ_CFLAGS += -DTFT_ENABLE
 endif
 ```
 
