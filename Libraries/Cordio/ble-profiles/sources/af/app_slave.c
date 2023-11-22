@@ -527,7 +527,7 @@ static void appSlaveConnUpdate(dmEvt_t *pMsg, appConnCb_t *pCb)
                                       pMsg->connUpdate.connInterval <= pAppUpdateCfg->connIntervalMax;
     
     /* if successful and we got an update using one of our requested values*/
-    if ((pMsg->hdr.status == HCI_SUCCESS && intervalInBetween ) || pCb->attempts >= pAppUpdateCfg->maxAttempts)
+    if ((pMsg->hdr.status == HCI_SUCCESS && intervalInBetween ))
     {
       pCb->attempts = 0;
       /* stop connection update timer */
