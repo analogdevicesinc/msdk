@@ -121,6 +121,19 @@ typedef enum {
 } mxc_wdt_mode_t;
 
 /**
+ * @brief Peripheral Clock settings 
+ */
+typedef enum {
+    MXC_WDT_PCLK = 0,
+    MXC_WDT_IPO_CLK,
+    MXC_WDT_IBRO_CLK,
+    MXC_WDT_NANO_CLK,
+    MXC_WDT_ERTCO_CLK,
+    MXC_WDT_EXT_CLK,
+    MXC_WDT_ERFO_CLK
+} mxc_wdt_clock_t;
+
+/**
  * @brief Timer Configuration
  */
 typedef struct {
@@ -233,6 +246,13 @@ int MXC_WDT_GetIntFlag(mxc_wdt_regs_t *wdt);
  * @param       wdt     Pointer to watchdog registers.
  */
 void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
+
+/**
+ * @brief       Sets clock source.
+ * @param       wdt             Pointer to watchdog registers.
+ * @param       clock_source    Clock source.
+ */
+int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source);
 
 /**@} end of group wdt */
 
