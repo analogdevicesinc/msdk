@@ -848,7 +848,53 @@ class BLE_hci:
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
     
-   
+    def phyEnVs(self, args):
+        _ = args
+
+        cmd = '0131fd00'
+
+        _ = self.send_command(cmd) 
+    def phyDisVs(self, args):
+        _ = args
+
+        cmd = '0132fd00'
+
+        _ = self.send_command(cmd) 
+
+    def getRssiVs(self, args):
+        _ = args
+
+        channel = args.channel % 40
+
+        cmd = '0133fd01%0.2X', channel
+
+        evt_str = self.send_command(cmd) 
+
+        rssi = int(evt_str[-1:], 16)
+
+        return rssi
+
+    def peak_dtm_stats(self, args):
+        _ = args
+        evtString = self.send_command("0134fd00")
+
+        if evtString:                      
+            stats = {}
+
+            #flip every two character strings to create a big endian string to cast            
+            stats['rxDataTO']   = int(evtString[-2:] + evtString[-4 :-2],16)
+            stats['rxDataCRC']  = int(evtString[-6 :-4] + evtString[-8:-6],16) 
+            stats['rxDataOk']   = int(evtString[-10 :-8] + evtString[-12:-10] ,16)
+            stats['txData']     = int(evtString[-14 :-12] + evtString[-16:-14],16)
+
+            # if args is None or args.noPrint is False:
+            for item in stats:
+                print(item, stats[item])
+                
+            return stats
+        else:
+            print(colored('Error: Device Returned No Data. Command may not be supported, or device might not be updated', 'red'))
+            return None
     def endTestVSFunc(self, args):
         """
         Vendor specific command to end test\n
@@ -1155,7 +1201,7 @@ class BLE_hci:
 
         if rssi is None:
             rssi = 0
-        
+        print(rssi)
         return rssi
 
 ## Help function.
@@ -1172,7 +1218,8 @@ def helpFunc(args):
 def signal_handler(signal, frame):
     print()
     sys.exit(0)
-        
+def get_hci_opcode(ogf, ocf):
+    return (ogf << 10) + ocf
 if __name__ == '__main__':
 
     # Setup the signal handler to catch the ctrl-C

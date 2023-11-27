@@ -204,6 +204,26 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         evtParamLen += sizeof(LlTestReport_t);
         break;
     }
+    case LHCI_OPCODE_VS_PHY_ENABLE: {
+        status = LL_SUCCESS;
+        PalBbEnable();
+        break;
+    }
+    case LHCI_OPCODE_VS_PHY_DISABLE: {
+        status = LL_SUCCESS;
+        PalBbDisable();
+        break;
+    }
+    case LHCI_OPCODE_VS_RSSI: {
+        evtParamLen += sizeof(int8_t);
+        status = LL_SUCCESS;
+        break;
+    }
+    case LHCI_OPCODE_VS_PEAK_DTM_STATS: {
+        LlPeakDtmStats(&rpt);
+        evtParamLen += sizeof(LlTestReport_t);
+        break;
+    }
 
     /* --- default --- */
     default:
@@ -229,10 +249,24 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_REG_WRITE:
 
         case LHCI_OPCODE_VS_TX_TEST:
+        case LHCI_OPCODE_VS_PHY_ENABLE:
+        case LHCI_OPCODE_VS_PHY_DISABLE:
 
             /* no action */
             break;
+        
+        case LHCI_OPCODE_VS_RSSI: {
+            int8_t rssi = 0xff;
+            if (PalBbIsEnabled()) {
+#ifndef __FREERTOS__
+                PalBbGetRssi(&rssi, pBuf[0]);
+#endif
+            }
+            UINT8_TO_BSTREAM(pBuf, rssi);
+            break;
+        }
 
+        case LHCI_OPCODE_VS_PEAK_DTM_STATS:
         case LHCI_OPCODE_VS_END_TEST: {
             memcpy(pBuf, (uint8_t *)&rpt, sizeof(LlTestReport_t));
             break;

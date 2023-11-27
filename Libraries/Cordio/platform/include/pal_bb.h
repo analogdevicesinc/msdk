@@ -271,6 +271,25 @@ void PalBbSetProtId(uint8_t protId);
 /*************************************************************************************************/
 const PalBbPhyVersion_t *PalBbGetPhyVersion(void);
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Sample an RSSI capture
+ *
+ *  \param      rssi  Pointer to rssi output.
+ *  \param      channel  RF channel to sample RSSI on.
+ *  \return     FALSE if RSSI capture times out
+ */
+/*************************************************************************************************/
+bool_t PalBbGetRssi(int8_t*rssi , uint8_t rfChannel);
+/*************************************************************************************************/
+/*!
+ *  \brief      Check whether baseband is enabled
+ *
+ *  \return     TRUE if enabled
+ */
+/*************************************************************************************************/
+bool_t PalBbIsEnabled(void);
+
 /*! \} */ /* PAL_BB */
 
 #ifdef __cplusplus

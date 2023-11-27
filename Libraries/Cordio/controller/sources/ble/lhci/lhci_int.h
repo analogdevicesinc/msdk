@@ -364,6 +364,20 @@ extern "C" {
 #define LHCI_OPCODE_VS_END_TEST     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x304) /*!<Vendor specific End Test Returning More than RX Packets*/
+#define LHCI_OPCODE_VS_PHY_ENABLE     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x305) /*!<Vendor specific End Test Returning More than RX Packets*/
+#define LHCI_OPCODE_VS_PHY_DISABLE     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x306) /*!<Vendor specific End Test Returning More than RX Packets*/
+#define LHCI_OPCODE_VS_RSSI     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x307) /*!<Vendor specific End Test Returning More than RX Packets*/
+
+#define LHCI_OPCODE_VS_PEAK_DTM_STATS     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x308) /*!<Vendor specific End Test Returning More than RX Packets*/
+
 /* Vendor specific event masks. */
 #define LHCI_VS_EVT_MASK_SCAN_REPORT_EVT 0x01 /*!< (Byte 0) VS event bit, scan report. */
 #define LHCI_VS_EVT_MASK_DIAG_TRACE_EVT 0x02 /*!< (Byte 0) VS event bit, diagnostic tracing. */

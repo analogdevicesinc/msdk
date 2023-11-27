@@ -1,4 +1,4 @@
-# Bluetooth Tools
+# Bluetooth Tools (DEPRECATED!!!!) Please Use <LINK>
 These python tools are used for Bluetooth development and debugging.
 
 ## BLE_hci

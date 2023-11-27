@@ -38,7 +38,6 @@
 #include "wsf_trace.h"
 #include <string.h>
 
-
 /* Access internal definitions. */
 #include "../lctr/lctr_int.h"
 
@@ -49,8 +48,6 @@
 // #if LL_DTM_MAX_CHAN_IDX != 40
 // #error "Must be 40"
 // #endif
-
-
 
 /**************************************************************************************************
   Macros
@@ -279,7 +276,6 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
     BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
     if (llTestCb.state == LL_TEST_STATE_TX) {
-
         SchInsertNextAvailable(pOp);
 
     } else {
@@ -453,7 +449,6 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
          /* (len > LL_DTM_PDU_ABS_MAX_LEN) || */ /* always valid since len is uint8_t. */
          (pktType > LL_TEST_PKT_TYPE_AA) ||
          ((phy < LL_TEST_PHY_LE_1M) || (phy > LL_TEST_PHY_LE_CODED_S2)))) {
-            
         return LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
     }
 
@@ -474,7 +469,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
 
     if (llTestCb.state == LL_TEST_STATE_IDLE) {
         /* Init test state. */
-        memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt));
+        memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt));
     }
 
     /* Handle non-packet test mode. */
@@ -574,7 +569,6 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     pOp->protId = BB_PROT_BLE_DTM;
     pOp->endCback = llTestTxOpEndCback;
     pOp->abortCback = llTestTxAbortCback;
-
 
     /*** BLE General Setup ***/
 
@@ -874,7 +868,6 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     pBle->chan.crcInit = LL_DTM_CRC_INIT;
     /* pBle->txPwrLevel = 0; */ /* value ignored */
     switch (phy) {
-
     case LL_TEST_PHY_LE_1M:
         pBle->chan.rxPhy = BB_PHY_BLE_1M;
         break;
@@ -911,7 +904,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     llTestCb.state = LL_TEST_STATE_RX;
     lmgrCb.testEnabled = TRUE;
     LmgrIncResetRefCount();
-    memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
+    memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
     BbStart(BB_PROT_BLE_DTM);
     SchInsertNextAvailable(pOp);
 
@@ -1006,11 +999,10 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
         /* Signal termination. */
         llTestCb.state = LL_TEST_STATE_TERM;
     } else if (llTestCb.state == LL_TEST_STATE_RX) {
-
         WsfCsEnter();
         BbCancelBod();
         WsfCsExit();
-        
+
         llTestCb.state = LL_TEST_STATE_TERM;
     } else if (llTestCb.state == LL_TEST_STATE_TERM) {
         llTestCb.state = LL_TEST_STATE_IDLE;
@@ -1029,7 +1021,7 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
     LL_TRACE_INFO1("                numRxCrcError=%u", llTestCb.rpt.numRxCrcError);
     LL_TRACE_INFO1("                numRxTimeout=%u", llTestCb.rpt.numRxTimeout);
 
-    memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
+    memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
 
     return LL_SUCCESS;
 }
@@ -1061,7 +1053,7 @@ uint8_t LlSetTxTestErrorPattern(uint32_t pattern)
 /*************************************************************************************************/
 static void llTestResetHandler(void)
 {
-    memset((void*)&llTestCb, 0, sizeof(llTestCb));
+    memset(&llTestCb, 0, sizeof(llTestCb));
     llTestCb.tx.errPattern = 0xFFFFFFFF;
 
     llTestCb.packetsFreed = TRUE;
@@ -1111,4 +1103,9 @@ void LlTestInit(void)
     lctrMsgDispTbl[LCTR_DISP_TEST] = (LctrMsgDisp_t)llTestDisp;
 
     BbBleTestInit();
+}
+LlStatus_t LlPeakDtmStats(LlTestReport_t *pRpt)
+{
+    *pRpt = llTestCb.rpt;
+    return LL_SUCCESS;
 }
