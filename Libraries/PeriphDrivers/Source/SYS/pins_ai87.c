@@ -116,10 +116,11 @@ const mxc_gpio_cfg_t gpio_cfg_i2s0 = { MXC_GPIO1, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN
 const mxc_gpio_cfg_t gpio_cfg_i2s0_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_14), MXC_GPIO_FUNC_ALT2,
                                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
+// 1-Wire pins need to be at 3.3V so that MXC_GPIO_VSSEL_VDDIOH is selected.
 const mxc_gpio_cfg_t gpio_cfg_owm = { MXC_GPIO0, (MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7), MXC_GPIO_FUNC_ALT2,
-                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_owmb = { MXC_GPIO0, (MXC_GPIO_PIN_18 | MXC_GPIO_PIN_19), MXC_GPIO_FUNC_ALT2,
-                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
 const mxc_gpio_cfg_t gpio_cfg_rtcsqw = { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_ALT1,
                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
