@@ -62,8 +62,10 @@
 // ********************************************************************************
 int MXC_ADC_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET_ADC);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
+#endif
 
     return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t *)MXC_ADC);
 }

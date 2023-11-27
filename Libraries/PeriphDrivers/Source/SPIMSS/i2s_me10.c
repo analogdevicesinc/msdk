@@ -67,8 +67,10 @@ mxc_i2s_direction_t dir;
 /* ************************************************************************* */
 int MXC_I2S_Init(const mxc_i2s_config_t *cfg, void (*dma_ctz_cb)(int, int))
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2S);
     MXC_GPIO_Config(&gpio_cfg_i2s);
+#endif
 
     return MXC_I2S_RevA_Init((mxc_spimss_reva_regs_t *)MXC_SPIMSS, cfg, dma_ctz_cb);
 }

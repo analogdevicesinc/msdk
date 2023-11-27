@@ -61,6 +61,7 @@
 
 int MXC_ADC_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_GCR->rstr0 |= MXC_F_GCR_RSTR0_ADC;
 
     // Reset ADC block
@@ -68,6 +69,7 @@ int MXC_ADC_Init(void)
 
     // Enable ADC peripheral clock
     MXC_GCR->perckcn0 &= ~MXC_F_GCR_PERCKCN0_ADCD;
+#endif
 
     return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t *)MXC_ADC);
 }

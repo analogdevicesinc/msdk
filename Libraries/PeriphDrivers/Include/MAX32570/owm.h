@@ -92,7 +92,8 @@ typedef struct {
 /**
  * @brief   Initialize and enable OWM module.
  * @param   cfg         Pointer to OWM configuration.
- * @param   map         MAP_A, MAP_B or MAP_C onewire pins select
+ * @param   map         MAP_A, MAP_B or MAP_C onewire pins select. Has no effect 
+ *                      incase of MSDK_NO_GPIO_CLK_INIT has been defined.
  *
  * @return  #E_NO_ERROR if everything is successful
  * @return  #E_NULL_PTR if parameter is a null pointer

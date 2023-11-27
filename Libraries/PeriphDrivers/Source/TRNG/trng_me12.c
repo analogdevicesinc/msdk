@@ -69,7 +69,9 @@
 
 int MXC_TRNG_Init()
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
+#endif
 
     MXC_TRNG_RevB_Init();
 

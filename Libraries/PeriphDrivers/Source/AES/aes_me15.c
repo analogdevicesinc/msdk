@@ -85,8 +85,10 @@ static void reverse_key(const void *key, uint8_t *keyr, int len)
 
 int MXC_AES_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_AES);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
+#endif
 
     MXC_AES->ctrl = 0x00;
     // Start with a randomly generated key.

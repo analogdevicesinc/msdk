@@ -99,6 +99,7 @@ static mxc_uart_req_t *tx_states[MXC_UART_INSTANCES];
 /* ************************************************************************* */
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int err;
 
     if ((err = MXC_UART_Shutdown(uart)) != E_NO_ERROR) {
@@ -122,6 +123,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud)
     default:
         return E_BAD_PARAM;
     }
+#endif
 
     // Clear pending requests
     rx_states[MXC_UART_GET_IDX(uart)] = NULL;

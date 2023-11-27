@@ -166,6 +166,7 @@ static void initGPIOforHWTrig(mxc_adc_trig_sel_t hwTrig)
 
 int MXC_ADC_Init(mxc_adc_req_t *req)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     /* ADC in reset state */
     switch (req->clock) {
     case MXC_ADC_CLK_HCLK:
@@ -189,6 +190,7 @@ int MXC_ADC_Init(mxc_adc_req_t *req)
 
     /* This is required for temperature sensor only */
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif
 
     MXC_ADC_ReferenceSelect(req->ref);
 
