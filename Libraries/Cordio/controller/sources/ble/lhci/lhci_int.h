@@ -293,6 +293,8 @@ extern "C" {
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F2) /*!< Set Local Feature opcode. */
 #define LHCI_OPCODE_VS_SET_OP_FLAGS \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F3) /*!< Set Operational Flags opcode. */
+#define LHCI_OPCODE_VS_GET_PDU_FILT_STATS \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F4) /*!< Get PDU Filter Statistics opcode. */
 #define LHCI_OPCODE_VS_SET_ADV_TX_PWR \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F5) /*!< Set Advertising Tx Power opcode. */
 #define LHCI_OPCODE_VS_SET_CONN_TX_PWR \
@@ -307,8 +309,6 @@ extern "C" {
 #define LHCI_OPCODE_VS_SET_SNIFFER_ENABLE \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3CD) /*!< Enable sniffer packet forwarding. */
 
-#define LHCI_OPCODE_VS_GET_PDU_FILT_STATS \
-    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F4) /*!< Get PDU Filter Statistics opcode. */
 #define LHCI_OPCODE_VS_GET_SYS_STATS \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3FA) /*!< Get Memory Statistics opcode. */
 #define LHCI_OPCODE_VS_GET_ADV_STATS \
@@ -354,8 +354,8 @@ extern "C" {
 #define LHCI_OPCODE_VS_SET_CONN_PHY_TX_PWR \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3DD) /*!< Set Connection Phy Tx Power opcode. */
 
-#define LHCI_OPCODE_VS_REG_WRITE HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300) /*!< Write register. */
-#define LHCI_OPCODE_VS_REG_READ HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301) /*!< Read register. */
+#define LHCI_OPCODE_VS_REG_WRITE HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300) /*!< Write data to MCU register or memory space. */
+#define LHCI_OPCODE_VS_REG_READ HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301) /*!< Read data from MCU  register or memory space. */
 #define LHCI_OPCODE_VS_RESET_CONN_STATS \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x302) /*!< Reset connection stats. */
 #define LHCI_OPCODE_VS_TX_TEST \
