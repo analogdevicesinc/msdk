@@ -1304,7 +1304,7 @@ void lctrMstPerScanOpCommit(lctrExtScanCtx_t *pExtScanCtx, lctrAuxPtr_t *pAuxPtr
   pPerScanCtx->lastAnchorPointUsec = startTs + offsetUsec;
   pPerScanCtx->lastActiveEvent = pPerScanCtx->eventCounter;
   uint32_t caPpm = lctrCalcTotalAccuracy(pSyncInfo->sca);
-  uint32_t wwUsec = lctrCalcWindowWideningUsec((offsetUsec + (pSyncInfo->offsetUnits == LCTR_OFFS_UNITS_30_USEC) ? 30 : 300), caPpm);
+  uint32_t wwUsec = lctrCalcWindowWideningUsec((offsetUsec + ((pSyncInfo->offsetUnits == LCTR_OFFS_UNITS_30_USEC) ? 30 : 300)), caPpm);
   syncOffsetUsec = offsetUsec - wwUsec;
   pPerScanCtx->rxSyncDelayUsec = pBle->op.mstPerScan.rxSyncDelayUsec = (wwUsec << 1) + ((pSyncInfo->offsetUnits == LCTR_OFFS_UNITS_30_USEC) ? 30 : 300);    /* rounding compensation */
 
