@@ -15,8 +15,8 @@
  * limitations under the License.
  *
  ******************************************************************************/
-#ifndef LIBRARIES_MISCDRIVERS_SRAM_N01S830HA_CONFIG_H_
-#define LIBRARIES_MISCDRIVERS_SRAM_N01S830HA_CONFIG_H_
+#ifndef LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_N01S830HA_CONFIG_H_
+#define LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_N01S830HA_CONFIG_H_
 
 #include "N01S830HA.h"
 #include "gpio.h"
@@ -39,4 +39,4 @@ static const mxc_gpio_cfg_t N01S830HA_hold_pin = { .port = N01S830HA_HOLD_PIN_PO
                                                    .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
                                                    .vssel = N01S830HA_VSSEL };
 
-#endif // LIBRARIES_MISCDRIVERS_SRAM_N01S830HA_CONFIG_H_
+#endif // LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_N01S830HA_CONFIG_H_
