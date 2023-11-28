@@ -42,28 +42,28 @@
 #include "gpio.h"
 
 // (*) Required definitions:
-#define SPI MXC_SPI0
-#define SPI_SPEED 25000000
+#define FASTSPI_INSTANCE MXC_SPI0
+#define FASTSPI_SPEED 25000000
 
 // Optional definitions to make GPIO creation easier:
-#define SPI_PINS_PORT MXC_GPIO0
-#define SPI_VSSEL MXC_GPIO_VSSEL_VDDIOH
-#define SPI_PINS_MASK \
+#define FASTSPI_PINS_PORT MXC_GPIO0
+#define FASTSPI_VSSEL MXC_GPIO_VSSEL_VDDIOH
+#define FASTSPI_PINS_MASK \
     (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9)
-#define SPI_SS_PORT MXC_GPIO0
-#define SPI_SS_PIN MXC_GPIO_PIN_10 // (SS2)
+#define FASTSPI_SS_PORT MXC_GPIO0
+#define FASTSPI_SS_PIN MXC_GPIO_PIN_10 // (SS2)
 
 // (*) Required GPIO definitions:
-static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = SPI_SS_PORT,
-                                               .mask = SPI_SS_PIN,
+static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = FASTSPI_SS_PORT,
+                                               .mask = FASTSPI_SS_PIN,
                                                .func = MXC_GPIO_FUNC_ALT2, // ALT2 for SS2
                                                .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
-                                               .vssel = SPI_VSSEL };
+                                               .vssel = FASTSPI_VSSEL };
 
-static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = SPI_PINS_PORT,
-                                                 .mask = SPI_PINS_MASK,
+static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = FASTSPI_PINS_PORT,
+                                                 .mask = FASTSPI_PINS_MASK,
                                                  .func = MXC_GPIO_FUNC_ALT1,
                                                  .pad = MXC_GPIO_PAD_NONE,
-                                                 .vssel = SPI_VSSEL };
+                                                 .vssel = FASTSPI_VSSEL };
 
 #endif // LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_

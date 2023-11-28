@@ -27,12 +27,12 @@
 // NOTE: "fastspi_config.h should be implemented for each Board Support Package and placed in
 //       its include folder in Libraries/Boards
 
-#ifndef SPI
-#error Missing fastspi_config.h definition 'SPI' to select SPI instance
+#ifndef FASTSPI_INSTANCE
+#error Missing fastspi_config.h definition 'FASTSPI_INSTANCE' to select SPI instance
 #endif
 
-#ifndef SPI_SPEED
-#error Missing fastspi_config.h definition 'SPI_SPEED' to set SPI clock frequency
+#ifndef FASTSPI_SPEED
+#error Missing fastspi_config.h definition 'FASTSPI_SPEED' to set SPI clock frequency
 #endif
 
 // These pin definitions should also be provided in the "fastspi_config.h" file
@@ -48,7 +48,7 @@ extern const mxc_gpio_cfg_t fastspi_spi_pins;
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during initialization.
  */
-extern int spi_init();
+int spi_init();
 
 /**
  * @brief Transmits and receives data using the SPI module.
@@ -68,7 +68,7 @@ extern int spi_init();
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the SPI transaction.
  */
-extern int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert);
+int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert);
 
 /**
  * @brief Exits the quad mode for SPI (Serial Peripheral Interface) communication.
@@ -80,7 +80,7 @@ extern int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rx
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode exit process.
  */
-extern int spi_exit_quadmode();
+int spi_exit_quadmode();
 
 /**
  * @brief Enters the quad mode for SPI (Serial Peripheral Interface) communication.
@@ -92,6 +92,6 @@ extern int spi_exit_quadmode();
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode entry process.
  */
-extern int spi_enter_quadmode();
+int spi_enter_quadmode();
 
 #endif // LIBRARIES_MISCDRIVERS_SRAM_FASTSPI_H_

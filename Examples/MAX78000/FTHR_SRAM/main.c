@@ -90,7 +90,7 @@ int main(void)
     printf("QSPI SRAM Test:\n");
     printf("\tTest Address: 0x%x\n", TEST_ADDR);
     printf("\tTest size: %i bytes\n", TEST_SIZE);
-    printf("\tTest speed: %i Hz\n", SPI_SPEED);
+    printf("\tTest speed: %i Hz\n", FASTSPI_SPEED);
 
     // Time the measurement overhead of our measurement functions
     MXC_TMR_SW_Start(MXC_TMR0);

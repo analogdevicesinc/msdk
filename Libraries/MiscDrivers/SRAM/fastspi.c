@@ -79,8 +79,8 @@ void DMA_RX_IRQHandler()
 void processSPI()
 {
     // Unload any SPI data that has come in
-    while (g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
-        *g_rx_buffer++ = SPI->fifo8[0];
+    while (g_rx_buffer && (FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
+        *g_rx_buffer++ = FASTSPI_INSTANCE->fifo8[0];
         g_rx_len--;
     }
 
@@ -90,9 +90,9 @@ void processSPI()
 
     // Write any pending bytes out.
     while (g_tx_buffer &&
-           (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH) &&
+           (((FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH) &&
            g_tx_len > 0) {
-        SPI->fifo8[0] = *g_tx_buffer++;
+        FASTSPI_INSTANCE->fifo8[0] = *g_tx_buffer++;
         g_tx_len--;
     }
 
@@ -103,19 +103,19 @@ void processSPI()
 
 void FastSPI_IRQHandler()
 {
-    uint32_t status = SPI->intfl;
+    uint32_t status = FASTSPI_INSTANCE->intfl;
 
     if (status & MXC_F_SPI_INTFL_MST_DONE) { // Master done (TX complete)
         g_master_done = 1;
-        SPI->intfl |= MXC_F_SPI_INTFL_MST_DONE; // Clear flag
+        FASTSPI_INSTANCE->intfl |= MXC_F_SPI_INTFL_MST_DONE; // Clear flag
     }
 
     if (status & MXC_F_SPI_INTFL_RX_THD) {
-        SPI->intfl |= MXC_F_SPI_INTFL_RX_THD;
+        FASTSPI_INSTANCE->intfl |= MXC_F_SPI_INTFL_RX_THD;
     }
 
     if (status & MXC_F_SPI_INTFL_TX_THD) {
-        SPI->intfl |= MXC_F_SPI_INTFL_TX_THD;
+        FASTSPI_INSTANCE->intfl |= MXC_F_SPI_INTFL_TX_THD;
     }
 }
 
@@ -187,33 +187,33 @@ int spi_init()
     fastspi_spi_pins.port->ds0 |= fastspi_spi_pins.mask;
     fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
-    SPI->ctrl0 =
+    FASTSPI_INSTANCE->ctrl0 =
         (0b0100
          << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
         MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
         MXC_F_SPI_CTRL0_EN; // Enable SPI
 
-    SPI->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS); // Set 8 bits per character
+    FASTSPI_INSTANCE->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS); // Set 8 bits per character
 
-    SPI->sstime =
+    FASTSPI_INSTANCE->sstime =
         (1 << MXC_F_SPI_SSTIME_PRE_POS) | // Remove any delay time between SSEL and SCLK edges
         (128 << MXC_F_SPI_SSTIME_POST_POS) | (1 << MXC_F_SPI_SSTIME_INACT_POS);
 
-    SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN | // Enable TX FIFO
+    FASTSPI_INSTANCE->dma = MXC_F_SPI_DMA_TX_FIFO_EN | // Enable TX FIFO
                (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS) | // Set TX threshold to 31
                MXC_F_SPI_DMA_DMA_TX_EN; // Enable DMA for the TX FIFO
 
-    SPI->inten |= MXC_F_SPI_INTFL_MST_DONE; // Enable the "Transaction complete" interrupt
+    FASTSPI_INSTANCE->inten |= MXC_F_SPI_INTFL_MST_DONE; // Enable the "Transaction complete" interrupt
 
-    SPI->intfl = SPI->intfl; // Clear any any interrupt flags that may already be set
+    FASTSPI_INSTANCE->intfl = FASTSPI_INSTANCE->intfl; // Clear any any interrupt flags that may already be set
 
-    err = MXC_SPI_SetFrequency(SPI, SPI_SPEED);
+    err = MXC_SPI_SetFrequency(FASTSPI_INSTANCE, FASTSPI_SPEED);
     if (err)
         return err;
 
-    NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
-    MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), FastSPI_IRQHandler);
-    NVIC_SetPriority(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), 0);
+    NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(FASTSPI_INSTANCE)));
+    MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(FASTSPI_INSTANCE)), FastSPI_IRQHandler);
+    NVIC_SetPriority(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(FASTSPI_INSTANCE)), 0);
 
     err = _dma_init();
 
@@ -225,7 +225,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     g_tx_done = 0;
     g_rx_done = 0;
     g_master_done = 0;
-    mxc_spi_width_t width = MXC_SPI_GetWidth(SPI);
+    mxc_spi_width_t width = MXC_SPI_GetWidth(FASTSPI_INSTANCE);
 
     // Set the number of bytes to transmit/receive for the SPI transaction
     if (width == SPI_WIDTH_STANDARD) {
@@ -237,25 +237,25 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
             dummy bytes must be transmitted to support half duplex. 
             */
             g_dummy_len = rxlen - txlen;
-            SPI->ctrl1 = ((txlen + g_dummy_len) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+            FASTSPI_INSTANCE->ctrl1 = ((txlen + g_dummy_len) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
         } else {
-            SPI->ctrl1 = txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+            FASTSPI_INSTANCE->ctrl1 = txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
         }
     } else { // width != SPI_WIDTH_STANDARD
-        SPI->ctrl1 = (txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS) |
+        FASTSPI_INSTANCE->ctrl1 = (txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS) |
                      (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
     }
 
-    SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN |
+    FASTSPI_INSTANCE->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN |
                   MXC_F_SPI_DMA_DMA_RX_EN); // Disable FIFOs before clearing as recommended by UG
-    SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH); // Clear the FIFOs
+    FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH); // Clear the FIFOs
 
     // TX
     if (txlen > 1) {
         // Configure TX DMA channel to fill the SPI TX FIFO
-        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
+        FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
                      (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
-        SPI->fifo8[0] = src[0];
+        FASTSPI_INSTANCE->fifo8[0] = src[0];
         // ^ Hardware requires writing the first byte into the FIFO manually.
         MXC_DMA->ch[g_tx_channel].src = (uint32_t)(src + 1);
         MXC_DMA->ch[g_tx_channel].cnt = txlen - 1;
@@ -263,12 +263,12 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
     } else if (txlen == 1) {
         // Workaround for single-length transactions not triggering CTZ
-        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-        SPI->fifo8[0] = src[0]; // Write first byte into FIFO
+        FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+        FASTSPI_INSTANCE->fifo8[0] = src[0]; // Write first byte into FIFO
         g_tx_done = 1;
     } else if (txlen == 0 && width == SPI_WIDTH_STANDARD) {
         // Configure TX DMA channel to retransmit a dummy byte
-        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+        FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
         MXC_DMA->ch[g_tx_channel].src = (uint32_t)&g_dummy_byte;
         MXC_DMA->ch[g_tx_channel].cnt = rxlen;
         MXC_DMA->ch[g_tx_channel].ctrl &= ~MXC_F_DMA_CTRL_SRCINC;
@@ -278,14 +278,14 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     // RX
     if (rxlen > 0) {
         // Configure RX DMA channel to unload the SPI RX FIFO
-        SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+        FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
         MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
         MXC_DMA->ch[g_rx_channel].cnt = rxlen;
         MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
     }
 
     // Start the SPI transaction
-    SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+    FASTSPI_INSTANCE->ctrl0 |= MXC_F_SPI_CTRL0_START;
 
     /*
     Handle slave-select (SS) deassertion.  This must be done AFTER launching the transaction
@@ -297,9 +297,9 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     on the value of CTRL->SS_CTRL, which causes the glitch.
     */
     if (deassert)
-        SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
+        FASTSPI_INSTANCE->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
     else
-        SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
+        FASTSPI_INSTANCE->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
 
     // Wait for the transaction to complete.
     while (!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) &&
@@ -309,7 +309,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         This is especially common with extremely short transactions, where all 3 
         interrupts may fire almost simultaneously.
         */
-        if ((src != NULL && txlen > 0) && SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)
+        if ((src != NULL && txlen > 0) && FASTSPI_INSTANCE->intfl & MXC_F_SPI_INTFL_MST_DONE)
             g_master_done = 1;
         if ((src != NULL && txlen > 0) &&
             MXC_DMA->ch[g_tx_channel].status & MXC_F_DMA_STATUS_CTZ_IF)
@@ -324,10 +324,10 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
 
 int spi_exit_quadmode()
 {
-    return MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
+    return MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD);
 }
 
 int spi_enter_quadmode()
 {
-    return MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
+    return MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD);
 }
