@@ -305,6 +305,9 @@ Documentation for each of the supporting applications can be found below:
 - [BLE Periph](Applications/BLE_periph.md)
 - [RF Test](Applications/RF_Test.md)
 
+### Test and Toolkits
+- [HCI](Tooling/HOST_CONTROLLER_INTERFACE.md)
+
 ## Certification
 
 Bluetooth LE Mesh solution implementing the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications
