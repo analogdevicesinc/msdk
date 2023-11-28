@@ -34,8 +34,7 @@
 // =======================================================================================
 
 // EXTERNAL PIN DEFINITIONS
-// - Must be supplied externally (!)
-// - Default can be found in N01S830HA_config.h
+// - Must be supplied externally (!) via N01S830HA_config.h for each BSP
 
 #ifndef N01S830HA_HOLD_PIN_PORT
 #error Missing definition 'N01S830HA_HOLD_PIN_PORT'
