@@ -97,14 +97,14 @@ _RF Channel_ (1 Byte):
 | **Description**           | **Value** |
 | ------------------------- | --------- |
 | RF channel to transmit on | 0 – 39    |
-|
+|                           |
 
 _Packet Length_ (1 Byte):
 
 | **Description**                  | **Value** |
 | -------------------------------- | --------- |
 | Number of bytes in single packet | 0 - 255   |
-|
+|                                  |
 
 _Packet Type (1 Byte)_
 
@@ -118,7 +118,7 @@ _Packet Type (1 Byte)_
 | 00000000'b packet payload | 0x05      |
 | 11110000'b packet payload | 0x06      |
 | 10101010'b packet payload | 0x07      |
-|
+|                           |
 
 _PHY (1 Byte)_
 
@@ -129,7 +129,7 @@ _PHY (1 Byte)_
 | Coded Unspecified | 0x03      |
 | Coded S8          | 0x04      |
 | Coded S2          | 0x05      |
-|
+|                   |
 
 _Num Packets (2 Bytes)_
 
@@ -146,7 +146,7 @@ Status
 | **OCF** | **Length** | **Parameters** |
 | ------- | ---------- | -------------- |
 | 0x304   | 0          | N/A            |
-|
+|         |
 #### Description
 
 End current DTM test and return all test stats.
@@ -158,35 +158,35 @@ _TX Data (2 Bytes)_
 | **Description**               | **Value**  |
 | ----------------------------- | ---------- |
 | Number of packets transmitted | 0 - 0xFFFF |
-|
+|                               |
 
 _RX Data Ok_(2 Bytes)
 
 | **Description**               | **Value**  |
 | ----------------------------- | ---------- |
 | Number of packets received ok | 0 – 0xFFFF |
-|
+|                               |
 
 _RX Data CRC_ (2 Bytes)
 
 | **Description**                             | **Value**  |
 | ------------------------------------------- | ---------- |
 | Number of packets received with a CRC error | 0 - 0xFFFF |
-|
+|                                             |
 
 _RX Data Timeout_ (2 Bytes)
 
 | **Description**                                | **Value**  |
 | ---------------------------------------------- | ---------- |
 | Number of timeouts waiting to receive a packet | 0 - 0xFFFF |
-|
+|                                                |
 
 ### Set Scan Channel Map
 
 | **OCF** | **Length** | **Parameters** |
 | ------- | ---------- | -------------- |
 | 0x301   | 1          | Channel Map    |
-|
+|         |
 
 **Description**
 
@@ -199,7 +199,7 @@ _Channel Map (1 Byte):_
 | **Description**          | **Value** |
 | ------------------------ | --------- |
 | Channel map used to scan | 0 – 0xFF  |
-|
+|                          |
 #### Return
 
 Status
@@ -232,7 +232,7 @@ _Enable (1 Byte):_
 | --------------- | --------- |
 | Disable         | 0x00      |
 | Enable          | 0x01      |
-|
+|                 |
 
 #### Return
 
@@ -258,7 +258,7 @@ _Enable (1 Byte):_
 | --------------- | --------- |
 | Disable         | 0x00      |
 | Enable          | 0x01      |
-|
+|                 |
 
 #### Return
 
@@ -293,7 +293,7 @@ _Packet Length (2 Bytes):_
 | **Description**                   | **Value**            |
 | --------------------------------- | -------------------- |
 | Length of packet of generated ACL | 0x00 – MAX\_ACL\_LEN |
-|
+|                                   |
 
 MAX\_ACL\_LEN set at application layer by user.
 
@@ -302,7 +302,7 @@ Num Packets (1 Bytes):
 | **Description**                            | **Value**   |
 | ------------------------------------------ | ----------- |
 | Number of packets to send in generated ACL | 0x00 – 0xFF |
-|
+|                                            |
 
 #### Return
 
@@ -327,7 +327,7 @@ _Enable (1 Byte):_
 | --------------- | --------- |
 | Disable         | 0x00      |
 | Enable          | 0x01      |
-|
+|                 |
 
 #### Return
 
@@ -395,7 +395,7 @@ _Enable (1 Byte):_
 | --------------- | --------- |
 | Disable         | 0x00      |
 | Enable          | 0x01      |
-|
+|                 |
 
 #### Return
 
@@ -435,7 +435,7 @@ Status
 | **OCF** | **Length** | **Parameters**                | **Return**  |
 | ------- | ---------- | ----------------------------- | ----------- |
 | 0x3DE   | **3**      | Advertising Handle, Adverting | Channel Map |
-|
+|         |
 
 #### Description
 
