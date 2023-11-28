@@ -90,7 +90,8 @@ void processSPI()
 
     // Write any pending bytes out.
     while (g_tx_buffer &&
-           (((FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH) &&
+           (((FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) <
+            MXC_SPI_FIFO_DEPTH) &&
            g_tx_len > 0) {
         FASTSPI_INSTANCE->fifo8[0] = *g_tx_buffer++;
         g_tx_len--;
@@ -200,12 +201,14 @@ int spi_init()
         (128 << MXC_F_SPI_SSTIME_POST_POS) | (1 << MXC_F_SPI_SSTIME_INACT_POS);
 
     FASTSPI_INSTANCE->dma = MXC_F_SPI_DMA_TX_FIFO_EN | // Enable TX FIFO
-               (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS) | // Set TX threshold to 31
-               MXC_F_SPI_DMA_DMA_TX_EN; // Enable DMA for the TX FIFO
+                            (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS) | // Set TX threshold to 31
+                            MXC_F_SPI_DMA_DMA_TX_EN; // Enable DMA for the TX FIFO
 
-    FASTSPI_INSTANCE->inten |= MXC_F_SPI_INTFL_MST_DONE; // Enable the "Transaction complete" interrupt
+    FASTSPI_INSTANCE->inten |=
+        MXC_F_SPI_INTFL_MST_DONE; // Enable the "Transaction complete" interrupt
 
-    FASTSPI_INSTANCE->intfl = FASTSPI_INSTANCE->intfl; // Clear any any interrupt flags that may already be set
+    FASTSPI_INSTANCE->intfl =
+        FASTSPI_INSTANCE->intfl; // Clear any any interrupt flags that may already be set
 
     err = MXC_SPI_SetFrequency(FASTSPI_INSTANCE, FASTSPI_SPEED);
     if (err)
@@ -243,18 +246,19 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         }
     } else { // width != SPI_WIDTH_STANDARD
         FASTSPI_INSTANCE->ctrl1 = (txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS) |
-                     (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
+                                  (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
     }
 
-    FASTSPI_INSTANCE->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN |
-                  MXC_F_SPI_DMA_DMA_RX_EN); // Disable FIFOs before clearing as recommended by UG
+    FASTSPI_INSTANCE->dma &=
+        ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN |
+          MXC_F_SPI_DMA_DMA_RX_EN); // Disable FIFOs before clearing as recommended by UG
     FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH); // Clear the FIFOs
 
     // TX
     if (txlen > 1) {
         // Configure TX DMA channel to fill the SPI TX FIFO
         FASTSPI_INSTANCE->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
-                     (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
+                                  (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
         FASTSPI_INSTANCE->fifo8[0] = src[0];
         // ^ Hardware requires writing the first byte into the FIFO manually.
         MXC_DMA->ch[g_tx_channel].src = (uint32_t)(src + 1);
