@@ -37,6 +37,18 @@
 // - Must be supplied externally (!)
 // - Default can be found in N01S830HA_config.h
 
+#ifndef N01S830HA_HOLD_PIN_PORT
+#error Missing definition 'N01S830HA_HOLD_PIN_PORT'
+#endif
+
+#ifndef N01S830HA_HOLD_PIN_MASK
+#error Missing definition 'N01S830HA_HOLD_PIN_MASK'
+#endif
+
+#ifndef N01S830HA_VSSEL
+#error Missing definition 'N01S830HA_VSSEL'
+#endif
+
 extern const mxc_gpio_cfg_t N01S830HA_hold_pin;
 
 // =======================================================================================
