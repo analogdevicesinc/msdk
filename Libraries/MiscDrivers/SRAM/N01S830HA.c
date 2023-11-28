@@ -51,8 +51,8 @@ inline void _parse_spi_header(uint8_t cmd, uint32_t address, uint8_t *out)
 
 inline int _transmit_spi_header(uint8_t cmd, uint32_t address)
 {
-    // SPI reads and writes will always start with 4 bytes.
-    // A command byte, then a 24-bit address (MSB first)
+    // SPI reads and writes will always start with a "header" that consists of
+    // a command byte, followed by a 24-bit address (MSB first)
     uint8_t header[4];
     _parse_spi_header(cmd, address, header);
 
@@ -141,16 +141,30 @@ int N01S830HA_exit_quadmode()
 
 int N01S830HA_read(uint32_t address, uint8_t *out, unsigned int len)
 {
+    /* 
+    Read sequence (standard SPI): 
+        MOSI:    [CMD] [24-bit address]
+        MISO:                           [DATA BYTE 0] ... [DATA BYTE N]
+    */
+
+    /* 
+    Read sequence (QSPI): 
+        SIO[3:0]: [CMD] [24-bit address] [1 DUMMY BYTE] [DATA BYTE 0] ... [DATA BYTE N]
+                  <--              TX               --> <--            RX           --> 
+    */
+
+    // Transmit header
     if (g_current_mode == STANDARD_MODE) {
         _transmit_spi_header(CMD_READ, address);
     } else if (g_current_mode == QUAD_MODE) {
-        // QUAD mode requires 1 dummy byte.
+        // QUAD mode requires an extra dummy byte.  Manually parse a special 5-byte header
         uint8_t header[5]; // (1 byte cmd + 3 byte address + 1 dummy)
         memset(header, 0xFF, 5);
         _parse_spi_header(CMD_READ, address, header);
         ERR_CHECK(spi_transmit(header, 5, NULL, 0, false));
     }
 
+    // Read data
     return spi_transmit(NULL, 0, out, len, true);
 }
 
