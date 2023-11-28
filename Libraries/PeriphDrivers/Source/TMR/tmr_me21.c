@@ -305,7 +305,7 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
 
         case MXC_TMR_32M_CLK:
             clockFrequency = ERFO_FREQ; // Note: Could vary between 16-32Mhz.  ERFO_FREQ should be
-                                        // overridden for custom designs.
+                // overridden for custom designs.
             break;
 
         default:
