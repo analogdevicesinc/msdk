@@ -22,3 +22,5 @@ IPATH += src/camera
 
 VPATH += src/cnn
 IPATH += src/cnn
+
+FONTS = LiberationSans16x16

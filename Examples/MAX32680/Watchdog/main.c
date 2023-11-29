@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -160,14 +178,12 @@ int main(void)
             MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
             MXC_WDT_ResetTimer(MXC_WDT0);
             MXC_WDT_EnableReset(MXC_WDT0);
-            MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
-            NVIC_EnableIRQ(WDT0_IRQn);
 
             MXC_WDT_Enable(MXC_WDT0);
         }
 
         //blink LED0
-        blinkled(0, 1, 500);
+        blinkled(0, 1, 100);
 
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);

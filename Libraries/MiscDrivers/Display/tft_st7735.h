@@ -4,7 +4,9 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,6 +36,22 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  ******************************************************************************/
 
 #ifndef LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ST7735_H_
@@ -43,6 +61,7 @@
 #include <stdint.h>
 #include <spi.h>
 #include <gpio.h>
+#include "fonts.h"
 
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 128
@@ -98,12 +117,7 @@ extern const unsigned char img_3_rgb565[];
 extern const unsigned char img_4_rgb565[];
 extern const unsigned char image_pattern_rgb565[];
 extern const unsigned char logo_rgb565[];
-// Fonts
-extern const unsigned char Arial12x12[];
-extern const unsigned char Arial24x23[];
-extern const unsigned char Arial28x28[];
-extern const unsigned char SansSerif19x19[];
-extern const unsigned char SansSerif16x16[];
+
 // Board Specific Functions
 extern void TFT_SPI_Init(void);
 extern void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data);

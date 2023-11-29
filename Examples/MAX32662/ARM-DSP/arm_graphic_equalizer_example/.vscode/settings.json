@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${config:MSYS_path}/usr/bin;${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:MSYS_path}/usr/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -71,9 +71,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "ARM_MATH_CM4",
-        "__FPU_PRESENT",
-        "SEMIHOSTING"
+        
     ],
     "C_Cpp.default.forcedInclude": [
         "${workspaceFolder}/build/project_defines.h"

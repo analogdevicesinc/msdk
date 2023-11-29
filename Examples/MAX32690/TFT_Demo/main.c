@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -91,27 +109,27 @@ void TFT_test(void)
         MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Arial12x12[0]); // Use Arial 12x12 font
-        TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Arial12x12[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Arial12x12[0]);
+        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Liberation_Sans12x12[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Liberation_Sans12x12[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Liberation_Sans12x12[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Arial24x23[0]); // Use Arial 24x23 font
-        TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Arial24x23[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Arial24x23[0]);
+        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Liberation_Sans24x24[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Liberation_Sans24x24[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Liberation_Sans24x24[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Arial28x28[0]); // Use Arial 28x28 font
-        TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Arial28x28[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Arial28x28[0]);
+        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Liberation_Sans28x28[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Liberation_Sans28x28[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Liberation_Sans28x28[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 80, (int)&SansSerif16x16[0]); // Use Sans Serif 16x16 font
-        TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&SansSerif16x16[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&SansSerif16x16[0]);
+        TFT_Print(buff, sizeof(buff), 3, 80, (int)&Liberation_Sans16x16[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&Liberation_Sans16x16[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&Liberation_Sans16x16[0]);
         MXC_Delay(1000000);
     }
 }

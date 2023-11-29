@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${config:MSYS_path}/usr/bin;${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:MSYS_path}/usr/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -56,6 +56,7 @@
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl",
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src",
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src/**",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.browse.path": [
@@ -73,6 +74,7 @@
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src",
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src/**",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.defines": [

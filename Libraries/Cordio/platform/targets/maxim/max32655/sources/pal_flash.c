@@ -16,6 +16,20 @@
  * Agreement do not use this file and delete all copies in your possession or control;
  * if you do not have a copy of the Agreement, you must contact Packetcraft, Inc. prior
  * to any use, copying or further distribution of this software.
+ *
+ * Copyright (c) 2022-2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 /*************************************************************************************************/
 
@@ -186,7 +200,7 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 /*!
  *  \brief  Erase sector.
  *
- *  \param[in] size       Data size in bytes to be erased.
+ *  \param[in] size       Data size in sectors to be erased.
  *  \param[in] startAddr  Word aligned address.
  *
  *  \return None.
@@ -195,18 +209,25 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
 {
   if(!PAL_NVM_IS_SECTOR_ALIGNED(startAddr)) {
-      WSF_ASSERT(FALSE);
+    PalSysAssertTrap();
   }
 
   /* Offset the address into flash */
+#if defined (__GNUC__)	
   startAddr += (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  startAddr += (uint32_t)__pal_nvm_db_start__;	
+#elif defined (__ICCARM__)
+  startAddr += (uint32_t)__pal_nvm_db_start__;	
+#endif 
 
   while(size) {
     WsfCsEnter();
     MXC_FLC_PageErase(startAddr);
     WsfCsExit();
+
     startAddr += MXC_FLASH_PAGE_SIZE;
-    size -= MXC_FLASH_PAGE_SIZE;
+    size --;
   }
 }
 
@@ -221,14 +242,25 @@ void PalFlashEraseChip(void)
 {
   uint32_t startAddr, size;
 
+#if defined (__GNUC__)
   /* Offset the address into flash */
   startAddr = (uint32_t)&__pal_nvm_db_start__;
   size = (uint32_t)&__pal_nvm_db_end__ - (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  /* Offset the address into flash */
+  startAddr = (uint32_t)__pal_nvm_db_start__;
+  size = (uint32_t)__pal_nvm_db_end__ - (uint32_t)__pal_nvm_db_start__;
+#elif defined (__ICCARM__)
+  /* Offset the address into flash */
+  startAddr = (uint32_t)__pal_nvm_db_start__;
+  size = (uint32_t)__pal_nvm_db_end__ - (uint32_t)__pal_nvm_db_start__ -1;
+#endif 
 
   while(size) {
     WsfCsEnter();
     MXC_FLC_PageErase(startAddr);
     WsfCsExit();
+
     startAddr += MXC_FLASH_PAGE_SIZE;
     size -= MXC_FLASH_PAGE_SIZE;
   }

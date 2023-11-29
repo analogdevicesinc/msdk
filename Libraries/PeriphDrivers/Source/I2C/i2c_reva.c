@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -1440,11 +1458,7 @@ void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
         }
 
         /* Call the callback */
-        if (i2c->intfl0 & MXC_I2C_REVA_ERROR) {
-            MXC_I2C_RevA_AsyncCallback(i2c, E_COMM_ERR);
-        } else {
-            MXC_I2C_RevA_AsyncCallback(i2c, E_NO_ERROR);
-        }
+        MXC_I2C_RevA_AsyncCallback(i2c, E_NO_ERROR);
 
         /* Clear the async state */
         MXC_I2C_RevA_AsyncStop(i2c);
@@ -1531,9 +1545,36 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
         }
     }
 
+    // Check if transaction completed or restart occurred
+    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_DONE) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
+            // Stop/NACK condition occurred, transaction complete
+            *retVal = E_NO_ERROR;
+
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
+            int_en[0] = 0;
+            int_en[1] = 0;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+        } else if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
+            // Restart detected, re-arm address match interrupt
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
+            int_en[0] = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+        }
+    }
+
     // Check for address match interrupt
     if (int_en[0] & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
         if (tFlags & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
+            // Address match occurred, prepare for transaction
+            if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP && !(tFlags & MXC_F_I2C_REVA_INTFL0_DONE)) {
+                // Clear stop flag if it was asserted in a previous transaction
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
+            }
+
             if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_READ) {
                 // Read request received from the master
                 if (callback != NULL) {
@@ -1559,27 +1600,6 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
                             MXC_I2C_REVA_ERROR;
                 int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
             }
-        }
-    }
-
-    // Check if transaction completed or restart occurred
-    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_DONE) {
-        if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
-            // Stop/NACK condition occurred, transaction complete
-            *retVal = E_NO_ERROR;
-
-            if (callback != NULL) {
-                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
-            }
-
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
-            int_en[0] = 0;
-            int_en[1] = 0;
-            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
-        } else if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
-            // Restart detected, re-arm address match interrupt
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
-            int_en[0] = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
         }
     }
 }

@@ -212,8 +212,8 @@ void TFT_Print(char *str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
 
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif //#ifdef ENABLE_TFT
 
 int32_t tot_usec = -100000;
@@ -1183,7 +1183,7 @@ void TFT_Intro(void)
     TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "detected:"));
     TFT_Print(buff, 35, 160, font_1, snprintf(buff, sizeof(buff), "0...9, up, down, left, right"));
     TFT_Print(buff, 35, 185, font_1, snprintf(buff, sizeof(buff), "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 10, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 
     while (!PB_Get(0)) {}
 
@@ -1217,6 +1217,6 @@ void TFT_End(uint16_t words)
     MXC_TFT_ClearScreen();
     TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
     TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
-    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 0, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif

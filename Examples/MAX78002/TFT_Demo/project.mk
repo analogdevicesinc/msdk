@@ -20,6 +20,6 @@ TFT = NEWHAVEN
 VPATH += resources/tft
 IPATH += resources/tft
 
-MXC_SPI_BUILD_V1 = 0
+FONTS = LiberationSans12x12 LiberationSans16x16 LiberationSans19x19 LiberationSans24x24 LiberationSans28x28
 
-LIBS_DIR = ../../../Libraries
+MXC_SPI_VERSION = v1

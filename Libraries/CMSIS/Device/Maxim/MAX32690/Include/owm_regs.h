@@ -6,7 +6,9 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,6 +37,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -174,7 +192,7 @@ typedef struct {
 #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS           4 /**< CTRL_STAT_OD_SPEC_MODE Position */
 #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE               ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS)) /**< CTRL_STAT_OD_SPEC_MODE Mask */
 
-#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        5 /**< CTRL_STAT_PRESENCE_DETECT Position */
+#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        7 /**< CTRL_STAT_PRESENCE_DETECT Position */
 #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS)) /**< CTRL_STAT_PRESENCE_DETECT Mask */
 
 /**@} end of group OWM_CTRL_STAT_Register */

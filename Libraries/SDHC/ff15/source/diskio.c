@@ -16,7 +16,14 @@
 /* Definitions of physical drive number for each drive */
 #define DEV_SD      0   /* Example: Map MMC/SD card to physical drive 1 */
 #define DEV_EXTERNAL_FLASH 1
-#define SPI_SPEED 10000000
+
+#ifndef SDHC_CLK_FREQ
+/* For non-native SDHC, a SPI is used to emulate the SDHC hardware.  In 
+that case, sdhc_lib.h is not included and we need to redefine a default speed
+here. */
+#define SDHC_CLK_FREQ 40000000
+#endif
+#define SPI_SPEED SDHC_CLK_FREQ
 
 #ifdef NATIVE_SDHC
 

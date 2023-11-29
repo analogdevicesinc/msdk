@@ -4,7 +4,9 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,6 +35,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -146,6 +164,23 @@ struct _mxc_uart_req_t {
 /* ************************************************************************* */
 /* Control/Configuration functions                                           */
 /* ************************************************************************* */
+
+/**
+ * @brief   Set the UART pin mapping to use.  This should be called *before* MXC_UART_Init!
+ * 
+ * @param   uart  Pointer to UART registers to set the pin mapping for
+ * @param   pin_mapping  Pin mapping to use (i.e. UART0A, UART0B).  See datasheet for mapping assignments.
+ * @return  E_NO_ERROR if successful, error code otherwise.
+ */
+int MXC_UART_SetPinMapping(mxc_uart_regs_t *uart, sys_map_t pin_mapping);
+
+/**
+ * @brief   Get the current UART pin mapping to use.
+ * 
+ * @param   uart  Pointer to UART registers to get the pin mapping for
+ * @return  The current pin mapping.
+ */
+sys_map_t MXC_UART_GetPinMapping(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Initialize and enable UART peripheral.

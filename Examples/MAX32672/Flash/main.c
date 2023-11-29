@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,6 +31,22 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  ******************************************************************************/
 
 /**
@@ -52,6 +70,7 @@
 #include "uart.h"
 #include "led.h"
 #include "pb.h"
+#include "trimsir_regs.h"
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
@@ -262,6 +281,14 @@ int main(void)
     since modifying flash contents may invalidate cached instructions.
     */
     MXC_ICC_Disable();
+
+    /*
+    Disable Flash ECC. Because this example uses 32-bit flash writes, 
+    ECC must be disabled.Only 128-bit writes are supported when ECC
+    is enabled.
+    */
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN;
 
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
