@@ -9,6 +9,7 @@ All contents in the packets are formatted little endian unless stated otherwise
 
 
 ## Packet Types
+
 | Packet     | Packet Type |
 | ---------- | ----------- |
 | Command    | 0x01        |
@@ -17,6 +18,7 @@ All contents in the packets are formatted little endian unless stated otherwise
 | Event      | 0x04        |
 
 ### Command Type
+
 The HCI command packet typically consists of an HCI command header followed by command parameters. The structure of the HCI command packet is defined in the Bluetooth specification.
 
 Here is a general overview of the HCI command packet structure:
@@ -32,7 +34,9 @@ Opcodes are mix of Opcode Group Field (OGF, 6 Bits) and the Opcode Command Field
 Below is an example of the BLE standard command for reset
 
 RESET
+
 <br>
+
 | OGF | OCF | Paramters  |
 | --- | --- | ---------- |
 | 0x3 | 0x3 | Length = 0 |
@@ -46,16 +50,21 @@ Command = Type | Opcode | Parameters = {0x1, 0x03, 0x0C, 0x00}
 Note the little endian format of the opcode.
 
 ### Async Data Type
+
 The asynchronous data packet is comprised of the connection handle, fragmentation bits, the number of data bytes, and the data bytes themselves.
+
 | Handle (12 Bits) | PB Flag (2 Bits) | BC Flag (2 Bits) | Total Length (2 Bytes) | Data (Total Length) |
 | ---------------- | ---------------- | ---------------- | ---------------------- | ------------------- |
 | 0xXXX            | 0bXX             | 0bXX             | 0xXXXX                 | ...                 |
 
 ### Sync Data
+
 This synchronous data packet is not used in BLE.
 
 ### Event Data
+
 The structure of an HCI asynchronous event packet typically consists of an HCI event header followed by event parameters. Here's a general overview:
+
 | Type (1 Byte) | Event Code (2 Bytes) | Event Params (N Bytes) |
 | ------------- | -------------------- | ---------------------- |
 | 0x04          | 0xXX                 | ...                    |
@@ -152,6 +161,7 @@ Status
 | ------- | ---------- | --------------------------------------------------- |
 | 0x303   | 6          | RF Channel, Packet Length, Packet Type, Num Packets |
 |         |
+
 #### Description
 
 Start a TX test using a specific number of packets.
@@ -213,6 +223,7 @@ Status
 | ------- | ---------- | -------------- |
 | 0x304   | 0          | N/A            |
 |         |
+
 #### Description
 
 End current DTM test and return all test stats.
@@ -266,6 +277,7 @@ _Channel Map (1 Byte):_
 | ------------------------ | --------- |
 | Channel map used to scan | 0 – 0xFF  |
 |                          |
+
 #### Return
 
 Status
