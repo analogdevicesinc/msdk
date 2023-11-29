@@ -166,27 +166,13 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt)
 
 int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
 {
-    const uint8_t clock_source_num = 8;
-    uint8_t idx = 0;
-    mxc_wdt_clock_t clock_sources[1][8] = { { MXC_WDT_PCLK, MXC_WDT_IPO_CLK, MXC_WDT_IBRO_CLK,
-                                              MXC_WDT_NANO_CLK, MXC_WDT_ERTCO_CLK, MXC_WDT_EXT_CLK,
-                                              MXC_WDT_ERFO_CLK, 0xFF } };
+    const uint8_t last_clock_source = MXC_WDT_ERFO_CLK;
 
-    if (wdt != MXC_WDT0) {
+    if ((clock_source < 0) || (clock_source > last_clock_source)) {
         return E_BAD_PARAM;
     }
 
-    for (idx = 0; idx < clock_source_num; idx++) {
-        if (clock_sources[0][idx] == clock_source) {
-            break;
-        }
-    }
-
-    if (idx == clock_source_num) {
-        return E_BAD_PARAM;
-    }
-
-    MXC_WDT_RevB_SetClockSource((mxc_wdt_revb_regs_t *)wdt, idx);
+    MXC_WDT_RevB_SetClockSource((mxc_wdt_revb_regs_t *)wdt, (int)clock_source);
 
     return E_NO_ERROR;
 }

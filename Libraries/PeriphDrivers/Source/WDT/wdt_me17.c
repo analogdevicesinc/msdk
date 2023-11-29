@@ -171,8 +171,7 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
         { MXC_WDT_IBRO_CLK, 0xFF, MXC_WDT_INRO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
     };
 #else
-    mxc_wdt_clock_t clock_sources[2][8] = { { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
-                                            { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } };
+#error ME17 WDT driver does not support given target number.
 #endif
 
     if (wdt == MXC_WDT0) {
