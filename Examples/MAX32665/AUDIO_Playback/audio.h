@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_AUDIO_H_
-#define LIBRARIES_PERIPHDRIVERS_SOURCE_AUDIO_H_
+#ifndef EXAMPLES_MAX32665_AUDIO_PLAYBACK_AUDIO_H_
+#define EXAMPLES_MAX32665_AUDIO_PLAYBACK_AUDIO_H_
 
 /* **** Includes **** */
 #include <string.h>
@@ -56,4 +56,4 @@ int MXC_AUDIO_Init(mxc_audio_regs_t *audio);
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_AUDIO_H_
+#endif // EXAMPLES_MAX32665_AUDIO_PLAYBACK_AUDIO_H_

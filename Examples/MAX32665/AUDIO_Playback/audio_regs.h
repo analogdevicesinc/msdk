@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_AUDIO_REGS_H_
-#define LIBRARIES_PERIPHDRIVERS_SOURCE_AUDIO_REGS_H_
+#ifndef EXAMPLES_MAX32665_AUDIO_PLAYBACK_AUDIO_REGS_H_
+#define EXAMPLES_MAX32665_AUDIO_PLAYBACK_AUDIO_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -1136,4 +1136,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_AUDIO_REGS_H_
+#endif // EXAMPLES_MAX32665_AUDIO_PLAYBACK_AUDIO_REGS_H_

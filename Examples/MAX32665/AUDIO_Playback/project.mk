@@ -9,6 +9,11 @@
 
 # Add your config here!
 
+SRCS+=max9867.c
+
+VPATH+=$(LIBS_DIR)/MiscDrivers/CODEC
+IPATH+=$(LIBS_DIR)/MiscDrivers/CODEC
+
 # If you have secure version of MCU (MAX32666), set SBT=1 to generate signed binary
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html

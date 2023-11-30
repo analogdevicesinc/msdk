@@ -182,6 +182,10 @@ static int max9867ConfigureDigitalMicrophone(void)
         return err;
     }
 
+    if ((err = max9867_power_enable(0, EN_LEFT_DAC | EN_RIGHT_DAC)) != E_NO_ERROR) {
+        return err;
+    }
+
     return max9867_linein_gain(0, 0);
 }
 
@@ -195,6 +199,10 @@ static int max9867ConfigureLineIn(void)
         return err;
     }
     if ((err = max9867_linein_gain(24, 24)) != E_NO_ERROR) {
+        return err;
+    }
+
+    if ((err = max9867_power_enable(0, EN_LEFT_LINEIN | EN_RIGHT_LINEIN)) != E_NO_ERROR) {
         return err;
     }
 
