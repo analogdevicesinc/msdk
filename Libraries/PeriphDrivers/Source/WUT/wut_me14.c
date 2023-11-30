@@ -82,7 +82,9 @@ static mxc_wut_complete_cb_t cb_async;
 /* ************************************************************************** */
 void MXC_WUT_Init(mxc_wut_pres_t pres)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_XTAL32K);
+#endif
     MXC_WUT_RevA_Init((mxc_wut_reva_regs_t *)MXC_WUT, pres);
 }
 

@@ -74,6 +74,7 @@ int dma_channel = -1;
 
 int MXC_I2S_Init(const mxc_i2s_config_t *config, void (*dma_ctz_cb)(int, int))
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (config->map == I2S_MAP_A) {
         MXC_GPIO_Config(&gpio_cfg_spi1a); // SPIMSS: I2S and SPI share pins
     } else if (config->map == I2S_MAP_B) {
@@ -83,6 +84,7 @@ int MXC_I2S_Init(const mxc_i2s_config_t *config, void (*dma_ctz_cb)(int, int))
     }
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1); // SPI1 clock used for SPIMSS
+#endif
 
     return MXC_I2S_RevA_Init((mxc_spimss_reva_regs_t *)MXC_SPIMSS, config, dma_ctz_cb);
 }

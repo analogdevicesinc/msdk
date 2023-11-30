@@ -45,10 +45,12 @@
 
 int MXC_SPIXF_Init(uint32_t cmdval, uint32_t frequency)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXFC); // SPIXFC
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP); // XIP ICACHE
     MXC_GPIO_Config(&gpio_cfg_spixf);
+#endif
 
     return MXC_SPIXF_RevA_Init((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
                                (mxc_spixfm_reva_regs_t *)MXC_SPIXFM, cmdval, frequency);

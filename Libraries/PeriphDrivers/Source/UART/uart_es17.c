@@ -74,6 +74,7 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
     retval = MXC_UART_Shutdown(uart);
@@ -92,6 +93,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud)
         return E_BAD_PARAM;
         break;
     }
+#endif
 
     return MXC_UART_RevC_Init((mxc_uart_revc_regs_t *)uart, baud);
 }

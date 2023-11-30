@@ -69,11 +69,13 @@ int MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
         return E_NULL_PTR;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_OWIRE);
 
     if ((err = MXC_GPIO_Config(&gpio_cfg_owm)) != E_NO_ERROR) {
         return err;
     }
+#endif
 
     // Configure clk divisor to get 1MHz OWM clk
     mxc_owm_clk = PeripheralClock;

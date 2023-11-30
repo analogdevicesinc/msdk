@@ -67,8 +67,10 @@
 
 int MXC_AES_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_AES);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
+#endif
 
     return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES);
 }

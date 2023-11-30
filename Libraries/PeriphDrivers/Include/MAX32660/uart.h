@@ -176,7 +176,8 @@ struct _mxc_uart_req_t {
  * @param   uart            Pointer to UART registers (selects the UART block used.)
  * @param   baud            The requested clock frequency. The actual clock frequency
  *                          will be returned by the function if successful.
- * @param   map             Selects which pin map to use.
+ * @param   map             Selects which pin map to use. Has no effect incase of 
+ *                          MSDK_NO_GPIO_CLK_INIT has been defined.
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.

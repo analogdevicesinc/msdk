@@ -63,7 +63,9 @@
 
 int MXC_CRC_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CRC);
+#endif
 
     MXC_CRC_RevA_Init();
 

@@ -44,9 +44,11 @@
 
 int MXC_ADC_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
+#endif
 
     //turn on charge pump enable (chip specific)
     MXC_ADC->ctrl |= MXC_F_ADC_CTRL_CHGPUMP_PWR;

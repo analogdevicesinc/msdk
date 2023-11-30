@@ -114,8 +114,10 @@ static void initGPIOForTrigSrc(mxc_adc_trig_sel_t hwTrig)
 
 int MXC_ADC_Init(mxc_adc_req_t *req)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
+#endif
 
     MXC_ADC_ReferenceSelect(req->ref);
 
