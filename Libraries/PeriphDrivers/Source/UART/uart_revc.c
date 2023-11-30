@@ -652,9 +652,7 @@ int MXC_UART_RevC_TransactionDMA(mxc_uart_revc_req_t *req)
 {
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart));
 
-    if (uart_num < 0) {
-        return E_BAD_PARAM;
-    }
+    MXC_ASSERT(uart_num >= 0)
 
     if (req->txLen) {
         if (req->txData == NULL) {
@@ -760,15 +758,13 @@ int MXC_UART_RevC_AbortAsync(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_AsyncHandler(mxc_uart_revc_regs_t *uart)
 {
-    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
     int flags, numToWrite, numToRead;
     mxc_uart_revc_req_t *req;
 
-    if (uartNum < 0) {
-        return E_INVALID;
-    }
+    MXC_ASSERT(uart_num >= 0)
 
-    req = (mxc_uart_revc_req_t *)AsyncRequests[uartNum];
+    req = (mxc_uart_revc_req_t *)AsyncRequests[uart_num];
 
     flags = MXC_UART_GetFlags((mxc_uart_regs_t *)uart);
 
