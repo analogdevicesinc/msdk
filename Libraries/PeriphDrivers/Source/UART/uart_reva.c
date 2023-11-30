@@ -815,8 +815,6 @@ int MXC_UART_RevA_ClearTXFIFO(mxc_uart_reva_regs_t *uart)
 
 int MXC_UART_RevA_SetRXThreshold(mxc_uart_reva_regs_t *uart, unsigned int numBytes)
 {
-    
-
     if (numBytes < 1 || numBytes > MXC_UART_FIFO_DEPTH) {
         return E_BAD_PARAM;
     }
@@ -835,8 +833,6 @@ unsigned int MXC_UART_RevA_GetRXThreshold(mxc_uart_reva_regs_t *uart)
 
 int MXC_UART_RevA_SetTXThreshold(mxc_uart_reva_regs_t *uart, unsigned int numBytes)
 {
-    
-
     if (numBytes < 1 || numBytes > MXC_UART_FIFO_DEPTH) {
         return E_BAD_PARAM;
     }
@@ -860,8 +856,6 @@ unsigned int MXC_UART_RevA_GetFlags(mxc_uart_reva_regs_t *uart)
 
 int MXC_UART_RevA_ClearFlags(mxc_uart_reva_regs_t *uart, unsigned int flags)
 {
-    
-
     uart->int_fl = flags;
 
     return E_NO_ERROR;
@@ -869,8 +863,6 @@ int MXC_UART_RevA_ClearFlags(mxc_uart_reva_regs_t *uart, unsigned int flags)
 
 int MXC_UART_RevA_EnableInt(mxc_uart_reva_regs_t *uart, unsigned int intEn)
 {
-    
-
     uart->int_en |= intEn;
 
     return E_NO_ERROR;
@@ -878,8 +870,6 @@ int MXC_UART_RevA_EnableInt(mxc_uart_reva_regs_t *uart, unsigned int intEn)
 
 int MXC_UART_RevA_DisableInt(mxc_uart_reva_regs_t *uart, unsigned int intDis)
 {
-    
-
     uart->int_en &= ~intDis;
 
     return E_NO_ERROR;
@@ -1179,7 +1169,7 @@ int MXC_UART_RevA_TxAsyncCallback(mxc_uart_reva_regs_t *uart, int retVal)
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
     MXC_ASSERT(uart_num >= 0)
-    
+
     if (TxAsyncRequests[uart_num] == NULL) {
         return E_BAD_STATE;
     }

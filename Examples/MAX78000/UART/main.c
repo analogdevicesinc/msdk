@@ -128,15 +128,13 @@ int main(void)
 #endif
 
     // Initialize the UART
-    if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK)) !=
-        E_NO_ERROR) {
+    if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
 
-    if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK)) !=
-        E_NO_ERROR) {
+    if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
         return error;
