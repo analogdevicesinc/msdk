@@ -109,13 +109,13 @@
 #ifdef SEND_MIC_OUT_SDCARD
 #undef WUT_ENABLE
 #warning !!! Disabling WUT_ENABLE option when SD card is enabled !!!
-#ifdef ENABLE_TFT
-#undef ENABLE_TFT
+#ifdef TFT_ENABLE
+#undef TFT_ENABLE
 #warning !!! TFT cannot be used when SD card is enabled  !!!
 #endif
 #endif
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 #define DISPLAY_AUDIO // displays audio waveform on TFT
 #endif
 
@@ -266,7 +266,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
 void I2SInit();
 void HPF_init(void);
 int16_t HPF(int16_t input);
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void);
 void TFT_Print(char *str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
@@ -280,7 +280,7 @@ int image_bitmap = (int)&img_1_rgb565[0];
 int font_1 = (int)&Liberation_Sans16x16[0];
 int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
-#endif //#ifdef ENABLE_TFT
+#endif //#ifdef TFT_ENABLE
 
 int32_t tot_usec = -100000;
 #ifdef WUT_ENABLE
@@ -466,7 +466,7 @@ int main(void)
     I2SInit();
 #endif
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     MXC_Delay(500000);
     PR_DEBUG("\n*** Init TFT ***\n");
 #ifdef BOARD_EVKIT_V1
@@ -495,7 +495,7 @@ int main(void)
 #else
 
     MXC_Delay(SEC(2)); // wait for debugger to connect
-#endif // #ifdef ENABLE_TFT
+#endif // #ifdef TFT_ENABLE
 
     PR_INFO("\n*** READY ***\n");
 #ifdef WUT_ENABLE
@@ -918,7 +918,7 @@ int main(void)
     LED_Off(LED2);
     PR_DEBUG("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     TFT_End(wordCounter);
 #endif
 
@@ -979,7 +979,7 @@ void I2SInit()
 /* **************************************************************************** */
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob)
 {
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     char buff[TFT_BUFF_SIZE];
 #endif
     int32_t temp[NUM_OUTPUTS];
@@ -1004,7 +1004,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         if (top == 0) {
             *out_class = max_index;
             *out_prob = 100.0 * max / 32768.0;
-#ifndef ENABLE_TFT
+#ifndef TFT_ENABLE
             break;
         }
 
@@ -1317,7 +1317,7 @@ int16_t HPF(int16_t input)
 }
 
 /************************************************************************************/
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];

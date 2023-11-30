@@ -365,7 +365,7 @@ When option `-a` is used, each file is converted to a .wav file once and subsequ
 
 ***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake-Up Timer (WUT) is disabled.***
 
-***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `ENABLE_TFT` is disabled regardless of make options.***
+***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `TFT_ENABLE` is disabled regardless of make options.***
 
 ### Sending Sound Snippets to serial
 

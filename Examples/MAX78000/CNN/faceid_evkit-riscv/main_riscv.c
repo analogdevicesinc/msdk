@@ -134,9 +134,9 @@ int main(void)
     /* Enable camera power */
     Camera_Power(POWER_ON);
     MXC_Delay(300000);
-    PR_DEBUG("\n\nFaceID Feather Demo\n");
+    PR_DEBUG("FaceID Feather Demo\n");
 #else
-    PR_DEBUG("\n\nFaceID Evkit Demo\n");
+    PR_DEBUG("FaceID Evkit Demo\n");
 #endif
 
     // Initialize the camera driver.

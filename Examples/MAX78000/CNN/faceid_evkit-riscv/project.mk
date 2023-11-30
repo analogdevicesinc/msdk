@@ -23,7 +23,7 @@ endif
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
-#PROJ_CFLAGS+=-DENABLE_TFT
+#PROJ_CFLAGS+=-DTFT_ENABLE
 FONTS = LiberationSans16x16
 endif
 

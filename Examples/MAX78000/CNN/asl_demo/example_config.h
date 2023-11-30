@@ -2,13 +2,13 @@
 #define CONFIG_H
 
 #ifdef BOARD_EVKIT_V1
-#define ENABLE_TFT
+#define TFT_ENABLE
 #include "bitmap.h"
 #include "tft_ssd2119.h"
 #endif
 
 #ifdef BOARD_FTHR_REVA
-// #define ENABLE_TFT
+// #define TFT_ENABLE
 #include "tft_ili9341.h"
 #endif
 

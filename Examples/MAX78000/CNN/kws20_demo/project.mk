@@ -21,7 +21,7 @@ MXC_OPTIMIZE_CFLAGS = -O2
 
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
-PROJ_CFLAGS+=-DENABLE_TFT
+PROJ_CFLAGS+=-DTFT_ENABLE
 IPATH += TFT/evkit/
 VPATH += TFT/evkit/
 endif
@@ -32,7 +32,7 @@ endif
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
-#PROJ_CFLAGS+=-DENABLE_TFT
+#PROJ_CFLAGS+=-DTFT_ENABLE
 
 # If enabled, it saves out the Mic samples used for inference to SDCARD
 # Note that if both SDCARD and TFT are enabled, the TFT will be disabled to avoid SPI driver conflict.
