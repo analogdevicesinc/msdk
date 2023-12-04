@@ -178,10 +178,6 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
         }
     }
 
-    if (idx == clock_source_num) {
-        return E_BAD_PARAM;
-    }
-
     MXC_WDT_RevB_SetClockSource((mxc_wdt_revb_regs_t *)wdt, idx);
 
     return E_NO_ERROR;

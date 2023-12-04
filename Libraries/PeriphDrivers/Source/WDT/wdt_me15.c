@@ -156,18 +156,6 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt)
 
 int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
 {
-#if TARGET_NUM == 32670
-    const uint8_t last_clock_source = MXC_WDT_ERFO_CLK;
-#elif TARGET_NUM == 32675
-    const uint8_t last_clock_source = MXC_WDT_INRO_CLK;
-#else
-#error ME15 WDT driver does not support given target number.
-#endif
-
-    if ((clock_source < 0) || (clock_source > last_clock_source)) {
-        return E_BAD_PARAM;
-    }
-
     MXC_WDT_RevB_SetClockSource((mxc_wdt_revb_regs_t *)wdt, (int)clock_source);
 
     return E_NO_ERROR;
