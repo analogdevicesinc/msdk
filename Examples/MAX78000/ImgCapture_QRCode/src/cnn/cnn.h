@@ -6,7 +6,7 @@
 **************************************************************************************************/
 
 /*
- * This header file was automatically @generated for the qrcode_tinierssd_nobias network from a template.
+ * This header file was automatically @generated for the qrcode_tinierssd_ds_lowres_lpriors network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
@@ -14,6 +14,7 @@
 #define __CNN_H__
 
 #include <stdint.h>
+#include "led.h"
 typedef int32_t q31_t;
 typedef int16_t q15_t;
 
@@ -23,28 +24,28 @@ typedef int16_t q15_t;
 
 /*
   SUMMARY OF OPS
-  Hardware: 1,728,946,640 ops (1,717,787,520 macc; 11,159,120 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 0: 68,812,800 ops (66,355,200 macc; 2,457,600 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 1: 710,246,400 ops (707,788,800 macc; 2,457,600 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 2: 357,580,800 ops (353,894,400 macc; 3,686,400 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 3: 178,483,200 ops (176,947,200 macc; 1,536,000 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 4: 177,254,400 ops (176,947,200 macc; 307,200 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 5: 44,620,800 ops (44,236,800 macc; 384,000 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 6: 44,313,600 ops (44,236,800 macc; 76,800 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 7: 88,627,200 ops (88,473,600 macc; 153,600 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 8 (fire8): 44,275,200 ops (44,236,800 macc; 38,400 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 9 (fire9): 2,812,800 ops (2,764,800 macc; 48,000 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 10 (fire10): 656,320 ops (645,120 macc; 11,200 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 11: 323,680 ops (322,560 macc; 1,120 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 12 (conv12_2): 35,760 ops (34,560 macc; 1,200 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 13: 5,529,600 ops (5,529,600 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 14: 1,382,400 ops (1,382,400 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 15: 322,560 ops (322,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 16: 34,560 ops (34,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 17: 2,764,800 ops (2,764,800 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 18: 691,200 ops (691,200 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 19: 161,280 ops (161,280 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 20: 17,280 ops (17,280 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+  Hardware: 432,092,720 ops (429,304,320 macc; 2,788,400 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 0: 17,203,200 ops (16,588,800 macc; 614,400 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 1: 177,561,600 ops (176,947,200 macc; 614,400 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 2: 89,395,200 ops (88,473,600 macc; 921,600 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 3: 44,620,800 ops (44,236,800 macc; 384,000 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 4: 44,313,600 ops (44,236,800 macc; 76,800 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 5: 11,155,200 ops (11,059,200 macc; 96,000 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 6: 11,078,400 ops (11,059,200 macc; 19,200 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 7: 22,156,800 ops (22,118,400 macc; 38,400 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 8 (fire8): 11,068,800 ops (11,059,200 macc; 9,600 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 9 (fire9): 656,320 ops (645,120 macc; 11,200 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 10 (fire10): 140,640 ops (138,240 macc; 2,400 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 11: 69,360 ops (69,120 macc; 240 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 12 (conv12_2): 4,768 ops (4,608 macc; 160 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 13: 1,382,400 ops (1,382,400 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 14: 322,560 ops (322,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 15: 69,120 ops (69,120 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 16: 4,608 ops (4,608 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 17: 691,200 ops (691,200 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 18: 161,280 ops (161,280 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 19: 34,560 ops (34,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 20: 2,304 ops (2,304 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
   Weight memory: 336,096 bytes out of 442,368 bytes total (76.0%)
@@ -52,7 +53,7 @@ typedef int16_t q15_t;
 */
 
 /* Number of outputs for this network */
-#define CNN_NUM_OUTPUTS 120
+#define CNN_NUM_OUTPUTS 16
 
 /* Use this timer to time the inference */
 #define CNN_INFERENCE_TIMER MXC_TMR1

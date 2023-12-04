@@ -14,7 +14,7 @@
 #define NUM_CLASSES 2
 
 #define LOC_DIM 4
-#define NUM_PRIORS_PER_AR 1585
+#define NUM_PRIORS_PER_AR 388
 #define NUM_PRIORS        NUM_PRIORS_PER_AR* NUM_ARS
 
 #define MAX_PRIORS  20
@@ -22,8 +22,8 @@
 #define MIN_CLASS_SCORE     128 // ~0.5*256
 #define MAX_ALLOWED_OVERLAP 0.1f
 
-#define TFT_W 320
-#define TFT_H 240
+#define TFT_W 160
+#define TFT_H 120
 #define TFT_X_OFFSET 0
 
 void get_priors(void);

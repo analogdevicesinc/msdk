@@ -11,7 +11,7 @@ static int nms_indices[NUM_CLASSES - 1][MAX_PRIORS];
 static uint8_t nms_removed[NUM_CLASSES - 1][MAX_PRIORS] = { 0 };
 static int num_nms_priors[NUM_CLASSES - 1] = { 0 };
 
-const int dims[NUM_SCALES][2] = {{30,40}, {15,20}, {7,10}, {3,5}};
+const int dims[NUM_SCALES][2] = {{15,20}, {7,10}, {3,5}, {1,2}};
 const float scales[NUM_SCALES] = {0.15f, 0.35f, 0.55f, 0.75f};
 const float ars[NUM_ARS]       = {2.0f, 1.2f, 0.8f, 0.5f};
 
