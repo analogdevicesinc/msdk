@@ -113,7 +113,7 @@ void pong_subscription_callback(const void * msgin)
 
 int stream_img_to_cnn(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel, sensor_msgs__msg__RegionOfInterest *out)
 {
-
+    // Union for in-place conversion from bytes to 32-bit word
     union {
         uint32_t w;
         uint8_t b[4];
