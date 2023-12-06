@@ -484,7 +484,13 @@ __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
-    //NVIC->ISPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* set interrupt pending */
+    if (IRQn < 32) {
+        MXC_INTR->irq0_set_pending |= (1 << IRQn);
+        MXC_EVENT->event0_set_pending |= (1 << IRQn);
+    } else {
+        MXC_INTR->irq1_set_pending |= (1 << (IRQn - 32));
+        MXC_EVENT->event1_set_pending |= (1 << (IRQn - 32));
+    }
 }
 
 /** \brief  Clear Pending Interrupt
