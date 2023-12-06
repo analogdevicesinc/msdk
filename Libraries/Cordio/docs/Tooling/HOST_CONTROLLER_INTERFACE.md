@@ -17,7 +17,7 @@ All contents in the packets are formatted little endian unless stated otherwise
 | Sync Data  | 0x03        |
 | Event      | 0x04        |
 
-### Command Type
+### Command Packet
 
 The HCI command packet typically consists of an HCI command header followed by command parameters. The structure of the HCI command packet is defined in the Bluetooth specification.
 
@@ -29,7 +29,9 @@ Here is a general overview of the HCI command packet structure:
 
 Opcodes are mix of Opcode Group Field (OGF, 6 Bits) and the Opcode Command Field (OCF, 10 Bits)
 
-**Opcode** = (OGF << 10)  | OCF
+```
+Opcode = (OGF << 10)  | OCF
+```
 
 Below is an example of the BLE standard command for reset
 
@@ -41,15 +43,17 @@ RESET
 | --- | --- | ---------- |
 | 0x3 | 0x3 | Length = 0 |
 
+```
 Type = 0x1
 Opcode = (0x3 << 10) | 0x3 = 0x0C03
 Parmeters = 0
 
 Command = Type | Opcode | Parameters = {0x1, 0x03, 0x0C, 0x00}
+```
 
-Note the little endian format of the opcode.
+**Note the little endian format of the opcode**
 
-### Async Data Type
+### Async Data Packet
 
 The asynchronous data packet is comprised of the connection handle, fragmentation bits, the number of data bytes, and the data bytes themselves.
 
@@ -57,11 +61,11 @@ The asynchronous data packet is comprised of the connection handle, fragmentatio
 | ---------------- | ---------------- | ---------------- | ---------------------- | ------------------- |
 | 0xXXX            | 0bXX             | 0bXX             | 0xXXXX                 | ...                 |
 
-### Sync Data
+### Sync Data Packet
 
 This synchronous data packet is not used in BLE.
 
-### Event Data
+### Event Data Packet
 
 The structure of an HCI asynchronous event packet typically consists of an HCI event header followed by event parameters. Here's a general overview:
 
@@ -81,13 +85,15 @@ NOTE: All data parameters and return values are returned little endian formatted
 
 ### Write Memory
 
+Write N bytes to a specified 32-bit address.
+
+Returns the Status
+
+
 | **OCF** | **Length**                                     | **Parameters**  | **Return** |
 | ------- | ---------------------------------------------- | --------------- | ---------- |
-| 0x300   | 5 + N, where N is the number of bytes to write | Length, Address | Status     |
+| 0x300   | 5 + N, where N is the number of bytes to write | Length, Address, Byte1, Byte2,...,ByteN | Status     |
 |         |
-#### Description
-
-Write N bytes to a specified 32-bit address.
 
 #### Parameters
 
@@ -104,11 +110,12 @@ _Address_ (4 Bytes):
 | Address to write data to | 0 - 0xFFFFFFFF |
 |                          |
 
-#### Return
 
-Status
+
 
 ### Read Memory
+
+Read memory from a specified 32-bit address.
 
 | **OCF** | **Length** | **Parameters**  |
 | ------- | ---------- | --------------- |
@@ -117,7 +124,6 @@ Status
 
 #### Description
 
-Read memory from a specified 32-bit address.
 
 #### Parameters
 
