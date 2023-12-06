@@ -153,3 +153,10 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt)
 {
     MXC_WDT_RevB_ClearIntFlag((mxc_wdt_revb_regs_t *)wdt);
 }
+
+int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
+{
+    MXC_WDT_RevB_SetClockSource((mxc_wdt_revb_regs_t *)wdt, (int)clock_source);
+
+    return E_NO_ERROR;
+}

@@ -110,5 +110,6 @@ int MXC_WDT_RevB_GetResetFlag(mxc_wdt_revb_regs_t *wdt);
 void MXC_WDT_RevB_ClearResetFlag(mxc_wdt_revb_regs_t *wdt);
 int MXC_WDT_RevB_GetIntFlag(mxc_wdt_revb_regs_t *wdt);
 void MXC_WDT_RevB_ClearIntFlag(mxc_wdt_revb_regs_t *wdt);
+void MXC_WDT_RevB_SetClockSource(mxc_wdt_revb_regs_t *wdt, int clock_source);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_WDT_WDT_REVB_H_
