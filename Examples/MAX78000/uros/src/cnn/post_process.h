@@ -14,7 +14,7 @@
 #define NUM_CLASSES 2
 
 #define LOC_DIM 4
-#define NUM_PRIORS_PER_AR 1585
+#define NUM_PRIORS_PER_AR 388
 #define NUM_PRIORS        NUM_PRIORS_PER_AR* NUM_ARS
 
 #define MAX_PRIORS  20

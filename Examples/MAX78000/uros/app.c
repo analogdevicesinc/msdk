@@ -23,6 +23,8 @@
 #include "tmr.h"
 
 #define STRING_BUFFER_LEN 50
+#define IMG_XRES 160
+#define IMG_YRES 120
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); vTaskDelete(NULL);}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
@@ -156,7 +158,6 @@ int stream_img_to_cnn(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_
 
     while (!camera_is_image_rcv()) {
         if ((data = get_camera_stream_buffer()) != NULL) {
-            LED_Toggle(1);
             for (int i = 0; i < camera_get_stream_buffer_size(); i += 2) {
                 // RGB565 to packed 24-bit RGB
                 m.b[0] = (*(data + i) & 0xF8); // Red
@@ -201,10 +202,6 @@ int stream_img_to_cnn(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_
     out->width = (int)((bb.x2 - bb.x1) * h);
     out->height = (int)((bb.y2 - bb.y1) * h);
 
-    if (bb.x1 !=0 && bb.y1 != 0 && bb.x2 != 0 && bb.y2 != 0) {
-        LED_On(1);
-    }
-
     cnn_disable();
 
     return E_NO_ERROR;
@@ -240,21 +237,25 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
     //         release_camera_stream_buffer();
     //     }
     // }
-	// LED_Off(0);    
+	// LED_Off(0);
 
     if (timer != NULL) {
         outgoing_roi.x_offset = 0;
         outgoing_roi.y_offset = 0;
         outgoing_roi.width = 0;
         outgoing_roi.height = 0;
-        stream_img_to_cnn(320, 240, PIXFORMAT_RGB565, g_camera_dma_channel, &outgoing_roi);
+        stream_img_to_cnn(IMG_XRES, IMG_YRES, PIXFORMAT_RGB565, g_camera_dma_channel, &outgoing_roi);
 
-        int error = rcl_publish(&box_publisher, (const void*)&outgoing_roi, NULL);
-
-        if (error == RCL_RET_OK) {
-            printf("roi send seq %s\n", outcoming_ping.frame_id.data);
+        if (outgoing_roi.width != 0 && outgoing_roi.height != 0) {
+            LED_On(1);
+            int error = rcl_publish(&box_publisher, (const void*)&outgoing_roi, NULL);
+            if (error == RCL_RET_OK) {
+                printf("roi send seq %s\n", outcoming_ping.frame_id.data);
+            } else {
+                printf("roi send req error\n");
+            }
         } else {
-            printf("roi send req error\n");
+            LED_Off(1);
         }
     }
 }
@@ -286,8 +287,7 @@ void appMain(void *argument)
 
 	// Create a 2 seconds ping timer,
 	rcl_timer_t timer;
-	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), timer_callback));
-
+	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(1000), timer_callback));
 
 	// Create executor
 	rclc_executor_t executor;
@@ -341,7 +341,7 @@ void appMain(void *argument)
     }
     printf("Camera ID detected: %04x\n", id);
 
-    ret = camera_setup(320, 240, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+    ret = camera_setup(IMG_XRES, IMG_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        g_camera_dma_channel); // RGB565
 
 	while(1){
