@@ -30,7 +30,7 @@ img {
 h1::after {
     display: inline-block;
     content: "";
-    border-top: .3rem solid;
+    border-top: .2rem solid;
     border-radius: 1rem;
     flex-grow: 1; /* This property makes the pseudo-element take up the remaining space */
     width: 100%; /* Set the width to 100% */
@@ -40,7 +40,7 @@ h1::after {
 h2::after {
     display: inline-block;
     content: "";
-    border-top: .2rem solid;
+    border-top: .1rem solid lightgray;
     border-radius: 1rem;
     flex-grow: 1; /* This property makes the pseudo-element take up the remaining space */
     width: 100%; /* Set the width to 100% */
@@ -51,7 +51,7 @@ h3::after
 {
     display: inline-block;
     content: "";
-    border-top: .15rem solid lightgray; /* Change this line to adjust the style */
+    border-top: .1rem solid lightgray; /* Change this line to adjust the style */
     flex-grow: 1;
     width: 100%;
     transform: translateY(-0.5rem);
