@@ -331,6 +331,8 @@ Here is a general overview of the HCI command packet structure:
 | ------------- | ---------------- | -------------------- |
 | 0x01          | 0xXXXX           | ...                  |
 
+![Command Packet Format](res/command-packet.png)
+
 Opcodes are mix of Opcode Group Field (OGF, 6 Bits) and the Opcode Command Field (OCF, 10 Bits)
 
 ```
@@ -363,6 +365,8 @@ The asynchronous data packet is comprised of the connection handle, fragmentatio
 | ---------------- | ---------------- | ---------------- | ---------------------- | ------------------- |
 | 0xXXX            | 0bXX             | 0bXX             | 0xXXXX                 | ...                 |
 
+![Async Data Packet Format](res/async-data-packet.png)
+
 ##### Sync Data Packet
 
 This synchronous data packet is not used in BLE.
@@ -374,6 +378,8 @@ The structure of an HCI asynchronous event packet typically consists of an HCI e
 | Type (1 Byte) | Event Code (2 Bytes) | Event Params (N Bytes) |
 | ------------- | -------------------- | ---------------------- |
 | 0x04          | 0xXX                 | ...                    |
+
+![Event Data Packet Format](res/event-packet.png)
 
 
 
