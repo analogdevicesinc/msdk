@@ -107,7 +107,7 @@ _where N is the number of bytes to write_
 
 Returns a status byte.
 
----
+
 
 ### Read Memory
 
@@ -141,7 +141,7 @@ Read memory from a specified 32-bit address.
     | ----------------------------------------- | ---------------- |
     | _N_ bytes read from the specified address | {`0 - 0xFF`,...} |
 
----
+
 
 ### Reset Connection Stats
 
@@ -157,7 +157,7 @@ Clear all connection statistics.
 
 Returns a status byte.
 
----
+
 
 ### VS TX Test
 
@@ -216,7 +216,7 @@ Start a TX test using a specific number of packets.
 
 Returns a status byte.
 
----
+
 
 ### VS End Test
 
@@ -254,7 +254,7 @@ End the current DTM test and return all test stats.
     | ---------------------------------------------- | ---------- |
     | Number of timeouts waiting to receive a packet | 0 - 0xFFFF |
 
----
+
 
 ### Set Scan Channel Map
 
@@ -278,7 +278,7 @@ Set the channel map to scan on.
 
 Returns a status byte.
 
----
+
 
 ### Set Event Mask
 
@@ -309,7 +309,7 @@ Enables or disables events the controller will flag.
 
 Returns a status byte.
 
----
+
 
 
 ### Enable ACL Sink
@@ -335,7 +335,7 @@ Enables or disables asynchronous connection-oriented logical transport.
 
 Returns a status byte.
 
----
+
 
 ### Generate ACL
 
@@ -375,7 +375,7 @@ Generate ACL for a specified connection.
 
 Returns a status byte.
 
----
+
 
 
 ### Enable Autogenerate ACL
@@ -405,7 +405,7 @@ Enable or disable Autogenerate ACL.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Set TX Test Error Pattern
 
@@ -429,7 +429,7 @@ Set the pattern of errors for the TX test mode.
 
 Returns a status byte.
 
----
+
 
 ### Set Connection Operational Flags
 
@@ -468,7 +468,7 @@ Enable or disable connection operational flags for a given connection.
 
 Returns a status byte.
 
----
+
 
 ### Set P-256 Private Key
 
@@ -493,7 +493,7 @@ Set P-256 private key or clear set private key. The private key will be used for
 
 Returns a status byte.
 
----
+
 
 ### Get channel map of periodic scan/adv
 
@@ -530,7 +530,7 @@ Get the channel map used for periodic scanning or advertising.
     | ------------------------- | -------------- |
     | 5                         | {0x00-0xFF, …} |
 
----
+
 
 ### Get ACL Test Report
 
@@ -568,7 +568,7 @@ Get ACL Test Report.
     | ------------------------------ | ---------------- |
     | Number of generated ACL octets | 0x0 – 0xFFFFFFFF |
 
----
+
 
 ### Set Local Minimum Number of Used Channels
 
@@ -606,7 +606,7 @@ Set local minimum number of used channels.
 
 Returns a status byte.
 
----
+
 
 ### Get Peer Minimum Number of Used Channels
 
@@ -646,7 +646,7 @@ Get peer minimum number of used channels.
     | ----------------------- | --------- |
     | Coded min used channels | 1 – 37    |
 
----
+
 
 ### Set validate public key mode between ALT1 and ALT2
 
@@ -671,7 +671,7 @@ Set mode used to validate public key.
 
 Returns a status byte.
 
----
+
 
 ### Set BD Address
 
@@ -695,7 +695,7 @@ Set the device address.
 
 Returns a status byte.
 
----
+
 
 ### Get Random Address
 
@@ -715,7 +715,7 @@ Get random device address.
     | --------------- | -------------- |
     | Device Address  | {0x00-0xFF, …} |
 
----
+
 
 ### Set Local Feature
 
@@ -743,7 +743,7 @@ Set local supported features.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Set Operational Flags
 
@@ -774,7 +774,7 @@ Enable or Disable Operational Flags.
 
 Returns a status byte.
 
----
+
 
 ### Get PDU Filter Statistics
 
@@ -902,7 +902,7 @@ Get the accumulated PDU filter statistics.
     | ------------------------------------------ | ------------ |
     | Number of local address resolutions pended | 0x0 – 0xFFFF |
 
----
+
 
 ### Set Advertising TX Power
 
@@ -926,7 +926,7 @@ Set the TX power used for advertising.
 
 Returns a status byte.
 
----
+
 
 ### Set Connection TX Power
 
@@ -950,7 +950,7 @@ Set the TX power used for connections.
 
 Returns a status byte.
 
----
+
 
 ### Set Encryption Mode
 
@@ -981,7 +981,7 @@ Set encryption mode for a given connection.
 
 Returns a status byte.
 
----
+
 
 ### Set Channel Map
 
@@ -1011,7 +1011,7 @@ Set the channel map.
 
 Returns a status byte.
 
----
+
 
 ### Set Diagnostic Mode
 
@@ -1036,7 +1036,7 @@ Enable/Disable PAL System Assert Trap.
 
 Returns a status byte.
 
----
+
 
 ### Enable Sniffer Packet Forwarding
 
@@ -1061,7 +1061,7 @@ Enable/Disable sniffer packet forwarding.
 
 Returns a status byte.
 
----
+
 
 
 ### Get Memory Stats
@@ -1208,7 +1208,7 @@ Read memory and system statistics.
     | ---------------------------- | ----------- |
     | Context size of CIS in bytes | 0x00-0xFFFF |
 
----
+
 
 ### Get Advertising Stats
 
@@ -1282,7 +1282,7 @@ Get the accumulated advertising statistics.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
----
+
 
 ### Get Scan Stats
 
@@ -1368,7 +1368,7 @@ Get the statistics captured during scanning.
     | ------------------------------------------- | ----------------- |
     | TX ISR processing watermark in microseconds | 0x00 – 0xFFFFFFFF |
 
----
+
 
 ### Get Connection Stats
 
@@ -1436,7 +1436,7 @@ Get the statistics captured during a connection.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
----
+
 
 ### Get Test Stats
 
@@ -1504,7 +1504,7 @@ Get the statistics captured during test mode.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
----
+
 
 ### Get Pool Stats
 
@@ -1563,7 +1563,7 @@ Set auxiliary packet offset delay.
 
 Returns a status byte
 
----
+
 
 ### Set Extended Advertising Data Fragmentation
 
@@ -1597,7 +1597,7 @@ Set the extended advertising fragmentation length.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Set Extended Advertising PHY Options
 
@@ -1637,7 +1637,7 @@ Set extended advertising PHY options.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Set Extended Advertising Default PHY Options
 
@@ -1665,7 +1665,7 @@ Set the default TX PHY options for extended advertising slave primary and second
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Generate ISO Packets
 
@@ -1705,7 +1705,7 @@ Generate ISO packets.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Get ISO Test Report
 
@@ -1743,7 +1743,7 @@ Get statistics captured during ISO test.
     | ------------------------ | ----------------- |
     | Generate ISO Octet Count | 0x00 – 0xFFFFFFFF |
 
----
+
 
 ### Enable ISO Packet Sink
 
@@ -1772,7 +1772,7 @@ Enable or Disable ISO packet sink.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Enable Autogenerate ISO Packets
 
@@ -1801,7 +1801,7 @@ Enable autogenerate ISO packets.
     | ------------------------- | ---------- |
     | 1                         | Status Code |
 
----
+
 
 ### Get ISO Connection Statistics
 
@@ -1869,7 +1869,7 @@ Get statistics captured during ISO connection.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
----
+
 
 ### Get Auxiliary Advertising Statistics
 
@@ -1949,7 +1949,7 @@ Get accumulated auxiliary advertising stats.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
----
+
 
 ### Get Auxiliary Scanning Statistics
 
@@ -2053,7 +2053,7 @@ Get accumulated auxiliary scanning statistics.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
----
+
 
 
 ### Get Periodic Scanning Statistics
@@ -2134,7 +2134,7 @@ Get accumulated periodic scanning statistics.
     | ------------------------------------------- | ------------- |
     | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
----
+
 
 ### Set Connection PHY TX Power
 
@@ -2172,4 +2172,4 @@ Set power level during a connection for a given PHY.
 
 Returns a status byte
 
----
+
