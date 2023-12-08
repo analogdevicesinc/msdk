@@ -395,7 +395,7 @@ NOTE: All data parameters and return values are returned little endian formatted
 
 Write N bytes to a specified 32-bit address.
 
-Packet type: Command Packet
+- Packet type: [Command Packet](#command-packet)
 
 | **OGF** | **OCF** | ** Length (bytes) ** | * *Parameters**  | **Return** |
 | ------- | ------- | ------------------- | ----------------- | ---------- |
