@@ -3,10 +3,6 @@ The Host Controller Interface (HCI) is the common point where devices are split.
 
 # Packets
 All contents in the packets are formatted little endian unless stated otherwise
-<br>
-
-
-
 
 ## Packet Types
 
@@ -36,8 +32,6 @@ Opcode = (OGF << 10)  | OCF
 Below is an example of the BLE standard command for reset
 
 RESET
-
-<br>
 
 | OGF | OCF | Paramters  |
 | --- | --- | ---------- |
@@ -75,10 +69,10 @@ The structure of an HCI asynchronous event packet typically consists of an HCI e
 
 
 
-# Vendor Specific Commands
+## Vendor Specific Commands
 
 **OGF** : 0x3F
-<br>
+
 **MAX\_NUMBER\_CONNECTIONS**: set at application layer by user.
 
 NOTE: All data parameters and return values are returned little endian formatted unless stated otherwise.
@@ -87,2285 +81,2095 @@ NOTE: All data parameters and return values are returned little endian formatted
 
 Write N bytes to a specified 32-bit address.
 
-Returns the Status
+Packet type: Command Packet
 
+| **OGF** | **OCF** | ** Length (bytes) ** | * *Parameters**  | **Return** |
+| ------- | ------- | ------------------- | ----------------- | ---------- |
+| 0x3F    | 0x300   |  5 + N              | {Length, Address} | Status     |
 
-| **OCF** | **Length**                                     | **Parameters**  | **Return** |
-| ------- | ---------------------------------------------- | --------------- | ---------- |
-| 0x300   | 5 + N, where N is the number of bytes to write | Length, Address, Byte1, Byte2,...,ByteN | Status     |
-|         |
+_where N is the number of bytes to write_
 
-#### Parameters
+#### Parameters (Write Memory)
 
-_Length_ (1 Byte):
+- _Length_ : 
 
-| **Description**                     | **Value** |
-| ----------------------------------- | --------- |
-| Number of bytes to write to address | 0 – 0xFF  |
-|                                     |
-_Address_ (4 Bytes):
+    | **Description**                      | **Value**         |
+    | ------------------------------------ | ----------------- |
+    | Number of bytes to write to address | `0 – 0xFF`        |
 
-| **Description**          | **Value**      |
-| ------------------------ | -------------- |
-| Address to write data to | 0 - 0xFFFFFFFF |
-|                          |
+- _Address_ : Address to read data from 
 
+    | **Description**                      | **Value**         |
+    | ------------------------------------ | ----------------- |
+    | Address to write data to             | `0 - 0xFFFFFFFF`  |
 
+#### Return (Write Memory)
 
+Returns a status byte.
+
+---
 
 ### Read Memory
 
 Read memory from a specified 32-bit address.
 
-| **OCF** | **Length** | **Parameters**  |
-| ------- | ---------- | --------------- |
-| 0x301   | 5          | Length, Address |
-|         |
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** |  **Param. Length (bytes)**  | **Parameters**  | **Return** |
+| ------- | ------- | --------------------------- | ----------------- | ---------- |
+| 0x3F    | 0x301   |  5                          | {Length, Address} | Data (N)   |
 
+#### Parameters (Read Memory)
 
-#### Parameters
+- _Length_ : 
 
-_Length_ (1 Byte):
+    | **Description**                      | **Value**         |
+    | ------------------------------------ | ----------------- |
+    | Number of bytes to read from address | `0 – 0xFF`        |
 
-| **Description**                     | **Value** |
-| ----------------------------------- | --------- |
-| Number of bytes to write to address | 0 – 0xFF  |
+- _Address_ : Address to read data from 
 
-_Address_ (4 Bytes):
+    | **Description**                      | **Value**         |
+    | ------------------------------------ | ----------------- |
+    | Address to read data from            | `0 - 0xFFFFFFFF`  |
 
-| **Description**          | **Value**      |
-| ------------------------ | -------------- |
-| Address to write data to | 0 - 0xFFFFFFFF |
+#### Return (Read Memory)
 
-#### Return
+- _Data_ (N) : 
 
-_Data_ (N)
+    | **Description**                           | **Value**        |
+    | ----------------------------------------- | ---------------- |
+    | _N_ bytes read from the specified address | {`0 - 0xFF`,...} |
 
-| **Description**        | **Value** |
-| ---------------------- | --------- |
-| Data read from address | 0 - 0xFF  |
+---
 
 ### Reset Connection Stats
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x302   | 0          | N/A            |
-
-#### Description
-
 Clear all connection statistics.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-Status
+| **OGF** | **OCF** | ** Param. Length (bytes) ** | **Parameters** | 
+| ------- | ------- | ------------------------- | --------------- | 
+| 0x3F    | 0x302   |  0                        | N/A             | 
+
+#### Return (Reset Connection Stats)
+
+Returns a status byte.
+
+---
 
 ### VS TX Test
 
-| **OCF** | **Length** | **Parameters**                                      |
-| ------- | ---------- | --------------------------------------------------- |
-| 0x303   | 6          | RF Channel, Packet Length, Packet Type, Num Packets |
-|         |
-
-#### Description
-
 Start a TX test using a specific number of packets.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_RF Channel_ (1 Byte):
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                                      | **Return** |
+| ------- | ------- | ------------------------ | --------------------------------------------------- | ---------- |
+| 0x3F    | 0x303   | 6                        | {RF Channel, Packet Length, Packet Type, PHY, Num Packets} | Status     |
 
-| **Description**           | **Value** |
-| ------------------------- | --------- |
-| RF channel to transmit on | 0 – 39    |
-|                           |
+#### Parameters (VS TX Test)
 
-_Packet Length_ (1 Byte):
+- _RF Channel (1 Byte):_
 
-| **Description**                  | **Value** |
-| -------------------------------- | --------- |
-| Number of bytes in single packet | 0 - 255   |
-|                                  |
+    | **Description**           | **Value** |
+    | ------------------------- | --------- |
+    | RF channel to transmit on | 0 – 39    |
 
-_Packet Type (1 Byte)_
+- _Packet Length (1 Byte):_
 
-| **Description**           | **Value** |
-| ------------------------- | --------- |
-| PRBS9                     | 0x00      |
-| 00001111'b packet payload | 0x01      |
-| 01010101'b packet payload | 0x02      |
-| PRBS15                    | 0x03      |
-| 11111111'b packet payload | 0x04      |
-| 00000000'b packet payload | 0x05      |
-| 11110000'b packet payload | 0x06      |
-| 10101010'b packet payload | 0x07      |
-|                           |
+    | **Description**                  | **Value** |
+    | -------------------------------- | --------- |
+    | Number of bytes in a single packet | 0 - 255   |
 
-_PHY (1 Byte)_
+- _Packet Type (1 Byte):_
 
-| **Description**   | **Value** |
-| ----------------- | --------- |
-| 1M                | 0x01      |
-| 2M                | 0x02      |
-| Coded Unspecified | 0x03      |
-| Coded S8          | 0x04      |
-| Coded S2          | 0x05      |
-|                   |
+    | **Description**           | **Value** |
+    | ------------------------- | --------- |
+    | PRBS9                     | 0x00      |
+    | 00001111'b packet payload | 0x01      |
+    | 01010101'b packet payload | 0x02      |
+    | PRBS15                    | 0x03      |
+    | 11111111'b packet payload | 0x04      |
+    | 00000000'b packet payload | 0x05      |
+    | 11110000'b packet payload | 0x06      |
+    | 10101010'b packet payload | 0x07      |
 
-_Num Packets (2 Bytes)_
+- _PHY (1 Byte):_
 
-| **Description**                                | **Value**  |
-| ---------------------------------------------- | ---------- |
-| Number of packets to send over courser of test | 0 - 0xFFFF |
+    | **Description**   | **Value** |
+    | ----------------- | --------- |
+    | 1M                | 0x01      |
+    | 2M                | 0x02      |
+    | Coded Unspecified | 0x03      |
+    | Coded S8          | 0x04      |
+    | Coded S2          | 0x05      |
 
-#### Return
+- _Num Packets (2 Bytes):_
 
-Status
+    | **Description**                                | **Value**  |
+    | ---------------------------------------------- | ---------- |
+    | Number of packets to send over the course of the test | 0 - 0xFFFF |
+
+#### Return (VS TX Test)
+
+Returns a status byte.
+
+---
 
 ### VS End Test
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x304   | 0          | N/A            |
-|         |
+End the current DTM test and return all test stats.
 
-#### Description
+- Packet type: [Command Packet](#command-packet)
 
-End current DTM test and return all test stats.
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**     |
+| ------- | ------- | ------------------------ | -------------- | -------------- |
+| 0x3F    | 0x304   | 0                        | N/A            | {TX Data, RX Data Ok, RX Data CRC, RX Data Timeout} |
 
-#### Return
+#### Return (VS End Test)
 
-_TX Data (2 Bytes)_
+- _TX Data (2 Bytes)_ : Number of packets transmitted
 
-| **Description**               | **Value**  |
-| ----------------------------- | ---------- |
-| Number of packets transmitted | 0 - 0xFFFF |
-|                               |
+    | **Description**               | **Value**  |
+    | ----------------------------- | ---------- |
+    | Number of packets transmitted | 0 - 0xFFFF |
 
-_RX Data Ok_(2 Bytes)
+- _RX Data Ok (2 Bytes)_ : Number of packets received ok
 
-| **Description**               | **Value**  |
-| ----------------------------- | ---------- |
-| Number of packets received ok | 0 – 0xFFFF |
-|                               |
+    | **Description**               | **Value**  |
+    | ----------------------------- | ---------- |
+    | Number of packets received ok | 0 – 0xFFFF |
 
-_RX Data CRC_ (2 Bytes)
+- _RX Data CRC (2 Bytes)_ : Number of packets received with a CRC error
 
-| **Description**                             | **Value**  |
-| ------------------------------------------- | ---------- |
-| Number of packets received with a CRC error | 0 - 0xFFFF |
-|                                             |
+    | **Description**                             | **Value**  |
+    | ------------------------------------------- | ---------- |
+    | Number of packets received with a CRC error | 0 - 0xFFFF |
 
-_RX Data Timeout_ (2 Bytes)
+- _RX Data Timeout (2 Bytes)_ : Number of timeouts waiting to receive a packet
 
-| **Description**                                | **Value**  |
-| ---------------------------------------------- | ---------- |
-| Number of timeouts waiting to receive a packet | 0 - 0xFFFF |
-|                                                |
+    | **Description**                                | **Value**  |
+    | ---------------------------------------------- | ---------- |
+    | Number of timeouts waiting to receive a packet | 0 - 0xFFFF |
+
+---
 
 ### Set Scan Channel Map
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x301   | 1          | Channel Map    |
-|         |
+Set the channel map to scan on.
 
-**Description**
+- Packet type: [Command Packet](#command-packet)
 
-Set channel map to scan on
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x301   | 1                        | Channel Map    | Status     |
 
-#### Parameters
+#### Parameters (Set Scan Channel Map)
 
-_Channel Map (1 Byte):_
+- _Channel Map (1 Byte):_
 
-| **Description**          | **Value** |
-| ------------------------ | --------- |
-| Channel map used to scan | 0 – 0xFF  |
-|                          |
+    | **Description**          | **Value** |
+    | ------------------------ | --------- |
+    | Channel map used to scan | 0 – 0xFF  |
 
-#### Return
+#### Return (Set Scan Channel Map)
 
-Status
+Returns a status byte.
+
+---
 
 ### Set Event Mask
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3E1   | 5          | Mask, Enable   |
-|         |
+Enables or disables events the controller will flag.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3E1   | 5                        | {Mask, Enable} | Status     |
 
-Enables/Disabled events the controller will flag
+#### Parameters (Set Event Mask)
 
-**Parameters**
+- _Mask (4 Bytes):_
 
-_Mask (4 Bytes):_
+    | **Description**                  | **Value**                |
+    | -------------------------------- | ------------------------ |
+    | Mask of events to enable/disable | 0x0 – 0xFFFFFFFFFFFFFFFF |
 
-| **Description**                  | **Value**                |
-| -------------------------------- | ------------------------ |
-| Mask of events to enable/disable | 0x0 – 0xFFFFFFFFFFFFFFFF |
-|                                  |
+- _Enable (1 Byte):_
 
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x00      |
+    | Enable          | 0x01      |
 
-_Enable (1 Byte):_
+#### Return (Set Event Mask)
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x00      |
-| Enable          | 0x01      |
-|                 |
+Returns a status byte.
 
-#### Return
+---
 
-Status
 
 ### Enable ACL Sink
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3E3   | 1          | Enable         |
-|         |
+Enables or disables asynchronous connection-oriented logical transport.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3E3   | 1                        | {Enable}       | Status     |
 
-Enables/Disables asynchronous connection-oriented logical transport.
+#### Parameters (Enable ACL Sink)
 
-#### Parameters
+- _Enable (1 Byte):_
 
-_Enable (1 Byte):_
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x00      |
+    | Enable          | 0x01      |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x00      |
-| Enable          | 0x01      |
-|                 |
+#### Return (Enable ACL Sink)
 
-#### Return
+Returns a status byte.
 
-Status
+---
 
 ### Generate ACL
 
-| **OCF** | **Length** | **Parameters**                     |
-| ------- | ---------- | ---------------------------------- |
-| 0x3E4   | 5          | Handle, Packet Length, Num Packets |
-|         |
-
-
-#### Description
-
 Generate ACL for a specified connection.
 
-**Parameters**
+- Packet type: [Command Packet](#command-packet)
 
-_Handle (2 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                      | **Return** |
+| ------- | ------- | ------------------------ | ----------------------------------- | ---------- |
+| 0x3F    | 0x3E4   | 5                        | {Handle, Packet Length, Num Packets} | Status     |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+#### Parameters (Generate ACL)
 
+- _Handle (2 Bytes):_
 
-MAX\_NUMBER\_CONNECTIONS set at application layer by user.
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-_Packet Length (2 Bytes):_
+    MAX\_NUMBER\_CONNECTIONS set at the application layer by the user.
 
-| **Description**                   | **Value**            |
-| --------------------------------- | -------------------- |
-| Length of packet of generated ACL | 0x00 – MAX\_ACL\_LEN |
-|                                   |
+- _Packet Length (2 Bytes):_
 
-MAX\_ACL\_LEN set at application layer by user.
+    | **Description**                   | **Value**            |
+    | --------------------------------- | -------------------- |
+    | Length of packet of generated ACL | 0x00 – MAX\_ACL\_LEN |
 
-Num Packets (1 Bytes):
+    MAX\_ACL\_LEN set at the application layer by the user.
 
-| **Description**                            | **Value**   |
-| ------------------------------------------ | ----------- |
-| Number of packets to send in generated ACL | 0x00 – 0xFF |
-|                                            |
+- _Num Packets (1 Byte):_
 
-#### Return
+    | **Description**                            | **Value**   |
+    | ------------------------------------------ | ----------- |
+    | Number of packets to send in generated ACL | 0x00 – 0xFF |
 
-Status
+#### Return (Generate ACL)
+
+Returns a status byte.
+
+---
+
 
 ### Enable Autogenerate ACL
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3E3   | 1          | Enable         |
-|         |
+Enable or disable Autogenerate ACL.
 
-#### Description
+- Packet type: [Command Packet](#command-packet)
 
-Enable/Disable Autogenerate ACL
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3E3   | 1                        | {Enable}       | Status     |
 
-#### Parameters
+#### Parameters (Enable Autogenerate ACL)
 
-_Enable (1 Byte):_
+- _Enable (1 Byte):_
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x00      |
-| Enable          | 0x01      |
-|                 |
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x00      |
+    | Enable          | 0x01      |
 
+#### Return (Enable Autogenerate ACL)
 
-#### Return
+- _Status (1 Byte)_ : Status of the Enable Autogenerate ACL command execution.
 
-Status
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Set TX Test Error Pattern
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3E6   | 4          | Error Pattern  |
-|         |
+Set the pattern of errors for the TX test mode.
 
-#### Description
+- Packet type: [Command Packet](#command-packet)
 
-Set pattern of errors for TX test mode.
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3E6   | 4                        | {Error Pattern} | Status     |
 
-**Parameters**
+#### Parameters (Set TX Test Error Pattern)
 
-_Error Pattern (1 Byte):_
+- _Error Pattern (1 Byte):_
 
-| **Description**                 | **Value**        |
-| ------------------------------- | ---------------- |
-| 1s = no error, 0s = CRC Failure | 0x0 - 0xFFFFFFFF |
-|                                 |
+    | **Description**                 | **Value**        |
+    | ------------------------------- | ---------------- |
+    | 1s = no error, 0s = CRC Failure | 0x0 - 0xFFFFFFFF |
 
-#### Return
+#### Return (Set TX Test Error Pattern)
 
-Status
+Returns a status byte.
+
+---
 
 ### Set Connection Operational Flags
 
-| **OCF** | **Length** | **Parameters**        |
-| ------- | ---------- | --------------------- |
-| 0x3E7   | 7          | Handle, Flags, Enable |
-|         |
+Enable or disable connection operational flags for a given connection.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**             | **Return** |
+| ------- | ------- | ------------------------ | -------------------------- | ---------- |
+| 0x3F    | 0x3E7   | 7                        | {Handle, Flags, Enable}    | Status     |
 
-Enable/Disable connection operational flags for a given connection.
+#### Parameters (Set Connection Operational Flags)
 
-#### Parameters
+- _Handle (2 Bytes):_
 
-_Handle (2 Bytes):_
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+    MAX\_NUMBER\_CONNECTIONS set at the application layer by the user.
 
+- _Flags (4 Bytes):_
 
-MAX\_NUMBER\_CONNECTIONS set at application layer by user.
+    | **Description**            | **Value**        |
+    | -------------------------- | ---------------- |
+    | Flags to enable or disable | 0x0 – 0xFFFFFFFF |
 
-_Flags (4 Bytes)_
+- _Enable (1 Byte):_
 
-| **Description**            | **Value**        |
-| -------------------------- | ---------------- |
-| Flags to enable or disable | 0x0 – 0xFFFFFFFF |
-|                            |
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x00      |
+    | Enable          | 0x01      |
 
+#### Return (Set Connection Operational Flags)
 
-_Enable (1 Byte):_
+Returns a status byte.
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x00      |
-| Enable          | 0x01      |
-|                 |
-
-#### Return
-
-Status
+---
 
 ### Set P-256 Private Key
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3E8   | 32         | Private Key    |
-|         |
+Set P-256 private key or clear set private key. The private key will be used for generating key pairs and Diffie-Hellman keys until cleared.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**    | **Return** |
+| ------- | ------- | ------------------------ | ----------------- | ---------- |
+| 0x3F    | 0x3E8   | 32                       | {Private Key}     | Status     |
 
-Set P-256 private key or clear set private key. The private key will be used for generating key
+#### Parameters (Set P-256 Private Key)
 
-pairs and Diffie-Hellman keys until cleared.
+- _Private Key (32 Bytes):_
 
-#### Parameters
+    | **Description**   | **Value**   |
+    | ----------------- | ----------- |
+    | Clear Private Key | 0x00…       |
+    | Private Key       | 0x1 – 0xFF… |
 
-_Private Key (32 Bytes):_
+#### Return (Set P-256 Private Key)
 
-| **Description**   | **Value**   |
-| ----------------- | ----------- |
-| Clear Private Key | 0x00…       |
-| Private Key       | 0x1 – 0xFF… |
-|                   |
+Returns a status byte.
 
-
-#### Return
-
-Status
+---
 
 ### Get channel map of periodic scan/adv
 
-| **OCF** | **Length** | **Parameters**                | **Return**  |
-| ------- | ---------- | ----------------------------- | ----------- |
-| 0x3DE   | 3          | Advertising Handle, Adverting | Channel Map |
-|         |
-
-#### Description
-
 Get the channel map used for periodic scanning or advertising.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Handle (2 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                | **Return**  |
+| ------- | ------- | ------------------------ | ----------------------------- | ----------- |
+| 0x3F    | 0x3DE   | 3                        | {Advertising Handle, Advertising} | Channel Map |
 
-| **Description**                    | **Value**                     |
-| ---------------------------------- | ----------------------------- |
-| Periodic Scanner/Advertiser Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                                    |
+#### Parameters (Get channel map of periodic scan/adv)
 
+- _Handle (2 Bytes):_
 
+    | **Description**                    | **Value**                     |
+    | ---------------------------------- | ----------------------------- |
+    | Periodic Scanner/Advertiser Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-_Advertising (1 Byte):_
+    MAX\_NUMBER\_CONNECTIONS set at the application layer by the user.
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Scanner         | 0x00      |
-| Advertiser      | 0x01      |
-|                 |
+- _Advertising (1 Byte):_
 
-#### Return
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Scanner         | 0x00      |
+    | Advertiser      | 0x01      |
 
-_Channel Map (5 Bytes):_
+#### Return (Get channel map of periodic scan/adv)
 
-| **Description** | **Value**      |
-| --------------- | -------------- |
-| Channel Masks   | {0x00-0xFF, …} |
-|                 |
+- _Channel Map (5 Bytes)_ : Channel map used for periodic scanning or advertising.
+
+    | **Return Length (bytes)** | **Value**      |
+    | ------------------------- | -------------- |
+    | 5                         | {0x00-0xFF, …} |
+
+---
 
 ### Get ACL Test Report
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3E9   | 0          | **N/A**        |
-|         |
+Get ACL Test Report.
 
-#### Description
+- Packet type: [Command Packet](#command-packet)
 
-Get ACL Test Report
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**     |
+| ------- | ------- | ------------------------ | --------------- | -------------- |
+| 0x3F    | 0x3E9   | 0                        | N/A             | {Report Data}  |
 
-#### Return
+#### Return (Get ACL Test Report)
 
-_RX ACL Packet Count (4 Bytes):_
+- _RX ACL Packet Count (4 Bytes):_
 
-| **Description**                | **Value**        |
-| ------------------------------ | ---------------- |
-| Number of ACL packets received | 0x0 – 0xFFFFFFFF |
-|                                |
+    | **Description**                | **Value**        |
+    | ------------------------------ | ---------------- |
+    | Number of ACL packets received | 0x0 – 0xFFFFFFFF |
 
-_RX ACL Octet Count (4 Bytes):_
+- _RX ACL Octet Count (4 Bytes):_
 
-| **Description**               | **Value**        |
-| ----------------------------- | ---------------- |
-| Number of ACL octets received | 0x0 – 0xFFFFFFFF |
-|                               |
+    | **Description**               | **Value**        |
+    | ----------------------------- | ---------------- |
+    | Number of ACL octets received | 0x0 – 0xFFFFFFFF |
 
+- _Generated ACL Packet Count (4 Bytes):_
 
-_Generated ACL Packet Count (4 Bytes):_
+    | **Description**                 | **Value**        |
+    | ------------------------------- | ---------------- |
+    | Number of generated ACL packets | 0x0 – 0xFFFFFFFF |
 
-| **Description**                 | **Value**        |
-| ------------------------------- | ---------------- |
-| Number of generated ACL packets | 0x0 – 0xFFFFFFFF |
-|                                 |
+- _Generated ACL Octet Count (4 Bytes):_
 
+    | **Description**                | **Value**        |
+    | ------------------------------ | ---------------- |
+    | Number of generated ACL octets | 0x0 – 0xFFFFFFFF |
 
-_Generated ACL Octet Count (4 Bytes):_
-
-| **Description**                | **Value**        |
-| ------------------------------ | ---------------- |
-| Number of generated ACL octets | 0x0 – 0xFFFFFFFF |
-|                                |
+---
 
 ### Set Local Minimum Number of Used Channels
 
-| **OCF** | **Length** | **Parameters**                           |
-| ------- | ---------- | ---------------------------------------- |
-| 0x3EA** | 3          | PHYs, Power Threshold, Min Used Channels |
-|         |
-
-
-#### Description
-
 Set local minimum number of used channels.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_PHYs (1 Byte):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                   | **Return** |
+| ------- | ------- | ------------------------ | --------------------------------- | ---------- |
+| 0x3F    | 0x3EA   | 3                        | {PHYs, Power Threshold, Min Used Channels} | Status     |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| 1M              | 0x1       |
-| 2M              | 0x2       |
-| Coded           | 0x3       |
-|                 |
+#### Parameters (Set Local Minimum Number of Used Channels)
 
+- _PHYs (1 Byte):_
 
-_Power Threshold (1 Byte, signed 8-Bit):_
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | 1M              | 0x1       |
+    | 2M              | 0x2       |
+    | Coded           | 0x3       |
 
-| **Description**         | **Value** |
-| ----------------------- | --------- |
-| Power Threshold for PHY | +/-127    |
-|                         |
+- _Power Threshold (1 Byte, signed 8-Bit):_
 
+    | **Description**         | **Value** |
+    | ----------------------- | --------- |
+    | Power Threshold for PHY | +/-127    |
 
-Min Used Channels (1 Byte)
+- _Min Used Channels (1 Byte):_
 
-| **Description**                 | **Value** |
-| ------------------------------- | --------- |
-| Minimum number of used channels | 1 - 37    |
-|                                 |
+    | **Description**                 | **Value** |
+    | ------------------------------- | --------- |
+    | Minimum number of used channels | 1 - 37    |
 
+#### Return (Set Local Minimum Number of Used Channels)
 
-#### Return
+Returns a status byte.
 
-Status
+---
 
 ### Get Peer Minimum Number of Used Channels
 
-| **OCF** | **Length** | **Parameters** | **Return**                |
-| ------- | ---------- | -------------- | ------------------------- |
-| 0x3EB   | 2          | Handle         | 1M PHY, 2M PHY, Coded PHY |
-|         |
-
-#### Description
-
 Get peer minimum number of used channels.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Handle (2 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**     |
+| ------- | ------- | ------------------------ | --------------- | -------------- |
+| 0x3F    | 0x3EB   | 2                        | {Handle}        | {1M PHY, 2M PHY, Coded PHY} |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+#### Parameters (Get Peer Minimum Number of Used Channels)
 
+- _Handle (2 Bytes):_
 
-#### Return
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-_1M PHY (1 Byte):_
+#### Return (Get Peer Minimum Number of Used Channels)
 
-| **Description**      | **Value** |
-| -------------------- | --------- |
-| 1M min used channels | 1 - 37    |
-|                      |
+- _1M PHY (1 Byte):_
 
-_2M PHY (1 Byte):_
+    | **Description**      | **Value** |
+    | -------------------- | --------- |
+    | 1M min used channels | 1 - 37    |
 
-| **Description**      | **Value** |
-| -------------------- | --------- |
-| 2M min used channels | 1 - 37    |
-|                      |
+- _2M PHY (1 Byte):_
 
-_Coded PHY (1 Byte):_
+    | **Description**      | **Value** |
+    | -------------------- | --------- |
+    | 2M min used channels | 1 - 37    |
 
-| **Description**         | **Value** |
-| ----------------------- | --------- |
-| Coded min used channels | 1 – 37    |
-|                         |
+- _Coded PHY (1 Byte):_
+
+    | **Description**         | **Value** |
+    | ----------------------- | --------- |
+    | Coded min used channels | 1 – 37    |
+
+---
 
 ### Set validate public key mode between ALT1 and ALT2
 
-| **OCF**   | **Length** | **Parameters**    |
-| --------- | ---------- | ----------------- |
-| **0x3EC** | **1**      | **Validate Mode** |
-|           |
-
-
-#### Description
-
 Set mode used to validate public key.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Validate Mode (1 Byte):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**         | **Return** |
+| ------- | ------- | ------------------------ | ---------------------- | ---------- |
+| 0x3F    | 0x3EC   | 1                        | {Validate Mode}        | Status     |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| ALT2            | 0x0       |
-| ALT1            | 0x1       |
-|                 |
+#### Parameters (Set validate public key mode between ALT1 and ALT2)
 
-#### Return
+- _Validate Mode (1 Byte):_
 
-Status
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | ALT2            | 0x0       |
+    | ALT1            | 0x1       |
+
+#### Return (Set validate public key mode between ALT1 and ALT2)
+
+Returns a status byte.
+
+---
 
 ### Set BD Address
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3F0   | 6          | BD Address     |
-|         |
-
-
-#### Description
-
 Set the device address.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_BD Address (6 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**         | **Return** |
+| ------- | ------- | ------------------------ | ---------------------- | ---------- |
+| 0x3F    | 0x3F0   | 6                        | {BD Address}           | Status     |
 
-| **Description** | **Value**      |
-| --------------- | -------------- |
-| Device Address  | {0x00-0xFF, …} |
-|                 |
+#### Parameters (Set BD Address)
 
+- _BD Address (6 Bytes):_
 
-#### Return
+    | **Description** | **Value**      |
+    | --------------- | -------------- |
+    | Device Address  | {0x00-0xFF, …} |
 
-Status
+#### Return (Set BD Address)
+
+Returns a status byte.
+
+---
 
 ### Get Random Address
 
-| **OCF** | **Length** | **Parameters** | **Return** |
-| ------- | ---------- | -------------- | ---------- |
-| 0x3F1   | 0          | N/A            | BD Address |
-|         |
-#### Description
-
 Get random device address.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_BD Address (6 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**     |
+| ------- | ------- | ------------------------ | --------------- | -------------- |
+| 0x3F    | 0x3F1   | 0                        | N/A             | {BD Address}   |
 
-| **Description** | **Value**      |
-| --------------- | -------------- |
-| Device Address  | {0x00-0xFF, …} |
-|                 |
+#### Return (Get Random Address)
+
+- _BD Address (6 Bytes):_
+
+    | **Description** | **Value**      |
+    | --------------- | -------------- |
+    | Device Address  | {0x00-0xFF, …} |
+
+---
+
 ### Set Local Feature
-
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3F2   | 8          | Local Features |
-|         |
-
-
-#### Description
 
 Set local supported features.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Local Features (8 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**     | **Return** |
+| ------- | ------- | ------------------------ | ------------------ | ---------- |
+| 0x3F    | 0x3F2   | 8                        | {Local Features}   | Status     |
 
-| **Description**        | **Value**                 |
-| ---------------------- | ------------------------- |
-| Mask of Local Features | 0x00 – 0xFFFFFFFFFFFFFFFF |
-|                        |
+#### Parameters (Set Local Feature)
 
+- _Local Features (8 Bytes):_
 
-#### Return
+    | **Description**        | **Value**                 |
+    | ---------------------- | ------------------------- |
+    | Mask of Local Features | 0x00 – 0xFFFFFFFFFFFFFFFF |
 
-Status
+#### Return (Set Local Feature)
+
+- _Status (1 Byte)_ : Status of the Set Local Feature command execution.
+
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Set Operational Flags
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3F3   | 5          | Flags, Enable  |
-|         |
+Enable or Disable Operational Flags.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**     | **Return** |
+| ------- | ------- | ------------------------ | ------------------ | ---------- |
+| 0x3F    | 0x3F3   | 5                        | {Flags, Enable}    | Status     |
 
-Enable Disable Operational Flags
+#### Parameters (Set Operational Flags)
 
-#### Parameters
+- _Flags (4 Bytes):_
 
-_Flags_ (4 Bytes):
+    | **Description**            | **Value**        |
+    | -------------------------- | ---------------- |
+    | Flags to enable or disable | 0x0 – 0xFFFFFFFF |
 
-| **Description**            | **Value**        |
-| -------------------------- | ---------------- |
-| Flags to enable or disable | 0x0 – 0xFFFFFFFF |
-|                            |
+- _Enable (1 Byte):_
 
-_Enable (1 Byte):_
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x00      |
+    | Enable          | 0x01      |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x00      |
-| Enable          | 0x01      |
-|                 |
+#### Return (Set Operational Flags)
 
-#### Return
+Returns a status byte.
 
-Status
+---
 
 ### Get PDU Filter Statistics
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3F4   | 0          | N/A            |
-|         |
-
-#### Description
-
 Get the accumulated PDU filter statistics.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_Fail PDU Type Filter_ (2 Bytes):
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3F4   | 0                        | N/A            | Statistics |
 
-| **Description**                        | **Value**    |
-| -------------------------------------- | ------------ |
-| Number of PDUs failing PDU type filter | 0x0 – 0xFFFF |
-|                                        |
+#### Return (PDU Filter Statistics)
 
-_Pass PDU Type Filter_ (2 Bytes):
+- _Fail PDU Type Filter_ (2 Bytes) :
 
-| **Description**                        | **Value**    |
-| -------------------------------------- | ------------ |
-| Number of PDUs passing PDU type filter | 0x0 – 0xFFFF |
-|                                        |
+    | **Description**                        | **Value**    |
+    | -------------------------------------- | ------------ |
+    | Number of PDUs failing PDU type filter | 0x0 – 0xFFFF |
 
-_Fail Whitelist Filter_ (2 Bytes):
+- _Pass PDU Type Filter_ (2 Bytes) :
 
-| **Description**                         | **Value**    |
-| --------------------------------------- | ------------ |
-| Number of PDUs failing whitelist filter | 0x0 – 0xFFFF |
-|                                         |
+    | **Description**                        | **Value**    |
+    | -------------------------------------- | ------------ |
+    | Number of PDUs passing PDU type filter | 0x0 – 0xFFFF |
 
-_Pass Whitelist Filter_ (2 Bytes):
+- _Fail Whitelist Filter_ (2 Bytes) :
 
-| **Description**                         | **Value**    |
-| --------------------------------------- | ------------ |
-| Number of PDUs passing whitelist filter | 0x0 – 0xFFFF |
-|                                         |
+    | **Description**                         | **Value**    |
+    | --------------------------------------- | ------------ |
+    | Number of PDUs failing whitelist filter | 0x0 – 0xFFFF |
 
-_Fail Peer Address Match_ (2 Bytes):
+- _Pass Whitelist Filter_ (2 Bytes) :
 
-| **Description**                           | **Value**    |
-| ----------------------------------------- | ------------ |
-| Number of PDUS failing peer address match | 0x0 – 0xFFFF |
-|                                           |
+    | **Description**                          | **Value**    |
+    | ---------------------------------------- | ------------ |
+    | Number of PDUs passing whitelist filter | 0x0 – 0xFFFF |
 
-_Pass Peer Address Match_ (2 Bytes):
+- _Fail Peer Address Match_ (2 Bytes) :
 
-| **Description**                           | **Value**    |
-| ----------------------------------------- | ------------ |
-| Number of PDUs passing peer address match | 0x0 – 0xFFFF |
-|                                           |
+    | **Description**                           | **Value**    |
+    | ----------------------------------------- | ------------ |
+    | Number of PDUs failing peer address match | 0x0 – 0xFFFF |
 
-_Fail Local Address Match_ (2 Bytes):
+- _Pass Peer Address Match_ (2 Bytes) :
 
-| **Description**                            | **Value**    |
-| ------------------------------------------ | ------------ |
-| Number of PDUS failing local address match | 0x0 – 0xFFFF |
-|                                            |
+    | **Description**                           | **Value**    |
+    | ----------------------------------------- | ------------ |
+    | Number of PDUs passing peer address match | 0x0 – 0xFFFF |
 
-_Pass local Address Match_ (2 Bytes):
+- _Fail Local Address Match_ (2 Bytes) :
 
-| **Description**                            | **Value**    |
-| ------------------------------------------ | ------------ |
-| Number of PDUs passing local address match | 0x0 – 0xFFFF |
-|                                            |
+    | **Description**                            | **Value**    |
+    | ------------------------------------------ | ------------ |
+    | Number of PDUs failing local address match | 0x0 – 0xFFFF |
 
-_Fail Peer RPA Verify_ (2 Bytes):
+- _Pass Local Address Match_ (2 Bytes) :
 
-| **Description**                          | **Value**    |
-| ---------------------------------------- | ------------ |
-| Number of peer RPAs failing verification | 0x0 – 0xFFFF |
-|                                          |
+    | **Description**                            | **Value**    |
+    | ------------------------------------------ | ------------ |
+    | Number of PDUs passing local address match | 0x0 – 0xFFFF |
 
-_Pass Peer RPA Verify_ (2 Bytes):
+- _Fail Peer RPA Verify_ (2 Bytes) :
 
-| **Description**                          | **Value**    |
-| ---------------------------------------- | ------------ |
-| Number of peer RPAs passing verification | 0x0 – 0xFFFF |
-|                                          |
+    | **Description**                          | **Value**    |
+    | ---------------------------------------- | ------------ |
+    | Number of peer RPAs failing verification | 0x0 – 0xFFFF |
 
-_Fail Local RPA Verify_ (2 Bytes):
+- _Pass Peer RPA Verify_ (2 Bytes) :
 
-| **Description**                           | **Value**    |
-| ----------------------------------------- | ------------ |
-| Number of local RPAs failing verification | 0x0 – 0xFFFF |
-|                                           |
+    | **Description**                          | **Value**    |
+    | ---------------------------------------- | ------------ |
+    | Number of peer RPAs passing verification | 0x0 – 0xFFFF |
 
-_Pass Local RPA Verify_ (2 Bytes):
+- _Fail Local RPA Verify_ (2 Bytes) :
 
-| **Description**                           | **Value**    |
-| ----------------------------------------- | ------------ |
-| Number of local RPAs passing verification | 0x0 – 0xFFFF |
-|                                           |
+    | **Description**                           | **Value**    |
+    | ----------------------------------------- | ------------ |
+    | Number of local RPAs failing verification | 0x0 – 0xFFFF |
 
-_Fail Peer Private Address_ (2 Bytes):
+- _Pass Local RPA Verify_ (2 Bytes) :
 
-| **Description**                                         | **Value**    |
-| ------------------------------------------------------- | ------------ |
-| Number of peer addresses failing requirement to be RPAs | 0x0 – 0xFFFF |
-|                                                         |
+    | **Description**                           | **Value**    |
+    | ----------------------------------------- | ------------ |
+    | Number of local RPAs passing verification | 0x0 – 0xFFFF |
 
-_Fail Local Private Address_ (2 Bytes):
+- _Fail Peer Private Address_ (2 Bytes) :
 
-| **Description**                                          | **Value**    |
-| -------------------------------------------------------- | ------------ |
-| Number of local addresses failing requirement to be RPAs | 0x0 – 0xFFFF |
-|                                                          |
+    | **Description**                                         | **Value**    |
+    | ------------------------------------------------------- | ------------ |
+    | Number of peer addresses failing requirement to be RPAs | 0x0 – 0xFFFF |
 
-_Fail Peer Address Res Req_ (2 Bytes):
+- _Fail Local Private Address_ (2 Bytes) :
 
-| **Description**                                         | **Value**    |
-| ------------------------------------------------------- | ------------ |
-| Number of PDUs failing required peer address resolution | 0x0 – 0xFFFF |
-|                                                         |
+    | **Description**                                          | **Value**    |
+    | -------------------------------------------------------- | ------------ |
+    | Number of local addresses failing requirement to be RPAs | 0x0 – 0xFFFF |
 
-_Pass Peer Address Res Req_ (2 Bytes):
+- _Fail Peer Address Res Req_ (2 Bytes) :
 
-| **Description**                                         | **Value**    |
-| ------------------------------------------------------- | ------------ |
-| Number of PDUs passing optional peer address resolution | 0x0 – 0xFFFF |
-|                                                         |
+    | **Description**                                         | **Value**    |
+    | ------------------------------------------------------- | ------------ |
+    | Number of PDUs failing required peer address resolution | 0x0 – 0xFFFF |
 
-_Pass Local Address Res Opt._ (2 Bytes):
-| **Description**                                          | **Value**    |
-| -------------------------------------------------------- | ------------ |
-| Number of PDUs passing optional local address resolution | 0x0 – 0xFFFF |
-|                                                          |
+- _Pass Peer Address Res Req_ (2 Bytes) :
 
-_Peer Res Address Pend_ (2 Bytes):
+    | **Description**                                         | **Value**    |
+    | ------------------------------------------------------- | ------------ |
+    | Number of PDUs passing optional peer address resolution | 0x0 – 0xFFFF |
 
-| **Description**                           | **Value**    |
-| ----------------------------------------- | ------------ |
-| Number of peer address resolutions pended | 0x0 – 0xFFFF |
-|                                           |
+- _Pass Local Address Res Opt._ (2 Bytes) :
 
-_Local Res Address Pend_ (2 Bytes):
+    | **Description**                                          | **Value**    |
+    | -------------------------------------------------------- | ------------ |
+    | Number of PDUs passing optional local address resolution | 0x0 – 0xFFFF |
 
-| **Description**                            | **Value**    |
-| ------------------------------------------ | ------------ |
-| Number of local address resolutions pended | 0x0 – 0xFFFF |
-|                                            |
+- _Peer Res Address Pend_ (2 Bytes) :
+
+    | **Description**                           | **Value**    |
+    | ----------------------------------------- | ------------ |
+    | Number of peer address resolutions pended | 0x0 – 0xFFFF |
+
+- _Local Res Address Pend_ (2 Bytes) :
+
+    | **Description**                            | **Value**    |
+    | ------------------------------------------ | ------------ |
+    | Number of local address resolutions pended | 0x0 – 0xFFFF |
+
+---
+
 ### Set Advertising TX Power
-
-| **OCF** | **Length** | **Parameters** | **Return** |
-| ------- | ---------- | -------------- | ---------- |
-| 0x3F5   | 1          | Power          | Status     |
-|         |
-#### Description
 
 Set the TX power used for advertising.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Power (1 Byte, Signed 8-Bit):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3F5   | 1                        | {Power}        | Status     |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Power           | -15 - 6   |
-|                 |
+#### Parameters (Set Advertising TX Power)
 
+- _Power (1 Byte, Signed 8-Bit):_
 
-#### Return
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Power           | -15 - 6   |
 
-Status
+#### Return (Set Advertising TX Power)
+
+Returns a status byte.
+
+---
 
 ### Set Connection TX Power
 
-| **OCF** | **Length** | **Parameters** | **Return** |
-| ------- | ---------- | -------------- | ---------- |
-| 0x3F6   | 1          | Power          | Status     |
-|         |
-#### Description
-
 Set the TX power used for connections.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Power (1 Byte, Signed 8-Bit):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3F6   | 1                        | {Power}        | Status     |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Power           | -15 - 6   |
-|                 |
+#### Parameters (Set Connection TX Power)
 
+- _Power (1 Byte, Signed 8-Bit):_
 
-#### Return
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Power           | -15 - 6   |
 
-Status
+#### Return (Set Connection TX Power)
+
+Returns a status byte.
+
+---
 
 ### Set Encryption Mode
 
-| **OCF** | **Length** | **Parameters**                  |
-| ------- | ---------- | ------------------------------- |
-| 0x3F7   | 4          | Enable Auth, Nonce Mode, Handle |
-|         |
-
-
-#### Description
-
 Set encryption mode for a given connection.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Enable Auth (1 Byte):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**           | **Return** |
+| ------- | ------- | ------------------------ | ------------------------ | ---------- |
+| 0x3F    | 0x3F7   | 4                        | {Enable Auth, Nonce Mode, Handle} | Status     |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x0       |
-| Enable          | 0x1       |
-|                 |
+#### Parameters (Set Encryption Mode)
 
+- _Enable Auth (1 Byte):_
 
-_Handle (2 Bytes):_
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x0       |
+    | Enable          | 0x1       |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+- _Handle (2 Bytes):_
 
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-#### Return
+#### Return (Set Encryption Mode)
 
-Status
+Returns a status byte.
+
+---
 
 ### Set Channel Map
 
-| **OCF** | **Length** | **Parameters**      |
-| ------- | ---------- | ------------------- |
-| 0x3F8   | 6          | Handle, Channel Map |
-|         |
+Set the channel map.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**             | **Return** |
+| ------- | ------- | ------------------------ | -------------------------- | ---------- |
+| 0x3F    | 0x3F8   | 6                        | {Handle, Channel Map}      | Status     |
 
-Set the channel map
+#### Parameters (Set Channel Map)
 
-#### Parameters
+- _Handle (2 Bytes):_
 
-_Handle (2 Bytes):_
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+- _Channel Map (4 Bytes):_
 
+    | **Description** | **Value**         |
+    | --------------- | ----------------- |
+    | Channel Map     | 0x00 – 0xFFFFFFFF |
 
-_Channel Map (4 Bytes):_
+#### Return (Set Channel Map)
 
-| **Description** | **Value**         |
-| --------------- | ----------------- |
-| Channel Map     | 0x00 – 0xFFFFFFFF |
-|                 |
+Returns a status byte.
 
-#### Return
-
-Status
+---
 
 ### Set Diagnostic Mode
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3F9   | 1          | Enable         |
-|         |
+Enable/Disable PAL System Assert Trap.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3F9   | 1                        | {Enable}        | Status     |
 
-Enable/Disable PAL System Assert Trap
+#### Parameters (Set Diagnostic Mode)
 
-#### Parameters
+- _Enable (1 Byte):_
 
-_Enable (1 Byte):_
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x0       |
+    | Enable          | 0x1       |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x0       |
-| Enable          | 0x1       |
-|                 |
+#### Return (Set Diagnostic Mode)
 
+Returns a status byte.
 
-#### Return
-
-Status
+---
 
 ### Enable Sniffer Packet Forwarding
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3CD   | 1          | Enable         |
-|         |
-
-
-#### Description
-
 Enable/Disable sniffer packet forwarding.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Enable (1 Byte):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3CD   | 1                        | {Enable}        | Status     |
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x0       |
-| Enable          | 0x1       |
-|                 |
+#### Parameters (Enable Sniffer Packet Forwarding)
 
+- _Enable (1 Byte):_
 
-#### Return
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x0       |
+    | Enable          | 0x1       |
 
-Status
+#### Return (Enable Sniffer Packet Forwarding)
+
+Returns a status byte.
+
+---
+
 
 ### Get Memory Stats
+
+Read memory and system statistics.
+
+- Packet type: [Command Packet](#command-packet)
 
 | **OCF** | **Length** | **Parameters** |
 | ------- | ---------- | -------------- |
 | 0x3FA   | 0          | N/A            |
-|         |
-
-#### Description
-
-Read memory and system statistics.
 
 #### Return
 
-_Stack Usage (2 Byte):_
+- _Stack Usage (2 Byte):_
 
-| **Description**               | **Value**    |
-| ----------------------------- | ------------ |
-| Number of bytes used by stack | 0x0 – 0xFFFF |
-|                               |
-
-
-_Sys Assert Count (2 Byte):_
-
-| **Description**                | **Value**    |
-| ------------------------------ | ------------ |
-| Number of times assertions hit | 0x0 – 0xFFFF |
-|                                |
-
-_Free Memory (4 Bytes):_
-
-| **Description**             | **Value**        |
-| --------------------------- | ---------------- |
-| Memory free for stack usage | 0x0 – 0xFFFFFFFF |
-|                             |
-
-_Used Memory (4 Bytes):_
-
-| **Description**      | **Value**         |
-| -------------------- | ----------------- |
-| Memory used by stack | 0x00 – 0xFFFFFFFF |
-|                      |
-
-_Max Connections (2 Bytes):_
-
-| **Description**                   | **Value**                       |
-| --------------------------------- | ------------------------------- |
-| Number of max connections allowed | 0x00 – MAX\_NUMBER\_CONNECTIONS |
-|                                   |
-
-_Connection Context Size (2 Bytes):_
-
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| Number of bytes used for connection context | 0x00 – 0xFFFF |
-|                                             |
-
-_CS Watermark Level (2 Bytes):_
-
-| **Description**                                     | **Value**     |
-| --------------------------------------------------- | ------------- |
-| Critical section watermark duration in microseconds | 0x00 – 0xFFFF |
-|                                                     |
-
-_LL Handler Watermark Level (2 Byte):_
-
-| **Description**                            | **Value**     |
-| ------------------------------------------ | ------------- |
-| LL handler watermark level in microseconds | 0x00 – 0xFFFF |
-|                                            |
-
-_Sch Handler Watermark Level (2 Byte):_
-
-| **Description**                                   | **Value**     |
-| ------------------------------------------------- | ------------- |
-| Scheduler handler watermark level in microseconds | 0x00 – 0xFFFF |
-|                                                   |
-
-_LHCI Handler Watermark Level (2 Byte):_
-
-| **Description**                              | **Value**     |
-| -------------------------------------------- | ------------- |
-| LHCI handler watermark level in microseconds | 0x00 – 0xFFFF |
-|                                              |
-
-_Max Adv Sets (2 Bytes):_
-
-| **Description**                    | **Value**     |
-| ---------------------------------- | ------------- |
-| Maximum number of advertising sets | 0x00 – 0xFFFF |
-|                                    |
-
-_Adv Set Context Size (2 Bytes):_
-
-| **Description**                          | **Value**     |
-| ---------------------------------------- | ------------- |
-| Size of advertising set context in bytes | 0x00 – 0xFFFF |
-|                                          |
-
-_Ext Scan Max (2 Bytes):_
-
-| **Description**                     | **Value**    |
-| ----------------------------------- | ------------ |
-| Maximum number of extended scanners | 0x0 – 0xFFFF |
-
-_Ext Scan Context Size (2 Bytes):_
-
-| **Description**                                     | **Value**     |
-| --------------------------------------------------- | ------------- |
-| Size of context size for extended scanners in bytes | 0x00 – 0xFFFF |
-|                                                     |
-
-_Max Num Extended Init (2 Bytes):_
-
-| **Description**                        | **Value**     |
-| -------------------------------------- | ------------- |
-| maximum number of extended initiators. | 0x00 – 0xFFFF |
-|                                        |
-
-_Ext Init Context Size (2 Byte):_
-
-| **Description**                                       | **Value**     |
-| ----------------------------------------------------- | ------------- |
-| Size of context size for extended initiators in bytes | 0x00 – 0xFFFF |
-|                                                       |
-_Max Periodic Scanners (2 Bytes):_
-
-| **Description**                     | **Value**   |
-| ----------------------------------- | ----------- |
-| Maximum number of periodic scanners | 0x00-0xFFFF |
-|                                     |
-
-_Periodic Scanners Context Size(2 Bytes):_
-
-| **Description**                            | **Value**   |
-| ------------------------------------------ | ----------- |
-| Context size of periodic scanners in bytes | 0x00-0xFFFF |
-|                                            |
-
-_Max CIG (2 Bytes):_
-
-| **Description**       | **Value**   |
-| --------------------- | ----------- |
-| Maximum number of CIG | 0x00-0xFFFF |
-|                       |
-
-_CIG Context Size (2 Bytes):_
-
-| **Description**              | **Value**   |
-| ---------------------------- | ----------- |
-| Context size of CIG in bytes | 0x00-0xFFFF |
-|                              |
-_Max CIS (2 Bytes):_
-
-| **Description**       | **Value**   |
-| --------------------- | ----------- |
-| Maximum number of CIS | 0x00-0xFFFF |
-|                       |
+    | **Description**               | **Value**    |
+    | ----------------------------- | ------------ |
+    | Number of bytes used by stack | 0x0 – 0xFFFF |
 
 
-_CIS Context Size (2 Bytes):_
+- _Sys Assert Count (2 Byte):_
 
-| **Description**              | **Value**   |
-| ---------------------------- | ----------- |
-| Context size of CIS in bytes | 0x00-0xFFFF |
-|                              |
+    | **Description**                | **Value**    |
+    | ------------------------------ | ------------ |
+    | Number of times assertions hit | 0x0 – 0xFFFF |
+
+- _Free Memory (4 Bytes):_
+
+    | **Description**             | **Value**        |
+    | --------------------------- | ---------------- |
+    | Memory free for stack usage | 0x0 – 0xFFFFFFFF |
+
+- _Used Memory (4 Bytes):_
+
+    | **Description**      | **Value**         |
+    | -------------------- | ----------------- |
+    | Memory used by stack | 0x00 – 0xFFFFFFFF |
+
+- _Max Connections (2 Bytes):_
+
+    | **Description**                   | **Value**                       |
+    | --------------------------------- | ------------------------------- |
+    | Number of max connections allowed | 0x00 – MAX\_NUMBER\_CONNECTIONS |
+
+- _Connection Context Size (2 Bytes):_
+
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | Number of bytes used for connection context | 0x00 – 0xFFFF |
+
+- _CS Watermark Level (2 Bytes):_
+
+    | **Description**                                     | **Value**     |
+    | --------------------------------------------------- | ------------- |
+    | Critical section watermark duration in microseconds | 0x00 – 0xFFFF |
+
+- _LL Handler Watermark Level (2 Byte):_
+
+    | **Description**                            | **Value**     |
+    | ------------------------------------------ | ------------- |
+    | LL handler watermark level in microseconds | 0x00 – 0xFFFF |
+
+- _Sch Handler Watermark Level (2 Byte):_
+
+    | **Description**                                   | **Value**     |
+    | ------------------------------------------------- | ------------- |
+    | Scheduler handler watermark level in microseconds | 0x00 – 0xFFFF |
+
+- _LHCI Handler Watermark Level (2 Byte):_
+
+    | **Description**                              | **Value**     |
+    | -------------------------------------------- | ------------- |
+    | LHCI handler watermark level in microseconds | 0x00 – 0xFFFF |
+
+- _Max Adv Sets (2 Bytes):_
+
+    | **Description**                    | **Value**     |
+    | ---------------------------------- | ------------- |
+    | Maximum number of advertising sets | 0x00 – 0xFFFF |
+
+- _Adv Set Context Size (2 Bytes):_
+
+    | **Description**                          | **Value**     |
+    | ---------------------------------------- | ------------- |
+    | Size of advertising set context in bytes | 0x00 – 0xFFFF |
+
+- _Ext Scan Max (2 Bytes):_
+
+    | **Description**                     | **Value**    |
+    | ----------------------------------- | ------------ |
+    | Maximum number of extended scanners | 0x0 – 0xFFFF |
+
+- _Ext Scan Context Size (2 Bytes):_
+
+    | **Description**                                     | **Value**     |
+    | --------------------------------------------------- | ------------- |
+    | Size of context size for extended scanners in bytes | 0x00 – 0xFFFF |
+
+- _Max Num Extended Init (2 Bytes):_
+
+    | **Description**                        | **Value**     |
+    | -------------------------------------- | ------------- |
+    | maximum number of extended initiators. | 0x00 – 0xFFFF |
+
+- _Ext Init Context Size (2 Byte):_
+
+    | **Description**                                       | **Value**     |
+    | ----------------------------------------------------- | ------------- |
+    | Size of context size for extended initiators in bytes | 0x00 – 0xFFFF |
+
+- _Max Periodic Scanners (2 Bytes):_
+
+    | **Description**                     | **Value**   |
+    | ----------------------------------- | ----------- |
+    | Maximum number of periodic scanners | 0x00-0xFFFF |
+
+- _Periodic Scanners Context Size(2 Bytes):_
+
+    | **Description**                            | **Value**   |
+    | ------------------------------------------ | ----------- |
+    | Context size of periodic scanners in bytes | 0x00-0xFFFF |
+
+- _Max CIG (2 Bytes):_
+
+    | **Description**       | **Value**   |
+    | --------------------- | ----------- |
+    | Maximum number of CIG | 0x00-0xFFFF |
+
+- _CIG Context Size (2 Bytes):_
+
+    | **Description**              | **Value**   |
+    | ---------------------------- | ----------- |
+    | Context size of CIG in bytes | 0x00-0xFFFF |
+- _Max CIS (2 Bytes):_
+
+    | **Description**       | **Value**   |
+    | --------------------- | ----------- |
+    | Maximum number of CIS | 0x00-0xFFFF |
+
+- _CIS Context Size (2 Bytes):_
+
+    | **Description**              | **Value**   |
+    | ---------------------------- | ----------- |
+    | Context size of CIS in bytes | 0x00-0xFFFF |
+
+---
+
 ### Get Advertising Stats
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3FB   | 0          | N/A            |
-|         |
-#### Description
+Get the accumulated advertising statistics.
 
-Get the accumulated adverting stats.
+- Packet type: [Command Packet](#command-packet)
 
-#### Return
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3FB   | 0                        | N/A            | Advertising Stats |
 
-_TX ADV (4 Bytes):_
+#### Return (Advertising Stats)
 
-| **Description**                    | **Value**         |
-| ---------------------------------- | ----------------- |
-| Number of sent advertising packets | 0x00 – 0xFFFFFFFF |
-|                                    |
+- _TX ADV (4 Bytes):_
 
-_RX Req (4 Bytes):_
+    | **Description**                    | **Value**         |
+    | ---------------------------------- | ----------------- |
+    | Number of sent advertising packets | 0x00 – 0xFFFFFFFF |
 
-| **Description**                                      | **Value**         |
-| ---------------------------------------------------- | ----------------- |
-| Number of successfully received advertising requests | 0x00 – 0xFFFFFFFF |
-|                                                      |
+- _RX Req (4 Bytes):_
 
+    | **Description**                                      | **Value**         |
+    | ---------------------------------------------------- | ----------------- |
+    | Number of successfully received advertising requests | 0x00 – 0xFFFFFFFF |
 
-_RX Req CRC (4 Bytes):_
+- _RX Req CRC (4 Bytes):_
 
-| **Description**                                         | **Value**         |
-| ------------------------------------------------------- | ----------------- |
-| Number of received advertising requests with CRC errors | 0x00 – 0xFFFFFFFF |
-|                                                         |
+    | **Description**                                         | **Value**         |
+    | ------------------------------------------------------- | ----------------- |
+    | Number of received advertising requests with CRC errors | 0x00 – 0xFFFFFFFF |
 
+- _RX Req Timeout (4 Bytes):_
 
-_RX Req Timeout (4 Bytes):_
+    | **Description**                                                     | **Value**         |
+    | ------------------------------------------------------------------- | ----------------- |
+    | Number of timed out received advertising requests (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-| **Description**                                                     | **Value**         |
-| ------------------------------------------------------------------- | ----------------- |
-| Number of timed out received advertising requests (receive timeout) | 0x00 – 0xFFFFFFFF |
-|                                                                     |
+- _TX RSP (4 Bytes):_
 
+    | **Description**                 | **Value**         |
+    | ------------------------------- | ----------------- |
+    | Number of sent response packets | 0x00 – 0xFFFFFFFF |
 
-_TX RSP (4 Bytes):_
+- _Err ADV (4 Bytes):_
 
-| **Description**                 | **Value**         |
-| ------------------------------- | ----------------- |
-| Number of sent response packets | 0x00 – 0xFFFFFFFF |
-|                                 |
+    | **Description**                          | **Value**         |
+    | ---------------------------------------- | ----------------- |
+    | Number of advertising transaction errors | 0x00 – 0xFFFFFFFF |
 
+- _RX Setup (2 Bytes):_
 
-_Err ADV (4 Bytes):_
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                          | **Value**         |
-| ---------------------------------------- | ----------------- |
-| Number of advertising transaction errors | 0x00 – 0xFFFFFFFF |
-|                                          |
+- _TX Setup (2 Bytes):_
 
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-_RX Setup (2 Bytes):_
+- _RX ISR (2 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
-|                                           |
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
-_TX Setup (2 Bytes):_
+- _TX ISR (2 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
-|                                           |
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
-
-_RX ISR (2 Bytes):_
-
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
-|                                             |
-
-
-_TX ISR (2 Bytes):_
-
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
-|                                             |
-
+---
 
 ### Get Scan Stats
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3FC   | 0          | N/A            |
-|         |
-#### Description
-
 Get the statistics captured during scanning.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_RX ADV (4 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3F    | 0x3FC   | 0                        | N/A            | Scan Stats  |
 
-| **Description**                                     | **Value**         |
-| --------------------------------------------------- | ----------------- |
-| Number of successfully received advertising packets | 0x00 – 0xFFFFFFFF |
-|                                                     |
+#### Return (Scan Stats)
 
+- _RX ADV (4 Bytes):_
 
-_RX ADV CRC (4 Bytes):_
+    | **Description**                                     | **Value**         |
+    | --------------------------------------------------- | ----------------- |
+    | Number of successfully received advertising packets | 0x00 – 0xFFFFFFFF |
 
-| **Description**                                        | **Value**         |
-| ------------------------------------------------------ | ----------------- |
-| Number of received advertising packets with CRC errors | 0x00 – 0xFFFFFFFF |
-|                                                        |
+- _RX ADV CRC (4 Bytes):_
 
+    | **Description**                                        | **Value**         |
+    | ------------------------------------------------------ | ----------------- |
+    | Number of received advertising packets with CRC errors | 0x00 – 0xFFFFFFFF |
 
-_RX ADV Timeout (4 Bytes):_
+- _RX ADV Timeout (4 Bytes):_
 
-| **Description**                                           | **Value**         |
-| --------------------------------------------------------- | ----------------- |
-| Number of timed out advertising packets (receive timeout) | 0x00 – 0xFFFFFFFF |
-|                                                           |
+    | **Description**                                           | **Value**         |
+    | --------------------------------------------------------- | ----------------- |
+    | Number of timed out advertising packets (receive timeout) | 0x00 – 0xFFFFFFFF |
 
+- _TX Req (4 Bytes):_
 
-_TX Req (4 Bytes):_
+    | **Description**                     | **Value**         |
+    | ----------------------------------- | ----------------- |
+    | Number of sent advertising requests | 0x00 – 0xFFFFFFFF |
 
-| **Description**                     | **Value**         |
-| ----------------------------------- | ----------------- |
-| Number of sent advertising requests | 0x00 – 0xFFFFFFFF |
-|                                     |
+- _RX RSP (4 Bytes):_
 
+    | **Description**                                              | **Value**         |
+    | ------------------------------------------------------------ | ----------------- |
+    | Number of successfully received advertising response packets | 0x00 – 0xFFFFFFFF |
 
-_RX RSP (4 Bytes):_
+- _RX RSP CRC (4 Bytes):_
 
-| **Description**                                              | **Value**         |
-| ------------------------------------------------------------ | ----------------- |
-| Number of successfully received advertising response packets | 0x00 – 0xFFFFFFFF |
-|                                                              |
+    | **Description**                                                 | **Value**         |
+    | --------------------------------------------------------------- | ----------------- |
+    | Number of received advertising response packets with CRC errors | 0x00 – 0xFFFFFFFF |
 
+- _RX RSP Timeout (4 Bytes):_
 
-_RX RSP CRC (4 Bytes):_
+    | **Description**                                                    | **Value**         |
+    | ------------------------------------------------------------------ | ----------------- |
+    | Number of timed out advertising response packets (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-| **Description**                                                 | **Value**         |
-| --------------------------------------------------------------- | ----------------- |
-| Number of received advertising response packets with CRC errors | 0x00 – 0xFFFFFFFF |
-|                                                                 |
+- _Err Scan (4 Bytes):_
 
+    | **Description**                   | **Value**         |
+    | --------------------------------- | ----------------- |
+    | Number of scan transaction errors | 0x00 – 0xFFFFFFFF |
 
-_RX RSP Timeout (4 Bytes):_
+- _RX Setup (2 Bytes):_
 
-| **Description**                                                    | **Value**         |
-| ------------------------------------------------------------------ | ----------------- |
-| Number of timed out advertising response packets (receive timeout) | 0x00 – 0xFFFFFFFF |
-|                                                                    |
+    | **Description**                           | **Value**         |
+    | ----------------------------------------- | ----------------- |
+    | RX packet setup watermark in microseconds | 0x00 – 0xFFFFFFFF |
 
+- _TX Setup (2 Bytes):_
 
-_Err Scan (4 Bytes):_
+    | **Description**                           | **Value**         |
+    | ----------------------------------------- | ----------------- |
+    | TX packet setup watermark in microseconds | 0x00 – 0xFFFFFFFF |
 
-| **Description**                   | **Value**         |
-| --------------------------------- | ----------------- |
-| Number of scan transaction errors | 0x00 – 0xFFFFFFFF |
-|                                   |
+- _RX ISR (2 Bytes):_
 
+    | **Description**                             | **Value**         |
+    | ------------------------------------------- | ----------------- |
+    | RX ISR processing watermark in microseconds | 0x00 – 0xFFFFFFFF |
 
-_RX Setup (2 Bytes):_
+- _TX ISR (2 Bytes):_
 
-| **Description**                           | **Value**         |
-| ----------------------------------------- | ----------------- |
-| RX packet setup watermark in microseconds | 0x00 – 0xFFFFFFFF |
-|                                           |
+    | **Description**                             | **Value**         |
+    | ------------------------------------------- | ----------------- |
+    | TX ISR processing watermark in microseconds | 0x00 – 0xFFFFFFFF |
 
+---
 
-_TX Setup (2 Bytes):_
-
-| **Description**                           | **Value**         |
-| ----------------------------------------- | ----------------- |
-| TX packet setup watermark in microseconds | 0x00 – 0xFFFFFFFF |
-|                                           |
-
-_RX ISR (2 Bytes):_
-
-| **Description**                             | **Value**         |
-| ------------------------------------------- | ----------------- |
-| RX ISR processing watermark in microseconds | 0x00 – 0xFFFFFFFF |
-|                                             |
-
-_TX ISR (2 Bytes):_
-
-| **Description**                             | **Value**         |
-| ------------------------------------------- | ----------------- |
-| TX ISR processing watermark in microseconds | 0x00 – 0xFFFFFFFF |
-|                                             |
 ### Get Connection Stats
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3FD   | 0          | N/A            |
-|         |
-#### Description
+Get the statistics captured during a connection.
 
-Get the statistics captured during connection.
+- Packet type: [Command Packet](#command-packet)
 
-#### Return
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**     |
+| ------- | ------- | ------------------------ | --------------- | -------------- |
+| 0x3F    | 0x3FD   | 0                        | N/A             | Connection Stats |
 
-_RX Data (4 Bytes)_
+#### Return (Connection Stats)
 
-| **Description**                              | **Value**         |
-| -------------------------------------------- | ----------------- |
-| Number of successfully received data packets | 0x00 - 0xFFFFFFFF |
-|                                              |
+- _RX Data (4 Bytes):_
 
+    | **Description**                              | **Value**         |
+    | -------------------------------------------- | ----------------- |
+    | Number of successfully received data packets | 0x00 - 0xFFFFFFFF |
 
-_RX Data CRC (4 Bytes)_
+- _RX Data CRC (4 Bytes):_
 
-| **Description**                                 | **Value**         |
-| ----------------------------------------------- | ----------------- |
-| Number of received data packets with CRC errors | 0x00 - 0xFFFFFFFF |
-|                                                 |
+    | **Description**                                 | **Value**         |
+    | ----------------------------------------------- | ----------------- |
+    | Number of received data packets with CRC errors | 0x00 - 0xFFFFFFFF |
 
+- _RX Data Timeout (4 Bytes):_
 
-_RX Data Timeout (4 Bytes)_
+    | **Description**                                    | **Value**         |
+    | -------------------------------------------------- | ----------------- |
+    | Number of timed out data packets (receive timeout) | 0x00 - 0xFFFFFFFF |
 
-| **Description**                                    | **Value**         |
-| -------------------------------------------------- | ----------------- |
-| Number of timed out data packets (receive timeout) | 0x00 - 0xFFFFFFFF |
-|                                                    |
+- _TX Data (4 Bytes):_
 
+    | **Description**             | **Value**         |
+    | --------------------------- | ----------------- |
+    | Number of sent data packets | 0x00 - 0xFFFFFFFF |
 
-_TX Data (4 Bytes)_
+- _Err Data (4 Bytes):_
 
-| **Description**             | **Value**         |
-| --------------------------- | ----------------- |
-| Number of sent data packets | 0x00 - 0xFFFFFFFF |
-|                             |
+    | **Description**                   | **Value**         |
+    | --------------------------------- | ----------------- |
+    | Number of data transaction errors | 0x00 - 0xFFFFFFFF |
 
+- _RX Setup (2 Bytes):_
 
-_Err Data (4 Bytes)_
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 - 0xFFFF |
 
-| **Description**                   | **Value**         |
-| --------------------------------- | ----------------- |
-| Number of data transaction errors | 0x00 - 0xFFFFFFFF |
-|                                   |
+- _TX Setup (2 Bytes):_
 
-_RX Setup (2 Bytes)_
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 - 0xFFFF |
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 - 0xFFFF |
-|                                           |
+- _RX ISR (2 Bytes):_
 
-_TX Setup (2 Bytes)_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 - 0xFFFF |
-|                                           |
+- _TX ISR (2 Bytes):_
 
-_RX ISR (2 Bytes)_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
-|                                             |
-
-_TX ISR (2 Bytes)_
-
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
-|                                             |
-
+---
 
 ### Get Test Stats
 
-| **OCF** | **Length** | **Parameters** | **Return**                        |
-| ------- | ---------- | -------------- | --------------------------------- |
-| 0x3FE   | 0          | N/A            | Test stats in order as documented |
-|         |
-#### Description
-
 Get the statistics captured during test mode.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_RX Data (4 Bytes)_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**                        |
+| ------- | ------- | ------------------------ | -------------- | --------------------------------- |
+| 0x3F    | 0x3FE   | 0                        | N/A            | Test stats in order as documented |
 
-| **Description**                              | **Value**         |
-| -------------------------------------------- | ----------------- |
-| Number of successfully received data packets | 0x00 - 0xFFFFFFFF |
-|                                              |
+#### Return (Get Test Stats)
 
+- _RX Data (4 Bytes)_
 
-_RX Data CRC (4 Bytes)_
+    | **Description**                              | **Value**         |
+    | -------------------------------------------- | ----------------- |
+    | Number of successfully received data packets | 0x00 - 0xFFFFFFFF |
 
-| **Description**                                 | **Value**         |
-| ----------------------------------------------- | ----------------- |
-| Number of received data packets with CRC errors | 0x00 - 0xFFFFFFFF |
-|                                                 |
+- _RX Data CRC (4 Bytes)_
 
+    | **Description**                                 | **Value**         |
+    | ----------------------------------------------- | ----------------- |
+    | Number of received data packets with CRC errors | 0x00 - 0xFFFFFFFF |
 
-_RX Data Timeout (4 Bytes)_
+- _RX Data Timeout (4 Bytes)_
 
-| **Description**                                    | **Value**         |
-| -------------------------------------------------- | ----------------- |
-| Number of timed out data packets (receive timeout) | 0x00 - 0xFFFFFFFF |
-|                                                    |
+    | **Description**                                    | **Value**         |
+    | -------------------------------------------------- | ----------------- |
+    | Number of timed out data packets (receive timeout) | 0x00 - 0xFFFFFFFF |
 
+- _TX Data (4 Bytes)_
 
-_TX Data (4 Bytes)_
+    | **Description**             | **Value**         |
+    | --------------------------- | ----------------- |
+    | Number of sent data packets | 0x00 - 0xFFFFFFFF |
 
-| **Description**             | **Value**         |
-| --------------------------- | ----------------- |
-| Number of sent data packets | 0x00 - 0xFFFFFFFF |
-|                             |
+- _Err Data (4 Bytes)_
 
+    | **Description**                   | **Value**         |
+    | --------------------------------- | ----------------- |
+    | Number of data transaction errors | 0x00 - 0xFFFFFFFF |
 
-_Err Data (4 Bytes)_
+- _RX Setup (2 Bytes)_
 
-| **Description**                   | **Value**         |
-| --------------------------------- | ----------------- |
-| Number of data transaction errors | 0x00 - 0xFFFFFFFF |
-|                                   |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 - 0xFFFF |
 
-_RX Setup (2 Bytes)_
+- _TX Setup (2 Bytes)_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 - 0xFFFF |
-|                                           |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 - 0xFFFF |
 
+- _RX ISR (2 Bytes)_
 
-_TX Setup (2 Bytes)_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 - 0xFFFF |
-|                                           |
+- _TX ISR (2 Bytes)_
 
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
-_RX ISR (2 Bytes)_
-
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
-|                                             |
-
-
-_TX ISR (2 Bytes)_
-
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
-|                                             |
+---
 
 ### Get Pool Stats
 
-| **OCF** | **Length** | **Parameters** | **Return**                        |
-| ------- | ---------- | -------------- | --------------------------------- |
-| 0x3FF   | 0          | N/A            | Pool stats in order as documented |
-|         |
-
-#### Description
-
 Get the memory pool statistics captured during runtime.
 
-**NOTE:** The flag _WSF\_BUF\_STATS_ must be defined to _TRUE_ at compile time
+- Packet type: [Command Packet](#command-packet)
 
-#### Return
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**  | **Return**                         |
+| ------- | ------- | ------------------------ | --------------- | ---------------------------------- |
+| 0x3F    | 0x3FF   | 0                        | N/A             | {Num Pool, {Buf Size, Num Buf, Num Alloc, Max Alloc, Max Req Len} * Num Pool} |
 
-_Num Pool (1 Bytes):_
+#### Return (Get Pool Stats)
 
-| **Description**         | **Value**   |
-| ----------------------- | ----------- |
-| Number of pools defined | 0x00 – 0xFF |
-|                         |
+- _Num Pool (1 Byte):_
 
-**Note:** The rest of the return parameters may be repeated _Num Pool_ times and will be sent in order of the pool number (e.g., pool 0, pool 1, …, pool N-1).
+    | **Description**         | **Value**   |
+    | ----------------------- | ----------- |
+    | Number of pools defined | 0x00 – 0xFF |
 
-_Buf Size (2 Bytes):_
+- _Pool Stats (variable):_
 
-| **Description**  | **Value**     |
-| ---------------- | ------------- |
-| Pool Buffer Size | 0x00 – 0xFFFF |
-|                  |
-
-_Num Buf (1 Byte):_
-
-| **Description**         | **Value**   |
-| ----------------------- | ----------- |
-| Total Number of buffers | 0x00 – 0xFF |
-|                         |
-
-
-_Num Alloc (1 Byte):_
-
-| **Description**                   | **Value**   |
-| --------------------------------- | ----------- |
-| Number of outstanding allocations | 0x00 – 0xFF |
-|                                   |
-
-_Max Alloc (1 Byte):_
-
-| **Description**           | **Value**   |
-| ------------------------- | ----------- |
-| High allocation watermark | 0x00 – 0xFF |
-|                           |
-
-
-_Max Req Len (2 Bytes):_
-
-| **Description**                 | **Value**     |
-| ------------------------------- | ------------- |
-| Maximum requested buffer length | 0x00 – 0xFFFF |
-|                                 |
-
+    | **Description**                   | **Value**     |
+    | --------------------------------- | ------------- |
+    | _Buf Size (2 Bytes):_             | 0x00 – 0xFFFF |
+    | _Num Buf (1 Byte):_               | 0x00 – 0xFF   |
+    | _Num Alloc (1 Byte):_             | 0x00 – 0xFF   |
+    | _Max Alloc (1 Byte):_             | 0x00 – 0xFF   |
+    | _Max Req Len (2 Bytes):_          | 0x00 – 0xFFFF |
 
 ### Set Additional AuxPtr Offset
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3D0   | 5          | Delay, Handle  |
-|         |
-
-
-#### Description
-
 Set auxiliary packet offset delay.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Delay (4 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**  | **Return** |
+| ------- | ------- | ------------------------ | --------------- | ---------- |
+| 0x3F    | 0x3D0   | 5                        | {Delay, Handle} | Status     |
 
-| **Description**       | **Value**        |
-| --------------------- | ---------------- |
-| Disable               | 0x00             |
-| Delay in microseconds | 0x1 – 0xFFFFFFFF |
-|                       |
+#### Parameters (Set Additional AuxPtr Offset)
 
-_Handle (1 Byte):_
+- _Delay (4 Bytes):_
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+    | **Description**       | **Value**        |
+    | --------------------- | ---------------- |
+    | Disable               | 0x00             |
+    | Delay in microseconds | 0x1 – 0xFFFFFFFF |
 
+- _Handle (1 Byte):_
 
-#### Return
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-Status
+#### Return (Set Additional AuxPtr Offset)
+
+Returns a status byte
+
+---
 
 ### Set Extended Advertising Data Fragmentation
 
-| **OCF** | **Length** | **Parameters**      |
-| ------- | ---------- | ------------------- |
-| 0x3D1   | 2          | Handle, Frag Length |
-|         |
-
-
-#### Description
-
 Set the extended advertising fragmentation length.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Handle (1 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**        | **Return** |
+| ------- | ------- | ------------------------ | --------------------- | ---------- |
+| 0x3D    | 0x3D1   | 2                        | {Handle, Frag Length} | Status     |
 
-| **Description**    | **Value**                     |
-| ------------------ | ----------------------------- |
-| Advertising Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                    |
+#### Parameters (Set Extended Advertising Data Fragmentation)
 
+- _Handle (1 Byte):_
 
-_Frag Length (1 Bytes):_
+    | **Description**    | **Value**                     |
+    | ------------------ | ----------------------------- |
+    | Advertising Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-| **Description**      | **Value** |
-| -------------------- | --------- |
-| Fragmentation Length | 0x00-0xFF |
+- _Frag Length (1 Byte):_
 
-#### Return
+    | **Description**      | **Value** |
+    | -------------------- | --------- |
+    | Fragmentation Length | 0x00-0xFF |
 
-Status
+#### Return (Set Extended Advertising Data Fragmentation)
+
+- _Status (1 Byte)_ : Status of the Set Extended Advertising Data Fragmentation command execution.
+
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Set Extended Advertising PHY Options
 
-| **OCF** | **Length** | **Parameters**                       |
-| ------- | ---------- | ------------------------------------ |
-| 0x3D2   | 3          | Handle, Primary Opt., Secondary Opt. |
-|         |
+Set extended advertising PHY options.
 
+- Packet type: [Command Packet](#command-packet)
 
-#### Description
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                   | **Return** |
+| ------- | ------- | ------------------------ | -------------------------------- | ---------- |
+| 0x3D    | 0x3D2   | 3                        | {Handle, Primary Opt., Secondary Opt.} | Status     |
 
-Set extended advertising PHY options
+#### Parameters (Set Extended Advertising PHY Options)
 
-#### Parameters
+- _Handle (1 Byte):_
 
-_Handle (1 Byte):_
+    | **Description**         | **Value**                     |
+    | ----------------------- | ----------------------------- |
+    | Advertising Handle      | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-| **Description**    | **Value**                     |
-| ------------------ | ----------------------------- |
-| Advertising Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                    |
+- _Primary Opt. (1 Byte):_
 
-_Primary Opt. (1 Byte):_
+    | **Description**                          | **Value** |
+    | ---------------------------------------- | --------- |
+    | Primary advertising channel PHY options. | 0x00-0xFF |
 
-| **Description**                          | **Value** |
-| ---------------------------------------- | --------- |
-| Primary advertising channel PHY options. | 0x00-0xFF |
+- _Secondary Opt. (1 Byte):_
 
-_Secondary Opt. (1 Byte):_
+    | **Description**                            | **Value** |
+    | ------------------------------------------ | --------- |
+    | Secondary advertising channel PHY options. | 0x00-0xFF |
 
-| **Description**                            | **Value** |
-| ------------------------------------------ | --------- |
-| Secondary advertising channel PHY options. | 0x00-0xFF |
+#### Return (Set Extended Advertising PHY Options)
 
-#### Return
+- _Status (1 Byte)_ : Status of the Set Extended Advertising PHY Options command execution.
 
-Status
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
 
-### Set extended Advertising Default PHY Options
+---
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3D3   | 1          | PHY Opt.       |
-|         |
+### Set Extended Advertising Default PHY Options
 
+Set the default TX PHY options for extended advertising slave primary and secondary channel.
 
-#### Description
+- Packet type: [Command Packet](#command-packet)
 
-Set the default TX PHY options for extended adv slave primary and secondary channel.
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**  | **Return** |
+| ------- | ------- | ------------------------ | --------------- | ---------- |
+| 0x3D    | 0x3D3   | 1                        | {PHY Opt.}      | Status     |
 
-#### Parameters
+#### Parameters (Set Extended Advertising Default PHY Options)
 
-_PHY Opt. (1 Byte):_
+- _PHY Opt. (1 Byte):_
 
-| **Description** | **Value**   |
-| --------------- | ----------- |
-| PHY Options     | 0x00 – 0xFF |
-|                 |
+    | **Description** | **Value**   |
+    | --------------- | ----------- |
+    | PHY Options     | 0x00 – 0xFF |
 
-#### Return
+#### Return (Set Extended Advertising Default PHY Options)
 
-Status
+- _Status (1 Byte)_ : Status of the Set Extended Advertising Default PHY Options command execution.
+
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Generate ISO Packets
 
-| **OCF** | **Length** | **Parameters**                     |
-| ------- | ---------- | ---------------------------------- |
-| 0x3D5   | 5          | Handle, Packet Length, Num Packets |
-|         |
-
-#### Description
-
 Generate ISO packets.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Handle (2 Byte):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                     | **Return** |
+| ------- | ------- | ------------------------ | ---------------------------------- | ---------- |
+| 0x3D    | 0x3D5   | 5                        | {Handle, Packet Length, Num Packets} | Status     |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
-|                   |
+#### Parameters (Generate ISO Packets)
 
-_Packet Length (2 Byte):_
+- _Handle (2 Byte):_
 
-| **Description** | **Value**   |
-| --------------- | ----------- |
-| Packet Length   | 0x00-0xFFFF |
-|                 |
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection Handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-_Num Packets (1 Byte):_
+- _Packet Length (2 Byte):_
 
-| **Description**   | **Value** |
-| ----------------- | --------- |
-| Number of packets | 0x00-0xFF |
-|                   |
-#### Return
+    | **Description** | **Value**   |
+    | --------------- | ----------- |
+    | Packet Length   | 0x00-0xFFFF |
 
-Status
+- _Num Packets (1 Byte):_
+
+    | **Description**   | **Value** |
+    | ----------------- | --------- |
+    | Number of packets | 0x00-0xFF |
+
+#### Return (Generate ISO Packets)
+
+- _Status (1 Byte)_ : Status of the Generate ISO Packets command execution.
+
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Get ISO Test Report
 
-| **OCF** | **Length** | **Parameters**                                                                   |
-| ------- | ---------- | -------------------------------------------------------------------------------- |
-| 0x3D6   | 16         | RX ISO Packet Count,RX ISO Octet CountGenerate Packet Count,Generate Octet Count |
-|         |
-
-#### Description
-
 Get statistics captured during ISO test.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_RX ISO Packet Count (4 Byte):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                                                                   | **Return**  |
+| ------- | ------- | ------------------------ | -------------------------------------------------------------------------------- | ----------- |
+| 0x3D    | 0x3D6   | 16                       | {RX ISO Packet Count, RX ISO Octet Count, Generate Packet Count, Generate Octet Count} | Status Code |
 
-| **Description**          | **Value**         |
-| ------------------------ | ----------------- |
-| Receive ISO Packet Count | 0x00 – 0xFFFFFFFF |
-|                          |
+#### Return (Get ISO Test Report)
 
-_RX ISO Octet Count (4 Byte):_
+- _RX ISO Packet Count (4 Byte):_
 
-| **Description**         | **Value**         |
-| ----------------------- | ----------------- |
-| Receive ISO Octet Count | 0x00 – 0xFFFFFFFF |
-|                         |
+    | **Description**          | **Value**         |
+    | ------------------------ | ----------------- |
+    | Receive ISO Packet Count | 0x00 – 0xFFFFFFFF |
 
-_Generate Packet Count (4 Byte):_
+- _RX ISO Octet Count (4 Byte):_
 
-| **Description**           | **Value**         |
-| ------------------------- | ----------------- |
-| Generate ISO Packet Count | 0x00 – 0xFFFFFFFF |
-|                           |
+    | **Description**         | **Value**         |
+    | ----------------------- | ----------------- |
+    | Receive ISO Octet Count | 0x00 – 0xFFFFFFFF |
 
-_Generate Octet Count (4 Byte):_
+- _Generate Packet Count (4 Byte):_
 
-| **Description**          | **Value**         |
-| ------------------------ | ----------------- |
-| Generate ISO Octet Count | 0x00 – 0xFFFFFFFF |
-|                          |
+    | **Description**           | **Value**         |
+    | ------------------------- | ----------------- |
+    | Generate ISO Packet Count | 0x00 – 0xFFFFFFFF |
+
+- _Generate Octet Count (4 Byte):_
+
+    | **Description**          | **Value**         |
+    | ------------------------ | ----------------- |
+    | Generate ISO Octet Count | 0x00 – 0xFFFFFFFF |
+
+---
 
 ### Enable ISO Packet Sink
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3D7   | 1          | Enable         |
-|         |
+Enable or Disable ISO packet sink.
 
-#### Description
+- Packet type: [Command Packet](#command-packet)
 
-Enable/Disable ISO packet sink.
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | ------------------------ | -------------- | ---------- |
+| 0x3D    | 0x3D7   | 1                        | {Enable}       | Status     |
 
-#### Parameters
+#### Parameters (Enable ISO Packet Sink)
 
-_Enable (1 Byte):_
+- _Enable (1 Byte):_
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Disable         | 0x00      |
-| Enable          | 0x01      |
-|                 |
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Disable         | 0x00      |
+    | Enable          | 0x01      |
 
-#### Return
+#### Return (Enable ISO Packet Sink)
 
-Status
+- _Status (1 Byte)_ : Status of the Enable ISO Packet Sink command execution.
+
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Enable Autogenerate ISO Packets
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3D8   | 2          | Packet Length  |
-|         |
-
-#### Description
-
 Enable autogenerate ISO packets.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Packet Length (2 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**   | **Return** |
+| ------- | ------- | ------------------------ | ---------------- | ---------- |
+| 0x3D    | 0x3D8   | 2                        | {Packet Length}  | Status     |
 
-| **Description** | **Value**     |
-| --------------- | ------------- |
-| Disable         | 0x00          |
-| Length          | 0x01 – 0xFFFF |
-|                 |
+#### Parameters (Enable Autogenerate ISO Packets)
 
-#### Return
+- _Packet Length (2 Bytes):_
 
-Status
+    | **Description** | **Value**     |
+    | --------------- | ------------- |
+    | Disable         | 0x00          |
+    | Length          | 0x01 – 0xFFFF |
+
+#### Return (Enable Autogenerate ISO Packets)
+
+- _Status (1 Byte)_ : Status of the Enable Autogenerate ISO Packets command execution.
+
+    | **Return Length (bytes)** | **Value**  |
+    | ------------------------- | ---------- |
+    | 1                         | Status Code |
+
+---
 
 ### Get ISO Connection Statistics
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3D9   | 0          | N/A            |
-|         |
-#### Description
-
 Get statistics captured during ISO connection.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_RX Data (4 Bytes)_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**     |
+| ------- | ------- | ------------------------ | -------------- | -------------- |
+| 0x3E    | 0x3D9   | 0                        | N/A            | RX, TX, Err... |
 
-| **Description**                              | **Value**         |
-| -------------------------------------------- | ----------------- |
-| Number of successfully received data packets | 0x00 - 0xFFFFFFFF |
-|                                              |
+#### Return (Get ISO Connection Statistics)
 
-_RX Data CRC (4 Bytes)_
+- _RX Data (4 Bytes):_
 
-| **Description**                                 | **Value**         |
-| ----------------------------------------------- | ----------------- |
-| Number of received data packets with CRC errors | 0x00 - 0xFFFFFFFF |
-|                                                 |
+    | **Description**                              | **Value**         |
+    | -------------------------------------------- | ----------------- |
+    | Number of successfully received data packets | 0x00 - 0xFFFFFFFF |
 
-_RX Data Timeout (4 Bytes)_
+- _RX Data CRC (4 Bytes):_
 
-| **Description**                                    | **Value**         |
-| -------------------------------------------------- | ----------------- |
-| Number of timed out data packets (receive timeout) | 0x00 - 0xFFFFFFFF |
-|                                                    |
+    | **Description**                                 | **Value**         |
+    | ----------------------------------------------- | ----------------- |
+    | Number of received data packets with CRC errors | 0x00 - 0xFFFFFFFF |
 
-_TX Data (4 Bytes)_
+- _RX Data Timeout (4 Bytes):_
 
-| **Description**             | **Value**         |
-| --------------------------- | ----------------- |
-| Number of sent data packets | 0x00 - 0xFFFFFFFF |
-|                             |
+    | **Description**                                    | **Value**         |
+    | -------------------------------------------------- | ----------------- |
+    | Number of timed out data packets (receive timeout) | 0x00 - 0xFFFFFFFF |
 
-_Err Data (4 Bytes)_
+- _TX Data (4 Bytes):_
 
-| **Description**                   | **Value**         |
-| --------------------------------- | ----------------- |
-| Number of data transaction errors | 0x00 - 0xFFFFFFFF |
-|                                   |
+    | **Description**             | **Value**         |
+    | --------------------------- | ----------------- |
+    | Number of sent data packets | 0x00 - 0xFFFFFFFF |
 
-_RX Setup (2 Bytes)_
+- _Err Data (4 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 - 0xFFFF |
-|                                           |
+    | **Description**                   | **Value**         |
+    | --------------------------------- | ----------------- |
+    | Number of data transaction errors | 0x00 - 0xFFFFFFFF |
 
-_TX Setup (2 Bytes)_
+- _RX Setup (2 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 - 0xFFFF |
-|                                           |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 - 0xFFFF |
 
-_RX ISR (2 Bytes)_
+- _TX Setup (2 Bytes):_
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
-|                                             |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 - 0xFFFF |
 
+- _RX ISR (2 Bytes):_
 
-_TX ISR (2 Bytes)_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
-|                                             |
+- _TX ISR (2 Bytes):_
+
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 - 0xFFFF |
+
+---
+
 ### Get Auxiliary Advertising Statistics
-
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3DA   | 0          | N/A            |
-|         |
-#### Description
 
 Get accumulated auxiliary advertising stats.
 
+- Packet type: [Command Packet](#command-packet)
+
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**  |
+| ------- | ------- | ------------------------ | -------------- | ----------- |
+| 0x3F    | 0x3DA   | 0                        | N/A            | {TX ADV, RX Req, RX Req CRC, RX Req Timeout, TX RSP, TX Chain, Err ADV, RX Setup, TX Setup, RX ISR, TX ISR}  |
+
 #### Return
 
-_TX ADV (4 Bytes):_
+- _TX ADV (4 Bytes):_
 
-| **Description**                    | **Value**         |
-| ---------------------------------- | ----------------- |
-| Number of sent advertising packets | 0x00 – 0xFFFFFFFF |
-|                                    |
+    | **Description**                    | **Value**         |
+    | ---------------------------------- | ----------------- |
+    | Number of sent advertising packets | 0x00 – 0xFFFFFFFF |
 
-_RX Req (4 Bytes):_
+- _RX Req (4 Bytes):_
 
-| **Description**                                      | **Value**         |
-| ---------------------------------------------------- | ----------------- |
-| Number of successfully received advertising requests | 0x00 – 0xFFFFFFFF |
-|                                                      |
+    | **Description**                                      | **Value**         |
+    | ---------------------------------------------------- | ----------------- |
+    | Number of successfully received advertising requests | 0x00 – 0xFFFFFFFF |
 
-_RX Req CRC (4 Bytes):_
+- _RX Req CRC (4 Bytes):_
 
-| **Description**                                         | **Value**         |
-| ------------------------------------------------------- | ----------------- |
-| Number of received advertising requests with CRC errors | 0x00 – 0xFFFFFFFF |
-|                                                         |
+    | **Description**                                         | **Value**         |
+    | ------------------------------------------------------- | ----------------- |
+    | Number of received advertising requests with CRC errors | 0x00 – 0xFFFFFFFF |
 
-_RX Req Timeout (4 Bytes):_
+- _RX Req Timeout (4 Bytes):_
 
-| **Description**                                                     | **Value**         |
-| ------------------------------------------------------------------- | ----------------- |
-| Number of timed out received advertising requests (receive timeout) | 0x00 – 0xFFFFFFFF |
-|                                                                     |
+    | **Description**                                                     | **Value**         |
+    | ------------------------------------------------------------------- | ----------------- |
+    | Number of timed out received advertising requests (receive timeout) | 0x00 – 0xFFFFFFFF |
 
+- _TX RSP (4 Bytes):_
 
-_TX RSP (4 Bytes):_
+    | **Description**                 | **Value**         |
+    | ------------------------------- | ----------------- |
+    | Number of sent response packets | 0x00 – 0xFFFFFFFF |
 
-| **Description**                 | **Value**         |
-| ------------------------------- | ----------------- |
-| Number of sent response packets | 0x00 – 0xFFFFFFFF |
-|                                 |
+- _TX Chain (4 Bytes):_
 
-_TX Chain (4 Bytes):_
+    | **Description**              | **Value**         |
+    | ---------------------------- | ----------------- |
+    | Number of sent chain packets | 0x00 – 0xFFFFFFFF |
 
-| **Description**              | **Value**         |
-| ---------------------------- | ----------------- |
-| Number of sent chain packets | 0x00 – 0xFFFFFFFF |
-|                              |
+- _Err ADV (4 Bytes):_
 
-_Err ADV (4 Bytes):_
+    | **Description**                          | **Value**         |
+    | ---------------------------------------- | ----------------- |
+    | Number of advertising transaction errors | 0x00 – 0xFFFFFFFF |
 
-| **Description**                          | **Value**         |
-| ---------------------------------------- | ----------------- |
-| Number of advertising transaction errors | 0x00 – 0xFFFFFFFF |
-|                                          |
+- _RX Setup (2 Bytes):_
 
-_RX Setup (2 Bytes):_
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
-|                                           |
+- _TX Setup (2 Bytes):_
 
-_TX Setup (2 Bytes):_
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
-|                                           |
+- _RX ISR (2 Bytes):_
 
-_RX ISR (2 Bytes):_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
-|                                             |
+- _TX ISR (2 Bytes):_
 
-_TX ISR (2 Bytes):_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
-|                                             |
- 
+---
 
 ### Get Auxiliary Scanning Statistics
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3DB   | 0          | N/A            |
-|         |
-#### Description
-
 Get accumulated auxiliary scanning statistics.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_RX ADV (4 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return**  |
+| ------- | ------- | -------------------------- | -------------- | ----------- |
+| 0x3F    | 0x3DB   | 0                          | N/A            | Statistics  |
 
-| **Description**                    | **Value**         |
-| ---------------------------------- | ----------------- |
-| Number of sent advertising packets | 0x00 – 0xFFFFFFFF |
-|                                    |
+#### Return (Auxiliary Scanning Statistics)
 
-_RX ADV CRC (4 Bytes):_
+- _RX ADV (4 Bytes):_
 
-| **Description**                                         | **Value**         |
-| ------------------------------------------------------- | ----------------- |
-| Number of received advertising requests with CRC errors | 0x00 – 0xFFFFFFFF |
-|                                                         |
+    | **Description**                    | **Value**         |
+    | ---------------------------------- | ----------------- |
+    | Number of sent advertising packets | 0x00 – 0xFFFFFFFF |
 
-_RX ADV Timeout (4 Bytes):_
+- _RX ADV CRC (4 Bytes):_
 
-| **Description**                                                     | **Value**         |
-| ------------------------------------------------------------------- | ----------------- |
-| Number of timed out received advertising requests (receive timeout) | 0x00 – 0xFFFFFFFF |
-|                                                                     |
+    | **Description**                                         | **Value**         |
+    | ------------------------------------------------------- | ----------------- |
+    | Number of received advertising requests with CRC errors | 0x00 – 0xFFFFFFFF |
 
-_TX REQ (4 Bytes):_
+- _RX ADV Timeout (4 Bytes):_
 
-| **Description**                     | **Value**         |
-| ----------------------------------- | ----------------- |
-| Number of sent advertising requests | 0x00 – 0xFFFFFFFF |
-|                                     |
+    | **Description**                                                     | **Value**         |
+    | ------------------------------------------------------------------- | ----------------- |
+    | Number of timed out received advertising requests (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-_RX RSP (4 Bytes):_
+- _TX REQ (4 Bytes):_
 
-| **Description**                                              | **Value**         |
-| ------------------------------------------------------------ | ----------------- |
-| Number of successfully received advertising response packets | 0x00 – 0xFFFFFFFF |
-|                                                              |
+    | **Description**                     | **Value**         |
+    | ----------------------------------- | ----------------- |
+    | Number of sent advertising requests | 0x00 – 0xFFFFFFFF |
 
-_RX RSP CRC (4 Bytes):_
+- _RX RSP (4 Bytes):_
 
-| **Description**                                                 | **Value**         |
-| --------------------------------------------------------------- | ----------------- |
-| Number of received advertising response packets with CRC errors | 0x00 – 0xFFFFFFFF |
-|                                                                 |
+    | **Description**                                              | **Value**         |
+    | ------------------------------------------------------------ | ----------------- |
+    | Number of successfully received advertising response packets | 0x00 – 0xFFFFFFFF |
 
-_RX RSP Timeout (4 Bytes):_
+- _RX RSP CRC (4 Bytes):_
 
-| **Description**                                                    | **Value**         |
-| ------------------------------------------------------------------ | ----------------- |
-| Number of timed out advertising response packets (receive timeout) | 0x00 – 0xFFFFFFFF |
-|                                                                    |
+    | **Description**                                                 | **Value**         |
+    | --------------------------------------------------------------- | ----------------- |
+    | Number of received advertising response packets with CRC errors | 0x00 – 0xFFFFFFFF |
 
+- _RX RSP Timeout (4 Bytes):_
 
-_RX Chain (4 Bytes):_
+    | **Description**                                                    | **Value**         |
+    | ------------------------------------------------------------------ | ----------------- |
+    | Number of timed out advertising response packets (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-| **Description**                               | **Value**         |
-| --------------------------------------------- | ----------------- |
-| Number of successfully received chain packets | 0x00 – 0xFFFFFFFF |
-|                                               |
+- _RX Chain (4 Bytes):_
 
+    | **Description**                               | **Value**         |
+    | --------------------------------------------- | ----------------- |
+    | Number of successfully received chain packets | 0x00 – 0xFFFFFFFF |
 
-_RX Chain CRC (4 Bytes):_
+- _RX Chain CRC (4 Bytes):_
 
-| **Description**                                  | **Value**         |
-| ------------------------------------------------ | ----------------- |
-| Number of received chain packets with CRC errors | 0x00 – 0xFFFFFFFF |
+    | **Description**                                  | **Value**         |
+    | ------------------------------------------------ | ----------------- |
+    | Number of received chain packets with CRC errors | 0x00 – 0xFFFFFFFF |
 
-_RX Chain Timeout (4 Bytes):_
+- _RX Chain Timeout (4 Bytes):_
 
-| **Description**                                     | **Value**         |
-| --------------------------------------------------- | ----------------- |
-| Number of timed out chain packets (receive timeout) | 0x00 – 0xFFFFFFFF |
+    | **Description**                                     | **Value**         |
+    | --------------------------------------------------- | ----------------- |
+    | Number of timed out chain packets (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-_Err Scan (4 Bytes):_
+- _Err Scan (4 Bytes):_
 
-| **Description**                   | **Value**         |
-| --------------------------------- | ----------------- |
-| Number of scan transaction errors | 0x00 – 0xFFFFFFFF |
-|                                   |
+    | **Description**                   | **Value**         |
+    | --------------------------------- | ----------------- |
+    | Number of scan transaction errors | 0x00 – 0xFFFFFFFF |
 
-_RX Setup (2 Bytes):_
+- _RX Setup (2 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
-|                                           |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
+- _TX Setup (2 Bytes):_
 
-_TX Setup (2 Bytes):_
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
-|                                           |
+- _RX ISR (2 Bytes):_
 
-_RX ISR (2 Bytes):_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
-|                                             |
+- _TX ISR (2 Bytes):_
 
-_TX ISR (2 Bytes):_
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
-|                                             |
+---
 
 
 ### Get Periodic Scanning Statistics
 
-| **OCF** | **Length** | **Parameters** |
-| ------- | ---------- | -------------- |
-| 0x3DC   | 0          | N/A            |
-
-#### Description
-
 Get accumulated periodic scanning statistics.
 
-#### Return
+- Packet type: [Command Packet](#command-packet)
 
-_RX ADV (4 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters** | **Return** |
+| ------- | ------- | -------------------------- | -------------- | ---------- |
+| 0x3D    | 0x3DC   | 0                          | N/A            | Statistics |
 
-| **Description**                                     | **Value**         |
-| --------------------------------------------------- | ----------------- |
-| Number of successfully received advertising packets | 0x00 – 0xFFFFFFFF |
-|                                                     |
+#### Return (Get Periodic Scanning Statistics)
 
-_RX ADV CRC (4 Bytes):_
+- _RX ADV (4 Bytes):_
 
-| **Description**                                        | **Value**         |
-| ------------------------------------------------------ | ----------------- |
-| Number of received advertising packets with CRC errors | 0x00 – 0xFFFFFFFF |
+    | **Description**                                     | **Value**         |
+    | --------------------------------------------------- | ----------------- |
+    | Number of successfully received advertising packets | 0x00 – 0xFFFFFFFF |
 
-_RX ADV Timeout (4 Bytes):_
+- _RX ADV CRC (4 Bytes):_
 
-| **Description**                                           | **Value**         |
-| --------------------------------------------------------- | ----------------- |
-| Number of timed out advertising packets (receive timeout) | 0x00 – 0xFFFFFFFF |
+    | **Description**                                        | **Value**         |
+    | ------------------------------------------------------ | ----------------- |
+    | Number of received advertising packets with CRC errors | 0x00 – 0xFFFFFFFF |
 
-_RX Chain (4 Bytes):_
+- _RX ADV Timeout (4 Bytes):_
 
-| **Description**                               | **Value**         |
-| --------------------------------------------- | ----------------- |
-| Number of successfully received chain packets | 0x00 – 0xFFFFFFFF |
+    | **Description**                                           | **Value**         |
+    | --------------------------------------------------------- | ----------------- |
+    | Number of timed out advertising packets (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-_RX Chain CRC (4 Bytes):_
+- _RX Chain (4 Bytes):_
 
-| **Description**                                  | **Value**         |
-| ------------------------------------------------ | ----------------- |
-| Number of received chain packets with CRC errors | 0x00 – 0xFFFFFFFF |
+    | **Description**                               | **Value**         |
+    | --------------------------------------------- | ----------------- |
+    | Number of successfully received chain packets | 0x00 – 0xFFFFFFFF |
 
-_RX Chain Timeout (4 Bytes):_
+- _RX Chain CRC (4 Bytes):_
 
-| **Description**                                     | **Value**         |
-| --------------------------------------------------- | ----------------- |
-| Number of timed out chain packets (receive timeout) | 0x00 – 0xFFFFFFFF |
+    | **Description**                                  | **Value**         |
+    | ------------------------------------------------ | ----------------- |
+    | Number of received chain packets with CRC errors | 0x00 – 0xFFFFFFFF |
 
-_Err Scan (4 Bytes):_
+- _RX Chain Timeout (4 Bytes):_
 
-| **Description**                   | **Value**         |
-| --------------------------------- | ----------------- |
-| Number of scan transaction errors | 0x00 – 0xFFFFFFFF |
+    | **Description**                                     | **Value**         |
+    | --------------------------------------------------- | ----------------- |
+    | Number of timed out chain packets (receive timeout) | 0x00 – 0xFFFFFFFF |
 
-_RX Setup (2 Bytes):_
+- _Err Scan (4 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
+    | **Description**                   | **Value**         |
+    | --------------------------------- | ----------------- |
+    | Number of scan transaction errors | 0x00 – 0xFFFFFFFF |
 
-_TX Setup (2 Bytes):_
+- _RX Setup (2 Bytes):_
 
-| **Description**                           | **Value**     |
-| ----------------------------------------- | ------------- |
-| TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | RX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-_RX ISR (2 Bytes):_
+- _TX Setup (2 Bytes):_
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
+    | **Description**                           | **Value**     |
+    | ----------------------------------------- | ------------- |
+    | TX packet setup watermark in microseconds | 0x00 – 0xFFFF |
 
-_TX ISR (2 Bytes):_
+- _RX ISR (2 Bytes):_
 
-| **Description**                             | **Value**     |
-| ------------------------------------------- | ------------- |
-| TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | RX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
+
+- _TX ISR (2 Bytes):_
+
+    | **Description**                             | **Value**     |
+    | ------------------------------------------- | ------------- |
+    | TX ISR processing watermark in microseconds | 0x00 – 0xFFFF |
+
+---
 
 ### Set Connection PHY TX Power
 
-| **OCF** | **Length** | **Parameters**     |
-| ------- | ---------- | ------------------ |
-| 0x3DD   | 4          | Handle, Level, PHY |
-
-#### Description
-
 Set power level during a connection for a given PHY.
 
-#### Parameters
+- Packet type: [Command Packet](#command-packet)
 
-_Handle (2 Bytes):_
+| **OGF** | **OCF** | **Param. Length (bytes)** | **Parameters**                   | **Return** |
+| ------- | ------- | ------------------------ | -------------------------------- | ---------- |
+| 0x3F    | 0x3DD   | 4                        | {Handle, Level, PHY}             | Status     |
 
-| **Description**   | **Value**                     |
-| ----------------- | ----------------------------- |
-| Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
+#### Parameters (Set Connection PHY TX Power)
 
-_Level (1 Byte, Signed 8-Bit):_
+- _Handle (2 Bytes):_
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| Power Level     | -15 - 6   |
-|                 |
+    | **Description**   | **Value**                     |
+    | ----------------- | ----------------------------- |
+    | Connection handle | 0x01-MAX\_NUMBER\_CONNECTIONS |
 
-_PHY (1 Byte, Signed 8-Bit):_
+- _Level (1 Byte, Signed 8-Bit):_
 
-| **Description** | **Value** |
-| --------------- | --------- |
-| 1M              | 0x00      |
-| 2M              | 0x01      |
-| Coded           | 0x02      |
-|                 |
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | Power Level     | -15 - 6   |
 
+- _PHY (1 Byte, Signed 8-Bit):_
 
-#### Return
+    | **Description** | **Value** |
+    | --------------- | --------- |
+    | 1M              | 0x00      |
+    | 2M              | 0x01      |
+    | Coded           | 0x02      |
 
-Status
+#### Return (Set Connection PHY TX Power)
+
+Returns a status byte
+
+---
