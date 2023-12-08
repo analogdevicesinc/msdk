@@ -290,7 +290,7 @@ Unfortunately, there is no Bluetooth SIG-defined standard for this protocol. Thi
 
 ## Additional Documentation
 
-Documentation for Python tools used for Bluetooth development and debugging can be found [here](../../../Tools/Bluetooth/README.md).
+Documentation for Python tools used for Bluetooth development and debugging can be found [here](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Tools/Bluetooth).
 
 Documentation for each of the supporting applications can be found below:
 
