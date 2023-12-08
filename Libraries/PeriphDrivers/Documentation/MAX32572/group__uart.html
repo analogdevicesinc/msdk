@@ -210,6 +210,16 @@ Functions</h2></td></tr>
 <tr class="separator:ga56e16b50653c8574a3c67d64f084799f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9ac3f3ec969196fe03ae6dfdb89db837"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga9ac3f3ec969196fe03ae6dfdb89db837">MXC_UART_AsyncHandler</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
 <tr class="separator:ga9ac3f3ec969196fe03ae6dfdb89db837"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ef2631dbd5226e6f68631cf3c2411c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga9ef2631dbd5226e6f68631cf3c2411c0">MXC_UART_SetAutoDMAHandlers</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart, bool enable)</td></tr>
+<tr class="separator:ga9ef2631dbd5226e6f68631cf3c2411c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga44dc443b9e06e4abe96bcd3a93a18be6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga44dc443b9e06e4abe96bcd3a93a18be6">MXC_UART_SetTXDMAChannel</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart, unsigned int channel)</td></tr>
+<tr class="separator:ga44dc443b9e06e4abe96bcd3a93a18be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9fe255e686e8f057088c42d46f76acf6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga9fe255e686e8f057088c42d46f76acf6">MXC_UART_GetTXDMAChannel</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
+<tr class="separator:ga9fe255e686e8f057088c42d46f76acf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaadbee118385dd3e6c476c2ce95eed267"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gaadbee118385dd3e6c476c2ce95eed267">MXC_UART_SetRXDMAChannel</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart, unsigned int channel)</td></tr>
+<tr class="separator:gaadbee118385dd3e6c476c2ce95eed267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d50d63b25df5fc82d066a881d84d733"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga8d50d63b25df5fc82d066a881d84d733">MXC_UART_GetRXDMAChannel</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
+<tr class="separator:ga8d50d63b25df5fc82d066a881d84d733"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -850,6 +860,34 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 
 </div>
 </div>
+<a id="ga8d50d63b25df5fc82d066a881d84d733" name="ga8d50d63b25df5fc82d066a881d84d733"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d50d63b25df5fc82d066a881d84d733">&#9670;&nbsp;</a></span>MXC_UART_GetRXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_UART_GetRXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the RX (Receive) DMA channel for a UART module. </p>
+<p >This function retrieves the currently configured DMA channel for receiving data when is MXC_UART_SetAutoDMAHandlers disabled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to the UART module's registers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The currently configured RX DMA channel. </dd></dl>
+
+</div>
+</div>
 <a id="ga6eabea818d1d4817481cf7b4cc401fe5" name="ga6eabea818d1d4817481cf7b4cc401fe5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga6eabea818d1d4817481cf7b4cc401fe5">&#9670;&nbsp;</a></span>MXC_UART_GetRXFIFOAvailable()</h2>
 
@@ -928,6 +966,34 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The status flags </dd></dl>
+
+</div>
+</div>
+<a id="ga9fe255e686e8f057088c42d46f76acf6" name="ga9fe255e686e8f057088c42d46f76acf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9fe255e686e8f057088c42d46f76acf6">&#9670;&nbsp;</a></span>MXC_UART_GetTXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_UART_GetTXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the TX (Transmit) DMA channel for a UART module. </p>
+<p >This function retrieves the currently assigned DMA channel for transmitting data when is MXC_UART_SetAutoDMAHandlers disabled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to the UART module's registers. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The currently assigned TX DMA channel. </dd></dl>
 
 </div>
 </div>
@@ -1257,6 +1323,47 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 
 </div>
 </div>
+<a id="ga9ef2631dbd5226e6f68631cf3c2411c0" name="ga9ef2631dbd5226e6f68631cf3c2411c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9ef2631dbd5226e6f68631cf3c2411c0">&#9670;&nbsp;</a></span>MXC_UART_SetAutoDMAHandlers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_UART_SetAutoDMAHandlers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable or disable automatic DMA interrupt handlers for the UART module. </p>
+<p >The <a class="el" href="group__uart.html#ga3630c344a93e1013c0b5a5b6bfc3e1cf">MXC_UART_TransactionDMA</a> functions require special interrupt handlers to work.</p>
+<p >When "Auto" DMA handlers are enabled, the UART drivers will acquire DMA channels and assign the appropriate handlers automatically. The acquired channels are released after each transaction.</p>
+<p >If "Auto" DMA handlers are disabled, the user must acquire DMA channels manually and assign them to the drivers with the <a class="el" href="group__uart.html#ga44dc443b9e06e4abe96bcd3a93a18be6">MXC_UART_SetTXDMAChannel</a> and <a class="el" href="group__uart.html#gaadbee118385dd3e6c476c2ce95eed267">MXC_UART_SetRXDMAChannel</a> functions.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to the UART module's registers. </td></tr>
+    <tr><td class="paramname">enable</td><td>true to enable Auto DMA handlers, false to disable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, or a non-zero error code on failure. </dd></dl>
+
+</div>
+</div>
 <a id="ga6ae308768f43f08d99184d2a7e40b90d" name="ga6ae308768f43f08d99184d2a7e40b90d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga6ae308768f43f08d99184d2a7e40b90d">&#9670;&nbsp;</a></span>MXC_UART_SetClockSource()</h2>
 
@@ -1461,6 +1568,44 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 
 </div>
 </div>
+<a id="gaadbee118385dd3e6c476c2ce95eed267" name="gaadbee118385dd3e6c476c2ce95eed267"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaadbee118385dd3e6c476c2ce95eed267">&#9670;&nbsp;</a></span>MXC_UART_SetRXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_UART_SetRXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the RX (Receive) DMA channel for a UART module. </p>
+<p >This function assigns the DMA channel for receiving data when is MXC_UART_SetAutoDMAHandlers disabled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to the UART module's registers. </td></tr>
+    <tr><td class="paramname">channel</td><td>The DMA channel number to be used for <a class="el" href="group__uart.html#ga3630c344a93e1013c0b5a5b6bfc3e1cf">MXC_UART_TransactionDMA</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga0c6a9a0836596871c254f5faca574099" name="ga0c6a9a0836596871c254f5faca574099"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0c6a9a0836596871c254f5faca574099">&#9670;&nbsp;</a></span>MXC_UART_SetRXThreshold()</h2>
 
@@ -1535,6 +1680,44 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga44dc443b9e06e4abe96bcd3a93a18be6" name="ga44dc443b9e06e4abe96bcd3a93a18be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga44dc443b9e06e4abe96bcd3a93a18be6">&#9670;&nbsp;</a></span>MXC_UART_SetTXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_UART_SetTXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the TX (Transmit) DMA channel for a UART module. </p>
+<p >This function assigns the DMA channel for transmitting data when is MXC_UART_SetAutoDMAHandlers disabled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to the UART module's registers. </td></tr>
+    <tr><td class="paramname">channel</td><td>The DMA channel number to be used for <a class="el" href="group__uart.html#ga3630c344a93e1013c0b5a5b6bfc3e1cf">MXC_UART_TransactionDMA</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1912,7 +2095,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 11 2023 21:27:02 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Dec 8 2023 22:20:51 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

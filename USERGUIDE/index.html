@@ -3386,6 +3386,11 @@ int main(void)
 <td>Specify the version of <a href="http://elm-chan.org/fsw/ff/00index_e.html">FatFS</a> to use</td>
 <td>FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the <a href="http://elm-chan.org/fsw/ff/updates.html">version</a> to use.  Acceptable values are <code>ff13</code> (R0.13), <code>ff14</code> (R0.14b), or <code>ff15</code> (R0.15)</td>
 </tr>
+<tr>
+<td><code>SDHC_CLK_FREQ</code></td>
+<td>Sets the clock freq. for the SDHC library (Hz)</td>
+<td>Sets the target clock frequency in units of Hz (Default is 40Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues.</td>
+</tr>
 </tbody>
 </table>
 <hr />
@@ -3483,7 +3488,7 @@ int main(void)
 </tr>
 <tr>
 <td><strong>BLE_otac</strong></td>
-<td>Bluetooth data client that scans for and connects to advertisers with the name of "OTAS".  Demonstrates Over-the-Air (OTA) firmware updates.</td>
+<td>Bluetooth data client that scans for and connects to advertisers with the name of "OTAS".</td>
 <td>MAX32655<br>MAX32665<br>MAX32690</td>
 </tr>
 <tr>
@@ -3928,7 +3933,7 @@ int main(void)
 <tr>
 <td><strong>BLE_fit_FreeRTOS</strong></td>
 <td>BLE_fit_FreeRTOS</td>
-<td><em>Local:</em><code>Examples/MAX32655/BLE_fit_FreeRTOS</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/BLE_fit_FreeRTOS">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS">link</a></td>
 </tr>
 <tr>
 <td><strong>Dual_core_sync_arm</strong></td>
@@ -3944,6 +3949,11 @@ int main(void)
 <td><strong>External_Flash</strong></td>
 <td>External flash example.</td>
 <td><em>Local:</em><code>Examples/MAX32655/External_Flash</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/External_Flash">link</a></td>
+</tr>
+<tr>
+<td><strong>I2C_EEPROM</strong></td>
+<td>24LC256 EEPROM I2C Communication Example</td>
+<td><em>Local:</em><code>Examples/MAX32655/I2C_EEPROM</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/I2C_EEPROM">link</a></td>
 </tr>
 <tr>
 <td><strong>I2S_Playback</strong></td>
@@ -4002,12 +4012,12 @@ int main(void)
 <tr>
 <td><strong>BLE_LR_Central</strong></td>
 <td>Long range demo on a central device</td>
-<td><em>Local:</em><code>Examples/MAX32665/BLE_LR_Central</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/BLE_LR_Central">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Central</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Central">link</a></td>
 </tr>
 <tr>
 <td><strong>BLE_LR_Peripheral</strong></td>
 <td>BLE long range application demo on a peripheral device.</td>
-<td><em>Local:</em><code>Examples/MAX32665/BLE_LR_Peripheral</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/BLE_LR_Peripheral">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Peripheral</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Peripheral">link</a></td>
 </tr>
 <tr>
 <td><strong>HTMR</strong></td>
@@ -4132,7 +4142,7 @@ int main(void)
 <tr>
 <td><strong>Bootloader</strong></td>
 <td>Bootloader</td>
-<td><em>Local:</em><code>Examples/MAX32690/Bootloader</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32690/Bootloader">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32690/Bluetooth/Bootloader</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32690/Bluetooth/Bootloader">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4333,7 +4343,7 @@ int main(void)
 <tr>
 <td><strong>USB_MassStorage_ThroughPut</strong></td>
 <td>USB Mass Storage Class example</td>
-<td><em>Local:</em><code>Examples/MAX78002/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/USB_MassStorage_ThroughPut">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/USB/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/USB/USB_MassStorage_ThroughPut">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-effnet2</strong></td>

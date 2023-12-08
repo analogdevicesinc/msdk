@@ -8,6 +8,7 @@ var group__wdt =
       [ "upperIntPeriod", "group__wdt.html#ae1cc47fde12916cf75532b6bc1a80d90", null ],
       [ "upperResetPeriod", "group__wdt.html#acd62253017205694e2f82a2cec6da3fa", null ]
     ] ],
+    [ "mxc_wdt_clock_t", "group__wdt.html#gace077805288ea487ce3f4e8a631b94c6", null ],
     [ "mxc_wdt_int_t", "group__wdt.html#gaa068a29ec73fdb8334b5a8c870f36f22", null ],
     [ "mxc_wdt_mode_t", "group__wdt.html#gad1323db0b92fc78344932bf42af62bc7", null ],
     [ "mxc_wdt_period_t", "group__wdt.html#ga402e160fed5337127134084c4042c598", [
@@ -41,6 +42,7 @@ var group__wdt =
     [ "MXC_WDT_GetResetFlag", "group__wdt.html#gae2acf5376e6ebc5b4ffce66625c8b61c", null ],
     [ "MXC_WDT_Init", "group__wdt.html#ga688d639163a55fdecf149f39543210ca", null ],
     [ "MXC_WDT_ResetTimer", "group__wdt.html#ga9d9b340687177f4f4d6e2949fece4bd7", null ],
+    [ "MXC_WDT_SetClockSource", "group__wdt.html#gaecbe7aecad1314fcd831c6b2d663b41e", null ],
     [ "MXC_WDT_SetIntPeriod", "group__wdt.html#ga186a18f3f76e3138e5dfe243cca1ff11", null ],
     [ "MXC_WDT_SetResetPeriod", "group__wdt.html#ga70bd68a16ab4d9d0d7e2fabe0ddc4a46", null ],
     [ "MXC_WDT_Shutdown", "group__wdt.html#ga93c35a51533fd9ae4e81cae08f9bd5d5", null ]

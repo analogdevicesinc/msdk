@@ -21,3 +21,49 @@ img {
     border-color: black;
     border-radius: 8px;
 }
+
+.rst-content h1, .rst-content h2, .rst-content h3, .rst-content h4 {
+    margin-bottom:0px;
+    margin-top:0px;
+}
+
+h1::after {
+    display: inline-block;
+    content: "";
+    border-top: .2rem solid;
+    border-radius: 1rem;
+    flex-grow: 1; /* This property makes the pseudo-element take up the remaining space */
+    width: 100%; /* Set the width to 100% */
+    transform: translateY(-0.5rem);
+}
+
+h2::after {
+    display: inline-block;
+    content: "";
+    border-top: .1rem solid lightgray;
+    border-radius: 1rem;
+    flex-grow: 1; /* This property makes the pseudo-element take up the remaining space */
+    width: 100%; /* Set the width to 100% */
+    transform: translateY(-0.5rem);
+}
+
+h3::after
+{
+    display: inline-block;
+    content: "";
+    border-top: .1rem solid lightgray; /* Change this line to adjust the style */
+    flex-grow: 1;
+    width: 100%;
+    transform: translateY(-0.5rem);
+}
+
+h4::after
+{
+    font-style: italic;
+    display: inline-block;
+    content: "";
+    border-top: .1rem solid lightgray; /* Change this line to adjust the style */
+    flex-grow: 1;
+    width: 100%;
+    transform: translateY(-0.5rem);
+}

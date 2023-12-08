@@ -181,7 +181,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_SYS_RiscVCloc
 <p >Ex: </p><div class="fragment"><div class="line"><a class="code hl_define" href="group__mxc__sys.html#ga911e0d4e99fa7da740f33eae7aa8d6d2">MXC_CRITICAL</a>(</div>
 <div class="line">     printf(<span class="stringliteral">&quot;Hello critical section!\n&quot;</span>);</div>
 <div class="line">)</div>
-<div class="ttc" id="agroup__mxc__sys_html_ga911e0d4e99fa7da740f33eae7aa8d6d2"><div class="ttname"><a href="group__mxc__sys.html#ga911e0d4e99fa7da740f33eae7aa8d6d2">MXC_CRITICAL</a></div><div class="ttdeci">#define MXC_CRITICAL(code)</div><div class="ttdoc">Macro for wrapping a section of code to make it critical (interrupts disabled). Note: this macro does...</div><div class="ttdef"><b>Definition:</b> mxc_sys.h:301</div></div>
+<div class="ttc" id="agroup__mxc__sys_html_ga911e0d4e99fa7da740f33eae7aa8d6d2"><div class="ttname"><a href="group__mxc__sys.html#ga911e0d4e99fa7da740f33eae7aa8d6d2">MXC_CRITICAL</a></div><div class="ttdeci">#define MXC_CRITICAL(code)</div><div class="ttdoc">Macro for wrapping a section of code to make it critical (interrupts disabled). Note: this macro does...</div><div class="ttdef"><b>Definition:</b> mxc_sys.h:319</div></div>
 </div><!-- fragment --><p> This macro places a call to <a class="el" href="group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44">MXC_SYS_Crit_Enter</a> before the code, and a call to <a class="el" href="group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0">MXC_SYS_Crit_Exit</a> after. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">code</td><td>The code section to wrap. </td></tr>
@@ -591,8 +591,8 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_SYS_RiscVCloc
 <p >Ex: </p><div class="fragment"><div class="line"><a class="code hl_function" href="group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44">MXC_SYS_Crit_Enter</a>();</div>
 <div class="line">printf(<span class="stringliteral">&quot;Hello critical section!\n&quot;</span>);</div>
 <div class="line"><a class="code hl_function" href="group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0">MXC_SYS_Crit_Exit</a>();</div>
-<div class="ttc" id="agroup__mxc__sys_html_ga658226f266a50d2fa0d69bfb5d14c7b0"><div class="ttname"><a href="group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0">MXC_SYS_Crit_Exit</a></div><div class="ttdeci">static void MXC_SYS_Crit_Exit(void)</div><div class="ttdoc">Exit a critical section of code from MXC_SYS_Crit_Enter.</div><div class="ttdef"><b>Definition:</b> mxc_sys.h:262</div></div>
-<div class="ttc" id="agroup__mxc__sys_html_ga6a5ac1a2bb2796cf0f56f8a23ca49e44"><div class="ttname"><a href="group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44">MXC_SYS_Crit_Enter</a></div><div class="ttdeci">static void MXC_SYS_Crit_Enter(void)</div><div class="ttdoc">Enter a critical section of code that cannot be interrupted. Call MXC_SYS_Crit_Exit to exit the criti...</div><div class="ttdef"><b>Definition:</b> mxc_sys.h:250</div></div>
+<div class="ttc" id="agroup__mxc__sys_html_ga658226f266a50d2fa0d69bfb5d14c7b0"><div class="ttname"><a href="group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0">MXC_SYS_Crit_Exit</a></div><div class="ttdeci">static void MXC_SYS_Crit_Exit(void)</div><div class="ttdoc">Exit a critical section of code from MXC_SYS_Crit_Enter.</div><div class="ttdef"><b>Definition:</b> mxc_sys.h:280</div></div>
+<div class="ttc" id="agroup__mxc__sys_html_ga6a5ac1a2bb2796cf0f56f8a23ca49e44"><div class="ttname"><a href="group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44">MXC_SYS_Crit_Enter</a></div><div class="ttdeci">static void MXC_SYS_Crit_Enter(void)</div><div class="ttdoc">Enter a critical section of code that cannot be interrupted. Call MXC_SYS_Crit_Exit to exit the criti...</div><div class="ttdef"><b>Definition:</b> mxc_sys.h:268</div></div>
 </div><!-- fragment --><p> The <a class="el" href="group__mxc__sys.html#ga911e0d4e99fa7da740f33eae7aa8d6d2">MXC_CRITICAL</a> macro is also provided as a convencience macro for wrapping a code section in this way. </p><dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
@@ -844,7 +844,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_SYS_RiscVCloc
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 11 2023 21:27:52 for MAX78000 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Dec 8 2023 22:21:31 for MAX78000 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

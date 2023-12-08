@@ -1,0 +1,5554 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>Intro - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Intro";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/HOST_CONTROLLER_INTERFACE.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-79C65FSVL6"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', "G-79C65FSVL6");
+      </script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Intro</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/HOST_CONTROLLER_INTERFACE.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="intro">Intro</h1>
+<p>The Host Controller Interface (HCI) is the common point where devices are split. Typically this interface is over an asynchronous protocol such as UART. Some devices will define proprietary interfaces between the application and host layers. Multi-core SOCs can also use the HCI or proprietary interfaces to split the stack between multiple CPUs.</p>
+<h1 id="packets">Packets</h1>
+<p>All contents in the packets are formatted little endian unless stated otherwise
+<br></p>
+<h2 id="packet-types">Packet Types</h2>
+<table>
+<thead>
+<tr>
+<th>Packet</th>
+<th>Packet Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Command</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>Async Data</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>Sync Data</td>
+<td>0x03</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>0x04</td>
+</tr>
+</tbody>
+</table>
+<h3 id="command-type">Command Type</h3>
+<p>The HCI command packet typically consists of an HCI command header followed by command parameters. The structure of the HCI command packet is defined in the Bluetooth specification.</p>
+<p>Here is a general overview of the HCI command packet structure:</p>
+<table>
+<thead>
+<tr>
+<th>Type (1 Byte)</th>
+<th>OpCode (2 Bytes)</th>
+<th>Parameters (N Bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x01</td>
+<td>0xXXXX</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>Opcodes are mix of Opcode Group Field (OGF, 6 Bits) and the Opcode Command Field (OCF, 10 Bits)</p>
+<p><strong>Opcode</strong> = (OGF &lt;&lt; 10)  | OCF</p>
+<p>Below is an example of the BLE standard command for reset</p>
+<p>RESET
+<br>
+| OGF | OCF | Paramters  |
+| --- | --- | ---------- |
+| 0x3 | 0x3 | Length = 0 |</p>
+<p>Type = 0x1
+Opcode = (0x3 &lt;&lt; 10) | 0x3 = 0x0C03
+Parmeters = 0</p>
+<p>Command = Type | Opcode | Parameters = {0x1, 0x03, 0x0C, 0x00}</p>
+<p>Note the little endian format of the opcode.</p>
+<h3 id="async-data-type">Async Data Type</h3>
+<p>The asynchronous data packet is comprised of the connection handle, fragmentation bits, the number of data bytes, and the data bytes themselves.
+| Handle (12 Bits) | PB Flag (2 Bits) | BC Flag (2 Bits) | Total Length (2 Bytes) | Data (Total Length) |
+| ---------------- | ---------------- | ---------------- | ---------------------- | ------------------- |
+| 0xXXX            | 0bXX             | 0bXX             | 0xXXXX                 | ...                 |</p>
+<h3 id="sync-data">Sync Data</h3>
+<p>This synchronous data packet is not used in BLE.</p>
+<h3 id="event-data">Event Data</h3>
+<p>The structure of an HCI asynchronous event packet typically consists of an HCI event header followed by event parameters. Here's a general overview:
+| Type (1 Byte) | Event Code (2 Bytes) | Event Params (N Bytes) |
+| ------------- | -------------------- | ---------------------- |
+| 0x04          | 0xXX                 | ...                    |</p>
+<h1 id="vendor-specific-commands">Vendor Specific Commands</h1>
+<p><strong>OGF</strong> : 0x3F
+<br>
+<strong>MAX_NUMBER_CONNECTIONS</strong>: set at application layer by user.</p>
+<p>NOTE: All data parameters and return values are returned little endian formatted unless stated otherwise.</p>
+<h3 id="write-memory">Write Memory</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x300</td>
+<td>5 + N, where N is the number of bytes to write</td>
+<td>Length, Address</td>
+<td>Status</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Write N bytes to a specified 32-bit address.</p>
+<h4 id="parameters">Parameters</h4>
+<p><em>Length</em> (1 Byte):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of bytes to write to address</td>
+<td>0 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>Address</em> (4 Bytes):</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address to write data to</td>
+<td>0 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return">Return</h4>
+<p>Status</p>
+<h3 id="read-memory">Read Memory</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x301</td>
+<td>5</td>
+<td>Length, Address</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description">Description</h4>
+<p>Read memory from a specified 32-bit address.</p>
+<h4 id="parameters_1">Parameters</h4>
+<p><em>Length</em> (1 Byte):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of bytes to write to address</td>
+<td>0 – 0xFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>Address</em> (4 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address to write data to</td>
+<td>0 - 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_1">Return</h4>
+<p><em>Data</em> (N)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data read from address</td>
+<td>0 - 0xFF</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reset-connection-stats">Reset Connection Stats</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x302</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_1">Description</h4>
+<p>Clear all connection statistics.</p>
+<h4 id="return_2">Return</h4>
+<p>Status</p>
+<h3 id="vs-tx-test">VS TX Test</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x303</td>
+<td>6</td>
+<td>RF Channel, Packet Length, Packet Type, Num Packets</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Start a TX test using a specific number of packets.</p>
+<h4 id="parameters_2">Parameters</h4>
+<p><em>RF Channel</em> (1 Byte):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RF channel to transmit on</td>
+<td>0 – 39</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Packet Length</em> (1 Byte):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of bytes in single packet</td>
+<td>0 - 255</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Packet Type (1 Byte)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRBS9</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>00001111'b packet payload</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>01010101'b packet payload</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>PRBS15</td>
+<td>0x03</td>
+</tr>
+<tr>
+<td>11111111'b packet payload</td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>00000000'b packet payload</td>
+<td>0x05</td>
+</tr>
+<tr>
+<td>11110000'b packet payload</td>
+<td>0x06</td>
+</tr>
+<tr>
+<td>10101010'b packet payload</td>
+<td>0x07</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>PHY (1 Byte)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>2M</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>Coded Unspecified</td>
+<td>0x03</td>
+</tr>
+<tr>
+<td>Coded S8</td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>Coded S2</td>
+<td>0x05</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Num Packets (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of packets to send over courser of test</td>
+<td>0 - 0xFFFF</td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_3">Return</h4>
+<p>Status</p>
+<h3 id="vs-end-test">VS End Test</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x304</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>End current DTM test and return all test stats.</p>
+<h4 id="return_4">Return</h4>
+<p><em>TX Data (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of packets transmitted</td>
+<td>0 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data Ok</em>(2 Bytes)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of packets received ok</td>
+<td>0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data CRC</em> (2 Bytes)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of packets received with a CRC error</td>
+<td>0 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data Timeout</em> (2 Bytes)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timeouts waiting to receive a packet</td>
+<td>0 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="set-scan-channel-map">Set Scan Channel Map</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x301</td>
+<td>1</td>
+<td>Channel Map</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description</strong></p>
+<p>Set channel map to scan on</p>
+<h4 id="parameters_3">Parameters</h4>
+<p><em>Channel Map (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channel map used to scan</td>
+<td>0 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Return</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Status</p>
+<h3 id="set-event-mask">Set Event Mask</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E1</td>
+<td>5</td>
+<td>Mask, Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_2">Description</h4>
+<p>Enables/Disabled events the controller will flag</p>
+<p><strong>Parameters</strong></p>
+<p><em>Mask (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mask of events to enable/disable</td>
+<td>0x0 – 0xFFFFFFFFFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_5">Return</h4>
+<p>Status</p>
+<h3 id="enable-acl-sink">Enable ACL Sink</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E3</td>
+<td>1</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_3">Description</h4>
+<p>Enables/Disables asynchronous connection-oriented logical transport.</p>
+<h4 id="parameters_4">Parameters</h4>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_6">Return</h4>
+<p>Status</p>
+<h3 id="generate-acl">Generate ACL</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E4</td>
+<td>5</td>
+<td>Handle, Packet Length, Num Packets</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_4">Description</h4>
+<p>Generate ACL for a specified connection.</p>
+<p><strong>Parameters</strong></p>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>MAX_NUMBER_CONNECTIONS set at application layer by user.</p>
+<p><em>Packet Length (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Length of packet of generated ACL</td>
+<td>0x00 – MAX_ACL_LEN</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>MAX_ACL_LEN set at application layer by user.</p>
+<p>Num Packets (1 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of packets to send in generated ACL</td>
+<td>0x00 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_7">Return</h4>
+<p>Status</p>
+<h3 id="enable-autogenerate-acl">Enable Autogenerate ACL</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E3</td>
+<td>1</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_5">Description</h4>
+<p>Enable/Disable Autogenerate ACL</p>
+<h4 id="parameters_5">Parameters</h4>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_8">Return</h4>
+<p>Status</p>
+<h3 id="set-tx-test-error-pattern">Set TX Test Error Pattern</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E6</td>
+<td>4</td>
+<td>Error Pattern</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_6">Description</h4>
+<p>Set pattern of errors for TX test mode.</p>
+<p><strong>Parameters</strong></p>
+<p><em>Error Pattern (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1s = no error, 0s = CRC Failure</td>
+<td>0x0 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_9">Return</h4>
+<p>Status</p>
+<h3 id="set-connection-operational-flags">Set Connection Operational Flags</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E7</td>
+<td>7</td>
+<td>Handle, Flags, Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_7">Description</h4>
+<p>Enable/Disable connection operational flags for a given connection.</p>
+<h4 id="parameters_6">Parameters</h4>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>MAX_NUMBER_CONNECTIONS set at application layer by user.</p>
+<p><em>Flags (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flags to enable or disable</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_10">Return</h4>
+<p>Status</p>
+<h3 id="set-p-256-private-key">Set P-256 Private Key</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E8</td>
+<td>32</td>
+<td>Private Key</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_8">Description</h4>
+<p>Set P-256 private key or clear set private key. The private key will be used for generating key</p>
+<p>pairs and Diffie-Hellman keys until cleared.</p>
+<h4 id="parameters_7">Parameters</h4>
+<p><em>Private Key (32 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clear Private Key</td>
+<td>0x00…</td>
+</tr>
+<tr>
+<td>Private Key</td>
+<td>0x1 – 0xFF…</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_11">Return</h4>
+<p>Status</p>
+<h3 id="get-channel-map-of-periodic-scanadv">Get channel map of periodic scan/adv</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3DE</td>
+<td>3</td>
+<td>Advertising Handle, Adverting</td>
+<td>Channel Map</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_9">Description</h4>
+<p>Get the channel map used for periodic scanning or advertising.</p>
+<h4 id="parameters_8">Parameters</h4>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Periodic Scanner/Advertiser Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Advertising (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scanner</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Advertiser</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_12">Return</h4>
+<p><em>Channel Map (5 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channel Masks</td>
+<td>{0x00-0xFF, …}</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-acl-test-report">Get ACL Test Report</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3E9</td>
+<td>0</td>
+<td><strong>N/A</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_10">Description</h4>
+<p>Get ACL Test Report</p>
+<h4 id="return_13">Return</h4>
+<p><em>RX ACL Packet Count (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of ACL packets received</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ACL Octet Count (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of ACL octets received</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Generated ACL Packet Count (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of generated ACL packets</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Generated ACL Octet Count (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of generated ACL octets</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="set-local-minimum-number-of-used-channels">Set Local Minimum Number of Used Channels</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3EA**</td>
+<td>3</td>
+<td>PHYs, Power Threshold, Min Used Channels</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_11">Description</h4>
+<p>Set local minimum number of used channels.</p>
+<h4 id="parameters_9">Parameters</h4>
+<p><em>PHYs (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td>2M</td>
+<td>0x2</td>
+</tr>
+<tr>
+<td>Coded</td>
+<td>0x3</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Power Threshold (1 Byte, signed 8-Bit):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power Threshold for PHY</td>
+<td>+/-127</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Min Used Channels (1 Byte)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum number of used channels</td>
+<td>1 - 37</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_14">Return</h4>
+<p>Status</p>
+<h3 id="get-peer-minimum-number-of-used-channels">Get Peer Minimum Number of Used Channels</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3EB</td>
+<td>2</td>
+<td>Handle</td>
+<td>1M PHY, 2M PHY, Coded PHY</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_12">Description</h4>
+<p>Get peer minimum number of used channels.</p>
+<h4 id="parameters_10">Parameters</h4>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_15">Return</h4>
+<p><em>1M PHY (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M min used channels</td>
+<td>1 - 37</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>2M PHY (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2M min used channels</td>
+<td>1 - 37</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Coded PHY (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coded min used channels</td>
+<td>1 – 37</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="set-validate-public-key-mode-between-alt1-and-alt2">Set validate public key mode between ALT1 and ALT2</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0x3EC</strong></td>
+<td><strong>1</strong></td>
+<td><strong>Validate Mode</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_13">Description</h4>
+<p>Set mode used to validate public key.</p>
+<h4 id="parameters_11">Parameters</h4>
+<p><em>Validate Mode (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ALT2</td>
+<td>0x0</td>
+</tr>
+<tr>
+<td>ALT1</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_16">Return</h4>
+<p>Status</p>
+<h3 id="set-bd-address">Set BD Address</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F0</td>
+<td>6</td>
+<td>BD Address</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_14">Description</h4>
+<p>Set the device address.</p>
+<h4 id="parameters_12">Parameters</h4>
+<p><em>BD Address (6 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Device Address</td>
+<td>{0x00-0xFF, …}</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_17">Return</h4>
+<p>Status</p>
+<h3 id="get-random-address">Get Random Address</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F1</td>
+<td>0</td>
+<td>N/A</td>
+<td>BD Address</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get random device address.</p>
+<h4 id="return_18">Return</h4>
+<p><em>BD Address (6 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Device Address</td>
+<td>{0x00-0xFF, …}</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>### Set Local Feature</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F2</td>
+<td>8</td>
+<td>Local Features</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_15">Description</h4>
+<p>Set local supported features.</p>
+<h4 id="parameters_13">Parameters</h4>
+<p><em>Local Features (8 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mask of Local Features</td>
+<td>0x00 – 0xFFFFFFFFFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_19">Return</h4>
+<p>Status</p>
+<h3 id="set-operational-flags">Set Operational Flags</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F3</td>
+<td>5</td>
+<td>Flags, Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_16">Description</h4>
+<p>Enable Disable Operational Flags</p>
+<h4 id="parameters_14">Parameters</h4>
+<p><em>Flags</em> (4 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flags to enable or disable</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_20">Return</h4>
+<p>Status</p>
+<h3 id="get-pdu-filter-statistics">Get PDU Filter Statistics</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F4</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_17">Description</h4>
+<p>Get the accumulated PDU filter statistics.</p>
+<h4 id="return_21">Return</h4>
+<p><em>Fail PDU Type Filter</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs failing PDU type filter</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass PDU Type Filter</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs passing PDU type filter</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Whitelist Filter</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs failing whitelist filter</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass Whitelist Filter</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs passing whitelist filter</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Peer Address Match</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUS failing peer address match</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass Peer Address Match</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs passing peer address match</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Local Address Match</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUS failing local address match</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass local Address Match</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs passing local address match</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Peer RPA Verify</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of peer RPAs failing verification</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass Peer RPA Verify</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of peer RPAs passing verification</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Local RPA Verify</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of local RPAs failing verification</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass Local RPA Verify</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of local RPAs passing verification</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Peer Private Address</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of peer addresses failing requirement to be RPAs</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Local Private Address</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of local addresses failing requirement to be RPAs</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Fail Peer Address Res Req</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs failing required peer address resolution</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass Peer Address Res Req</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of PDUs passing optional peer address resolution</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Pass Local Address Res Opt.</em> (2 Bytes):
+| <strong>Description</strong>                                          | <strong>Value</strong>    |
+| -------------------------------------------------------- | ------------ |
+| Number of PDUs passing optional local address resolution | 0x0 – 0xFFFF |
+|                                                          |</p>
+<p><em>Peer Res Address Pend</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of peer address resolutions pended</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Local Res Address Pend</em> (2 Bytes):</p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of local address resolutions pended</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>### Set Advertising TX Power</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F5</td>
+<td>1</td>
+<td>Power</td>
+<td>Status</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Set the TX power used for advertising.</p>
+<h4 id="parameters_15">Parameters</h4>
+<p><em>Power (1 Byte, Signed 8-Bit):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power</td>
+<td>-15 - 6</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_22">Return</h4>
+<p>Status</p>
+<h3 id="set-connection-tx-power">Set Connection TX Power</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F6</td>
+<td>1</td>
+<td>Power</td>
+<td>Status</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Set the TX power used for connections.</p>
+<h4 id="parameters_16">Parameters</h4>
+<p><em>Power (1 Byte, Signed 8-Bit):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power</td>
+<td>-15 - 6</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_23">Return</h4>
+<p>Status</p>
+<h3 id="set-encryption-mode">Set Encryption Mode</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F7</td>
+<td>4</td>
+<td>Enable Auth, Nonce Mode, Handle</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_18">Description</h4>
+<p>Set encryption mode for a given connection.</p>
+<h4 id="parameters_17">Parameters</h4>
+<p><em>Enable Auth (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x0</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_24">Return</h4>
+<p>Status</p>
+<h3 id="set-channel-map">Set Channel Map</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F8</td>
+<td>6</td>
+<td>Handle, Channel Map</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_19">Description</h4>
+<p>Set the channel map</p>
+<h4 id="parameters_18">Parameters</h4>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Channel Map (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Channel Map</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_25">Return</h4>
+<p>Status</p>
+<h3 id="set-diagnostic-mode">Set Diagnostic Mode</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3F9</td>
+<td>1</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_20">Description</h4>
+<p>Enable/Disable PAL System Assert Trap</p>
+<h4 id="parameters_19">Parameters</h4>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x0</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_26">Return</h4>
+<p>Status</p>
+<h3 id="enable-sniffer-packet-forwarding">Enable Sniffer Packet Forwarding</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3CD</td>
+<td>1</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_21">Description</h4>
+<p>Enable/Disable sniffer packet forwarding.</p>
+<h4 id="parameters_20">Parameters</h4>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x0</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_27">Return</h4>
+<p>Status</p>
+<h3 id="get-memory-stats">Get Memory Stats</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3FA</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_22">Description</h4>
+<p>Read memory and system statistics.</p>
+<h4 id="return_28">Return</h4>
+<p><em>Stack Usage (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of bytes used by stack</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Sys Assert Count (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of times assertions hit</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Free Memory (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Memory free for stack usage</td>
+<td>0x0 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Used Memory (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Memory used by stack</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Max Connections (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of max connections allowed</td>
+<td>0x00 – MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Connection Context Size (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of bytes used for connection context</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>CS Watermark Level (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Critical section watermark duration in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>LL Handler Watermark Level (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LL handler watermark level in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Sch Handler Watermark Level (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scheduler handler watermark level in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>LHCI Handler Watermark Level (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LHCI handler watermark level in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Max Adv Sets (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum number of advertising sets</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Adv Set Context Size (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size of advertising set context in bytes</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Ext Scan Max (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum number of extended scanners</td>
+<td>0x0 – 0xFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>Ext Scan Context Size (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size of context size for extended scanners in bytes</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Max Num Extended Init (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>maximum number of extended initiators.</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Ext Init Context Size (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size of context size for extended initiators in bytes</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>Max Periodic Scanners (2 Bytes):</em></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum number of periodic scanners</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Periodic Scanners Context Size(2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Context size of periodic scanners in bytes</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Max CIG (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum number of CIG</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>CIG Context Size (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Context size of CIG in bytes</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>Max CIS (2 Bytes):</em></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum number of CIS</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>CIS Context Size (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Context size of CIS in bytes</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>### Get Advertising Stats</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3FB</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get the accumulated adverting stats.</p>
+<h4 id="return_29">Return</h4>
+<p><em>TX ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent advertising packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Req (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received advertising requests</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Req CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising requests with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Req Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out received advertising requests (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX RSP (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent response packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Err ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of advertising transaction errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-scan-stats">Get Scan Stats</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3FC</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get the statistics captured during scanning.</p>
+<h4 id="return_30">Return</h4>
+<p><em>RX ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received advertising packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ADV CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising packets with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ADV Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out advertising packets (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Req (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent advertising requests</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX RSP (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received advertising response packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX RSP CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising response packets with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX RSP Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out advertising response packets (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Err Scan (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of scan transaction errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>### Get Connection Stats</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3FD</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get the statistics captured during connection.</p>
+<h4 id="return_31">Return</h4>
+<p><em>RX Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received data packets</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data CRC (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received data packets with CRC errors</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data Timeout (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out data packets (receive timeout)</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent data packets</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Err Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of data transaction errors</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-test-stats">Get Test Stats</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3FE</td>
+<td>0</td>
+<td>N/A</td>
+<td>Test stats in order as documented</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get the statistics captured during test mode.</p>
+<h4 id="return_32">Return</h4>
+<p><em>RX Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received data packets</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data CRC (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received data packets with CRC errors</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data Timeout (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out data packets (receive timeout)</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent data packets</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Err Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of data transaction errors</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-pool-stats">Get Pool Stats</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+<th><strong>Return</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3FF</td>
+<td>0</td>
+<td>N/A</td>
+<td>Pool stats in order as documented</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_23">Description</h4>
+<p>Get the memory pool statistics captured during runtime.</p>
+<p><strong>NOTE:</strong> The flag <em>WSF_BUF_STATS</em> must be defined to <em>TRUE</em> at compile time</p>
+<h4 id="return_33">Return</h4>
+<p><em>Num Pool (1 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of pools defined</td>
+<td>0x00 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> The rest of the return parameters may be repeated <em>Num Pool</em> times and will be sent in order of the pool number (e.g., pool 0, pool 1, …, pool N-1).</p>
+<p><em>Buf Size (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pool Buffer Size</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Num Buf (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total Number of buffers</td>
+<td>0x00 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Num Alloc (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of outstanding allocations</td>
+<td>0x00 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Max Alloc (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High allocation watermark</td>
+<td>0x00 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Max Req Len (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum requested buffer length</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="set-additional-auxptr-offset">Set Additional AuxPtr Offset</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D0</td>
+<td>5</td>
+<td>Delay, Handle</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_24">Description</h4>
+<p>Set auxiliary packet offset delay.</p>
+<h4 id="parameters_21">Parameters</h4>
+<p><em>Delay (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Delay in microseconds</td>
+<td>0x1 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Handle (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_34">Return</h4>
+<p>Status</p>
+<h3 id="set-extended-advertising-data-fragmentation">Set Extended Advertising Data Fragmentation</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D1</td>
+<td>2</td>
+<td>Handle, Frag Length</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_25">Description</h4>
+<p>Set the extended advertising fragmentation length.</p>
+<h4 id="parameters_22">Parameters</h4>
+<p><em>Handle (1 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Advertising Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Frag Length (1 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fragmentation Length</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_35">Return</h4>
+<p>Status</p>
+<h3 id="set-extended-advertising-phy-options">Set Extended Advertising PHY Options</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D2</td>
+<td>3</td>
+<td>Handle, Primary Opt., Secondary Opt.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_26">Description</h4>
+<p>Set extended advertising PHY options</p>
+<h4 id="parameters_23">Parameters</h4>
+<p><em>Handle (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Advertising Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Primary Opt. (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary advertising channel PHY options.</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>Secondary Opt. (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Secondary advertising channel PHY options.</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_36">Return</h4>
+<p>Status</p>
+<h3 id="set-extended-advertising-default-phy-options">Set extended Advertising Default PHY Options</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D3</td>
+<td>1</td>
+<td>PHY Opt.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_27">Description</h4>
+<p>Set the default TX PHY options for extended adv slave primary and secondary channel.</p>
+<h4 id="parameters_24">Parameters</h4>
+<p><em>PHY Opt. (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHY Options</td>
+<td>0x00 – 0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_37">Return</h4>
+<p>Status</p>
+<h3 id="generate-iso-packets">Generate ISO Packets</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D5</td>
+<td>5</td>
+<td>Handle, Packet Length, Num Packets</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_28">Description</h4>
+<p>Generate ISO packets.</p>
+<h4 id="parameters_25">Parameters</h4>
+<p><em>Handle (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection Handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Packet Length (2 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Packet Length</td>
+<td>0x00-0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Num Packets (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of packets</td>
+<td>0x00-0xFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Return</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Status</p>
+<h3 id="get-iso-test-report">Get ISO Test Report</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D6</td>
+<td>16</td>
+<td>RX ISO Packet Count,RX ISO Octet CountGenerate Packet Count,Generate Octet Count</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_29">Description</h4>
+<p>Get statistics captured during ISO test.</p>
+<h4 id="return_38">Return</h4>
+<p><em>RX ISO Packet Count (4 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Receive ISO Packet Count</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISO Octet Count (4 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Receive ISO Octet Count</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Generate Packet Count (4 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generate ISO Packet Count</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Generate Octet Count (4 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generate ISO Octet Count</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="enable-iso-packet-sink">Enable ISO Packet Sink</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D7</td>
+<td>1</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_30">Description</h4>
+<p>Enable/Disable ISO packet sink.</p>
+<h4 id="parameters_26">Parameters</h4>
+<p><em>Enable (1 Byte):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Enable</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_39">Return</h4>
+<p>Status</p>
+<h3 id="enable-autogenerate-iso-packets">Enable Autogenerate ISO Packets</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D8</td>
+<td>2</td>
+<td>Packet Length</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_31">Description</h4>
+<p>Enable autogenerate ISO packets.</p>
+<h4 id="parameters_27">Parameters</h4>
+<p><em>Packet Length (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disable</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>0x01 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_40">Return</h4>
+<p>Status</p>
+<h3 id="get-iso-connection-statistics">Get ISO Connection Statistics</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3D9</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get statistics captured during ISO connection.</p>
+<h4 id="return_41">Return</h4>
+<p><em>RX Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received data packets</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data CRC (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received data packets with CRC errors</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Data Timeout (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out data packets (receive timeout)</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent data packets</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Err Data (4 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of data transaction errors</td>
+<td>0x00 - 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes)</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 - 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>### Get Auxiliary Advertising Statistics</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3DA</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get accumulated auxiliary advertising stats.</p>
+<h4 id="return_42">Return</h4>
+<p><em>TX ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent advertising packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Req (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received advertising requests</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Req CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising requests with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Req Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out received advertising requests (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX RSP (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent response packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Chain (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent chain packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Err ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of advertising transaction errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-auxiliary-scanning-statistics">Get Auxiliary Scanning Statistics</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3DB</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Description</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Get accumulated auxiliary scanning statistics.</p>
+<h4 id="return_43">Return</h4>
+<p><em>RX ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent advertising packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ADV CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising requests with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ADV Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out received advertising requests (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX REQ (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of sent advertising requests</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX RSP (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received advertising response packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX RSP CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising response packets with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX RSP Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out advertising response packets (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Chain (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received chain packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Chain CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received chain packets with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Chain Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out chain packets (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>Err Scan (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of scan transaction errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-periodic-scanning-statistics">Get Periodic Scanning Statistics</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3DC</td>
+<td>0</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_32">Description</h4>
+<p>Get accumulated periodic scanning statistics.</p>
+<h4 id="return_44">Return</h4>
+<p><em>RX ADV (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received advertising packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ADV CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received advertising packets with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ADV Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out advertising packets (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Chain (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of successfully received chain packets</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Chain CRC (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of received chain packets with CRC errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Chain Timeout (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of timed out chain packets (receive timeout)</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>Err Scan (4 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of scan transaction errors</td>
+<td>0x00 – 0xFFFFFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>TX Setup (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX packet setup watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>RX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+</tbody>
+</table>
+<p><em>TX ISR (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TX ISR processing watermark in microseconds</td>
+<td>0x00 – 0xFFFF</td>
+</tr>
+</tbody>
+</table>
+<h3 id="set-connection-phy-tx-power">Set Connection PHY TX Power</h3>
+<table>
+<thead>
+<tr>
+<th><strong>OCF</strong></th>
+<th><strong>Length</strong></th>
+<th><strong>Parameters</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x3DD</td>
+<td>4</td>
+<td>Handle, Level, PHY</td>
+</tr>
+</tbody>
+</table>
+<h4 id="description_33">Description</h4>
+<p>Set power level during a connection for a given PHY.</p>
+<h4 id="parameters_28">Parameters</h4>
+<p><em>Handle (2 Bytes):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection handle</td>
+<td>0x01-MAX_NUMBER_CONNECTIONS</td>
+</tr>
+</tbody>
+</table>
+<p><em>Level (1 Byte, Signed 8-Bit):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power Level</td>
+<td>-15 - 6</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>PHY (1 Byte, Signed 8-Bit):</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Description</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1M</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>2M</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>Coded</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="return_45">Return</h4>
+<p>Status</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../../..";</script>
+    <script src="../../../../js/theme_extra.js"></script>
+    <script src="../../../../js/theme.js"></script>
+      <script src="../../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

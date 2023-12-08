@@ -1,5 +1,10 @@
 var NAVTREEINDEX30 =
 {
+"pwrseq__regs_8h.html":[1,7,0,12],
+"rpu__regs_8h.html":[1,15,0,70],
+"rtc__regs_8h.html":[1,16,0,8],
+"sdhc__regs_8h.html":[1,17,0,43],
+"sema__regs_8h.html":[1,18,0,3],
 "simo__regs_8h.html":[1,37,21],
 "sir__regs_8h.html":[1,38,5],
 "smon__regs_8h.html":[1,39,9],

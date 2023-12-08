@@ -73,8 +73,8 @@ var NAVTREEINDEX =
 "group__rpu__registers.html#adfbe3c029fbceadbc935da2ffde51f43",
 "group__spi.html#ga8bd2984da7fd84362fe59e2add1e3bb9",
 "group__spixr.html#ga9b79a5981b9d38035a330bbd66e1deda",
-"group__uart.html#gac6b86cff9dd03547bef1b291876de08b",
-"simo__regs_8h.html"
+"group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c",
+"pwrseq__regs_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

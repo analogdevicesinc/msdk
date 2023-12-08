@@ -80,11 +80,12 @@ var searchData=
   ['mxc_5fuart_5fflow_5ft_77',['mxc_uart_flow_t',['../group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c',1,'uart.h']]],
   ['mxc_5fuart_5fparity_5ft_78',['mxc_uart_parity_t',['../group__uart.html#ga7bea3ce501d2c4b9841ee2292f4cb350',1,'uart.h']]],
   ['mxc_5fuart_5fstop_5ft_79',['mxc_uart_stop_t',['../group__uart.html#ga9ef512c6d921959fa4aa91c24bf60edb',1,'uart.h']]],
-  ['mxc_5fwdt_5fint_5ft_80',['mxc_wdt_int_t',['../group__wdt.html#gaa068a29ec73fdb8334b5a8c870f36f22',1,'wdt.h']]],
-  ['mxc_5fwdt_5fmode_5ft_81',['mxc_wdt_mode_t',['../group__wdt.html#gad1323db0b92fc78344932bf42af62bc7',1,'wdt.h']]],
-  ['mxc_5fwdt_5fperiod_5ft_82',['mxc_wdt_period_t',['../group__wdt.html#ga402e160fed5337127134084c4042c598',1,'wdt.h']]],
-  ['mxc_5fwdt_5frst_5ft_83',['mxc_wdt_rst_t',['../group__wdt.html#ga3e80540eb80f9f39cc5ff51b0231f319',1,'wdt.h']]],
-  ['mxc_5fwut_5fmode_5ft_84',['mxc_wut_mode_t',['../group__wut.html#gaf4e99bf4f46ec75686eb695eb722b133',1,'wut.h']]],
-  ['mxc_5fwut_5fpres_5ft_85',['mxc_wut_pres_t',['../group__wut.html#ga96a472fb1a849939ace5b6027cb449d9',1,'wut.h']]],
-  ['mxc_5fwut_5funit_5ft_86',['mxc_wut_unit_t',['../group__wut.html#gaee9500f23f1e924393d93187e65d388d',1,'wut.h']]]
+  ['mxc_5fwdt_5fclock_5ft_80',['mxc_wdt_clock_t',['../group__wdt.html#gace077805288ea487ce3f4e8a631b94c6',1,'wdt.h']]],
+  ['mxc_5fwdt_5fint_5ft_81',['mxc_wdt_int_t',['../group__wdt.html#gaa068a29ec73fdb8334b5a8c870f36f22',1,'wdt.h']]],
+  ['mxc_5fwdt_5fmode_5ft_82',['mxc_wdt_mode_t',['../group__wdt.html#gad1323db0b92fc78344932bf42af62bc7',1,'wdt.h']]],
+  ['mxc_5fwdt_5fperiod_5ft_83',['mxc_wdt_period_t',['../group__wdt.html#ga402e160fed5337127134084c4042c598',1,'wdt.h']]],
+  ['mxc_5fwdt_5frst_5ft_84',['mxc_wdt_rst_t',['../group__wdt.html#ga3e80540eb80f9f39cc5ff51b0231f319',1,'wdt.h']]],
+  ['mxc_5fwut_5fmode_5ft_85',['mxc_wut_mode_t',['../group__wut.html#gaf4e99bf4f46ec75686eb695eb722b133',1,'wut.h']]],
+  ['mxc_5fwut_5fpres_5ft_86',['mxc_wut_pres_t',['../group__wut.html#ga96a472fb1a849939ace5b6027cb449d9',1,'wut.h']]],
+  ['mxc_5fwut_5funit_5ft_87',['mxc_wut_unit_t',['../group__wut.html#gaee9500f23f1e924393d93187e65d388d',1,'wut.h']]]
 ];

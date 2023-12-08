@@ -1308,9 +1308,7 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 </div><div class="memdoc">
 
 <p>Initialize and enable I2C peripheral. </p>
-<dl class="section note"><dt>Note</dt><dd>This function sets the I2C Speed to 100kHz, if another speed is desired use the <a class="el" href="group__i2c.html#ga77c6eb650f273bdd2ecd472d214a4457" title="Set the frequency of the I2C interface.">MXC_I2C_SetFrequency()</a> function to set it. </dd>
-<dd>
-On default this function enables I2C peripheral clock and i2c gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables I2C peripheral clock and i2c gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used.) </td></tr>
@@ -2385,7 +2383,7 @@ On default this function enables I2C peripheral clock and i2c gpio pins. if you 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 11 2023 21:27:24 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Dec 8 2023 22:21:09 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

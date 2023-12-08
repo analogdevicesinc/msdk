@@ -113,6 +113,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:ga3e80540eb80f9f39cc5ff51b0231f319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad1323db0b92fc78344932bf42af62bc7"><td class="memItemLeft" align="right" valign="top"><a id="gad1323db0b92fc78344932bf42af62bc7" name="gad1323db0b92fc78344932bf42af62bc7"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt.html#gad1323db0b92fc78344932bf42af62bc7">mxc_wdt_mode_t</a> </td></tr>
 <tr class="separator:gad1323db0b92fc78344932bf42af62bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace077805288ea487ce3f4e8a631b94c6"><td class="memItemLeft" align="right" valign="top"><a id="gace077805288ea487ce3f4e8a631b94c6" name="gace077805288ea487ce3f4e8a631b94c6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt.html#gace077805288ea487ce3f4e8a631b94c6">mxc_wdt_clock_t</a> </td></tr>
+<tr class="separator:gace077805288ea487ce3f4e8a631b94c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -146,6 +148,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga12467c52fd011a002b1f9c0efa11d7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad82681e5605833e6740fb100287e10f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt.html#gad82681e5605833e6740fb100287e10f5">MXC_WDT_ClearIntFlag</a> (<a class="el" href="group__wdt__registers.html#structmxc__wdt__regs__t">mxc_wdt_regs_t</a> *wdt)</td></tr>
 <tr class="separator:gad82681e5605833e6740fb100287e10f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaecbe7aecad1314fcd831c6b2d663b41e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt.html#gaecbe7aecad1314fcd831c6b2d663b41e">MXC_WDT_SetClockSource</a> (<a class="el" href="group__wdt__registers.html#structmxc__wdt__regs__t">mxc_wdt_regs_t</a> *wdt, <a class="el" href="group__wdt.html#gace077805288ea487ce3f4e8a631b94c6">mxc_wdt_clock_t</a> clock_source)</td></tr>
+<tr class="separator:gaecbe7aecad1314fcd831c6b2d663b41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -561,6 +565,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gaecbe7aecad1314fcd831c6b2d663b41e" name="gaecbe7aecad1314fcd831c6b2d663b41e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaecbe7aecad1314fcd831c6b2d663b41e">&#9670;&nbsp;</a></span>MXC_WDT_SetClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_WDT_SetClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__wdt__registers.html#structmxc__wdt__regs__t">mxc_wdt_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>wdt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__wdt.html#gace077805288ea487ce3f4e8a631b94c6">mxc_wdt_clock_t</a>&#160;</td>
+          <td class="paramname"><em>clock_source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets clock source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wdt</td><td>Pointer to watchdog registers. </td></tr>
+    <tr><td class="paramname">clock_source</td><td>Clock source. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga186a18f3f76e3138e5dfe243cca1ff11" name="ga186a18f3f76e3138e5dfe243cca1ff11"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga186a18f3f76e3138e5dfe243cca1ff11">&#9670;&nbsp;</a></span>MXC_WDT_SetIntPeriod()</h2>
 
@@ -667,7 +708,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 11 2023 21:27:56 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Dec 8 2023 22:21:35 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>
