@@ -95,10 +95,10 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
     adc->ctrl0 &= ~MXC_F_ADC_REVB_CTRL0_RESETB;
 
     //Power up to Sleep State
-    adc->clkctrl |= (req->clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
-
-    adc->clkctrl |= (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS) &
-                    MXC_F_ADC_REVB_CLKCTRL_CLKDIV;
+    MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
+                 (req->clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS));
+    MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKDIV,
+                 (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS));
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_RESETB;
 
@@ -112,10 +112,10 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
         adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_SKIP_CAL;
     }
 
-    adc->sampclkctrl |= (req->trackCount << MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT_POS) &
-                        MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT;
-    adc->sampclkctrl |= (req->idleCount << MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT_POS) &
-                        MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT;
+    MXC_SETFIELD(adc->sampclkctrl, MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT,
+                 (req->trackCount << MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT_POS));
+    MXC_SETFIELD(adc->sampclkctrl, MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT,
+                 (req->idleCount << MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT_POS));
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_ADC_EN;
 
@@ -171,7 +171,8 @@ void MXC_ADC_RevB_ClearFlags(mxc_adc_revb_regs_t *adc, uint32_t flags)
 
 void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock)
 {
-    adc->clkctrl |= (clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
+    MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
+                 (clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS));
 }
 
 int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t *adc)
