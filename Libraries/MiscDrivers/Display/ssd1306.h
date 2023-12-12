@@ -56,6 +56,10 @@
 #include <stdint.h>
 #include "display.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /********************************* DEFINES ******************************/
 #define BIT_SET(a, b) ((a) |= (1U << (b)))
 #define BIT_CLEAR(a, b) ((a) &= ~(1U << (b)))
@@ -97,5 +101,9 @@ void ssd1306_flush_area(ssd1306_dev *dev, const display_area_t *area, const uint
 
 void ssd1306_set_buffer_pixel_util(uint8_t *buf, uint16_t buf_w, uint32_t buf_max, uint16_t x,
                                    uint16_t y, uint8_t color, uint8_t is_opaque);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_SSD1306_H_

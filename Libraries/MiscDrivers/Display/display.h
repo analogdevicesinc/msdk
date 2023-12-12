@@ -52,6 +52,10 @@
 #ifndef LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
 #define LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define DISP_E_SUCCESS 0
 #define DISP_E_ERROR -1
 #define DISP_E_BUSY -99
@@ -79,5 +83,10 @@ typedef struct {
     uint8_t *comm_buffer;
     uint32_t comm_buffer_len;
 } display_comm_api;
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_

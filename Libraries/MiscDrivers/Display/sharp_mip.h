@@ -57,6 +57,10 @@
 #include "gpio.h"
 #include "display.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /********************************* DEFINES ******************************/
 #define BUF_SIZE(w, h) (((h) * (2 + (w >> 3))) + 2)
 
@@ -82,5 +86,9 @@ void sharp_mip_flush_area(sharp_mip_dev *dev, const display_area_t *area, const 
 void sharp_mip_set_buffer_pixel_util(sharp_mip_dev *dev, uint8_t *buf, uint16_t buf_w, uint16_t x,
                                      uint16_t y, uint8_t color, uint8_t is_opaque);
 void sharp_mip_com_inversion(sharp_mip_dev *dev, int inversion_on);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_SHARP_MIP_H_

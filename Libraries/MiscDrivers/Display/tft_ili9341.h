@@ -63,6 +63,10 @@
 #include <gpio.h>
 #include "fonts.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 320
 #define DISPLAY_HEIGHT 240
@@ -334,5 +338,9 @@ void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color);
  * @param      height       image height
  */
 void MXC_TFT_Stream(int x0, int y0, int width, int height);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ILI9341_H_

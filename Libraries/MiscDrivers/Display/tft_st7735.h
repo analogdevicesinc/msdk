@@ -63,6 +63,10 @@
 #include <gpio.h>
 #include "fonts.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 128
@@ -323,5 +327,9 @@ void MXC_TFT_Line(int x0, int y0, int x1, int y1, int color);
  * @param       color           rectangle color
  */
 void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ST7735_H_

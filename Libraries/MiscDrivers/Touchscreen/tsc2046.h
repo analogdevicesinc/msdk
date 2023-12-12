@@ -60,6 +60,10 @@
 #include <spi.h>
 #include <gpio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************************/
 #ifndef TS_MAX_BUTTONS
 #define TS_MAX_BUTTONS 16
@@ -190,5 +194,9 @@ void MXC_TS_RemoveAllButton(void);
  *
  */
 int MXC_TS_GetKey(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_TOUCHSCREEN_TSC2046_H_
