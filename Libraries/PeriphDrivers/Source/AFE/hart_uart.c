@@ -503,7 +503,6 @@ static int hart_uart_pins_idle_mode(void)
     return retval;
 }
 
-
 static int hart_uart_pins_external_test_mode_state(void)
 {
     int retval = 0;
@@ -512,7 +511,7 @@ static int hart_uart_pins_external_test_mode_state(void)
     // RTS Input to AFE, LOW is transmit mode, so Pulling Up
     hart_pin.port = HART_RTS_GPIO_PORT;
     hart_pin.mask = HART_RTS_GPIO_PIN;
-    hart_pin.pad  = MXC_GPIO_PAD_PULL_UP;
+    hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
     hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
@@ -523,7 +522,7 @@ static int hart_uart_pins_external_test_mode_state(void)
     // CD output from AFE, Tristate
     hart_pin.port = HART_CD_GPIO_PORT;
     hart_pin.mask = HART_CD_GPIO_PIN;
-    hart_pin.pad  = MXC_GPIO_PAD_NONE;
+    hart_pin.pad = MXC_GPIO_PAD_NONE;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
@@ -533,7 +532,7 @@ static int hart_uart_pins_external_test_mode_state(void)
     // IN input to AFE, pulling Up
     hart_pin.port = HART_IN_GPIO_PORT;
     hart_pin.mask = HART_IN_GPIO_PIN;
-    hart_pin.pad  = MXC_GPIO_PAD_PULL_UP;
+    hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
@@ -543,7 +542,7 @@ static int hart_uart_pins_external_test_mode_state(void)
     // IN output from AFE, Tristate
     hart_pin.port = HART_OUT_GPIO_PORT;
     hart_pin.mask = HART_OUT_GPIO_PIN;
-    hart_pin.pad  = MXC_GPIO_PAD_NONE;
+    hart_pin.pad = MXC_GPIO_PAD_NONE;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
@@ -552,7 +551,6 @@ static int hart_uart_pins_external_test_mode_state(void)
 
     return retval;
 }
-
 
 void hart_rts_transmit_mode(void)
 {
@@ -595,13 +593,14 @@ int hart_reset_check_and_handle(void)
     }
 
     // MASK off all status bits but HART_EN and ST_DIS
-    masked_read_val = read_val & (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
+    masked_read_val = read_val &
+                      (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
 
     // If BOTH HART_EN and ST_DIS are set, then a NON-POR reset has occurred.
     //  in this case we need to clear ST_DIS to allow the HART state machine to proceed
     //  normally.
-    if (masked_read_val == (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) {
-
+    if (masked_read_val ==
+        (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) {
         // Both HART_EN and ST_DIS are set. (NON POR reset indicated)
 
         // Clear State Machine Disable
@@ -611,13 +610,11 @@ int hart_reset_check_and_handle(void)
         if (retval != E_NO_ERROR) {
             return retval;
         }
-    }
-    else {
+    } else {
         // HART_EN or ST_DIS are clear. (Normal, POR behavior)
     }
 
     return E_SUCCESS;
-
 }
 
 // TODO(ADI): Consider adding some parameters to this function to specify
