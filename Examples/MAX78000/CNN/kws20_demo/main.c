@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -91,13 +109,13 @@
 #ifdef SEND_MIC_OUT_SDCARD
 #undef WUT_ENABLE
 #warning !!! Disabling WUT_ENABLE option when SD card is enabled !!!
-#ifdef ENABLE_TFT
-#undef ENABLE_TFT
+#ifdef TFT_ENABLE
+#undef TFT_ENABLE
 #warning !!! TFT cannot be used when SD card is enabled  !!!
 #endif
 #endif
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 #define DISPLAY_AUDIO // displays audio waveform on TFT
 #endif
 
@@ -248,7 +266,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
 void I2SInit();
 void HPF_init(void);
 int16_t HPF(int16_t input);
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void);
 void TFT_Print(char *str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
@@ -259,10 +277,10 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #endif
 #ifdef BOARD_FTHR_REVA
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
-#endif //#ifdef ENABLE_TFT
+#endif //#ifdef TFT_ENABLE
 
 int32_t tot_usec = -100000;
 #ifdef WUT_ENABLE
@@ -448,7 +466,7 @@ int main(void)
     I2SInit();
 #endif
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     MXC_Delay(500000);
     PR_DEBUG("\n*** Init TFT ***\n");
 #ifdef BOARD_EVKIT_V1
@@ -477,7 +495,7 @@ int main(void)
 #else
 
     MXC_Delay(SEC(2)); // wait for debugger to connect
-#endif // #ifdef ENABLE_TFT
+#endif // #ifdef TFT_ENABLE
 
     PR_INFO("\n*** READY ***\n");
 #ifdef WUT_ENABLE
@@ -900,7 +918,7 @@ int main(void)
     LED_Off(LED2);
     PR_DEBUG("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     TFT_End(wordCounter);
 #endif
 
@@ -961,7 +979,7 @@ void I2SInit()
 /* **************************************************************************** */
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob)
 {
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     char buff[TFT_BUFF_SIZE];
 #endif
     int32_t temp[NUM_OUTPUTS];
@@ -986,7 +1004,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         if (top == 0) {
             *out_class = max_index;
             *out_prob = 100.0 * max / 32768.0;
-#ifndef ENABLE_TFT
+#ifndef TFT_ENABLE
             break;
         }
 
@@ -1299,7 +1317,7 @@ int16_t HPF(int16_t input)
 }
 
 /************************************************************************************/
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];
@@ -1311,7 +1329,7 @@ void TFT_Intro(void)
     TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "detected:"));
     TFT_Print(buff, 35, 160, font_1, snprintf(buff, sizeof(buff), "0...9, up, down, left, right"));
     TFT_Print(buff, 35, 185, font_1, snprintf(buff, sizeof(buff), "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 20, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 
     while (!PB_Get(0)) {}
 
@@ -1345,6 +1363,6 @@ void TFT_End(uint16_t words)
     MXC_TFT_ClearScreen();
     TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
     TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
-    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 0, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif

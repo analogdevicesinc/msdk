@@ -43,9 +43,11 @@
 
 int MXC_ADC_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
+#endif
 
     //turn on charge pump enable (chip specific)
     MXC_ADC->ctrl |= MXC_F_ADC_CTRL_CHGPUMP_PWR;
@@ -136,10 +138,7 @@ void MXC_ADC_SetExtScale(mxc_adc_scale_t scale)
 {
     MXC_ADC_RevA_SetExtScale((mxc_adc_reva_regs_t *)MXC_ADC, scale);
 }
-void MXC_ADC_RefSelect(mxc_adc_ref_t ref)
-{
-    MXC_ADC_RevA_RefSelect((mxc_adc_reva_regs_t *)MXC_ADC, ref);
-}
+
 void MXC_ADC_EnableMonitor(mxc_adc_monitor_t monitor)
 {
     MXC_ADC_RevA_EnableMonitor((mxc_adc_reva_regs_t *)MXC_ADC, monitor);

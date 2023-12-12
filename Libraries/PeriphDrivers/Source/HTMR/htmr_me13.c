@@ -50,6 +50,7 @@ int MXC_HTMR_Init(mxc_htmr_regs_t *htmr, uint32_t longInterval, uint8_t shortInt
         return E_NULL_PTR;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO) != E_NO_ERROR) {
         return E_TIME_OUT;
     }
@@ -61,6 +62,7 @@ int MXC_HTMR_Init(mxc_htmr_regs_t *htmr, uint32_t longInterval, uint8_t shortInt
     } else {
         return E_BAD_PARAM;
     }
+#endif
 
     return MXC_HTMR_RevA_Init((mxc_htmr_reva_regs_t *)htmr, longInterval, shortInterval);
 }

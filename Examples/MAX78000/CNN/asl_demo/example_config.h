@@ -2,13 +2,13 @@
 #define CONFIG_H
 
 #ifdef BOARD_EVKIT_V1
-#define ENABLE_TFT
+#define TFT_ENABLE
 #include "bitmap.h"
 #include "tft_ssd2119.h"
 #endif
 
 #ifdef BOARD_FTHR_REVA
-// #define ENABLE_TFT
+// #define TFT_ENABLE
 #include "tft_ili9341.h"
 #endif
 
@@ -30,8 +30,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #ifdef BOARD_FTHR_REVA
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 #endif

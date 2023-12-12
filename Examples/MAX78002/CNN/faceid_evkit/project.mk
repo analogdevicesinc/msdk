@@ -23,6 +23,7 @@ PROJ_CFLAGS += -DTFT_ENABLE
 # Add TFT resources folder to build
 VPATH += tft
 IPATH += tft
+FONTS = LiberationSans16x16
 endif
 
 

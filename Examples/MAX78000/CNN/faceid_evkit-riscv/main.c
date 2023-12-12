@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -165,7 +183,7 @@ static int font = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
 static int bitmap = (int)&logo_rgb565[0];
-static int font = (int)&SansSerif16x16[0];
+static int font = (int)&font_char_table[0];
 #endif
 #endif
 
@@ -179,7 +197,7 @@ static void screen_faceID(void)
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_ShowImage(BACK_X, BACK_Y, left_arrow_bmp); // back button icon
 #endif
-    MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL); // FACEID DEMO
+    MXC_TFT_PrintFont(50, 5, font, &screen_msg[0], NULL); // FACEID DEMO
     MXC_TFT_PrintFont(12, 240, font, &screen_msg[1], NULL); // Process Time:
     // texts
 #ifdef TS_ENABLE
@@ -194,7 +212,7 @@ static int init(void)
     uint8_t *raw;
     uint32_t w, h;
     area_t area1 = { 150, 240, 50, 30 };
-    area_t area2 = { 60, 290, 180, 30 };
+    area_t area2 = { 50, 290, 180, 30 };
 
     screen_faceID();
 
@@ -384,7 +402,7 @@ int main(void)
     MXC_RTC_Start();
 
 #ifdef TFT_ENABLE
-
+    printf("TFT init\n");
 #ifdef BOARD_EVKIT_V1
     /* Initialize TFT display */
     MXC_TFT_Init();
@@ -428,6 +446,7 @@ int main(void)
     NVIC_EnableIRQ(RISCV_IRQn);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CPU1); // Enable RISC-V clock
 
+#ifdef LP_MODE_ENABLE
     // Get ticks based off of milliseconds
     MXC_WUT_GetTicks(LP_TIME, MXC_WUT_UNIT_MILLISEC, &ticks);
 
@@ -444,14 +463,13 @@ int main(void)
     MXC_LP_EnableWUTAlarmWakeup();
 
     NVIC_EnableIRQ(WUT_IRQn);
+#endif
 
 #ifndef TFT_ENABLE
     int i;
 
     for (i = 0; i < (1 << 27); i++) {}
     // Let debugger interrupt if needed
-
-    __WFI(); // ARM sleeps
 #endif
 
 #ifndef TS_ENABLE
@@ -467,8 +485,10 @@ int main(void)
 #endif
 
         if (key > 0) {
+#ifdef LP_MODE_ENABLE
             // Start Wakeup Timer in case RISC-V sleeps
             MXC_WUT_Enable();
+#endif
             arm_mail_box[0] = START_FACEID;
             state->prcss_key(key);
         }

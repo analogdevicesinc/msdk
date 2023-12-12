@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +31,25 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  ******************************************************************************/
+
+#include <stdint.h>
 
 static const unsigned char scp_0000001_connection_request[] = { 0xbe, 0xef, 0xed, 0x01,
                                                                 0x00, 0x00, 0x90, 0xf3 };
@@ -2870,7 +2890,7 @@ static const unsigned char scp_0000037_disconnection_reply[] = { 0xbe, 0xef, 0xe
 typedef struct {
     unsigned char type; // 1:hello_reply, 2:erase/del_mem
     unsigned char is_tx; // 1: From host to target, 0: From target to host
-    unsigned short len;
+    uint16_t len;
     const unsigned char *data;
 } scp_packet_struct;
 

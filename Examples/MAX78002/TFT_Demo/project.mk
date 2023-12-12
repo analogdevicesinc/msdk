@@ -20,4 +20,6 @@ TFT = NEWHAVEN
 VPATH += resources/tft
 IPATH += resources/tft
 
+FONTS = LiberationSans12x12 LiberationSans16x16 LiberationSans19x19 LiberationSans24x24 LiberationSans28x28
+
 MXC_SPI_VERSION = v1

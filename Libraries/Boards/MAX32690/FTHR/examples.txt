@@ -53,9 +53,11 @@ SPI
 Temp_Monitor
 TMR
 TRNG
-USB_CDCACM
-USB_CompositeDevice_MSC_CDC
-USB_MassStorage
+USB/USB_CDCACM
+USB/USB_CompositeDevice_MSC_CDC
+USB/USB_CompositeDevice_MSC_HID
+USB/USB_HIDKeyboard
+USB/USB_MassStorage
 Watchdog
 WearLeveling
 WUT

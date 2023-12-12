@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -59,7 +77,7 @@
 extern volatile void const *__FlashStart_; // Defined in linker file
 char buff[TFT_BUFF_SIZE];
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void);
 void TFT_Print(char *str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
@@ -70,8 +88,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #endif
 #ifdef BOARD_FTHR_REVA
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 #endif
 
@@ -109,7 +127,7 @@ int main(void)
 
     printf("Analog Devices \nKeyword Spotting Demo\nVer. %s \n", VERSION);
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     MXC_Delay(500000);
     printf("\n*** Init TFT ***\n");
 #ifdef BOARD_EVKIT_V1
@@ -151,9 +169,11 @@ int main(void)
         //  printf("mailbox ARM: %x\n",&mail_box[0]);
 
     while (1) {
-        int16_t max = 0; // soft_max output is 0->32767
-        int16_t max_index = -1;
+#ifdef TFT_ENABLE
         int i = 0;
+        int16_t max = 0; // soft_max output is 0->32767
+#endif
+        int16_t max_index;
 
         //LED_On(0);
         __WFI(); // Let RISC-V run
@@ -163,7 +183,7 @@ int main(void)
 
         /* is there anything in the mail box? */
         if (mail_box[MAILBOX_SIZE - 1]) {
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
             // update TFT message
             MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
@@ -200,7 +220,7 @@ int main(void)
 }
 
 /************************************************************************************/
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];

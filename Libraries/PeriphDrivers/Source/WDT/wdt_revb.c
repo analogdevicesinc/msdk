@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * (now owned by Analog Devices, Inc.)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,6 +30,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ ******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -135,4 +153,13 @@ int MXC_WDT_RevB_GetIntFlag(mxc_wdt_revb_regs_t *wdt)
 void MXC_WDT_RevB_ClearIntFlag(mxc_wdt_revb_regs_t *wdt)
 {
     wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_INT_LATE | MXC_F_WDT_REVB_CTRL_INT_EARLY);
+}
+
+void MXC_WDT_RevB_SetClockSource(mxc_wdt_revb_regs_t *wdt, int clock_source)
+{
+    const uint8_t clock_source_num = 8; // Max number of clock sources for Rev B WDT
+
+    MXC_ASSERT((clock_source < clock_source_num) && (clock_source >= 0));
+    MXC_SETFIELD(wdt->clksel, MXC_F_WDT_REVB_CLKSEL_SOURCE,
+                 (clock_source << MXC_F_WDT_REVB_CLKSEL_SOURCE_POS));
 }
