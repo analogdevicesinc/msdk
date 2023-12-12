@@ -88,5 +88,4 @@ typedef struct {
 }
 #endif
 
-
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
