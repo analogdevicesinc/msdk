@@ -195,7 +195,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
                         getPhyStr(phy));
-        res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;
@@ -204,7 +204,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
                         getPhyStr(phy));
-        res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;
@@ -213,7 +213,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
                         getPhyStr(phy));
-        res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;
