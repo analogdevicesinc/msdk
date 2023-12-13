@@ -37,8 +37,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WDT_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WDT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -222,4 +222,4 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WDT_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
