@@ -49,23 +49,23 @@ typedef enum
 typedef struct
 {
     enum_magic_t        MagicHigh;                //> SLA Header magic
-    enum_magic_t        MagicLow;                //> SLA Header magic
+    enum_magic_t        MagicLow;                 //> SLA Header magic
 } magic_t;
 
 typedef struct
 {
-    magic_t            Magic;
-    enum_rom_version_t    RomVersion;                //> ROM version
-    unsigned int    LoadAddr;                //> Relocation address.
-    unsigned int    SLA_CodeSize;              //> SLA code size in bytes
-    unsigned int*    JumpAddr;                 //> Rom code will jump at this address
-    unsigned int     ArgSize;                  //> Size of the Argument
-    unsigned int     AppVersionNumber;          //> Version of this application
+    magic_t             Magic;
+    enum_rom_version_t  RomVersion;               //> ROM version
+    unsigned int     	LoadAddr;                 //> Relocation address.
+    unsigned int     	SLA_CodeSize;             //> SLA code size in bytes
+    unsigned int*    	JumpAddr;                 //> Rom code will jump at this address
+    unsigned int     	ArgSize;                  //> Size of the Argument
+    unsigned int     	AppVersionNumber;         //> Version of this application
 } flash_app_header_t;
 
 extern uint32_t _FLASH;
 
-__attribute__ ((section(".sb_sla_header"))) __attribute__ ((__used__))
+__attribute__((section(".sb_sla_header"))) __attribute__((__used__))
 const flash_app_header_t sb_header =
 {
         .Magic =
