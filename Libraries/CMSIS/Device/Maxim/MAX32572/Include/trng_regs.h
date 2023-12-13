@@ -2,10 +2,11 @@
  * @file    trng_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup trng_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -150,11 +151,11 @@ typedef struct {
 
 #define MXC_F_TRNG_CTRL_ROMON_DIS_POS                  24 /**< CTRL_ROMON_DIS Position */
 #define MXC_F_TRNG_CTRL_ROMON_DIS                      ((uint32_t)(0x7UL << MXC_F_TRNG_CTRL_ROMON_DIS_POS)) /**< CTRL_ROMON_DIS Mask */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x0UL) /**< CTRL_ROMON_DIS_RO_0 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_0 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_0                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_0 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_0 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_1 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_1 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_1                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_1 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_1 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_2 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x4UL) /**< CTRL_ROMON_DIS_RO_2 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_2                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_2 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_2 Setting */
 
 /**@} end of group TRNG_CTRL_Register */

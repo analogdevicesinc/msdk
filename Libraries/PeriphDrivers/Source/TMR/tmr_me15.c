@@ -129,7 +129,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr0);
             }
         }
@@ -141,7 +141,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr1);
             }
         }
@@ -153,7 +153,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr2);
             }
         }
@@ -165,7 +165,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr3);
             }
         }
@@ -177,7 +177,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr4);
 #if TARGET_NUM == 32670
                 MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR0_I | MXC_F_MCR_LPPIOCTRL_LPTMR0_O;
@@ -194,7 +194,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr5);
 #if TARGET_NUM == 32670
                 MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR1_I | MXC_F_MCR_LPPIOCTRL_LPTMR1_O;

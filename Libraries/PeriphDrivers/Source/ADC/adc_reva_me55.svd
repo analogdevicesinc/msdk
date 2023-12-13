@@ -148,7 +148,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ADC_DIVSEL</name>
+            <name>DIVSEL</name>
             <description>Scales the external inputs, all inputs are scaled the same</description>
             <bitRange>[18:17]</bitRange>
             <access>read-write</access>

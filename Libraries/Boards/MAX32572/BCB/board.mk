@@ -1,12 +1,14 @@
 ################################################################################
- # Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
- #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ # 
+ # This software is protected by copyright laws of the United States and
+ # of foreign countries. This material may also be protected by patent laws
+ # and technology transfer regulations of the United States and of foreign
+ # countries. This software is furnished under a license agreement and/or a
+ # nondisclosure agreement and may only be used or reproduced in accordance
+ # with the terms of those agreements. Dissemination of this information to
+ # any party or parties not specified in the license agreement and/or
+ # nondisclosure agreement is expressly prohibited.
  #
  # The above copyright notice and this permission notice shall be included
  # in all copies or substantial portions of the Software.
@@ -29,37 +31,34 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date$ 
- # $Revision$
- #
  ###############################################################################
 
 ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
+# PROJ_CFLAGS+=-DRO_FREQ=46000000
+# PROJ_CFLAGS+=-DCRYPTO_FREQ=46000000
+
+#PROJ_CFLAGS+=-DPeripheralClock=60000000
 # Source files for this test (add path to VPATH below)
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
-SRCS += tsc2046.c
-SRCS += tft_ssd2119.c
 
-MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
+MISC_DRIVERS_DIR ?= $(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
 VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
-VPATH += $(MISC_DRIVERS_DIR)/Display
-VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
+VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
 IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
-IPATH += $(MISC_DRIVERS_DIR)/Display
-IPATH += $(MISC_DRIVERS_DIR)/Touchscreen
+IPATH += $(MISC_DRIVERS_DIR)/ExtMemory

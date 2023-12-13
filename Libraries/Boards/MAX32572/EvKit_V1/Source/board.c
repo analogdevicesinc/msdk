@@ -51,13 +51,16 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
-// clang-format off
-const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN,
-                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 } };
+const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_31, MXC_GPIO_FUNC_IN,
+                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+                                  { MXC_GPIO1, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_IN,
+                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO } };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
-const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO1, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 } };
+const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO1, MXC_GPIO_PIN_30, MXC_GPIO_FUNC_OUT,
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+                                   { MXC_GPIO1, MXC_GPIO_PIN_31, MXC_GPIO_FUNC_OUT,
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // clang-format on
 
@@ -80,13 +83,72 @@ __weak void GPIO0_IRQHandler(void)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button/Touchscreen interrupts
+ *       in case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
+
+void TS_SPI_Init(void)
+{
+    mxc_spi_pins_t ts_pins = {
+        // CLK, MISO, MOSI enabled, SS IDx = 1
+        .clock = true, .ss0 = false, .ss1 = true,    .ss2 = false,
+        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
+    };
+
+    MXC_SPI_Init(TS_SPI, true, false, 1, 0, TS_SPI_FREQ, ts_pins);
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+                      MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26);
+    MXC_SPI_SetFrameSize(TS_SPI, 8);
+    MXC_SPI_SetInterface(TS_SPI, MXC_SPI_INTERFACE_STANDARD);
+}
+
+void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
+{
+    int i;
+    uint8_t rx[2] = { 0, 0 };
+    mxc_spi_req_t request;
+
+    request.spi = TS_SPI;
+    request.ssDeassert = 0;
+    request.txData = (uint8_t *)(&datain);
+    request.rxData = NULL;
+    request.txLen = 1;
+    request.rxLen = 0;
+    request.ssIdx = 1;
+
+    MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
+    MXC_SPI_SetFrameSize(TS_SPI, 8);
+
+    MXC_SPI_ControllerTransaction(&request);
+
+    // Wait to clear TS busy signal
+    for (i = 0; i < 100; i++) {
+        __asm volatile("nop\n");
+    }
+
+    request.ssDeassert = 1;
+    request.txData = NULL;
+    request.rxData = (uint8_t *)(rx);
+    request.txLen = 0;
+    request.rxLen = 2;
+
+    MXC_SPI_ControllerTransaction(&request);
+
+    if (dataout != NULL) {
+        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
+    }
+}
+
+/******************************************************************************/
 int Board_Init(void)
 {
     int err;
-
-    if ((err = MX25_Board_Init()) != E_NO_ERROR) {
-        return err;
-    }
 
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
@@ -101,6 +163,41 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
+
+    /* TFT reset and backlight signal */
+    mxc_tft_spi_config tft_spi_config = {
+        .regs = MXC_SPI1,
+        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20,
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+        .freq = 12000000,
+        .ss_idx = 0,
+    };
+
+    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO3,         MXC_GPIO_PIN_0,        MXC_GPIO_FUNC_OUT,
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_27,       MXC_GPIO_FUNC_OUT,
+                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+
+    /* Initialize TFT display */
+    MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
+
+    /* Enable Touchscreen */
+    mxc_ts_spi_config ts_spi_config = {
+        .regs = MXC_SPI1,
+        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26,
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+        .freq = 200000,
+        .ss_idx = 1,
+    };
+
+    /* Touch screen controller interrupt signal */
+    mxc_gpio_cfg_t int_pin = { MXC_GPIO0,         MXC_GPIO_PIN_13,       MXC_GPIO_FUNC_IN,
+                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    /* Touch screen controller busy signal */
+    mxc_gpio_cfg_t busy_pin = { MXC_GPIO0,         MXC_GPIO_PIN_12,       MXC_GPIO_FUNC_IN,
+                                MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    /* Initialize Touch Screen controller */
+    MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
 
     return E_NO_ERROR;
 }
@@ -131,47 +228,4 @@ int Console_Shutdown(void)
 __weak void NMI_Handler(void)
 {
     __NOP();
-}
-
-/******************************************************************************/
-int MX25_Board_Init(void)
-{
-    int err;
-    err = MXC_SPIXF_Init(0x0B, MX25_BAUD);
-
-    if (err == E_NO_ERROR) {
-        MXC_SPIXF_Enable();
-    }
-
-    return err;
-}
-
-/******************************************************************************/
-int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width)
-{
-    mxc_spixf_req_t req = { deassert, 0, NULL, read, width, len, 0, 0, NULL };
-
-    if (MXC_SPIXF_Transaction(&req) != len) {
-        return E_COMM_ERR;
-    }
-
-    return E_NO_ERROR;
-}
-
-/******************************************************************************/
-int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert, mxc_spixf_width_t width)
-{
-    mxc_spixf_req_t req = { deassert, 0, write, NULL, width, len, 0, 0, NULL };
-
-    if (MXC_SPIXF_Transaction(&req) != len) {
-        return E_COMM_ERR;
-    }
-
-    return E_NO_ERROR;
-}
-
-/******************************************************************************/
-int MX25_Clock(unsigned len, unsigned deassert)
-{
-    return MXC_SPIXF_Clocks(len, deassert);
 }

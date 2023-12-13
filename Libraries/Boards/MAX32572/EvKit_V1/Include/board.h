@@ -54,12 +54,12 @@ extern "C" {
 #ifdef LED_OFF
 #undef LED_OFF
 #endif
-#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_OFF 0 /// Override inactive state of LEDs
 
 #ifdef LED_ON
 #undef LED_ON
 #endif
-#define LED_ON 0 /// Override active state of LEDs
+#define LED_ON 1 /// Override active state of LEDs
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
@@ -72,6 +72,7 @@ extern "C" {
 #ifndef MX25_BAUD
 #define MX25_BAUD 3000000
 #endif
+
 // #define MX25_SPI                    MXC_SPIXC
 // #define MX25_SSEL                   0
 // // #define SPI_CHAR_BITS               8
