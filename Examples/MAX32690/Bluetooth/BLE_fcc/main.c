@@ -151,12 +151,12 @@ void TMR2_IRQHandler(void)
 void printUsage(void)
 {
     APP_TRACE_INFO0("Usage: ");
-    APP_TRACE_INFO0(" (0) Transmit on RF channel 0 (2402 MHz)");
-    APP_TRACE_INFO0(" (1) Transmit on RF channel 19 (2440 MHz)");
-    APP_TRACE_INFO0(" (2) Transmit on RF channel 39 (2480 MHz)");
+    APP_TRACE_INFO0(" (0) Transmit Continuous Modulated on RF channel 0 (2402 MHz)");
+    APP_TRACE_INFO0(" (1) Transmit Continuous Modulated on RF channel 19 (2440 MHz)");
+    APP_TRACE_INFO0(" (2) Transmit Continuous Modulated RF channel 39 (2480 MHz)");
     APP_TRACE_INFO0(" (3) Receive  on RF channel 39 (2480 MHz)");
     APP_TRACE_INFO0(" (4) Set Transmit power");
-    APP_TRACE_INFO0(" (5) Enable constant TX");
+    APP_TRACE_INFO0(" (5) Enable Constant Unmodulated TX");
     APP_TRACE_INFO0(" (6) Disable constant TX -- MUST be called after (5)");
     /* APP_TRACE_INFO0(" (7) Set PA value"); */
     APP_TRACE_INFO0(" (8) Set PHY");
@@ -193,7 +193,7 @@ static void processConsoleRX(uint8_t rxByte)
     switch (cmd) {
     case '0':
 
-        APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
+        APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, PRBS15, %s, forever ..",
                         getPhyStr(phy));
         res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
@@ -202,7 +202,7 @@ static void processConsoleRX(uint8_t rxByte)
 
     case '1':
 
-        APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
+        APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, PRBS15, %s, forever ..",
                         getPhyStr(phy));
         res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
@@ -211,7 +211,7 @@ static void processConsoleRX(uint8_t rxByte)
 
     case '2':
 
-        APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
+        APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, PRBS15, %s, forever ..",
                         getPhyStr(phy));
         res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
