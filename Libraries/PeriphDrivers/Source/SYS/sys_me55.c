@@ -483,8 +483,8 @@ uint32_t MXC_SYS_RiscVClockRate(void)
     //    (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LPMCLKSEL)) {
     //     return ISO_FREQ;
     // } else {
-        // return PeripheralClock;
-        return SystemCoreClock;
+    // return PeripheralClock;
+    return SystemCoreClock;
     // }
 }
 

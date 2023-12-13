@@ -80,7 +80,8 @@ int MXC_RTC_RevA_GetBusyFlag(mxc_rtc_reva_regs_t *rtc)
 
 int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
-    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE | MXC_F_RTC_REVA_CTRL_RDY_IE);
+    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE |
+             MXC_F_RTC_REVA_CTRL_RDY_IE);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
@@ -102,7 +103,8 @@ int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 
 int MXC_RTC_RevA_DisableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
-    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE | MXC_F_RTC_REVA_CTRL_RDY_IE);
+    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE |
+             MXC_F_RTC_REVA_CTRL_RDY_IE);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
@@ -288,12 +290,14 @@ int MXC_RTC_RevA_Trim(mxc_rtc_reva_regs_t *rtc, int8_t trim)
 
 int MXC_RTC_RevA_GetFlags(mxc_rtc_reva_regs_t *rtc)
 {
-    return rtc->ctrl & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM | MXC_F_RTC_REVA_CTRL_RDY);
+    return rtc->ctrl & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM |
+                        MXC_F_RTC_REVA_CTRL_RDY);
 }
 
 int MXC_RTC_RevA_ClearFlags(mxc_rtc_reva_regs_t *rtc, int flags)
 {
-    rtc->ctrl &= ~(flags & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM | MXC_F_RTC_REVA_CTRL_RDY));
+    rtc->ctrl &= ~(flags & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM |
+                            MXC_F_RTC_REVA_CTRL_RDY));
 
     return E_SUCCESS;
 }

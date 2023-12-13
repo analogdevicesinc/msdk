@@ -16,17 +16,16 @@
  *
  ******************************************************************************/
 
-#define SWAP(x) (((x) >> 24) | (((x) & 0x00FF0000) >> 8) | (((x) & 0x0000FF00) << 8) | (((x) & 0x000000FF) << 24))
+#define SWAP(x) \
+    (((x) >> 24) | (((x)&0x00FF0000) >> 8) | (((x)&0x0000FF00) << 8) | (((x)&0x000000FF) << 24))
 
-typedef enum
-{
+typedef enum {
     ROM_A1_VERSION = 0x01000000,
     LESS_THAN_ROM_A1_VERSION = 0x00000001,
     GREATER_THAN_ROM_A1_VERSION = 0x01000001,
 } enum_rom_version_t;
 
-typedef enum
-{
+typedef enum {
     APP_VERSION = 0x01000000,
     LESS_THAN_APP_VERSION = 0x00AA0055,
     GREATER_THAN_APP_VERSION = 0x010000CC,
@@ -40,27 +39,24 @@ typedef enum
 extern unsigned int _start_SWAP;
 extern unsigned int _SLA_Size_SWAP;
 
-typedef enum
-{
+typedef enum {
     MagicH = 0x48495357,
     MagicL = 0x45444744,
 } enum_magic_t;
 
-typedef struct
-{
-    enum_magic_t        MagicHigh;                //> SLA Header magic
-    enum_magic_t        MagicLow;                 //> SLA Header magic
+typedef struct {
+    enum_magic_t MagicHigh; //> SLA Header magic
+    enum_magic_t MagicLow; //> SLA Header magic
 } magic_t;
 
-typedef struct
-{
-    magic_t             Magic;
-    enum_rom_version_t  RomVersion;               //> ROM version
-    unsigned int        LoadAddr;                 //> Relocation address.
-    unsigned int        SLA_CodeSize;             //> SLA code size in bytes
-    unsigned int*       JumpAddr;                 //> Rom code will jump at this address
-    unsigned int        ArgSize;                  //> Size of the Argument
-    unsigned int        AppVersionNumber;         //> Version of this application
+typedef struct {
+    magic_t Magic;
+    enum_rom_version_t RomVersion; //> ROM version
+    unsigned int LoadAddr; //> Relocation address.
+    unsigned int SLA_CodeSize; //> SLA code size in bytes
+    unsigned int *JumpAddr; //> Rom code will jump at this address
+    unsigned int ArgSize; //> Size of the Argument
+    unsigned int AppVersionNumber; //> Version of this application
 } flash_app_header_t;
 
 extern uint32_t _FLASH;

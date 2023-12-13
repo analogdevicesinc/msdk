@@ -87,16 +87,18 @@ typedef enum {
     MXC_TMR_PRES_32 = MXC_S_TMR_CN_PRES_DIV_BY_32, ///< Divide input clock by 32
     MXC_TMR_PRES_64 = MXC_S_TMR_CN_PRES_DIV_BY_64, ///< Divide input clock by 64
     MXC_TMR_PRES_128 = MXC_S_TMR_CN_PRES_DIV_BY_128, ///< Divide input clock by 128
-    MXC_TMR_PRES_256 = MXC_S_TMR_CN_PRES_DIV_BY_256 | MXC_F_TMR_CN_PRES3, ///< Divide input clock by 256
-    MXC_TMR_PRES_512 = MXC_S_TMR_CN_PRES_DIV_BY_512 | MXC_F_TMR_CN_PRES3, ///< Divide input clock by 512
+    MXC_TMR_PRES_256 = MXC_S_TMR_CN_PRES_DIV_BY_256 |
+                       MXC_F_TMR_CN_PRES3, ///< Divide input clock by 256
+    MXC_TMR_PRES_512 = MXC_S_TMR_CN_PRES_DIV_BY_512 |
+                       MXC_F_TMR_CN_PRES3, ///< Divide input clock by 512
     MXC_TMR_PRES_1024 = MXC_S_TMR_CN_PRES_DIV_BY_1024 |
-                    MXC_F_TMR_CN_PRES3, ///< Divide input clock by 1024
+                        MXC_F_TMR_CN_PRES3, ///< Divide input clock by 1024
     MXC_TMR_PRES_2048 = MXC_S_TMR_CN_PRES_DIV_BY_2048 |
-                    MXC_F_TMR_CN_PRES3, ///< Divide input clock by 2048
+                        MXC_F_TMR_CN_PRES3, ///< Divide input clock by 2048
     MXC_TMR_PRES_4096 = MXC_S_TMR_CN_PRES_DIV_BY_4096 |
-                    MXC_F_TMR_CN_PRES3, ///< Divide input clock by 4096
+                        MXC_F_TMR_CN_PRES3, ///< Divide input clock by 4096
     MXC_TMR_PRES_8192 = MXC_S_TMR_CN_PRES_DIV_BY_8192 |
-                    MXC_F_TMR_CN_PRES3, ///< Divide input clock by 8192
+                        MXC_F_TMR_CN_PRES3, ///< Divide input clock by 8192
 
     // Legacy names
     TMR_PRES_1 = MXC_TMR_PRES_1,

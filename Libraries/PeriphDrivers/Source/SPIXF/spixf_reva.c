@@ -139,7 +139,8 @@ void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t *spixfc)
 }
 
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_padctrl_t padctrl)
+                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
+                           mxc_spixf_padctrl_t padctrl)
 {
     spixfm->io_ctrl = 0;
 

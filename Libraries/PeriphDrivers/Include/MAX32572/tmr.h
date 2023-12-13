@@ -70,15 +70,15 @@ typedef enum {
     MXC_TMR_PRES_64 = MXC_S_TMR_CTRL_CLKDIV_DIV64, ///< Divide input clock by 64
     MXC_TMR_PRES_128 = MXC_S_TMR_CTRL_CLKDIV_DIV128, ///< Divide input clock by 128
     MXC_TMR_PRES_256 = MXC_F_TMR_CTRL_CLKDIV3 |
-                   MXC_S_TMR_CTRL_CLKDIV_DIV1, ///< Divide input clock by 256
+                       MXC_S_TMR_CTRL_CLKDIV_DIV1, ///< Divide input clock by 256
     MXC_TMR_PRES_512 = MXC_F_TMR_CTRL_CLKDIV3 |
-                   MXC_S_TMR_CTRL_CLKDIV_DIV2, ///< Divide input clock by 512
+                       MXC_S_TMR_CTRL_CLKDIV_DIV2, ///< Divide input clock by 512
     MXC_TMR_PRES_1024 = MXC_F_TMR_CTRL_CLKDIV3 |
-                    MXC_S_TMR_CTRL_CLKDIV_DIV4, ///< Divide input clock by 1024
+                        MXC_S_TMR_CTRL_CLKDIV_DIV4, ///< Divide input clock by 1024
     MXC_TMR_PRES_2048 = MXC_F_TMR_CTRL_CLKDIV3 |
-                    MXC_S_TMR_CTRL_CLKDIV_DIV8, ///< Divide input clock by 2048
+                        MXC_S_TMR_CTRL_CLKDIV_DIV8, ///< Divide input clock by 2048
     MXC_TMR_PRES_4096 = MXC_F_TMR_CTRL_CLKDIV3 |
-                    MXC_S_TMR_CTRL_CLKDIV_DIV16, ///< Divide input clock by 4096
+                        MXC_S_TMR_CTRL_CLKDIV_DIV16, ///< Divide input clock by 4096
 } mxc_tmr_pres_t;
 
 /**
@@ -92,7 +92,8 @@ typedef enum {
     MXC_TMR_MODE_CAPTURE = MXC_V_TMR_CTRL_MODE_CAPTURE, ///< Timer Mode CAPTURE
     MXC_TMR_MODE_COMPARE = MXC_V_TMR_CTRL_MODE_COMPARE, ///< Timer Mode COMPARE
     MXC_TMR_MODE_GATED = MXC_V_TMR_CTRL_MODE_GATED, ///< Timer Mode GATED
-    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_V_TMR_CTRL_MODE_CAPTURECOMPARE, ///< Timer Mode CAPTURECOMPARE
+    MXC_TMR_MODE_CAPTURE_COMPARE =
+        MXC_V_TMR_CTRL_MODE_CAPTURECOMPARE, ///< Timer Mode CAPTURECOMPARE
 } mxc_tmr_mode_t;
 
 /**
