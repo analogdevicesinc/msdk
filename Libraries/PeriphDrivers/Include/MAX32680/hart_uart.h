@@ -75,6 +75,7 @@ extern "C" {
 #define NORMAL_HART_TRANSCEIVE_MODE 0
 #define HART_TEST_MODE_TX_1200 1
 #define HART_TEST_MODE_TX_2200 2
+#define HART_TEST_MODE_EXTERNAL 3
 
 /** TPDLL Communications Errors, based on Command Summary Specification
     HCF-Spec099 Section 7.3.1 Table 10 Communication Status. */
