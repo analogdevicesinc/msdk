@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,11 +56,11 @@ typedef struct
 {
     magic_t             Magic;
     enum_rom_version_t  RomVersion;               //> ROM version
-    unsigned int     	LoadAddr;                 //> Relocation address.
-    unsigned int     	SLA_CodeSize;             //> SLA code size in bytes
-    unsigned int*    	JumpAddr;                 //> Rom code will jump at this address
-    unsigned int     	ArgSize;                  //> Size of the Argument
-    unsigned int     	AppVersionNumber;         //> Version of this application
+    unsigned int        LoadAddr;                 //> Relocation address.
+    unsigned int        SLA_CodeSize;             //> SLA code size in bytes
+    unsigned int*       JumpAddr;                 //> Rom code will jump at this address
+    unsigned int        ArgSize;                  //> Size of the Argument
+    unsigned int        AppVersionNumber;         //> Version of this application
 } flash_app_header_t;
 
 extern uint32_t _FLASH;

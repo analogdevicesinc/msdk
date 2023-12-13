@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_SPI_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_SPI_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SPI_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SPI_H_
 
 /***** includes *******/
 #include <stdbool.h>
