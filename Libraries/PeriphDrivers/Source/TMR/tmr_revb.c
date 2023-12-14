@@ -269,10 +269,28 @@ int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
         return E_BAD_PARAM;
     }
 
-    while (tmr->cnt >= pwm) {}
+    bool timera_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_A;
+    bool timerb_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_B;
+
+    if (timera_is_running || timerb_is_running) {
+        MXC_TMR_RevB_ClearFlags(tmr); // Clear flags so we can catch the next one
+        while (!MXC_TMR_RevB_GetFlags(tmr)) {} // Wait for next PWM transition
+        MXC_TMR_RevB_Stop(tmr); // Pause timer
+        MXC_TMR_RevB_SetCount(tmr, 0); // Reset the count
+        MXC_TMR_RevB_ClearFlags(
+            tmr); // Clear flags since app code wants the new PWM transitions set by this function
+    }
 
     tmr->pwm = pwm;
     while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
+
+    if (timera_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A; // Unpause A
+    }
+
+    if (timerb_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B; // Unpause B
+    }
 
     return E_NO_ERROR;
 }
