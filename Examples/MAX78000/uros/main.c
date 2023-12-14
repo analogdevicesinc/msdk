@@ -92,6 +92,8 @@ int main(void)
     /* Delay to prevent bricks */
     MXC_Delay(MXC_DELAY_SEC(2));
 
+    LED_On(0);
+
     /* Print banner (RTOS scheduler not running) */
     printf("\n-=- %s micro-ROS + FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
     printf("SystemCoreClock = %d\n", SystemCoreClock);
@@ -114,9 +116,10 @@ int main(void)
     if ((xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
         printf("xTaskCreate() failed to create a task.\n");
     } else {
-        /* Start scheduler */
+        /* Start scheduler */        
         printf("Starting scheduler in 1s...\n");
         MXC_Delay(MXC_DELAY_SEC(1));
+        LED_Off(0);
         vTaskStartScheduler();
     }
 

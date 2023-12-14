@@ -13,6 +13,9 @@ import os
 import select
 import sys
 
+global g_stopped
+g_stopped = False
+
 class BoxSubscriber(Node):
   x: int
   y: int
@@ -43,39 +46,45 @@ class BoxSubscriber(Node):
     self.get_logger().info(f"\twidth: {data.width}")
     self.get_logger().info(f"\theight: {data.height}")
     self.x = data.x_offset + (data.width / 2)
-    self.y = data.y_offset + (data.height / 2)
+    self.y = data.y_offset - (data.height / 2)
     self.get_logger().info(f"\tmiddle: {self.x},{self.y}")
 
     if self.x > 0 and self.y > 0:
-        prev = goal_joint_angle[0]
-        if (self.x < (160 / 2)):           
+        if (self.x < (160 / 2)):
            step_size = joint_angle_delta * (1 * ((80 - self.x)/80.0))
-           goal_joint_angle[0] = prev - step_size
-           print(f"{prev}-{step_size} -> {goal_joint_angle[0]}")
-           teleop_keyboard.send_goal_joint_space()
+           goal_joint_angle[0] -= step_size
         elif (self.x > (160 / 2)):
            step_size = joint_angle_delta * (1 * ((self.x - 80)/80.0))
-           goal_joint_angle[0] = goal_joint_angle[0] + step_size
-           print(f"{prev}+{step_size} -> {goal_joint_angle[0]}")
-           teleop_keyboard.send_goal_joint_space()
-        print(goal_joint_angle[0])
-        for index in range(0, 7):
-            prev_goal_kinematics_pose[index] = goal_kinematics_pose[index]
-        for index in range(0, 4):
-            prev_goal_joint_angle[index] = goal_joint_angle[index]
+           goal_joint_angle[0] += step_size
+
+        if (self.y < (120 / 2)):
+           step_size = (joint_angle_delta / 2) * (1 * ((60 - self.y)/60.0))
+           goal_joint_angle[1] -= step_size
+           goal_joint_angle[3] -= (step_size / 4)
+        elif (self.y > (120 / 2)):
+           step_size = (joint_angle_delta / 2) * (1 * ((self.y - 60)/60.0))
+           goal_joint_angle[1] += step_size
+           goal_joint_angle[3] += (step_size / 4)
+
+        teleop_keyboard.send_goal_joint_space()
+
+        # for index in range(0, 7):
+        #     prev_goal_kinematics_pose[index] = goal_kinematics_pose[index]
+        # for index in range(0, 4):
+        #     prev_goal_joint_angle[index] = goal_joint_angle[index]
         
 
 present_joint_angle = [1.514991, -0.754719, 0.391165, 1.184233]
 goal_joint_angle = [1.514991, -0.754719, 0.391165, 1.184233]
 prev_goal_joint_angle = [0.0, 0.0, 0.0, 0.0]
-present_kinematics_pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-goal_kinematics_pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+present_kinematics_pose = [0.009, 0.147, 0.162, 0.666, -0.221, 0.217, 0.679]
+goal_kinematics_pose = [0.009, 0.147, 0.162, 0.666, -0.221, 0.217, 0.679]
 prev_goal_kinematics_pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 debug = True
 task_position_delta = 0.01  # meter
 joint_angle_delta = 0.4  # radian
-path_time = 0.5  # second
+path_time = 1.0 # second
 
 class TeleopKeyboard(Node):
 
@@ -164,14 +173,16 @@ class TeleopKeyboard(Node):
             #     goal_joint_angle[index] = present_joint_angle[index]
 
 def main(args=None):
-  
+
   # Initialize the rclpy library
   rclpy.init(args=args)
   
   # Create the node
   box_subscriber = BoxSubscriber()
   global teleop_keyboard
-  teleop_keyboard = TeleopKeyboard()  
+  teleop_keyboard = TeleopKeyboard()
+
+  teleop_keyboard.send_goal_joint_space()
   
   # Spin the node so the callback function is called.
   while(rclpy.ok()):

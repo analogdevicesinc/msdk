@@ -121,7 +121,7 @@ int stream_img_to_cnn(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_
         uint8_t b[4];
     } m;
 
-    camera_write_reg(0x28, 0x30);
+    // camera_write_reg(0x28, 0x30);
 
     printf("Configuring camera\n");
     fifomode_t fifo_mode = (pixel_format == PIXFORMAT_RGB888) ? FIFO_THREE_BYTE : FIFO_FOUR_BYTE;
@@ -287,7 +287,7 @@ void appMain(void *argument)
 
 	// Create a 2 seconds ping timer,
 	rcl_timer_t timer;
-	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(1000), timer_callback));
+	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(500), timer_callback));
 
 	// Create executor
 	rclc_executor_t executor;
