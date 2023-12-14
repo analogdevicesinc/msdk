@@ -25,8 +25,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_OTP_H_
-#define _MXC_OTP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_OTP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_OTP_H_
 
 /* **** Includes **** */
 
@@ -147,4 +147,4 @@ int MXC_OTP_Read32(uint16_t addr, uint32_t *data);
 }
 #endif
 
-#endif /* _MXC_OTP_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_OTP_H_
