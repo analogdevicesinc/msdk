@@ -271,7 +271,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             /*
                 TODO: Needs feature in PHY
             */
-            pBuf[0] = 0;
+            pBuf[0] = -10;
             break;
         }
 
