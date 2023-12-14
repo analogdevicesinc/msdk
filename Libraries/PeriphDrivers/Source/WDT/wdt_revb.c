@@ -158,6 +158,7 @@ void MXC_WDT_RevB_ClearIntFlag(mxc_wdt_revb_regs_t *wdt)
 void MXC_WDT_RevB_SetClockSource(mxc_wdt_revb_regs_t *wdt, int clock_source)
 {
     const uint8_t clock_source_num = 8; // Max number of clock sources for Rev B WDT
+    (void)clock_source_num;
 
     MXC_ASSERT((clock_source < clock_source_num) && (clock_source >= 0));
     MXC_SETFIELD(wdt->clksel, MXC_F_WDT_REVB_CLKSEL_SOURCE,
