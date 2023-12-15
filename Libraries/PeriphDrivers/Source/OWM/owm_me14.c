@@ -124,7 +124,9 @@ int MXC_OWM_Init(const mxc_owm_cfg_t *cfg, sys_map_t map)
         return E_NOT_SUPPORTED;
     }
 
-    return MXC_OWM_RevA_Init((mxc_owm_reva_regs_t *)MXC_OWM, cfg);
+    err = MXC_OWM_RevA_Init((mxc_owm_reva_regs_t *)MXC_OWM, cfg);
+
+    return err;
 }
 
 void MXC_OWM_Shutdown(void)
