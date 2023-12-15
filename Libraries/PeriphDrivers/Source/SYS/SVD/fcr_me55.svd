@@ -279,12 +279,61 @@
             <description>MSR R1</description>
             <bitOffset>0</bitOffset>
             <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0K</name>
+                <description>0kOhm</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1P2K</name>
+                <description>1.2kOhm</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>2P4K</name>
+                <description>2.4kOhm</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4P8K</name>
+                <description>4.8kOhm</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>MSR_R2</name>
             <description>MSR R2</description>
             <bitOffset>2</bitOffset>
             <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>OPEN</name>
+                <description>Open drain.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3K</name>
+                <description>3kOhm</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>6K</name>
+                <description>6kOhm</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>12K</name>
+                <description>12kOhm</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>24K</name>
+                <description>24kOhm</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
         </fields>
       </register>

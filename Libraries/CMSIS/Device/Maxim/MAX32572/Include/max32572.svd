@@ -1141,12 +1141,61 @@
        <description>MSR R1</description>
        <bitOffset>0</bitOffset>
        <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0K</name>
+         <description>0kOhm</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P2K</name>
+         <description>1.2kOhm</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P4K</name>
+         <description>2.4kOhm</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>4P8K</name>
+         <description>4.8kOhm</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>MSR_R2</name>
        <description>MSR R2</description>
        <bitOffset>2</bitOffset>
        <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>OPEN</name>
+         <description>Open drain.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3K</name>
+         <description>3kOhm</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>6K</name>
+         <description>6kOhm</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>12K</name>
+         <description>12kOhm</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>24K</name>
+         <description>24kOhm</description>
+         <value>7</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -1202,31 +1251,6 @@
     <usage>registers</usage>
    </addressBlock>
    <registers>
-    <register>
-     <name>ECCEN</name>
-     <description>ECC Enable Register</description>
-     <addressOffset>0x00</addressOffset>
-     <fields>
-      <field>
-       <name>ICCXIP</name>
-       <description>IcacheXIP ECC Enable.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
     <register>
      <name>PDOWN</name>
      <description>PDOWN Drive Strength</description>
@@ -4245,12 +4269,6 @@
        </enumeratedValues>
       </field>
       <field derivedFrom="ERFO_EN">
-       <name>ERTCO_EN</name>
-       <description>32 kHz Oscillator Enable.</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="ERFO_EN">
        <name>ISO_EN</name>
        <description>60 MHz Internal Oscillator Enable.</description>
        <bitOffset>18</bitOffset>
@@ -4746,12 +4764,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="RAM0LS_EN">
-       <name>ICCLS_EN</name>
-       <description>ICache RAM Light Sleep Mode.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="RAM0LS_EN">
        <name>ICCXIPLS_EN</name>
        <description>ICACHE-XIP RAM Light Sleep Mode.</description>
        <bitOffset>25</bitOffset>
@@ -5243,160 +5255,6 @@
        <description>TBD</description>
        <bitOffset>0</bitOffset>
        <bitWidth>10</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ECCERR</name>
-     <description>ECC Error Register</description>
-     <addressOffset>0x64</addressOffset>
-     <fields>
-      <field>
-       <name>RAM0</name>
-       <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM1</name>
-       <description>ECC System RAM1 Error Flag. Write 1 to clear.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM2</name>
-       <description>ECC System RAM2 Error Flag. Write 1 to clear.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM3</name>
-       <description>ECC System RAM3 Error Flag. Write 1 to clear.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ICCXIP</name>
-       <description>ECC System ICACHEXIP Error Flag. Write 1 to clear.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ECCCED</name>
-     <description>ECC Not Double Error Detect Register</description>
-     <addressOffset>0x68</addressOffset>
-     <fields>
-      <field>
-       <name>RAM0</name>
-       <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM1</name>
-       <description>ECC System RAM1 Error Flag. Write 1 to clear.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM2</name>
-       <description>ECC System RAM2 Error Flag. Write 1 to clear.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM3</name>
-       <description>ECC System RAM3 Error Flag. Write 1 to clear.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ICCXIP</name>
-       <description>ECC System ICACHEXIP Error Flag. Write 1 to clear.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ECCIE</name>
-     <description>ECC IRQ Enable Register</description>
-     <addressOffset>0x6C</addressOffset>
-     <fields>
-      <field>
-       <name>RAM0</name>
-       <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM1</name>
-       <description>ECC System RAM1 Error Flag. Write 1 to clear.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM2</name>
-       <description>ECC System RAM2 Error Flag. Write 1 to clear.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RAM3</name>
-       <description>ECC System RAM3 Error Flag. Write 1 to clear.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ICCXIP</name>
-       <description>ECC System ICACHEXIP Error Flag. Write 1 to clear.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ECCADDR</name>
-     <description>ECC Error Address Register</description>
-     <addressOffset>0x70</addressOffset>
-     <fields>
-      <field>
-       <name>DADDR</name>
-       <description>Address of Error in Data RAM.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>14</bitWidth>
-      </field>
-      <field>
-       <name>DB</name>
-       <description>Data Bank,</description>
-       <bitOffset>14</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DE</name>
-       <description>Data Error Flag.</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>TADDR</name>
-       <description>Address of Error in Tag RAM.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>14</bitWidth>
-      </field>
-      <field>
-       <name>TB</name>
-       <description>Tag Bank.</description>
-       <bitOffset>30</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>TE</name>
-       <description>Tag Error Flag.</description>
-       <bitOffset>31</bitOffset>
-       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>
