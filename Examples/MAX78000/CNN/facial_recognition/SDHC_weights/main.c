@@ -1,7 +1,5 @@
 /******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,22 +28,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  *
  ******************************************************************************/
 
@@ -156,9 +138,7 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    MKFS_PARM format_options = { .fmt = FM_ANY };
-
-    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
+    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
@@ -407,6 +387,137 @@ int delete ()
     return err;
 }
 
+int example()
+{
+    unsigned int length = 256;
+
+    if ((err = formatSDHC()) != FR_OK) {
+        printf("Error Formatting SD Card: %s\n", FF_ERRORS[err]);
+        return err;
+    }
+
+    //open SD Card
+    if ((err = mount()) != FR_OK) {
+        printf("Error opening SD Card: %s\n", FF_ERRORS[err]);
+        return err;
+    }
+
+    printf("SD Card Opened!\n");
+
+    if ((err = f_setlabel("MAXIM")) != FR_OK) {
+        printf("Error setting drive label: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_getfree(&volume, &clusters_free, &fs)) != FR_OK) {
+        printf("Error finding free size of card: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_getlabel(&volume, volume_label, &volume_sn)) != FR_OK) {
+        printf("Error reading drive label: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_open(&file, "0:HelloWorld.txt", FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
+        printf("Error opening file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("File opened!\n");
+
+    generateMessage(length);
+
+    if ((err = f_write(&file, &message, length, &bytes_written)) != FR_OK) {
+        printf("Error writing file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("%d bytes written to file!\n", bytes_written);
+
+    if ((err = f_close(&file)) != FR_OK) {
+        printf("Error closing file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("File Closed!\n");
+
+    if ((err = f_chmod("HelloWorld.txt", 0, AM_RDO | AM_ARC | AM_SYS | AM_HID)) != FR_OK) {
+        printf("Error in chmod: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    err = f_stat("MaximSDHC", &fno);
+
+    if (err == FR_NO_FILE) {
+        printf("Creating Directory...\n");
+
+        if ((err = f_mkdir("MaximSDHC")) != FR_OK) {
+            printf("Error creating directory: %s\n", FF_ERRORS[err]);
+            f_mount(NULL, "", 0);
+            return err;
+        }
+    }
+
+    printf("Renaming File...\n");
+
+    if ((err = f_rename("0:HelloWorld.txt", "0:MaximSDHC/HelloMaxim.txt")) !=
+        FR_OK) { //cr: clearify 0:file notation
+        printf("Error moving file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_chdir("/MaximSDHC")) != FR_OK) {
+        printf("Error in chdir: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("Attempting to read back file...\n");
+
+    if ((err = f_open(&file, "HelloMaxim.txt", FA_READ)) != FR_OK) {
+        printf("Error opening file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_read(&file, &message, bytes_written, &bytes_read)) != FR_OK) {
+        printf("Error reading file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("Read Back %d bytes\n", bytes_read);
+    printf("Message: ");
+    printf("%s", message);
+    printf("\n");
+
+    if ((err = f_close(&file)) != FR_OK) {
+        printf("Error closing file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("File Closed!\n");
+
+    //unmount SD Card
+    //f_mount(fs, "", 0);
+    if ((err = f_mount(NULL, "", 0)) != FR_OK) {
+        printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
+        return err;
+    }
+
+    return 0;
+}
+
 void waitCardInserted()
 {
     // On the MAX78000FTHR board, P0.12 will be pulled low when a card is inserted.
@@ -416,7 +527,6 @@ void waitCardInserted()
     cardDetect.func = MXC_GPIO_FUNC_IN;
     cardDetect.pad = MXC_GPIO_PAD_NONE;
     cardDetect.vssel = MXC_GPIO_VSSEL_VDDIOH;
-    cardDetect.drvstr = MXC_GPIO_DRVSTR_0;
 
     MXC_GPIO_Config(&cardDetect);
 

@@ -1,6 +1,6 @@
-/******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+/*******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -30,8 +30,7 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- ******************************************************************************/
+ *******************************************************************************/
 #include "post_process.h"
 #include "tft_utils.h"
 #include "facedetection.h"
@@ -306,7 +305,53 @@ void reset_nms(void)
         }
     }
 }
+void get_max_probable_box(void)
+{   
+    /*Supports only one classes for now*/
+    int prior_idx, class_idx;  
+    uint16_t cls_prob;
+    uint16_t max_cls_prob = 0;
+    uint16_t max_prior_idx = 0;
+    float prior_cxcy[4];
+    float cxcy[4];
+    float xy[4];
+    
+    for (prior_idx = 0; prior_idx < NUM_PRIORS; ++prior_idx) {
+        for (class_idx = 0; class_idx < (NUM_CLASSES - 2); ++class_idx) {
+            cls_prob = prior_cls_softmax[prior_idx * NUM_CLASSES + class_idx + 1];
 
+            if (cls_prob > max_cls_prob) {
+                max_cls_prob = cls_prob;
+                max_prior_idx = prior_idx;
+
+            }
+        }
+    }
+
+    if (max_cls_prob < MIN_CLASS_SCORE) {
+        PR_DEBUG("No face detected\n");
+        face_detected = 0;
+        return;
+    }
+
+    
+    get_cxcy(prior_cxcy, max_prior_idx);
+    gcxgcy_to_cxcy(cxcy, max_prior_idx, prior_cxcy);
+    cxcy_to_xy(xy, cxcy);
+    box_sanity_check(&xy[0]);
+
+    box[0] = (uint8_t)(IMAGE_SIZE_X * xy[0]);
+    box[1] = (uint8_t)(IMAGE_SIZE_Y * xy[1]);
+    box[2] = (uint8_t)(IMAGE_SIZE_X * xy[2]);
+    box[3] = (uint8_t)(IMAGE_SIZE_Y * xy[3]);
+
+    PR_DEBUG("x1:%d y1:%d x2:%d y2:%d\n", box[0], box[1], box[2], box[3]);
+    PR_DEBUG("width:%d heigth:%d\n", box[2] - box[0], box[3] - box[1]);
+
+    face_detected = 1;
+    draw_obj_rect(xy, IMAGE_SIZE_X, IMAGE_SIZE_Y);
+    
+}
 void nms(void)
 {
     int prior_idx, class_idx, nms_idx1, nms_idx2, prior1_idx, prior2_idx;
@@ -450,6 +495,7 @@ void localize_objects(void)
                 box[1] = (uint8_t)(IMAGE_SIZE_Y * xy[1]);
                 box[2] = (uint8_t)(IMAGE_SIZE_X * xy[2]);
                 box[3] = (uint8_t)(IMAGE_SIZE_Y * xy[3]);
+
 #if 0
 			    PR_DEBUG("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
                        "%.2f \n",

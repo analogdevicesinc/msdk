@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "facedetection.h": "c",
+        "post_process.h": "c",
+        "baseaddr.h": "c",
+        "record.h": "c",
+        "tft_utils.h": "c"
+    }
+}

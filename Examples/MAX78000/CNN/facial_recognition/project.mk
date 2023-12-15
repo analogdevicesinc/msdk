@@ -12,29 +12,24 @@
 # **********************************************************
 
 # Add your config here!
-# Uncomment the line below to build for the MAX78000FTHR
-#BOARD=FTHR_RevA
 
 $(info Note: This project is designed and tested for the OV7692 only.)
 override CAMERA=OV7692
 
-# This example is only compatible with the FTHR board
-BOARD = FTHR_RevA
-ifneq ($(BOARD),FTHR_RevA)
-$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000FTHR.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
-endif
+# This example is only compatible with the FTHR board,
+# so we override the BOARD value to hard-set it.
+override BOARD=FTHR_RevA
+$(warning Warning: This project is forced to compile for the FTHR board only!)
 
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
-#PROJ_CFLAGS+=-DTFT_ENABLE
+PROJ_CFLAGS+=-DTFT_ENABLE
+SDHC_CLK_FREQ  = 25000000
 IPATH += TFT/fthr
 VPATH += TFT/fthr
-FONTS = LiberationSans16x16
 endif
 
-# Enable the SDHC library
 LIB_SDHC = 1
-# Use FatFS R0.15
-FATFS_VERSION = ff15
+
 

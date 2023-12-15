@@ -1,6 +1,6 @@
-/******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+/*******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -30,8 +30,7 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- ******************************************************************************/
+ *******************************************************************************/
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
@@ -39,6 +38,7 @@
 #include <math.h>
 
 //#define RETURN_LARGEST // If defined returns the largest face detected
+#define RETURN_MAX_PROB // If defined returns the face with the highest probability Note: This doesn't need nms
 
 #define SQUARE(x) ((x) * (x))
 #define MULT(x, y) ((x) * (y))
@@ -53,6 +53,7 @@
 
 #define NUM_PRIORS_PER_AR 623
 #define NUM_PRIORS NUM_PRIORS_PER_AR *NUM_ARS
+
 
 #ifdef RETURN_LARGEST
 #define MAX_PRIORS 20
@@ -69,3 +70,5 @@ void get_cxcy(float *cxcy, int prior_idx);
 void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy);
 void cxcy_to_xy(float *xy, float *cxcy);
 void localize_objects(void);
+void box_sanity_check(float *xy);
+void get_max_probable_box(void);

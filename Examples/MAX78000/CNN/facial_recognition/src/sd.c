@@ -1,7 +1,5 @@
 /******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,22 +28,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  *
  ******************************************************************************/
 
@@ -87,7 +69,7 @@ TCHAR *FF_ERRORS[20];
 DWORD clusters_free = 0, sectors_free = 0, sectors_total = 0, volume_sn = 0;
 UINT bytes_written = 0, bytes_read = 0, mounted = 0;
 uint32_t total_bytes;
-uint32_t kernel_buffer[1000];
+uint32_t kernel_buffer[4096]; //5K seems to be limit for this app.
 BYTE work[4096];
 static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
 mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
@@ -145,9 +127,7 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    MKFS_PARM format_options = { .fmt = FM_ANY };
-
-    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
+    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
@@ -536,7 +516,6 @@ void waitCardInserted()
     cardDetect.func = MXC_GPIO_FUNC_IN;
     cardDetect.pad = MXC_GPIO_PAD_NONE;
     cardDetect.vssel = MXC_GPIO_VSSEL_VDDIOH;
-    cardDetect.drvstr = MXC_GPIO_DRVSTR_0;
 
     MXC_GPIO_Config(&cardDetect);
 
