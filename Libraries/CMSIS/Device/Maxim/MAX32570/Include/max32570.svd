@@ -10859,12 +10859,6 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>CLKSEL</name>
-       <description>Select source clock for internal SCK mode.</description>
-       <bitRange>[14:14]</bitRange>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>ADJUST</name>
        <description>LSB/MSB Justify.</description>
        <bitRange>[15:15]</bitRange>
@@ -11956,7 +11950,7 @@
       <field>
        <name>PRESDET_ST</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[5:5]</bitRange>
+       <bitRange>[7:7]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -12903,6 +12897,25 @@
      <description>Low Power Control Register.</description>
      <addressOffset>0x00</addressOffset>
      <fields>
+      <field>
+       <name>RAMRET_EN</name>
+       <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>OVR</name>
+       <description>Operating Voltage Range</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>1_1V</name>
+         <description>1.1V</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
       <field>
        <name>RETREG_EN</name>
        <description>Retention Regulator Enable. This bit controls the retention regulator in BACKUP mode. </description>
