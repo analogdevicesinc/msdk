@@ -7,7 +7,10 @@
 
 /******************************************************************************
  *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,38 +23,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- ******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
  *
  ******************************************************************************/
 
@@ -124,11 +95,6 @@ typedef struct {
     __I  uint32_t revision;             /**< <tt>\b 0x50:</tt> GCR REVISION Register */
     __IO uint32_t sysie;                /**< <tt>\b 0x54:</tt> GCR SYSIE Register */
     __IO uint32_t ipocnt;               /**< <tt>\b 0x58:</tt> GCR IPOCNT Register */
-    __R  uint32_t rsv_0x5c_0x63[2];
-    __IO uint32_t eccerr;               /**< <tt>\b 0x64:</tt> GCR ECCERR Register */
-    __IO uint32_t eccced;               /**< <tt>\b 0x68:</tt> GCR ECCCED Register */
-    __IO uint32_t eccie;                /**< <tt>\b 0x6C:</tt> GCR ECCIE Register */
-    __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
 } mxc_gcr_regs_t;
 
 /* Register offsets for module GCR */
@@ -154,10 +120,6 @@ typedef struct {
 #define MXC_R_GCR_REVISION                 ((uint32_t)0x00000050UL) /**< Offset from GCR Base Address: <tt> 0x0050</tt> */
 #define MXC_R_GCR_SYSIE                    ((uint32_t)0x00000054UL) /**< Offset from GCR Base Address: <tt> 0x0054</tt> */
 #define MXC_R_GCR_IPOCNT                   ((uint32_t)0x00000058UL) /**< Offset from GCR Base Address: <tt> 0x0058</tt> */
-#define MXC_R_GCR_ECCERR                   ((uint32_t)0x00000064UL) /**< Offset from GCR Base Address: <tt> 0x0064</tt> */
-#define MXC_R_GCR_ECCCED                   ((uint32_t)0x00000068UL) /**< Offset from GCR Base Address: <tt> 0x0068</tt> */
-#define MXC_R_GCR_ECCIE                    ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */
-#define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
 /**@} end of group gcr_registers */
 
 /**
@@ -815,101 +777,6 @@ typedef struct {
 #define MXC_F_GCR_IPOCNT_WMUPCNT                       ((uint32_t)(0x3FFUL << MXC_F_GCR_IPOCNT_WMUPCNT_POS)) /**< IPOCNT_WMUPCNT Mask */
 
 /**@} end of group GCR_IPOCNT_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_ECCERR GCR_ECCERR
- * @brief    ECC Error Register
- * @{
- */
-#define MXC_F_GCR_ECCERR_RAM0_POS                      0 /**< ECCERR_RAM0 Position */
-#define MXC_F_GCR_ECCERR_RAM0                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_RAM0_POS)) /**< ECCERR_RAM0 Mask */
-
-#define MXC_F_GCR_ECCERR_RAM1_POS                      1 /**< ECCERR_RAM1 Position */
-#define MXC_F_GCR_ECCERR_RAM1                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_RAM1_POS)) /**< ECCERR_RAM1 Mask */
-
-#define MXC_F_GCR_ECCERR_RAM2_POS                      2 /**< ECCERR_RAM2 Position */
-#define MXC_F_GCR_ECCERR_RAM2                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_RAM2_POS)) /**< ECCERR_RAM2 Mask */
-
-#define MXC_F_GCR_ECCERR_RAM3_POS                      3 /**< ECCERR_RAM3 Position */
-#define MXC_F_GCR_ECCERR_RAM3                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_RAM3_POS)) /**< ECCERR_RAM3 Mask */
-
-#define MXC_F_GCR_ECCERR_ICCXIP_POS                    10 /**< ECCERR_ICCXIP Position */
-#define MXC_F_GCR_ECCERR_ICCXIP                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_ICCXIP_POS)) /**< ECCERR_ICCXIP Mask */
-
-/**@} end of group GCR_ECCERR_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_ECCCED GCR_ECCCED
- * @brief    ECC Not Double Error Detect Register
- * @{
- */
-#define MXC_F_GCR_ECCCED_RAM0_POS                      0 /**< ECCCED_RAM0 Position */
-#define MXC_F_GCR_ECCCED_RAM0                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_RAM0_POS)) /**< ECCCED_RAM0 Mask */
-
-#define MXC_F_GCR_ECCCED_RAM1_POS                      1 /**< ECCCED_RAM1 Position */
-#define MXC_F_GCR_ECCCED_RAM1                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_RAM1_POS)) /**< ECCCED_RAM1 Mask */
-
-#define MXC_F_GCR_ECCCED_RAM2_POS                      2 /**< ECCCED_RAM2 Position */
-#define MXC_F_GCR_ECCCED_RAM2                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_RAM2_POS)) /**< ECCCED_RAM2 Mask */
-
-#define MXC_F_GCR_ECCCED_RAM3_POS                      3 /**< ECCCED_RAM3 Position */
-#define MXC_F_GCR_ECCCED_RAM3                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_RAM3_POS)) /**< ECCCED_RAM3 Mask */
-
-#define MXC_F_GCR_ECCCED_ICCXIP_POS                    10 /**< ECCCED_ICCXIP Position */
-#define MXC_F_GCR_ECCCED_ICCXIP                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_ICCXIP_POS)) /**< ECCCED_ICCXIP Mask */
-
-/**@} end of group GCR_ECCCED_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_ECCIE GCR_ECCIE
- * @brief    ECC IRQ Enable Register
- * @{
- */
-#define MXC_F_GCR_ECCIE_RAM0_POS                       0 /**< ECCIE_RAM0 Position */
-#define MXC_F_GCR_ECCIE_RAM0                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM0_POS)) /**< ECCIE_RAM0 Mask */
-
-#define MXC_F_GCR_ECCIE_RAM1_POS                       1 /**< ECCIE_RAM1 Position */
-#define MXC_F_GCR_ECCIE_RAM1                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM1_POS)) /**< ECCIE_RAM1 Mask */
-
-#define MXC_F_GCR_ECCIE_RAM2_POS                       2 /**< ECCIE_RAM2 Position */
-#define MXC_F_GCR_ECCIE_RAM2                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM2_POS)) /**< ECCIE_RAM2 Mask */
-
-#define MXC_F_GCR_ECCIE_RAM3_POS                       3 /**< ECCIE_RAM3 Position */
-#define MXC_F_GCR_ECCIE_RAM3                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM3_POS)) /**< ECCIE_RAM3 Mask */
-
-#define MXC_F_GCR_ECCIE_ICCXIP_POS                     10 /**< ECCIE_ICCXIP Position */
-#define MXC_F_GCR_ECCIE_ICCXIP                         ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_ICCXIP_POS)) /**< ECCIE_ICCXIP Mask */
-
-/**@} end of group GCR_ECCIE_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_ECCADDR GCR_ECCADDR
- * @brief    ECC Error Address Register
- * @{
- */
-#define MXC_F_GCR_ECCADDR_DADDR_POS                    0 /**< ECCADDR_DADDR Position */
-#define MXC_F_GCR_ECCADDR_DADDR                        ((uint32_t)(0x3FFFUL << MXC_F_GCR_ECCADDR_DADDR_POS)) /**< ECCADDR_DADDR Mask */
-
-#define MXC_F_GCR_ECCADDR_DB_POS                       14 /**< ECCADDR_DB Position */
-#define MXC_F_GCR_ECCADDR_DB                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCADDR_DB_POS)) /**< ECCADDR_DB Mask */
-
-#define MXC_F_GCR_ECCADDR_DE_POS                       15 /**< ECCADDR_DE Position */
-#define MXC_F_GCR_ECCADDR_DE                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCADDR_DE_POS)) /**< ECCADDR_DE Mask */
-
-#define MXC_F_GCR_ECCADDR_TADDR_POS                    16 /**< ECCADDR_TADDR Position */
-#define MXC_F_GCR_ECCADDR_TADDR                        ((uint32_t)(0x3FFFUL << MXC_F_GCR_ECCADDR_TADDR_POS)) /**< ECCADDR_TADDR Mask */
-
-#define MXC_F_GCR_ECCADDR_TB_POS                       30 /**< ECCADDR_TB Position */
-#define MXC_F_GCR_ECCADDR_TB                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCADDR_TB_POS)) /**< ECCADDR_TB Mask */
-
-#define MXC_F_GCR_ECCADDR_TE_POS                       31 /**< ECCADDR_TE Position */
-#define MXC_F_GCR_ECCADDR_TE                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCADDR_TE_POS)) /**< ECCADDR_TE Mask */
-
-/**@} end of group GCR_ECCADDR_Register */
 
 #ifdef __cplusplus
 }

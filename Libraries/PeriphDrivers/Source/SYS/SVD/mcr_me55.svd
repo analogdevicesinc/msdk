@@ -11,31 +11,6 @@
     </addressBlock>
     <registers>
       <register>
-        <name>ECCEN</name>
-        <description>ECC Enable Register</description>
-        <addressOffset>0x00</addressOffset>
-        <fields>
-          <field>
-            <name>ICCXIP</name>
-            <description>IcacheXIP ECC Enable.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>PDOWN</name>
         <description>PDOWN Drive Strength</description>
         <addressOffset>0x08</addressOffset>
