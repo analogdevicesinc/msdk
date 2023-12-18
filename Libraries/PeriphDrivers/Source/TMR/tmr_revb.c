@@ -234,6 +234,8 @@ void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // Stop timer before disable it.
+    MXC_TMR_RevB_Stop(tmr);
     // Disable timer and clear settings
     tmr->ctrl0 = 0;
     while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A) {}
