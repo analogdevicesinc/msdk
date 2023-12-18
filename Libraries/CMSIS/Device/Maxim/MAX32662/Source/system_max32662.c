@@ -3,7 +3,6 @@
  * @brief      System-level initialization implementation file
  */
 /******************************************************************************
-/******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
