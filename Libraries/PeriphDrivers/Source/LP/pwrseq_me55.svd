@@ -19,7 +19,7 @@
             <name>RAMRET_EN</name>
             <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
             <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitWidth>4</bitWidth>
           </field>
           <field>
             <name>OVR</name>
@@ -28,18 +28,8 @@
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>0_9V</name>
-                <description>0.9V 24MHz</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>1_0V</name>
-                <description>1.0V 48MHz</description>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
                 <name>1_1V</name>
-                <description>1.1V 96MHz</description>
+                <description>1.1V</description>
                 <value>2</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -608,6 +598,5 @@
       </register>
     </registers>
   </peripheral>
-  <!-- PWRSEQ:
-                                                                                                                                             Power sequencer          -->
+  <!-- PWRSEQ: Power sequencer          -->
 </device>
