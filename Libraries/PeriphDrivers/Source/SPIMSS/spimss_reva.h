@@ -117,6 +117,7 @@ int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t *spi, unsigned mode, unsigned fr
 int MXC_SPIMSS_RevA_Shutdown(mxc_spimss_reva_regs_t *spi);
 void MXC_SPIMSS_RevA_Handler(mxc_spimss_reva_regs_t *spi);
 int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
+int MXC_SPIMSS_RevA_MasterTransDMA(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_MasterTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_SlaveTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);

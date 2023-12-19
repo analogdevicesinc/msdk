@@ -155,6 +155,16 @@ int MXC_SPIMSS_Shutdown(mxc_spimss_regs_t *spi);
 int MXC_SPIMSS_MasterTrans(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req);
 
 /**
+ * @brief     Execute a master transaction over DMA.
+ * @param     spi   Pointer to spi module.
+ * @param     req   Pointer to spi request.
+ *
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+ */
+int MXC_SPIMSS_MasterTransDMA(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req);
+
+/**
  * @brief      Execute SPI transaction based on interrupt handler
  * @param      spi   The spi
  *

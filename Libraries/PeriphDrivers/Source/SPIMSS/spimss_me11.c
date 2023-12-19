@@ -125,6 +125,12 @@ int MXC_SPIMSS_MasterTrans(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 }
 
 /* ************************************************************************** */
+int MXC_SPIMSS_MasterTransDMA(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
+{
+    return MXC_SPIMSS_RevA_MasterTransDMA((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t*) req);
+}
+
+/* ************************************************************************** */
 int MXC_SPIMSS_SlaveTrans(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 {
     return MXC_SPIMSS_RevA_SlaveTrans((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t *)req);
