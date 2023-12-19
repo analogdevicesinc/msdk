@@ -487,7 +487,7 @@ static int hart_uart_pins_external_test_mode_state(void)
     int retval = 0;
     mxc_gpio_cfg_t hart_pin;
 
-    // RTS Input to AFE, LOW is transmit mode, so Pulling Up
+    // HART_RTS Input to AFE, LOW is transmit mode, so Pulling Up
     hart_pin.port = HART_RTS_GPIO_PORT;
     hart_pin.mask = HART_RTS_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
@@ -498,30 +498,33 @@ static int hart_uart_pins_external_test_mode_state(void)
         return retval;
     }
 
-    // CD output from AFE, Tristate
+    // HART_CD output from AFE, Tristate
     hart_pin.port = HART_CD_GPIO_PORT;
     hart_pin.mask = HART_CD_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_NONE;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    // IN input to AFE, pulling Up
+    // HART_IN input to AFE, pulling Up
     hart_pin.port = HART_IN_GPIO_PORT;
     hart_pin.mask = HART_IN_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    // IN output from AFE, Tristate
+    // HART_OUT output from AFE, Tristate
     hart_pin.port = HART_OUT_GPIO_PORT;
     hart_pin.mask = HART_OUT_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_NONE;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
