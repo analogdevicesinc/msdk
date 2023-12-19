@@ -76,14 +76,8 @@ extern "C" {
  * Structure type to access the AESKEYS Registers.
  */
 typedef struct {
-    __IO uint32_t key0;                 /**< <tt>\b 0x00:</tt> AESKEYS KEY0 Register */
-    __IO uint32_t key1;                 /**< <tt>\b 0x04:</tt> AESKEYS KEY1 Register */
-    __IO uint32_t key2;                 /**< <tt>\b 0x08:</tt> AESKEYS KEY2 Register */
-    __IO uint32_t key3;                 /**< <tt>\b 0x0C:</tt> AESKEYS KEY3 Register */
-    __IO uint32_t key4;                 /**< <tt>\b 0x10:</tt> AESKEYS KEY4 Register */
-    __IO uint32_t key5;                 /**< <tt>\b 0x14:</tt> AESKEYS KEY5 Register */
-    __IO uint32_t key6;                 /**< <tt>\b 0x18:</tt> AESKEYS KEY6 Register */
-    __IO uint32_t key7;                 /**< <tt>\b 0x1C:</tt> AESKEYS KEY7 Register */
+    __IO uint32_t meu[8];               /**< <tt>\b 0x00:</tt> AESKEYS MEU Register */
+    __IO uint32_t xip[4];               /**< <tt>\b 0x20:</tt> AESKEYS XIP Register */
 } mxc_aeskeys_regs_t;
 
 /* Register offsets for module AESKEYS */
@@ -93,14 +87,8 @@ typedef struct {
  * @brief      AESKEYS Peripheral Register Offsets from the AESKEYS Base Peripheral Address.
  * @{
  */
-#define MXC_R_AESKEYS_KEY0                 ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
-#define MXC_R_AESKEYS_KEY1                 ((uint32_t)0x00000004UL) /**< Offset from AESKEYS Base Address: <tt> 0x0004</tt> */
-#define MXC_R_AESKEYS_KEY2                 ((uint32_t)0x00000008UL) /**< Offset from AESKEYS Base Address: <tt> 0x0008</tt> */
-#define MXC_R_AESKEYS_KEY3                 ((uint32_t)0x0000000CUL) /**< Offset from AESKEYS Base Address: <tt> 0x000C</tt> */
-#define MXC_R_AESKEYS_KEY4                 ((uint32_t)0x00000010UL) /**< Offset from AESKEYS Base Address: <tt> 0x0010</tt> */
-#define MXC_R_AESKEYS_KEY5                 ((uint32_t)0x00000014UL) /**< Offset from AESKEYS Base Address: <tt> 0x0014</tt> */
-#define MXC_R_AESKEYS_KEY6                 ((uint32_t)0x00000018UL) /**< Offset from AESKEYS Base Address: <tt> 0x0018</tt> */
-#define MXC_R_AESKEYS_KEY7                 ((uint32_t)0x0000001CUL) /**< Offset from AESKEYS Base Address: <tt> 0x001C</tt> */
+#define MXC_R_AESKEYS_MEU                  ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AESKEYS_XIP                  ((uint32_t)0x00000020UL) /**< Offset from AESKEYS Base Address: <tt> 0x0020</tt> */
 /**@} end of group aeskeys_registers */
 
 #ifdef __cplusplus

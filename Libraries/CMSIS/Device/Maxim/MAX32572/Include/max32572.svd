@@ -386,52 +386,22 @@
    </addressBlock>
    <registers>
     <register>
-     <name>KEY0</name>
-     <description>AES Key 0.</description>
+     <dim>8</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>MEU[%s]</name>
+     <description>AES-256 SRAM Encryption Key (MEU).</description>
      <addressOffset>0x00</addressOffset>
      <size>32</size>
+     <access>read-write</access>
     </register>
     <register>
-     <name>KEY1</name>
-     <description>AES Key 1.</description>
-     <addressOffset>0x04</addressOffset>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>XIP[%s]</name>
+     <description>AES-128 QSPI Code Key (MEMPROT XIP).</description>
+     <addressOffset>0x20</addressOffset>
      <size>32</size>
-    </register>
-    <register>
-     <name>KEY2</name>
-     <description>AES Key 2.</description>
-     <addressOffset>0x08</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>KEY3</name>
-     <description>AES Key 3.</description>
-     <addressOffset>0x0C</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>KEY4</name>
-     <description>AES Key 4.</description>
-     <addressOffset>0x10</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>KEY5</name>
-     <description>AES Key 5.</description>
-     <addressOffset>0x14</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>KEY6</name>
-     <description>AES Key 6.</description>
-     <addressOffset>0x18</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>KEY7</name>
-     <description>AES Key 7.</description>
-     <addressOffset>0x1C</addressOffset>
-     <size>32</size>
+     <access>read-write</access>
     </register>
    </registers>
   </peripheral>
