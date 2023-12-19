@@ -1,35 +1,21 @@
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+/******************************************************************************
+ *
+ * Copyright 2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -41,6 +27,12 @@
 #include "mxc_device.h"
 #include "gc0308_regs.h"
 
+#include "board.h" 
+/* Note: board.h is included here because the GC0308 uses a hardware pin
+to toggle sleep mode.  "Camera_Sleep" should be implemented in the BSP, since
+the pin routing is board-specific.
+*/ 
+
 #define cambus_write(addr, x)     sccb_write_byt(g_slv_addr, addr, x)
 #define cambus_read(addr, x)      sccb_read_byt(g_slv_addr, addr, x)
 
@@ -48,6 +40,14 @@
 
 #define MSB(val) (((val) >> 8) & 0xFF)
 #define LSB(val) ((val) & 0xFF)
+
+#ifndef PRINTF_DEBUG
+#ifdef DEBUG
+#define PRINTF_DEBUG(...) printf(__VA_ARGS__);
+#else
+#define PRINTF_DEBUG(...)
+#endif
+#endif 
 
 static const uint8_t default_regs[][2] = {
 		{BANKSEL_RESET,			0x80},		// Reset Chip
@@ -368,39 +368,16 @@ static const uint8_t default_regs[][2] = {
 };
 
 
-static int g_slv_addr;
+static int g_slv_addr = GC0308_I2C_SLAVE_ADDR;
 static pixformat_t g_pixelformat = PIXFORMAT_BAYER;
 
 /******************************** Static Functions ***************************/
 static int init(void)
 {
-    int ret = 0;
-//#if 0
-    printf("\nScanning Camera On SCCB\n");
- ///   g_slv_addr = sccb_scan();
+    int ret = E_NO_ERROR;
 
-    if (g_slv_addr == -1) {
-    	printf("Couldn't get ack from the camera\n");
-    	while(1);
-        return -1;
-    }
-    printf("The camera address : %0.2x \n", g_slv_addr);
+    PRINTF_DEBUG("GC0308 initialized.  Using I2C address : %0.2x \n", g_slv_addr);
 
-
-
-//#else
-    g_slv_addr = GC0308_I2C_SLAVE_ADDR;
-   // uint8_t rev;
-   // while(1) {
-
-
-
-   //     cambus_read(REVISION, &rev);
-    //    for (int i = 0 ; i < 100000 ; i++);
-
-
-   // }
-//#endif
     return ret;
 }
 
@@ -436,7 +413,7 @@ static int dump_registers(void)
 
         if ((i != 0) && !(i % 16)) {
             *ptr = '\0';
-            printf("%04X:%s\n", i - 16, buf);
+            PRINTF_DEBUG("%04X:%s\n", i - 16, buf);
             ptr = buf;
         }
 
@@ -468,32 +445,38 @@ static int dump_registers(void)
 static int reset(void)
 {
     int ret = 0;
+	uint8_t value = 0;
+	PRINTF_DEBUG("Resetting camera.\n");
+	ret |= cambus_read(SW_RESET, &value);
+	if (ret) {
+		return ret;
+	}
 
-/*
-    ret |= cambus_write(SW_RESET, 0x80);
-    MXC_Delay(10000);
-    ret |= cambus_write(SW_RESET, 0x00);
-    MXC_Delay(100);
-    int a = SW_RESET;
-    printf("sw reset %0.2x \n", a);
-*/
+	value |= (1 << 7); // Set soft_reset bit
 
+	ret |= cambus_write(SW_RESET, value);
+	if (ret) {
+		return ret;
+	}
 
-#if 1
-    // Write default registers
+	MXC_Delay(10000);
+	PRINTF_DEBUG("Reset camera successfully.\n");
+
+	PRINTF_DEBUG("Writing default registers.\n");
     for (int i = 0; (default_regs[i][0] != 0xFF); i++) {
         ret |= cambus_write(default_regs[i][0], (uint8_t)default_regs[i][1]);
-        printf("reg: 0x%04x , val: 0x%02x\r\n",default_regs[i][0], default_regs[i][1]);
-        //if (ret)
-        //    printf("fail");
+        PRINTF_DEBUG("reg: 0x%04x , val: 0x%02x\r\n",default_regs[i][0], default_regs[i][1]);
+        if (ret) {
+			return ret;
+		}
     }
-#endif
+
     return ret;
 }
 
 static int sleep(int enable)
 {
-    return E_NOT_SUPPORTED;
+    return Camera_Sleep(enable);
 }
 
 static int read_reg(uint8_t reg_addr, uint8_t* reg_data)
@@ -616,7 +599,7 @@ static int set_framesize(int width, int height)
             */
             w_offset = (GC0308_SENSOR_WIDTH - window_w) / 2;
             h_offset = (GC0308_SENSOR_HEIGHT - window_h) / 2;
-            printf("Subsample window:  %ix%i, ratio: %i/%i\n", window_w, window_h, ss->num, ss->denom);
+            PRINTF_DEBUG("Subsample window:  %ix%i, ratio: %i/%i\n", window_w, window_h, ss->num, ss->denom);
             break;
         }
     }
@@ -654,13 +637,12 @@ static int set_windowing(int width, int height, int hsize, int vsize)
        hsize: horizontal size of cropped image
        vsize: vertical size of cropped image
     */
-    int ret = 0;
 
-    if (width < hsize || height < vsize) {
-        ret = -1;
-    }
+   /* TODO(JC): Windowing has some strange side-effects against the frame size settings,
+   so this is currently not supported.  Use "set_framesize" instead.
+   */
 
-    return ret;
+    return E_NOT_SUPPORTED;
 }
 
 static int set_contrast(int level)
@@ -714,9 +696,7 @@ static int set_hmirror(int enable)
 
 static int set_negateimage(int enable)
 {
-    int ret = 0;
-
-    return ret;
+    return E_NOT_SUPPORTED;
 }
 
 static int set_vflip(int enable)
@@ -732,10 +712,7 @@ static int set_vflip(int enable)
 
 static int get_luminance(int* lum)
 {
-    int ret = 0;
-
-    *lum = 0xFFFFFF;
-    return ret;
+    return E_NOT_SUPPORTED;
 }
 
 /******************************** Public Functions ***************************/
@@ -769,43 +746,10 @@ int sensor_register(camera_t* camera)
 
 int set_subsampling(int context, int h_sub, int v_sub, int h_binning, int v_binning)
 {
-    int ret = 0;
-
-
-    uint8_t binreg = 0;
-
-    if ( h_binning ==  1 ) {
-
-    	binreg = binreg | 0x02;
-    }
-    if ( v_binning ==  1 ) {
-
-    	binreg = binreg | 0x01;
-    }
-
-/*
-    switch ( context ) {
-
-    	case 0 :   ret |= cambus_write(H_SUB, h_sub);
-    			   ret |= cambus_write(V_SUB, v_sub);
-    			   ret |= cambus_write(BINNING_MODE, binreg);
-    			   printf("Subsampling Binning Mode %d %d %d\n", h_sub, v_sub,  binreg);
-    			   break;
-    	case 1 :   ret |= cambus_write(H_SUB_CTXA, h_sub);
-    			   ret |= cambus_write(V_SUB_CTXA, v_sub);
-    			   ret |= cambus_write(BINNING_MODE_CTXA, binreg);
-    			   break;
-    	case 2 :   ret |= cambus_write(H_SUB_CTXB, h_sub);
-    			   ret |= cambus_write(V_SUB_CTXB, v_sub);
-    			   ret |= cambus_write(BINNING_MODE_CTXB, binreg);
-    			   break;
-    	default:
-    			   break;
-    }
-*/
-
-    return ret;
-
+	/* TODO(JC): Sub-sampling is currently not well implemented, and somewhat complicated
+	for this sensor.  Use "set_framesize" instead.
+	*/
+    return E_NOT_SUPPORTED;
 }
 
 
