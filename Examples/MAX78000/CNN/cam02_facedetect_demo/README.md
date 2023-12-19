@@ -18,6 +18,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 * Connect the GC0308 camera module with its back-face text aligned to the outer edge of the PCB.
 
     ![Inserting GC3080](res/cam02_inserting_camera.jpg)
+
 * (optional) Connect a serial terminal to the port presented by the PICO debugger to see console message logs.  The baud rate is 115200. 
 
 ## Expected Output
