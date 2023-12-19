@@ -63,8 +63,13 @@ void load_input(void)
 {
     uint8_t *raw;
     uint32_t imglen, w, h;
+
+    camera_sleep(0); // Disable sleep mode.
+
     camera_start_capture_image();
     while (!camera_is_image_rcv()) {}
+
+    camera_sleep(1); // Enable sleep mode.
 
     camera_get_image(&raw, &imglen, &w, &h);
     uint8_t ur = 0, ug = 0, ub = 0;

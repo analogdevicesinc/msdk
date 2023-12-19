@@ -9,8 +9,6 @@
 
 # Add your config here!
 
-MXC_OPTIMIZE_CFLAGS = -Og
-
 BOARD = CAM02_RevA
 
 ifneq ($(BOARD),CAM02_RevA)
