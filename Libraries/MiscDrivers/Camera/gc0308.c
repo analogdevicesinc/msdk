@@ -357,7 +357,6 @@ static const uint8_t default_regs[][2] = {
     { BANKSEL_RESET, 0x00 },
     { BANKSEL_RESET, 0x00 },
     { 0xff, 0xff },
-
 };
 
 static int g_slv_addr = GC0308_I2C_SLAVE_ADDR;
@@ -415,7 +414,7 @@ static int dump_registers(void)
         ret = cambus_read(i, &byt);
 
         if (ret == 0) {
-            ret = sprintf((char *)ptr, " %02X", byt);
+            ret = snprintf((char *)ptr, sizeof((char *)ptr), " %02X", byt);
 
             if (ret < 0) {
                 return ret;
