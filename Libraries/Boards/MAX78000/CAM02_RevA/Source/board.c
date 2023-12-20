@@ -78,24 +78,6 @@ const mxc_gpio_cfg_t led_pin[] = {
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /***** File Scope Variables *****/
-// const uart_cfg_t uart_cfg = {
-//     UART_PARITY_DISABLE,
-//     UART_DATA_SIZE_8_BITS,
-//     UART_STOP_1,
-//     UART_FLOW_CTRL_DIS,
-//     UART_FLOW_POL_DIS,
-//     CONSOLE_BAUD
-// };
-
-// const sys_cfg_uart_t uart_sys_cfg = {MAP_A,Enable};    // There is no special system configuration parameters for UART on MAX32650
-// const sys_cfg_i2c_t i2c_sys_cfg = NULL;     // There is no special system configuration parameters for I2C on MAX32650
-// const sys_cfg_spixc_t spixc_sys_cfg = NULL;   // There is no special system configuration parameters for SPIXC on MAX32650
-
-// const spixc_cfg_t mx25_spixc_cfg = {
-//     0, //mode
-//     0, //ssel_pol
-//     1000000 //baud
-// };
 
 /******************************************************************************/
 void mxc_assert(const char* expr, const char* file, int line)
