@@ -52,7 +52,7 @@ the pin routing is board-specific.
 static const uint8_t default_regs[][2] = {
     { BANKSEL_RESET, 0x80 }, // Reset Chip
     { BANKSEL_RESET, 0x00 }, // Release from reset and select Page-0
-    { HORIZONTAL_BLANKING, 0x6a }, 
+    { HORIZONTAL_BLANKING, 0x6a },
     /* If you see a bar on the left side of
         the image you need to tweak (probably
         increase) the horizontal blanking.
