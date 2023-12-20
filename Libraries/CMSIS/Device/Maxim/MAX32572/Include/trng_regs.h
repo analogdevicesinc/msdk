@@ -110,8 +110,11 @@ typedef struct {
 #define MXC_F_TRNG_CTRL_HEALTH_IE_POS                  2 /**< CTRL_HEALTH_IE Position */
 #define MXC_F_TRNG_CTRL_HEALTH_IE                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_IE_POS)) /**< CTRL_HEALTH_IE Mask */
 
-#define MXC_F_TRNG_CTRL_AES_KEYGEN_POS                 4 /**< CTRL_AES_KEYGEN Position */
-#define MXC_F_TRNG_CTRL_AES_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AES_KEYGEN_POS)) /**< CTRL_AES_KEYGEN Mask */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN_POS                 3 /**< CTRL_MEU_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_MEU_KEYGEN_POS)) /**< CTRL_MEU_KEYGEN Mask */
+
+#define MXC_F_TRNG_CTRL_XIP_KEYGEN_POS                 4 /**< CTRL_XIP_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_XIP_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_XIP_KEYGEN_POS)) /**< CTRL_XIP_KEYGEN Mask */
 
 #define MXC_F_TRNG_CTRL_OD_ROMON_POS                   6 /**< CTRL_OD_ROMON Position */
 #define MXC_F_TRNG_CTRL_OD_ROMON                       ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_ROMON_POS)) /**< CTRL_OD_ROMON Mask */
