@@ -36,11 +36,10 @@
  * @brief   Board support package API.
  */
 
-
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX78000_CAM02_REVA_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX78000_CAM02_REVA_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -133,4 +132,4 @@ int Camera_Sleep(int sleep);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX78000_CAM02_REVA_INCLUDE_BOARD_H_
