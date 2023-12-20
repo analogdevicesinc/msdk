@@ -43,3 +43,8 @@ ifeq ($(BOARD),CAM01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
 endif
 
+ifeq ($(BOARD),CAM02_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM02 board)
+endif
+
+
