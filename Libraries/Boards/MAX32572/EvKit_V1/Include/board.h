@@ -69,16 +69,6 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#ifndef MX25_BAUD
-#define MX25_BAUD 3000000
-#endif
-
-// #define MX25_SPI                    MXC_SPIXC
-// #define MX25_SSEL                   0
-// // #define SPI_CHAR_BITS               8
-
-// const spixc_cfg_t mx25_spixc_cfg;
-
 /**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful
@@ -103,42 +93,6 @@ int Console_Shutdown(void);
  * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
  */
 int Console_PrepForSleep(void);
-
-/**
- * \brief   Initialize the SPI peripheral to use for MX25
-  * \returns #E_NO_ERROR if everything is successful
- */
-int MX25_Board_Init(void);
-
-/**
- * \brief   Translation function to implement SPI Read transaction
- * @param   read        Pointer to where master will store data.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * @param   width       spi_width_t for how many data lines to use
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-
-int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
-/**
- * \brief   Translation function to implement SPI Write transaction
- * @param   write       Pointer to data master will write.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * @param   width       spi_width_t for how many data lines to use
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-
-int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert,
-                     mxc_spixf_width_t width);
-
-/**
- * \brief   Send clocks on SCLK.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-int MX25_Clock(unsigned len, unsigned deassert);
 
 #ifdef __cplusplus
 }

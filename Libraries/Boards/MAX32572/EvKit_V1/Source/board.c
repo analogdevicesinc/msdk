@@ -93,57 +93,57 @@ __weak void GPIO1_IRQHandler(void)
 }
 
 
-void TS_SPI_Init(void)
-{
-    mxc_spi_pins_t ts_pins = {
-        // CLK, MISO, MOSI enabled, SS IDx = 1
-        .clock = true, .ss0 = false, .ss1 = true,    .ss2 = false,
-        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
-    };
+// void TS_SPI_Init(void)
+// {
+//     mxc_spi_pins_t ts_pins = {
+//         // CLK, MISO, MOSI enabled, SS IDx = 1
+//         .clock = true, .ss0 = false, .ss1 = true,    .ss2 = false,
+//         .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
+//     };
 
-    MXC_SPI_Init(TS_SPI, true, false, 1, 0, TS_SPI_FREQ, ts_pins);
-    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
-                      MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26);
-    MXC_SPI_SetFrameSize(TS_SPI, 8);
-    MXC_SPI_SetInterface(TS_SPI, MXC_SPI_INTERFACE_STANDARD);
-}
+//     MXC_SPI_Init(TS_SPI, true, false, 1, 0, TS_SPI_FREQ, ts_pins);
+//     MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+//                       MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26);
+//     MXC_SPI_SetFrameSize(TS_SPI, 8);
+//     MXC_SPI_SetInterface(TS_SPI, MXC_SPI_INTERFACE_STANDARD);
+// }
 
-void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
-{
-    int i;
-    uint8_t rx[2] = { 0, 0 };
-    mxc_spi_req_t request;
+// void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
+// {
+//     int i;
+//     uint8_t rx[2] = { 0, 0 };
+//     mxc_spi_req_t request;
 
-    request.spi = TS_SPI;
-    request.ssDeassert = 0;
-    request.txData = (uint8_t *)(&datain);
-    request.rxData = NULL;
-    request.txLen = 1;
-    request.rxLen = 0;
-    request.ssIdx = 1;
+//     request.spi = TS_SPI;
+//     request.ssDeassert = 0;
+//     request.txData = (uint8_t *)(&datain);
+//     request.rxData = NULL;
+//     request.txLen = 1;
+//     request.rxLen = 0;
+//     request.ssIdx = 1;
 
-    MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
-    MXC_SPI_SetFrameSize(TS_SPI, 8);
+//     MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
+//     MXC_SPI_SetFrameSize(TS_SPI, 8);
 
-    MXC_SPI_ControllerTransaction(&request);
+//     MXC_SPI_ControllerTransaction(&request);
 
-    // Wait to clear TS busy signal
-    for (i = 0; i < 100; i++) {
-        __asm volatile("nop\n");
-    }
+//     // Wait to clear TS busy signal
+//     for (i = 0; i < 100; i++) {
+//         __asm volatile("nop\n");
+//     }
 
-    request.ssDeassert = 1;
-    request.txData = NULL;
-    request.rxData = (uint8_t *)(rx);
-    request.txLen = 0;
-    request.rxLen = 2;
+//     request.ssDeassert = 1;
+//     request.txData = NULL;
+//     request.rxData = (uint8_t *)(rx);
+//     request.txLen = 0;
+//     request.rxLen = 2;
 
-    MXC_SPI_ControllerTransaction(&request);
+//     MXC_SPI_ControllerTransaction(&request);
 
-    if (dataout != NULL) {
-        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
-    }
-}
+//     if (dataout != NULL) {
+//         *dataout = (rx[1] | (rx[0] << 8)) >> 4;
+//     }
+// }
 
 /******************************************************************************/
 int Board_Init(void)
@@ -164,40 +164,40 @@ int Board_Init(void)
         return err;
     }
 
-    /* TFT reset and backlight signal */
-    mxc_tft_spi_config tft_spi_config = {
-        .regs = MXC_SPI1,
-        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20,
-                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
-        .freq = 12000000,
-        .ss_idx = 0,
-    };
+    // /* TFT reset and backlight signal */
+    // mxc_tft_spi_config tft_spi_config = {
+    //     .regs = MXC_SPI1,
+    //     .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20,
+    //               MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+    //     .freq = 12000000,
+    //     .ss_idx = 0,
+    // };
 
-    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO3,         MXC_GPIO_PIN_0,        MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_27,       MXC_GPIO_FUNC_OUT,
-                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    // mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO3,         MXC_GPIO_PIN_0,        MXC_GPIO_FUNC_OUT,
+    //                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    // mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_27,       MXC_GPIO_FUNC_OUT,
+    //                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
-    /* Initialize TFT display */
-    MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
+    // /* Initialize TFT display */
+    // MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
 
-    /* Enable Touchscreen */
-    mxc_ts_spi_config ts_spi_config = {
-        .regs = MXC_SPI1,
-        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26,
-                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
-        .freq = 200000,
-        .ss_idx = 1,
-    };
+    // /* Enable Touchscreen */
+    // mxc_ts_spi_config ts_spi_config = {
+    //     .regs = MXC_SPI1,
+    //     .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26,
+    //               MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+    //     .freq = 200000,
+    //     .ss_idx = 1,
+    // };
 
-    /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t int_pin = { MXC_GPIO0,         MXC_GPIO_PIN_13,       MXC_GPIO_FUNC_IN,
-                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    /* Touch screen controller busy signal */
-    mxc_gpio_cfg_t busy_pin = { MXC_GPIO0,         MXC_GPIO_PIN_12,       MXC_GPIO_FUNC_IN,
-                                MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    /* Initialize Touch Screen controller */
-    MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
+    // /* Touch screen controller interrupt signal */
+    // mxc_gpio_cfg_t int_pin = { MXC_GPIO0,         MXC_GPIO_PIN_13,       MXC_GPIO_FUNC_IN,
+    //                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    // /* Touch screen controller busy signal */
+    // mxc_gpio_cfg_t busy_pin = { MXC_GPIO0,         MXC_GPIO_PIN_12,       MXC_GPIO_FUNC_IN,
+    //                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    // /* Initialize Touch Screen controller */
+    // MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
 
     return E_NO_ERROR;
 }

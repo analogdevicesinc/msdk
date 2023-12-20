@@ -140,21 +140,6 @@ int MXC_LP_PORVCOREoreMonitorIsEnabled(void)
     return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS);
 }
 
-void MXC_LP_LDOEnable(void)
-{
-    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
-}
-
-void MXC_LP_LDODisable(void)
-{
-    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
-}
-
-int MXC_LP_LDOIsEnabled(void)
-{
-    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_LDO_DIS);
-}
-
 void MXC_LP_FastWakeupEnable(void)
 {
     MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_FASTWK_EN;
