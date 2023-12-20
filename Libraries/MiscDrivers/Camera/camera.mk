@@ -17,7 +17,9 @@
  ##############################################################################
 
 # If CAMERA_DIR is not specified, this Makefile will locate itself.
-CAMERA_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+ifeq "$(CAMERA_DIR)" ""
+CAMERA_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
 
 # Set empty default value.
 CAMERA ?= 
