@@ -385,5 +385,4 @@ void release_camera_stream_buffer(void);
  */
 stream_stat_t *get_camera_stream_statistic(void);
 
-
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_CAMERA_H_

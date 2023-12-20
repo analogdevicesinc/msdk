@@ -39,8 +39,7 @@ extern volatile uint8_t face_detected;
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len)
@@ -97,10 +96,9 @@ void load_input(void)
         rgb888 = r | (g << 8) | (b << 16);
 
         // Loading data into the CNN fifo
-        while (((*((volatile uint32_t *)0x50000004) & 1)) != 0)
-            ; // Wait for FIFO 0
+        while (((*((volatile uint32_t *)0x50000004) & 1)) != 0) {}
+        // Wait for FIFO 0
         *((volatile uint32_t *)0x50000008) = rgb888; // Write FIFO 0
-        
     }
 }
 
