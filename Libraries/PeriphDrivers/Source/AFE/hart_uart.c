@@ -503,6 +503,55 @@ static int hart_uart_pins_idle_mode(void)
     return retval;
 }
 
+static int hart_uart_pins_external_test_mode_state(void)
+{
+    int retval = 0;
+    mxc_gpio_cfg_t hart_pin;
+
+    // RTS Input to AFE, LOW is transmit mode, so Pulling Up
+    hart_pin.port = HART_RTS_GPIO_PORT;
+    hart_pin.mask = HART_RTS_GPIO_PIN;
+    hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // CD output from AFE, Tristate
+    hart_pin.port = HART_CD_GPIO_PORT;
+    hart_pin.mask = HART_CD_GPIO_PIN;
+    hart_pin.pad = MXC_GPIO_PAD_NONE;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // IN input to AFE, pulling Up
+    hart_pin.port = HART_IN_GPIO_PORT;
+    hart_pin.mask = HART_IN_GPIO_PIN;
+    hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // IN output from AFE, Tristate
+    hart_pin.port = HART_OUT_GPIO_PORT;
+    hart_pin.mask = HART_OUT_GPIO_PIN;
+    hart_pin.pad = MXC_GPIO_PAD_NONE;
+
+    retval = MXC_AFE_GPIO_Config(&hart_pin);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
 void hart_rts_transmit_mode(void)
 {
     MXC_GPIO_OutClr(HART_RTS_GPIO_PORT, HART_RTS_GPIO_PIN);
@@ -529,6 +578,43 @@ void hart_sap_enable_request(uint32_t state)
             sap_callbacks.enable_confirm_cb(HART_STATE_IDLE);
         }
     }
+}
+
+int hart_reset_check_and_handle(void)
+{
+    int retval = E_NO_ERROR;
+    uint32_t read_val = 0;
+    uint32_t masked_read_val = 0;
+
+    // Check to see if HART is still enabled after a reset
+    retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // MASK off all status bits but HART_EN and ST_DIS
+    masked_read_val = read_val &
+                      (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
+
+    // If BOTH HART_EN and ST_DIS are set, then a NON-POR reset has occurred.
+    //  in this case we need to clear ST_DIS to allow the HART state machine to proceed
+    //  normally.
+    if (masked_read_val ==
+        (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) {
+        // Both HART_EN and ST_DIS are set. (NON POR reset indicated)
+
+        // Clear State Machine Disable
+        read_val &= ~MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS;
+
+        retval = afe_write_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, read_val);
+        if (retval != E_NO_ERROR) {
+            return retval;
+        }
+    } else {
+        // HART_EN or ST_DIS are clear. (Normal, POR behavior)
+    }
+
+    return E_SUCCESS;
 }
 
 // TODO(ADI): Consider adding some parameters to this function to specify
@@ -840,21 +926,40 @@ int hart_uart_setup(uint32_t test_mode)
         // Test mode is required for physical layer test to output constant bit
         // Frequencies.
 
-        // Force mode for constant transmit.
-        retval = setup_hart_in_pin();
-        if (retval != E_NO_ERROR) {
-            return retval;
-        }
-
         if (test_mode == HART_TEST_MODE_TX_1200) {
+            // Force mode for constant transmit.
+            retval = setup_hart_in_pin();
+            if (retval != E_NO_ERROR) {
+                return retval;
+            }
+
             // Set (1) means 1200 signal
             MXC_GPIO_OutSet(HART_IN_GPIO_PORT, HART_IN_GPIO_PIN);
-        } else {
+
+            hart_rts_transmit_mode(); // start transmit
+        } else if (test_mode == HART_TEST_MODE_TX_2200) {
+            // Force mode for constant transmit.
+            retval = setup_hart_in_pin();
+            if (retval != E_NO_ERROR) {
+                return retval;
+            }
+
             // Clear (0) means 2200 signal
             MXC_GPIO_OutClr(HART_IN_GPIO_PORT, HART_IN_GPIO_PIN);
+
+            hart_rts_transmit_mode(); // start transmit
+        } else if (test_mode == HART_TEST_MODE_EXTERNAL) {
+            // Allow HART UART pins to be driven externally
+            retval = hart_uart_pins_external_test_mode_state();
+
+            if (retval != E_NO_ERROR) {
+                return retval;
+            }
+        } else {
+            // Unknown Mode
+            return E_BAD_PARAM;
         }
 
-        hart_rts_transmit_mode(); // start transmit
     } else {
         hart_rts_receive_mode();
 
@@ -862,6 +967,17 @@ int hart_uart_setup(uint32_t test_mode)
         if (retval != E_NO_ERROR) {
             return E_COMM_ERR;
         }
+    }
+
+    //
+    // In the case a NON POR reset occurred we must clear ST_DIS to allow normal
+    //  HART state machine behavior.  This is designed to prevent the HART state
+    //  machine from operating when a reset occurs, but leaves the internal and
+    //  external biases enabled.
+    //
+    retval = hart_reset_check_and_handle();
+    if (retval != E_NO_ERROR) {
+        return retval;
     }
 
     //
