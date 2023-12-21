@@ -2,7 +2,7 @@
 PROJ_AFLAGS += -DFLASH_ORIGIN=0x10000000
 PROJ_AFLAGS += -DFLASH_SIZE=0x340000
 PROJ_AFLAGS += -DSRAM_ORIGIN=0x20000000
-PROJ_AFLAGS += -DSRAM_SIZE=0x120000
+PROJ_AFLAGS += -DSRAM_SIZE=0x100000
 
 # Each core has a mailbox in the RISCV core SRAM memory space.
 # Total memory allocated for boxes will be 2*MAILBOX_SIZE
