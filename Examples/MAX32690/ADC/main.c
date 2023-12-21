@@ -28,11 +28,12 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
-
+#include "mxc_device.h"
 #include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "adc.h"
 #include "dma.h"
+#include "fcr_regs.h"
 #include "led.h"
 #include "tmr.h"
 
@@ -41,6 +42,8 @@
 #define POLLING // Uncomment to perform ADC conversions using blocking/polling method
 // #define INTERRUPT    // Uncomment to perform ADC conversions using interrupt driven method
 // #define DMA          // Uncomment to perform ADC conversions using DMA driven method.
+
+#define REF_TRIM //Uncomment to perform the reference trim after initialization
 
 #define SOFTWARE // Uncomment to perform ADC conversions using a software trigger
 // #define HARDWARE     // Uncomment to perform ADC conversions using a hardware trigger
@@ -60,6 +63,13 @@ volatile unsigned int adc_done = 0;
 
 #ifdef DMA
 volatile unsigned int dma_done = 0;
+#endif
+
+#ifdef REF_TRIM
+//These values are dependent on the sample rate of the ADC. For 250ksps, the
+//values are below. See table 11-4 in the user guide for other sample rates
+#define TRIM_BIAS_COUNT 5
+#define TRIM_WAKE_COUNT 3
 #endif
 
 /* Temperature Sensor firmware average*/
@@ -168,6 +178,190 @@ void StartHWTriggerTimer(void)
 }
 #endif
 
+#ifdef REF_TRIM
+/* Performs the 1.25V Internal Reference Trim
+ * Derived from UG7618 Section 11.6.3 - 1.25V Internal Reference Trim
+ */
+void adc_internal_1v25_ref_trim()
+{
+    uint32_t tempData;
+
+    //Enter nap state
+    MXC_ADC->ctrl0 &= ~MXC_F_ADC_CTRL0_ADC_EN;
+
+    //Clear Skip Cal
+    MXC_ADC->ctrl0 &= ~MXC_F_ADC_CTRL0_SKIP_CAL;
+
+    MXC_ADC->sfraddr = 0x0B;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xC0;
+    tempData |= ((MXC_FCR->adcreftrim0 & MXC_F_FCR_ADCREFTRIM0_VX2_TUNE) >>
+                 MXC_F_FCR_ADCREFTRIM0_VX2_TUNE_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0C;
+    tempData = ((MXC_FCR->adcreftrim2 & MXC_F_FCR_ADCREFTRIM2_IBOOST_1P25) >>
+                MXC_F_FCR_ADCREFTRIM2_IBOOST_1P25_POS)
+               << 7;
+    tempData |=
+        ((MXC_FCR->adcreftrim0 & MXC_F_FCR_ADCREFTRIM0_VREFP) >> MXC_F_FCR_ADCREFTRIM0_VREFP_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0D;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0x80;
+    tempData |=
+        ((MXC_FCR->adcreftrim0 & MXC_F_FCR_ADCREFTRIM0_VREFM) >> MXC_F_FCR_ADCREFTRIM0_VREFM_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0E;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0x0C;
+    tempData |= ((MXC_FCR->adcreftrim2 & MXC_F_FCR_ADCREFTRIM2_IDRV_1P25) >>
+                 MXC_F_FCR_ADCREFTRIM2_IDRV_1P25_POS)
+                << 4;
+    tempData |=
+        ((MXC_FCR->adcreftrim0 & MXC_F_FCR_ADCREFTRIM0_VCM) >> MXC_F_FCR_ADCREFTRIM0_VCM_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x05;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xF0;
+    tempData |= TRIM_BIAS_COUNT;
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x06;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xF0;
+    tempData |= TRIM_WAKE_COUNT;
+    MXC_ADC->sfrwrdata = tempData;
+
+    //Enable
+    MXC_ADC->ctrl0 |= MXC_F_ADC_CTRL0_ADC_EN;
+
+    //Wait for 30us
+    MXC_Delay(30);
+
+    //wait for calibration to complete
+    while (!(MXC_ADC->intfl & MXC_F_ADC_INTFL_READY)) {}
+}
+
+/* Performs the 2.048V Internal Reference Trim
+ * Derived from UG7618 Section 11.6.4 - 2.048V Internal Reference Trim
+ */
+void adc_internal_2v048_ref_trim()
+{
+    uint32_t tempData;
+
+    //Enter nap state
+    MXC_ADC->ctrl0 &= ~MXC_F_ADC_CTRL0_ADC_EN;
+
+    //Clear Skip Cal
+    MXC_ADC->ctrl0 &= ~MXC_F_ADC_CTRL0_SKIP_CAL;
+
+    MXC_ADC->sfraddr = 0x0B;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xC0;
+    tempData |= ((MXC_FCR->adcreftrim1 & MXC_F_FCR_ADCREFTRIM1_VX2_TUNE) >>
+                 MXC_F_FCR_ADCREFTRIM1_VX2_TUNE_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0C;
+    tempData = ((MXC_FCR->adcreftrim2 & MXC_F_FCR_ADCREFTRIM2_IBOOST_2P048) >>
+                MXC_F_FCR_ADCREFTRIM2_IBOOST_2P048_POS)
+               << 7;
+    tempData |=
+        ((MXC_FCR->adcreftrim1 & MXC_F_FCR_ADCREFTRIM1_VREFP) >> MXC_F_FCR_ADCREFTRIM1_VREFP_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0D;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0x80;
+    tempData |=
+        ((MXC_FCR->adcreftrim1 & MXC_F_FCR_ADCREFTRIM1_VREFM) >> MXC_F_FCR_ADCREFTRIM1_VREFM_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0E;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0x0C;
+    tempData |= ((MXC_FCR->adcreftrim2 & MXC_F_FCR_ADCREFTRIM2_IDRV_2P048) >>
+                 MXC_F_FCR_ADCREFTRIM2_IDRV_2P048_POS)
+                << 4;
+    tempData |=
+        ((MXC_FCR->adcreftrim1 & MXC_F_FCR_ADCREFTRIM1_VCM) >> MXC_F_FCR_ADCREFTRIM1_VCM_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x05;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xF0;
+    tempData |= TRIM_BIAS_COUNT;
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x06;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xF0;
+    tempData |= TRIM_WAKE_COUNT;
+    MXC_ADC->sfrwrdata = tempData;
+
+    //Enable
+    MXC_ADC->ctrl0 |= MXC_F_ADC_CTRL0_ADC_EN;
+
+    //Wait for 30us
+    MXC_Delay(30);
+
+    //wait for calibration to complete
+    while (!(MXC_ADC->intfl & MXC_F_ADC_INTFL_READY)) {}
+}
+
+/* Performs the External Reference Trim
+ * Derived from UG7618 Section 11.6.5 - External Reference Trim
+ */
+void adc_external_ref_trim()
+{
+    uint32_t tempData;
+
+    //Enter nap state
+    MXC_ADC->ctrl0 &= ~MXC_F_ADC_CTRL0_ADC_EN;
+
+    //Clear Skip Cal
+    MXC_ADC->ctrl0 &= ~MXC_F_ADC_CTRL0_SKIP_CAL;
+
+    MXC_ADC->sfraddr = 0x0B;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0x80;
+    tempData |= ((MXC_FCR->adcreftrim2 & MXC_F_FCR_ADCREFTRIM2_VX2_TUNE) >>
+                 MXC_F_FCR_ADCREFTRIM2_VX2_TUNE_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x0E;
+    tempData = MXC_ADC->sfrrddata;
+    tempData |=
+        ((MXC_FCR->adcreftrim2 & MXC_F_FCR_ADCREFTRIM2_VCM) >> MXC_F_FCR_ADCREFTRIM2_VCM_POS);
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x05;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xF0;
+    tempData |= TRIM_BIAS_COUNT;
+    MXC_ADC->sfrwrdata = tempData;
+
+    MXC_ADC->sfraddr = 0x06;
+    tempData = MXC_ADC->sfrrddata;
+    tempData &= 0xF0;
+    tempData |= TRIM_WAKE_COUNT;
+    MXC_ADC->sfrwrdata = tempData;
+
+    //Enable
+    MXC_ADC->ctrl0 |= MXC_F_ADC_CTRL0_ADC_EN;
+
+    //Wait for 30us
+    MXC_Delay(30);
+
+    //wait for calibration to complete
+    while (!(MXC_ADC->intfl & MXC_F_ADC_INTFL_READY)) {}
+}
+
+#endif
 /*ADC initialization*/
 void adc_init(void)
 {
@@ -178,13 +372,27 @@ void adc_init(void)
     adc_cfg.cal = MXC_ADC_EN_CAL;
     adc_cfg.trackCount = 4;
     adc_cfg.idleCount = 17;
-    adc_cfg.ref = MXC_ADC_REF_INT_2V048;
+    adc_cfg.ref = MXC_ADC_REF_INT_1V25;
 
     /* Initialize ADC */
     if (MXC_ADC_Init(&adc_cfg) != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
         while (1) {}
     }
+
+#ifdef REF_TRIM
+    switch (adc_cfg.ref) {
+    case MXC_ADC_REF_INT_1V25:
+        adc_internal_1v25_ref_trim();
+        break;
+    case MXC_ADC_REF_INT_2V048:
+        adc_internal_2v048_ref_trim();
+        break;
+    case MXC_ADC_REF_EXT:
+        adc_external_ref_trim();
+        break;
+    }
+#endif
 }
 
 /* Single channel */
