@@ -44,6 +44,7 @@
 #include "i2c.h"
 #include "dma.h"
 #include "led.h"
+#include "board.h"
 
 /***** Definitions *****/
 
@@ -198,6 +199,9 @@ int main()
 
     printf("\nYou will need to connect P1.8->P2.8 (SCL) and\n");
     printf("P1.7->P2.7 (SDA).\n");
+#ifdef BOARD_EVKIT_V1
+    printf("\nAdditionally, ensure JP9 and JP10 are set to SDA and SCL.\n");
+#endif
 
     int error, i = 0;
 
