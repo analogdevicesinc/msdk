@@ -34,6 +34,10 @@
 
 #include "tsc2046.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /************************************************************************************/
 
 typedef struct {
@@ -215,5 +219,9 @@ void MXC_TFT_SetRotation(tft_rotation_t rotation);
  * @param       data                data for the command or register
  */
 void MXC_TFT_WriteReg(uint16_t command, uint16_t data);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_TFT_SSD2119_H_
