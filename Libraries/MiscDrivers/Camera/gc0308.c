@@ -414,7 +414,7 @@ static int dump_registers(void)
         ret = cambus_read(i, &byt);
 
         if (ret == 0) {
-            ret = snprintf((char *)ptr, sizeof((char *)ptr), " %02X", byt);
+            ret = snprintf((char *)ptr, sizeof(buf) / sizeof(uint8_t), " %02X", byt);
 
             if (ret < 0) {
                 return ret;
