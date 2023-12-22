@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -234,6 +204,8 @@ void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // Stop timer before disable it.
+    MXC_TMR_RevB_Stop(tmr);
     // Disable timer and clear settings
     tmr->ctrl0 = 0;
     while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A) {}
@@ -269,10 +241,28 @@ int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
         return E_BAD_PARAM;
     }
 
-    while (tmr->cnt >= pwm) {}
+    bool timera_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_A;
+    bool timerb_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_B;
+
+    if (timera_is_running || timerb_is_running) {
+        MXC_TMR_RevB_ClearFlags(tmr); // Clear flags so we can catch the next one
+        while (!MXC_TMR_RevB_GetFlags(tmr)) {} // Wait for next PWM transition
+        MXC_TMR_RevB_Stop(tmr); // Pause timer
+        MXC_TMR_RevB_SetCount(tmr, 0); // Reset the count
+        MXC_TMR_RevB_ClearFlags(
+            tmr); // Clear flags since app code wants the new PWM transitions set by this function
+    }
 
     tmr->pwm = pwm;
     while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
+
+    if (timera_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A; // Unpause A
+    }
+
+    if (timerb_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B; // Unpause B
+    }
 
     return E_NO_ERROR;
 }

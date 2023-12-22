@@ -37,6 +37,7 @@
 #include "wsf_msg.h"
 #include "wsf_trace.h"
 #include "util/bstream.h"
+#include "bb_ble_api.h"
 #include <string.h>
 
 /**************************************************************************************************
@@ -81,7 +82,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    LlTestReport_t rpt = { 0 };
+    
 
     /* Decode and consume command packet. */
 
@@ -199,9 +200,15 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         status = LlEnhancedTxTest(pBuf[0], pBuf[1], pBuf[2], pBuf[3], numPackets);
         break;
     }
-    case LHCI_OPCODE_VS_END_TEST: {
-        status = LlEndTest(&rpt);
-        evtParamLen += sizeof(LlTestReport_t);
+    case LHCI_OPCODE_VS_RESET_TEST_STATS: {
+        status = LL_SUCCESS;
+        
+        break;
+    }
+    case LHCI_OPCODE_VS_RX_TEST:
+    {
+        uint16_t numPackets = (pBuf[4] << 8) | pBuf[3];
+        status = LlEnhancedRxTest(pBuf[0], pBuf[1], pBuf[2], numPackets);
         break;
     }
 
@@ -227,14 +234,14 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_SET_TX_TEST_ERR_PATT:
         case LHCI_OPCODE_VS_SET_SNIFFER_ENABLE:
         case LHCI_OPCODE_VS_REG_WRITE:
-
+        case LHCI_OPCODE_VS_RX_TEST:
         case LHCI_OPCODE_VS_TX_TEST:
 
             /* no action */
             break;
 
-        case LHCI_OPCODE_VS_END_TEST: {
-            memcpy(pBuf, (uint8_t *)&rpt, sizeof(LlTestReport_t));
+        case LHCI_OPCODE_VS_RESET_TEST_STATS: {
+            BbBleResetTestStats();
             break;
         }
 
