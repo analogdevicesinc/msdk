@@ -35,6 +35,12 @@ SRCS += ov7692.c
 SRCS += sccb.c
 SRCS += max20303.c
 SRCS += max9867.c
+ifeq "$(RISCV_CORE)" ""
+SRCS += N01S830HA.c
+SRCS += fastspi.c
+else
+$(warning Warning: Skipping N01S830HA drivers for RISC-V core)
+endif
 
 PROJ_CFLAGS+=-DCAMERA_OV7692
 
@@ -50,6 +56,7 @@ VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/PMIC
 VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 VPATH += $(MISC_DRIVERS_DIR)/CODEC
+VPATH += $(MISC_DRIVERS_DIR)/SRAM
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
@@ -61,5 +68,6 @@ IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/PMIC
 IPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 IPATH += $(MISC_DRIVERS_DIR)/CODEC
+IPATH += $(MISC_DRIVERS_DIR)/SRAM
 
 include $(MISC_DRIVERS_DIR)/Display/fonts/fonts.mk
