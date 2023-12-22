@@ -426,8 +426,9 @@ int MXC_SDHC_Lib_InitCard(int retries)
     // First, there is a GCR register setting to determine the input clock to the peripheral.
     // This varies between micros, so a native implementation for each one is maintained in
     // sdhc_mexx.c
-    unsigned int sdhc_clk_freq = MXC_SDHC_Get_Input_Clock_Freq();
-    unsigned int sdhc_clk_div = sdhc_clk_freq / (2 * SDHC_CLK_FREQ);
+    unsigned int sdhc_input_clk_freq = MXC_SDHC_Get_Input_Clock_Freq();
+    MXC_ASSERT(sdhc_input_clk_freq >= SDHC_CLK_FREQ);
+    unsigned int sdhc_clk_div = sdhc_input_clk_freq / (2 * SDHC_CLK_FREQ);
     MXC_SDHC_Set_Clock_Config(sdhc_clk_div);
 
     return E_NO_ERROR;
