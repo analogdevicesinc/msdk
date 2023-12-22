@@ -51,14 +51,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
         return E_NULL_PTR;
     }
 
-    uint32_t timerOffset;
-
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
-        timerOffset = TIMER_16B_OFFSET;
-    } else {
-        timerOffset = TIMER_16A_OFFSET;
-    }
-
     // Default 32 bit timer
     if (cfg->bitMode & (TMR_BIT_MODE_16A | TMR_BIT_MODE_16B)) {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_CASCADE;
@@ -69,11 +61,17 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Clear interrupt flag
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 
-    // Set the prescale
-    tmr->ctrl0 |= (cfg->pres << timerOffset);
-
-    // Select clock Source
-    tmr->ctrl1 |= ((clk_src << MXC_F_TMR_REVB_CTRL1_CLKSEL_A_POS) << timerOffset);
+    // Select clock Source and prescaler
+    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
+    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
+    if (cfg->bitMode == TMR_BIT_MODE_16A || cfg->bitMode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A, clk_src);
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, cfg->pres);
+    }
+    if (cfg->bitMode == TMR_BIT_MODE_16B || cfg->bitMode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B, clk_src);
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, cfg->pres);
+    }
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
