@@ -26,6 +26,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if defined(CAMERA_HM01B0)
 #include "hm01b0_regs.h"
 #elif defined(CAMERA_HM0360_MONO)
@@ -216,5 +220,9 @@ void release_camera_stream_buffer(void);
 
 // Get statistics of DMA streaming mode.
 stream_stat_t *get_camera_stream_statistic(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_CAMERA_H_

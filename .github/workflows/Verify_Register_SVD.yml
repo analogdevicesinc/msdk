@@ -82,7 +82,7 @@ jobs:
             pwd
           else
             pwd
-            git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+            git clone --depth 1 git@github.com:Analog-Devices-MSDK/msdk-internal.git
             ls
           fi
           

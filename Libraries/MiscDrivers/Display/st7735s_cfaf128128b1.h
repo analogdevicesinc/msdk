@@ -39,6 +39,10 @@
 
 #include "st7735s.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 st7735s_regcfg_t cfaf128128b1_regcfg[] = {
     /* Send a software reset to clear regs (120ms delay mandatory) */
     { .cmd = ST7735S_SWRESET, .delay = 120, .len = 0, .data = NULL },
@@ -79,5 +83,9 @@ st7735s_regcfg_t cfaf128128b1_regcfg[] = {
     /* Memory Data Access Control; Reverse row and column address order for panel orientation */
     { .cmd = ST7735S_MADCTL, .delay = 0, .len = 1, .data = (uint8_t *)"\xc0" },
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_CFAF128128B1_H_

@@ -24,6 +24,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Return an x coordinate given an array index and x resolution
 unsigned int _x(unsigned int i, unsigned int xres);
 
@@ -88,5 +92,9 @@ void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_
 void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32_t src_height,
                                      uint32_t w_offset, uint32_t h_offset, uint16_t *dstimg,
                                      uint32_t dst_width, uint32_t dst_height);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_DEBAYERING_H_
