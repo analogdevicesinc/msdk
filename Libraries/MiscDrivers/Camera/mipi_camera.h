@@ -26,6 +26,11 @@
 #ifndef OV5640_DVP
 #include "csi2.h"
 #endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Pixel format enumerations.
 */
@@ -213,5 +218,9 @@ mxc_csi2_capture_stats_t mipi_camera_get_capture_stats(void);
  * @return The image header of the last captured image
  */
 char *mipi_camera_get_image_header(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_

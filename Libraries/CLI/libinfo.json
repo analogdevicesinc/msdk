@@ -1,0 +1,10 @@
+{
+    "name":"CLI",
+    "ipaths":[
+        "inc"
+    ],
+    "vpaths":[
+        "src"
+    ],
+    "whitelist":"False"
+}

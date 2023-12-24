@@ -28,6 +28,10 @@
 #ifndef LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_
 #define LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define DISP_HOR_RES 128
 #define DISP_VER_RES 128
 #define DRAW_BUF_SIZE (DISP_HOR_RES * DISP_VER_RES) / 10
@@ -81,5 +85,9 @@ int st7735s_init(st7735s_cfg_t *cfg);
 int st7735s_pixel(uint32_t x, uint32_t y, uint32_t z);
 int st7735s_write_pixels(uint8_t *data, unsigned int len);
 int st7735s_xyloc(uint8_t row, uint8_t col);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_

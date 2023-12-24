@@ -33,6 +33,8 @@
 extern "C" {
 #endif
 
+#define BOARD_FTHR
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
 #endif

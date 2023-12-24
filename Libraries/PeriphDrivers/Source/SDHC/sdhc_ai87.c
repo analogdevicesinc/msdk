@@ -73,11 +73,11 @@ unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
     // register description for MXC_GCR->pclkdiv marks the usual SDHC divider as reserved.
     // We will follow figure 4-1 for now.
 
-    // if (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_SDHC) {
-    //     return SystemCoreClock >> 2; // Div by 4
-    // } else {
-    //     return SystemCoreClock >> 1; // Div by 2
-    // }
+    if (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIS1_SDHC) {
+        return SystemCoreClock >> 2; // Div by 4
+    } else {
+        return SystemCoreClock >> 1; // Div by 2
+    }
 
     return SystemCoreClock;
 }
