@@ -214,7 +214,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
                 }
             }
         }
-    // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
+        // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
     } else if (spi == MXC_SPI3) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI3);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
@@ -351,7 +351,7 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
     } else if (spi == MXC_SPI1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
-    // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
+        // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
     } else if (spi == MXC_SPI3) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI3);
     } else {
@@ -555,7 +555,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
             tx_reqsel = MXC_DMA_REQUEST_SPI1TX;
             break;
 
-        // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
+            // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
 
         case 3:
             tx_reqsel = MXC_DMA_REQUEST_SPI3TX;
@@ -576,7 +576,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
             rx_reqsel = MXC_DMA_REQUEST_SPI1RX;
             break;
 
-        // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
+            // SPI2 does not exist in the MAX32572 (to match instance addressing with MAX32570B)
 
         case 3:
             rx_reqsel = MXC_DMA_REQUEST_SPI3RX;
