@@ -56,8 +56,8 @@ static mxc_i2s_req_t txn_req;
 static mxc_i2s_reva_txn_t txn_state;
 static uint32_t txn_lock = 0;
 
-static void configure_data_sizes(mxc_i2s_reva_regs_t *i2s, uint8_t bits_word, 
-                                    uint8_t smp_sz, uint8_t wsize)
+static void configure_data_sizes(mxc_i2s_reva_regs_t *i2s, uint8_t bits_word, uint8_t smp_sz,
+                                 uint8_t wsize)
 {
     i2s->ctrl1ch0 |= (bits_word << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
 
@@ -67,7 +67,7 @@ static void configure_data_sizes(mxc_i2s_reva_regs_t *i2s, uint8_t bits_word,
 
     //Set datasize to load in FIFO
     MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
-                    wsize << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
+                 wsize << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
 }
 
 /* ****** Functions ****** */

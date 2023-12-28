@@ -61,11 +61,7 @@ typedef enum { MXC_I2S_MSB_FIRST, MXC_I2S_LSB_FIRST } mxc_i2s_bitorder_t;
 typedef enum { MXC_I2S_MSB_JUSTIFY, MXC_I2S_LSB_JUSTIFY } mxc_i2s_justify_t;
 
 /** @brief I2S transaction word size */
-typedef enum {
-    MXC_I2S_WSIZE_BYTE,
-    MXC_I2S_WSIZE_HALFWORD,
-    MXC_I2S_WSIZE_WORD
-} mxc_i2s_wsize_t;
+typedef enum { MXC_I2S_WSIZE_BYTE, MXC_I2S_WSIZE_HALFWORD, MXC_I2S_WSIZE_WORD } mxc_i2s_wsize_t;
 
 /** @brief  I2S transaction bits word */
 typedef enum {
