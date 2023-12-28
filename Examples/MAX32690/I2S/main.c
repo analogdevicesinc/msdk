@@ -80,8 +80,8 @@ int main()
     printf("\nI2S Transmission Example\n");
     printf("I2S Signals may be viewed on pins P2.26-P2.29.\n");
 
-    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
-    req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
+    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
+    req.sampleSize = MXC_I2S_BITSWORD_SIXTEEN;
     req.justify = MXC_I2S_LSB_JUSTIFY;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
     req.clkdiv = 100;

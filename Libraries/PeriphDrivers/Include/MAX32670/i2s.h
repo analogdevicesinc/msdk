@@ -62,19 +62,19 @@ typedef enum { MXC_I2S_MSB_JUSTIFY, MXC_I2S_LSB_JUSTIFY } mxc_i2s_justify_t;
 
 /** @brief  I2S transaction word size */
 typedef enum {
-    MXC_I2S_DATASIZE_BYTE,
-    MXC_I2S_DATASIZE_HALFWORD,
-    MXC_I2S_DATASIZE_WORD
+    MXC_I2S_WSIZE_BYTE,
+    MXC_I2S_WSIZE_HALFWORD,
+    MXC_I2S_WSIZE_WORD
 } mxc_i2s_wsize_t;
 
 /** @brief  I2S transaction sample size */
 typedef enum {
-    MXC_I2S_SAMPLESIZE_EIGHT,
-    MXC_I2S_SAMPLESIZE_SIXTEEN,
-    MXC_I2S_SAMPLESIZE_TWENTY,
-    MXC_I2S_SAMPLESIZE_TWENTYFOUR,
-    MXC_I2S_SAMPLESIZE_THIRTYTWO,
-} mxc_i2s_samplesize_t;
+    MXC_I2S_BITSWORD_EIGHT,
+    MXC_I2S_BITSWORD_SIXTEEN,
+    MXC_I2S_BITSWORD_TWENTY,
+    MXC_I2S_BITSWORD_TWENTYFOUR,
+    MXC_I2S_BITSWORD_THIRTYTWO,
+} mxc_i2s_bitsword_t;
 
 /** @brief  I2S channel mode */
 typedef enum {
@@ -88,11 +88,12 @@ typedef enum {
 typedef struct {
     mxc_i2s_ch_mode_t channelMode;
     mxc_i2s_stereo_t stereoMode;
-    mxc_i2s_wsize_t wordSize;
     mxc_i2s_justify_t justify;
     mxc_i2s_bitorder_t bitOrder;
     mxc_i2s_polarity_t wsPolarity;
-    mxc_i2s_samplesize_t sampleSize;
+    mxc_i2s_bitsword_t bitsWord;
+    mxc_i2s_wsize_t wordSize;
+    uint8_t sampleSize;
     uint16_t clkdiv;
     void *rawData;
     void *txData;
