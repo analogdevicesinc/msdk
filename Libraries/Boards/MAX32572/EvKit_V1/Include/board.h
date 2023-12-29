@@ -69,6 +69,10 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
+#define TS_I2C MXC_I2C0
+#define TS_I2C_FREQ MXC_I2C_STD_MODE
+#define TS_I2C_TARGET_ADDR 0x48
+
 /**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful

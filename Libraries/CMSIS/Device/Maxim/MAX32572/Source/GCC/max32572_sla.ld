@@ -77,6 +77,16 @@ SECTIONS {
         _etext = .;
     } > SPIX
 
+    /* Binary import */
+    .bin_storage :
+    {
+	   FILL(0xFF)
+      _bin_start_ = .;
+      KEEP(*(.bin_storage_img))
+      _bin_end_ = .;
+	  . = ALIGN(4);
+    } > SPIX
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
