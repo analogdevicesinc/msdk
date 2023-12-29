@@ -196,5 +196,5 @@ const mxc_gpio_cfg_t gpio_cfg_spixf = { MXC_GPIO1, (MXC_GPIO_PIN_22 | MXC_GPIO_P
 
 // SKBD Pin Definitions
 const mxc_gpio_cfg_t gpio_cfg_kbd_P2 = { MXC_GPIO1, ( MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16 |
-										MXC_GPIO_PIN_17 | MXC_GPIO_PIN_18| MXC_GPIO_PIN_19 | MXC_GPIO_PIN_20 |
-										MXC_GPIO_PIN_21), MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO,MXC_GPIO_DRVSTR_0 };
+                                        MXC_GPIO_PIN_17 | MXC_GPIO_PIN_18| MXC_GPIO_PIN_19 | MXC_GPIO_PIN_20 |
+                                        MXC_GPIO_PIN_21), MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO,MXC_GPIO_DRVSTR_0 };
