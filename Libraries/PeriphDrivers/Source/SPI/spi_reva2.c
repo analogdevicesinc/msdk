@@ -1417,11 +1417,12 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
                                    false);
 
-    // Start the SPI transaction.
-    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
-
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
     MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
+
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Complete transaction once it started.
     while (STATES[spi_num].transaction_done == false) {
