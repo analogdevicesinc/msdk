@@ -37,12 +37,7 @@
 #define CODEC_I2C_FREQ 100000
 
 #define CODEC_MCLOCK 12288000
-#define BITS_PER_CHANNEL 16
-#define CHANNELS_PER_FRAME 2
-#define SAMPLE_RATE 24000
-
-#define BIT_CLK (SAMPLE_RATE * CHANNELS_PER_FRAME * BITS_PER_CHANNEL)
-#define CLK_DIV (((CODEC_MCLOCK / 2) / BIT_CLK) - 1)
+#define SAMPLE_RATE 48000
 
 #define I2S_DMA_BUFFER_SIZE 64
 
@@ -168,15 +163,22 @@ void i2s_init(void)
 #define I2S_CRUFT_PTR (void *)UINT32_MAX
 #define I2S_CRUFT_LEN UINT32_MAX
 
-    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
-    req.sampleSize = MXC_I2S_BITSWORD_SIXTEEN;
+    req.bitsWord = MXC_I2S_BITSWORD_TWENTYFOUR;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
-    req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
+    /* I2S Peripheral is in slave mode - no need to set clkdiv */
+    req.channelMode = MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS;
     req.stereoMode = MXC_I2S_STEREO;
 
     req.bitOrder = MXC_I2S_MSB_FIRST;
-    req.clkdiv = CLK_DIV;
+
+    if (req.bitsWord == MXC_I2S_BITSWORD_EIGHT) {
+        req.wordSize = MXC_I2S_WSIZE_BYTE;
+    } else if (req.bitsWord == MXC_I2S_BITSWORD_SIXTEEN) {
+        req.wordSize = MXC_I2S_WSIZE_HALFWORD;
+    } else {
+        req.wordSize = MXC_I2S_WSIZE_WORD;
+    }
 
     req.rawData = NULL;
     req.txData = I2S_CRUFT_PTR;
@@ -187,8 +189,6 @@ void i2s_init(void)
         blink_halt("Error initializing I2S");
     else
         printf("I2S initialized successfully \n");
-
-    MXC_I2S_SetFrequency(MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS, 0);
 }
 
 int main(void)
