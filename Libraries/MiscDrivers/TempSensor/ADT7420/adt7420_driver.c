@@ -61,7 +61,7 @@
 #define ADT7420_CONFIG_FLTQ0 0 //Fault Queue BIT0
 #define ADT7420_CONFIG_FLTQ1 1 //Fault Queue BIT1
 #define ADT7420_CONFIG_CTPP 2 // CT Pin Polarity
-#define ADT7420_CONFIG_INTPP 3 // INT PIn lity
+#define ADT7420_CONFIG_INTPP 3 // INT Pin Polarity
 #define ADT7420_CONFIG_INT_CT_MODE 4
 #define ADT7420_CONFIG_OPMODE0 5
 #define ADT7420_CONFIG_OPMODE1 6
@@ -161,7 +161,7 @@ static int adt7420_init(mxc_i2c_regs_t *i2c, uint8_t addr)
     if (err != E_NO_ERROR) {
         return err;
     }
-    printf("\nThe Device ID is: 0x%02X \n", id); // print the ID value of the sensor
+    printf("\nThe Device ID is: 0x%02X \n", id); // Print Sensor ID
     // Verify sensor ID
     if (id != ADT7420_PART_ID_VALUE) {
         printf("\nWrong sensor ID");
@@ -177,8 +177,7 @@ static int adt7420_init(mxc_i2c_regs_t *i2c, uint8_t addr)
 static int adt7420_read(void *buff)
 {
     int err = E_NO_ERROR;
-    // Automatic conversion is done by default
-    // Read conversion result
+    // Read conversion result (Automatic conversion is done by default)
     return adt7420_read_temperature((float *)buff);
 }
 
