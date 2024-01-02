@@ -29,6 +29,8 @@ If using the MAX32655EVKIT (EvKit\_V1):
 ```
 ****************** I2C ADT7420 TEMPERATURE SENSOR DEMO *******************
 
+The Device ID is: 0xCB
+
 -->Temperature: 21.920000 °C
 -->Temperature: 21.910000 °C
 -->Temperature: 21.895000 °C
