@@ -69,6 +69,8 @@
 #define WUT_ENABLE // enables WUT timer
 #define WUT_USEC 380 // continuous WUT duration close to I2S polling time in usec
 //#define ENERGY            // if enabled, turn off LED2, toggle LED1 for 10sec for energy measurements on Power monitor (System Power)
+#define SAMPLE_RATE 16000
+#define EXT_I2S_FREQ 12288000
 
 #if SLEEP_MODE == 2 // need WakeUp Timer (WUT) for deepsleep (LPM)
 #ifndef WUT_ENABLE
@@ -910,7 +912,7 @@ void I2SInit()
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
     req.wordSize = MXC_I2S_WSIZE_WORD;
-    req.sampleSize = MXC_I2S_BITSWORD_THIRTYTWO;
+    req.bitsWord = MXC_I2S_BITSWORD_THIRTYTWO;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
@@ -918,8 +920,8 @@ void I2SInit()
     req.stereoMode = MXC_I2S_MONO_LEFT_CH;
     req.bitOrder = MXC_I2S_MSB_FIRST;
     /* I2S clock = PT freq / (2*(req.clkdiv + 1)) */
-    /* I2S sample rate = I2S clock/64 = 16kHz */
-    req.clkdiv = 5;
+    /* I2S sample rate = I2S clock/(2*wsize) = 16kHz */
+    req.clkdiv = MXC_I2S_CalculateClockDiv(SAMPLE_RATE, req.wordSize, EXT_I2S_FREQ);
     req.rawData = NULL;
     req.txData = NULL;
     req.rxData = i2s_rx_buffer;

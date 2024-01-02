@@ -82,7 +82,7 @@ int main()
     printf("\n\n\n\n");
 
     req.wordSize = MXC_I2S_WSIZE_HALFWORD;
-    req.sampleSize = MXC_I2S_BITSWORD_SIXTEEN;
+    req.bitsWord = MXC_I2S_BITSWORD_SIXTEEN;
     req.justify = MXC_I2S_LSB_JUSTIFY;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
     req.clkdiv = 100;

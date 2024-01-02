@@ -78,7 +78,7 @@ int main()
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.bitOrder = MXC_I2S_MSB_FIRST;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
-    req.sampleSize = MXC_I2S_BITSWORD_SIXTEEN;
+    req.bitsWord = MXC_I2S_BITSWORD_SIXTEEN;
     req.clkdiv =
         ERFO_FREQ / (2 * 16 * 16000); // SRC_CLK / (2 * BITS_PER_SAMPLE * DESIRED_WSCLK_FREQ)
     req.rawData = tone;
