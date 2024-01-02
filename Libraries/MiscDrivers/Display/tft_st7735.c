@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "board.h"
 #include "gpio.h"
@@ -688,11 +689,14 @@ void MXC_TFT_SetFont(int font_id)
 
 void MXC_TFT_Printf(const char *format, ...)
 {
-    char str[100];
     char value;
     int i;
+    char str[100] = { 0 };
+    va_list args;
 
-    snprintf(str, sizeof(str), format, *((&format) + 1), *((&format) + 2), *((&format) + 3));
+    va_start(args, format);
+    vsnprintf(str, sizeof(str), format, args);
+    va_end(args);
 
     for (i = 0; i < sizeof(str); i++) {
         value = str[i];
