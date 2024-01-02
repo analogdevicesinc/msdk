@@ -65,12 +65,12 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="I2C_Sensor.null.923778415" name="I2C_Sensor"/>
+		<project id="I2C_Sensor_ADT7420.null.923778415" name="I2C_Sensor_ADT7420"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/I2C_Sensor"/>
+			<resource resourceType="PROJECT" workspacePath="/I2C_Sensor_ADT7420"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
