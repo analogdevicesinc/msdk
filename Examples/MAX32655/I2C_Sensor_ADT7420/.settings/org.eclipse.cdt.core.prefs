@@ -7,7 +7,7 @@ environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.2952019
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/GCC_PREFIX/value=arm-none-eabi-
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/PROJECT/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/PROJECT/operation=append
-environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/PROJECT/value=I2C_Sensor
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/PROJECT/value=I2C_Sensor_ADT7420
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/TARGET/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/TARGET/operation=append
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529.295201965/TARGET/value=MAX32655
@@ -21,7 +21,7 @@ environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PRE
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PREFIX/value=arm-none-eabi-
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/operation=append
-environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/value=I2C_Sensor
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/value=I2C_Sensor_ADT7420
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/operation=append
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/value=MAX32655
