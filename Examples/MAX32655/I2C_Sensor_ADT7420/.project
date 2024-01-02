@@ -23,26 +23,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Boards</name>
-			<type>2</type>
-			<location>C:/repo/Libraries/Boards</location>
-		</link>
-		<link>
-			<name>Maxim</name>
-			<type>2</type>
-			<location>C:/repo/Libraries/CMSIS/Device/Maxim</location>
-		</link>
-		<link>
-			<name>MiscDrivers</name>
-			<type>2</type>
-			<location>C:/repo/Libraries/MiscDrivers</location>
-		</link>
-		<link>
-			<name>PeriphDrivers</name>
-			<type>2</type>
-			<location>C:/repo/Libraries/PeriphDrivers</location>
-		</link>
-	</linkedResources>
 </projectDescription>
