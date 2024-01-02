@@ -34,11 +34,11 @@
 #include "tft_ssd2119.h"
 #endif
 #ifdef BOARD_FTHR_REVA
-#define TFT_ENABLE
 #include "tft_ili9341.h"
 #endif
 #include "camera.h"
 #include "camera_util.h"
+#include "tft_config.h"
 
 #ifdef BOARD_EVKIT_V1
 int font = urw_gothic_12_grey_bg_white;

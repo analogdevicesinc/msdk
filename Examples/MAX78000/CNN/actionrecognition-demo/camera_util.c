@@ -49,6 +49,7 @@
 #include "dma.h"
 #include "dma_regs.h"
 #include "camera_util.h"
+#include "tft_config.h"
 #include "rtc.h"
 
 #ifdef BOARD_EVKIT_V1
@@ -56,7 +57,6 @@
 #include "tft_ssd2119.h"
 #endif
 #ifdef BOARD_FTHR_REVA
-#define TFT_ENABLE
 #include "tft_ili9341.h"
 #endif
 
@@ -84,11 +84,13 @@ static uint32_t *addr, offset0, offset1, subtract;
 // *****************************************************************************
 
 #ifdef TFT_ENABLE
+
 static int g_dma_channel_tft = 1;
 static uint8_t* rx_data = NULL;
 
 static void setup_dma_tft(uint32_t* src_ptr)
 {
+    MXC_Delay(MSEC(1));
     // TFT DMA
     MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
     MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
@@ -141,7 +143,9 @@ static void start_tft_dma(uint32_t* src_ptr)
 	// Start DMA
 	MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
 }
+
 #endif
+
 
 int initialize_camera(void)
 {
@@ -336,7 +340,6 @@ static void load_cnn(uint8_t *data, uint32_t row_number)
 
 void capture_and_display_camera(void)
 {
-
     uint32_t imgLen;
     uint32_t w, h;
     uint8_t *raw;
@@ -350,20 +353,17 @@ void capture_and_display_camera(void)
     //MXC_LP_EnterSleepMode();
     #ifdef TFT_ENABLE
 	MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
-    #endif
-	// Get the details of the image from the camera driver.
+	#endif
+    // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
-    
     #ifdef TFT_ENABLE
 	setup_dma_tft((uint32_t*)raw);
-    #endif
-	
+	#endif
 	// Wait to complete image capture
 	while(camera_is_image_rcv() == 0);
 	printf("Image capture: %d ms\n", utils_get_time_ms() - start_time);
 
     start_time = utils_get_time_ms();
-
     #ifdef TFT_ENABLE
 	// Send a first half of captured image to TFT
 	start_tft_dma((uint32_t*)raw);
