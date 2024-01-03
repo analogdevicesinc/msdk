@@ -89,7 +89,7 @@ static int i2c_transfer(mxc_i2c_req_t *req, uint8_t *txData, int txSize, uint8_t
     return MXC_I2C_MasterTransaction(req);
 }
 
-static int i2c_write(mxc_i2c_req_t *req, uint8_t *txData, int txSize)
+static int i2c_write(mxc_i2c_req_t *req, uint8_t *txData, int txSize)  // Necessary for future use
 {
     return i2c_transfer(req, txData, txSize, NULL, 0); // Create I2C write request
 }
@@ -176,7 +176,6 @@ static int adt7420_init(mxc_i2c_regs_t *i2c, uint8_t addr)
 
 static int adt7420_read(void *buff)
 {
-    int err = E_NO_ERROR;
     // Read conversion result (Automatic conversion is done by default)
     return adt7420_read_temperature((float *)buff);
 }
