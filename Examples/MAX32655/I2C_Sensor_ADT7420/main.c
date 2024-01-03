@@ -32,7 +32,6 @@
 
 #include "i2c.h"
 #include "mxc_device.h"
-//#include "max31889_driver.h"
 #include "adt7420_driver.h"
 /***** Definitions *****/
 #define I2C_MASTER MXC_I2C1 ///< I2C instance
@@ -45,7 +44,7 @@ int main(void)
     float temperature;
 
     printf("\n****************** I2C ADT7420 TEMPERATURE SENSOR DEMO *******************\n");
-    printf("trial for commit sourcetree");
+    printf("\nMake sure that the SCL and SDA pins of the EVAL-ADT7420MBZ board are connected to P0.16 and P0.17 on the MAX32655EVKIT\n");
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("I2C master configure failed with error %i\n", error);
@@ -54,14 +53,10 @@ int main(void)
 
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
 
-    //max31889_driver_t MAX31889 = MAX31889_Open();
     adt7420_driver_t ADT7420 = ADT7420_Open();
-    //MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0); // init the sensor
     ADT7420.init(I2C_MASTER, ADT7420_I2C_SLAVE_ADDR1); //  the ADT7420
-    //Let's comment out the infinite loop to check if we can read the ID)
     
     while (1) {
-        //error = MAX31889.read(&temperature);
         error = ADT7420.read(&temperature);
         if (error != E_NO_ERROR) {
             printf("\nSensor read error: %i", error);
