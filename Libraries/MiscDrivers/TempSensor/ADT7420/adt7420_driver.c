@@ -110,7 +110,7 @@ static int adt7420_read_temperature(float *temp)
     int ret_code = E_NO_ERROR;
     uint8_t reg[2];
     uint8_t tr[2]; //temperature reading
-    uint8_t status, ov_cnt;
+    uint8_t status;
 
     // Read status
     reg[0] = ADT7420_REG_STATUS;
