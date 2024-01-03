@@ -2,7 +2,7 @@
 
 This example demonstrates how to take temperature readings from the ADT7420 using the I2C.
 
-After initialization, a new reading is printed to the terminal every second.
+After startup, a new reading is printed to the terminal every second.
 
 NOTE: This example is only supported on the MAX32655EVKIT.
 
