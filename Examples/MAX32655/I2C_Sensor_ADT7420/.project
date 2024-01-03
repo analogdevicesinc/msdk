@@ -23,4 +23,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>MiscDrivers</name>
+			<type>2</type>
+			<location>C:/Repo/Libraries/MiscDrivers</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -55,7 +55,7 @@ int main(void)
 
     adt7420_driver_t ADT7420 = ADT7420_Open();
     ADT7420.init(I2C_MASTER, ADT7420_I2C_SLAVE_ADDR1); //  the ADT7420
-    
+
     while (1) {
         error = ADT7420.read(&temperature);
         if (error != E_NO_ERROR) {
