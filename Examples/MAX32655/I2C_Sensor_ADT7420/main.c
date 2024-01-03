@@ -44,7 +44,7 @@ int main(void)
     float temperature;
 
     printf("\n****************** I2C ADT7420 TEMPERATURE SENSOR DEMO *******************\n");
-    printf("\nMake sure that the SCL and SDA pins of the EVAL-ADT7420MBZ board are connected to P0.16 and P0.17 on the MAX32655EVKIT\n");
+    printf("\n***Make sure that the SCL and SDA pins of the EVAL-ADT7420MBZ board are connected to P0.16 and P0.17 on the MAX32655EVKIT***\n");
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("I2C master configure failed with error %i\n", error);
