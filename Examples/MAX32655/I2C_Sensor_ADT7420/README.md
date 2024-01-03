@@ -29,6 +29,8 @@ If using the MAX32655EVKIT (EvKit\_V1):
 ```
 ****************** I2C ADT7420 TEMPERATURE SENSOR DEMO *******************
 
+Make sure that the SCL and SDA pins of the EVAL-ADT7420MBZ board are connected to P0.16 and P0.17 on the MAX32655EVKIT
+
 The Device ID is: 0xCB
 
 -->Temperature: 21.920000 °C
