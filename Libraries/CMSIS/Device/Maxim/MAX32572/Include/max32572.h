@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc. (now owned by Analog
+ * Devices, Inc.), Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary and confidential to Analog Devices, Inc. and its licensors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -298,6 +300,7 @@ typedef enum {
 #define MXC_ROM_MEM_SIZE                MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE                0x08000000UL
 #define MXC_XIP_MEM_SIZE                0x08000000UL
+#define MXC_XIP_SECTOR_SIZE             0x00001000UL
 #define MXC_SRAM_MEM_BASE               0x20000000UL
 #define MXC_SRAM_MEM_SIZE               0x0006C000UL
 #define MXC_OTP_MEM_BASE                0x400C0000UL
@@ -562,7 +565,7 @@ typedef enum {
 /******************************************************************************/
 /*                                           Instruction Cache XIP Controller */
 #define MXC_BASE_SFCC                   ((uint32_t)0x4002F000UL)
-#define MXC_SFCC                        ((mxc_sfcc_regs_t *)MXC_BASE_SFCC)
+#define MXC_SFCC                        ((mxc_icc_regs_t *)MXC_BASE_SFCC)
 
 /******************************************************************************/
 /*                                                            Secure Keyboard */
