@@ -55,30 +55,28 @@ volatile uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
-  printf("\n*** FAIL ***\n\n");
-  while (1);
+    printf("\n*** FAIL ***\n\n");
+    while (1) {}
 }
 
 // define 5 strings for the 5 classes, max 6 characters each
-char *classes[6] = {"pullup", "pushup", "situp", "squat", "other"};
+char *classes[6] = { "pullup", "pushup", "situp", "squat", "other" };
 
 int cnn_display_decision(void)
 {
+    int32_t max = 0;
+    int32_t max_index = 0;
+    int32_t i;
 
-  int32_t max = 0;
-  int32_t max_index = 0;
-  int32_t i;
-
-  for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
-    printf("\n%s: %d\n", classes[i], ml_data[i]);
-    if (ml_data[i] > max) {
-      max = ml_data[i];
-      max_index = i;
+    for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
+        printf("\n%s: %d\n", classes[i], ml_data[i]);
+        if (ml_data[i] > max) {
+            max = ml_data[i];
+            max_index = i;
+        }
     }
-  }
-  printf("\nDecision: %d\n", max_index);
-  return max_index;
-
+    printf("\nDecision: %d\n", max_index);
+    return max_index;
 }
 
 unsigned int utils_get_time_ms(void)
@@ -109,186 +107,186 @@ void TFT_Print(char *str, int x, int y, int font, int length)
 
 int main(void)
 {
-  char buff[TFT_BUFF_SIZE];
+    char buff[TFT_BUFF_SIZE];
 
-  #ifdef BOARD_FTHR_REVA
-  // Wait for PMIC 1.8V to become available, about 180ms after power up.
-  MXC_Delay(MSEC(200));
-  /* Enable camera power */
-  Camera_Power(POWER_ON);
-  printf("\n\nTCN Action Demo - MAX78000 Feather\n");
-  #else
-  printf("\n\nTCN Action Demo - MAX78000 EVKIT\n");
-  #endif
+#ifdef BOARD_FTHR_REVA
+    // Wait for PMIC 1.8V to become available, about 180ms after power up.
+    MXC_Delay(MSEC(200));
+    /* Enable camera power */
+    Camera_Power(POWER_ON);
+    printf("\n\nTCN Action Demo - MAX78000 Feather\n");
+#else
+    printf("\n\nTCN Action Demo - MAX78000 EVKIT\n");
+#endif
 
-  MXC_ICC_Enable(MXC_ICC0); // Enable cache
+    MXC_ICC_Enable(MXC_ICC0); // Enable cache
 
-  // Switch to 100 MHz clock
-  MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-  SystemCoreClockUpdate();
+    // Switch to 100 MHz clock
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    SystemCoreClockUpdate();
 
-  MXC_RTC_Init(0, 0);
-  MXC_RTC_Start();
+    MXC_RTC_Init(0, 0);
+    MXC_RTC_Start();
 
-  // DO NOT DELETE THIS LINE:
-  printf("Waiting ...\n");
-  MXC_Delay(SEC(1)); // Let debugger interrupt if needed
+    // DO NOT DELETE THIS LINE:
+    printf("Waiting ...\n");
+    MXC_Delay(SEC(1)); // Let debugger interrupt if needed
 
-  printf("\n\nInitializing Camera\n");
-  initialize_camera();
+    printf("\n\nInitializing Camera\n");
+    initialize_camera();
 
-  #ifdef TFT_ENABLE
-  // Initialize TFT display.
-  printf("Init TFT\n");
-  
-  #ifdef BOARD_EVKIT_V1
-  MXC_TFT_Init();
-  #endif
-  
-  #ifdef BOARD_FTHR_REVA
-  
-  MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-  MXC_TFT_SetRotation(ROTATE_270);
-  MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
-  #endif
-    
-  MXC_TFT_ClearScreen();
-  memset(buff, 32, TFT_BUFF_SIZE);
-  TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG"));
-  TFT_Print(buff, 55, 55, font, snprintf(buff, sizeof(buff), "DEVICES"));
-  TFT_Print(buff, 55, 80, font, snprintf(buff, sizeof(buff), "TCN Demo"));
-  TFT_Print(buff, 55, 105, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0"));
-  #endif
+#ifdef TFT_ENABLE
+    // Initialize TFT display.
+    printf("Init TFT\n");
 
-  MXC_Delay(SEC(1));
+#ifdef BOARD_EVKIT_V1
+    MXC_TFT_Init();
+#endif
 
-  // Enable peripheral, enable CNN interrupt, turn on CNN clock
-  // CNN clock: APB (50 MHz) div 1
-  cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-  cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5); // Turn on the boost circuit
+#ifdef BOARD_FTHR_REVA
 
-  if (cnn_init() != CNN_OK) fail();
-  cnn_load_weights(); // Load kernels
-  cnn_load_bias();
-  cnn_configure(); // Configure state machine
+    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    MXC_TFT_SetRotation(ROTATE_270);
+    MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
+#endif
 
-  unsigned int start_time;
-  unsigned int unload_time;
+    MXC_TFT_ClearScreen();
+    memset(buff, 32, TFT_BUFF_SIZE);
+    TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG"));
+    TFT_Print(buff, 55, 55, font, snprintf(buff, sizeof(buff), "DEVICES"));
+    TFT_Print(buff, 55, 80, font, snprintf(buff, sizeof(buff), "TCN Demo"));
+    TFT_Print(buff, 55, 105, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0"));
+#endif
 
-  static q15_t ml_softmax[CNN_NUM_OUTPUTS];
+    MXC_Delay(SEC(1));
 
-  int i;
-  int digs;
-  int tens[CNN_NUM_OUTPUTS];
-  int result[CNN_NUM_OUTPUTS]; // = {0};
+    // Enable peripheral, enable CNN interrupt, turn on CNN clock
+    // CNN clock: APB (50 MHz) div 1
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5); // Turn on the boost circuit
 
-  #ifdef TFT_ENABLE
-  TFT_Print(buff, 242, 20, font, snprintf(buff, sizeof(buff), classes[0]));
-  TFT_Print(buff, 242, 60, font, snprintf(buff, sizeof(buff), classes[1]));
-  TFT_Print(buff, 242, 100, font, snprintf(buff, sizeof(buff), classes[2]));
-  TFT_Print(buff, 242, 140, font, snprintf(buff, sizeof(buff), classes[3]));
-  TFT_Print(buff, 242, 180, font, snprintf(buff, sizeof(buff), classes[4]));
+    if (cnn_init() != CNN_OK)
+        fail();
+    cnn_load_weights(); // Load kernels
+    cnn_load_bias();
+    cnn_configure(); // Configure state machine
 
-  area_t area_black = { 242, 40, 78, 15 };
-  #endif
+    unsigned int start_time;
+    unsigned int unload_time;
 
-  while (1) {
+    static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
-    printf("Loop starts \n");
+    int i;
+    int digs;
+    int tens[CNN_NUM_OUTPUTS];
+    int result[CNN_NUM_OUTPUTS]; // = {0};
 
-    LED_Toggle(LED1);
+#ifdef TFT_ENABLE
+    TFT_Print(buff, 242, 20, font, snprintf(buff, sizeof(buff), classes[0]));
+    TFT_Print(buff, 242, 60, font, snprintf(buff, sizeof(buff), classes[1]));
+    TFT_Print(buff, 242, 100, font, snprintf(buff, sizeof(buff), classes[2]));
+    TFT_Print(buff, 242, 140, font, snprintf(buff, sizeof(buff), classes[3]));
+    TFT_Print(buff, 242, 180, font, snprintf(buff, sizeof(buff), classes[4]));
 
-	  start_time = utils_get_time_ms();
+    area_t area_black = { 242, 40, 78, 15 };
+#endif
 
-    // capture image & display on TFT (frame 0)
-    capture_and_display_camera();
-  
-    // make sure the two frame captures are at least 85 ms apart
-    while (utils_get_time_ms() - start_time < 85) {
-      MXC_Delay(MSEC(1));
+    while (1) {
+        printf("Loop starts \n");
+
+        LED_Toggle(LED1);
+
+        start_time = utils_get_time_ms();
+
+        // capture image & display on TFT (frame 0)
+        capture_and_display_camera();
+
+        // make sure the two frame captures are at least 85 ms apart
+        while (utils_get_time_ms() - start_time < 85) {
+            MXC_Delay(MSEC(1));
+        }
+
+        // capture image & display on TFT (frame 1)
+        capture_and_display_camera();
+        // load image into CNN as frame 1
+        load_input_camera(1);
+        // inference
+        cnn_start(); // Start CNN processing
+        printf("Start CNN\n");
+
+        SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
+        while (cnn_time == 0) {
+            __WFI(); // Wait for CNN
+        }
+
+#ifdef CNN_INFERENCE_TIMER
+        printf("CNN time: %u us\n", cnn_time);
+#endif
+
+        // Unload CNN and display results
+        printf("Unload CNN\n\n");
+        unload_time = utils_get_time_ms();
+        cnn_unload((uint32_t *)ml_data);
+
+        softmax_q17p14_q15((const q31_t *)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+        for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
+            digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
+            tens[i] = digs % 10;
+            digs = digs / 10;
+            result[i] = digs;
+            printf("Class %d %8s: %d.%d%%\r\n", i, classes[i], result[i], tens[i]);
+        }
+
+#ifdef TFT_ENABLE
+        // display results as bar graphs
+        area_black.y = 40;
+        area_black.w = 78;
+        MXC_TFT_FillRect(&area_black, BLACK);
+        area_black.w = result[0] / 1.3;
+        MXC_TFT_FillRect(&area_black, GREEN);
+
+        area_black.y = 80;
+        area_black.w = 78;
+        MXC_TFT_FillRect(&area_black, BLACK);
+        area_black.w = result[1] / 1.3;
+        MXC_TFT_FillRect(&area_black, GREEN);
+
+        area_black.y = 120;
+        area_black.w = 78;
+        MXC_TFT_FillRect(&area_black, BLACK);
+        area_black.w = result[2] / 1.3;
+        MXC_TFT_FillRect(&area_black, GREEN);
+
+        area_black.y = 160;
+        area_black.w = 78;
+        MXC_TFT_FillRect(&area_black, BLACK);
+        area_black.w = result[3] / 1.3;
+        MXC_TFT_FillRect(&area_black, GREEN);
+
+        area_black.y = 200;
+        area_black.w = 78;
+        MXC_TFT_FillRect(&area_black, BLACK);
+        area_black.w = result[4] / 1.3;
+        MXC_TFT_FillRect(&area_black, GREEN);
+#endif
+
+        printf("Unload/Decision time:%d ms\n", utils_get_time_ms() - unload_time);
+
+        // load image into CNN as frame 0 (for next inference)
+        load_input_camera(0);
+
+        // make sure the loop takes at least 200 ms
+        while (utils_get_time_ms() - start_time < 200) {
+            MXC_Delay(MSEC(1));
+        }
+
+        printf("Total time:%d ms\n", utils_get_time_ms() - start_time);
+        printf("---\n\n");
     }
-    
-    // capture image & display on TFT (frame 1)
-    capture_and_display_camera();
-    // load image into CNN as frame 1
-    load_input_camera(1);
-    // inference
-    cnn_start(); // Start CNN processing
-    printf("Start CNN\n");
 
-    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0) {
-      __WFI(); // Wait for CNN
-    }
+    cnn_disable(); // Shut down CNN clock, disable peripheral
 
-    #ifdef CNN_INFERENCE_TIMER
-      printf("CNN time: %u us\n", cnn_time);
-    #endif
-
-    // Unload CNN and display results
-    printf("Unload CNN\n\n");
-	  unload_time = utils_get_time_ms();
-    cnn_unload((uint32_t *) ml_data);
-
-    softmax_q17p14_q15((const q31_t *)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
-    for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
-        digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
-        tens[i] = digs % 10;
-        digs = digs / 10;
-        result[i] = digs;
-        printf("Class %d %8s: %d.%d%%\r\n", i, classes[i], result[i], tens[i]);
-    }
-    
-    #ifdef TFT_ENABLE
-    // display results as bar graphs
-	  area_black.y = 40;
-	  area_black.w = 78;
-    MXC_TFT_FillRect(&area_black, BLACK);
-    area_black.w = result[0]/1.3;
-    MXC_TFT_FillRect(&area_black, GREEN);
-	
-	  area_black.y = 80;
-	  area_black.w = 78;
-	  MXC_TFT_FillRect(&area_black, BLACK);
-    area_black.w  = result[1]/1.3;
-    MXC_TFT_FillRect(&area_black, GREEN);
-	
-	  area_black.y = 120;
-	  area_black.w = 78;
-	  MXC_TFT_FillRect(&area_black, BLACK);
-    area_black.w = result[2]/1.3;
-    MXC_TFT_FillRect(&area_black, GREEN);
-	
-	  area_black.y = 160;
-	  area_black.w = 78;
-	  MXC_TFT_FillRect(&area_black, BLACK);
-    area_black.w = result[3]/1.3;
-    MXC_TFT_FillRect(&area_black, GREEN);
-
-	  area_black.y = 200;
-	  area_black.w = 78;
-	  MXC_TFT_FillRect(&area_black, BLACK);
-    area_black.w = result[4]/1.3;
-    MXC_TFT_FillRect(&area_black, GREEN);
-    #endif
-
-    printf("Unload/Decision time:%d ms\n", utils_get_time_ms() - unload_time);
-
-    // load image into CNN as frame 0 (for next inference)
-    load_input_camera(0);
-    
-    // make sure the loop takes at least 200 ms
-    while (utils_get_time_ms() - start_time < 200) {
-      MXC_Delay(MSEC(1));
-    }
-	
-	  printf("Total time:%d ms\n", utils_get_time_ms() - start_time);
-    printf("---\n\n");
-  }
-
-  cnn_disable(); // Shut down CNN clock, disable peripheral
-
-  return 0;
+    return 0;
 }
 
 /*
@@ -320,4 +318,3 @@ int main(void)
   Weight memory: 378,272 bytes out of 442,368 bytes total (85.5%)
   Bias memory:   933 bytes out of 2,048 bytes total (45.6%)
 */
-

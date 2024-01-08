@@ -51,6 +51,4 @@ int initialize_camera(void);
 void load_input_camera(int);
 void capture_and_display_camera(void);
 
-
-
 #endif

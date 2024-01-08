@@ -86,9 +86,9 @@ static uint32_t *addr, offset0, offset1, subtract;
 #ifdef TFT_ENABLE
 
 static int g_dma_channel_tft = 1;
-static uint8_t* rx_data = NULL;
+static uint8_t *rx_data = NULL;
 
-static void setup_dma_tft(uint32_t* src_ptr)
+static void setup_dma_tft(uint32_t *src_ptr)
 {
     MXC_Delay(MSEC(1));
     // TFT DMA
@@ -96,56 +96,51 @@ static void setup_dma_tft(uint32_t* src_ptr)
     MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
     MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
     MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
-   
-    MXC_DMA->ch[g_dma_channel_tft].ctrl = ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS)  +
-                                       (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) +
-                                       (0x0 << MXC_F_DMA_CTRL_DSTINC_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_DSTWD_POS)   +
-                                       (0x1 << MXC_F_DMA_CTRL_SRCINC_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_SRCWD_POS)   +
-                                       (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
-                                       (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) +
-                                       (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
-                                       (0x0 << MXC_F_DMA_CTRL_PRI_POS)     +  // High Priority
-									   (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)      // Disable Reload
-                                      );
-    
-	MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
-	MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR, (IMAGE_XRES*IMAGE_YRES) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
-    MXC_SPI0->dma   |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
-    
+
+    MXC_DMA->ch[g_dma_channel_tft].ctrl =
+        ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
+         (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) + (0x0 << MXC_F_DMA_CTRL_DSTINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_DSTWD_POS) + (0x1 << MXC_F_DMA_CTRL_SRCINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_SRCWD_POS) + (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+         (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
+         (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) // Disable Reload
+        );
+
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
+                 (IMAGE_XRES * IMAGE_YRES) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+
     // Clear SPI master done flag
     MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
-    MXC_SETFIELD (MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SETFIELD(MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
     MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
 }
 
-static void start_tft_dma(uint32_t* src_ptr)
+static void start_tft_dma(uint32_t *src_ptr)
 {
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        {
+        }
     }
 
-    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
-    {
+    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
         MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
     }
-    
-	MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
-	MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
-	
-	// Enable DMA channel
-	MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
-	// Start DMA
-	MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+
+    // Enable DMA channel
+    MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    // Start DMA
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
 }
 
 #endif
-
 
 int initialize_camera(void)
 {
@@ -175,7 +170,7 @@ int initialize_camera(void)
     printf("Init Camera\n");
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel);
 
     if (ret != STATUS_OK) {
@@ -184,31 +179,26 @@ int initialize_camera(void)
     }
 
     // double camera PCLK speed
-	camera_write_reg(0x11, 0x80); 
+    camera_write_reg(0x11, 0x80);
 
     return ret;
 }
 
 static void load_row_cnn_init(int frame_no)
 {
-    if (frame_no == 0)
-    {
+    if (frame_no == 0) {
         data_addr0 = (uint32_t *)0x50400f00;
         data_addr3 = (uint32_t *)0x50418f00;
         data_addr6 = (uint32_t *)0x50810f00;
         data_addr9 = (uint32_t *)0x50c08f00;
-    }
-    else
-    {
+    } else {
         data_addr0 = (uint32_t *)0x50400f04;
         data_addr3 = (uint32_t *)0x50418f04;
         data_addr6 = (uint32_t *)0x50810f04;
         data_addr9 = (uint32_t *)0x50c08f04;
     }
     addr = data_addr9;
-
 }
-
 
 static void load_cnn(uint8_t *data, uint32_t row_number)
 {
@@ -218,72 +208,69 @@ static void load_cnn(uint8_t *data, uint32_t row_number)
     } m;
 
     for (int row = 0; row < row_number; row++) {
+        offset0 = 0x00002000;
+        offset1 = 0x00002000;
+        subtract = 0x00004000 - 2;
 
-		offset0 = 0x00002000;
-		offset1 = 0x00002000;
-		subtract = 0x00004000 - 2;
+        switch (row & 3) {
+        case 0:
+            data_addr9 = addr;
+            addr = data_addr0;
+            break;
 
-		switch (row & 3) {
-		case 0:
-			data_addr9 = addr;
-			addr = data_addr0;
-			break;
+        case 1:
+            data_addr0 = addr;
+            addr = data_addr3;
+            offset0 += 0x000FA000 - 0x00002000;
+            subtract += 0x000FC000 - 0x00004000;
+            break;
 
-		case 1:
-			data_addr0 = addr;
-			addr = data_addr3;
-			offset0 += 0x000FA000 - 0x00002000;
-			subtract += 0x000FC000 - 0x00004000;
-			break;
+        case 2:
+            data_addr3 = addr;
+            addr = data_addr6;
+            offset1 += 0x000FA000 - 0x00002000;
+            subtract += 0x000FC000 - 0x00004000;
+            break;
 
-		case 2:
-			data_addr3 = addr;
-			addr = data_addr6;
-			offset1 += 0x000FA000 - 0x00002000;
-			subtract += 0x000FC000 - 0x00004000;
-			break;
+        default:
+            data_addr6 = addr;
+            addr = data_addr9;
+            break;
+        }
 
-		default:
-			data_addr6 = addr;
-			addr = data_addr9;
-			break;
-		}
+        // indexes of 240x240 image (row,j)
+        for (int j = 0; j < IMAGE_XRES; j += 4) {
+            // RGB565 to packed 24-bit RGB
+            m.b[0] = (*data & 0xF8); // Red
+            m.b[1] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+            m.b[2] = (*(data + 1) << 3); // Blue
+            data += 2;
+            m.b[3] = (*data & 0xF8); // Red
 
-		// indexes of 240x240 image (row,j)
-		for (int j = 0; j < IMAGE_XRES; j += 4) {
-			// RGB565 to packed 24-bit RGB
-			m.b[0] = (*data & 0xF8);  // Red
-			m.b[1] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
-			m.b[2] = (*(data+1) << 3);  // Blue
-			data += 2;
-			m.b[3] = (*data & 0xF8);  // Red
+            *addr = m.w ^ 0x80808080U;
+            addr += offset0;
 
-			*addr = m.w ^ 0x80808080U;
-			addr += offset0;
+            m.b[0] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+            m.b[1] = (*(data + 1) << 3); // Blue
+            data += 2;
+            m.b[2] = (*data & 0xF8); // Red
+            m.b[3] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
 
-			m.b[0] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
-			m.b[1] = (*(data+1) << 3);  // Blue
-			data += 2;
-			m.b[2] = (*data & 0xF8);  // Red
-			m.b[3] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
+            *addr = m.w ^ 0x80808080U;
+            addr += offset1;
 
-			*addr = m.w ^ 0x80808080U;
-			addr += offset1;
+            m.b[0] = (*(data + 1) << 3); // Blue
+            data += 2;
+            m.b[1] = (*data & 0xF8); // Red
+            m.b[2] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+            m.b[3] = (*(data + 1) << 3); // Blue
+            data += 2;
 
-			m.b[0] = (*(data+1) << 3);  // Blue
-			data += 2;
-			m.b[1] = (*data & 0xF8);  // Red
-			m.b[2] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
-			m.b[3] = (*(data+1) << 3);  // Blue
-			data += 2;
-
-			*addr = m.w ^ 0x80808080U;
-			addr -= subtract;
-		}
-	}
+            *addr = m.w ^ 0x80808080U;
+            addr -= subtract;
+        }
+    }
 }
-
-
 
 /*
   Data Order:
@@ -343,46 +330,45 @@ void capture_and_display_camera(void)
     uint32_t imgLen;
     uint32_t w, h;
     uint8_t *raw;
-	unsigned int start_time;
+    unsigned int start_time;
 
-	start_time = utils_get_time_ms();
+    start_time = utils_get_time_ms();
 
     // Capture the image
     camera_start_capture_image();
-    /* Sleep until camera interrupt */
-    //MXC_LP_EnterSleepMode();
-    #ifdef TFT_ENABLE
-	MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
-	#endif
+/* Sleep until camera interrupt */
+//MXC_LP_EnterSleepMode();
+#ifdef TFT_ENABLE
+    MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
+#endif
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
-    #ifdef TFT_ENABLE
-	setup_dma_tft((uint32_t*)raw);
-	#endif
-	// Wait to complete image capture
-	while(camera_is_image_rcv() == 0);
-	printf("Image capture: %d ms\n", utils_get_time_ms() - start_time);
+#ifdef TFT_ENABLE
+    setup_dma_tft((uint32_t *)raw);
+#endif
+    // Wait to complete image capture
+    while (camera_is_image_rcv() == 0) {}
+    printf("Image capture: %d ms\n", utils_get_time_ms() - start_time);
 
     start_time = utils_get_time_ms();
-    #ifdef TFT_ENABLE
-	// Send a first half of captured image to TFT
-	start_tft_dma((uint32_t*)raw);
-	// Wait for DMA to finish
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+#ifdef TFT_ENABLE
+    // Send a first half of captured image to TFT
+    start_tft_dma((uint32_t *)raw);
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        {
+        }
     }
-	setup_dma_tft((uint32_t*)(raw + IMAGE_XRES*IMAGE_YRES));
-	// Send a second half of captured image to TFT
-	start_tft_dma((uint32_t*)(raw + IMAGE_XRES*IMAGE_YRES));
-	// Wait for DMA to finish
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+    setup_dma_tft((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
+    // Send a second half of captured image to TFT
+    start_tft_dma((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        {
+        }
     }
-	printf("Display image: %d ms\n", utils_get_time_ms() - start_time);
-    #endif
-
+    printf("Display image: %d ms\n", utils_get_time_ms() - start_time);
+#endif
 }
 
 void load_input_camera(int frame_no)
@@ -391,7 +377,7 @@ void load_input_camera(int frame_no)
     uint32_t w, h;
     uint8_t *raw;
     uint32_t start_time;
-	
+
     start_time = utils_get_time_ms();
 
     // Initialize loading rows to CNN
