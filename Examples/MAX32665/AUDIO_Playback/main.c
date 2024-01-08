@@ -52,8 +52,8 @@
 #include "nvic_table.h"
 #include "i2c.h"
 #include "board.h"
-#include "max9867.h"
 #include "audio.h"
+#include "max9867.h"
 
 /***** Definitions *****/
 
@@ -65,7 +65,10 @@
 #define I2C_FREQ 100000
 
 /***** Globals *****/
-volatile bool lineIn = true;
+volatile bool lineIn = false;
+uint32_t leftBuffer = 0;
+uint32_t rightBuffer = 0;
+uint16_t len = 0;
 
 /***** Protottypes *****/
 static int max9867ConfigureHeadphone(void);
@@ -77,8 +80,9 @@ static int max9867Configure(void);
 
 void AUDIO_IRQHandler(void)
 {
-    AUDIO->tx_pcm_ch0_addr = AUDIO->rx_pcm_ch0_addr;
-    AUDIO->tx_pcm_ch1_addr = AUDIO->rx_pcm_ch1_addr;
+    if (MXC_AUDIO_I2S_Receive(AUDIO, &leftBuffer, &rightBuffer, 1) == E_NO_ERROR) {
+        MXC_AUDIO_I2S_Transmit(AUDIO, &leftBuffer, &rightBuffer, 1) ;
+    }
 
     //Clear RX interrupts
     AUDIO->int_pcm_rx_clr |= 0xFFFFFFFF;
@@ -94,10 +98,10 @@ int main()
     printf("\n************************ Audio Subsystem I2S Example ************************\n");
 
     printf(
-        "\nIn this example, the device reads audio data simultaneously from the LINE_IN input or \n");
-    printf("the Digital Microphone, then writes it to HD_PHONE using the MAX9867 Audio Codec. \n");
+        "\nIn this example, the device reads audio data simultaneously from the LINE_IN input or\n");
+    printf("the Digital Microphone, then writes it to HD_PHONE using the MAX9867 Audio Codec.\n");
     printf(
-        "\nThis example utilizes the audio subsystem peripheral to receive and transmit audio \n");
+        "\nThis example utilizes the audio subsystem peripheral to receive and transmit audio\n");
     printf("data via the I2S protocol. If you wish to use 'LINE_IN' as the input source, \n");
     printf("you must connect a microphone to the 'LINE_IN' port and listen to the sound using \n");
     printf("headphones connected to 'HD_PHONE'. \n");
@@ -148,6 +152,28 @@ int main()
         while (1) {}
     }
 
+    mxc_audio_I2S_config_t config = { 0 };
+
+    config.audio = AUDIO;
+    config.masterClockSource = MXC_AUDIO_CLK_SRC_HSCLK;
+    config.clock = MXC_AUDIO_CLK_12_288MHz;
+    config.BCLKSourceSelect = MXC_AUDIO_BCLK_GENERATOR_TOGGLE;
+    config.BCLKSource = MXC_AUDIO_BCLK_SOURCE_F_AUDIO_MN;
+    config.BCLKPolarity = MXC_AUDIO_CLK_POL_HIGH;
+    config.BCLKDivisor = 0x06;
+    config.LRCLKPolarity = MXC_AUDIO_CLK_POL_HIGH;
+    config.LRCLKDivider = MXC_AUDIO_LRCLK_DIV_32;
+    config.channelSize = MXC_AUDIO_PCM_CHANNEL_SIZE_16;
+    config.TxInterfaceSampleRates = MXC_AUDIO_PCM_SAMPLE_RATE_192kHz;
+    config.RxInterfaceSampleRates = MXC_AUDIO_PCM_SAMPLE_RATE_192kHz;
+    config.TxDataportSampleRates = MXC_AUDIO_PCM_SAMPLE_RATE_192kHz;
+    config.RxDataportSampleRates = MXC_AUDIO_PCM_SAMPLE_RATE_192kHz;
+    config.TxExtraBitsFormat = MXC_AUDIO_TX_EXTRA_BITS_1;
+
+    MXC_AUDIO_I2S_Configure(&config);
+    uint32_t interrupts = MXC_F_EN_AE_PCM_RX;
+    MXC_AUDIO_EnableInterrupts(AUDIO, interrupts);
+
     //Enable Audio Subsytem interrupts
     NVIC_ClearPendingIRQ(AUDIO_IRQ);
     NVIC_DisableIRQ(AUDIO_IRQ);
@@ -182,7 +208,8 @@ static int max9867ConfigureDigitalMicrophone(void)
         return err;
     }
 
-    if ((err = max9867_power_enable(0, EN_LEFT_DAC | EN_RIGHT_DAC)) != E_NO_ERROR) {
+    if ((err = max9867_power_enable(0, EN_LEFT_DAC | EN_RIGHT_DAC | EN_RIGHT_ADC | EN_LEFT_ADC |
+                                           EN_LEFT_LINEIN | EN_RIGHT_LINEIN)) != E_NO_ERROR) {
         return err;
     }
 

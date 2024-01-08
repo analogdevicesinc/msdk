@@ -37,8 +37,3 @@ setting the 'lineIn' global variable to 'false'.
 It's important to note that the Digital microphone input source is only compatible 
 with MAX32666 EV KIT REV D. 
 ```
-
-
-
-
-

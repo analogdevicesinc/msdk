@@ -31,12 +31,12 @@
  *
  ******************************************************************************/
 
-#include "audio.h"
 #include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "mxc_errors.h"
+#include "audio.h"
 
 /* **** Definitions **** */
 
@@ -53,8 +53,145 @@ const mxc_gpio_cfg_t gpio_cfg_audio = { MXC_GPIO0,
 /* ************************************************************************* */
 /* Control/Configuration functions                                           */
 /* ************************************************************************* */
+static int MXC_AUDIO_SetMasterClock(mxc_audio_I2S_config_t *config)
+{
+    uint16_t mVal, nVal = 0;
 
-static int MXC_AUDIO_SetMasterClock(mxc_audio_regs_t *audio)
+    if (config->audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    /* I2S Clock generation */
+    // Clear GLOBAL_ENABLE to 0 to disable the audio system.
+    config->audio->global_en = 0;
+    // Set GCR_PCKDIV.audclksel for clock source, 96MHz high-frequency internal oscillato is selected
+
+    switch (config->masterClockSource) {
+    case MXC_AUDIO_CLK_SRC_HSCLK:
+        MXC_GCR->pckdiv &= ~(0x03 << 16);
+        if (config->clock == MXC_AUDIO_CLK_12_288MHz) {
+            mVal = 125;
+            nVal = 16;
+        } else if (config->clock == MXC_AUDIO_CLK_11_2896MHz) {
+            ///////////////////////
+            mVal = 147;
+            nVal = 17;
+        } else {
+            return E_NOT_SUPPORTED;
+        }
+        break;
+    case MXC_AUDIO_CLK_SRC_32MHZ:
+        MXC_GCR->pckdiv &= ~(0x01 << 17);
+        MXC_GCR->pckdiv |= (0x01 << 16);
+
+        if (config->clock == MXC_AUDIO_CLK_12_288MHz) {
+            mVal = 125;
+            nVal = 48;
+        } else if (config->clock == MXC_AUDIO_CLK_11_2896MHz) {
+            ///////////////////////
+            mVal = 1250;
+            nVal = 441;
+        } else {
+            return E_NOT_SUPPORTED;
+        }
+
+        break;
+    case MXC_AUDIO_CLK_SRC_GPIO_0_23:
+        return E_NOT_SUPPORTED;
+
+    default:
+        return E_NOT_SUPPORTED;
+    }
+
+    // Set GLOBAL_ENABLE.enable to 1 to enable the audio subsystem
+    config->audio->global_en = 1;
+
+    //Set M and N values for master clock(Set to 12288MHz)
+    config->audio->m_val = mVal;
+    config->audio->n_val = nVal;
+
+    return E_NO_ERROR;
+}
+
+static int MXC_AUDIO_EnablePCMMode(mxc_audio_I2S_config_t *init)
+{
+    if (init->audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    //Enable the PCM Mode
+    init->audio->modulator_controls |= MXC_F_PDM_PCM_SELECT;
+
+    return E_NO_ERROR;
+}
+
+static int MXC_AUDIO_PCM_Config(mxc_audio_I2S_config_t *init)
+{
+    if (init->audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    //PCM Clock config, BCLK polarity high, 32 BCLK per LRCLK
+    init->audio->pcm_clock_setup =
+        (init->LRCLKDivider | (init->BCLKPolarity << MXC_F_PCM_BCLKEDGE_POS));
+
+    //PCM Config, I2S mode
+    init->audio->pcm_config = (MXC_F_PCM_FORMATX_I2S | (init->channelSize << MXC_F_PCM_CHANSZ_POS));
+
+    //Set PCM Clock Dividers
+    init->audio->pcm_clock_dividers_msb =
+        ((init->BCLKSource << MXC_F_PCM_BCLK_MASTER_SEL_POS) |
+         (init->BCLKSourceSelect << MXC_F_PCM_BCLK_SEL_POS) | ((init->BCLKDivisor >> 10) & 0x03));
+    init->audio->pcm_clock_dividers_lsb = init->BCLKDivisor & 0x3FF;
+
+    return E_NO_ERROR;
+}
+
+static int MXC_AUDIO_PCM_Tx_Enable(mxc_audio_I2S_config_t *init)
+{
+    if (init->audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    init->audio->pcm_tx_sample_rates =
+        (init->TxInterfaceSampleRates |
+         (init->TxDataportSampleRates << MXC_F_PCM_TX_DATAPORT_SR_POS));
+
+    init->audio->pcm_tx_enables_byte0 = (MXC_F_PCM_TX_CH0_EN | MXC_F_PCM_TX_CH1_EN);
+    init->audio->dataport1_slot_mapping_ch0 |= MXC_F_PCM_DPORT1_CH0_EN;
+    init->audio->dataport1_slot_mapping_ch1 |= MXC_F_PCM_DPORT1_CH1_EN;
+
+    return E_NO_ERROR;
+}
+
+static int MXC_AUDIO_PCM_Rx_Enable(mxc_audio_I2S_config_t *init)
+{
+    if (init->audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    init->audio->pcm_rx_sample_rates =
+        (init->RxInterfaceSampleRates |
+         (init->RxDataportSampleRates << MXC_F_PCM_RX_DATAPORT_SR_POS));
+
+    init->audio->pcm_rx_enables_byte0 = (MXC_F_PCM_RX_CH0_EN | MXC_F_PCM_RX_CH1_EN);
+    init->audio->dataport2_slot_mapping_ch0 |= MXC_F_PCM_DPORT2_CH0_EN;
+    init->audio->dataport2_slot_mapping_ch1 |= MXC_F_PCM_DPORT2_CH1_EN;
+
+    return E_NO_ERROR;
+}
+
+int MXC_AUDIO_EnableInterrupts(mxc_audio_regs_t *audio, uint32_t interrupts)
+{
+    if (audio == NULL) {
+        return E_NULL_PTR;
+    }
+    audio->int_en |= interrupts;
+
+    return E_NO_ERROR;
+}
+
+int MXC_AUDIO_Init(mxc_audio_regs_t *audio)
 {
     if (audio == NULL) {
         return E_NULL_PTR;
@@ -71,128 +208,74 @@ static int MXC_AUDIO_SetMasterClock(mxc_audio_regs_t *audio)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_GPIO_Config(&gpio_cfg_audio);
 
-    /* I2S Clock generation */
-    // Clear GLOBAL_ENABLE to 0 to disable the audio system.
-    audio->global_en = 0;
-    // Set GCR_PCKDIV.audclksel for clock source, 96MHz high-frequency internal oscillato is selected
-    MXC_GCR->pckdiv &= ~(0x03 << 16);
-    // Set GLOBAL_ENABLE.enable to 1 to enable the audio subsystem
-    audio->global_en = 1;
-
-    //Set M and N values for master clock(Set to 12288MHz)
-    audio->m_val = 125;
-    audio->n_val = 16;
-
     return E_NO_ERROR;
 }
 
-static int MXC_AUDIO_EnablePCMMode(mxc_audio_regs_t *audio)
-{
-    if (audio == NULL) {
-        return E_NULL_PTR;
-    }
-
-    //Enable the PCM Mode
-    audio->modulator_controls |= MXC_F_PDM_PCM_SELECT;
-
-    return E_NO_ERROR;
-}
-
-static int MXC_AUDIO_PCM_Config(mxc_audio_regs_t *audio)
-{
-    if (audio == NULL) {
-        return E_NULL_PTR;
-    }
-
-    //PCM Clock config, BCLK polarity high, 32 BCLK per LRCLK
-    audio->pcm_clock_setup = MXC_F_PCM_BSEL_32;
-
-    //PCM Confif, 16 bit I2S mode
-    audio->pcm_config = (MXC_F_PCM_FORMATX_I2S | MXC_F_PCM_CHANSZ_16);
-
-    //Set PCM Clock Dividers
-    audio->pcm_clock_dividers_msb =
-        (MXC_F_PCM_BCLK_SEL_BCLK_TOGGLE | MXC_F_PCM_BCLK_MASTER_SEL_MODULATOR_CLK);
-    audio->pcm_clock_dividers_lsb = 0x06;
-
-    return E_NO_ERROR;
-}
-
-static int MXC_AUDIO_PCM_Tx_Enable(mxc_audio_regs_t *audio)
-{
-    if (audio == NULL) {
-        return E_NULL_PTR;
-    }
-
-    //Set PCM TX dataport and interface sample rates to 192kHz
-    audio->pcm_tx_sample_rates = (MXC_F_PCM_TX_INTERFACE_SR_192 | MXC_F_PCM_TX_DATAPORT_SR_192);
-
-    //Enable PCM Tx CH0 and CH1 Channels
-    audio->pcm_tx_enables_byte0 = (MXC_F_PCM_TX_CH0_EN | MXC_F_PCM_TX_CH1_EN);
-
-    //Enables the PCM TRANSMIT dataport channel 0, which is connected to APB Channel TX_PCM_CH 0
-    audio->dataport1_slot_mapping_ch0 |= MXC_F_PCM_DPORT1_CH0_EN;
-
-    //Enables the PCM TRANSMIT dataport channel 1, which is connected to APB Channel TX_PCM_CH 1
-    audio->dataport1_slot_mapping_ch1 |= MXC_F_PCM_DPORT1_CH1_EN;
-
-    return E_NO_ERROR;
-}
-
-static int MXC_AUDIO_PCM_Rx_Enable(mxc_audio_regs_t *audio)
-{
-    if (audio == NULL) {
-        return E_NULL_PTR;
-    }
-
-    //Set PCM TX dataport and interface sample rates to 192kHz
-    audio->pcm_rx_sample_rates = (MXC_F_PCM_RX_INTERFACE_SR_192 | MXC_F_PCM_RX_DATAPORT_SR_192);
-
-    //Enable PCM Tx CH0 and CH1 Channels
-    audio->pcm_rx_enables_byte0 = (MXC_F_PCM_RX_CH0_EN | MXC_F_PCM_RX_CH1_EN);
-
-    //Enables the PCM TRANSMIT dataport channel 0, which is connected to APB Channel TX_PCM_CH 0
-    audio->dataport2_slot_mapping_ch0 |= MXC_F_PCM_DPORT2_CH0_EN;
-
-    //Enables the PCM TRANSMIT dataport channel 1, which is connected to APB Channel TX_PCM_CH 1
-    audio->dataport2_slot_mapping_ch1 |= MXC_F_PCM_DPORT2_CH1_EN;
-
-    return E_NO_ERROR;
-}
-
-static int MXC_AUDIO_EnableInterrupts(mxc_audio_regs_t *audio)
-{
-    if (audio == NULL) {
-        return E_NULL_PTR;
-    }
-    audio->int_en |= MXC_F_EN_AE_PCM_RX;
-
-    return E_NO_ERROR;
-}
-
-int MXC_AUDIO_Init(mxc_audio_regs_t *audio)
+int MXC_AUDIO_I2S_Configure(mxc_audio_I2S_config_t *config)
 {
     int err = E_NO_ERROR;
 
+    if (config->audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    if ((err = MXC_AUDIO_SetMasterClock(config)) != E_NO_ERROR) {
+        return err;
+    }
+
+    if ((err = MXC_AUDIO_EnablePCMMode(config)) != E_NO_ERROR) {
+        return err;
+    }
+    if ((err = MXC_AUDIO_PCM_Config(config)) != E_NO_ERROR) {
+        return err;
+    }
+    if ((err = MXC_AUDIO_PCM_Tx_Enable(config)) != E_NO_ERROR) {
+        return err;
+    }
+    if ((err = MXC_AUDIO_PCM_Rx_Enable(config)) != E_NO_ERROR) {
+        return err;
+    }
+
+    return err;
+}
+
+int MXC_AUDIO_I2S_Receive(mxc_audio_regs_t *audio, uint32_t *leftData, uint32_t *rightData,
+                          uint16_t len)
+{
     if (audio == NULL) {
         return E_NULL_PTR;
     }
 
-    if ((err = MXC_AUDIO_SetMasterClock(audio)) != E_NO_ERROR) {
-        return err;
-    }
-    if ((err = MXC_AUDIO_EnablePCMMode(audio)) != E_NO_ERROR) {
-        return err;
-    }
-    if ((err = MXC_AUDIO_PCM_Config(audio)) != E_NO_ERROR) {
-        return err;
-    }
-    if ((err = MXC_AUDIO_PCM_Tx_Enable(audio)) != E_NO_ERROR) {
-        return err;
-    }
-    if ((err = MXC_AUDIO_PCM_Rx_Enable(audio)) != E_NO_ERROR) {
-        return err;
+    if ((rightData == NULL) && (leftData == NULL)) {
+        return E_NULL_PTR;
     }
 
-    return MXC_AUDIO_EnableInterrupts(audio);
+    for (uint8_t i = 0; i < len; i++) {
+        if (leftData != NULL)
+            leftData[i] = audio->rx_pcm_ch0_addr;
+        if (rightData != NULL)
+            rightData[i] = audio->rx_pcm_ch1_addr;
+    }
+
+    return E_NO_ERROR;
+}
+int MXC_AUDIO_I2S_Transmit(mxc_audio_regs_t *audio, uint32_t *leftData, uint32_t *rightData,
+                           uint16_t len)
+{
+    if (audio == NULL) {
+        return E_NULL_PTR;
+    }
+
+    if ((rightData == NULL) && (leftData == NULL)) {
+        return E_NULL_PTR;
+    }
+
+    for (uint8_t i = 0; i < len; i++) {
+        if (leftData != NULL)
+            audio->tx_pcm_ch0_addr = leftData[i];
+        if (rightData != NULL)
+            audio->tx_pcm_ch1_addr = rightData[i];
+    }
+
+    return E_NO_ERROR;
 }
