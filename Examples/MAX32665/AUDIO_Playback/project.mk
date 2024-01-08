@@ -14,3 +14,6 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
+ifneq ($(BOARD),EvKit_V1)
+$(error ERR_NOTSUPPORTED: This example requires an Audio Codec IC, therefore it's not supported only supported by the MAX32665EVKIT)
+endif

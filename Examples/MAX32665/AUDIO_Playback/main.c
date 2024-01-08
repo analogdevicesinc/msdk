@@ -81,7 +81,7 @@ static int max9867Configure(void);
 void AUDIO_IRQHandler(void)
 {
     if (MXC_AUDIO_I2S_Receive(AUDIO, &leftBuffer, &rightBuffer, 1) == E_NO_ERROR) {
-        MXC_AUDIO_I2S_Transmit(AUDIO, &leftBuffer, &rightBuffer, 1) ;
+        MXC_AUDIO_I2S_Transmit(AUDIO, &leftBuffer, &rightBuffer, 1);
     }
 
     //Clear RX interrupts

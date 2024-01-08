@@ -48,8 +48,8 @@ extern "C" {
 
 // clang-format off
 typedef enum _CLK_FREQ {
-     MXC_AUDIO_CLK_12_288MHz, 
-     MXC_AUDIO_CLK_11_2896MHz 
+     MXC_AUDIO_CLK_12_288MHz,
+     MXC_AUDIO_CLK_11_2896MHz
 } mxc_audio_clock_frequency_t;
 
 typedef enum _CLK_SRC {
@@ -58,13 +58,13 @@ typedef enum _CLK_SRC {
     MXC_AUDIO_CLK_SRC_GPIO_0_23
 } mxc_audio_master_clock_source_t;
 
-typedef enum _CLK_POL { 
-    MXC_AUDIO_CLK_POL_HIGH, 
+typedef enum _CLK_POL {
+    MXC_AUDIO_CLK_POL_HIGH,
     MXC_AUDIO_CLK_POL_LOW
     } mxc_audio_clock_polarity_t;
 
-typedef enum _EXTRA_BITS { 
-    MXC_AUDIO_TX_EXTRA_BITS_0, 
+typedef enum _EXTRA_BITS {
+    MXC_AUDIO_TX_EXTRA_BITS_0,
     MXC_AUDIO_TX_EXTRA_BITS_1
 } mxc_audio_tx_extra_bits_t;
 
