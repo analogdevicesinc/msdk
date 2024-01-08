@@ -1,0 +1,42 @@
+[submodule "Libraries/microROS/humble/src/eProsima/Micro-CDR"]
+	path = Libraries/microROS/src/eProsima/Micro-CDR
+	url = https://github.com/eProsima/Micro-CDR.git
+[submodule "Libraries/microROS/humble/src/eProsima/Micro-XRCE-DDS-Client"]
+	path = Libraries/microROS/src/eProsima/Micro-XRCE-DDS-Client
+	url = https://github.com/eProsima/Micro-XRCE-DDS-Client.git
+[submodule "Libraries/microROS/humble/src/micro_ros_setup"]
+	path = Libraries/microROS/src/micro_ros_setup
+	url = https://github.com/micro-ROS/micro_ros_setup.git
+[submodule "Libraries/microROS/humble/src/ros2/common_interfaces"]
+	path = Libraries/microROS/src/ros2/common_interfaces
+	url = https://github.com/ros2/common_interfaces
+[submodule "Libraries/microROS/humble/src/ros2/example_interfaces"]
+	path = Libraries/microROS/src/ros2/example_interfaces
+	url = https://github.com/ros2/example_interfaces
+[submodule "Libraries/microROS/humble/src/ros2/rcl_interfaces"]
+	path = Libraries/microROS/src/ros2/rcl_interfaces
+	url = https://github.com/ros2/rcl_interfaces
+[submodule "Libraries/microROS/humble/src/ros2/unique_identifier_msgs"]
+	path = Libraries/microROS/src/ros2/unique_identifier_msgs
+	url = https://github.com/ros2/unique_identifier_msgs
+[submodule "Libraries/microROS/humble/src/uros/micro-ROS-Agent"]
+	path = Libraries/microROS/src/uros/micro-ROS-Agent
+	url = https://github.com/micro-ROS/micro-ROS-Agent.git
+[submodule "Libraries/microROS/humble/src/uros/micro-ROS-demos"]
+	path = Libraries/microROS/src/uros/micro-ROS-demos
+	url = https://github.com/micro-ROS/micro-ROS-demos.git
+[submodule "Libraries/microROS/humble/src/uros/micro_ros_msgs"]
+	path = Libraries/microROS/src/uros/micro_ros_msgs
+	url = https://github.com/micro-ROS/micro_ros_msgs.git
+[submodule "Libraries/microROS/humble/src/uros/micro_ros_utilities"]
+	path = Libraries/microROS/src/uros/micro_ros_utilities
+	url = https://github.com/micro-ROS/micro_ros_utilities
+[submodule "Libraries/microROS/humble/src/uros/rclc"]
+	path = Libraries/microROS/src/uros/rclc
+	url = https://github.com/ros2/rclc.git
+[submodule "Libraries/microROS/humble/src/uros/rmw_microxrcedds"]
+	path = Libraries/microROS/src/uros/rmw_microxrcedds
+	url = https://github.com/micro-ROS/rmw-microxrcedds.git
+[submodule "Libraries/microROS/humble/src/uros/rosidl_typesupport_microxrcedds"]
+	path = Libraries/microROS/src/uros/rosidl_typesupport_microxrcedds
+	url = https://github.com/micro-ROS/rosidl_typesupport_microxrcedds.git

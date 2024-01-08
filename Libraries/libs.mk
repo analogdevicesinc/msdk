@@ -85,12 +85,31 @@ include $(FCL_DIR)/fcl.mk
 endif
 # ************************
 
+# micro-ROS (Disabled by default)
+# ************************
+LIB_MICROROS ?= 0
+ifeq ($(LIB_MICROROS), 1)
+MICROROS_DIR ?= $(LIBS_DIR)/microROS
+include $(MICROROS_DIR)/microros.mk
+
+# Enable the RTOS library
+# The "MICROROS_RTOS" variable comes from microROS.mk and defines
+# which RTOS we want to use.
+LIB_$(MICROROS_RTOS) := 1
+endif
+
+# ************************
+
 # FreeRTOS (Disabled by default)
 # ************************
 LIB_FREERTOS ?= 0
 ifeq ($(LIB_FREERTOS), 1)
 # Where to find FreeRTOSConfig.h
-RTOS_CONFIG_DIR ?= .
+ifneq "$(RTOS_CONFIG_DIR)" ""
+FREERTOS_CONFIG_DIR ?= RTOS_CONFIG_DIR
+# ^ Variable rename from RTOS_CONFIG_DIR->FREERTOS_CONFIG_DIR
+endif
+FREERTOS_CONFIG_DIR ?= .
 
 # Include FreeRTOS-Plus-CLI
 IPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI

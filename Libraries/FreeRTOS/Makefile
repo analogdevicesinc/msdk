@@ -40,8 +40,8 @@ CMSIS_ROOT=../CMSIS
 endif
 
 # This is the path to the CMSIS root directory
-ifeq "$(RTOS_CONFIG_DIR)" ""
-RTOS_CONFIG_DIR=.
+ifeq "$(FREERTOS_CONFIG_DIR)" ""
+FREERTOS_CONFIG_DIR=.
 endif
 
 # Source files for this test (add path to VPATH below)
@@ -61,7 +61,7 @@ VPATH += Source/portable/MemMang
 VPATH += Source
 
 # Where to find header files for this project
-IPATH  = $(RTOS_CONFIG_DIR)
+IPATH  = $(FREERTOS_CONFIG_DIR)
 IPATH += Source/portable/GCC/ARM_CM4F
 IPATH += .
 IPATH += Source/include

@@ -46,7 +46,7 @@ endif
 RTOS_BUILD_DIR := ${abspath ${RTOS_BUILD_DIR}}
 export TOOL_DIR := ${abspath ${TOOL_DIR}}
 export CMSIS_ROOT := ${abspath ${CMSIS_ROOT}}
-export RTOS_CONFIG_DIR := ${abspath ${RTOS_CONFIG_DIR}}
+export FREERTOS_CONFIG_DIR := ${abspath ${FREERTOS_CONFIG_DIR}}
 
 # Export other variables needed by the peripheral driver makefile
 export TARGET
@@ -59,12 +59,13 @@ export PROJ_LDFLAGS
 LIBS += ${RTOS_BUILD_DIR}/librtos.a
 
 # Add to include directory list
-IPATH += $(RTOS_CONFIG_DIR)
+IPATH += $(FREERTOS_CONFIG_DIR)
 IPATH += ${RTOS_DIR}
 IPATH += ${RTOS_DIR}/Source/portable/$(COMPILER)/ARM_CM4F
 IPATH += ${RTOS_DIR}/Source/include
 
 # Add rule to build the Driver Library
-${RTOS_BUILD_DIR}/librtos.a: FORCE
-	$(MAKE) -C ${RTOS_DIR} lib BUILD_DIR=${RTOS_BUILD_DIR}
+${RTOS_BUILD_DIR}/librtos.a:
+	@$(MAKE) -C ${RTOS_DIR} lib BUILD_DIR=${RTOS_BUILD_DIR}
 
+$(info Library enabled: FreeRTOS)

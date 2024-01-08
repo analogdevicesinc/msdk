@@ -1,0 +1,10 @@
+
+#ifndef _EXAMPLES_MAX78000_UROS_MXC_MICROROS_CONFIG_H
+#define _EXAMPLES_MAX78000_UROS_MXC_MICROROS_CONFIG_H
+
+#include "mxc_microros.h"
+
+#define configMXC_SERIAL_UART MXC_UART0
+#define configMXC_SERIAL_BAUDRATE 115200
+
+#endif
