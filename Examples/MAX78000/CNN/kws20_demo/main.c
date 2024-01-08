@@ -140,7 +140,6 @@
 
 #if defined(ENABLE_CODEC_MIC)
 #define PMIC_AUDIO_I2C MXC_I2C1
-#define CODEC_MCLOCK 12288000
 #endif
 
 /* DEBUG Print */
@@ -236,6 +235,7 @@ uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outS
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
 void I2SInit();
+static void codec_init(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 #ifdef TFT_ENABLE
@@ -359,10 +359,7 @@ int main(void)
 
 #ifdef ENABLE_MIC_PROCESSING
 #if defined(ENABLE_CODEC_MIC)
-    int err;
-    if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK, 1)) != E_NO_ERROR) {
-        PR_DEBUG("\nError in max9867_init: %d\n", err);
-    }
+    codec_init();
 #elif defined(BOARD_FTHR_REVA)
     /* Enable microphone power on Feather board only if codec is not enabled */
     Microphone_Power(POWER_ON);
@@ -900,6 +897,24 @@ int main(void)
 /* **************************************************************************** */
 
 #ifdef ENABLE_MIC_PROCESSING
+#ifdef ENABLE_CODEC_MIC
+static void codec_init(void)
+{
+    int err;
+    if (MXC_I2C_Init(PMIC_AUDIO_I2C, 1, 0) != E_NO_ERROR)
+        printf("Error initializing I2C controller");
+    else
+        printf("I2C initialized successfully \n");
+
+    MXC_I2C_SetFrequency(PMIC_AUDIO_I2C, CODEC_I2C_FREQ);
+    if ((err = max9867_init(PMIC_AUDIO_I2C, EXT_I2S_FREQ, 1)) != E_NO_ERROR) {
+        PR_DEBUG("\nError in max9867_init: %d\n", err);
+    }
+
+    if (max9867_enable_record(1) != E_NO_ERROR)
+        printf("Error enabling record path");
+}
+#endif
 void I2SInit()
 {
     mxc_i2s_req_t req;
@@ -926,7 +941,9 @@ void I2SInit()
     req.txData = NULL;
     req.rxData = i2s_rx_buffer;
     req.length = I2S_RX_BUFFER_SIZE;
-
+#ifdef ENABLE_CODEC_MIC
+    req.channelMode = MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS;
+#endif
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         PR_DEBUG("\nError in I2S_Init: %d\n", err);
 
@@ -1184,11 +1201,7 @@ uint8_t MicReadChunk(uint16_t *avg)
         sample = (int32_t)MXC_I2S->fifoch0;
 
         /* The actual value is 18 MSB of 32-bit word */
-#ifdef ENABLE_CODEC_MIC
-        temp = sample >> 19; // adjusted for codec
-#else
         temp = sample >> 14;
-#endif
 
         /* Remove DC from microphone signal */
         sample = HPF((int16_t)temp); // filter needs about 1K sample to converge
