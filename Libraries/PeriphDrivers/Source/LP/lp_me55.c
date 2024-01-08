@@ -67,11 +67,15 @@ void MXC_LP_EnterBackupMode(void)
 
 void MXC_LP_EnterShutDownMode(void)
 {
-    MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
-    MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
+    // TODO(SDK Team): Check this function once SBT is added for MAX32572.
 
-    while (1) {}
-    // Should never reach this line - device will reset on exit from shutdown mode.
+    // MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
+    // MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
+
+    // while (1) {}
+    // // Should never reach this line - device will reset on exit from shutdown mode.
+
+    return;
 }
 
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
@@ -122,21 +126,6 @@ void MXC_LP_PORVCOREoreMonitorDisable(void)
 int MXC_LP_PORVCOREoreMonitorIsEnabled(void)
 {
     return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS);
-}
-
-void MXC_LP_LDOEnable(void)
-{
-    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
-}
-
-void MXC_LP_LDODisable(void)
-{
-    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
-}
-
-int MXC_LP_LDOIsEnabled(void)
-{
-    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_LDO_DIS);
 }
 
 void MXC_LP_FastWakeupEnable(void)
@@ -286,11 +275,6 @@ void MXC_LP_SysRam6LightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM6LS_EN;
 }
 
-void MXC_LP_ICache0LightSleepEnable(void)
-{
-    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICCLS_EN;
-}
-
 void MXC_LP_ICacheXIPLightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICCXIPLS_EN;
@@ -314,6 +298,11 @@ void MXC_LP_ROM0LightSleepEnable(void)
 void MXC_LP_ROM1LightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM1LS_EN;
+}
+
+void MXC_LP_MAALightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_MAALS_EN;
 }
 
 void MXC_LP_SysRam0LightSleepDisable(void)
@@ -351,11 +340,6 @@ void MXC_LP_SysRam6LightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM6LS_EN;
 }
 
-void MXC_LP_ICache0LightSleepDisable(void)
-{
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICCLS_EN;
-}
-
 void MXC_LP_ICacheXIPLightSleepDisable(void)
 {
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICCXIPLS_EN;
@@ -379,6 +363,11 @@ void MXC_LP_ROM0LightSleepDisable(void)
 void MXC_LP_ROM1LightSleepDisable(void)
 {
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM1LS_EN;
+}
+
+void MXC_LP_MAALightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_MAALS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)

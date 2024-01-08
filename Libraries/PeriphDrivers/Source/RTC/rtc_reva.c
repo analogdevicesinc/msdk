@@ -50,7 +50,8 @@ int MXC_RTC_RevA_GetBusyFlag(mxc_rtc_reva_regs_t *rtc)
 
 int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
-    mask &= (MXC_RTC_INT_EN_LONG | MXC_RTC_INT_EN_SHORT | MXC_RTC_INT_EN_READY);
+    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE |
+             MXC_F_RTC_REVA_CTRL_RDY_IE);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
@@ -62,7 +63,7 @@ int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
     rtc->ctrl |= mask;
 
     /* If TOD and SSEC interrupt enable, check busy after CTRL register write*/
-    mask &= ~MXC_RTC_INT_EN_READY;
+    mask &= MXC_F_RTC_REVA_CTRL_RDY_IE;
 
     if (mask) {
         MXC_RTC_Wait_BusyToClear();
@@ -72,7 +73,8 @@ int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 
 int MXC_RTC_RevA_DisableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
-    mask &= (MXC_RTC_INT_EN_LONG | MXC_RTC_INT_EN_SHORT | MXC_RTC_INT_EN_READY);
+    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE |
+             MXC_F_RTC_REVA_CTRL_RDY_IE);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
@@ -84,7 +86,7 @@ int MXC_RTC_RevA_DisableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
     rtc->ctrl &= ~mask;
 
     /* If TOD and SSEC interrupt enable, check busy after CTRL register write*/
-    mask &= ~MXC_RTC_INT_EN_READY;
+    mask &= ~MXC_F_RTC_REVA_CTRL_RDY_IE;
 
     if (mask) {
         MXC_RTC_Wait_BusyToClear();
@@ -258,12 +260,14 @@ int MXC_RTC_RevA_Trim(mxc_rtc_reva_regs_t *rtc, int8_t trim)
 
 int MXC_RTC_RevA_GetFlags(mxc_rtc_reva_regs_t *rtc)
 {
-    return rtc->ctrl & (MXC_RTC_INT_FL_LONG | MXC_RTC_INT_FL_SHORT | MXC_RTC_INT_FL_READY);
+    return rtc->ctrl & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM |
+                        MXC_F_RTC_REVA_CTRL_RDY);
 }
 
 int MXC_RTC_RevA_ClearFlags(mxc_rtc_reva_regs_t *rtc, int flags)
 {
-    rtc->ctrl &= ~(flags & (MXC_RTC_INT_FL_LONG | MXC_RTC_INT_FL_SHORT | MXC_RTC_INT_FL_READY));
+    rtc->ctrl &= ~(flags & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM |
+                            MXC_F_RTC_REVA_CTRL_RDY));
 
     return E_SUCCESS;
 }

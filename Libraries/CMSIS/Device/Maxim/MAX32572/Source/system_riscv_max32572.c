@@ -22,6 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "mxc_errors.h"
 #include "max32572.h"
 #include "gcr_regs.h"
 

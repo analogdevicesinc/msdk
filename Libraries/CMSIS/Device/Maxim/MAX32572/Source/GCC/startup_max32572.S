@@ -25,11 +25,6 @@
     .section .stack
     .align 3
 	
-	/* Define SDMA_SIZE to enable the loading of the SDMA image */
-#ifdef __MSR_SDMA_SIZE
-    .global MSR_SDMA_SIZE
-    .equ    MSR_SDMA_SIZE, __MSR_SDMA_SIZE - 512
-#endif
 
 #ifdef __STACK_SIZE
     .equ    Stack_Size, __STACK_SIZE
@@ -243,39 +238,6 @@ Reset_Handler:
 .LC1:
 #endif
 
-#ifdef __MSR_SDMA_SIZE
-/*     Loop to copy data from read only SDMA memory to RAM. The ranges
- *      of copy from/to are specified by following symbols evaluated in
- *      linker script.
- *      __load_sdma: Where data sections are saved.
- *      _sdma /_esdma: RAM address range that data should be
- *      copied to. Both must be aligned to 4 bytes boundary.  */
-
-    ldr    r1, =__load_msr_sdma
-    ldr    r2, =_msr_sdma
-    ldr    r3, =_emsr_sdma
-
-#if 0
-/* Here are two copies of loop implemenations. First one favors code size
- * and the second one favors performance. Default uses the first one.
- * Change to "#if 0" to use the second one */
-.LC0_sdma:
-    cmp     r2, r3
-    ittt    lt
-    ldrlt   r0, [r1], #4
-    strlt   r0, [r2], #4
-    blt    .LC0_sdma
-#else
-    subs    r3, r2
-    ble    .LC1_sdma
-.LC0_sdma:
-    subs    r3, #4
-    ldr    r0, [r1, r3]
-    str    r0, [r2, r3]
-    bgt    .LC0_sdma
-.LC1_sdma:
-#endif
-#endif
 
 /*
  *     Loop to zero out BSS section, which uses following symbols

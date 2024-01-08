@@ -77,7 +77,7 @@
     <registers>
       <register>
         <name>INTEN</name>
-        <description>DMA Control Register.</description>
+        <description>DMA Interrupt Enable Register.</description>
         <addressOffset>0x000</addressOffset>
         <fields>
           <field>
@@ -192,7 +192,7 @@
       </register>
       <register>
         <name>INTFL</name>
-        <description>DMA Interrupt Register.</description>
+        <description>DMA Interrupt Flag Register.</description>
         <addressOffset>0x004</addressOffset>
         <access>read-only</access>
         <fields>
@@ -430,8 +430,8 @@
                   <value>0x0E</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPI2RX</name>
-                  <description>SPI2 RX</description>
+                  <name>SPI3RX</name>
+                  <description>SPI3 RX</description>
                   <value>0x0F</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -535,8 +535,8 @@
                   <value>0x2E</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPI2TX</name>
-                  <description>SPI2 TX</description>
+                  <name>SPI3TX</name>
+                  <description>SPI3 TX</description>
                   <value>0x2F</value>
                 </enumeratedValue>
                 <enumeratedValue>

@@ -1,4 +1,5 @@
 /******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
@@ -11,18 +12,22 @@
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
  *
  ******************************************************************************/
 
+
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB ROM */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00100000 /* 1MB flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x000BE000 /* 760kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0006C000 /* 432kB SRAM */
 }
 
 SECTIONS {
@@ -30,9 +35,9 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
-        *(.rodata*)  /* read-only data: "const" */
-	*(.flashprog*)      /* Flash program */
+        *(.text*)       /* program code */
+        *(.rodata*)     /* read-only data: "const" */
+	    *(.flashprog*)  /* Flash program */
 
         KEEP(*(.init))
         KEEP(*(.fini))

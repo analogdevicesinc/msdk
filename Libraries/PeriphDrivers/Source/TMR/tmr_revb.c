@@ -52,7 +52,7 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     }
 
     // Default 32 bit timer
-    if (cfg->bitMode & (TMR_BIT_MODE_16A | TMR_BIT_MODE_16B)) {
+    if (cfg->bitMode & (MXC_TMR_BIT_MODE_16A | MXC_TMR_BIT_MODE_16B)) {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_CASCADE;
     } else {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_CASCADE;
@@ -75,52 +75,52 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
-    case TMR_MODE_ONESHOT:
+    case MXC_TMR_MODE_ONESHOT:
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
 
-    case TMR_MODE_CONTINUOUS:
+    case MXC_TMR_MODE_CONTINUOUS:
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
 
-    case TMR_MODE_COUNTER:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_COUNTER:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_CAPTURE:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_CAPTURE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_COMPARE:
+    case MXC_TMR_MODE_COMPARE:
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
 
-    case TMR_MODE_GATED:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_GATED:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_CAPTURE_COMPARE:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_CAPTURE_COMPARE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_PWM:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_PWM:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
@@ -165,7 +165,7 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
         return;
     }
 
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         timerOffset = TIMER_16B_OFFSET;
     } else {
         timerOffset = TIMER_16A_OFFSET;
@@ -188,7 +188,7 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 #endif
 
     // If configured as TIMER_16B then enable the interrupt and start the timer
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_IE_B;
 
         tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
@@ -356,7 +356,7 @@ void MXC_TMR_RevB_EnableWakeup(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     MXC_ASSERT(tmr_id >= 0);
 
     // Enable Timer wake-up source
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_WE_B;
     } else {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_WE_A;
@@ -370,7 +370,7 @@ void MXC_TMR_RevB_DisableWakeup(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     MXC_ASSERT(tmr_id >= 0);
 
     // Disable Timer wake-up source
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_WE_B;
     } else {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_WE_A;
@@ -421,8 +421,8 @@ void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, uint32_t us)
 
     // Initialize the timer in one-shot mode
     cfg.pres = prescale;
-    cfg.mode = TMR_MODE_ONESHOT;
-    cfg.bitMode = TMR_BIT_MODE_32;
+    cfg.mode = MXC_TMR_MODE_ONESHOT;
+    cfg.bitMode = MXC_TMR_BIT_MODE_32;
     cfg.clock = MXC_TMR_APB_CLK;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
@@ -460,7 +460,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_NANOSEC;
+        *units = MXC_TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
 
@@ -468,7 +468,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MICROSEC;
+        *units = MXC_TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
 
@@ -476,7 +476,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MILLISEC;
+        *units = MXC_TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
 
@@ -484,7 +484,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_SEC;
+        *units = MXC_TMR_UNIT_SEC;
         return E_NO_ERROR;
     }
 
@@ -504,19 +504,19 @@ int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t *tmr, uint32_t time, mxc_tmr_unit_
     prescale = ((tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKDIV_A) >> MXC_F_TMR_CTRL0_CLKDIV_A_POS);
 
     switch (units) {
-    case TMR_UNIT_NANOSEC:
+    case MXC_TMR_UNIT_NANOSEC:
         unit_div0 = 1000000;
         unit_div1 = 1000;
         break;
-    case TMR_UNIT_MICROSEC:
+    case MXC_TMR_UNIT_MICROSEC:
         unit_div0 = 1000;
         unit_div1 = 1000;
         break;
-    case TMR_UNIT_MILLISEC:
+    case MXC_TMR_UNIT_MILLISEC:
         unit_div0 = 1;
         unit_div1 = 1000;
         break;
-    case TMR_UNIT_SEC:
+    case MXC_TMR_UNIT_SEC:
         unit_div0 = 1;
         unit_div1 = 1;
         break;

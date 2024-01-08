@@ -2,6 +2,7 @@
  * @file    smon_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SMON Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup smon_registers
  */
 
 /******************************************************************************
@@ -195,11 +196,14 @@ typedef struct {
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS             4 /**< INTSCTRL_DFD_NMI_EN Position */
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS)) /**< INTSCTRL_DFD_NMI_EN Mask */
 
-#define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS           8 /**< INTSCTRL_DFD_STDBY_EN Position */
-#define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN               ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS)) /**< INTSCTRL_DFD_STDBY_EN Mask */
+#define MXC_F_SMON_INTSCTRL_TAMPOUT_EN_POS             7 /**< INTSCTRL_TAMPOUT_EN Position */
+#define MXC_F_SMON_INTSCTRL_TAMPOUT_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_TAMPOUT_EN_POS)) /**< INTSCTRL_TAMPOUT_EN Mask */
 
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS             16 /**< INTSCTRL_LOTEMP_SEL Position */
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS)) /**< INTSCTRL_LOTEMP_SEL Mask */
+
+#define MXC_F_SMON_INTSCTRL_HITEMP_SEL_POS             17 /**< INTSCTRL_HITEMP_SEL Position */
+#define MXC_F_SMON_INTSCTRL_HITEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_HITEMP_SEL_POS)) /**< INTSCTRL_HITEMP_SEL Mask */
 
 #define MXC_F_SMON_INTSCTRL_VCORELO_EN_POS             18 /**< INTSCTRL_VCORELO_EN Position */
 #define MXC_F_SMON_INTSCTRL_VCORELO_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VCORELO_EN_POS)) /**< INTSCTRL_VCORELO_EN Mask */
@@ -398,17 +402,17 @@ typedef struct {
  * @brief    Security Monitor Status Register.
  * @{
  */
-#define MXC_F_SMON_SECST_EXTSCTRL_ST_POS               0 /**< SECST_EXTSCTRL_ST Position */
-#define MXC_F_SMON_SECST_EXTSCTRL_ST                   ((uint32_t)(0x1UL << MXC_F_SMON_SECST_EXTSCTRL_ST_POS)) /**< SECST_EXTSCTRL_ST Mask */
+#define MXC_F_SMON_SECST_EXTSCTRL_POS                  0 /**< SECST_EXTSCTRL Position */
+#define MXC_F_SMON_SECST_EXTSCTRL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECST_EXTSCTRL_POS)) /**< SECST_EXTSCTRL Mask */
 
-#define MXC_F_SMON_SECST_INTSCTRL_ST_POS               1 /**< SECST_INTSCTRL_ST Position */
-#define MXC_F_SMON_SECST_INTSCTRL_ST                   ((uint32_t)(0x1UL << MXC_F_SMON_SECST_INTSCTRL_ST_POS)) /**< SECST_INTSCTRL_ST Mask */
+#define MXC_F_SMON_SECST_INTSCTRL_POS                  1 /**< SECST_INTSCTRL Position */
+#define MXC_F_SMON_SECST_INTSCTRL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECST_INTSCTRL_POS)) /**< SECST_INTSCTRL Mask */
 
-#define MXC_F_SMON_SECST_SECALM_ST_POS                 2 /**< SECST_SECALM_ST Position */
-#define MXC_F_SMON_SECST_SECALM_ST                     ((uint32_t)(0x1UL << MXC_F_SMON_SECST_SECALM_ST_POS)) /**< SECST_SECALM_ST Mask */
+#define MXC_F_SMON_SECST_SECALM_POS                    2 /**< SECST_SECALM Position */
+#define MXC_F_SMON_SECST_SECALM                        ((uint32_t)(0x1UL << MXC_F_SMON_SECST_SECALM_POS)) /**< SECST_SECALM Mask */
 
-#define MXC_F_SMON_SECST_MEUCTRL_ST_POS                7 /**< SECST_MEUCTRL_ST Position */
-#define MXC_F_SMON_SECST_MEUCTRL_ST                    ((uint32_t)(0x1UL << MXC_F_SMON_SECST_MEUCTRL_ST_POS)) /**< SECST_MEUCTRL_ST Mask */
+#define MXC_F_SMON_SECST_MEUCTRL_POS                   7 /**< SECST_MEUCTRL Position */
+#define MXC_F_SMON_SECST_MEUCTRL                       ((uint32_t)(0x1UL << MXC_F_SMON_SECST_MEUCTRL_POS)) /**< SECST_MEUCTRL Mask */
 
 /**@} end of group SMON_SECST_Register */
 

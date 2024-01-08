@@ -2,6 +2,7 @@
  * @file    rtc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the RTC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup rtc_registers
  */
 
 /******************************************************************************
@@ -206,8 +207,8 @@ typedef struct {
 #define MXC_F_RTC_TRIM_TRIM_POS                        0 /**< TRIM_TRIM Position */
 #define MXC_F_RTC_TRIM_TRIM                            ((uint32_t)(0xFFUL << MXC_F_RTC_TRIM_TRIM_POS)) /**< TRIM_TRIM Mask */
 
-#define MXC_F_RTC_TRIM_VRTC_TMR_POS                    8 /**< TRIM_VRTC_TMR Position */
-#define MXC_F_RTC_TRIM_VRTC_TMR                        ((uint32_t)(0xFFFFFFUL << MXC_F_RTC_TRIM_VRTC_TMR_POS)) /**< TRIM_VRTC_TMR Mask */
+#define MXC_F_RTC_TRIM_VBAT_TMR_POS                    8 /**< TRIM_VBAT_TMR Position */
+#define MXC_F_RTC_TRIM_VBAT_TMR                        ((uint32_t)(0xFFFFFFUL << MXC_F_RTC_TRIM_VBAT_TMR_POS)) /**< TRIM_VBAT_TMR Mask */
 
 /**@} end of group RTC_TRIM_Register */
 

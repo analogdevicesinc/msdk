@@ -94,7 +94,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr0);
             } else {
                 MXC_GPIO_Config(&gpio_cfg_tmr0b);
@@ -108,7 +108,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr1);
             } else {
                 MXC_GPIO_Config(&gpio_cfg_tmr1b);
@@ -122,7 +122,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr2);
             } else {
                 MXC_GPIO_Config(&gpio_cfg_tmr2b);
@@ -136,7 +136,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr3);
             } else {
                 MXC_GPIO_Config(&gpio_cfg_tmr3b);

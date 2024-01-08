@@ -61,19 +61,25 @@ int MXC_RTC_Stop(void)
     return MXC_RTC_RevA_Stop((mxc_rtc_reva_regs_t *)MXC_RTC);
 }
 
-int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
+int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
-    // Enable clock
-    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
 
-    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
-int MXC_RTC_SquareWave(mxc_rtc_reva_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
+int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
 
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC, sqe, ft);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
+                                   ft);
+}
+
+int MXC_RTC_SquareWaveStop(void)
+{
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC,
+                                   MXC_RTC_REVA_SQUARE_WAVE_DISABLED, MXC_RTC_F_32KHZ);
 }
 
 int MXC_RTC_Trim(int8_t trm)
@@ -120,4 +126,27 @@ int MXC_RTC_GetSeconds(uint32_t *sec)
 int MXC_RTC_GetTime(uint32_t *sec, uint32_t *subsec)
 {
     return MXC_RTC_RevA_GetTime((mxc_rtc_reva_regs_t *)MXC_RTC, sec, subsec);
+}
+
+int MXC_RTC_GetBusyFlag(void)
+{
+    return MXC_RTC_RevA_GetBusyFlag((mxc_rtc_reva_regs_t *)MXC_RTC);
+}
+
+int MXC_RTC_TrimCrystal(mxc_tmr_regs_t *tmr)
+{
+    if (MXC_TMR_GET_IDX(tmr) < 0 ||
+        MXC_TMR_GET_IDX(tmr) > 3) { // Timer must support ERFO as clock source
+        return E_BAD_PARAM;
+    }
+
+    mxc_tmr_cfg_t
+        tmr_cfg; // Configure timer to trigger each interrupt NUM_PERIOD number of times within a second
+    tmr_cfg.pres = MXC_TMR_PRES_1;
+    tmr_cfg.mode = MXC_TMR_MODE_CONTINUOUS;
+    tmr_cfg.cmp_cnt = ERFO_FREQ / MXC_RTC_REVA_TRIM_PERIODS;
+    tmr_cfg.pol = 0;
+    MXC_TMR_Init(tmr, &tmr_cfg);
+
+    return MXC_RTC_RevA_TrimCrystal((mxc_rtc_reva_regs_t *)MXC_RTC, tmr);
 }

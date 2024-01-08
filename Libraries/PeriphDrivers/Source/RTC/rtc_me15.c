@@ -162,9 +162,9 @@ int MXC_RTC_TrimCrystal(mxc_tmr_regs_t *tmr)
 
     mxc_tmr_cfg_t
         tmr_cfg; // Configure timer to trigger each interrupt NUM_PERIOD number of times within a second
-    tmr_cfg.pres = TMR_PRES_1;
-    tmr_cfg.mode = TMR_MODE_CONTINUOUS;
-    tmr_cfg.bitMode = TMR_BIT_MODE_32;
+    tmr_cfg.pres = MXC_TMR_PRES_1;
+    tmr_cfg.mode = MXC_TMR_MODE_CONTINUOUS;
+    tmr_cfg.bitMode = MXC_TMR_BIT_MODE_32;
     tmr_cfg.clock = MXC_TMR_32M_CLK;
     tmr_cfg.cmp_cnt = ERFO_FREQ / MXC_RTC_REVA_TRIM_PERIODS;
     tmr_cfg.pol = 0;

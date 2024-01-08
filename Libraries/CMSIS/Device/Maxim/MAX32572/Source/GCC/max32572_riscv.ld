@@ -19,31 +19,24 @@
  *
  ******************************************************************************/
 
-FLASH_MEM_SIZE = _RISCV_FLASH_SIZE - _PAL_NVM_SIZE;
-FLASH_MEM_ORIGIN = _FLASH_SIZE + _FLASH_ORIGIN - _RISCV_FLASH_SIZE - _PAL_NVM_SIZE;
-MAILBOX_ORIGIN = _SRAM_SIZE +_SRAM_ORIGIN - _RISCV_SRAM_SIZE;
-SRAM_MEM_ORIGIN = _SRAM_SIZE +_SRAM_ORIGIN - _RISCV_SRAM_SIZE + _MAILBOX_SIZE*2;
-SRAM_MEM_SIZE =  _RISCV_SRAM_SIZE - _MAILBOX_SIZE*2;
+MSR_DATA_LEN = 0x300;
 
 MEMORY {
-    FLASH      (rx) : ORIGIN = FLASH_MEM_ORIGIN, LENGTH = FLASH_MEM_SIZE
-    PAL_NVM_DB (r)  : ORIGIN = FLASH_MEM_ORIGIN + FLASH_MEM_SIZE, LENGTH = _PAL_NVM_SIZE
-    MAILBOX_0  (rw) : ORIGIN = MAILBOX_ORIGIN, LENGTH = _MAILBOX_SIZE
-    MAILBOX_1  (rw) : ORIGIN = MAILBOX_ORIGIN + _MAILBOX_SIZE, LENGTH = _MAILBOX_SIZE
-    SRAM      (rwx) : ORIGIN = SRAM_MEM_ORIGIN, LENGTH = SRAM_MEM_SIZE
+    SRAM5 (rw) : ORIGIN = 0x20060000, LENGTH = 8K
+    SRAM5_MSRDATA (rw) : ORIGIN = 0x20062000, LENGTH = MSR_DATA_LEN
+    SRAM5_ROMDATA (rw) : ORIGIN = 0x20062000 + MSR_DATA_LEN, LENGTH = 24K - MSR_DATA_LEN
+    SRAM6 (rwx) : ORIGIN = 0x20068000, LENGTH = 16K
+/*    ROM (rx) : ORIGIN = 0x2006C000, LENGTH = 32K */
 }
 
 SECTIONS {
     
     .text :
     {
-        _text = ALIGN(.,13);
+        _text = ALIGN(.,4);
         KEEP(*(.isr_vector))
         KEEP(*(.c_iv))
-        *(.text*)    /* program code */
-
-        *(.srodata*) /* read-only data: "const" */
-        *(.rodata*)  /* read-only data: "const" */
+        *(.text*)  /* program code */
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -51,23 +44,7 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > FLASH
-
-    .mailbox_0 (NOLOAD) :
-    {
-        _mailbox_0 = ALIGN(., 4); 
-        *(.mailbox_0*)           /*Shared memory section*/
-        . = . + _MAILBOX_SIZE;
-        _emailbox_0 = ALIGN(., 4);
-    } > MAILBOX_0
-
-    .mailbox_1 (NOLOAD) :
-    {
-        _mailbox_1 = ALIGN(., 4);
-        *(.mailbox_1*)           /*Shared memory section*/
-        . = . + _MAILBOX_SIZE;
-        _emailbox_1 = ALIGN(., 4);
-    } > MAILBOX_1
+    } > SRAM6
 
     /* short/global data section */
     .sdata :
@@ -80,7 +57,7 @@ SECTIONS {
         _esdata = ALIGN(., 4);
         __sdata_end = .;
     
-    } > SRAM AT>FLASH
+    } > SRAM5
     __load_sdata = LOADADDR(.sdata);
 
     .data :
@@ -89,7 +66,9 @@ SECTIONS {
         __data_start__ = . ;            /* Standard newlib definition. */
     
         *(.data*)           /*read-write initialized data: initialized global variable*/
-        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM3 */
+        *(.sdata*)  /*read-write initialized data: initialized global variable*/
+        *(.srodata*) /* read-only data: "const" */
+        *(.rodata*)  /* read-only data: "const" */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -113,22 +92,22 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-       __data_end__ = . ;                /* Standard newlib definition. */
-    } > SRAM AT>FLASH
+        __data_end__ = . ;                /* Standard newlib definition. */
+    } > SRAM5
     __load_data = LOADADDR(.data);
 
     .sbss :
     {
         . = ALIGN(4);
         __sbss_start = .;                 /* Standard newlib definition. */
-    __sbss_start__ = .;                 /* Standard newlib definition. */
+        __sbss_start__ = .;                /* Standard newlib definition. */
         _sbss = .;
         *(.sbss*)     /*read-write zero initialized data: uninitialzed global variable*/
         *(COMMON)
         _esbss = ALIGN(., 4);
         __sbss_end__ = .;                /* Standard newlib definition. */
         __sbss_end = .;                    /* Standard newlib definition. */
-    } > SRAM
+    } > SRAM5
 
     .bss :
     {
@@ -140,22 +119,12 @@ SECTIONS {
         *(COMMON)
         _ebss = ALIGN(., 4);
         __bss_end__ = .;                /* Standard newlib definition. */
-    __bss_end = .;                    /* Standard newlib definition. */
-     } > SRAM
-
-    .pal_nvm_db :
-    {
-    /* Align to the sector size */
-    . = ALIGN(0x2000);
-    __pal_nvm_db_start__ = .;
-    . = . + _PAL_NVM_SIZE;
-    __pal_nvm_db_end__ = .;
-    } > PAL_NVM_DB
-     
+        __bss_end = .;                    /* Standard newlib definition. */
+     } > SRAM5
 
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */
-    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
+    __StackTop = ORIGIN(SRAM5) + LENGTH(SRAM5);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
     /* .stack_dummy section doesn't contains any symbols. It is only
@@ -164,14 +133,14 @@ SECTIONS {
     .stack_dummy (COPY):
     {
         *(.stack*)
-    } > SRAM
+    } > SRAM5
 
     .heap (COPY):
     {
         . = ALIGN(4);
         *(.heap*)
         __HeapLimit = ABSOLUTE(__StackLimit);
-    } > SRAM
+    } > SRAM5
 
     /* init two words preceding const seg to address and length of segment */
     PROVIDE(__stack = __StackTop);

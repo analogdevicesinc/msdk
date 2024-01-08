@@ -1,8 +1,3 @@
-/**
- * @file    MAX32xxx.h
- * @brief   Includes all the required dependancies.
- */
-
 /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
@@ -24,44 +19,53 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
+/**
+ * @file    board.h
+ * @brief   Board support package API.
+ */
 
-//
-#include "mxc_device.h"
+#include <stdio.h>
+#include "spixf.h"
 
-//
-#include "mxc_delay.h"
-#include "mxc_assert.h"
-#include "mxc_errors.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include "nvic_table.h"
+#ifndef _BOARD_H
+#define _BOARD_H
 
-#ifdef LIB_BOARD
-#include "board.h"
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-/*
- *  Peripheral Driver Includes
- */
-#include "adc.h"
-#include "ctb.h"
-#include "dma.h"
-#include "gpio.h"
-#include "htmr.h"
-#include "i2c.h"
-#include "lp.h"
-#include "pt.h"
-#include "rtc.h"
-// #include "sc.h"
-#include "skbd.h"
-#include "smon.h"
-#include "spi.h"
-#include "spixf.h"
-#include "tmr.h"
-#include "uart.h"
-#include "wdt.h"
+#ifndef CONSOLE_UART
+#define CONSOLE_UART 0 /// UART instance to use for console
+#endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
+#ifndef CONSOLE_BAUD
+#define CONSOLE_BAUD 115200 /// Console baud rate
+#endif
+
+#define LED_OFF 0 /// Inactive state of LEDs
+#define LED_ON 1 /// Active state of LEDs
+
+/**
+ * \brief   Initialize the BSP and board interfaces.
+ * \returns #E_NO_ERROR if everything is successful
+ */
+int Board_Init(void);
+
+/**
+ * \brief   Initialize or reinitialize the console. This may be necessary if the
+ *          system clock rate is changed.
+ * \returns #E_NO_ERROR if everything is successful
+ */
+int Console_Init(void);
+
+/**
+ * \brief   Attempt to prepare the console for sleep.
+ * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
+ */
+int Console_PrepForSleep(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _BOARD_H */

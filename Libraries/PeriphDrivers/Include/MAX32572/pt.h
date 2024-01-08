@@ -1,9 +1,10 @@
 /**
- * @file    pt.h
- * @brief   Pulse Train data types, definitions and function prototypes.
+ * @file
+ * @brief Pulse Train data types, definitions and function prototypes.
  */
 
 /******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
@@ -31,6 +32,7 @@
 /* **** Includes **** */
 
 #include <stdio.h>
+#include "pt.h"
 #include "gcr_regs.h"
 #include "pt_regs.h"
 #include "ptg_regs.h"
@@ -45,28 +47,28 @@ extern "C" {
 #endif
 
 /**
- * @defgroup pt Pulse Train Engine
+ * @defgroup pulsetrain Pulse Train Engine
  * @ingroup periphlibs
  * @brief This is the high level API for the pulse train engine.
  * @{
  */
 
 /**
- * @brief      Structure type for pulse train mode configuration.
+ * Structure type for pulse train mode configuration.
  * @note       Do not use for square wave
  */
 typedef struct {
-    unsigned channel; ///< PT Channel to use
-    uint32_t bps; ///< pulse train bit rate
-    uint32_t pattern; ///< Output pattern to shift out, starts at LSB
-    uint8_t ptLength; ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ...
-    uint16_t loop; ///< Number of times to repeat the train, 0 = continuous
+    unsigned channel; /**< PT Channel to use */
+    uint32_t bps; /**< pulse train bit rate */
+    uint32_t pattern; /**< Output pattern to shift out, starts at LSB */
+    uint8_t
+        ptLength; /**< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ... */
+    uint16_t loop; /**< Number of times to repeat the train, 0 = continuous */
     uint16_t
-        loopDelay; ///< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits
+        loopDelay; /**< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits */
 } mxc_pt_cfg_t;
-
 /**
- * @brief      Enumeration type for the system clock scale types
+ * Enumeration type for the system clock scale types
  */
 typedef enum {
     MXC_PT_CLK_DIV1,
@@ -82,7 +84,6 @@ typedef enum {
 /**
  * @brief      This function initializes the pulse trains to a known stopped
  *             state and sets the global PT clock scale.
- *
  * @param      clk_scale  Scale the system clock for the global PT clock.
  */
 void MXC_PT_Init(mxc_clk_scale_t clk_scale);
@@ -93,9 +94,6 @@ void MXC_PT_Init(mxc_clk_scale_t clk_scale);
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      pts    Pulse train channel to operate on.
- *
- * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes
- *             "error" if unsuccessful.
  */
 void MXC_PT_Shutdown(uint32_t pts);
 
@@ -108,7 +106,7 @@ void MXC_PT_Shutdown(uint32_t pts);
  *
  * @param      cfg     Pointer to pulse train configuration.
  *
- * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes
+ * @return     #E_NO_ERROR if everything is successful, @ref MXC_Error_Codes
  *             "error" if unsuccessful.
  */
 int MXC_PT_Config(mxc_pt_cfg_t *cfg);
@@ -121,7 +119,7 @@ int MXC_PT_Config(mxc_pt_cfg_t *cfg);
  * @param      channel Pulse train channel to operate on
  * @param      freq    square wave output frequency in Hz
  *
- * @returns    #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
+ * @returns #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
 int MXC_PT_SqrWaveConfig(unsigned channel, uint32_t freq);
 
@@ -135,7 +133,7 @@ void MXC_PT_Start(unsigned pts);
 /**
  * @brief      Stops pulse trains.
  *
- * @param      pts   Pulse train pts to stop.
+ * @param      pts Pulse train pts to stop.
  */
 void MXC_PT_Stop(unsigned pts);
 
@@ -216,7 +214,7 @@ void MXC_PT_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex);
 /**
  * @brief      Disable the restart for the specified pulse train
  *
- * @param      channel       Pulse train channel to restart
+ * @param      channel       Pulse train channel
  * @param      restartIndex  selects which restart trigger to disable (0 or 1)
  */
 void MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex);
@@ -224,7 +222,7 @@ void MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex);
 /**
  * @brief      Resynchronize individual pulse trains together. Resync will stop
  *             those resync_pts; others will be still running
- * 
+ *
  * @param      pts   Pulse train modules that need to be re-synced by bit
  *                        number. Bit0-\>pt0, Bit1-\>pt1... etc.
  */
@@ -265,7 +263,7 @@ uint32_t MXC_PT_GetReadyFlags(void);
  */
 void MXC_PT_ClearReadyFlags(uint32_t flags);
 
-/**@} end of group pt*/
+/**@} end of group pulsetrains*/
 
 #ifdef __cplusplus
 }

@@ -2,6 +2,7 @@
  * @file    skbd_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SKBD Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup skbd_registers
  */
 
 /******************************************************************************
@@ -146,14 +147,14 @@ typedef struct {
  * @brief    Control Register 1
  * @{
  */
-#define MXC_F_SKBD_CTRL1_AUTOEN_POS                    0 /**< CTRL1_AUTOEN Position */
-#define MXC_F_SKBD_CTRL1_AUTOEN                        ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_AUTOEN_POS)) /**< CTRL1_AUTOEN Mask */
+#define MXC_F_SKBD_CTRL1_AUTOSCAN_EN_POS               0 /**< CTRL1_AUTOSCAN_EN Position */
+#define MXC_F_SKBD_CTRL1_AUTOSCAN_EN                   ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_AUTOSCAN_EN_POS)) /**< CTRL1_AUTOSCAN_EN Mask */
 
-#define MXC_F_SKBD_CTRL1_CLEAR_POS                     1 /**< CTRL1_CLEAR Position */
-#define MXC_F_SKBD_CTRL1_CLEAR                         ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_CLEAR_POS)) /**< CTRL1_CLEAR Mask */
+#define MXC_F_SKBD_CTRL1_AUTOCLEAR_POS                 1 /**< CTRL1_AUTOCLEAR Position */
+#define MXC_F_SKBD_CTRL1_AUTOCLEAR                     ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_AUTOCLEAR_POS)) /**< CTRL1_AUTOCLEAR Mask */
 
 #define MXC_F_SKBD_CTRL1_OUTNUM_POS                    8 /**< CTRL1_OUTNUM Position */
-#define MXC_F_SKBD_CTRL1_OUTNUM                        ((uint32_t)(0x7UL << MXC_F_SKBD_CTRL1_OUTNUM_POS)) /**< CTRL1_OUTNUM Mask */
+#define MXC_F_SKBD_CTRL1_OUTNUM                        ((uint32_t)(0xFUL << MXC_F_SKBD_CTRL1_OUTNUM_POS)) /**< CTRL1_OUTNUM Mask */
 
 #define MXC_F_SKBD_CTRL1_DBTM_POS                      13 /**< CTRL1_DBTM Position */
 #define MXC_F_SKBD_CTRL1_DBTM                          ((uint32_t)(0x7UL << MXC_F_SKBD_CTRL1_DBTM_POS)) /**< CTRL1_DBTM Mask */
@@ -201,6 +202,9 @@ typedef struct {
 
 #define MXC_F_SKBD_INTEN_OVERRUN_POS                   2 /**< INTEN_OVERRUN Position */
 #define MXC_F_SKBD_INTEN_OVERRUN                       ((uint32_t)(0x1UL << MXC_F_SKBD_INTEN_OVERRUN_POS)) /**< INTEN_OVERRUN Mask */
+
+#define MXC_F_SKBD_INTEN_KBD_PINS_POS                  3 /**< INTEN_KBD_PINS Position */
+#define MXC_F_SKBD_INTEN_KBD_PINS                      ((uint32_t)(0x1UL << MXC_F_SKBD_INTEN_KBD_PINS_POS)) /**< INTEN_KBD_PINS Mask */
 
 /**@} end of group SKBD_INTEN_Register */
 

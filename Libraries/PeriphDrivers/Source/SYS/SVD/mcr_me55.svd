@@ -11,31 +11,6 @@
     </addressBlock>
     <registers>
       <register>
-        <name>ECCEN</name>
-        <description>ECC Enable Register</description>
-        <addressOffset>0x00</addressOffset>
-        <fields>
-          <field>
-            <name>ICCXIP</name>
-            <description>IcacheXIP ECC Enable.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>PDOWN</name>
         <description>PDOWN Drive Strength</description>
         <addressOffset>0x08</addressOffset>
@@ -166,9 +141,118 @@
         <addressOffset>0x60</addressOffset>
         <fields>
           <field>
-            <name>LDO0P9_EN</name>
+            <name>0P9V_EN</name>
             <description>LDO 0.9V Enable.</description>
             <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PWRMONST</name>
+        <description>Power Monitor Statuses Register.</description>
+        <addressOffset>0x64</addressOffset>
+        <fields>
+          <field>
+            <name>PORZ_VLOSS</name>
+            <description>Sticky bit indicating power on status of core power domains.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VBAT</name>
+            <description>Sticky bit indicating power on status of the battery.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VRTC</name>
+            <description>Sticky bit indicating power on status of the RTC.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDC</name>
+            <description>Sticky bit indicating power on status of VCORE.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDA</name>
+            <description>Sticky bit indicating power on status of VDDA.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDB</name>
+            <description>Sticky bit indicating power on status of VDDB.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDC</name>
+            <description>Sticky bit indicating reset condition on VCORE.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDA</name>
+            <description>Sticky bit indicating reset condition on VDDA.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDB</name>
+            <description>Sticky bit indicating reset condition on VDDB.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIO</name>
+            <description>Sticky bit indicating reset condition on VDDIO.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIOH</name>
+            <description>Sticky bit indicating reset condition on VDDIOH.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VRTC</name>
+            <description>Sticky bit indicating reset condition on RTC.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_LDO_0P9V</name>
+            <description>Non-sticky bit indicating reset condition on 0.9V USB supply.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDCA</name>
+            <description>Non-sticky bit indicating reset condition on VCORE in Analog supply.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VCOREHV</name>
+            <description>Non-sticky bit indicating high voltage reset condition on VCORE supply.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIOHV</name>
+            <description>Non-sticky bit indicating high voltage reset condition on VDDIO supply.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIOHHV</name>
+            <description>Non-sticky bit indicating high voltage reset condition on VDDIOH supply.</description>
+            <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

@@ -51,33 +51,58 @@ extern "C" {
  * @brief Timer prescaler values
  */
 typedef enum {
-    TMR_PRES_1 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1, ///< Divide input clock by 1
-    TMR_PRES_2 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2, ///< Divide input clock by 2
-    TMR_PRES_4 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4, ///< Divide input clock by 4
-    TMR_PRES_8 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_8, ///< Divide input clock by 8
-    TMR_PRES_16 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_16, ///< Divide input clock by 16
-    TMR_PRES_32 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_32, ///< Divide input clock by 32
-    TMR_PRES_64 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_64, ///< Divide input clock by 64
-    TMR_PRES_128 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_128, ///< Divide input clock by 128
-    TMR_PRES_256 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_256, ///< Divide input clock by 256
-    TMR_PRES_512 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_512, ///< Divide input clock by 512
-    TMR_PRES_1024 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1024, ///< Divide input clock by 1024
-    TMR_PRES_2048 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2048, ///< Divide input clock by 2048
-    TMR_PRES_4096 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4096 ///< Divide input clock by 4096
+    MXC_TMR_PRES_1 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1, ///< Divide input clock by 1
+    MXC_TMR_PRES_2 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2, ///< Divide input clock by 2
+    MXC_TMR_PRES_4 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4, ///< Divide input clock by 4
+    MXC_TMR_PRES_8 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_8, ///< Divide input clock by 8
+    MXC_TMR_PRES_16 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_16, ///< Divide input clock by 16
+    MXC_TMR_PRES_32 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_32, ///< Divide input clock by 32
+    MXC_TMR_PRES_64 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_64, ///< Divide input clock by 64
+    MXC_TMR_PRES_128 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_128, ///< Divide input clock by 128
+    MXC_TMR_PRES_256 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_256, ///< Divide input clock by 256
+    MXC_TMR_PRES_512 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_512, ///< Divide input clock by 512
+    MXC_TMR_PRES_1024 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1024, ///< Divide input clock by 1024
+    MXC_TMR_PRES_2048 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2048, ///< Divide input clock by 2048
+    MXC_TMR_PRES_4096 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4096, ///< Divide input clock by 4096
+
+    // Legacy names
+    TMR_PRES_1 = MXC_TMR_PRES_1,
+    TMR_PRES_2 = MXC_TMR_PRES_2,
+    TMR_PRES_4 = MXC_TMR_PRES_4,
+    TMR_PRES_8 = MXC_TMR_PRES_8,
+    TMR_PRES_16 = MXC_TMR_PRES_16,
+    TMR_PRES_32 = MXC_TMR_PRES_32,
+    TMR_PRES_64 = MXC_TMR_PRES_64,
+    TMR_PRES_128 = MXC_TMR_PRES_128,
+    TMR_PRES_256 = MXC_TMR_PRES_256,
+    TMR_PRES_512 = MXC_TMR_PRES_512,
+    TMR_PRES_1024 = MXC_TMR_PRES_1024,
+    TMR_PRES_2048 = MXC_TMR_PRES_2048,
+    TMR_PRES_4096 = MXC_TMR_PRES_4096
 } mxc_tmr_pres_t;
 
 /**
  * @brief Timer modes
  */
 typedef enum {
-    TMR_MODE_ONESHOT = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT, ///< Timer Mode ONESHOT
-    TMR_MODE_CONTINUOUS = MXC_S_TMR_CTRL0_MODE_A_CONTINUOUS, ///< Timer Mode CONTINUOUS
-    TMR_MODE_COUNTER = MXC_S_TMR_CTRL0_MODE_A_COUNTER, ///< Timer Mode COUNTER
-    TMR_MODE_PWM = MXC_S_TMR_CTRL0_MODE_A_PWM, ///< Timer Mode PWM
-    TMR_MODE_CAPTURE = MXC_S_TMR_CTRL0_MODE_A_CAPTURE, ///< Timer Mode CAPTURE
-    TMR_MODE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_COMPARE, ///< Timer Mode COMPARE
-    TMR_MODE_GATED = MXC_S_TMR_CTRL0_MODE_A_GATED, ///< Timer Mode GATED
-    TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP ///< Timer Mode CAPTURECOMPARE
+    MXC_TMR_MODE_ONESHOT = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT, ///< Timer Mode ONESHOT
+    MXC_TMR_MODE_CONTINUOUS = MXC_S_TMR_CTRL0_MODE_A_CONTINUOUS, ///< Timer Mode CONTINUOUS
+    MXC_TMR_MODE_COUNTER = MXC_S_TMR_CTRL0_MODE_A_COUNTER, ///< Timer Mode COUNTER
+    MXC_TMR_MODE_PWM = MXC_S_TMR_CTRL0_MODE_A_PWM, ///< Timer Mode PWM
+    MXC_TMR_MODE_CAPTURE = MXC_S_TMR_CTRL0_MODE_A_CAPTURE, ///< Timer Mode CAPTURE
+    MXC_TMR_MODE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_COMPARE, ///< Timer Mode COMPARE
+    MXC_TMR_MODE_GATED = MXC_S_TMR_CTRL0_MODE_A_GATED, ///< Timer Mode GATED
+    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP, ///< Timer Mode CAPTURECOMPARE
+
+    // Legacy names
+    TMR_MODE_ONESHOT = MXC_TMR_MODE_ONESHOT,
+    TMR_MODE_CONTINUOUS = MXC_TMR_MODE_CONTINUOUS,
+    TMR_MODE_COUNTER = MXC_TMR_MODE_COUNTER,
+    TMR_MODE_PWM = MXC_TMR_MODE_PWM,
+    TMR_MODE_CAPTURE = MXC_TMR_MODE_CAPTURE,
+    TMR_MODE_COMPARE = MXC_TMR_MODE_COMPARE,
+    TMR_MODE_GATED = MXC_TMR_MODE_GATED,
+    TMR_MODE_CAPTURE_COMPARE = MXC_TMR_MODE_CAPTURE_COMPARE
 } mxc_tmr_mode_t;
 
 /**
@@ -85,19 +110,30 @@ typedef enum {
  * 
  */
 typedef enum {
-    TMR_BIT_MODE_32, ///< Timer Mode 32 bit
-    TMR_BIT_MODE_16A, ///< Timer Mode Lower 16 bit
-    TMR_BIT_MODE_16B, ///< Timer Mode Upper 16 bit
+    MXC_TMR_BIT_MODE_32, ///< Timer Mode 32 bit
+    MXC_TMR_BIT_MODE_16A, ///< Timer Mode Lower 16 bit
+    MXC_TMR_BIT_MODE_16B, ///< Timer Mode Upper 16 bit
+
+    // Legacy names
+    TMR_BIT_MODE_32 = MXC_TMR_BIT_MODE_32,
+    TMR_BIT_MODE_16A = MXC_TMR_BIT_MODE_16A,
+    TMR_BIT_MODE_16B = MXC_TMR_BIT_MODE_16B,
 } mxc_tmr_bit_mode_t;
 
 /**
  * @brief Timer units of time enumeration
  */
 typedef enum {
-    TMR_UNIT_NANOSEC, ///< Nanosecond Unit Indicator
-    TMR_UNIT_MICROSEC, ///< Microsecond Unit Indicator
-    TMR_UNIT_MILLISEC, ///< Millisecond Unit Indicator
-    TMR_UNIT_SEC, ///< Second Unit Indicator
+    MXC_TMR_UNIT_NANOSEC, ///< Nanosecond Unit Indicator
+    MXC_TMR_UNIT_MICROSEC, ///< Microsecond Unit Indicator
+    MXC_TMR_UNIT_MILLISEC, ///< Millisecond Unit Indicator
+    MXC_TMR_UNIT_SEC, ///< Second Unit Indicator
+
+    // Legacy names
+    TMR_UNIT_NANOSEC = MXC_TMR_UNIT_NANOSEC,
+    TMR_UNIT_MICROSEC = MXC_TMR_UNIT_MICROSEC,
+    TMR_UNIT_MILLISEC = MXC_TMR_UNIT_MILLISEC,
+    TMR_UNIT_SEC = MXC_TMR_UNIT_SEC,
 } mxc_tmr_unit_t;
 
 /**

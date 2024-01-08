@@ -2,6 +2,7 @@
  * @file    sema_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SEMA Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sema_registers
  */
 
 /******************************************************************************
@@ -123,8 +124,8 @@ typedef struct {
 #define MXC_F_SEMA_IRQ0_EN_POS                         0 /**< IRQ0_EN Position */
 #define MXC_F_SEMA_IRQ0_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ0_EN_POS)) /**< IRQ0_EN Mask */
 
-#define MXC_F_SEMA_IRQ0_RV32_IRQ_POS                   16 /**< IRQ0_RV32_IRQ Position */
-#define MXC_F_SEMA_IRQ0_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ0_RV32_IRQ_POS)) /**< IRQ0_RV32_IRQ Mask */
+#define MXC_F_SEMA_IRQ0_CM4_IRQ_POS                    16 /**< IRQ0_CM4_IRQ Position */
+#define MXC_F_SEMA_IRQ0_CM4_IRQ                        ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ0_CM4_IRQ_POS)) /**< IRQ0_CM4_IRQ Mask */
 
 /**@} end of group SEMA_IRQ0_Register */
 
@@ -148,8 +149,8 @@ typedef struct {
 #define MXC_F_SEMA_IRQ1_EN_POS                         0 /**< IRQ1_EN Position */
 #define MXC_F_SEMA_IRQ1_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ1_EN_POS)) /**< IRQ1_EN Mask */
 
-#define MXC_F_SEMA_IRQ1_CM4_IRQ_POS                    16 /**< IRQ1_CM4_IRQ Position */
-#define MXC_F_SEMA_IRQ1_CM4_IRQ                        ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ1_CM4_IRQ_POS)) /**< IRQ1_CM4_IRQ Mask */
+#define MXC_F_SEMA_IRQ1_RV32_IRQ_POS                   16 /**< IRQ1_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ1_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ1_RV32_IRQ_POS)) /**< IRQ1_RV32_IRQ Mask */
 
 /**@} end of group SEMA_IRQ1_Register */
 

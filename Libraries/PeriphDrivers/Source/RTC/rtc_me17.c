@@ -176,9 +176,9 @@ int MXC_RTC_TrimCrystal(void)
 
     /* Init timer to count 32 MHz periods */
     mxc_tmr_cfg_t tmr_cfg;
-    tmr_cfg.pres = TMR_PRES_1;
-    tmr_cfg.mode = TMR_MODE_CONTINUOUS;
-    tmr_cfg.bitMode = TMR_BIT_MODE_32;
+    tmr_cfg.pres = MXC_TMR_PRES_1;
+    tmr_cfg.mode = MXC_TMR_MODE_CONTINUOUS;
+    tmr_cfg.bitMode = MXC_TMR_BIT_MODE_32;
     tmr_cfg.clock = MXC_TMR_APB_CLK;
     tmr_cfg.cmp_cnt = 0xFFFFFFFF;
     tmr_cfg.pol = 0;

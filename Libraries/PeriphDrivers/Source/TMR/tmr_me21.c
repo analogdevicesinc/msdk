@@ -94,7 +94,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr0a);
             }
         }
@@ -106,7 +106,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr1a);
             }
         }
@@ -118,7 +118,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr2a);
             }
         }
@@ -130,7 +130,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr3a);
             }
         }
@@ -142,7 +142,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_lptmr0);
             } else {
                 return E_NOT_SUPPORTED;
@@ -157,7 +157,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_lptmr1);
             } else {
                 return E_NOT_SUPPORTED;

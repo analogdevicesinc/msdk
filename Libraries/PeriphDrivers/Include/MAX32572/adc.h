@@ -153,6 +153,14 @@ typedef struct {
 } mxc_adc_conversion_req_t;
 
 /**
+ * Enumeration type for ADC reference sources
+ */
+typedef enum {
+    MXC_ADC_REF_INT, // Selects internal bandgap reference
+    MXC_ADC_REF_EXT, // Selects external reference pins
+} mxc_adc_ref_t;
+
+/**
  * @brief   Performs the ADC startup procedure
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
