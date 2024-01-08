@@ -301,6 +301,25 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 }
 
 /* ************************************************************************** */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
+{
+    /* Return if this setting is already current */
+    if (div == MXC_SYS_GetClockDiv()) {
+        return;
+    }
+
+    MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_PSC, div);
+
+    SystemCoreClockUpdate();
+}
+
+/* ************************************************************************** */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
+{
+    return (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_PSC);
+}
+
+/* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
     /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 for the rstr1 register. */

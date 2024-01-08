@@ -101,6 +101,17 @@ typedef enum {
     MXC_SYS_CLOCK_HIRC = MXC_V_GCR_CLK_CTRL_CLKSEL_HIRC, /**< High Frequency Internal Oscillator */
 } mxc_sys_system_clock_t;
 
+typedef enum {
+    MXC_SYS_CLOCK_DIV_1 = MXC_S_GCR_CLK_CTRL_PSC_DIV1,
+    MXC_SYS_CLOCK_DIV_2 = MXC_S_GCR_CLK_CTRL_PSC_DIV2,
+    MXC_SYS_CLOCK_DIV_4 = MXC_S_GCR_CLK_CTRL_PSC_DIV4,
+    MXC_SYS_CLOCK_DIV_8 = MXC_S_GCR_CLK_CTRL_PSC_DIV8,
+    MXC_SYS_CLOCK_DIV_16 = MXC_S_GCR_CLK_CTRL_PSC_DIV16,
+    MXC_SYS_CLOCK_DIV_32 = MXC_S_GCR_CLK_CTRL_PSC_DIV32,
+    MXC_SYS_CLOCK_DIV_64 = MXC_S_GCR_CLK_CTRL_PSC_DIV64,
+    MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLK_CTRL_PSC_DIV128
+} mxc_sys_system_clock_div_t;
+
 #define MXC_SYS_USN_LEN 8
 
 /***** Function Prototypes *****/
@@ -266,6 +277,18 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
+
+/**
+ * @brief Set the system clock divider.
+ * @param div       Enumeration for desired clock divider.
+ */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
+
+/**
+ * @brief Get the system clock divider.
+ * @returns         System clock divider.
+ */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
 
 /**
  * @brief Wait for a clock to enable with timeout
