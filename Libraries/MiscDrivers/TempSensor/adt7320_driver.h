@@ -58,65 +58,52 @@
 extern "C" {
 #endif
 
-// clang-format off
-
 /* ADT7320 registers */
-#define ADT7320_00_STATUS               0x00
-#define ADT7320_01_CONFIGURATION        0x01
-#define ADT7320_02_TEMPERATURE_VALUE    0x02
-#define ADT7320_03_ID                   0x03
-#define ADT7320_04_TCRIT_SETPOINT       0x04
-#define ADT7320_05_THYST_SETPOINT       0x05
-#define ADT7320_06_THIGH_SETPOINT       0x06
-#define ADT7320_07_TLOW_SETPOINT        0x07
+#define ADT7320_00_STATUS 0x00
+#define ADT7320_01_CONFIGURATION 0x01
+#define ADT7320_02_TEMPERATURE_VALUE 0x02
+#define ADT7320_03_ID 0x03
+#define ADT7320_04_TCRIT_SETPOINT 0x04
+#define ADT7320_05_THYST_SETPOINT 0x05
+#define ADT7320_06_THIGH_SETPOINT 0x06
+#define ADT7320_07_TLOW_SETPOINT 0x07
 
 /* ADT7320_REG_STATUS definition */
-#define ADT7320_STATUS_T_LOW		(1 << 4)
-#define ADT7320_STATUS_T_HIGH		(1 << 5)
-#define ADT7320_STATUS_T_CRIT		(1 << 6)
-#define ADT7320_STATUS_RDY		  (1 << 7)
+#define ADT7320_STATUS_T_LOW (1 << 4)
+#define ADT7320_STATUS_T_HIGH (1 << 5)
+#define ADT7320_STATUS_T_CRIT (1 << 6)
+#define ADT7320_STATUS_RDY (1 << 7)
 
 /* ADT7320_REG_CONFIG definition */
-#define ADT7320_CONFIG_FAULT_QUEUE(x)	    (x & 0x3)
-#define ADT7320_CONFIG_CT_POL_POS		      (2)
-#define ADT7320_CONFIG_INT_POL_POS		    (3)
-#define ADT7320_CONFIG_INT_CT_MODE_POS	  (4)
-#define ADT7320_CONFIG_OP_MODE(x)	        ((x & 0x3) << 5)
-#define ADT7320_CONFIG_RESOLUTION_POS     (7)
+#define ADT7320_CONFIG_FAULT_QUEUE(x) (x & 0x3)
+#define ADT7320_CONFIG_CT_POL_POS (2)
+#define ADT7320_CONFIG_INT_POL_POS (3)
+#define ADT7320_CONFIG_INT_CT_MODE_POS (4)
+#define ADT7320_CONFIG_OP_MODE(x) ((x & 0x3) << 5)
+#define ADT7320_CONFIG_RESOLUTION_POS (7)
 
 /* ADT7320 device ID */
-#define ADT7320_DEVICE_ID		0xC3
+#define ADT7320_DEVICE_ID 0xC3
 
-typedef enum _ADC_RESOLUTION {
-  ADC_RES_13,
-  ADC_RES_16
-} adt7320_adc_resolution_t;
+typedef enum _ADC_RESOLUTION { ADC_RES_13, ADC_RES_16 } adt7320_adc_resolution_t;
 
 typedef enum _FAULT_QUEUE {
-  FAULT_QUEUE_1 = 0x0,
-  FAULT_QUEUE_2,
-  FAULT_QUEUE_3,
-  FAULT_QUEUE_4
+    FAULT_QUEUE_1 = 0x0,
+    FAULT_QUEUE_2,
+    FAULT_QUEUE_3,
+    FAULT_QUEUE_4
 } ad7320_FaultQueue_t;
 
-typedef enum _PIN_POLARITY {
-  ACTIVE_LOW = 0x0,
-  ACTIVE_HIGH
-} ad7320_PinPolarity_t;
+typedef enum _PIN_POLARITY { ACTIVE_LOW = 0x0, ACTIVE_HIGH } ad7320_PinPolarity_t;
 
-typedef enum _INT_MODE {
-  INTERRUPT_MODE = 0x0,
-  COMPARATOR_MODE
-} ad7320_IntCtMode_t;
+typedef enum _INT_MODE { INTERRUPT_MODE = 0x0, COMPARATOR_MODE } ad7320_IntCtMode_t;
 
 typedef enum _OPERATION_MODE {
-  MODE_CONTINUOUS_CONVERSION = 0x0,
-  MODE_ONE_SHOT,
-  MODE_1_SPS,
-  MODE_SHUTDOWN
+    MODE_CONTINUOUS_CONVERSION = 0x0,
+    MODE_ONE_SHOT,
+    MODE_1_SPS,
+    MODE_SHUTDOWN
 } ad7320_OperationMode_t;
-
-// clang-format on
 
 /**
    * @brief Initialize ADT7320 Temperature Sensor
