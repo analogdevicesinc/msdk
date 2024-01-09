@@ -22,6 +22,8 @@
 #include "post_process.h"
 #include "tmr.h"
 
+#include "mxc_microros.h"
+
 #define STRING_BUFFER_LEN 50
 #define IMG_XRES 160
 #define IMG_YRES 120
