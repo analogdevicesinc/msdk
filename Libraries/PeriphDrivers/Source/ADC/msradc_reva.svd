@@ -18,7 +18,7 @@
       <value>20</value>
     </interrupt>
     <registers>
-      <!-- CTRL: ADC Control -->
+      <!-- CTRL: MSRADC Control -->
       <register>
         <name>CTRL</name>
         <description>ADC Control</description>
@@ -99,7 +99,7 @@
           </field>
         </fields>
       </register>
-      <!--CMD: ADC Command-->
+      <!--CMD: MSRADC Command-->
       <register>
         <name>CMD</name>
         <description>MSRADC Command</description>
@@ -241,6 +241,22 @@
                 <name>CH3_IN</name>
                 <value>3</value>
               </enumeratedValue>
+              <enumeratedValue>
+                <name>CH4_IN</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH5_IN</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH6_IN</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH7_IN</name>
+                <value>7</value>
+              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -251,7 +267,7 @@
           </field>
         </fields>
       </register>
-      <!-- INTFL: ADC Interrupt Enable Register -->
+      <!-- INTEN: MSRADC Interrupt Enable Register -->
       <register>
         <name>INTEN</name>
         <description>ADC Interrupt Enable Register</description>
@@ -261,7 +277,7 @@
           <field>
             <name>SET_FIFOLVL</name>
             <description>Set FIFO Interrupt Level.</description>
-            <bitRange>[2:0]</bitRange>
+            <bitRange>[4:0]</bitRange>
             <access>read-write</access>
             <enumeratedValues>
               <enumeratedValue>
@@ -296,12 +312,44 @@
                 <name>at_least_8</name>
                 <value>7</value>
               </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_9</name>
+                <value>8</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_10</name>
+                <value>9</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_11</name>
+                <value>10</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_12</name>
+                <value>11</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_13</name>
+                <value>12</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_14</name>
+                <value>13</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_15</name>
+                <value>14</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_16</name>
+                <value>15</value>
+              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>DMAREQ_EN</name>
+            <name>DMAREQ</name>
             <description>DMA Request Enable.</description>
-            <bitRange>[3:3]</bitRange>
+            <bitRange>[5:5]</bitRange>
             <access>read-write</access>
           </field>
           <field>
@@ -340,43 +388,43 @@
           <field>
             <name>FIFOCNT</name>
             <description>FIFO Count.</description>
-            <bitRange>[3:0]</bitRange>
+            <bitRange>[5:0]</bitRange>
             <access>read-only</access>
           </field>
           <field>
             <name>FIFO_FULL_ST</name>
             <description>FIFO Full Status.</description>
-            <bitRange>[4:4]</bitRange>
+            <bitRange>[6:6]</bitRange>
             <access>read-only</access>
           </field>
           <field>
             <name>FIFO_EM_ST</name>
             <description>FIFO Empty Status.</description>
-            <bitRange>[5:5]</bitRange>
+            <bitRange>[7:7]</bitRange>
             <access>read-only</access>
           </field>
           <field>
             <name>FIFO_OV</name>
             <description>FIFO Overflow Status.</description>
-            <bitRange>[6:6]</bitRange>
+            <bitRange>[8:8]</bitRange>
             <access>read-only</access>
           </field>
           <field>
             <name>FIFO_UN</name>
             <description>FIFO Underflow Status.</description>
-            <bitRange>[7:7]</bitRange>
+            <bitRange>[9:9]</bitRange>
             <access>read-only</access>
           </field>
           <field>
             <name>FIFO_LVL</name>
             <description>FIFO Level Status.</description>
-            <bitRange>[8:8]</bitRange>
+            <bitRange>[10:10]</bitRange>
             <access>read-only</access>
           </field>
           <field>
             <name>GLOBAL</name>
             <description>ADC Global Interrupt Flag.</description>
-            <bitRange>[9:9]</bitRange>
+            <bitRange>[11:11]</bitRange>
             <access>read-only</access>
           </field>
         </fields>

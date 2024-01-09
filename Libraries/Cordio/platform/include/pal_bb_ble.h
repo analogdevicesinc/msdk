@@ -341,6 +341,14 @@ void PalBbBleInlineEncryptSetPacketCount(uint64_t count);
 /*************************************************************************************************/
 void PalBbBleLowPower(void);
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Refresh encryption keys.
+ *
+ *  \note       Needed after deep sleep.
+ */
+/*************************************************************************************************/
+void PalBbBleRefreshKeyAfterSleep(void);
 /*! \} */    /* PAL_BB_BLE */
 
 #ifdef __cplusplus

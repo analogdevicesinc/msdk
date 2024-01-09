@@ -290,3 +290,12 @@ void BbBleGetTestStats(BbBleDataPktStats_t *pStats)
 {
   *pStats = bbTestStats;
 }
+/*************************************************************************************************/
+/*!
+ *  \brief      Reset test mode packet statistics.
+ */
+/*************************************************************************************************/
+void BbBleResetTestStats(void)
+{
+  memset(&bbTestStats, 0, sizeof(bbTestStats));
+}

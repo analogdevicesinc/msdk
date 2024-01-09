@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <name>SC0</name>
+    <name>SCN</name>
     <description>Smart Card Interface.</description>
     <groupName>SCN</groupName>
     <baseAddress>0x4002C000</baseAddress>
@@ -152,7 +152,7 @@
       </register>
       <register>
         <name>PN</name>
-        <description>Pin Register,</description>
+        <description>Pin Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
           <field>
@@ -419,7 +419,7 @@
       </register>
       <register>
         <name>CCR</name>
-        <description>Clock Counter Register,</description>
+        <description>Clock Counter Register.</description>
         <addressOffset>0x2C</addressOffset>
         <fields>
           <field>

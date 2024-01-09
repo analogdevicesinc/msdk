@@ -173,7 +173,7 @@ endif
 FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/$(FATFS_VERSION)
 
 # Set default SDHC clock frequency (40Mhz)
-SDHC_CLK_FREQ ?= 40000000
+SDHC_CLK_FREQ ?= 30000000
 PROJ_CFLAGS += -DSDHC_CLK_FREQ=$(SDHC_CLK_FREQ)
 
 # Include the SDHC library

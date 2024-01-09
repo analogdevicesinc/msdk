@@ -293,6 +293,8 @@ extern "C" {
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F2) /*!< Set Local Feature opcode. */
 #define LHCI_OPCODE_VS_SET_OP_FLAGS \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F3) /*!< Set Operational Flags opcode. */
+#define LHCI_OPCODE_VS_GET_PDU_FILT_STATS \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F4) /*!< Get PDU Filter Statistics opcode. */
 #define LHCI_OPCODE_VS_SET_ADV_TX_PWR \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F5) /*!< Set Advertising Tx Power opcode. */
 #define LHCI_OPCODE_VS_SET_CONN_TX_PWR \
@@ -307,8 +309,6 @@ extern "C" {
 #define LHCI_OPCODE_VS_SET_SNIFFER_ENABLE \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3CD) /*!< Enable sniffer packet forwarding. */
 
-#define LHCI_OPCODE_VS_GET_PDU_FILT_STATS \
-    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3F4) /*!< Get PDU Filter Statistics opcode. */
 #define LHCI_OPCODE_VS_GET_SYS_STATS \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3FA) /*!< Get Memory Statistics opcode. */
 #define LHCI_OPCODE_VS_GET_ADV_STATS \
@@ -354,16 +354,27 @@ extern "C" {
 #define LHCI_OPCODE_VS_SET_CONN_PHY_TX_PWR \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3DD) /*!< Set Connection Phy Tx Power opcode. */
 
-#define LHCI_OPCODE_VS_REG_WRITE HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300) /*!< Write register. */
-#define LHCI_OPCODE_VS_REG_READ HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301) /*!< Read register. */
+#define LHCI_OPCODE_VS_REG_WRITE HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300) /*!< Write data to MCU register or memory space. */
+#define LHCI_OPCODE_VS_REG_READ HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301) /*!< Read data from MCU  register or memory space. */
 #define LHCI_OPCODE_VS_RESET_CONN_STATS \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x302) /*!< Reset connection stats. */
 #define LHCI_OPCODE_VS_TX_TEST \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x303) /*!< Vendor specific TX test that takes numPkt param. */
-
-#define LHCI_OPCODE_VS_END_TEST     \
+#define LHCI_OPCODE_VS_RESET_TEST_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x304) /*!<Vendor specific End Test Returning More than RX Packets*/
+#define LHCI_OPCODE_VS_RX_TEST     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x305) /*!<Vendor specific RX Test*/
+#define LHCI_OPCODE_VS_GET_RSSI     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x306) /*!<Vendor specific Get RSSI*/
+#define LHCI_OPCODE_VS_PHY_EN     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x307) /*!<Vendor specific Get RSSI*/
+#define LHCI_OPCODE_VS_PHY_DIS     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x308) /*!<Vendor specific Get RSSI*/
 /* Vendor specific event masks. */
 #define LHCI_VS_EVT_MASK_SCAN_REPORT_EVT 0x01 /*!< (Byte 0) VS event bit, scan report. */
 #define LHCI_VS_EVT_MASK_DIAG_TRACE_EVT 0x02 /*!< (Byte 0) VS event bit, diagnostic tracing. */
