@@ -51,7 +51,7 @@
  * @brief I2C slave addresses
  **/
 #define ADT7420_I2C_SLAVE_ADDR0 0x48
-#define ADT7420_I2C_SLAVE_ADDR1 0x49  // Default Address For EVAL-ADT7420MBZ
+#define ADT7420_I2C_SLAVE_ADDR1 0x49 // Default Address For EVAL-ADT7420MBZ
 #define ADT7420_I2C_SLAVE_ADDR2 0x4A
 #define ADT7420_I2C_SLAVE_ADDR3 0x4B
 /**@def ADT7420_I2C_SLAVE_ADDR1

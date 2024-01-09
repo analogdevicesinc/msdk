@@ -72,7 +72,7 @@
 
 /******************************* Useful Definitions *******************************/
 #define SET_BIT(cmd, bit) cmd |= (1 << bit)
-#define GET_BIT(cmd, bit) cmd & (1 << bit)
+#define GET_BIT(cmd, bit) cmd &(1 << bit)
 #define CLEAR_BIT(cmd, bit) cmd &= ~(1 << bit)
 
 /******************************* Globals *******************************/
@@ -89,7 +89,7 @@ static int i2c_transfer(mxc_i2c_req_t *req, uint8_t *txData, int txSize, uint8_t
     return MXC_I2C_MasterTransaction(req);
 }
 
-static int i2c_write(mxc_i2c_req_t *req, uint8_t *txData, int txSize)  // Necessary for future use
+static int i2c_write(mxc_i2c_req_t *req, uint8_t *txData, int txSize) // Necessary for future use
 {
     return i2c_transfer(req, txData, txSize, NULL, 0); // Create I2C write request
 }
