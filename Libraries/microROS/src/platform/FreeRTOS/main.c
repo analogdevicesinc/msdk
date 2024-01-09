@@ -63,6 +63,7 @@ as well.
 int _gettimeofday (struct timeval *__p, void *__tz)
 {
     clock_gettime(0, (struct timespec *) __p);
+    return 0;
 }
 
 /* The micro-ROS library needs an implementation of clock_gettime, defined in <time.h>.
