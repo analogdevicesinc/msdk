@@ -33,18 +33,18 @@ Make sure that the SCL and SDA pins of the EVAL-ADT7420MBZ board are connected t
 
 The Device ID is: 0xCB
 
--->Temperature: 21.920000 °C
--->Temperature: 21.910000 °C
--->Temperature: 21.895000 °C
--->Temperature: 21.924999 °C
--->Temperature: 21.910000 °C
--->Temperature: 21.895000 °C
--->Temperature: 21.889999 °C
--->Temperature: 21.859999 °C
--->Temperature: 21.885000 °C
--->Temperature: 21.904999 °C
--->Temperature: 21.889999 °C
--->Temperature: 21.895000 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.187500 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.187500 °C
+-->Temperature: 24.187500 °C
+-->Temperature: 24.125000 °C
+-->Temperature: 24.187500 °C
+-->Temperature: 24.125000 °C
 
 ...
 ```
