@@ -34,6 +34,8 @@ SRCS += led.c
 SRCS += mx25.c
 SRCS += pb.c
 SRCS += sharp_mip.c
+SRCS += sharp_mip.c
+SRCS += adt7320_driver.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_MX25
 
@@ -46,6 +48,7 @@ VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/TempSensor
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
@@ -54,4 +57,5 @@ IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/TempSensor
 
