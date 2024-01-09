@@ -106,4 +106,6 @@ IPATH += $(MICROROS_LIB_DIR)/include/visualization_msgs
 PROJ_LDFLAGS += -L$(MICROROS_LIB_DIR)
 PROJ_LIBS += microros
 
+PROJ_CFLAGS += -D_POSIX_TIMERS
+
 $(info Library enabled: microROS (targeting ROS $(ROS_DISTRO), using $(MICROROS_RTOS)))

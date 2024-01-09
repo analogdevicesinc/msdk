@@ -27,6 +27,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "portmacro.h"
@@ -54,6 +55,18 @@ int usleep (useconds_t __useconds)
     return 0;
 }
 
+/* glibc complains at the link step about a missing "_gettimeofday" implementation.
+As far as I can tell, gettimeofday isn't used...  at least not by micro-ROS.  The structs
+are almost identical, so to get rid of the warning we'll just past through to clock_gettime
+as well.
+*/
+int _gettimeofday (struct timeval *__p, void *__tz)
+{
+    clock_gettime(0, (struct timespec *) __p);
+}
+
+/* The micro-ROS library needs an implementation of clock_gettime, defined in <time.h>.
+Here, we'll use the RTC. */
 int clock_gettime (clockid_t clock_id, struct timespec *tp)
 {
     uint32_t sec = 0, subsec = 0;
