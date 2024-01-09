@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc. (now owned by Analog
+ * Devices, Inc.), Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary and confidential to Analog Devices, Inc. and its licensors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -98,25 +100,24 @@ __weak void GPIO1_IRQHandler(void)
 void TS_I2C_Init(void)
 {
     MXC_I2C_Init(TS_I2C, 1, 0);
-	MXC_I2C_SetFrequency(TS_I2C, TS_I2C_FREQ);
+    MXC_I2C_SetFrequency(TS_I2C, TS_I2C_FREQ);
 }
 
 void TS_I2C_Transmit(uint8_t datain, uint16_t *dataout)
 {
-    //int i;
     uint8_t rx[2] = { 0, 0 };
     mxc_i2c_req_t request;
 
     request.i2c = TS_I2C;
     request.addr = TS_I2C_TARGET_ADDR;
-	request.tx_buf = (uint8_t *)(&datain);
+    request.tx_buf = (uint8_t *)(&datain);
     request.rx_buf = NULL;
     request.tx_len = 1;
     request.rx_len = 0;
     request.restart = 0;
     request.callback = NULL;
 
-	// send command
+    // send command
     MXC_I2C_MasterTransaction(&request);
 
     request.tx_buf = NULL;
@@ -124,10 +125,10 @@ void TS_I2C_Transmit(uint8_t datain, uint16_t *dataout)
     request.tx_len = 0;
     request.rx_len = 2;
 
-	// receive value
+    // receive value
     MXC_I2C_MasterTransaction(&request);
 
-	// convert 16 bits to 12 bits
+    // convert 16 bits to 12 bits
     if (dataout != NULL) {
         *dataout = (rx[1] | (rx[0] << 8)) >> 4;
     }
@@ -170,11 +171,11 @@ int Board_Init(void)
     /* Initialize TFT display */
     MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
 
-	/* Touch screen controller I2C */
+    /* Touch screen controller I2C */
     mxc_ts_i2c_config ts_i2c_config = {
         .regs = MXC_I2C0,
         .gpio = { MXC_GPIO0, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1), MXC_GPIO_FUNC_ALT1,
-			      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
         .freq = MXC_I2C_STD_MODE,
     };
 

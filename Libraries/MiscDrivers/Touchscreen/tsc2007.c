@@ -1,35 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * This software is proprietary and confidential to Analog Devices, Inc. and
+ * its licensors.
  *
  ******************************************************************************
  *
@@ -72,11 +46,14 @@
 #define X_RES_T 320
 #define Y_RES_T 240
 
+#define ADC_Z_THRESHOLD 0x7F0
 #define ADC_X_MIN 232
 #define ADC_X_MAX 3888
 #define ADC_Y_MIN 375
 #define ADC_Y_MAX 3799
 
+#define NOT_IN_BOX 0
+#define IN_BOX 1
 
 /******************************* TYPE DEFINITIONS ****************************/
 typedef struct _TS_Buttons_t {
@@ -103,44 +80,43 @@ uint16_t tsX, tsY, tsZ1;
 
 static uint8_t tsConstructCommand(mxc_ts_cmd_func_t function, mxc_ts_cmd_pdown_t pdown, mxc_ts_cmd_mode_t mode)
 {
-	// Bits D7-D4: C3-C0 	=> converter function select bits
-	// Bits D3-D2: PD1-PD0	=> power-down bits
-	// Bits D1: M			=> mode bit
-	// Bits D0: X			=> don't care
-	uint8_t command = (uint8_t) function << 4;
-	command |= (uint8_t) pdown << 2;
-	command |= (uint8_t) mode << 1;
-	return command;
+    // Bits D7-D4: C3-C0     => converter function select bits
+    // Bits D3-D2: PD1-PD0    => power-down bits
+    // Bits D1: M            => mode bit
+    // Bits D0: X            => don't care
+    uint8_t command = (uint8_t) function << 4;
+    command |= (uint8_t) pdown << 2;
+    command |= (uint8_t) mode << 1;
+    return command;
 }
 
-static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
+static int isInBox(int x, int y, int x0, int y0, int x1, int y1)
 {
     if ((x >= x0) && (x <= x1) && (y >= y0) && (y <= y1)) {
-        return 1;
+        return IN_BOX;
     }
 
-    return 0;
+    return NOT_IN_BOX;
 }
 
 static int tsGetXY(uint16_t *x, uint16_t *y)
 {
-
     int ret;
 
     TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Z1, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsZ1);
-    if (tsZ1 & 0x7F0) {
+    if (tsZ1 & ADC_Z_THRESHOLD) {
 #if (SWAP_XY == 1)
-    	TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Y, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsX);
-    	TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_X, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsY);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Y, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsX);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_X, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsY);
 #else
-    	TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Y, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsY);
-    	TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_X, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsX);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Y, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsY);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_X, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsX);
 #endif
 
         // Wait Release
         do {
             TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Z1, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsZ1);
-        } while (tsZ1 & 0x7F0);
+        } while (tsZ1 & ADC_Z_THRESHOLD);
 
         *x = (((tsX-ADC_X_MIN) * X_RES_T) / (ADC_X_MAX-ADC_X_MIN));
         *y = (((tsY-ADC_Y_MIN) * Y_RES_T) / (ADC_Y_MAX-ADC_Y_MIN));    
@@ -150,7 +126,7 @@ static int tsGetXY(uint16_t *x, uint16_t *y)
         *y = Y_RES_T - *y;
 #elif (ROTATE_SCREEN == 1)
         uint16_t swap = *x;
-        *x = 240 - *y - 1;
+        *x = Y_RES_T - *y - 1;
         *y = swap;
 #endif
         ret = 1;
@@ -185,10 +161,9 @@ static void tsHandler(void)
     if (tsGetXY((uint16_t *)&g_x, (uint16_t *)&g_y)) {
         ts_event = true;
         if (pressed_key == 0) { // wait until prev key process
-		
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-                    if (is_inBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1, ts_buttons[i].y1)) {
+                    if (isInBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1, ts_buttons[i].y1)) {
                         // pressed key
                         pressed_key = ts_buttons[i].key_code;
                         break;
@@ -213,18 +188,18 @@ int MXC_TS_AssignInterruptPin(mxc_gpio_cfg_t pin)
 
 int MXC_TS_PreInit(mxc_ts_i2c_config *i2c_config, mxc_gpio_cfg_t *int_pin)
 {
-	int result = E_NO_ERROR;
+    int result = E_NO_ERROR;
 
-	if ((int_pin == NULL) || (i2c_config == NULL)) {
-		return -1;
-	}
+    if ((int_pin == NULL) || (i2c_config == NULL)) {
+        return E_NULL_PTR;
+    }
 
-	t_i2c = i2c_config->regs;
-	t_i2c_freq = i2c_config->freq;
-	int_gpio = *int_pin;
-	t_i2c_gpio = i2c_config->gpio;
+    t_i2c = i2c_config->regs;
+    t_i2c_freq = i2c_config->freq;
+    int_gpio = *int_pin;
+    t_i2c_gpio = i2c_config->gpio;
 
-	return result;
+    return result;
 }
 
 int MXC_TS_Init(void)
@@ -302,7 +277,7 @@ void MXC_TS_RemoveButton(int x0, int y0, int x1, int y1)
 
     for (i = 0; i < TS_MAX_BUTTONS; i++) {
         if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-            if (is_inBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1, ts_buttons[i].y1)) {
+            if (isInBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1, ts_buttons[i].y1)) {
                 // clear flag
                 ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
             }
