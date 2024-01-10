@@ -28,15 +28,27 @@ TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
+ifeq "$(RISCV_CORE)" ""
 BUILD_DIR=$(CURDIR)/build
+else
+BUILD_DIR=$(CURDIR)/buildrv
+endif
 endif
 
 ifeq "$(STARTUPFILE)" ""
+ifeq "$(RISCV_CORE)" ""
 STARTUPFILE=startup_$(TARGET_LC).S
+else
+STARTUPFILE=startup_riscv_$(TARGET_LC).S
+endif
 endif
 
 ifeq "$(LINKERFILE)" ""
+ifeq "$(RISCV_CORE)" ""
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
+else
+LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_riscv.ld
+endif
 endif
 
 ifeq "$(ENTRY)" ""
@@ -53,7 +65,11 @@ endif
 ifneq (${MAKECMDGOALS},lib)
 SRCS += ${STARTUPFILE}
 SRCS += heap.c
+ifeq "$(RISCV_CORE)" ""
 SRCS += system_$(TARGET_LC).c
+else
+SRCS += system_riscv_$(TARGET_LC).c
+endif
 endif
 
 # Add target specific CMSIS source directories

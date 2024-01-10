@@ -322,7 +322,7 @@
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>VRTC_TMR</name>
+            <name>VBAT_TMR</name>
             <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>24</bitWidth>

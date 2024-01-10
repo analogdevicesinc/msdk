@@ -85,7 +85,8 @@ void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_RTCClockEnable()
 {
-    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_PD;
+    MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
 }
 
 /* ************************************************************************** */
@@ -93,7 +94,7 @@ int MXC_SYS_RTCClockDisable(void)
 {
     /* Check that the RTC is not the system clock source */
     if ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) != MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO) {
-        MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_ERTCO_EN;
+        MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
         return E_NO_ERROR;
     } else {
         return E_BAD_STATE;
@@ -130,7 +131,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERTCO:
-        MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+        MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_PD;
+        MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY);
         break;
 
@@ -174,7 +176,7 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERTCO:
-        MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_ERTCO_EN;
+        MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
         break;
 
     default:
@@ -291,8 +293,9 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     case MXC_SYS_CLOCK_ERTCO:
 
         // Enable XRTCO clock
-        if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERTCO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+        if (!(MXC_MCR->clkctrl & MXC_F_MCR_CLKCTRL_ERTCO_EN)) {
+            MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_PD;
+            MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
 
             // Check if XRTCO clock is ready
             if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY) != E_NO_ERROR) {
@@ -459,4 +462,18 @@ uint8_t MXC_SYS_GetRev(void)
 
     // return serialNumber[0];
 }
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_RiscVClockRate(void)
+{
+    // // If in LPM mode and the PCLK is selected as the RV32 clock source,
+    // if(((MXC_GCR->pm & MXC_F_GCR_PM_MODE) == MXC_S_GCR_PM_MODE_LPM) &&
+    //    (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LPMCLKSEL)) {
+    //     return ISO_FREQ;
+    // } else {
+    // return PeripheralClock;
+    return SystemCoreClock;
+    // }
+}
+
 /**@} end of mxc_sys */

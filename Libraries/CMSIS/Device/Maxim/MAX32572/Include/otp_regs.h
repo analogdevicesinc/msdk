@@ -2,6 +2,7 @@
  * @file    otp_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the OTP Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup otp_registers
  */
 
 /******************************************************************************

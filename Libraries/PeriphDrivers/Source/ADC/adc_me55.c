@@ -18,17 +18,57 @@
  * limitations under the License.
  *
  ******************************************************************************/
-
 #include <stdio.h>
+#include "adc.h"
+#include "adc_regs.h"
+#include "adc_reva.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "mxc_lock.h"
-#include "adc.h"
-#include "adc_regs.h"
-#include "adc_reva.h"
 #include "mcr_regs.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
+
+static void initGPIOForChannel(mxc_adc_chsel_t channel)
+{
+    switch (channel) {
+    case MXC_ADC_CH_0:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain0);
+        break;
+
+    case MXC_ADC_CH_1:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain1);
+        break;
+
+    case MXC_ADC_CH_2:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain2);
+        break;
+
+    case MXC_ADC_CH_3:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain3);
+        break;
+
+    case MXC_ADC_CH_4:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain4);
+        break;
+
+    case MXC_ADC_CH_5:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain5);
+        break;
+
+    case MXC_ADC_CH_6:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain6);
+        break;
+
+    case MXC_ADC_CH_7:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain7);
+        break;
+
+    default:
+        break;
+    }
+}
 
 int MXC_ADC_Init(void)
 {
@@ -38,20 +78,13 @@ int MXC_ADC_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
 #endif
 
-    //turn on charge pump enable (chip specific)
-    MXC_ADC->ctrl |= MXC_F_ADC_CTRL_CHGPUMP_PWR;
-
     return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t *)MXC_ADC);
 }
 
 int MXC_ADC_Shutdown(void)
 {
-    // Disable ADC Charge Pump (chip specific)
-    MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CHGPUMP_PWR;
-
     MXC_ADC_RevA_Shutdown((mxc_adc_reva_regs_t *)MXC_ADC);
 
-    //Disable ADC peripheral clock
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ADC);
 
     return E_NO_ERROR;
@@ -108,13 +141,12 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
     //enable clock
     MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t *)MXC_ADC, hz);
 
-    return E_NO_ERROR;
+    return MXC_ADC_GetConversionSpeed();
 }
 
 int MXC_ADC_GetConversionSpeed(void)
 {
     uint8_t divider = (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_ADCFRQ) >> MXC_F_GCR_PCLKDIV_ADCFRQ_POS;
-
     return MXC_ADC_RevA_GetConversionSpeed(divider);
 }
 
@@ -160,6 +192,8 @@ int MXC_ADC_GetMonitorLowThreshold(mxc_adc_monitor_t monitor)
 
 void MXC_ADC_SetMonitorChannel(mxc_adc_monitor_t monitor, mxc_adc_chsel_t channel)
 {
+    initGPIOForChannel(channel);
+
     MXC_ADC_RevA_SetMonitorChannel((mxc_adc_reva_regs_t *)MXC_ADC, monitor, channel);
 }
 
@@ -180,16 +214,22 @@ void MXC_ADC_DisableMonitorAsync(mxc_adc_monitor_t monitor)
 
 int MXC_ADC_StartConversion(mxc_adc_chsel_t channel)
 {
+    initGPIOForChannel(channel);
+
     return MXC_ADC_RevA_StartConversion((mxc_adc_reva_regs_t *)MXC_ADC, channel);
 }
 
 int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t callback)
 {
+    initGPIOForChannel(channel);
+
     return MXC_ADC_RevA_StartConversionAsync((mxc_adc_reva_regs_t *)MXC_ADC, channel, callback);
 }
 
 int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t *data, void (*callback)(int, int))
 {
+    initGPIOForChannel(channel);
+
     return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t *)MXC_ADC, channel, MXC_DMA, data,
                                            callback);
 }
@@ -201,11 +241,15 @@ int MXC_ADC_Handler(void)
 
 int MXC_ADC_Convert(mxc_adc_conversion_req_t *req)
 {
+    initGPIOForChannel(req->channel);
+
     return MXC_ADC_RevA_Convert((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 
 int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t *req)
 {
+    initGPIOForChannel(req->channel);
+
     return MXC_ADC_RevA_ConvertAsync((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 

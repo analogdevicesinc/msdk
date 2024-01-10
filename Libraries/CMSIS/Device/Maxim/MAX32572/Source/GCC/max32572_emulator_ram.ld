@@ -22,7 +22,11 @@
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB "ROM" */
     FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256kB "FLASH" */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00098000 /* 608kB SRAM */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00050000 /* 320kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00048000 /* 288kB SRAM, leaving last 32kB for openocd work area */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /*32kB SRAM0 */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00010000 /*64kB SRAM0 + SRAM1 */
+
 }
 
 SECTIONS {
@@ -30,7 +34,10 @@ SECTIONS {
     {
         KEEP(*(.rom_vector))
         *(.rom_handlers*)
-    } > ROM
+        
+        
+    } > ROM 
+   
 
     .text :
     {
@@ -38,12 +45,15 @@ SECTIONS {
         KEEP(*(.isr_vector))
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
-
+        
+        KEEP(*(.isr_vector))
+        
         KEEP(*(.init))
         KEEP(*(.fini))
-
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
+
+        
         _etext = .;
     } > SRAM
 
@@ -60,8 +70,8 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
-        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
-        *(.flashprog*)      /* Flash program */
+        KEEP(*(.spix_config*))    /* SPIX configuration functions need to be run from SRAM */
+        /**(.flashprog*)      /* Flash program */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);

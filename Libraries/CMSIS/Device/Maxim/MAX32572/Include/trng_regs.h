@@ -2,6 +2,7 @@
  * @file    trng_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup trng_registers
  */
 
 /******************************************************************************
@@ -109,8 +110,11 @@ typedef struct {
 #define MXC_F_TRNG_CTRL_HEALTH_IE_POS                  2 /**< CTRL_HEALTH_IE Position */
 #define MXC_F_TRNG_CTRL_HEALTH_IE                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_IE_POS)) /**< CTRL_HEALTH_IE Mask */
 
-#define MXC_F_TRNG_CTRL_AES_KEYGEN_POS                 4 /**< CTRL_AES_KEYGEN Position */
-#define MXC_F_TRNG_CTRL_AES_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AES_KEYGEN_POS)) /**< CTRL_AES_KEYGEN Mask */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN_POS                 3 /**< CTRL_MEU_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_MEU_KEYGEN_POS)) /**< CTRL_MEU_KEYGEN Mask */
+
+#define MXC_F_TRNG_CTRL_XIP_KEYGEN_POS                 4 /**< CTRL_XIP_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_XIP_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_XIP_KEYGEN_POS)) /**< CTRL_XIP_KEYGEN Mask */
 
 #define MXC_F_TRNG_CTRL_OD_ROMON_POS                   6 /**< CTRL_OD_ROMON Position */
 #define MXC_F_TRNG_CTRL_OD_ROMON                       ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_ROMON_POS)) /**< CTRL_OD_ROMON Mask */
@@ -138,11 +142,11 @@ typedef struct {
 
 #define MXC_F_TRNG_CTRL_ROMON_DIS_POS                  24 /**< CTRL_ROMON_DIS Position */
 #define MXC_F_TRNG_CTRL_ROMON_DIS                      ((uint32_t)(0x7UL << MXC_F_TRNG_CTRL_ROMON_DIS_POS)) /**< CTRL_ROMON_DIS Mask */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x0UL) /**< CTRL_ROMON_DIS_RO_0 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_0 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_0                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_0 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_0 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_1 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_1 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_1                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_1 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_1 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_2 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x4UL) /**< CTRL_ROMON_DIS_RO_2 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_2                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_2 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_2 Setting */
 
 /**@} end of group TRNG_CTRL_Register */

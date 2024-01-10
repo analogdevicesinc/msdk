@@ -2,6 +2,7 @@
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup dma_registers
  */
 
 /******************************************************************************
@@ -114,7 +115,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTEN DMA_INTEN
- * @brief    DMA Control Register.
+ * @brief    DMA Interrupt Enable Register.
  * @{
  */
 #define MXC_F_DMA_INTEN_CH0_POS                        0 /**< INTEN_CH0 Position */
@@ -170,7 +171,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTFL DMA_INTFL
- * @brief    DMA Interrupt Register.
+ * @brief    DMA Interrupt Flag Register.
  * @{
  */
 #define MXC_F_DMA_INTFL_CH0_POS                        0 /**< INTFL_CH0 Position */
@@ -270,8 +271,8 @@ typedef struct {
 #define MXC_S_DMA_CTRL_REQUEST_MSRADC                  (MXC_V_DMA_CTRL_REQUEST_MSRADC << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_MSRADC Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART2RX                 ((uint32_t)0xEUL) /**< CTRL_REQUEST_UART2RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART2RX                 (MXC_V_DMA_CTRL_REQUEST_UART2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART2RX Setting */
-#define MXC_V_DMA_CTRL_REQUEST_SPI2RX                  ((uint32_t)0xFUL) /**< CTRL_REQUEST_SPI2RX Value */
-#define MXC_S_DMA_CTRL_REQUEST_SPI2RX                  (MXC_V_DMA_CTRL_REQUEST_SPI2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI2RX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_SPI3RX                  ((uint32_t)0xFUL) /**< CTRL_REQUEST_SPI3RX Value */
+#define MXC_S_DMA_CTRL_REQUEST_SPI3RX                  (MXC_V_DMA_CTRL_REQUEST_SPI3RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI3RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_USBRXEP1                ((uint32_t)0x11UL) /**< CTRL_REQUEST_USBRXEP1 Value */
 #define MXC_S_DMA_CTRL_REQUEST_USBRXEP1                (MXC_V_DMA_CTRL_REQUEST_USBRXEP1 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP1 Setting */
 #define MXC_V_DMA_CTRL_REQUEST_USBRXEP2                ((uint32_t)0x12UL) /**< CTRL_REQUEST_USBRXEP2 Value */
@@ -312,8 +313,8 @@ typedef struct {
 #define MXC_S_DMA_CTRL_REQUEST_I2C1TX                  (MXC_V_DMA_CTRL_REQUEST_I2C1TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C1TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART2TX                 ((uint32_t)0x2EUL) /**< CTRL_REQUEST_UART2TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART2TX                 (MXC_V_DMA_CTRL_REQUEST_UART2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART2TX Setting */
-#define MXC_V_DMA_CTRL_REQUEST_SPI2TX                  ((uint32_t)0x2FUL) /**< CTRL_REQUEST_SPI2TX Value */
-#define MXC_S_DMA_CTRL_REQUEST_SPI2TX                  (MXC_V_DMA_CTRL_REQUEST_SPI2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI2TX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_SPI3TX                  ((uint32_t)0x2FUL) /**< CTRL_REQUEST_SPI3TX Value */
+#define MXC_S_DMA_CTRL_REQUEST_SPI3TX                  (MXC_V_DMA_CTRL_REQUEST_SPI3TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI3TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_USBTXEP1                ((uint32_t)0x31UL) /**< CTRL_REQUEST_USBTXEP1 Value */
 #define MXC_S_DMA_CTRL_REQUEST_USBTXEP1                (MXC_V_DMA_CTRL_REQUEST_USBTXEP1 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP1 Setting */
 #define MXC_V_DMA_CTRL_REQUEST_USBTXEP2                ((uint32_t)0x32UL) /**< CTRL_REQUEST_USBTXEP2 Value */

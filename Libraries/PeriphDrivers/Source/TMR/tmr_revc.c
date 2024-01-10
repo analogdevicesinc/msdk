@@ -45,59 +45,59 @@ int MXC_TMR_RevC_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 
     // Set the prescaler
     switch (cfg->pres) {
-    case TMR_PRES_1:
+    case MXC_TMR_PRES_1:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_1);
         break;
 
-    case TMR_PRES_2:
+    case MXC_TMR_PRES_2:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_2);
         break;
 
-    case TMR_PRES_4:
+    case MXC_TMR_PRES_4:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_4);
         break;
 
-    case TMR_PRES_8:
+    case MXC_TMR_PRES_8:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_8);
         break;
 
-    case TMR_PRES_16:
+    case MXC_TMR_PRES_16:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_16);
         break;
 
-    case TMR_PRES_32:
+    case MXC_TMR_PRES_32:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_32);
         break;
 
-    case TMR_PRES_64:
+    case MXC_TMR_PRES_64:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_64);
         break;
 
-    case TMR_PRES_128:
+    case MXC_TMR_PRES_128:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_128);
         break;
 
-    case TMR_PRES_256:
+    case MXC_TMR_PRES_256:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_256);
         break;
 
-    case TMR_PRES_512:
+    case MXC_TMR_PRES_512:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_512);
         break;
 
-    case TMR_PRES_1024:
+    case MXC_TMR_PRES_1024:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_1024);
         break;
 
-    case TMR_PRES_2048:
+    case MXC_TMR_PRES_2048:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_2048);
         break;
 
-    case TMR_PRES_4096:
+    case MXC_TMR_PRES_4096:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_4096);
         break;
 
-    case TMR_PRES_8192:
+    case MXC_TMR_PRES_8192:
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_8192);
         break;
     }
@@ -274,7 +274,7 @@ void MXC_TMR_RevC_TO_Start(mxc_tmr_regs_t *tmr, uint32_t us)
     // Initialize the timer in one-shot mode
     cfg.pres = prescale;
     cfg.clock = MXC_TMR_HFIO_CLK;
-    cfg.mode = TMR_MODE_ONESHOT;
+    cfg.mode = MXC_TMR_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
 
@@ -298,7 +298,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t *tmr, uint32_t ticks, uint32_t *time, mx
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_NANOSEC;
+        *units = MXC_TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
 
@@ -306,7 +306,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t *tmr, uint32_t ticks, uint32_t *time, mx
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MICROSEC;
+        *units = MXC_TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
 
@@ -314,7 +314,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t *tmr, uint32_t ticks, uint32_t *time, mx
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MILLISEC;
+        *units = MXC_TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
 
@@ -322,7 +322,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t *tmr, uint32_t ticks, uint32_t *time, mx
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_SEC;
+        *units = MXC_TMR_UNIT_SEC;
         return E_NO_ERROR;
     }
 

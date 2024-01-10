@@ -2,6 +2,7 @@
  * @file    fcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the FCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup fcr_registers
  */
 
 /******************************************************************************
@@ -76,12 +77,14 @@ extern "C" {
 typedef struct {
     __IO uint32_t fctrl0;               /**< <tt>\b 0x00:</tt> FCR FCTRL0 Register */
     __IO uint32_t fctrl1;               /**< <tt>\b 0x04:</tt> FCR FCTRL1 Register */
-    __IO uint32_t fctrl2;               /**< <tt>\b 0x08:</tt> FCR FCTRL2 Register */
+    __R  uint32_t rsv_0x8;
     __IO uint32_t fctrl3;               /**< <tt>\b 0x0C:</tt> FCR FCTRL3 Register */
     __IO uint32_t urvbootaddr;          /**< <tt>\b 0x10:</tt> FCR URVBOOTADDR Register */
     __IO uint32_t urvctrl;              /**< <tt>\b 0x14:</tt> FCR URVCTRL Register */
     __R  uint32_t rsv_0x18;
     __IO uint32_t gp;                   /**< <tt>\b 0x1C:</tt> FCR GP Register */
+    __IO uint32_t trimctrl;             /**< <tt>\b 0x20:</tt> FCR TRIMCTRL Register */
+    __IO uint32_t erfoks;               /**< <tt>\b 0x24:</tt> FCR ERFOKS Register */
 } mxc_fcr_regs_t;
 
 /* Register offsets for module FCR */
@@ -93,11 +96,12 @@ typedef struct {
  */
 #define MXC_R_FCR_FCTRL0                   ((uint32_t)0x00000000UL) /**< Offset from FCR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_FCR_FCTRL1                   ((uint32_t)0x00000004UL) /**< Offset from FCR Base Address: <tt> 0x0004</tt> */
-#define MXC_R_FCR_FCTRL2                   ((uint32_t)0x00000008UL) /**< Offset from FCR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_FCR_FCTRL3                   ((uint32_t)0x0000000CUL) /**< Offset from FCR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_FCR_URVBOOTADDR              ((uint32_t)0x00000010UL) /**< Offset from FCR Base Address: <tt> 0x0010</tt> */
 #define MXC_R_FCR_URVCTRL                  ((uint32_t)0x00000014UL) /**< Offset from FCR Base Address: <tt> 0x0014</tt> */
 #define MXC_R_FCR_GP                       ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */
+#define MXC_R_FCR_TRIMCTRL                 ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
+#define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000024UL) /**< Offset from FCR Base Address: <tt> 0x0024</tt> */
 /**@} end of group fcr_registers */
 
 /**
@@ -129,11 +133,11 @@ typedef struct {
  * @brief    Register 1.
  * @{
  */
-#define MXC_F_FCR_FCTRL1_ACEN_POS                      0 /**< FCTRL1_ACEN Position */
-#define MXC_F_FCR_FCTRL1_ACEN                          ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_ACEN_POS)) /**< FCTRL1_ACEN Mask */
+#define MXC_F_FCR_FCTRL1_AC_EN_POS                     0 /**< FCTRL1_AC_EN Position */
+#define MXC_F_FCR_FCTRL1_AC_EN                         ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_AC_EN_POS)) /**< FCTRL1_AC_EN Mask */
 
-#define MXC_F_FCR_FCTRL1_ACRUN_POS                     1 /**< FCTRL1_ACRUN Position */
-#define MXC_F_FCR_FCTRL1_ACRUN                         ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_ACRUN_POS)) /**< FCTRL1_ACRUN Mask */
+#define MXC_F_FCR_FCTRL1_AC_RUN_POS                    1 /**< FCTRL1_AC_RUN Position */
+#define MXC_F_FCR_FCTRL1_AC_RUN                        ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_AC_RUN_POS)) /**< FCTRL1_AC_RUN Mask */
 
 #define MXC_F_FCR_FCTRL1_LOAD_POS                      2 /**< FCTRL1_LOAD Position */
 #define MXC_F_FCR_FCTRL1_LOAD                          ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_LOAD_POS)) /**< FCTRL1_LOAD Mask */
@@ -147,24 +151,10 @@ typedef struct {
 #define MXC_F_FCR_FCTRL1_MU_POS                        8 /**< FCTRL1_MU Position */
 #define MXC_F_FCR_FCTRL1_MU                            ((uint32_t)(0xFFFUL << MXC_F_FCR_FCTRL1_MU_POS)) /**< FCTRL1_MU Mask */
 
-#define MXC_F_FCR_FCTRL1_TRIM_POS                      23 /**< FCTRL1_TRIM Position */
-#define MXC_F_FCR_FCTRL1_TRIM                          ((uint32_t)(0x1FFUL << MXC_F_FCR_FCTRL1_TRIM_POS)) /**< FCTRL1_TRIM Mask */
+#define MXC_F_FCR_FCTRL1_AC_TRIM_POS                   23 /**< FCTRL1_AC_TRIM Position */
+#define MXC_F_FCR_FCTRL1_AC_TRIM                       ((uint32_t)(0x1FFUL << MXC_F_FCR_FCTRL1_AC_TRIM_POS)) /**< FCTRL1_AC_TRIM Mask */
 
 /**@} end of group FCR_FCTRL1_Register */
-
-/**
- * @ingroup  fcr_registers
- * @defgroup FCR_FCTRL2 FCR_FCTRL2
- * @brief    Register 2.
- * @{
- */
-#define MXC_F_FCR_FCTRL2_MSR_R1_POS                    16 /**< FCTRL2_MSR_R1 Position */
-#define MXC_F_FCR_FCTRL2_MSR_R1                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL2_MSR_R1_POS)) /**< FCTRL2_MSR_R1 Mask */
-
-#define MXC_F_FCR_FCTRL2_MSR_R2_POS                    18 /**< FCTRL2_MSR_R2 Position */
-#define MXC_F_FCR_FCTRL2_MSR_R2                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL2_MSR_R2_POS)) /**< FCTRL2_MSR_R2 Mask */
-
-/**@} end of group FCR_FCTRL2_Register */
 
 /**
  * @ingroup  fcr_registers
@@ -212,6 +202,49 @@ typedef struct {
 #define MXC_F_FCR_GP_GP                                ((uint32_t)(0xFFFFFFFFUL << MXC_F_FCR_GP_GP_POS)) /**< GP_GP Mask */
 
 /**@} end of group FCR_GP_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_TRIMCTRL FCR_TRIMCTRL
+ * @brief    MSR ADC Trim Register.
+ * @{
+ */
+#define MXC_F_FCR_TRIMCTRL_MSR_R1_POS                  0 /**< TRIMCTRL_MSR_R1 Position */
+#define MXC_F_FCR_TRIMCTRL_MSR_R1                      ((uint32_t)(0x3UL << MXC_F_FCR_TRIMCTRL_MSR_R1_POS)) /**< TRIMCTRL_MSR_R1 Mask */
+#define MXC_V_FCR_TRIMCTRL_MSR_R1_0K                   ((uint32_t)0x0UL) /**< TRIMCTRL_MSR_R1_0K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R1_0K                   (MXC_V_FCR_TRIMCTRL_MSR_R1_0K << MXC_F_FCR_TRIMCTRL_MSR_R1_POS) /**< TRIMCTRL_MSR_R1_0K Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R1_1P2K                 ((uint32_t)0x1UL) /**< TRIMCTRL_MSR_R1_1P2K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R1_1P2K                 (MXC_V_FCR_TRIMCTRL_MSR_R1_1P2K << MXC_F_FCR_TRIMCTRL_MSR_R1_POS) /**< TRIMCTRL_MSR_R1_1P2K Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R1_2P4K                 ((uint32_t)0x2UL) /**< TRIMCTRL_MSR_R1_2P4K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R1_2P4K                 (MXC_V_FCR_TRIMCTRL_MSR_R1_2P4K << MXC_F_FCR_TRIMCTRL_MSR_R1_POS) /**< TRIMCTRL_MSR_R1_2P4K Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R1_4P8K                 ((uint32_t)0x3UL) /**< TRIMCTRL_MSR_R1_4P8K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R1_4P8K                 (MXC_V_FCR_TRIMCTRL_MSR_R1_4P8K << MXC_F_FCR_TRIMCTRL_MSR_R1_POS) /**< TRIMCTRL_MSR_R1_4P8K Setting */
+
+#define MXC_F_FCR_TRIMCTRL_MSR_R2_POS                  2 /**< TRIMCTRL_MSR_R2 Position */
+#define MXC_F_FCR_TRIMCTRL_MSR_R2                      ((uint32_t)(0x7UL << MXC_F_FCR_TRIMCTRL_MSR_R2_POS)) /**< TRIMCTRL_MSR_R2 Mask */
+#define MXC_V_FCR_TRIMCTRL_MSR_R2_OPEN                 ((uint32_t)0x0UL) /**< TRIMCTRL_MSR_R2_OPEN Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R2_OPEN                 (MXC_V_FCR_TRIMCTRL_MSR_R2_OPEN << MXC_F_FCR_TRIMCTRL_MSR_R2_POS) /**< TRIMCTRL_MSR_R2_OPEN Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R2_3K                   ((uint32_t)0x4UL) /**< TRIMCTRL_MSR_R2_3K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R2_3K                   (MXC_V_FCR_TRIMCTRL_MSR_R2_3K << MXC_F_FCR_TRIMCTRL_MSR_R2_POS) /**< TRIMCTRL_MSR_R2_3K Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R2_6K                   ((uint32_t)0x5UL) /**< TRIMCTRL_MSR_R2_6K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R2_6K                   (MXC_V_FCR_TRIMCTRL_MSR_R2_6K << MXC_F_FCR_TRIMCTRL_MSR_R2_POS) /**< TRIMCTRL_MSR_R2_6K Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R2_12K                  ((uint32_t)0x6UL) /**< TRIMCTRL_MSR_R2_12K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R2_12K                  (MXC_V_FCR_TRIMCTRL_MSR_R2_12K << MXC_F_FCR_TRIMCTRL_MSR_R2_POS) /**< TRIMCTRL_MSR_R2_12K Setting */
+#define MXC_V_FCR_TRIMCTRL_MSR_R2_24K                  ((uint32_t)0x7UL) /**< TRIMCTRL_MSR_R2_24K Value */
+#define MXC_S_FCR_TRIMCTRL_MSR_R2_24K                  (MXC_V_FCR_TRIMCTRL_MSR_R2_24K << MXC_F_FCR_TRIMCTRL_MSR_R2_POS) /**< TRIMCTRL_MSR_R2_24K Setting */
+
+/**@} end of group FCR_TRIMCTRL_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_ERFOKS FCR_ERFOKS
+ * @brief    ERFO Kick Start Register.
+ * @{
+ */
+#define MXC_F_FCR_ERFOKS_CTRL_POS                      0 /**< ERFOKS_CTRL Position */
+#define MXC_F_FCR_ERFOKS_CTRL                          ((uint32_t)(0xFFFFUL << MXC_F_FCR_ERFOKS_CTRL_POS)) /**< ERFOKS_CTRL Mask */
+
+/**@} end of group FCR_ERFOKS_Register */
 
 #ifdef __cplusplus
 }

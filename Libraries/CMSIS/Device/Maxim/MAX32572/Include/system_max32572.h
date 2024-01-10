@@ -33,8 +33,10 @@ extern "C" {
  *----------------------------------------------------------------------------*/
 
 /* NOTE: ISO was previously HIRC. */
+
+// TODO(SW): Remove ISO
 #ifndef ISO_FREQ
-#define ISO_FREQ 75000000
+#define ISO_FREQ 10000000
 #endif
 
 /* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
@@ -46,7 +48,7 @@ extern "C" {
 
 /* NOTE: IPO was previously HIRC96. */
 #ifndef IPO_FREQ
-#define IPO_FREQ 150000000
+#define IPO_FREQ 96000000
 #endif
 
 /* NOTE: IBRO was previously HIRC8M. */
