@@ -118,8 +118,8 @@ typedef struct {
 
 #pragma pack()
 
-extern Header_images_t _bin_start_; // binary start address, defined in linker file
-extern unsigned int _bin_end_; // binary end address, defined in linker file
+extern unsigned char _bin_start_[]; // binary start address, defined in linker file
+extern unsigned char _bin_end_; // binary end address, defined in linker file
 static unsigned char *images_start_addr = NULL;
 static Header_images_t images_header;
 
@@ -927,10 +927,10 @@ int MXC_TFT_Init(void)
     memset(&images_header, 0, sizeof(Header_images_t));
 
     // Is there any image data to work with?
-    if ((unsigned int *)&_bin_start_ != (unsigned int *)&_bin_end_) {
-        images_start_addr = (unsigned char *)&_bin_start_;
+    if (_bin_start_ != &_bin_end_) {
+        images_start_addr = _bin_start_;
         // set header
-        images_header = *((Header_images_t *)&_bin_start_);
+        memcpy(&images_header, images_start_addr, sizeof(Header_images_t));
     }
 
     /*
