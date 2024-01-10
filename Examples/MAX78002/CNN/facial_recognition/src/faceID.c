@@ -77,7 +77,7 @@ static void ARM_low_power(int lp_mode);
 #endif
 
 #ifdef TFT_ENABLE
-static int font   = (int)&SansSerif16x16[0];
+static int font   = (int)&Liberation_Sans16x16[0];
 #endif //#ifdef TFT_ENABLE
 
 static int box_x_offset = 0;

@@ -42,6 +42,7 @@ ifeq "$(TFT_ENABLE)" "1"
 PROJ_CFLAGS+=-DTFT_ENABLE
 IPATH += TFT/fthr
 VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 endif

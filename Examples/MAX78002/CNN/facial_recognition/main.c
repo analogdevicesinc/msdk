@@ -208,7 +208,7 @@ static const uint8_t camera_settings[][2] = {
 
 mxc_uart_regs_t* CommUart;
 unsigned int touch_x, touch_y;
-int font = (int)&SansSerif16x16[0];
+int font = (int)&Liberation_Sans16x16[0];
 
 void init_names(){
 	char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;

@@ -65,7 +65,7 @@ static void run_cnn_2(void);
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_FTHR_REVA
-static int font = (int)&SansSerif16x16[0];
+static int font = (int)&Liberation_Sans16x16[0];
 #endif
 #endif //#ifdef TFT_ENABLE
 

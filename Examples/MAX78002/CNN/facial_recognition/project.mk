@@ -12,18 +12,13 @@
 $(info Note: This project is designed and tested for the OV7692 only.)
 override CAMERA=OV7692
 
-$(info Note: This project is designed and tested for the NewHaven NHD-2.4 screen only!)
-#TFT = ADAFRUIT
+# This project only supports the Newhaven NHD-2.4 TFT display
 TFT = NEWHAVEN
 
-# Place build files specific to EvKit_V1 here.
-ifeq "$(BOARD)" "EvKit_V1"
+# Enable TFT and touchscreen
 PROJ_CFLAGS+=-DTFT_ENABLE
 PROJ_CFLAGS+=-DTS_ENABLE
 PROJ_CFLAGS +=-DTS_MAX_BUTTONS=32
-IPATH += TFT/fthr
-VPATH += TFT/fthr
-endif
 
-
-
+# Add font
+FONTS = LiberationSans16x16

@@ -129,7 +129,7 @@ extern uint8_t box[4]; // x1, y1, x2, y2
 static const uint32_t baseaddr[] = BASEADDR;
 int key;
 char alphabet[26][1] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-static int font   = (int)&SansSerif16x16[0];
+static int font   = (int)&Liberation_Sans16x16[0];
 
 
 /***** Prototypes *****/
