@@ -1,8 +1,8 @@
 ## Description
 
-This example captures an image using the camera (e.g. OV5640) via MIPI CSI-2 Protocol and streams either to the on-board TFT display or to your PC through the COM port. Press PB1 to capture an image once the device is ready.
+This example captures an image using the camera (e.g. OV5640) via MIPI CSI-2 Protocol, saves it into external SRAM and streams to your PC through the COM port. Press PB1 to capture an image once the device is ready.
 
-Use the [utils/console.py](utils/console.py) script to grab the camera data and create a png image of the captured image. More information can be found in [utils/README.md](utils/README.md).
+Use the [utils/console.py](utils/console.py) script to grab the camera data and create a PNG image of the captured image. More information can be found in [utils/README.md](utils/README.md).
 
 ## Software
 
