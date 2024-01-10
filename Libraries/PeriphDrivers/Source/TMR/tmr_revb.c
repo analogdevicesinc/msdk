@@ -119,6 +119,14 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
+    case MXC_TMR_MODE_DUAL_EDGE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
+
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
+
     case MXC_TMR_MODE_PWM:
         if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
