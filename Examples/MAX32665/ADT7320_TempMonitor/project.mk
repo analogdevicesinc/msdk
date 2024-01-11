@@ -8,6 +8,9 @@
 # **********************************************************
 
 # Add your config here!
+VPATH += $(LIBS_DIR)/MiscDrivers/TempSensor
+IPATH += $(LIBS_DIR)/MiscDrivers/TempSensor
+SRCS += adt7320_driver.c
 
 # If you have secure version of MCU (MAX32666), set SBT=1 to generate signed binary
 # For more information on how sing process works, see

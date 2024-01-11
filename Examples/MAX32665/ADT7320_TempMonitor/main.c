@@ -77,7 +77,6 @@ int main(void)
     printf("This example reads the temperature data from ADT7320 temperature sensor\n");
     printf("via SPI and write it to the terminal. \n");
     printf("You will need to connect the ADT7320 sensor to the ");
-    printf("SPI0 pins.\n\n");
 #if defined(BOARD_FTHR)
     printf("SPI1 pins.\n\n");
 #else
