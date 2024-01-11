@@ -1,0 +1,37 @@
+name: CI micro-ROS Agent
+
+on:
+    pull_request:
+      branches:
+        - 'humble'
+    schedule:
+      - cron: '33 6 * * *'
+
+jobs:
+
+    microros_agent_ci:
+      runs-on: ubuntu-latest
+      strategy:
+        fail-fast: false
+        matrix:
+          os: [ ubuntu-20.04 ]
+          ros_distribution: [ humble ]
+          include:
+            - docker_image: ubuntu:jammy
+              ros_distribution: humble
+      container:
+        image: ubuntu:jammy
+      steps:
+      - uses: actions/checkout@v2
+      - uses: ros-tooling/setup-ros@0.3.2
+        with:
+          use-ros2-testing: false
+          required-ros-distributions: ${{ matrix.ros_distribution }}
+      - name : Download and install dependencies
+        run: |
+          apt-get install ros-${{ matrix.ros_distribution }}-micro-ros-msgs
+          apt-get install ros-${{ matrix.ros_distribution }}-rmw-fastrtps-cpp
+      - uses : ros-tooling/action-ros-ci@0.2.5
+        with:
+          package-name: "micro_ros_agent"
+          target-ros2-distro: ${{ matrix.ros_distribution }}

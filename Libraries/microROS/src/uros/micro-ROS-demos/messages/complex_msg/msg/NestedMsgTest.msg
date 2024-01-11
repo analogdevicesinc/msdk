@@ -1,0 +1,14 @@
+bool data1
+byte data2
+char data3
+float32 data4
+float64 data5
+int8 data6
+uint8 data7
+int16 data8
+uint16 data9
+int32 data10
+uint32 data11
+int64 data12
+uint64 data13
+MultiStringTest data14
