@@ -8,17 +8,27 @@ def _validate(returncode:int, fail_msg:str):
         print(fail_msg)
         exit(returncode)
 
-if __name__ == "__main__":
-    _cwd = Path(__file__).parent.resolve()
+def install_ros():
+    result = run("sudo apt install software-properties-common -y", shell=True)
+    _validate(result.returncode, "Failed to add Ubuntu Universe repo!")
+    result = run("sudo add-apt-repository universe", shell=True)
+    _validate(result.returncode, "Failed to add Ubuntu Universe repo!")
 
-    if not environ.get("ROS_DISTRO"):
-        if Path(f"/opt/ros/humble/setup.bash").exists():
-            print("run 'source /opt/ros/humble/setup.bash' before running this script!")
-            exit(2)
-        else:
-            print("Install and set up ROS before running this script!")
-            exit(3)
-    
+    result = run("sudo apt update && sudo apt install curl -y", shell=True)
+    _validate(result.returncode, "Failed to install curl!")
+    result = run("sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg", shell=True)
+    _validate(result.returncode, "Failed to add ROS2 GPG key!")
+
+    result = run('echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null', shell=True)
+    _validate(result.returncode, "Failed to add ROS repository!")
+
+    result = run("sudo apt update && sudo apt upgrade", shell=True)
+    _validate(result.returncode, "Failed to update apt packages!")
+
+    result = run("sudo apt install ros-humble-desktop -y", shell=True)
+    _validate(result.returncode, "Failed to install ros!")
+
+def install_microros():
     result = run("colcon --help", shell=True, capture_output=True)
     if result.returncode != 0:
         print("Installing colcon")
@@ -56,5 +66,25 @@ if __name__ == "__main__":
 
     result = run(f"{local_source} && ros2 run micro_ros_setup build_agent.sh", shell=True, executable="/bin/bash", cwd=_cwd)
     _validate(result.returncode, "Failed to build agent!")
+
+if __name__ == "__main__":
+    _cwd = Path(__file__).parent.resolve()
+
+    if not environ.get("ROS_DISTRO"):
+        if Path(f"/opt/ros/humble/setup.bash").exists():
+            print("run 'source /opt/ros/humble/setup.bash' before running this script!")
+            exit(2)
+        else:
+            print("No ROS distro detected on your system.")
+            confirm = input("Would you like this script to auto-install ROS humble now? [y/n]")
+            if confirm.lower() == "y":
+                install_ros()
+            else:
+                print("Aborting.")
+                exit(3)
+    else:
+        print(f"Found ros {environ['ROS_DISTRO']}")
+
+    install_microros()
 
     print("Success!")
