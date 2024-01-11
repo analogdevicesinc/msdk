@@ -52,10 +52,6 @@
 #include "tft_config.h"
 #include "rtc.h"
 
-#ifdef BOARD_EVKIT_V1
-#include "bitmap.h"
-#include "tft_ssd2119.h"
-#endif
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
 #endif

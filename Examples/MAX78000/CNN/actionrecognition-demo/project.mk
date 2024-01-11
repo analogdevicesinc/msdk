@@ -19,9 +19,6 @@ MXC_OPTIMIZE_CFLAGS = -O2
 
 # Add some additional directories to the build based on what board
 # we're compiling for...
-ifeq "$(BOARD)" "EvKit_V1"
-VPATH += TFT/evkit
-endif
 ifeq "$(BOARD)" "FTHR_RevA"
 VPATH += TFT/fthr/fonts
 endif
@@ -33,4 +30,12 @@ FONTS = LiberationSans12x12 LiberationSans24x24 LiberationSans28x28 LiberationSa
 
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif
+
+ifeq ($(BOARD),CAM01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
+endif
+
+ifeq ($(BOARD),EvKit_V1)
+$(error ERR_NOTSUPPORTED: This project is not supported for the EVKIT board)
 endif
