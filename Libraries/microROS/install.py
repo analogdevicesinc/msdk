@@ -11,7 +11,7 @@ def _validate(returncode:int, fail_msg:str):
 def install_ros():
     result = run("sudo apt install software-properties-common -y", shell=True)
     _validate(result.returncode, "Failed to add Ubuntu Universe repo!")
-    result = run("sudo add-apt-repository universe", shell=True)
+    result = run("sudo add-apt-repository universe -y", shell=True)
     _validate(result.returncode, "Failed to add Ubuntu Universe repo!")
 
     result = run("sudo apt update && sudo apt install curl -y", shell=True)
