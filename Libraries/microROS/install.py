@@ -56,3 +56,5 @@ if __name__ == "__main__":
 
     result = run(f"{local_source} && ros2 run micro_ros_setup build_agent.sh", shell=True, executable="/bin/bash", cwd=_cwd)
     _validate(result.returncode, "Failed to build agent!")
+
+    print("Success!")
