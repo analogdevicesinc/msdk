@@ -41,22 +41,22 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "sfcc.h"
-#include "icc_reva.h"
+#include "sfcc_reva.h"
 
-int MXC_SFCC_ID(mxc_icc_info_t cid)
+int MXC_SFCC_ID(mxc_sfcc_info_t cid)
 {
-    return MXC_ICC_RevA_ID ((mxc_icc_reva_regs_t*) MXC_SFCC, cid);
+    return MXC_SFCC_RevA_ID ((mxc_sfcc_reva_regs_t*) MXC_SFCC, cid);
 }
 
 void MXC_SFCC_Enable(void)
 {
-    MXC_ICC_RevA_Enable ((mxc_icc_reva_regs_t*) MXC_SFCC);
+    MXC_SFCC_RevA_Enable ((mxc_sfcc_reva_regs_t*) MXC_SFCC);
 }
 
 void MXC_SFCC_Disable(void)
 {
 
-    MXC_ICC_RevA_Disable ((mxc_icc_reva_regs_t*) MXC_SFCC);
+    MXC_SFCC_RevA_Disable ((mxc_sfcc_reva_regs_t*) MXC_SFCC);
 }
 
 void MXC_SFCC_Flush(void)

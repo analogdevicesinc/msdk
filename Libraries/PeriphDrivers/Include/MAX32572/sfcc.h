@@ -45,8 +45,7 @@
 
 /* **** Includes **** */
 #include <stdint.h>
-#include "icc_regs.h"
-#include "icc.h"
+#include "sfcc_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,13 +57,21 @@ extern "C" {
  * @{
  */
 
+/**
+ * @brief Enumeration type for the Cache ID Register
+ */
+typedef enum {
+    SFCC_INFO_RELNUM,    ///< Identifies the Release Number
+    SFCC_INFO_PARTNUM,   ///< Specifies the value of Cache ID Part Number
+    SFCC_INFO_ID         ///< Specifies the value of Cache ID
+} mxc_sfcc_info_t;
 
 /**
  * @brief   Reads the data from the Cache Id Register.
  * @param   cid Enumeration type for Cache Id Register.
  * @retval  Returns the contents of Cache Id Register.
  */
-int MXC_SFCC_ID (mxc_icc_info_t cid);
+int MXC_SFCC_ID (mxc_sfcc_info_t cid);
 
 /**
  * @brief   Enable the instruction cache controller.
