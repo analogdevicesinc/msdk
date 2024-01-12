@@ -38,8 +38,6 @@
 #include "led.h"
 
 #define STRING_BUFFER_LEN 50
-#define IMG_XRES 160
-#define IMG_YRES 120
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); vTaskDelete(NULL);}}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
@@ -53,19 +51,9 @@ std_msgs__msg__Header incoming_ping;
 std_msgs__msg__Header outcoming_ping;
 std_msgs__msg__Header incoming_pong;
 
-sensor_msgs__msg__RegionOfInterest outgoing_roi;
-typedef struct {
-    float x1;
-    float y1;
-    float x2;
-    float y2;
-} bounding_box_t;
-
 int device_id;
 int seq_no;
 int pong_count;
-int g_camera_dma_channel;
-volatile uint32_t cnn_time; // Stopwatch
 
 void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {
@@ -139,6 +127,10 @@ void appMain(void *argument)
 	rcl_node_t node;
 	RCCHECK(rclc_node_init_default(&node, "pingpong_node", "", &support));
 
+	/*
+	Create publishers and subscribers.  These define the topics that this firmware will
+	interact with, and the message types for each topic.
+	*/
 	// Create a reliable ping publisher
 	RCCHECK(rclc_publisher_init_default(&ping_publisher, &node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/ping"));
@@ -155,7 +147,11 @@ void appMain(void *argument)
 	RCCHECK(rclc_subscription_init_best_effort(&pong_subscriber, &node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Header), "/microROS/pong"));
 
-    // Create a 2 seconds ping timer
+    /*
+	Create a 2 second ping timer.  This is a software timer that is driven by the micro-ROS
+	layer, and when it expires the associated callback function will be triggered.  "ping"
+	messages are published from the callback.
+	*/
 	rcl_timer_t timer;
 	RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(2000), ping_timer_callback));
 
