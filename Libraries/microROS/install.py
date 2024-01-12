@@ -1,4 +1,24 @@
+###############################################################################
+ #
+ # Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
+ # is proprietary to Analog Devices, Inc. and its licensors.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ ##############################################################################
+
 import os
+import sys
 from os import environ
 from subprocess import run
 from pathlib import Path
@@ -27,6 +47,8 @@ def install_ros():
 
     result = run("sudo apt install ros-humble-desktop -y", shell=True)
     _validate(result.returncode, "Failed to install ros!")
+
+    print("Successfully installed ros humble.")
 
 def install_microros():
     result = run("colcon --help", shell=True, capture_output=True)
@@ -72,6 +94,7 @@ if __name__ == "__main__":
 
     if not environ.get("ROS_DISTRO"):
         if Path(f"/opt/ros/humble/setup.bash").exists():
+            print("ROS humble detected!")
             print("run 'source /opt/ros/humble/setup.bash' before running this script!")
             exit(2)
         else:
@@ -79,11 +102,13 @@ if __name__ == "__main__":
             confirm = input("Would you like this script to auto-install ROS humble now? [y/n]")
             if confirm.lower() == "y":
                 install_ros()
+                run(f"source /opt/ros/humble/setup.bash && {sys.executable} install.py", shell=True, executable="/bin/bash", cwd=_cwd)
+                exit(0)
             else:
                 print("Aborting.")
                 exit(3)
     else:
-        print(f"Found ros {environ['ROS_DISTRO']}")
+        print(f"Found ROS {environ['ROS_DISTRO']}")
 
     install_microros()
 
