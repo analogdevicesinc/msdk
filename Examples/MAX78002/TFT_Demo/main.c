@@ -134,9 +134,14 @@ int main(void)
 
     printf("TFT Demo Example\n");
 #ifdef TFT_ADAFRUIT
-    /* Initialize touch screen */
+    /* Initialize ADAFRUIT TFT display */
+    MXC_TFT_Init(MXC_SPI0, -1, NULL, NULL);
+    MXC_TFT_SetRotation(ROTATE_270);
+    TFT_test();
+    /* Initialize ADAFRUIT touch screen */
     if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL))
         printf("Touch screen initialization failed\n");
+    MXC_TS_Start();
 #else
     /* Initialize TFT display */
     MXC_TFT_Init(NULL, NULL);
