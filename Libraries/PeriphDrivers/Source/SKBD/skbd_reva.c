@@ -120,9 +120,9 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t *skbd, mxc_skbd_config_t config)
 
         /* Configure the SKBD  */
         skbd->ctrl1 = (config.reg_erase << MXC_F_SKBD_REVA_CTRL1_CLEAR_POS) | MXC_F_SKBD_REVA_CTRL1_AUTOEN // ->ctrl1[0]
-                		| MXC_F_SKBD_REVA_CTRL1_CLEAR // ->ctrl1[1]
-                		| MXC_F_SKBD_REVA_CTRL1_OUTNB //ctrl1[11:8]
-                		| (config.debounce << MXC_F_SKBD_REVA_CTRL1_DBTM_POS) & MXC_F_SKBD_REVA_CTRL1_DBTM; //ctrl1[15:13]
+                	| MXC_F_SKBD_REVA_CTRL1_CLEAR // ->ctrl1[1]
+                	| MXC_F_SKBD_REVA_CTRL1_OUTNB //ctrl1[11:8]
+                	| (config.debounce << MXC_F_SKBD_REVA_CTRL1_DBTM_POS) & MXC_F_SKBD_REVA_CTRL1_DBTM; //ctrl1[15:13]
 
         while (!(skbd->sr & MXC_F_SKBD_REVA_SR_BUSY)) {}
 
