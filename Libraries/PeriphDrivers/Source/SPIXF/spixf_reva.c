@@ -85,8 +85,8 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t *spixfc,
                                 mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, mxc_spixf_req_t *req);
 
 #if defined(SPIXF_RAM)
-    int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value);
-    void MXC_FreeLock_SPIXF(uint32_t *lock);
+    static int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value);
+    static void MXC_FreeLock_SPIXF(uint32_t *lock);
 #endif
 
 /******* Globals *******/

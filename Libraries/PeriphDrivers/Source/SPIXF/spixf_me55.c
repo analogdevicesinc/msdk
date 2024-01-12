@@ -59,7 +59,7 @@ mxc_gpio_cfg_t gpio_cfg_spixf_ram = { MXC_GPIO1, (MXC_GPIO_PIN_22 | MXC_GPIO_PIN
 #else
 __attribute__((section(".spix_config")))
 #endif
-int MXC_GPIO_Config_SPIXF(mxc_gpio_cfg_t *cfg)
+static int MXC_GPIO_Config_SPIXF(mxc_gpio_cfg_t *cfg)
 {
     mxc_gpio_regs_t *gpio = cfg->port;
     mxc_gpio_reva_regs_t *port = (mxc_gpio_reva_regs_t *)gpio;
