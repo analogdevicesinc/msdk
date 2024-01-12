@@ -1,9 +1,24 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software is
- * proprietary and confidential to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
+
 /**
  * @file    is25.c
  * @brief   Board layer Driver for the ISSI IS25 Serial Multi-I/O Flash Memory.
@@ -242,7 +257,6 @@ uint32_t Ext_Flash_ID(void)
     }
 
     return ((uint32_t)(id[2] | (id[1] << 8) | (id[0] << 16)));
-    return 0;
 }
 
 /* ************************************************************************* */
@@ -328,7 +342,7 @@ int Ext_Flash_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, Ext_Flash
     // Select approriate command for the desired read mode
     if (d_line == Ext_Flash_DataLine_Single) {
         cmd[0] = EXT_FLASH_CMD_READ;
-        dummy_bits = EXT_FLASH_Read_DUMMY;
+        dummy_bits = EXT_FLASH_READ_DUMMY;
     } else if (d_line == Ext_Flash_DataLine_Dual) {
         cmd[0] = EXT_FLASH_CMD_DREAD;
         dummy_bits = EXT_FLASH_DREAD_DUMMY;
