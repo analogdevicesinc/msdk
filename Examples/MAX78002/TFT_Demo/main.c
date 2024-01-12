@@ -142,6 +142,7 @@ int main(void)
     if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL))
         printf("Touch screen initialization failed\n");
     MXC_TS_Start();
+    TFT_Print("Touch the screen!", 0, 120, font_5, 17);
 #else
     /* Initialize TFT display */
     MXC_TFT_Init(NULL, NULL);
