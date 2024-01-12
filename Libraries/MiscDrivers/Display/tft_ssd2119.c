@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "mxc_device.h"
 #include "mxc_delay.h"
@@ -117,8 +118,8 @@ typedef struct {
 
 #pragma pack()
 
-extern unsigned int _bin_start_; // binary start address, defined in linker file
-extern unsigned int _bin_end_; // binary end address, defined in linker file
+extern unsigned char _bin_start_[]; // binary start address, defined in linker file
+extern unsigned char _bin_end_; // binary end address, defined in linker file
 static unsigned char *images_start_addr = NULL;
 static Header_images_t images_header;
 
@@ -926,8 +927,8 @@ int MXC_TFT_Init(void)
     memset(&images_header, 0, sizeof(Header_images_t));
 
     // Is there any image data to work with?
-    if (_bin_start_ != _bin_end_) {
-        images_start_addr = (unsigned char *)&_bin_start_;
+    if (_bin_start_ != &_bin_end_) {
+        images_start_addr = _bin_start_;
         // set header
         memcpy(&images_header, images_start_addr, sizeof(Header_images_t));
     }
@@ -1276,9 +1277,12 @@ void MXC_TFT_SetFont(int font_id)
 
 void MXC_TFT_Printf(const char *format, ...)
 {
-    char str[100];
+    char str[100] = { 0 };
+    va_list args;
 
-    snprintf(str, sizeof(str), format, *((&format) + 1), *((&format) + 2), *((&format) + 3));
+    va_start(args, format);
+    vsnprintf(str, sizeof(str), format, args);
+    va_end(args);
 
     printCursor(str); //printf_message
 }
