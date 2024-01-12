@@ -399,13 +399,13 @@ static void run_cnn_2(void)
     PR_DEBUG("CNN_3 max value index: %d \n", max_emb_index);
     if (max_emb > Threshold)
     {
-        PR_DEBUG("subject id: %d \n", max_emb_index);
+        printf("subject id: %d \n", max_emb_index);
         name =  (char*)names[max_emb_index];
-        PR_DEBUG("subject name: %s \n", name);
+        printf("subject name: %s \n", name);
             }
     else
     {
-        PR_DEBUG("Unknown subject \n");
+        printf("Unknown subject \n");
         name =  "Unknown";
             }
 
