@@ -143,7 +143,7 @@ int main(void)
         printf("Touch screen initialization failed\n");
     MXC_TS_Start();
     TFT_Print("Touch the screen!", 0, 120, font_5, 17);
-    TFT_Print("And check serial terminal!", 0, 120, font_5, 27);
+    TFT_Print("And check serial terminal!", 0, 140, font_5, 27);
 #else
     /* Initialize TFT display */
     MXC_TFT_Init(NULL, NULL);
