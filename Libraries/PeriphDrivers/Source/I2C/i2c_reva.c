@@ -957,7 +957,8 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
             return E_COMM_ERR;
         }
 
-        if ((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE) && (req->rx_len < read)) {
+        if ((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE) && (req->rx_len > read) &&
+            (MXC_I2C_RevA_GetRXFIFOAvailable(i2c) == 0)) {
             if ((req->rx_len - read) > MXC_I2C_REVA_MAX_FIFO_TRANSACTION) {
                 i2c->rxctrl1 = 0;
             } else {
