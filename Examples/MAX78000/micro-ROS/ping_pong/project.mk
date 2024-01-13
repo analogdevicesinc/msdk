@@ -13,4 +13,5 @@
 
 # Add your config here!
 
+# Enable the micro-ROS library.
 LIB_MICROROS = 1
