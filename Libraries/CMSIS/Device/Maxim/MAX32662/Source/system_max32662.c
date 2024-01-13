@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include "max32662.h"
 #include "gcr_regs.h"
+#include "pwrseq_regs.h"
 #include "mxc_sys.h"
 
 extern void (*const __isr_vector[])(void);
@@ -80,6 +81,26 @@ __weak void SystemCoreClockUpdate(void)
         // This code should never execute, however, initialize to safe value.
         base_freq = HIRC_FREQ;
         break;
+    }
+
+    if (clk_src == MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO) {
+        uint32_t ovr = (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_OVR);
+        switch (ovr) {
+        case MXC_S_PWRSEQ_LPCTRL_OVR_0_9V:
+            base_freq = base_freq >> 3;
+            break;
+        case MXC_S_PWRSEQ_LPCTRL_OVR_1_0V:
+            base_freq = base_freq >> 1;
+            break;
+        case MXC_S_PWRSEQ_LPCTRL_OVR_1_1V:
+        default:
+            /* Nothing to do here.
+                OVR = 1.1V means the clock runs full speed. */
+            break;
+        }
+        // Get the clock divider
+        base_freq = base_freq >> ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_DIV) >>
+                                  MXC_F_GCR_CLKCTRL_IPO_DIV_POS);
     }
 
     div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;

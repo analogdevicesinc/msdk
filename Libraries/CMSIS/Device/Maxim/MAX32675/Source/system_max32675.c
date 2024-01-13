@@ -25,6 +25,7 @@
 #include "max32675.h"
 #include "gcr_regs.h"
 #include "mxc_sys.h"
+#include "pwrseq_regs.h"
 
 extern void (*const __vector_table[])(void);
 
@@ -80,6 +81,21 @@ __weak void SystemCoreClockUpdate(void)
     }
     // Get the clock divider
     if (clk_src == MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO) {
+        uint32_t ovr = (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_OVR);
+        switch (ovr) {
+        case MXC_S_PWRSEQ_LPCN_OVR_0_9V:
+            base_freq = base_freq >> 3;
+            break;
+        case MXC_S_PWRSEQ_LPCN_OVR_1_0V:
+            base_freq = base_freq >> 1;
+            break;
+        case MXC_S_PWRSEQ_LPCN_OVR_1_1V:
+        default:
+            /* Nothing to do here.
+                OVR = 1.1V means the clock runs full speed. */
+            break;
+        }
+
         base_freq = base_freq >> ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_DIV) >>
                                   MXC_F_GCR_CLKCTRL_IPO_DIV_POS);
     }
