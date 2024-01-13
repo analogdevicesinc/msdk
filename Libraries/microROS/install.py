@@ -124,10 +124,11 @@ def install_microros():
 
 def main():
     logging.info(f"Running MSDK micro-ROS install.py for {platform.platform()}")
+    logging.info(f"Using Python {sys.version}")
 
     if not environ.get("ROS_DISTRO"):
         if Path(f"/opt/ros/humble/setup.bash").exists():
-            logging.info("ROS humble detected!")
+            logging.info("Detected ROS 'humble'")
             logging.error("run 'source /opt/ros/humble/setup.bash' before running this script!")
             exit(2)
         else:
@@ -144,9 +145,18 @@ def main():
     else:
         logging.info(f"Found ROS '{environ['ROS_DISTRO']}'")
 
+    if not (sys.version_info.major == 3 and sys.version_info.minor == 10 and sys.version_info.minor == 12):
+        logging.warning("ROS and micro-ROS depend on Python 3.10.12!  Your current python version does not match.")
+        logging.warning("Untested Python version detected...  Failures may occur.  You have been warned!...")
+        response = input("Would you like to continue?... [y/n]")
+        if response.lower() != "y":
+            logging.info("Aborting.")
+            exit(3)
+
     install_microros()
 
     logging.info("Success!  micro-ROS is now ready to use with the MSDK.")
+    logging.info(f"You can now source the {_cwd / '/install/local_setup.bash'} script when you want to run the micro-ROS agent.")
 
 if __name__ == "__main__":
     try:
