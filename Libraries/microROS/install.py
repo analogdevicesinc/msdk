@@ -156,7 +156,7 @@ def main():
     install_microros()
 
     logging.info("Success!  micro-ROS is now ready to use with the MSDK.")
-    logging.info(f"You can now source the {_cwd / '/install/local_setup.bash'} script when you want to run the micro-ROS agent.")
+    logging.info(f"You can now source the {_cwd / 'install/local_setup.bash'} script when you want to run the micro-ROS agent.")
 
 if __name__ == "__main__":
     try:
