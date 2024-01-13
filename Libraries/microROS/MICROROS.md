@@ -38,7 +38,7 @@ So - ROS is an attractive option for building robots, but historically required 
 
 ## Installation and Setup
 
-One of the disadvantages of ROS is that it can be difficult to set up.  To address this, the MSDK provides an installation script that can streamline the 
+One of the disadvantages of ROS is that it can be difficult to set up.  To address this, the MSDK provides an installation script that can streamline these difficulties.
 
 ### Requirements
 
