@@ -1,5 +1,7 @@
 /*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc. (now owned by Analog
+ * Devices, Inc.), Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary and confidential to Analog Devices, Inc. and its licensors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -68,6 +70,10 @@ extern "C" {
 #ifndef CONSOLE_BAUD
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
+
+#define TS_I2C MXC_I2C0
+#define TS_I2C_FREQ MXC_I2C_STD_MODE
+#define TS_I2C_TARGET_ADDR 0x48
 
 /**
  * \brief   Initialize the BSP and board interfaces.
