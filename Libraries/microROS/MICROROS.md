@@ -2,7 +2,7 @@
 
 [micro-ROS](https://micro.ros.org/) is a library that puts [ROS 2](https://www.ros.org/) onto microcontrollers.  The Robot Operating System (ROS) is a set of software libraries and tools for building robot applications.
 
-The MSDK maintains support for micro-ROS so that users can write applications that directly interface with the larger ROS ecosystem.  This reduces complexity and system integration overhead while simultaneously speeding up application development.  Additionally, the ROS ecosystem offers a huge set of libraries to enable integrated robotic applications and products.
+The MSDK maintains support for micro-ROS so that users can integrate microcontrollers directly into the larger ROS ecosystem.  This reduces complexity and system integration overhead while simultaneously speeding up application development.  Additionally, the ROS ecosystem offers a huge set of libraries to enable integrated robotic applications and products.
 
 **The MSDK's micro-ROS support is currently in beta**.  It is not officially released or ready for production applications, but it is ready for beta testing and internal usage.
 
@@ -23,9 +23,22 @@ In general, the most popular network transport layer for ROS is USB/Serial.  Oth
 For more details on basic ROS concepts see the official [ROS Concepts Documentation](https://docs.ros.org/en/humble/Concepts.html)
 
 ![ROS Network](https://docs.ros.org/en/humble/_images/Nodes-TopicandService.gif)
+
 ([Image source](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html))
 
+### Why ROS?
+
+Robotics applications can be intricate, involving multiple systems written in different languages.  On top of its network topology, ROS offers a compelling advantage with its standardization of the [interfaces](https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html#) between nodes. ROS provides pre-defined message types that packages and applications can leverage, enabling the modularization of systems and libraries.
+
+For example, the [sensor_msgs](https://index.ros.org/p/sensor_msgs/) messages establish standard "packets" for various data types, such as images, IMU data, temperature measurements, and battery information commonly emitted by low-level sensors. Consider a scenario where a robot needs to query its orientation by polling an IMU, which involves a microcontroller.  ROS facilitates the microcontroller in filling and publishing a standardized message packet, streamlining and decoupling robot development from any custom IMU interface code that might otherwise be necessary.
+
+Additionally, ROS defines datatypes and interfaces comprehensively, supporting most common [field types](https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html#field-types) with built-in type conversions. ROS also offers robust support for defining custom messages, and messages can be transmitted seamlessly across C, C++, and Python code.  No more manual string scraping!
+
+So - ROS is an attractive option for building robots, but historically required a full Linux distribution running on a powerful host machine.  With the development of [micro-ROS](https://micro.ros.org/docs/overview/features/), a ROS client implementation now exists for extremely resource constrained microcontrollers.  It builds on an RTOS layer, and the MSDK provides an implementation that builds on FreeRTOS with future plans for Zephyr support.
+
 ## Installation and Setup
+
+One of the disadvantages of ROS is that it can be difficult to set up.  To address this, the MSDK provides an installation script that can streamline the 
 
 ### Requirements
 
@@ -50,6 +63,14 @@ To run the micro-ROS installation, run the following commands where `$MAXIM_PATH
 $ cd $MAXIM_PATH/Libraries/microROS
 $ python3 ./install.py
 ```
+
+### Manual Installation
+
+If the automatic installer doesn't work, or manual setup is preferred, official documentation can be found below.
+
+1. Follow the [official ROS2 humble installation instructions](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html)
+
+2. Follow the official [micro-ROS installation tutorials](https://micro.ros.org/docs/tutorials/core/overview/) and build the [micro-ROS Agent](https://github.com/micro-ROS/micro-ROS-Agent).
 
 ## Getting Started with Micro-ROS
 
@@ -97,7 +118,7 @@ Having validated the basic publisher/subscriber functionality of the ROS library
 
 ### First micro-ROS Application
 
-The MSDK includes a pre-built micro-ROS library and some micro-ROS examples.  The best way to get started is with the ["ping-pong" application](../../Examples/MAX78000/micro-ROS/ping_pong/).  This will validate that the micro-ROS agent and any micro-ROS application code can communicate correctly, and is a good application to introduce the basic concepts.
+The MSDK includes a pre-built micro-ROS library and some micro-ROS examples.  The best way to get started is with the ["ping-pong" application](../../Examples/MAX78000/micro-ROS/ping_pong/).  This will validate that the micro-ROS agent and any micro-ROS application code can communicate correctly, and that the messages from our microcontroller firmware are accessible in the ROS network.  It's a good application to get familiar with the basic concepts and tools.
 
 This section will use VS Code and the MAX78000FTHR to demonstrate the application's functionality.
 
@@ -288,4 +309,3 @@ source $MAXIM_PATH/Libraries/microROS/install/local_setup.zsh
 ```
 
 Reload your active shell with `source ~/.zshrc`
-
