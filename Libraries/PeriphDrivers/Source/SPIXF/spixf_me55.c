@@ -50,6 +50,10 @@
 #include "gpio_reva_regs.h"
 #include "mxc_pins.h"
 
+/* NOTE: SPIXF functions should not access the flash area when
+ * executing from RAM.
+ */
+// Non-const version of 'gpio_cfg_spixf' pin set.
 mxc_gpio_cfg_t gpio_cfg_spixf_ram = { MXC_GPIO1, (MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 |
                                         MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27), MXC_GPIO_FUNC_ALT1,
                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
