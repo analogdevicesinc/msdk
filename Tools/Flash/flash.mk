@@ -47,15 +47,10 @@ OPENOCDEXE      ?= openocd.exe
 
 # Determine if we can use cygpath to convert the path name
 CYGPATH_AVAILABLE := 0
-ifneq ($(findstring MSYS, $(UNAME)), )
-CYGPATH_AVAILABLE := 1
-endif
-
-ifneq ($(findstring MINGW, $(UNAME)), )
-CYGPATH_AVAILABLE := 1
-endif
-
-ifneq ($(findstring CYGWIN, $(UNAME)), )
+ifneq ($(findstring msys, $(_OS)), )
+# NOTE:  "_OS" auto-detection comes from gcc.mk
+# As a result, this file should be included AFTER gcc.mk
+# This is done via the target's "MAX32xxx.mk" file.
 CYGPATH_AVAILABLE := 1
 endif
 
