@@ -11,7 +11,8 @@
         "PushButton",
         "Touchscreen",
         "CODEC",
-        "SRAM"
+        "SRAM",
+        "TempSensor"
     ],
     "vpaths":[
         "ADC",
@@ -25,6 +26,7 @@
         "Touchscreen",
         "CODEC",
         "SRAM",
+        "TempSensor",
         "./"],
     "whitelist":"False"
 }
