@@ -17,11 +17,11 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   You must connect ADT7320 to the related pins on MAX3266 FTHR2 board.    
+-   You must connect ADT7320 to the related pins on MAX32666 FTHR2 board.    
     
 | ADT7320 | FTHR2 / EvKit   | FTHR  |
 | ------- | --------------- | ----- |
-| SCLK -> | P1_8_QSPI0_SCKI | P0_16 |
+| SCLK -> | P1_8_QSPI0_SCK  | P0_16 |
 | GND ->  | GND             | GND   |
 | DOUT -> | P1_8_QSPI0_MISO | P0_18 |
 | VDD ->  | 3V3             | 3V3   |
