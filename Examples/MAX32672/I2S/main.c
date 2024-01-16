@@ -92,7 +92,7 @@ int main()
     Console_Shutdown();
 
     // Initialize I2S
-    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
+    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
     req.justify = MXC_I2S_LSB_JUSTIFY;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;

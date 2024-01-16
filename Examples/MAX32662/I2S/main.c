@@ -74,7 +74,7 @@ int main()
 
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0; // Set I2S configurations
     req.stereoMode = MXC_I2S_STEREO;
-    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
+    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.bitOrder = MXC_I2S_MSB_FIRST;
     req.wsPolarity = MXC_I2S_POL_NORMAL;

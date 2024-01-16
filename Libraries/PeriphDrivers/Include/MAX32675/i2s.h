@@ -60,11 +60,18 @@ typedef enum { MXC_I2S_MSB_FIRST, MXC_I2S_LSB_FIRST } mxc_i2s_bitorder_t;
 /** @brief I2S transaction justify order */
 typedef enum { MXC_I2S_MSB_JUSTIFY, MXC_I2S_LSB_JUSTIFY } mxc_i2s_justify_t;
 
-/** @brief  I2S transaction word size */
+/** @brief I2S transaction word size.
+ *
+ * Set this field to the desired width for data writes and reads from the FIFO. */
 typedef enum {
-    MXC_I2S_DATASIZE_BYTE,
-    MXC_I2S_DATASIZE_HALFWORD,
-    MXC_I2S_DATASIZE_WORD
+    MXC_I2S_WSIZE_BYTE, ///< Set 8-bit FIFO transactions
+    MXC_I2S_WSIZE_HALFWORD, ///< Set 16-bit FIFO transactions
+    MXC_I2S_WSIZE_WORD, ///< Set 32-bit FIFO transactions
+
+    MXC_I2S_DATASIZE_BYTE = MXC_I2S_WSIZE_BYTE, ///< Legacy name.  Use MXC_I2S_WSIZE_BYTE instead.
+    MXC_I2S_DATASIZE_HALFWORD =
+        MXC_I2S_WSIZE_HALFWORD, ///< Legacy name.  Use MXC_I2S_WSIZE_HALFWORD instead.
+    MXC_I2S_DATASIZE_WORD = MXC_I2S_WSIZE_WORD, ///< Legacy name.  Use MXC_I2S_WSIZE_WORD instead.
 } mxc_i2s_wsize_t;
 
 /** @brief  I2S transaction sample size */

@@ -168,7 +168,7 @@ void i2s_init(void)
 #define I2S_CRUFT_PTR (void *)UINT32_MAX
 #define I2S_CRUFT_LEN UINT32_MAX
 
-    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
+    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
