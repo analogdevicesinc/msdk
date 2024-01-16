@@ -43,20 +43,6 @@ formatter = logging.Formatter("%(levelname)-8s: %(message)s")
 console.setFormatter(formatter)
 logging.getLogger().addHandler(console)
 
-class Unbuffered(object):
-   def __init__(self, stream):
-       self.stream = stream
-   def write(self, data):
-       self.stream.write(data)
-       self.stream.flush()
-   def writelines(self, datas):
-       self.stream.writelines(datas)
-       self.stream.flush()
-   def __getattr__(self, attr):
-       return getattr(self.stream, attr)
-   
-sys.stdout = Unbuffered(sys.stdout)
-
 def _validate(process_result:CompletedProcess, fail_msg:str):
     if process_result.returncode != 0:
         logging.error(f"{fail_msg}\n\nPlease report to https://github.com/Analog-Devices-MSDK/msdk/issues\nAttach {log_file} to your ticket")
