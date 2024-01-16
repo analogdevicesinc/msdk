@@ -12,6 +12,6 @@ On a x86-cygwin PC, just run build_fcl_x86_external
 release notes
 1.0.0: initial release
 1.0.1: p192 initializers size corrected; hash functions number updated
-1.1.0: sha-3 (sha-224,sha-256,sha-384, sha-512) has been added
+1.1.0: sha-3 (sha-224, sha-256, sha-384, sha-512) has been added
 1.2.0: secp384r1, secp521r1, bp256r1, bp384r1, bp512r1 curves added; sha384 and sha512 added
-1.2.1: AES (128,192, 256) in ECB, CBC modes and AES-CBC-MAC added
+1.2.1: AES (128, 192, 256) in ECB, CBC modes and AES-CBC-MAC added

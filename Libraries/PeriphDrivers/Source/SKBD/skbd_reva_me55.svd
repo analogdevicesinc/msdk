@@ -101,7 +101,7 @@
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>AUTOEN</name>
+            <name>AUTOSCAN_EN</name>
             <description>Automatic Keyboard Scan Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -118,8 +118,8 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="AUTOEN">
-            <name>CLEAR</name>
+          <field derivedFrom="AUTOSCAN_EN">
+            <name>AUTOCLEAR</name>
             <description>Auto Clear Bit</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -129,7 +129,7 @@
             <description>Output Number. Number of KBDIO pins selected as outputs. NOTE:
                                                                                                                                                                      Output pins must be allocated contiguously starting with KBDIO0 and continuing through to KBDIO7.</description>
             <bitOffset>8</bitOffset>
-            <bitWidth>3</bitWidth>
+            <bitWidth>4</bitWidth>
           </field>
           <field>
             <name>DBTM</name>
@@ -241,6 +241,12 @@
             <name>OVERRUN</name>
             <description>Overrun Event Enable Bit. When set, this bit enables an interrupt to be generated on an overrun event.  Automatic keyboard scan must be enabled.</description>
             <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KBD_PINS</name>
+            <description>Keyboard Pins Interrupt Enable.</description>
+            <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

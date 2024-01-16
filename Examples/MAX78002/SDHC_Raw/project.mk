@@ -14,4 +14,5 @@
 # Add your config here!
 
 LIB_SDHC = 1
-
+# Set 10Mhz clock frequency
+SDHC_CLK_FREQ = 10000000

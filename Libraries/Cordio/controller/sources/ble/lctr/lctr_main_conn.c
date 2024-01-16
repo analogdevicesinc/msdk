@@ -1565,7 +1565,7 @@ uint8_t lctrSetTxPowerReporting(uint16_t handle, uint8_t enableLocal, uint8_t en
       pMsg->hdr.dispId = LCTR_DISP_CONN;
       pMsg->hdr.event  = LCTR_CONN_MSG_API_PWR_CTRL_REQ;
       pMsg->delta      = 0;
-      pMsg->phy        = pCtx->bleData.chan.rxPhy + ((pCtx->bleData.chan.rxPhy == BB_PHY_BLE_CODED) && (pCtx->bleData.chan.initTxPhyOptions == BB_PHY_OPTIONS_BLE_S2)) ? 1 : 0;
+      pMsg->phy        = pCtx->bleData.chan.rxPhy + (((pCtx->bleData.chan.rxPhy == BB_PHY_BLE_CODED) && (pCtx->bleData.chan.initTxPhyOptions == BB_PHY_OPTIONS_BLE_S2)) ? 1 : 0);
 
       WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
     }

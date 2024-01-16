@@ -25,21 +25,21 @@ Universal instructions on building, flashing, and debugging this project can be 
 * This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 * This project supports output to a TFT display.
-    * For the MAX78000EVKIT, the TFT display is **enabled** by default.  It can be _disabled_ by commenting out `#define ENABLE_TFT` in [example_config.h](example_config.h).
+    * For the MAX78000EVKIT, the TFT display is **enabled** by default.  It can be _disabled_ by commenting out `#define TFT_ENABLE` in [example_config.h](example_config.h).
 
         ```C
         #ifdef BOARD_EVKIT_V1
-        // #define ENABLE_TFT
+        // #define TFT_ENABLE
         #include "bitmap.h"
         #include "tft_ssd2119.h"
         #endif
         ```
 
-    * For the MAX78000FTHR, the TFT display is **disabled** by default.  The TFT display is not supplied with the MAX78000 Feather board. The compatible 2.4'' TFT FeatherWing display can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing).  To _enable_ the display code, uncomment `#define ENABLE_TFT` in [example_config.h](example_config.h)
+    * For the MAX78000FTHR, the TFT display is **disabled** by default.  The TFT display is not supplied with the MAX78000 Feather board. The compatible 2.4'' TFT FeatherWing display can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing).  To _enable_ the display code, uncomment `#define TFT_ENABLE` in [example_config.h](example_config.h)
 
         ```C
         #ifdef BOARD_FTHR_REVA
-        // #define ENABLE_TFT
+        // #define TFT_ENABLE
         #include "tft_ili9341.h"
         #endif
         ```

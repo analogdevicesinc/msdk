@@ -496,25 +496,20 @@ static void appSlaveProcConnClose(dmEvt_t *pMsg, appConnCb_t *pCb)
 /*************************************************************************************************/
 static void appSlaveConnUpdate(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
-    if (pAppUpdateCfg->idlePeriod != 0) {
-        const bool_t intervalInBetween =
-            pAppUpdateCfg->connIntervalMin <= pMsg->connUpdate.connInterval &&
-            pMsg->connUpdate.connInterval <= pAppUpdateCfg->connIntervalMax;
-        // intervalInBetween = TRUE;
-        /* if successful and we got an update using one of our requested values*/
-        if (pMsg->hdr.status == HCI_SUCCESS && intervalInBetween) {
-            /* stop connection update timer */
-            appConnUpdateTimerStop(pCb);
-        }
-        /* else if update failed but not pending and still attempting to do update */
-        else if ((pMsg->hdr.status != HCI_ERR_CMD_DISALLOWED) &&
-                 (pCb->attempts < pAppUpdateCfg->maxAttempts)) {
-            /* start timer and try again */
-            appConnUpdateTimerStart(pCb->connId);
-        }
+  if (pAppUpdateCfg->idlePeriod != 0)
+  {
+    const bool_t intervalInBetween =  pAppUpdateCfg->connIntervalMin <= pMsg->connUpdate.connInterval && 
+                                      pMsg->connUpdate.connInterval <= pAppUpdateCfg->connIntervalMax;
+    
+    /* if successful and we got an update using one of our requested values*/
+    if (pMsg->hdr.status == HCI_SUCCESS && intervalInBetween)
+    {
+      pCb->attempts = 0;
+      /* stop connection update timer */
+      appConnUpdateTimerStop(pCb);
     }
 }
-
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Process a received privacy resolved address indication.
@@ -910,22 +905,27 @@ static void appSlaveConnUpdateTimeout(wsfMsgHdr_t *pMsg, appConnCb_t *pCb)
     /* check if connection is idle */
     idle = (DmConnCheckIdle(pCb->connId) == 0);
 
-    /* if connection is idle and was also idle on last check */
-    if (idle && pCb->connWasIdle) {
-        /* do update */
-        pCb->attempts++;
-        connSpec.connIntervalMin = pAppUpdateCfg->connIntervalMin;
-        connSpec.connIntervalMax = pAppUpdateCfg->connIntervalMax;
-        connSpec.connLatency = pAppUpdateCfg->connLatency;
-        connSpec.supTimeout = pAppUpdateCfg->supTimeout;
-        connSpec.minCeLen = 0;
-        connSpec.maxCeLen = 0xffff;
-        DmConnUpdate(pCb->connId, &connSpec);
-    } else {
-        
-        pCb->connWasIdle = idle;
-        appConnUpdateTimerStart(pCb->connId);
-    }
+  /* if connection is idle and was also idle on last check */
+  if (idle && pCb->connWasIdle)
+  {
+    /* do update */
+    pCb->attempts++;
+    connSpec.connIntervalMin = pAppUpdateCfg->connIntervalMin;
+    connSpec.connIntervalMax = pAppUpdateCfg->connIntervalMax;
+    connSpec.connLatency = pAppUpdateCfg->connLatency;
+    connSpec.supTimeout = pAppUpdateCfg->supTimeout;
+    connSpec.minCeLen = 0;
+    connSpec.maxCeLen = 0xffff;
+
+    
+      DmConnUpdate(pCb->connId, &connSpec);
+    
+  }
+  else
+  {
+    pCb->connWasIdle = idle;
+    appConnUpdateTimerStart(pCb->connId);
+  }
 }
     /*************************************************************************************************/
     /*!

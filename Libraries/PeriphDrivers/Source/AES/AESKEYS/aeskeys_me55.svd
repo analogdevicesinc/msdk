@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!-- AES Keys-->
+    <name>AESKEYS</name>
+    <description>AES Key Registers.</description>
+    <baseAddress>0x40007800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MEU[%s]</name>
+        <description>AES-256 SRAM Encryption Key (MEU).</description>
+        <addressOffset>0x00</addressOffset>
+        <size>32</size>
+        <access>read-write</access>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>XIP[%s]</name>
+        <description>AES-128 QSPI Code Key (MEMPROT XIP).</description>
+        <addressOffset>0x20</addressOffset>
+        <size>32</size>
+        <access>read-write</access>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- AES Keys-->
+</device>
