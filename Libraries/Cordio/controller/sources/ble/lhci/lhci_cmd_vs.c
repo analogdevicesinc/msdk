@@ -232,12 +232,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         break;
     }
 
-    case LHCI_OPCODE_VS_RSSI: {
-        evtParamLen += sizeof(int8_t);
-        status = LL_SUCCESS;
-        break;
-    }
-
 
     /* --- default --- */
     default:
@@ -270,7 +264,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             /* no action */
             break;
         
-        case LHCI_OPCODE_VS_RSSI: {
+        case LHCI_OPCODE_VS_GET_RSSI: {
             int8_t rssi = 0xff;
             if (PalBbIsEnabled()) {
 #ifndef __FREERTOS__
