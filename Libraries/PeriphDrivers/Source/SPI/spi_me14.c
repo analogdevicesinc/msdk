@@ -94,7 +94,6 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_SPI1) {}
         MXC_GCR->perckcn0 &= ~(MXC_F_GCR_PERCKCN0_SPI1D);
         MXC_GPIO_Config(&gpio_cfg_spi1);
-        
         // Configure Chip Select GPIOs
         if (numSlaves == 1) {
             MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
