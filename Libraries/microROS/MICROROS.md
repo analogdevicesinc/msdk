@@ -44,7 +44,7 @@ One of the disadvantages of ROS is that it can be difficult to set up.  To addre
 
 ROS development requires a linux environment with Ubuntu 22.04.  Windows 10 is technically supported by ROS, but the installation is non-trivial and is untested by the MSDK developers.
 
-A native Linux machine is ideal, but development can also be achieved from a virtual machine (recommend [VirtualBox](https://www.virtualbox.org/)), or on Windows via [WSL2](https://learn.microsoft.com/en-us/windows/wsl/).  If developing from a virtual machine or WSL2, it should be noted that some additional steps are required to pass through USB devices.
+A native Linux machine is ideal, but development can also be achieved from a virtual machine (recommend [VirtualBox](https://www.virtualbox.org/)), or on Windows via [WSL2](https://learn.microsoft.com/en-us/windows/wsl/).  If developing from a virtual machine or WSL2, it should be noted that some additional steps are required to pass through USB devices.  See [VirtualBox Setup](./VIRTUALBOX_SETUP.md).
 
 ### install.py
 
