@@ -18,6 +18,7 @@
  ##############################################################################
 
 import os
+import io
 import sys
 from os import environ
 import subprocess
@@ -32,12 +33,29 @@ _cwd = Path(__file__).parent.resolve()
 # Set up logger to stream to file and console simultaneously.  Any debug messages will
 # go to the file only
 log_file = Path(f"{_cwd}/log/install.log")
+if not log_file.parent.exists():
+    log_file.parent.mkdir(parents=True)
+
 logging.basicConfig(filename=log_file, encoding="utf-8", level=logging.DEBUG)
 console = logging.StreamHandler(sys.stdout)
 console.setLevel(logging.INFO)
 formatter = logging.Formatter("%(levelname)-8s: %(message)s")
 console.setFormatter(formatter)
 logging.getLogger().addHandler(console)
+
+class Unbuffered(object):
+   def __init__(self, stream):
+       self.stream = stream
+   def write(self, data):
+       self.stream.write(data)
+       self.stream.flush()
+   def writelines(self, datas):
+       self.stream.writelines(datas)
+       self.stream.flush()
+   def __getattr__(self, attr):
+       return getattr(self.stream, attr)
+   
+sys.stdout = Unbuffered(sys.stdout)
 
 def _validate(process_result:CompletedProcess, fail_msg:str):
     if process_result.returncode != 0:
@@ -49,9 +67,11 @@ def log_cmd(cmd, **kwargs):
     _env = environ
     _env["PYTHONUNBUFFERED"] = "1"
     stdout = ""
-    with Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", env=_env, **kwargs) as process:  
+    with Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", env=_env, bufsize=0, **kwargs) as process:  
         for line in process.stdout:
-            print(line, end="")
+            sys.stdout.write(line)
+            sys.stdout.flush()
+            logging.debug(line.encode())
             stdout += line
 
         return_code=process.wait()
