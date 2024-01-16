@@ -87,7 +87,7 @@ def install_microros():
     result = run("colcon --help", shell=True, capture_output=True)
     if result.returncode != 0:
         logging.info("Installing colcon")
-        result = run("sudo apt update && sudo apt install python3-colcon-common-extensions -y", shell=True, stdout=PIPE, stderr=PIPE)
+        result = log_cmd("sudo apt update && sudo apt install python3-colcon-common-extensions -y", shell=True)
         _validate(result, "Failed to install colcon!")
 
     else:
