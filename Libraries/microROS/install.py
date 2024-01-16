@@ -75,7 +75,12 @@ def install_ros():
     result = log_cmd('echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null', shell=True)
     _validate(result, "Failed to add ROS repository!")
 
-    result = log_cmd("sudo apt update && sudo apt upgrade", shell=True)
+    result = input("This script will now upgrade your system packages.  Would you to proceed? [y/n]")
+    if (result.lower() != "y"):
+        logging.info("Aborting.")
+        exit(0)
+
+    result = log_cmd("sudo apt update && sudo apt upgrade -y", shell=True)
     _validate(result, "Failed to update apt packages!")
 
     result = log_cmd("sudo apt install ros-humble-desktop -y", shell=True)
@@ -145,8 +150,10 @@ def main():
     else:
         logging.info(f"Found ROS '{environ['ROS_DISTRO']}'")
 
-    if not (sys.version_info.major == 3 and sys.version_info.minor == 10 and sys.version_info.minor == 12):
-        logging.warning("ROS and micro-ROS depend on Python 3.10.12!  Your current python version does not match.")
+    current_python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+
+    if not current_python_version == "3.10.12":
+        logging.warning(f"ROS and micro-ROS depend on Python 3.10.12!  Your current python version ({current_python_version}) does not match.")
         logging.warning("Untested Python version detected...  Failures may occur.  You have been warned!...")
         response = input("Would you like to continue?... [y/n]")
         if response.lower() != "y":
