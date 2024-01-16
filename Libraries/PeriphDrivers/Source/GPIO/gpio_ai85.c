@@ -110,6 +110,12 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 
     MXC_GPIO_Init(1 << port);
 
+    // Configure the vssel
+    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     if (cfg->port == MXC_GPIO3) {
         switch (cfg->func) {
         case MXC_GPIO_FUNC_IN:
@@ -192,12 +198,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         default:
             return E_BAD_PARAM;
         }
-    }
-
-    // Configure the vssel
-    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (error != E_NO_ERROR) {
-        return error;
     }
 
     // Configure the drive strength
