@@ -77,6 +77,10 @@ extern "C" {
 #define SPIXFC_CMD_VAL 0x0B
 #define SPIXFM_BUS_IDLE_VAL 0x1000
 
+#define TS_I2C MXC_I2C0
+#define TS_I2C_FREQ MXC_I2C_STD_MODE
+#define TS_I2C_TARGET_ADDR 0x48
+
 /**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful

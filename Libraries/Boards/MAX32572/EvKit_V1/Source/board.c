@@ -49,6 +49,9 @@
 #include "spixf.h"
 #include "i2c.h"
 #include "Ext_Flash.h"
+#include "spi.h"
+#include "tft_ssd2119.h"
+#include "tsc2007.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -156,58 +159,42 @@ __weak void GPIO1_IRQHandler(void)
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
 }
 
+void TS_I2C_Init(void)
+{
+    MXC_I2C_Init(TS_I2C, 1, 0);
+    MXC_I2C_SetFrequency(TS_I2C, TS_I2C_FREQ);
+}
 
-// void TS_SPI_Init(void)
-// {
-//     mxc_spi_pins_t ts_pins = {
-//         // CLK, MISO, MOSI enabled, SS IDx = 1
-//         .clock = true, .ss0 = false, .ss1 = true,    .ss2 = false,
-//         .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
-//     };
+void TS_I2C_Transmit(uint8_t datain, uint16_t *dataout)
+{
+    uint8_t rx[2] = { 0, 0 };
+    mxc_i2c_req_t request;
 
-//     MXC_SPI_Init(TS_SPI, true, false, 1, 0, TS_SPI_FREQ, ts_pins);
-//     MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
-//                       MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26);
-//     MXC_SPI_SetFrameSize(TS_SPI, 8);
-//     MXC_SPI_SetInterface(TS_SPI, MXC_SPI_INTERFACE_STANDARD);
-// }
+    request.i2c = TS_I2C;
+    request.addr = TS_I2C_TARGET_ADDR;
+    request.tx_buf = (uint8_t *)(&datain);
+    request.rx_buf = NULL;
+    request.tx_len = 1;
+    request.rx_len = 0;
+    request.restart = 0;
+    request.callback = NULL;
 
-// void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
-// {
-//     int i;
-//     uint8_t rx[2] = { 0, 0 };
-//     mxc_spi_req_t request;
+    // send command
+    MXC_I2C_MasterTransaction(&request);
 
-//     request.spi = TS_SPI;
-//     request.ssDeassert = 0;
-//     request.txData = (uint8_t *)(&datain);
-//     request.rxData = NULL;
-//     request.txLen = 1;
-//     request.rxLen = 0;
-//     request.ssIdx = 1;
+    request.tx_buf = NULL;
+    request.rx_buf = (uint8_t *)(rx);
+    request.tx_len = 0;
+    request.rx_len = 2;
 
-//     MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
-//     MXC_SPI_SetFrameSize(TS_SPI, 8);
+    // receive value
+    MXC_I2C_MasterTransaction(&request);
 
-//     MXC_SPI_ControllerTransaction(&request);
-
-//     // Wait to clear TS busy signal
-//     for (i = 0; i < 100; i++) {
-//         __asm volatile("nop\n");
-//     }
-
-//     request.ssDeassert = 1;
-//     request.txData = NULL;
-//     request.rxData = (uint8_t *)(rx);
-//     request.txLen = 0;
-//     request.rxLen = 2;
-
-//     MXC_SPI_ControllerTransaction(&request);
-
-//     if (dataout != NULL) {
-//         *dataout = (rx[1] | (rx[0] << 8)) >> 4;
-//     }
-// }
+    // convert 16 bits to 12 bits
+    if (dataout != NULL) {
+        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
+    }
+}
 
 /******************************************************************************/
 int Board_Init(void)
@@ -238,40 +225,38 @@ int Board_Init(void)
         return err;
     }
 
-    // /* TFT reset and backlight signal */
-    // mxc_tft_spi_config tft_spi_config = {
-    //     .regs = MXC_SPI1,
-    //     .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20,
-    //               MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
-    //     .freq = 12000000,
-    //     .ss_idx = 0,
-    // };
+    /* TFT SPI */
+    mxc_tft_spi_config tft_spi_config = {
+        .regs = MXC_SPI0,
+        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5,
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+        .freq = 12000000,
+        .ss_idx = 0,
+    };
 
-    // mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO3,         MXC_GPIO_PIN_0,        MXC_GPIO_FUNC_OUT,
-    //                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    // mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_27,       MXC_GPIO_FUNC_OUT,
-    //                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    /* TFT reset and backlight signal */
+    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO0,         MXC_GPIO_PIN_7,        MXC_GPIO_FUNC_OUT,
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_6,       MXC_GPIO_FUNC_OUT,
+                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
-    // /* Initialize TFT display */
-    // MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
+    /* Initialize TFT display */
+    MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
 
-    // /* Enable Touchscreen */
-    // mxc_ts_spi_config ts_spi_config = {
-    //     .regs = MXC_SPI1,
-    //     .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26,
-    //               MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
-    //     .freq = 200000,
-    //     .ss_idx = 1,
-    // };
+    /* Touch screen controller I2C */
+    mxc_ts_i2c_config ts_i2c_config = {
+        .regs = MXC_I2C0,
+        .gpio = { MXC_GPIO0, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1), MXC_GPIO_FUNC_ALT1,
+                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+        .freq = MXC_I2C_STD_MODE,
+    };
 
-    // /* Touch screen controller interrupt signal */
-    // mxc_gpio_cfg_t int_pin = { MXC_GPIO0,         MXC_GPIO_PIN_13,       MXC_GPIO_FUNC_IN,
-    //                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    // /* Touch screen controller busy signal */
-    // mxc_gpio_cfg_t busy_pin = { MXC_GPIO0,         MXC_GPIO_PIN_12,       MXC_GPIO_FUNC_IN,
-    //                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    // /* Initialize Touch Screen controller */
-    // MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
+    /* Touch screen controller interrupt signal */
+    mxc_gpio_cfg_t ts_int_pin = { MXC_GPIO1,         MXC_GPIO_PIN_1,       MXC_GPIO_FUNC_IN,
+                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+
+    /* Pre-Initialize Touch Screen controller */
+    MXC_TS_PreInit(&ts_i2c_config, &ts_int_pin);
 
     return E_NO_ERROR;
 }

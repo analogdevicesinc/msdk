@@ -46,11 +46,12 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += is25.c
 SRCS += pb.c
-SRCS += tsc2046.c
+SRCS += tsc2007.c
 SRCS += tft_ssd2119.c
 
 PROJ_CFLAGS+=-DSPIXF_RAM
 PROJ_CFLAGS+=-DEXT_FLASH_IS25
+PROJ_CFLAGS+=-DTS_TSC2007
 
 MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 

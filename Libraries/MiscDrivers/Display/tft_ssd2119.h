@@ -62,7 +62,11 @@
 #include <spi.h>
 #include <gpio.h>
 
+#if defined(TS_TSC2007)
+#include "tsc2007.h"
+#else
 #include "tsc2046.h"
+#endif
 
 /************************************************************************************/
 

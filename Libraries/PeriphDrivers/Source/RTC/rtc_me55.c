@@ -1,5 +1,7 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc. (now owned by Analog
+ * Devices, Inc.), Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary and confidential to Analog Devices, Inc. and its licensors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -75,7 +77,8 @@ int MXC_RTC_Stop(void)
 
 int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
-    MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->ctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->clkctrl &= ~(MXC_F_MCR_CLKCTRL_ERTCO_PD);
 
     return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
