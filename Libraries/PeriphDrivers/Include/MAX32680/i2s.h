@@ -83,6 +83,14 @@ typedef enum {
     MXC_I2S_SAMPLESIZE_THIRTYTWO,
 } mxc_i2s_samplesize_t;
 
+/** @brief  I2S transaction adjust position.
+ * 
+ * This field is used to determine which bits are used if the sample size is less than the bits per word.*/
+typedef enum {
+    MXC_I2S_ADJUST_LEFT,
+    MXC_I2S_ADJUST_RIGHT,
+} mxc_i2s_adjust_t;
+
 /** @brief  I2S channel mode */
 typedef enum {
     MXC_I2S_INTERNAL_SCK_WS_0,
@@ -91,7 +99,32 @@ typedef enum {
     MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS,
 } mxc_i2s_ch_mode_t;
 
-/** @brief I2S Configuration Struct */
+/** @brief I2S Extended Configuration Struct 
+ * 
+ * Provides manual access to I2S channel configuration. */
+typedef struct {
+    mxc_i2s_wsize_t wordSize;
+    mxc_i2s_justify_t justify;
+    mxc_i2s_bitorder_t bitOrder;
+    mxc_i2s_adjust_t adjust;
+    uint8_t bitsWord; ///< Zero based field. Set it to <desired_value - 1>. MAX=0x1F.
+    uint8_t sampleSize; ///< Between zero and bitsWord. Consider setting 'adjust' field with this.
+} mxc_i2s_ext_config_t;
+
+/** @brief I2S Configuration Struct 
+ * 
+ * Only available for following 'most common' configurations. For other configurations, please see \ref mxc_i2s_ext_config_t.
+ *  _______________________________________________________________________
+ * |    Audio     |            sampleSize         |        wordSize        |
+ * | Sample Width |   \ref mxc_i2s_samplesize_t   |  \ref mxc_i2s_wsize_t  |
+ * |-----------------------------------------------------------------------|
+ * |       8 bits |      MXC_I2S_SAMPLESIZE_EIGHT |     MXC_I2S_WSIZE_BYTE |
+ * |      16 bits |    MXC_I2S_SAMPLESIZE_SIXTEEN | MXC_I2S_WSIZE_HALFWORD |
+ * |      20 bits |     MXC_I2S_SAMPLESIZE_TWENTY |     MXC_I2S_WSIZE_WORD |
+ * |      24 bits | MXC_I2S_SAMPLESIZE_TWENTYFOUR |     MXC_I2S_WSIZE_WORD |
+ * |      32 bits |  MXC_I2S_SAMPLESIZE_THIRTYTWO |     MXC_I2S_WSIZE_WORD |
+ * |______________|_______________________________|________________________|
+*/
 typedef struct {
     mxc_i2s_ch_mode_t channelMode;
     mxc_i2s_stereo_t stereoMode;
@@ -131,6 +164,14 @@ int MXC_I2S_Shutdown(void);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.   
  */
 int MXC_I2S_ConfigData(mxc_i2s_req_t *req);
+
+/**
+ * @brief   Manually set all I2S data configurations. Overwrites all values included in cfg.
+ * 
+ * @param   cfg           see \ref mxc_i2s_ext_config_t I2S Extended Data Configuration struct.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.   
+ */
+int MXC_I2S_ConfigExtendedData(mxc_i2s_ext_config_t *cfg);
 
 /**
  * @brief   Enable TX channel

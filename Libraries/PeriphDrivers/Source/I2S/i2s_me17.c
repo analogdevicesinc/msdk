@@ -68,6 +68,11 @@ int MXC_I2S_ConfigData(mxc_i2s_req_t *req)
     return MXC_I2S_RevA_ConfigData((mxc_i2s_reva_regs_t *)MXC_I2S, req);
 }
 
+int MXC_I2S_ConfigExtendedData(mxc_i2s_ext_config_t *cfg)
+{
+    return MXC_I2S_RevA_ConfigExtendedData((mxc_i2s_reva_regs_t *)MXC_I2S, cfg);
+}
+
 int MXC_I2S_SelectClockSource(mxc_i2s_clksrc_t clk_src, uint32_t freq_ext)
 {
     // Check for bad parameters

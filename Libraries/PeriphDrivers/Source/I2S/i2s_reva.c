@@ -151,7 +151,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
     switch (req->sampleSize) {
     case MXC_I2S_SAMPLESIZE_EIGHT:
 
-        configure_data_sizes(i2c, DATALENGTH_EIGHT, 0, MXC_I2S_WSIZE_BYTE);
+        configure_data_sizes(i2s, DATALENGTH_EIGHT, 0, MXC_I2S_WSIZE_BYTE);
 
         dataMask = 0x000000ff;
 
@@ -165,7 +165,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
 
     case MXC_I2S_SAMPLESIZE_SIXTEEN:
 
-        configure_data_sizes(i2c, DATALENGTH_SIXTEEN, 0, MXC_I2S_WSIZE_HALFWORD);
+        configure_data_sizes(i2s, DATALENGTH_SIXTEEN, 0, MXC_I2S_WSIZE_HALFWORD);
 
         dataMask = 0x0000ffff;
 
@@ -179,7 +179,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
 
     case MXC_I2S_SAMPLESIZE_TWENTY:
 
-        configure_data_sizes(i2c, DATALENGTH_TWENTY, 0, MXC_I2S_WSIZE_WORD);
+        configure_data_sizes(i2s, DATALENGTH_TWENTY, 0, MXC_I2S_WSIZE_WORD);
 
         dataMask = 0x00fffff;
 
@@ -193,7 +193,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
 
     case MXC_I2S_SAMPLESIZE_TWENTYFOUR:
 
-        configure_data_sizes(i2c, DATALENGTH_TWENTYFOUR, 0, MXC_I2S_WSIZE_WORD);
+        configure_data_sizes(i2s, DATALENGTH_TWENTYFOUR, 0, MXC_I2S_WSIZE_WORD);
 
         dataMask = 0x00ffffff;
 
@@ -207,7 +207,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
 
     case MXC_I2S_SAMPLESIZE_THIRTYTWO:
 
-        configure_data_sizes(i2c, DATALENGTH_THIRTYTWO, 0, MXC_I2S_WSIZE_WORD);
+        configure_data_sizes(i2s, DATALENGTH_THIRTYTWO, 0, MXC_I2S_WSIZE_WORD);
 
         dataMask = 0xffffffff;
 
@@ -225,6 +225,25 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
     }
 
     return E_NO_ERROR;
+}
+
+int MXC_I2S_RevA_ConfigExtendedData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_ext_config_t *cfg)
+{
+    int retval = E_NO_ERROR;
+
+    i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_EN;
+
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_ALIGN,
+                 (cfg->justify) << MXC_F_I2S_REVA_CTRL0CH0_ALIGN_POS);
+
+    configure_data_sizes(i2s, cfg->bitsWord, cfg->sampleSize, cfg->wordSize);
+
+    MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_ADJUST,
+                 (cfg->adjust) << MXC_F_I2S_REVA_CTRL1CH0_ADJUST_POS);
+
+    i2s->ctrl1ch0 |= MXC_F_I2S_REVA_CTRL1CH0_EN;
+
+    return retval;
 }
 
 void MXC_I2S_RevA_TXEnable(mxc_i2s_reva_regs_t *i2s)
