@@ -357,7 +357,7 @@ int Ext_Flash_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, Ext_Flash
     // Select approriate command for the desired read mode
     if (d_line == Ext_Flash_DataLine_Single) {
         cmd[0] = EXT_FLASH_CMD_READ;
-        dummy_bits = EXT_FLASH_Read_DUMMY;
+        dummy_bits = EXT_FLASH_READ_DUMMY;
     } else if (d_line == Ext_Flash_DataLine_Dual) {
         cmd[0] = EXT_FLASH_CMD_DREAD;
         dummy_bits = EXT_FLASH_DREAD_DUMMY;
