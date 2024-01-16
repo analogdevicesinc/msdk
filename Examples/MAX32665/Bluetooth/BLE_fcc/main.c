@@ -122,7 +122,7 @@ void TMR2_IRQHandler(void)
     MXC_TMR_TO_Clear(MXC_TMR2);
 
     /* Start the next channel */
-    res = LlEnhancedTxTest(txFreqHopCh++, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+    res = LlEnhancedTxTest(txFreqHopCh++, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
     if (res != LL_SUCCESS)
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
 
@@ -191,27 +191,27 @@ static void processConsoleRX(uint8_t rxByte)
     switch (cmd) {
     case '0':
 
-        APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
+        APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, PRBS15, %s, forever ..",
                         getPhyStr(phy));
-        res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;
 
     case '1':
 
-        APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
+        APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, PRBS15, %s, forever ..",
                         getPhyStr(phy));
-        res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;
 
     case '2':
 
-        APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
+        APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, PRBS15, %s, forever ..",
                         getPhyStr(phy));
-        res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_PRBS15, phy, 0);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;

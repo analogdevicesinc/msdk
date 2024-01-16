@@ -7,8 +7,6 @@
  *
  *  Copyright (c) 2019-2020 Packetcraft, Inc.
  *
- *  Portions Copyright (c) 2022-2023 Analog Devices, Inc.
- *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -24,8 +22,8 @@
 /*************************************************************************************************/
 
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "ll_init_api.h"
 #include "chci_tr.h"
 #include "lhci_api.h"
@@ -42,7 +40,6 @@
 #include "pal_cfg.h"
 #include "pal_radio.h"
 #include "tmr.h"
-
 /**************************************************************************************************
   Definitions
 **************************************************************************************************/
@@ -51,14 +48,12 @@
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
 #define FREQ_HOP_PERIOD_US 20000
-
 typedef enum {
     PAL_BB_CW,
     PAL_BB_PRBS9,
     PAL_BB_PRBS15,
 
 } PalBbDbbPrbsType_t;
-
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -72,20 +67,20 @@ static LlRtCfg_t mainLlRtCfg;
 static uint8_t phy = LL_PHY_LE_1M;
 static uint8_t phy_str[16];
 static uint8_t txFreqHopCh;
+
 static uint32_t numTxPowers;
 static int8_t *txPowersAvailable;
-
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
 
-extern bool_t PalBbAfeSetTxPower(int8_t txPower);
-extern void PalBbAfeSetChannelTx(uint8_t rfChannel);
+/*! \brief Physical layer functions. */
+
+extern void PalBbAfeSetTxCfg(uint8_t rfChannel, int8_t txPower);
 extern void PalBbDbbEnablePatternGen(PalBbDbbPrbsType_t prbsType);
 extern void PalBbDbbDisablePatternGen(void);
 extern bool_t PalBbAfeTxSetup(void);
 extern bool_t PalBbAfeTxDone(void);
-extern void PalBbSeqTxEnable(void);
 
 /*************************************************************************************************/
 /*!
@@ -148,6 +143,7 @@ void TMR2_IRQHandler(void)
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
     MXC_TMR_EnableInt(MXC_TMR2);
 }
+
 /*************************************************************************************************/
 /*!
 
@@ -180,12 +176,12 @@ static void printAvailablePowers(void)
 void printUsage(void)
 {
     APP_TRACE_INFO0("Usage: ");
-    APP_TRACE_INFO0(" (0) Transmit Continuous Modulated on RF channel 0 (2402 MHz)");
-    APP_TRACE_INFO0(" (1) Transmit Continuous Modulated on RF channel 19 (2440 MHz)");
-    APP_TRACE_INFO0(" (2) Transmit Continuous Modulated RF channel 39 (2480 MHz)");
+    APP_TRACE_INFO0(" (0) Transmit on RF channel 0 (2402 MHz)");
+    APP_TRACE_INFO0(" (1) Transmit on RF channel 19 (2440 MHz)");
+    APP_TRACE_INFO0(" (2) Transmit on RF channel 39 (2480 MHz)");
     APP_TRACE_INFO0(" (3) Receive  on RF channel 39 (2480 MHz)");
     APP_TRACE_INFO0(" (4) Set Transmit power");
-    APP_TRACE_INFO0(" (5) Enable Constant Unmodulated TX");
+    APP_TRACE_INFO0(" (5) Enable constant TX");
     APP_TRACE_INFO0(" (6) Disable constant TX -- MUST be called after (5)");
     /* APP_TRACE_INFO0(" (7) Set PA value"); */
     APP_TRACE_INFO0(" (8) Set PHY");
@@ -212,6 +208,8 @@ static void processConsoleRX(uint8_t rxByte)
     /* Holds the state of the command and the parameter */
     static uint8_t cmd = 0;
     static uint8_t param = 0;
+    static int8_t power = INT8_MIN;
+    static uint8_t channel = UINT8_MAX;
 
     /* Determines if the incoming character is a command or a parameter */
     if (cmd == 0)
@@ -256,26 +254,25 @@ static void processConsoleRX(uint8_t rxByte)
         break;
 
     case '4':
-
         PalBbEnable();
 
         if (param == 0) {
             printAvailablePowers();
             break;
         } else if (param >= '0' && param <= '0' + numTxPowers) {
-            PalBbAfeSetTxPower(txPowersAvailable[param - '0']);
-            LlSetAdvTxPower(txPowersAvailable[param - '0']);
+            uint8_t set_channel = channel == UINT8_MAX ? 0 : channel;
+    
+            power  = txPowersAvailable[param - '0'];
+            PalBbAfeSetTxCfg(set_channel, power);        
+            LlSetAdvTxPower(power);
             APP_TRACE_INFO1("Power set to %d dBm", txPowersAvailable[param - '0']);
 
         } else if (param < '0' || param > '9') {
             APP_TRACE_INFO0("Invalid selection");
         }
 
-        PalBbDisable();
-
         cmd = 0;
         param = 0;
-
         break;
 
     case '5':
@@ -287,42 +284,53 @@ static void processConsoleRX(uint8_t rxByte)
             APP_TRACE_INFO0(" 2: 39");
             break;
         }
-
+        
+        int8_t set_power = power == INT8_MIN ? 0 : power;
+        
         switch (param) {
         case '0':
-            PalBbAfeSetChannelTx(0);
+        {
+            channel = 0;
             APP_TRACE_INFO0("Channel set to 0");
             break;
+
+        }
         case '1':
-            PalBbAfeSetChannelTx(19);
+        {
+            channel = 19;
             APP_TRACE_INFO0("Channel set to 19");
             break;
+        }
         case '2':
-            PalBbAfeSetChannelTx(39);
+        {
+            channel = 39;
             APP_TRACE_INFO0("Channel set to 39");
             break;
+        }
         default:
             APP_TRACE_INFO0("Invalid selection");
             break;
         }
 
+        PalBbAfeSetTxCfg(channel, set_power);
+
         APP_TRACE_INFO0("Starting TX");
 
         /* Enable constant TX */
         PalBbAfeTxSetup();
-
         PalBbDbbEnablePatternGen(PAL_BB_CW);
 
         cmd = 0;
         param = 0;
         break;
+
     case '6':
         APP_TRACE_INFO0("Disabling TX");
 
         /* Disable constant TX */
+
         PalBbAfeTxDone();
         PalBbDbbDisablePatternGen();
-
         PalBbDisable();
 
         cmd = 0;
@@ -372,7 +380,6 @@ static void processConsoleRX(uint8_t rxByte)
         MXC_TMR_EnableInt(MXC_TMR2);
         cmd = 0;
         break;
-
     case 'E':
     case 'e':
 
@@ -407,7 +414,6 @@ static void mainLoadConfiguration(void)
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
-
     /* Set 5.1 requirements. */
     mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_0;
 
@@ -440,6 +446,7 @@ static void mainInitTxPowers(void)
 
     numTxPowers = PalRadioGetAvailableTxPowers(txPowersAvailable, numTxPowers);
 }
+
 /*************************************************************************************************/
 /*!
  *  \brief  Initialize WSF.
@@ -453,12 +460,10 @@ static void mainWsfInit(void)
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
     const uint16_t dataBufSize =
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
-
-    /* Use single pool for data buffers. */
 #if (BT_VER > 9)
+    /* Use single pool for data buffers. */
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
 #endif
-
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
@@ -526,9 +531,10 @@ static bool_t mainCheckServiceTokens(void)
 int main(void)
 {
     uint32_t memUsed;
-    mainInitTxPowers();
+
     mainLoadConfiguration();
     mainWsfInit();
+    mainInitTxPowers();
 
 #if (WSF_TRACE_ENABLED == TRUE)
     WsfCsEnter();
