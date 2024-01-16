@@ -261,9 +261,9 @@ static void processConsoleRX(uint8_t rxByte)
             break;
         } else if (param >= '0' && param <= '0' + numTxPowers) {
             uint8_t set_channel = channel == UINT8_MAX ? 0 : channel;
-    
-            power  = txPowersAvailable[param - '0'];
-            PalBbAfeSetTxCfg(set_channel, power);        
+
+            power = txPowersAvailable[param - '0'];
+            PalBbAfeSetTxCfg(set_channel, power);
             LlSetAdvTxPower(power);
             APP_TRACE_INFO1("Power set to %d dBm", txPowersAvailable[param - '0']);
 
@@ -284,25 +284,21 @@ static void processConsoleRX(uint8_t rxByte)
             APP_TRACE_INFO0(" 2: 39");
             break;
         }
-        
+
         int8_t set_power = power == INT8_MIN ? 0 : power;
-        
+
         switch (param) {
-        case '0':
-        {
+        case '0': {
             channel = 0;
             APP_TRACE_INFO0("Channel set to 0");
             break;
-
         }
-        case '1':
-        {
+        case '1': {
             channel = 19;
             APP_TRACE_INFO0("Channel set to 19");
             break;
         }
-        case '2':
-        {
+        case '2': {
             channel = 39;
             APP_TRACE_INFO0("Channel set to 39");
             break;
