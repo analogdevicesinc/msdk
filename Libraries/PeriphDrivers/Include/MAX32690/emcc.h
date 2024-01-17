@@ -55,6 +55,8 @@
 extern "C" {
 #endif
 
+#warning "Testing copyright"
+
 /***** Definitions *****/
 
 /**
