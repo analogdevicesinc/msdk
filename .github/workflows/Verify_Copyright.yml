@@ -1,0 +1,103 @@
+name: Verify Copyright
+
+# Controls when the workflow will run
+on:
+  issue_comment:
+    types: [created]
+
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+env:
+  MSDK_DIR: msdk
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Generate register files job.
+  verify-copyright:
+    # The type of runner that the job will run on
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Dispatch.
+        uses: actions/github-script@v6
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+
+            try {
+              const result = await github.rest.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+
+      - name: Acknowledged.
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const acknowledge = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket'
+            }
+
+            core.info(`Getting comment ID: ${acknowledge.comment_id}`)
+          
+            github.rest.reactions.createForIssueComment(acknowledge)
+
+            core.info(`Comment: ${{ github.event.comment.body }}`)
+
+      - name: Checkout source repository.
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          fetch-depth: 0
+
+      - name: Check Copyright.
+        run: |
+          pwd
+          ls
+
+          git fetch
+          CHANGED_FILES=$(git diff --ignore-submodules --name-only @ remotes/origin/main)
+
+          files_need_copyright=$(python .github/workflows/scripts/check_copyright.py)
+
+          echo $files_need_copyright
+
+          exit 1
+
+          if [[ -n $files_need_copyright ]]; then
+            exit 1
+          else
+            echo "All changed files in this PR have the correct copyright."
+            exit 0
+          fi
+
+      - name: Files with incorrect copyrights detected.
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const failmsg = {
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Files with incorrect copyright detected. Please check the actions log and update accordingly.'
+            }
+
+            github.rest.issues.createComment(failmsg)
+
