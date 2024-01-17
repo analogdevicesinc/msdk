@@ -55,6 +55,9 @@
 extern "C" {
 #endif
 
+
+#warning "Deprecated"
+
 /***** Definitions *****/
 
 /**
