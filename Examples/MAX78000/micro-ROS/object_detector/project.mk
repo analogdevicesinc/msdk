@@ -17,6 +17,8 @@ LIB_MICROROS = 1
 
 VPATH += src/cnn
 IPATH += src/cnn
+VPATH += src/camera
+IPATH += src/camera
 
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)

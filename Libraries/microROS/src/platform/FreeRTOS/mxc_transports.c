@@ -157,6 +157,16 @@ size_t vMXC_Serial_Read (
         elapsed++;
     }
 
+    /* 
+    Reset the queue if the number of bytes received was less than expected.
+    This is very important to prevent bogging down the queue, especially
+    with best effort streams.  Failing to do this will eventually cause the
+    transports to completely break.
+    */
+    if (num_received < length){
+        xQueueReset(rx_queue);
+    }
+
     MXC_GPIO_OutClr(indicator.port, indicator.mask); // B
 
     return num_received;

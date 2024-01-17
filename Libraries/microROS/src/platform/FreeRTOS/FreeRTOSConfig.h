@@ -46,7 +46,7 @@
 #define configTICK_RATE_HZ ((portTickType)1000)
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(26 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(13 * 1024))
 
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
 

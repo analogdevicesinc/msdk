@@ -1,4 +1,3 @@
-
 /******************************************************************************
  *
  * Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
@@ -18,13 +17,14 @@
  *
  ******************************************************************************/
 
-#ifndef _EXAMPLES_MAX78000_UROS_MXC_MICROROS_CONFIG_H
-#define _EXAMPLES_MAX78000_UROS_MXC_MICROROS_CONFIG_H
+#ifndef APP_CONFIG_H
+#define APP_CONFIG_H
 
-#include "mxc_microros.h"
-#include "board.h"
+#define IMG_XRES 160
+#define IMG_YRES 120
+#define PUBLISH_IMAGE
 
-#define configMXC_SERIAL_UART MXC_UART_GET_UART(CONSOLE_UART)
-#define configMXC_SERIAL_BAUDRATE CONSOLE_BAUD
+#define STRING_BUFFER_LEN (50)
+#define DEVICE_ID ("mxc_object_detector")
 
 #endif

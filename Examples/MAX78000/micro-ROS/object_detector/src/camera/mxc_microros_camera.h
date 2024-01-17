@@ -1,4 +1,3 @@
-
 /******************************************************************************
  *
  * Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
@@ -18,13 +17,12 @@
  *
  ******************************************************************************/
 
-#ifndef _EXAMPLES_MAX78000_UROS_MXC_MICROROS_CONFIG_H
-#define _EXAMPLES_MAX78000_UROS_MXC_MICROROS_CONFIG_H
-
 #include "mxc_microros.h"
-#include "board.h"
+#include "mxc_errors.h"
 
-#define configMXC_SERIAL_UART MXC_UART_GET_UART(CONSOLE_UART)
-#define configMXC_SERIAL_BAUDRATE CONSOLE_BAUD
+#include <sensor_msgs/msg/image.h>
+#include <sensor_msgs/msg/region_of_interest.h> 
 
-#endif
+int mxc_microros_camera_init(unsigned int width, unsigned int height, const char* encoding);
+int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img);
+int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image *input, sensor_msgs__msg__RegionOfInterest *output);

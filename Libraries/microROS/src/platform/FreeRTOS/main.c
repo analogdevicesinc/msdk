@@ -107,7 +107,7 @@ int main(void)
         vMXC_Serial_Read
     );
 
-    if ((xTaskCreate(appMain, "appMain", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
+    if ((xTaskCreate(appMain, "appMain", configAPPMAIN_STACK_DEPTH, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
         printf("xTaskCreate() failed to create a task.\n");
     } else {
         /* Start scheduler */        
