@@ -93,7 +93,7 @@
         "lib/humble/include/visualization_msgs/**"
     ],
     "vpaths":[
-        "lib/humble/src"
+        "lib/humble/src/mcu_ws"
     ],
     "makefile":"microROS.mk",
     "whitelist":"True",

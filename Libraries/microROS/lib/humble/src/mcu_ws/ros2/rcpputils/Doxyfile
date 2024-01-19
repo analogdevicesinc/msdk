@@ -1,0 +1,30 @@
+# All settings not listed here will use the Doxygen default values.
+
+PROJECT_NAME           = "rcpputils"
+PROJECT_NUMBER         = master
+PROJECT_BRIEF          = "C++ API providing common utilities and data structures."
+
+# Use these lines to include the generated logging_macro.h (update install path if needed)
+INPUT                  = README.md QUALITY_DECLARATION.md CONTRIBUTING.md ./include ./docs
+USE_MDFILE_AS_MAINPAGE = README.md
+RECURSIVE              = YES
+OUTPUT_DIRECTORY       = doc_output
+
+EXTRACT_ALL            = YES
+SORT_MEMBER_DOCS       = NO
+
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+EXCLUDE_SYMBOLS        = detail details
+
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES
+PREDEFINED             += __declspec(x)=
+PREDEFINED             += RCPPUTILS_PUBLIC=
+PREDEFINED             += RCPPUTILS_PUBLIC_TYPE=
+
+# Tag files that do not exist will produce a warning and cross-project linking will not work.
+TAGFILES += "../../../doxygen_tag_files/cppreference-doxygen-web.tag.xml=http://en.cppreference.com/w/"
+# Uncomment to generate tag files for cross-project linking.
+#GENERATE_TAGFILE = "../../../doxygen_tag_files/rcpputils.tag"

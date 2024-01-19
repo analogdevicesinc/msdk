@@ -1,0 +1,42 @@
+[0.351s] Invoking command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_pep257': AMENT_PREFIX_PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin:${PATH} PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_pep257 build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/install.log --single-version-externally-managed
+[0.435s] running egg_info
+[0.435s] creating ../../../build/ament_pep257/ament_pep257.egg-info
+[0.435s] writing ../../../build/ament_pep257/ament_pep257.egg-info/PKG-INFO
+[0.435s] writing dependency_links to ../../../build/ament_pep257/ament_pep257.egg-info/dependency_links.txt
+[0.435s] writing entry points to ../../../build/ament_pep257/ament_pep257.egg-info/entry_points.txt
+[0.435s] writing requirements to ../../../build/ament_pep257/ament_pep257.egg-info/requires.txt
+[0.435s] writing top-level names to ../../../build/ament_pep257/ament_pep257.egg-info/top_level.txt
+[0.435s] writing manifest file '../../../build/ament_pep257/ament_pep257.egg-info/SOURCES.txt'
+[0.436s] reading manifest file '../../../build/ament_pep257/ament_pep257.egg-info/SOURCES.txt'
+[0.436s] writing manifest file '../../../build/ament_pep257/ament_pep257.egg-info/SOURCES.txt'
+[0.436s] running build
+[0.436s] running build_py
+[0.437s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build
+[0.437s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib
+[0.437s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257
+[0.437s] copying ament_pep257/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257
+[0.437s] copying ament_pep257/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257
+[0.437s] copying ament_pep257/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257
+[0.437s] running install
+[0.437s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.437s]   warnings.warn(
+[0.437s] running install_lib
+[0.438s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257
+[0.438s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257
+[0.438s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257
+[0.438s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build/lib/ament_pep257/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257
+[0.438s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257/pytest_marker.py to pytest_marker.cpython-310.pyc
+[0.438s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257/main.py to main.cpython-310.pyc
+[0.439s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257/__init__.py to __init__.cpython-310.pyc
+[0.439s] running install_data
+[0.439s] copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/share/ament_pep257
+[0.439s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/share/ament_index
+[0.439s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/share/ament_index/resource_index
+[0.440s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/share/ament_index/resource_index/packages
+[0.440s] copying resource/ament_pep257 -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/share/ament_index/resource_index/packages
+[0.440s] running install_egg_info
+[0.440s] Copying ../../../build/ament_pep257/ament_pep257.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages/ament_pep257-0.12.9-py3.10.egg-info
+[0.441s] running install_scripts
+[0.450s] Installing ament_pep257 script to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/bin
+[0.450s] writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/install.log'
+[0.462s] Invoked command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_pep257' returned '0': AMENT_PREFIX_PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin:${PATH} PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_pep257 build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_pep257/install.log --single-version-externally-managed

@@ -1,0 +1,110 @@
+running egg_info
+creating ../../../build/ament_copyright/ament_copyright.egg-info
+writing ../../../build/ament_copyright/ament_copyright.egg-info/PKG-INFO
+writing dependency_links to ../../../build/ament_copyright/ament_copyright.egg-info/dependency_links.txt
+writing entry points to ../../../build/ament_copyright/ament_copyright.egg-info/entry_points.txt
+writing requirements to ../../../build/ament_copyright/ament_copyright.egg-info/requires.txt
+writing top-level names to ../../../build/ament_copyright/ament_copyright.egg-info/top_level.txt
+writing manifest file '../../../build/ament_copyright/ament_copyright.egg-info/SOURCES.txt'
+reading manifest file '../../../build/ament_copyright/ament_copyright.egg-info/SOURCES.txt'
+writing manifest file '../../../build/ament_copyright/ament_copyright.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/copyright_names.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/crawler.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/licenses.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/parser.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+copying ament_copyright/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_3clause_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_3clause_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/gplv3_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit0_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd2_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/lgplv3_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/boost1_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/apache2_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit0_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd2_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_3clause_header_0.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/gplv3_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/boost1_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_3clause_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/gplv3_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/apache2_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd2_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/boost1_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_2clause_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit_header_0.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/lgplv3_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit0_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_2clause_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/bsd_2clause_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/apache2_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/lgplv3_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+copying ament_copyright/template/mit_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template
+running install
+running install_lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/copyright_names.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/crawler.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/licenses.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_3clause_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_3clause_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/gplv3_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit0_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd2_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/lgplv3_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/boost1_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/apache2_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit0_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd2_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_3clause_header_0.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/gplv3_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/boost1_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_3clause_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/gplv3_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/apache2_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd2_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/boost1_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_2clause_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit_header_0.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/lgplv3_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit0_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_2clause_contributing.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/bsd_2clause_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/apache2_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/lgplv3_header.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/template/mit_license.txt -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/parser.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/build/lib/ament_copyright/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/copyright_names.py to copyright_names.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/pytest_marker.py to pytest_marker.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/crawler.py to crawler.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/main.py to main.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/licenses.py to licenses.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/parser.py to parser.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/share/ament_copyright
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/share/ament_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/share/ament_index/resource_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/share/ament_index/resource_index/packages
+copying resource/ament_copyright -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/share/ament_index/resource_index/packages
+running install_egg_info
+Copying ../../../build/ament_copyright/ament_copyright.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages/ament_copyright-0.12.9-py3.10.egg-info
+running install_scripts
+Installing ament_copyright script to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/bin
+writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_copyright/install.log'

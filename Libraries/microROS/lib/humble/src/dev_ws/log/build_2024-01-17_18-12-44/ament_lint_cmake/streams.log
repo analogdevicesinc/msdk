@@ -1,0 +1,42 @@
+[1.226s] Invoking command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_lint_cmake': AMENT_PREFIX_PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/bin:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/bin:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin:${PATH} PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_lint_cmake build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/install.log --single-version-externally-managed
+[1.314s] running egg_info
+[1.315s] creating ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info
+[1.315s] writing ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/PKG-INFO
+[1.315s] writing dependency_links to ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/dependency_links.txt
+[1.315s] writing entry points to ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/entry_points.txt
+[1.315s] writing requirements to ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/requires.txt
+[1.316s] writing top-level names to ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/top_level.txt
+[1.316s] writing manifest file '../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/SOURCES.txt'
+[1.316s] reading manifest file '../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/SOURCES.txt'
+[1.316s] writing manifest file '../../../build/ament_lint_cmake/ament_lint_cmake.egg-info/SOURCES.txt'
+[1.317s] running build
+[1.317s] running build_py
+[1.317s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build
+[1.317s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib
+[1.317s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake
+[1.317s] copying ament_lint_cmake/cmakelint.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake
+[1.317s] copying ament_lint_cmake/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake
+[1.317s] copying ament_lint_cmake/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake
+[1.317s] running install
+[1.318s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[1.318s]   warnings.warn(
+[1.318s] running install_lib
+[1.319s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake
+[1.319s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake/cmakelint.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake
+[1.320s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake
+[1.320s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build/lib/ament_lint_cmake/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake
+[1.320s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake/cmakelint.py to cmakelint.cpython-310.pyc
+[1.321s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake/main.py to main.cpython-310.pyc
+[1.322s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake/__init__.py to __init__.cpython-310.pyc
+[1.322s] running install_data
+[1.322s] copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/share/ament_lint_cmake
+[1.322s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/share/ament_index
+[1.322s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/share/ament_index/resource_index
+[1.322s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/share/ament_index/resource_index/packages
+[1.322s] copying resource/ament_lint_cmake -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/share/ament_index/resource_index/packages
+[1.322s] running install_egg_info
+[1.322s] Copying ../../../build/ament_lint_cmake/ament_lint_cmake.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages/ament_lint_cmake-0.12.9-py3.10.egg-info
+[1.323s] running install_scripts
+[1.333s] Installing ament_lint_cmake script to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/bin
+[1.333s] writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/install.log'
+[1.349s] Invoked command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_lint_cmake' returned '0': AMENT_PREFIX_PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/bin:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/bin:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin:${PATH} PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint_cmake/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_copyright/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_pep257/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_lint_cmake build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint_cmake/install.log --single-version-externally-managed

@@ -1,0 +1,46 @@
+[0.341s] Invoking command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_mypy': AMENT_PREFIX_PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin:${PATH} PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_mypy build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/install.log --single-version-externally-managed
+[0.426s] running egg_info
+[0.426s] creating ../../../build/ament_mypy/ament_mypy.egg-info
+[0.426s] writing ../../../build/ament_mypy/ament_mypy.egg-info/PKG-INFO
+[0.427s] writing dependency_links to ../../../build/ament_mypy/ament_mypy.egg-info/dependency_links.txt
+[0.427s] writing entry points to ../../../build/ament_mypy/ament_mypy.egg-info/entry_points.txt
+[0.427s] writing requirements to ../../../build/ament_mypy/ament_mypy.egg-info/requires.txt
+[0.427s] writing top-level names to ../../../build/ament_mypy/ament_mypy.egg-info/top_level.txt
+[0.427s] writing manifest file '../../../build/ament_mypy/ament_mypy.egg-info/SOURCES.txt'
+[0.427s] reading manifest file '../../../build/ament_mypy/ament_mypy.egg-info/SOURCES.txt'
+[0.428s] writing manifest file '../../../build/ament_mypy/ament_mypy.egg-info/SOURCES.txt'
+[0.428s] running build
+[0.428s] running build_py
+[0.428s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build
+[0.428s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib
+[0.428s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy
+[0.428s] copying ament_mypy/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy
+[0.428s] copying ament_mypy/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy
+[0.428s] copying ament_mypy/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy
+[0.428s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy/configuration
+[0.428s] copying ament_mypy/configuration/ament_mypy.ini -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy/configuration
+[0.428s] running install
+[0.428s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.428s]   warnings.warn(
+[0.429s] running install_lib
+[0.429s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy
+[0.429s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy/configuration
+[0.429s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy/configuration/ament_mypy.ini -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy/configuration
+[0.429s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy
+[0.430s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy
+[0.430s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build/lib/ament_mypy/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy
+[0.430s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy/pytest_marker.py to pytest_marker.cpython-310.pyc
+[0.430s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy/main.py to main.cpython-310.pyc
+[0.431s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy/__init__.py to __init__.cpython-310.pyc
+[0.431s] running install_data
+[0.431s] copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/share/ament_mypy
+[0.431s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/share/ament_index
+[0.431s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/share/ament_index/resource_index
+[0.431s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/share/ament_index/resource_index/packages
+[0.431s] copying resource/ament_mypy -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/share/ament_index/resource_index/packages
+[0.431s] running install_egg_info
+[0.432s] Copying ../../../build/ament_mypy/ament_mypy.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages/ament_mypy-0.12.9-py3.10.egg-info
+[0.432s] running install_scripts
+[0.443s] Installing ament_mypy script to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/bin
+[0.443s] writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/install.log'
+[0.482s] Invoked command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_mypy' returned '0': AMENT_PREFIX_PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint PATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin:${PATH} PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_mypy/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_mypy build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_mypy/install.log --single-version-externally-managed

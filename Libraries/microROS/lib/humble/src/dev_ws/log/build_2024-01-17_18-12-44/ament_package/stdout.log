@@ -1,0 +1,114 @@
+running egg_info
+creating ../../build/ament_package/ament_package.egg-info
+writing ../../build/ament_package/ament_package.egg-info/PKG-INFO
+writing dependency_links to ../../build/ament_package/ament_package.egg-info/dependency_links.txt
+writing top-level names to ../../build/ament_package/ament_package.egg-info/top_level.txt
+writing manifest file '../../build/ament_package/ament_package.egg-info/SOURCES.txt'
+reading manifest file '../../build/ament_package/ament_package.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../../build/ament_package/ament_package.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package
+copying ament_package/templates.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package
+copying ament_package/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template
+copying ament_package/template/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+copying ament_package/template/isolated_prefix_level/_order_isolated_packages.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+copying ament_package/template/isolated_prefix_level/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/_local_setup_util.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level
+copying ament_package/template/package_level/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level
+copying ament_package/template/environment_hook/path.bat -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/library_path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/pkg_config_path.bat -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/pythonpath.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/ament_prefix_path.bat -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/ament_prefix_path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/pythonpath.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/environment_hook/pkg_config_path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook
+copying ament_package/template/isolated_prefix_level/local_setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+copying ament_package/template/isolated_prefix_level/local_setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+copying ament_package/template/isolated_prefix_level/local_setup.zsh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+copying ament_package/template/isolated_prefix_level/local_setup.bash -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level
+copying ament_package/template/package_level/local_setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level
+copying ament_package/template/package_level/local_setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level
+copying ament_package/template/package_level/local_setup.bash.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level
+copying ament_package/template/package_level/local_setup.zsh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level
+copying ament_package/template/prefix_level/local_setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/local_setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/setup.bash -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/local_setup.zsh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/local_setup.bash -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+copying ament_package/template/prefix_level/setup.zsh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level
+running install
+running install_lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/templates.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level/local_setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level/local_setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level/local_setup.zsh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level/local_setup.bash -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level/_order_isolated_packages.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/isolated_prefix_level/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/_local_setup_util.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/local_setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/local_setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/setup.bash -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/local_setup.zsh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/local_setup.bash -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/setup.zsh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/prefix_level/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/path.bat -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/library_path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/pkg_config_path.bat -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/pythonpath.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/ament_prefix_path.bat -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/ament_prefix_path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/pythonpath.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/pkg_config_path.sh -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/environment_hook/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level/local_setup.bat.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level/local_setup.sh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level/local_setup.bash.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level/local_setup.zsh.in -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/package_level/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/template/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/build/lib/ament_package/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/templates.py to templates.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level/_order_isolated_packages.py to _order_isolated_packages.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/isolated_prefix_level/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level/_local_setup_util.py to _local_setup_util.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/prefix_level/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/environment_hook/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/package_level/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/template/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/share/ament_package
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/share/ament_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/share/ament_index/resource_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/share/ament_index/resource_index/packages
+copying resource/ament_package -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/share/ament_index/resource_index/packages
+running install_egg_info
+Copying ../../build/ament_package/ament_package.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_package/lib/python3.10/site-packages/ament_package-0.14.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_package/install.log'

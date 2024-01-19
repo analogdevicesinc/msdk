@@ -1,0 +1,6 @@
+[33mCMake Warning at CMakeLists.txt:30 (message):
+  The Python module 'pytest' was not found, pytests cannot be run.  On Linux,
+  install the 'python3-pytest' package.  On other platforms, install 'pytest'
+  using pip.
+
+[0m

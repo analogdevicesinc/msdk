@@ -1,0 +1,41 @@
+// generated from rosidl_generator_dds_idl/resource/idl.idl.em
+// with input from test_msgs:msg/Test.idl
+// generated code does not contain a copyright notice
+
+#ifndef __test_msgs__msg__test__idl__
+#define __test_msgs__msg__test__idl__
+
+
+module test_msgs {
+
+module msg {
+
+module dds_ {
+
+
+struct Test_ {
+boolean bool_value_;
+octet byte_value_;
+octet char_value_;
+float float32_value_;
+double float64_value_;
+octet int8_value_;
+octet uint8_value_;
+short int16_value_;
+unsigned short uint16_value_;
+long int32_value_;
+unsigned long uint32_value_;
+long long int64_value_;
+unsigned long long uint64_value_;
+
+};
+
+
+};  // module dds_
+
+};  // module msg
+
+};  // module test_msgs
+
+
+#endif  // __test_msgs__msg__test__idl__

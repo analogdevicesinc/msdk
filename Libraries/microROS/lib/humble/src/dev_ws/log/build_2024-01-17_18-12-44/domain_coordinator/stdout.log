@@ -1,0 +1,33 @@
+running egg_info
+creating ../../../build/domain_coordinator/domain_coordinator.egg-info
+writing ../../../build/domain_coordinator/domain_coordinator.egg-info/PKG-INFO
+writing dependency_links to ../../../build/domain_coordinator/domain_coordinator.egg-info/dependency_links.txt
+writing requirements to ../../../build/domain_coordinator/domain_coordinator.egg-info/requires.txt
+writing top-level names to ../../../build/domain_coordinator/domain_coordinator.egg-info/top_level.txt
+writing manifest file '../../../build/domain_coordinator/domain_coordinator.egg-info/SOURCES.txt'
+reading manifest file '../../../build/domain_coordinator/domain_coordinator.egg-info/SOURCES.txt'
+writing manifest file '../../../build/domain_coordinator/domain_coordinator.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build/lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build/lib/domain_coordinator
+copying domain_coordinator/impl.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build/lib/domain_coordinator
+copying domain_coordinator/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build/lib/domain_coordinator
+running install
+running install_lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/lib/python3.10/site-packages/domain_coordinator
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build/lib/domain_coordinator/impl.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/lib/python3.10/site-packages/domain_coordinator
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/build/lib/domain_coordinator/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/lib/python3.10/site-packages/domain_coordinator
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/lib/python3.10/site-packages/domain_coordinator/impl.py to impl.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/lib/python3.10/site-packages/domain_coordinator/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/share/domain_coordinator
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/share/ament_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/share/ament_index/resource_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/share/ament_index/resource_index/packages
+copying resource/domain_coordinator -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/share/ament_index/resource_index/packages
+running install_egg_info
+Copying ../../../build/domain_coordinator/domain_coordinator.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/domain_coordinator/lib/python3.10/site-packages/domain_coordinator-0.10.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/domain_coordinator/install.log'

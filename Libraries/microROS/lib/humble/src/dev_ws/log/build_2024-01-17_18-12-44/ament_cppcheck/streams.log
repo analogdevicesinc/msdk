@@ -1,0 +1,39 @@
+[0.582s] Invoking command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_cppcheck': PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages: /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_cppcheck build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/install.log --single-version-externally-managed
+[0.665s] running egg_info
+[0.666s] creating ../../../build/ament_cppcheck/ament_cppcheck.egg-info
+[0.666s] writing ../../../build/ament_cppcheck/ament_cppcheck.egg-info/PKG-INFO
+[0.666s] writing dependency_links to ../../../build/ament_cppcheck/ament_cppcheck.egg-info/dependency_links.txt
+[0.666s] writing entry points to ../../../build/ament_cppcheck/ament_cppcheck.egg-info/entry_points.txt
+[0.666s] writing requirements to ../../../build/ament_cppcheck/ament_cppcheck.egg-info/requires.txt
+[0.666s] writing top-level names to ../../../build/ament_cppcheck/ament_cppcheck.egg-info/top_level.txt
+[0.666s] writing manifest file '../../../build/ament_cppcheck/ament_cppcheck.egg-info/SOURCES.txt'
+[0.666s] reading manifest file '../../../build/ament_cppcheck/ament_cppcheck.egg-info/SOURCES.txt'
+[0.667s] writing manifest file '../../../build/ament_cppcheck/ament_cppcheck.egg-info/SOURCES.txt'
+[0.667s] running build
+[0.667s] running build_py
+[0.667s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build
+[0.667s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build/lib
+[0.667s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build/lib/ament_cppcheck
+[0.667s] copying ament_cppcheck/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build/lib/ament_cppcheck
+[0.668s] copying ament_cppcheck/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build/lib/ament_cppcheck
+[0.668s] running install
+[0.668s] running install_lib
+[0.668s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.668s]   warnings.warn(
+[0.669s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages/ament_cppcheck
+[0.669s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build/lib/ament_cppcheck/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages/ament_cppcheck
+[0.669s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build/lib/ament_cppcheck/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages/ament_cppcheck
+[0.669s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages/ament_cppcheck/main.py to main.cpython-310.pyc
+[0.670s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages/ament_cppcheck/__init__.py to __init__.cpython-310.pyc
+[0.670s] running install_data
+[0.670s] copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/share/ament_cppcheck
+[0.670s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/share/ament_index
+[0.670s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/share/ament_index/resource_index
+[0.670s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/share/ament_index/resource_index/packages
+[0.671s] copying resource/ament_cppcheck -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/share/ament_index/resource_index/packages
+[0.671s] running install_egg_info
+[0.671s] Copying ../../../build/ament_cppcheck/ament_cppcheck.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages/ament_cppcheck-0.12.9-py3.10.egg-info
+[0.671s] running install_scripts
+[0.680s] Installing ament_cppcheck script to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/bin
+[0.681s] writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/install.log'
+[0.733s] Invoked command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_cppcheck' returned '0': PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_cppcheck/lib/python3.10/site-packages: /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_cppcheck build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_cppcheck/install.log --single-version-externally-managed

@@ -1,0 +1,38 @@
+[0.605s] Invoking command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_lint': PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages: /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_lint build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/install.log --single-version-externally-managed
+[0.689s] running egg_info
+[0.690s] creating ../../../build/ament_lint/ament_lint.egg-info
+[0.690s] writing ../../../build/ament_lint/ament_lint.egg-info/PKG-INFO
+[0.690s] writing dependency_links to ../../../build/ament_lint/ament_lint.egg-info/dependency_links.txt
+[0.690s] writing entry points to ../../../build/ament_lint/ament_lint.egg-info/entry_points.txt
+[0.690s] writing requirements to ../../../build/ament_lint/ament_lint.egg-info/requires.txt
+[0.690s] writing top-level names to ../../../build/ament_lint/ament_lint.egg-info/top_level.txt
+[0.691s] writing manifest file '../../../build/ament_lint/ament_lint.egg-info/SOURCES.txt'
+[0.691s] reading manifest file '../../../build/ament_lint/ament_lint.egg-info/SOURCES.txt'
+[0.692s] writing manifest file '../../../build/ament_lint/ament_lint.egg-info/SOURCES.txt'
+[0.692s] running build
+[0.692s] running build_py
+[0.692s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build
+[0.692s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build/lib
+[0.692s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build/lib/ament_lint
+[0.692s] copying ament_lint/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build/lib/ament_lint
+[0.693s] copying ament_lint/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build/lib/ament_lint
+[0.693s] running install
+[0.693s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.693s]   warnings.warn(
+[0.693s] running install_lib
+[0.693s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages/ament_lint
+[0.694s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build/lib/ament_lint/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages/ament_lint
+[0.694s] copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build/lib/ament_lint/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages/ament_lint
+[0.694s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages/ament_lint/pytest_marker.py to pytest_marker.cpython-310.pyc
+[0.694s] byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages/ament_lint/__init__.py to __init__.cpython-310.pyc
+[0.694s] running install_data
+[0.694s] copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/share/ament_lint
+[0.694s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/share/ament_index
+[0.694s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/share/ament_index/resource_index
+[0.694s] creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/share/ament_index/resource_index/packages
+[0.694s] copying resource/ament_lint -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/share/ament_index/resource_index/packages
+[0.695s] running install_egg_info
+[0.695s] Copying ../../../build/ament_lint/ament_lint.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages/ament_lint-0.12.9-py3.10.egg-info
+[0.696s] running install_scripts
+[0.705s] writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/install.log'
+[0.716s] Invoked command in '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/ament/ament_lint/ament_lint' returned '0': PYTHONPATH=/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/prefix_override:/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_lint/lib/python3.10/site-packages: /usr/bin/python3 setup.py egg_info --egg-base ../../../build/ament_lint build --build-base /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/build install --record /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_lint/install.log --single-version-externally-managed

@@ -1,0 +1,42 @@
+running egg_info
+creating ../../../build/ament_flake8/ament_flake8.egg-info
+writing ../../../build/ament_flake8/ament_flake8.egg-info/PKG-INFO
+writing dependency_links to ../../../build/ament_flake8/ament_flake8.egg-info/dependency_links.txt
+writing entry points to ../../../build/ament_flake8/ament_flake8.egg-info/entry_points.txt
+writing requirements to ../../../build/ament_flake8/ament_flake8.egg-info/requires.txt
+writing top-level names to ../../../build/ament_flake8/ament_flake8.egg-info/top_level.txt
+writing manifest file '../../../build/ament_flake8/ament_flake8.egg-info/SOURCES.txt'
+reading manifest file '../../../build/ament_flake8/ament_flake8.egg-info/SOURCES.txt'
+writing manifest file '../../../build/ament_flake8/ament_flake8.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8
+copying ament_flake8/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8
+copying ament_flake8/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8
+copying ament_flake8/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8/configuration
+copying ament_flake8/configuration/ament_flake8.ini -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8/configuration
+running install
+running install_lib
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8/configuration
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8/configuration/ament_flake8.ini -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8/configuration
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8/pytest_marker.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8/main.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8
+copying /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/build/lib/ament_flake8/__init__.py -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8/pytest_marker.py to pytest_marker.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8/main.py to main.cpython-310.pyc
+byte-compiling /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying package.xml -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/share/ament_flake8
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/share/ament_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/share/ament_index/resource_index
+creating /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/share/ament_index/resource_index/packages
+copying resource/ament_flake8 -> /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/share/ament_index/resource_index/packages
+running install_egg_info
+Copying ../../../build/ament_flake8/ament_flake8.egg-info to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/lib/python3.10/site-packages/ament_flake8-0.12.9-py3.10.egg-info
+running install_scripts
+Installing ament_flake8 script to /home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/install/ament_flake8/bin
+writing list of installed files to '/home/jhcarter/repos/msdk/Libraries/microROS/firmware/dev_ws/build/ament_flake8/install.log'
