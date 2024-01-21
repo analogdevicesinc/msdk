@@ -1,5 +1,8 @@
 /*
  * Copyright (C) 2010-2018 Arm Limited or its affiliates. All rights reserved.
+ * 
+ * Portions Copyright (C) 2020 Maxim Integrated Products, Inc. (now owned 
+ * by Analog Devices, Inc.).
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -14,10 +17,6 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-/* 
- * Portions Copyright (C) 2020 Maxim Integrated Products, Inc.
  */
 
 /* ----------------------------------------------------------------------

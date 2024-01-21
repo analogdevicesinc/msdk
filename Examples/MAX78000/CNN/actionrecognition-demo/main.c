@@ -1,8 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,9 +16,6 @@
  * limitations under the License.
  *
  ******************************************************************************/
-
-// Kinetics Action Recognition Demo
-// Created using ./ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix kinetics --overwrite --overlap-data --checkpoint-file trained/ai85-kinetics-qat8-q.pth.tar --config-file networks/ai85-kinetics-actiontcn.yaml --device MAX78000 --timer 0 --display-checkpoint --verbose --zero-sram --no-kat   # note: known-answer test can't be done on MAX78000 due to memory constraints (sample data is too large)
 
 #include <stdlib.h>
 #include <stdint.h>
