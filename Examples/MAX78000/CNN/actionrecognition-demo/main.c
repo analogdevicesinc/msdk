@@ -1,6 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2019-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
