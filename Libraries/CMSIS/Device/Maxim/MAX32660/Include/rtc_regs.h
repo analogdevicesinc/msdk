@@ -102,6 +102,17 @@ typedef struct {
 
 /**
  * @ingroup  rtc_registers
+ * @defgroup RTC_SEC RTC_SEC
+ * @brief    RTC Second Counter. This register contains the 32-bit second counter.
+ * @{
+ */
+#define MXC_F_RTC_SEC_SEC_POS                          0 /**< SEC_SEC Position */
+#define MXC_F_RTC_SEC_SEC                              ((uint32_t)(0xFFFFFFFFUL << MXC_F_RTC_SEC_SEC_POS)) /**< SEC_SEC Mask */
+
+/**@} end of group RTC_SEC_Register */
+
+/**
+ * @ingroup  rtc_registers
  * @defgroup RTC_SSEC RTC_SSEC
  * @brief    RTC Sub-second Counter. This counter increments at 256Hz. RTC_SEC is incremented
  *           when this register rolls over from 0xFF to 0x00.

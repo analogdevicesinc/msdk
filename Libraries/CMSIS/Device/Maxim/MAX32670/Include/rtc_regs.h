@@ -107,7 +107,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_RTC_SEC_SEC_POS                          0 /**< SEC_SEC Position */
-#define MXC_F_RTC_SEC_SEC                              ((uint32_t)(0xFFUL << MXC_F_RTC_SEC_SEC_POS)) /**< SEC_SEC Mask */
+#define MXC_F_RTC_SEC_SEC                              ((uint32_t)(0xFFFFFFFFUL << MXC_F_RTC_SEC_SEC_POS)) /**< SEC_SEC Mask */
 
 /**@} end of group RTC_SEC_Register */
 
@@ -119,7 +119,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_RTC_SSEC_SSEC_POS                        0 /**< SSEC_SSEC Position */
-#define MXC_F_RTC_SSEC_SSEC                            ((uint32_t)(0xFFUL << MXC_F_RTC_SSEC_SSEC_POS)) /**< SSEC_SSEC Mask */
+#define MXC_F_RTC_SSEC_SSEC                            ((uint32_t)(0xFFFUL << MXC_F_RTC_SSEC_SSEC_POS)) /**< SSEC_SSEC Mask */
 
 /**@} end of group RTC_SSEC_Register */
 
