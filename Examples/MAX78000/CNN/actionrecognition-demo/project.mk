@@ -17,16 +17,7 @@ override CAMERA=OV7692
 # timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS = -O2
 
-# Add some additional directories to the build based on what board
-# we're compiling for...
-ifeq "$(BOARD)" "FTHR_RevA"
-VPATH += TFT/fthr/fonts
-endif
-
-$(info $$var is [${BOARD}])
- IPATH += TFT/evkit
-
-FONTS = LiberationSans12x12 LiberationSans24x24 LiberationSans28x28 LiberationSans16x16
+FONTS = LiberationSans12x12 LiberationSans16x16
 
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
