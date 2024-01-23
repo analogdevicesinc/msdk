@@ -15,7 +15,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 ### Project-Specific Build Notes
 
 * This project comes pre-configured for the MAX78000FTHR. See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
-* This project supports output to a TFT display, which is **enabled** by default. To disable it, undefine `TFT_ENABLE` by commenting out the line in [tft_config.h](tft_config.h). The compatible 2.4'' TFT FeatherWing is an optional display that does not come with the MAX78000FTHR.  It can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing)
+
+* This project supports output to a TFT display, which is **enabled** by default. It can be disabled by undefining `TFT_ENABLE` in [project_config.h](project_config.h). The compatible 2.4'' TFT FeatherWing is an optional display that does not come with the MAX78000FTHR.  It can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing)
 
 ## Hardware
 

@@ -31,7 +31,7 @@
 #endif
 #include "camera.h"
 #include "camera_util.h"
-#include "tft_config.h"
+#include "project_config.h"
 
 #ifdef BOARD_FTHR_REVA
 int font = (int)&Liberation_Sans16x16[0];

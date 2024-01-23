@@ -35,7 +35,7 @@
 #include "dma.h"
 #include "dma_regs.h"
 #include "camera_util.h"
-#include "tft_config.h"
+#include "project_config.h"
 #include "rtc.h"
 
 #ifdef BOARD_FTHR_REVA
