@@ -21,7 +21,7 @@
 
 // Project config options:
 
-// Define TFT_ENABLE to enable TFT display code.  
+// Define TFT_ENABLE to enable TFT display code.
 // Requires an Adafuit 2.4" TFT FeatherWing
 // ----
 #define TFT_ENABLE
