@@ -85,11 +85,13 @@ area_t area = { 50, 290, 180, 30 };
 // *****************************************************************************
 int main(void)
 {
-    int ret = 0;
+    int error = 0;
     int slaveAddress;
     int id;
     int dma_channel;
     mxc_uart_regs_t *ConsoleUart;
+
+    MXC_Delay(MXC_DELAY_SEC(2)); // Provide window for debugger to connect
 
 #ifdef BOARD_FTHR_REVA
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
@@ -106,13 +108,14 @@ int main(void)
 
     ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 
-    if ((ret = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
-        PR_ERR("UART1 Init Error: %d\n", ret);
-        return ret;
+    if ((error = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+        PR_ERR("UART1 Init Error: %d\n", error);
+        return error;
     }
 
-    PR_DEBUG("\n\nMAX78000 Feather Facial Recognition Demo\n");
+    PR_INFO("\n\nMAX78000 Feather Facial Recognition Demo\n");
 
+    PR_INFO("Initializing...\n");
     init_names();
     /* Initialize RTC */
     MXC_RTC_Init(0, 0);
@@ -123,39 +126,43 @@ int main(void)
     dma_channel = MXC_DMA_AcquireChannel();
 
     // Initialize the camera driver.
-    camera_init(CAMERA_FREQ);
+    error = camera_init(CAMERA_FREQ);
+    if (error) {
+        PR_ERR("Camera initialization error (%i)\n", error);
+        return error;
+    }
 
     // Obtain the I2C slave address of the camera.
     slaveAddress = camera_get_slave_address();
     PR_DEBUG("Camera I2C slave address is %02x\n", slaveAddress);
 
     // Obtain the product ID of the camera.
-    ret = camera_get_product_id(&id);
+    error = camera_get_product_id(&id);
 
-    if (ret != STATUS_OK) {
-        PR_ERR("Error returned from reading camera id. Error %d\n", ret);
-        return -1;
+    if (error) {
+        PR_ERR("Error returned from reading camera id. Error %d\n", error);
+        return error;
     }
 
     PR_DEBUG("Camera Product ID is %04x\n", id);
 
     // Obtain the manufacture ID of the camera.
-    ret = camera_get_manufacture_id(&id);
+    error = camera_get_manufacture_id(&id);
 
-    if (ret != STATUS_OK) {
-        PR_ERR("Error returned from reading camera id. Error %d\n", ret);
-        return -1;
+    if (error) {
+        PR_ERR("Error returned from reading camera id. Error %d\n", error);
+        return error;
     }
 
     PR_DEBUG("Camera Manufacture ID is %04x\n", id);
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+    error = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel);
 
-    if (ret != STATUS_OK) {
-        PR_ERR("Error returned from setting up camera. Error %d\n", ret);
-        return -1;
+    if (error) {
+        PR_ERR("Error returned from setting up camera. Error %d\n", error);
+        return error;
     }
 
     // Double PCLK
@@ -183,21 +190,27 @@ int main(void)
 #endif
 
     /* Initilize SD card */
+    PR_INFO("Initializing SD Card...\n");
     SD_Init();
 
+    PR_INFO("Launching face detection loop...\n");
     while (1) {
         uint32_t loop_time = utils_get_time_ms();
+        LED_On(0);
         face_detection();
+        LED_Off(0);
         PR_DEBUG("face detection time: %d ms\n", utils_get_time_ms() - loop_time);
 
         if (face_detected) {
-            
+            LED_On(1);
             uint32_t faceid_time = utils_get_time_ms();
             face_id();
             PR_DEBUG("faceid time: %d ms\n", utils_get_time_ms() - faceid_time);
             face_detected = 0;
             loop_time = utils_get_time_ms() - loop_time;
             PR_DEBUG("loop time: %d ms\n", loop_time);
+        } else {
+            LED_Off(1);
         }
 
 		#ifdef TFT_ENABLE
