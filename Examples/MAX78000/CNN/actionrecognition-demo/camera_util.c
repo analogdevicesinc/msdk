@@ -296,6 +296,8 @@ static void load_cnn(uint8_t *data, uint32_t row_number)
 //   memcpy32((uint32_t *) 0x50c18f00, input_44, 7200);
 // }
 
+extern unsigned int utils_get_time_ms(void);
+
 void capture_and_display_camera(void)
 {
     uint32_t imgLen;

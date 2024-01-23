@@ -97,7 +97,9 @@ void TFT_Print(char *str, int x, int y, int font, int length)
 
 int main(void)
 {
+#ifdef TFT_ENABLE
     char buff[TFT_BUFF_SIZE];
+#endif
 
 #ifdef BOARD_FTHR_REVA
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
