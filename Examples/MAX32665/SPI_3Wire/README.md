@@ -10,7 +10,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+This example is supported on MAX32666FTHR and MAX32666FTHR2 boards. It is not supported on the MAX32666EVKit board.
 
 ## Required Connections
 

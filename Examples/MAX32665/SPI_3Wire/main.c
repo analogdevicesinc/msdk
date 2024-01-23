@@ -174,7 +174,7 @@ int main(void)
     while (1) {
         for (int i = 0; i < DATA_LEN; i++) {
             master_tx[i] = i;
-            slave_tx[i] = i + 500;
+            slave_tx[i] = i;
         }
         memset(master_rx, 0x0, DATA_LEN * sizeof(uint8_t));
         memset(slave_rx, 0x0, DATA_LEN * sizeof(uint8_t));

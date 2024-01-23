@@ -8,7 +8,9 @@
 # **********************************************************
 
 # Add your config here!
-
+ifeq ($(BOARD),EvKit_V1)
+$(error ERR_NOTSUPPORTED: This project is not supported for the MAX32665EVKIT)
+endif
 # If you have secure version of MCU (MAX32666), set SBT=1 to generate signed binary
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
