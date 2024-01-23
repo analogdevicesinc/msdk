@@ -109,7 +109,7 @@ int MXC_Ext_Write(uint32_t address, uint32_t length, uint8_t *buffer);
  * @return     #EF_E_SUCCESS If function is successful.
  * @note       make sure to disable SFCC and interrupts; before running this function
  */
-int MXC_Ext_Read(int address, uint8_t* buffer, int len);
+int MXC_Ext_Read(int address, uint8_t *buffer, int len);
 
 /**
  * @brief      Erases the sector of external flash at the specified address.

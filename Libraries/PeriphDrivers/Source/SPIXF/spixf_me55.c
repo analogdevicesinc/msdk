@@ -40,9 +40,13 @@
  * executing from RAM.
  */
 // Non-const version of 'gpio_cfg_spixf' pin set.
-mxc_gpio_cfg_t gpio_cfg_spixf_ram = { MXC_GPIO1, (MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 |
-                                        MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27), MXC_GPIO_FUNC_ALT1,
-                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+mxc_gpio_cfg_t gpio_cfg_spixf_ram = { MXC_GPIO1,
+                                      (MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 |
+                                       MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27),
+                                      MXC_GPIO_FUNC_ALT1,
+                                      MXC_GPIO_PAD_NONE,
+                                      MXC_GPIO_VSSEL_VDDIO,
+                                      MXC_GPIO_DRVSTR_0 };
 
 #if IAR_PRAGMAS
 #pragma section = ".spix_config"
@@ -70,7 +74,6 @@ static int MXC_GPIO_Config_SPIXF(mxc_gpio_cfg_t *cfg)
     port->ds1 &= ~(cfg->mask);
 
     return E_NO_ERROR;
-
 }
 #endif
 

@@ -119,8 +119,8 @@ extern "C" {
 #endif
 
 #ifdef EXT_FLASH_READ_DUMMY
-    // Deprecated name. Please use EXT_FLASH_READ_DUMMY
-    #define EXT_FLASH_Read_DUMMY EXT_FLASH_READ_DUMMY
+// Deprecated name. Please use EXT_FLASH_READ_DUMMY
+#define EXT_FLASH_Read_DUMMY EXT_FLASH_READ_DUMMY
 #endif
 
 /**
