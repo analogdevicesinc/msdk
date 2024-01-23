@@ -39,7 +39,7 @@ SDHC_CLK_FREQ  = 25000000
 
 ifeq "$(TFT_ENABLE)" "1"
 # Only Enable if 2.4" TFT is connected to Feather
-PROJ_CFLAGS+=-DTFT_ENABLE
+# PROJ_CFLAGS+=-DTFT_ENABLE
 IPATH += TFT/fthr
 VPATH += TFT/fthr
 FONTS = LiberationSans16x16
