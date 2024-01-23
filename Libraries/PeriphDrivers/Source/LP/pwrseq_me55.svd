@@ -19,7 +19,7 @@
             <name>RAMRET_EN</name>
             <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
             <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitWidth>4</bitWidth>
           </field>
           <field>
             <name>OVR</name>
@@ -28,18 +28,8 @@
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>0_9V</name>
-                <description>0.9V 24MHz</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>1_0V</name>
-                <description>1.0V 48MHz</description>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
                 <name>1_1V</name>
-                <description>1.1V 96MHz</description>
+                <description>1.1V</description>
                 <value>2</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -117,10 +107,58 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>LDO_DIS</name>
-            <description>Disable Main LDO</description>
-            <bitOffset>16</bitOffset>
+            <name>VDDIOHHVMON_DIS</name>
+            <description>VDDIOH High Voltage Monitor Disable.</description>
+            <bitOffset>17</bitOffset>
             <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable if Bandgap is ON (default) </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VDDIOHVMON_DIS</name>
+            <description>VDDIO High Voltage Monitor Disable.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable if Bandgap is ON (default) </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCOREHVMON_DIS</name>
+            <description>VCORE High Voltage Monitor Disable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable if Bandgap is ON (default) </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>VCOREMON_DIS</name>
@@ -231,9 +269,9 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>WKRST</name>
-            <description>Reset wakeup status registers</description>
-            <bitOffset>31</bitOffset>
+            <name>DEEPSLEEP_PDOUT_DIS</name>
+            <description>PDOWN out enable in DEEPSLEEP mode.</description>
+            <bitOffset>30</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -312,8 +350,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>HA0</name>
-            <description>Hardware Accelerator 0 Detect Wakeup Status Flag</description>
+            <name>CPU1</name>
+            <description>CPU1 Detect Wakeup Flag (wite one to clear). This bit will be set when the SDMA IRQ transitions from low to high, or high to low.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -327,6 +365,12 @@
             <name>RESET</name>
             <description>Reset Detect Wakeup Flag (write one to clear). This bit will be set when the external reset causes wakeup</description>
             <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DRS_EVT</name>
+            <description>Tamper Detext Status. Can only be cleared with a system reset.</description>
+            <bitOffset>19</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -346,6 +390,12 @@
             <name>USBVBUS</name>
             <description>USB VBUS Detect Wakeup Enable. This bit allows wakeup from the USB power supply on or off status.</description>
             <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CPU1</name>
+            <description>CPU1 Wakeup Enable.</description>
+            <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -608,6 +658,5 @@
       </register>
     </registers>
   </peripheral>
-  <!-- PWRSEQ:
-                                                                                                                                             Power sequencer          -->
+  <!-- PWRSEQ: Power sequencer          -->
 </device>

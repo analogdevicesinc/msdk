@@ -58,7 +58,9 @@ bool_t lhciMstExtScanVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     case LHCI_OPCODE_VS_GET_AUX_SCAN_STATS:
       evtParamLen += sizeof(BbBleAuxScanPktStats_t);
       break;
-
+    case LHCI_OPCODE_VS_GET_PER_SCAN_STATS:
+      evtParamLen += sizeof(BbBlePerScanPktStats_t);
+      break;
     /* --- default --- */
 
     default:

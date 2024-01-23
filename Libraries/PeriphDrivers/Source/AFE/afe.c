@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,7 +56,7 @@
 #define AFE_SPI_PORT MXC_SPI1
 #endif
 
-#define AFE_SPI_BAUD 100000 // Can only run up to PCLK speed
+#define AFE_SPI_BAUD 1000000 // Can only run up to PCLK speed
 #define AFE_SPI_BIT_WIDTH 8
 #define AFE_SPI_SSEL_PIN 1
 #define AFE_SPI_ADDRESS_LEN 1
@@ -95,21 +65,32 @@
 //#define DUMP_TRIM_DATA
 
 //
+// Enabling this will use the afe timer to timeout polling of the AFE.
+//  This avoid any chance of the blocking function afe_spi_transceive from never returning.
+//  However, as this low level function can be called several times for even a single
+//  AFE register read, it decreases throughput to and from the AFE.
+//  When running at lower system clock frequencies this can be more of a concern.
+//
+//#define AFE_SPI_TRANSCEIVE_SAFE_BUT_SLOWER
+
+#ifdef AFE_SPI_TRANSCEIVE_SAFE_BUT_SLOWER
+//
 // This timeout prevents infinite loop if AFE is not responsive via SPI
 //
 //  Each read from AFE is 8 bits, unless CRC is enabled.
 //  maximum of 4 reads.
 //      1/AFE_SPI_BAUD * 4 * 8 should be a reasonable timeout for this.
-//      1/100000 = 10us * 4 * 8 = 320us
+//      1/1000000 = 1us * 4 * 8 = 32us
 //
-//  Since this is just for catastrophic lockup, lets round it up to 1000
+//  Since this is just for catastrophic lockup, lets round it up to 100
 //      this will also be a even multiple for MXC_AFE_SPI_RESET_TIMEOUT_ITERATES
 //
-#if (AFE_SPI_BAUD != 100000)
+#if (AFE_SPI_BAUD != 1000000)
 #warning "Recalculate MXC_AFE_SPI_READ_TIMEOUT, since baud rate was modified.\n"
 #endif
+#endif // End of AFE_SPI_TRANSCEIVE_SAFE_BUT_SLOWER
 
-#define MXC_AFE_SPI_READ_TIMEOUT USEC(1000)
+#define MXC_AFE_SPI_READ_TIMEOUT USEC(100)
 
 //
 // Initial AFE RESET time, up to 10 milliseconds
@@ -419,7 +400,12 @@ static int afe_spi_setup(void)
     return E_NO_ERROR;
 }
 
-// This function block until transceive is completed, or times out
+#ifdef AFE_SPI_TRANSCEIVE_SAFE_BUT_SLOWER
+//
+// This function blocks until transceive is completed, or times out
+//  To avoid possibility of getting stuck in a infinite loop, it uses the afe timer
+//  to timeout polling.
+//
 static int afe_spi_transceive(uint8_t *data, int byte_length)
 {
     int status = E_NO_ERROR;
@@ -536,6 +522,86 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     // Got all bytes, and we did NOT timeout
     return E_NO_ERROR;
 }
+#else // Not AFE_SPI_TRANSCEIVE_SAFE_BUT_SLOWER
+
+//
+// This function blocks until transceive is completed, or times out
+//  This version does not use the afe timer to interrupt potential infinite polling.
+//
+static int afe_spi_transceive(uint8_t *data, int byte_length)
+{
+    int i = 0;
+
+    if (byte_length > AFE_SPI_MAX_DATA_LEN) {
+        return E_OVERFLOW;
+    }
+
+    //
+    // Ensure transmit FIFO is finished
+    // NOTE: if the AFE was reset during transaction this may not finish, so using a timeout
+    //
+    while ((pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) != 0) {}
+
+    //
+    // If a transaction has been started, verify it completed before continuing
+    //
+    if (check_done) {
+        while (!(pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+    }
+
+    check_done = 1;
+
+    pSPIm->intfl = pSPIm->intfl;
+    pSPIm->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+
+    while (pSPIm->dma & (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH)) {}
+
+    pSPIm->ctrl1 = ((((byte_length) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS)) |
+                    (byte_length << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS));
+
+    if (device_version < MXC_AFE_VERSION_POST_RESET) {
+        //
+        // Legacy: Disable pull down on MISO while transmitting.
+        //
+        AFE_SPI_MISO_GPIO_PORT->padctrl0 |= AFE_SPI_MISO_GPIO_PIN;
+    }
+
+    pSPIm->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    // NOTE: At most we will read 32 bits before returning to processing, no streaming data
+
+    //
+    // Transmit the data
+    //
+    for (i = 0; i < byte_length; i++) {
+        pSPIm->fifo8[0] = data[i];
+    }
+
+    //
+    // Receive the data
+    //
+
+    // Reset byte counter
+    i = 0;
+
+    do {
+        if ((pSPIm->dma & MXC_F_SPI_DMA_RX_LVL)) {
+            data[i] = pSPIm->fifo8[0];
+            i++;
+        }
+    } while (i < byte_length);
+
+    if (device_version < MXC_AFE_VERSION_POST_RESET) {
+        //
+        // Legacy: Enable pull down on MISO while idle.
+        //
+        AFE_SPI_MISO_GPIO_PORT->padctrl0 |= AFE_SPI_MISO_GPIO_PIN;
+    }
+
+    // Got all bytes, and we did NOT timeout
+    return E_NO_ERROR;
+}
+#endif // End of else not AFE_SPI_TRANSCEIVE_SAFE_BUT_SLOWER
 
 static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
 {
@@ -764,7 +830,7 @@ static int afe_setup_non_por(void)
     // mask all bits but st_dis, or hart_en bits.
     read_val &= (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
 
-    if (device_version >= MXC_MAX32675_REV_B4) {
+    if (device_version >= MXC_AFE_VERSION_POST_RESET) {
         // ST_DIS MUST be set, and HART_EN MAY be set
         if ((read_val !=
              (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) &&
@@ -810,7 +876,7 @@ int afe_setup(mxc_tmr_regs_t *tmr)
     // NEW on ME16-0D, ensure reset is released for the AFE via GRC
     //  Reset could be active due to SW error recovery.
     //
-    if (device_version >= MXC_MAX32675_REV_B4) {
+    if (device_version >= MXC_AFE_VERSION_POST_RESET) {
         MXC_GCR->rst1 &= ~MXC_F_GCR_RST1_AFE;
     }
 

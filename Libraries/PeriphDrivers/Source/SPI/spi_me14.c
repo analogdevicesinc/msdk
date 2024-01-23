@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +57,34 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         MXC_GCR->perckcn1 &= ~(MXC_F_GCR_PERCKCN1_SPI0D);
         if (map == MAP_A) {
             MXC_GPIO_Config(&gpio_cfg_spi0a);
+
+            // Configure Chip Select GPIOs
+            if (numSlaves == 1) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0a);
+            }
+            if (numSlaves == 2) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0a);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+            }
+            if (numSlaves == 3) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0a);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss2);
+            }
         } else if (map == MAP_B) {
+            // Configure Chip Select GPIOs
+            if (numSlaves == 1) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0b);
+            }
+            if (numSlaves == 2) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0b);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+            }
+            if (numSlaves == 3) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0b);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss2);
+            }
             MXC_GPIO_Config(&gpio_cfg_spi0b);
         } else {
             return E_BAD_PARAM;
@@ -97,11 +94,38 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_SPI1) {}
         MXC_GCR->perckcn0 &= ~(MXC_F_GCR_PERCKCN0_SPI1D);
         MXC_GPIO_Config(&gpio_cfg_spi1);
+        // Configure Chip Select GPIOs
+        if (numSlaves == 1) {
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
+        }
+        if (numSlaves == 2) {
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss1);
+        }
+        if (numSlaves == 3) {
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss1);
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss2);
+        }
     } else if (spi == MXC_SPI2) {
         MXC_GCR->rstr0 |= MXC_F_GCR_RSTR0_SPI2;
         while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_SPI2) {}
         MXC_GCR->perckcn0 &= ~(MXC_F_GCR_PERCKCN0_SPI2D);
         MXC_GPIO_Config(&gpio_cfg_spi2);
+
+        // Configure Chip Select GPIOs
+        if (numSlaves == 1) {
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss0);
+        }
+        if (numSlaves == 2) {
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss1);
+        }
+        if (numSlaves == 3) {
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss1);
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss2);
+        }
     } else {
         return E_NO_DEVICE;
     }

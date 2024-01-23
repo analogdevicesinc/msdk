@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,7 +99,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr0);
             }
         }
@@ -141,7 +111,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr1);
             }
         }
@@ -153,7 +123,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr2);
             }
         }
@@ -165,7 +135,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr3);
             }
         }
@@ -177,7 +147,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr4);
 #if TARGET_NUM == 32670
                 MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR0_I | MXC_F_MCR_LPPIOCTRL_LPTMR0_O;
@@ -194,7 +164,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr5);
 #if TARGET_NUM == 32670
                 MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR1_I | MXC_F_MCR_LPPIOCTRL_LPTMR1_O;
