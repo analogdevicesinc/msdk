@@ -122,8 +122,6 @@ int face_detection(void)
 {
     // Capture the image
     camera_start_capture_image();
-    /* Sleep until camera interrupt */
-    MXC_LP_EnterSleepMode();
     #ifdef TFT_ENABLE
     MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
     #endif
