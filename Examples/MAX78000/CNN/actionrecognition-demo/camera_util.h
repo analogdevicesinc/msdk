@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  ******************************************************************************/
- 
+
 #ifndef __CAMERA_UTIL_H__
 #define __CAMERA_UTIL_H__
 

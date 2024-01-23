@@ -18,7 +18,7 @@
  * limitations under the License.
  *
  ******************************************************************************/
- 
+
 // Kinetics Action Recognition Known-Answer-Test for MAX78002
 // Generated using ./ai8xize.py --test-dir sdk/Examples/MAX78002/CNN --prefix kinetics --checkpoint-file trained/ai85-kinetics-qat8-q.pth.tar --config-file networks/ai85-kinetics-actiontcn.yaml --overlap-data --softmax --zero-sram --device MAX78002 --timer 0 --display-checkpoint --verbose
 
