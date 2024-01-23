@@ -1,8 +1,3 @@
-/**
- * @file    w25.c
- * @brief   Board layer Driver for the Micron W25 Serial Multi-I/O Flash Memory.
- */
-
 /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
@@ -24,74 +19,49 @@
  *
  ******************************************************************************/
 
+/**
+ * @file    is25.c
+ * @brief   Board layer Driver for the ISSI IS25 Serial Multi-I/O Flash Memory.
+*/
+
 /* **** Includes **** */
 #include <stdint.h>
 #include <stddef.h>
 #include "Ext_Flash.h"
 
 /**
- * @ingroup w25
+ * @ingroup is25
  * @{
  */
 
 /* **** Definitions **** */
-#define W25_ID_LEN (3)
+#define IS25_ID_LEN (3)
 
-#define W25_WIP_MASK 0x01 /**< Status Reg-1: Work In Progress          */
-#define W25_WEL_MASK 0x02 /**< Status Reg-1: Write Enable Latch mask   */
-#define W25_QE_MASK 0x02 /**< Status Reg-2: Quad-SPI enable mask      */
+#define IS25_WIP_MASK 0x01 /**< Status Reg-1: Work In Progress          */
+#define IS25_WEL_MASK 0x02 /**< Status Reg-1: Write Enable Latch mask   */
+#define IS25_QE_MASK 0x40 /**< Status Reg-2: Quad-SPI enable mask      */
 
-#define W25_TB_POS 5
-#define W25_TB_MASK (1 << W25_TB_POS) /**< Top/Bottom Select mask         */
-#define W25_BP_POS 2
-#define W25_BP_MASK (0x7 << W25_BP_POS) /**< Block Protect mask             */
-#define W25_SR1_FP_MASK \
-    (W25_TB_MASK | W25_BP_MASK) /**< Mask of all flash block protect bits in status register 1 */
-#define W25_CMP_POS 6
-#define W25_CMP_MASK (1 << W25_CMP_POS) /**< Flash protect complement bit mask */
 
-#define W25_GET_BP_IN_FIRST_HALF(pg) \
-    ((pg < 4)              ? 1 :     \
-     (pg > 3 && pg < 8)    ? 2 :     \
-     (pg > 7 && pg < 16)   ? 3 :     \
-     (pg > 15 && pg < 32)  ? 4 :     \
-     (pg > 31 && pg < 64)  ? 5 :     \
-     (pg > 63 && pg < 128) ? 6 :     \
-                             -1)
-#define W25_GET_BP_IN_SECOND_HALF(pg) \
-    ((pg < 192)             ? 5 :     \
-     (pg > 191 && pg < 224) ? 4 :     \
-     (pg > 223 && pg < 240) ? 3 :     \
-     (pg > 239 && pg < 248) ? 2 :     \
-     (pg > 247 && pg < 252) ? 1 :     \
-                              -1)
+#define IS25_DEVICE_SIZE 0x1000000
+#define IS25_BLOCK_SIZE 0x10000
+#define IS25_PAGE_SIZE 256
 
-#define W25_DEVICE_SIZE 0x1000000
-#define W25_BLOCK_SIZE 0x10000
-#define W25_PAGE_SIZE 256
+#define IS25_CMD_RST_EN 0x66 /**< Reset Enable                   */
+#define IS25_CMD_RST_MEM 0x99 /**< Reset Memory                   */
+#define IS25_CMD_ID 0x9F /**< ID                             */
+#define IS25_CMD_WRITE_EN 0x06 /**< Write Enable                   */
+#define IS25_CMD_WRITE_DIS 0x04 /**< Write Disable                  */
 
-#define W25_CMD_RST_EN 0x66 /**< Reset Enable                   */
-#define W25_CMD_RST_MEM 0x99 /**< Reset Memory                   */
-#define W25_CMD_ID 0x9F /**< ID                             */
-#define W25_CMD_WRITE_EN 0x06 /**< Write Enable                   */
-#define W25_CMD_WRITE_DIS 0x04 /**< Write Disable                  */
+#define IS25_CMD_READ_SR 0x05 /**< Read Status Register 1         */
+#define IS25_CMD_WRITE_SR 0x01 /**< Write Status Register 1        */
 
-#define W25_CMD_READ_SR1 0x05 /**< Read Status Register 1         */
-#define W25_CMD_WRITE_SR1 0x01 /**< Write Status Register 1        */
+#define IS25_CMD_PPROG 0x02 /**< Page Program                   */
+#define IS25_CMD_QUAD_PROG 0X32 /**< Quad (4 x I/O) Page Program    */
 
-#define W25_CMD_READ_SR2 0x35 /**< Read Status Register 2         */
-#define W25_CMD_WRITE_SR2 0x31 /**< Write Status Register 2        */
-
-#define W25_CMD_READ_SR3 0x15 /**< Read Status Register 3         */
-#define W25_CMD_WRITE_SR3 0x11 /**< Write Status Register 3        */
-
-#define W25_CMD_PPROG 0x02 /**< Page Program                   */
-#define W25_CMD_QUAD_PROG 0X32 /**< Quad (4 x I/O) Page Program    */
-
-#define W25_CMD_4K_ERASE 0x20 /**< Page Erase                     */
-#define W25_CMD_32K_ERASE 0x52 /**< Sector Type 2 (32KB) Erase     */
-#define W25_CMD_64K_ERASE 0xD8 /**< Sector Type 3 (64KB) Erase     */
-#define W25_CMD_BULK_ERASE 0xC7 /**< Bulk Erase                     */
+#define IS25_CMD_4K_ERASE 0x20 /**< Page Erase                     */
+#define IS25_CMD_32K_ERASE 0x52 /**< Sector Type 2 (32KB) Erase     */
+#define IS25_CMD_64K_ERASE 0xD8 /**< Sector Type 3 (64KB) Erase     */
+#define IS25_CMD_BULK_ERASE 0xC7 /**< Bulk Erase                     */
 
 /* **** Globals **** */
 
@@ -101,13 +71,18 @@ static uint8_t g_is_configured = 0;
 /* **** Static Functions **** */
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 static int flash_busy()
 {
     uint8_t buf;
 
     Ext_Flash_Read_SR(&buf, Ext_Flash_StatusReg_1);
 
-    if (buf & W25_WIP_MASK) {
+    if (buf & IS25_WIP_MASK) {
         return EF_E_BUSY;
     } else {
         return EF_E_SUCCESS;
@@ -115,10 +90,15 @@ static int flash_busy()
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 static int write_enable()
 {
     int err = EF_E_SUCCESS;
-    uint8_t cmd = W25_CMD_WRITE_EN;
+    uint8_t cmd = IS25_CMD_WRITE_EN;
     uint8_t buf = 0;
 
     // Send the command
@@ -130,7 +110,7 @@ static int write_enable()
         return err;
     }
 
-    if (buf & W25_WEL_MASK) {
+    if (buf & IS25_WEL_MASK) {
         return EF_E_SUCCESS;
     }
 
@@ -138,6 +118,11 @@ static int write_enable()
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 static int inline read_reg(uint8_t cmd, uint8_t *buf)
 {
     int err = EF_E_SUCCESS;
@@ -160,6 +145,11 @@ static int inline read_reg(uint8_t cmd, uint8_t *buf)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 static int inline write_reg(uint8_t *buf, unsigned len)
 {
     int err = EF_E_SUCCESS;
@@ -197,7 +187,11 @@ int Ext_Flash_Configure(Ext_Flash_Config_t *cfg)
 }
 
 /* ************************************************************************* */
-
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Init(void)
 {
     if (!g_is_configured) {
@@ -208,18 +202,23 @@ int Ext_Flash_Init(void)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Reset(void)
 {
     int err = EF_E_SUCCESS;
     int busy_count = 0;
-    uint8_t cmd = W25_CMD_RST_EN;
+    uint8_t cmd = IS25_CMD_RST_EN;
 
     // Send the Reset command
     if ((err = g_cfg.write(&cmd, 1, 1, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
         return err;
     }
 
-    cmd = W25_CMD_RST_MEM;
+    cmd = IS25_CMD_RST_MEM;
     if ((err = g_cfg.write(&cmd, 1, 1, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
         return err;
     }
@@ -235,11 +234,17 @@ int Ext_Flash_Reset(void)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 uint32_t Ext_Flash_ID(void)
 {
     int err = EF_E_SUCCESS;
-    uint8_t cmd = W25_CMD_ID;
-    uint8_t id[W25_ID_LEN] = { 0 };
+    uint8_t cmd = IS25_CMD_ID;
+    uint8_t id[IS25_ID_LEN];
+
 
     // Send the command
     if ((err = g_cfg.write(&cmd, 1, 0, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
@@ -247,7 +252,7 @@ uint32_t Ext_Flash_ID(void)
     }
 
     // Read the data
-    if ((err = g_cfg.read(id, W25_ID_LEN, 1, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
+    if ((err = g_cfg.read(id, IS25_ID_LEN, 1, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
         return err;
     }
 
@@ -255,6 +260,11 @@ uint32_t Ext_Flash_ID(void)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Quad(int enable)
 {
     int err = EF_E_SUCCESS;
@@ -262,46 +272,46 @@ int Ext_Flash_Quad(int enable)
     uint8_t post_buf = 0;
 
     // Enable QSPI mode
-    if ((err = Ext_Flash_Read_SR(&pre_buf, Ext_Flash_StatusReg_2)) != EF_E_SUCCESS) {
+    if ((err = Ext_Flash_Read_SR(&pre_buf, Ext_Flash_StatusReg_1)) != EF_E_SUCCESS) {
         return err;
     }
 
     while (flash_busy()) {}
 
     if (enable) {
-        if (pre_buf & W25_QE_MASK) {
+        if (pre_buf & IS25_QE_MASK) {
             return EF_E_SUCCESS;
         }
-        pre_buf |= W25_QE_MASK;
+        pre_buf |= IS25_QE_MASK;
     } else {
-        if (!(pre_buf & W25_QE_MASK)) {
+        if (!(pre_buf & IS25_QE_MASK)) {
             return EF_E_SUCCESS;
         }
-        pre_buf &= ~W25_QE_MASK;
+        pre_buf &= ~IS25_QE_MASK;
     }
 
     if (write_enable() != EF_E_SUCCESS) {
         return EF_E_BAD_STATE;
     }
 
-    if ((err = Ext_Flash_Write_SR(pre_buf, Ext_Flash_StatusReg_2)) != EF_E_SUCCESS) {
+    if ((err = Ext_Flash_Write_SR(pre_buf, Ext_Flash_StatusReg_1)) != EF_E_SUCCESS) {
         return err;
     }
 
     while (flash_busy()) {}
 
-    if ((err = Ext_Flash_Read_SR(&post_buf, Ext_Flash_StatusReg_2)) != EF_E_SUCCESS) {
+    if ((err = Ext_Flash_Read_SR(&post_buf, Ext_Flash_StatusReg_1)) != EF_E_SUCCESS) {
         return err;
     }
 
     while (flash_busy()) {}
 
     if (enable) {
-        if (!(post_buf & W25_QE_MASK)) {
+        if (!(post_buf & IS25_QE_MASK)) {
             return EF_E_ERROR;
         }
     } else {
-        if (post_buf & W25_QE_MASK) {
+        if (post_buf & IS25_QE_MASK) {
             return EF_E_ERROR;
         }
     }
@@ -310,6 +320,11 @@ int Ext_Flash_Quad(int enable)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, Ext_Flash_DataLine_t d_line)
 {
     int err = EF_E_SUCCESS;
@@ -358,6 +373,11 @@ int Ext_Flash_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, Ext_Flash
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
                            Ext_Flash_DataLine_t d_line)
 {
@@ -373,7 +393,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
     }
 
     // if flash address is out-of-range
-    if ((address >= W25_DEVICE_SIZE) || ((address + tx_len) > W25_DEVICE_SIZE)) {
+    if ((address >= IS25_DEVICE_SIZE) || ((address + tx_len) > IS25_DEVICE_SIZE)) {
         return EF_E_BAD_PARAM; // attempt to write outside flash memory size
     }
 
@@ -403,9 +423,9 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
 
         // Send the command and dummy bits
         if (d_line == Ext_Flash_DataLine_Quad) {
-            cmd[0] = W25_CMD_QUAD_PROG;
+            cmd[0] = IS25_CMD_QUAD_PROG;
         } else {
-            cmd[0] = W25_CMD_PPROG;
+            cmd[0] = IS25_CMD_PPROG;
         }
 
         if ((err = g_cfg.write(&cmd[0], 1, 0, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
@@ -418,7 +438,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
         }
 
         // calculate the next flash page boundary from our starting address
-        next_page = ((address & ~(W25_PAGE_SIZE - 1)) + W25_PAGE_SIZE);
+        next_page = ((address & ~(IS25_PAGE_SIZE - 1)) + IS25_PAGE_SIZE);
 
         // Now check for how much data to write on this page of flash
         if ((address + tx_len) < next_page) {
@@ -454,10 +474,15 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Bulk_Erase(void)
 {
     int err = EF_E_SUCCESS;
-    uint8_t cmd = W25_CMD_BULK_ERASE;
+    uint8_t cmd = IS25_CMD_BULK_ERASE;
     volatile int timeout = 0;
 
     if (flash_busy()) {
@@ -484,6 +509,11 @@ int Ext_Flash_Bulk_Erase(void)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
 {
     int err = EF_E_SUCCESS;
@@ -494,20 +524,23 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
         return EF_E_BUSY;
     }
 
-    if (write_enable() != 0) {
-        return EF_E_BAD_STATE;
+    while (write_enable()) {
+        timeout++;
+        if (timeout > 100) {
+            return EF_E_BAD_STATE;
+        }
     }
 
     switch (size) {
     case Ext_Flash_Erase_4K:
     default:
-        cmd[0] = W25_CMD_4K_ERASE;
+        cmd[0] = IS25_CMD_4K_ERASE;
         break;
     case Ext_Flash_Erase_32K:
-        cmd[0] = W25_CMD_32K_ERASE;
+        cmd[0] = IS25_CMD_32K_ERASE;
         break;
     case Ext_Flash_Erase_64K:
-        cmd[0] = W25_CMD_64K_ERASE;
+        cmd[0] = IS25_CMD_64K_ERASE;
         break;
     }
 
@@ -530,6 +563,11 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Read_SR(uint8_t *buf, Ext_Flash_StatusReg_t reg_num)
 {
     uint8_t cmd = 0;
@@ -540,13 +578,7 @@ int Ext_Flash_Read_SR(uint8_t *buf, Ext_Flash_StatusReg_t reg_num)
 
     switch (reg_num) {
     case Ext_Flash_StatusReg_1:
-        cmd = W25_CMD_READ_SR1;
-        break;
-    case Ext_Flash_StatusReg_2:
-        cmd = W25_CMD_READ_SR2;
-        break;
-    case Ext_Flash_StatusReg_3:
-        cmd = W25_CMD_READ_SR3;
+        cmd = IS25_CMD_READ_SR;
         break;
     default:
         return EF_E_BAD_PARAM;
@@ -556,19 +588,18 @@ int Ext_Flash_Read_SR(uint8_t *buf, Ext_Flash_StatusReg_t reg_num)
 }
 
 /* ************************************************************************* */
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int Ext_Flash_Write_SR(uint8_t value, Ext_Flash_StatusReg_t reg_num)
 {
     uint8_t cmd = 0;
 
     switch (reg_num) {
     case Ext_Flash_StatusReg_1:
-        cmd = W25_CMD_WRITE_SR1;
-        break;
-    case Ext_Flash_StatusReg_2:
-        cmd = W25_CMD_WRITE_SR2;
-        break;
-    case Ext_Flash_StatusReg_3:
-        cmd = W25_CMD_WRITE_SR3;
+        cmd = IS25_CMD_WRITE_SR;
         break;
     default:
         return EF_E_BAD_PARAM;
@@ -582,122 +613,18 @@ int Ext_Flash_Write_SR(uint8_t value, Ext_Flash_StatusReg_t reg_num)
 /* ************************************************************************* */
 int Ext_Flash_Block_WP(uint32_t addr, uint32_t begin)
 {
-    int err = EF_E_SUCCESS;
-    uint8_t sr1, sr2, page_num, bp, cmp;
-
-    if (addr >= W25_DEVICE_SIZE) { // Check address valid
-        return EF_E_ERROR;
-    }
-
-    page_num = addr / W25_BLOCK_SIZE; // Get page number in which "addr" is located
-    if ((begin && page_num > 251) || (!begin && page_num < 4)) { // Entire memory array to be locked
-        begin = 0;
-        cmp = 1;
-        bp = 0;
-    } else if ((begin && addr == 0) ||
-               (!begin && addr == W25_DEVICE_SIZE)) { // Entire memory array to be unlocked
-        begin = 0;
-        cmp = 0;
-        bp = 0;
-    } else if ((begin && page_num < 128) ||
-               (!begin &&
-                page_num > 127)) { // If address in the same half of flash as the starting point
-        cmp = 0;
-
-        if (!begin) {
-            page_num = 255 - page_num;
-        }
-
-        bp = W25_GET_BP_IN_FIRST_HALF(page_num);
-    } else { // If address in the opposite half of flash as the starting point
-        cmp = 1;
-
-        if (!begin) {
-            page_num = 255 - page_num;
-        }
-
-        bp = W25_GET_BP_IN_SECOND_HALF(page_num);
-    }
-
-    if ((err = Ext_Flash_Read_SR(&sr1, Ext_Flash_StatusReg_1)) !=
-        EF_E_SUCCESS) { // Read current value of flash protect bits
-        return err;
-    }
-    if ((err = Ext_Flash_Read_SR(&sr2, Ext_Flash_StatusReg_2)) != EF_E_SUCCESS) {
-        return err;
-    }
-
-    sr1 = (sr1 & ~W25_SR1_FP_MASK) | (!!begin << W25_TB_POS) |
-          (bp << W25_BP_POS); // Modify flash protect bits
-    sr2 = (sr2 & ~W25_CMP_MASK) | (cmp << W25_CMP_POS);
-
-    if ((err = Ext_Flash_Write_SR(sr1, Ext_Flash_StatusReg_1)) !=
-        EF_E_SUCCESS) { // Write flash protect settings back to W25
-        return err;
-    }
-    if ((err = Ext_Flash_Write_SR(sr2, Ext_Flash_StatusReg_2)) != EF_E_SUCCESS) {
-        return err;
-    }
-
-    return EF_E_SUCCESS;
+    // not implemented yet
+    return EF_E_BAD_PARAM;
 }
 
 /* ************************************************************************* */
 Ext_Flash_Unblk_t Ext_Flash_GetAvailableFlash(void)
 {
-    int err = 0;
-    uint8_t sr1, sr2;
-    uint32_t page_addr;
+    // not implemented yet
     Ext_Flash_Unblk_t free_flash;
-
-    if ((err = Ext_Flash_Read_SR(&sr1, Ext_Flash_StatusReg_1)) !=
-        EF_E_SUCCESS) { // Get current value of flash protect bits
-        free_flash.start_addr = err;
-        free_flash.end_addr = err;
-        return (free_flash);
-    }
-    if ((err = Ext_Flash_Read_SR(&sr2, Ext_Flash_StatusReg_2)) != EF_E_SUCCESS) {
-        free_flash.start_addr = err;
-        free_flash.end_addr = err;
-        return (free_flash);
-    }
-
-    // Use CMP, TB, and BP bits to find start and end addresses
-    if (((sr1 & W25_BP_MASK) >> W25_BP_POS) == 0) { // Special case: block protect == 0
-        if (sr2 & W25_CMP_MASK) {
-            free_flash.start_addr = 0; // CMP == 1 ---> All mem protected
-            free_flash.end_addr = 0;
-        } else {
-            free_flash.start_addr = 0; // CMP == 0 ---> All mem un-protected
-            free_flash.end_addr = W25_DEVICE_SIZE;
-        }
-    } else if (((sr1 & W25_BP_MASK) >> W25_BP_POS) == 7) { // Special case: block protect == 7
-        if (sr2 & W25_CMP_MASK) {
-            free_flash.start_addr = 0; // CMP == 1 ---> All mem un-protected
-            free_flash.end_addr = W25_DEVICE_SIZE;
-        } else { // CMP == 0 ---> All mem protected
-            free_flash.start_addr = 0;
-            free_flash.end_addr = 0;
-        }
-    } else { // 0 < Block Protect < 7
-        page_addr = 4 << (((sr1 & W25_BP_MASK) >> W25_BP_POS) -
-                          1); // Find page offset from value of block protect field
-
-        if ((sr1 & W25_TB_MASK) && (sr2 & W25_CMP_MASK)) { // TB == 1 && CMP == 1
-            free_flash.start_addr = 0;
-            free_flash.end_addr = page_addr * W25_BLOCK_SIZE;
-        } else if ((sr1 & W25_TB_MASK) && !(sr2 & W25_CMP_MASK)) { // TB == 1 && CMP == 0
-            free_flash.start_addr = page_addr * W25_BLOCK_SIZE;
-            free_flash.end_addr = W25_DEVICE_SIZE;
-        } else if (!(sr1 & W25_TB_MASK) && (sr2 & W25_CMP_MASK)) { // TB == 0 && CMP == 1
-            free_flash.start_addr = 0;
-            free_flash.end_addr = (256 - page_addr) * W25_BLOCK_SIZE;
-        } else { // TB == 0 && CMP == 0
-            free_flash.start_addr = (256 - page_addr) * W25_BLOCK_SIZE;
-            free_flash.end_addr = W25_DEVICE_SIZE;
-        }
-    }
+    free_flash.start_addr = 0;
+    free_flash.end_addr = 0;
 
     return free_flash;
 }
-/**@} end of ingroup w25 */
+/**@} end of ingroup is25 */

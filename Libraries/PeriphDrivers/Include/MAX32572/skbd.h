@@ -131,6 +131,21 @@ typedef enum {
 } mxc_skbd_io_pins_t;
 
 /**
+ * @brief   Keypad Debounce Time
+ *
+ */
+typedef enum {
+    MXC_SKBD_DBTM_TIME4MS = MXC_V_SKBD_CTRL1_DBTM_TIME4MS, ///< SKBD Debounce Time 4ms
+    MXC_SKBD_DBTM_TIME5MS = MXC_V_SKBD_CTRL1_DBTM_TIME5MS, ///< SKBD Debounce Time 5ms
+    MXC_SKBD_DBTM_TIME6MS = MXC_V_SKBD_CTRL1_DBTM_TIME6MS, ///< SKBD Debounce Time 6ms
+    MXC_SKBD_DBTM_TIME7MS = MXC_V_SKBD_CTRL1_DBTM_TIME7MS, ///< SKBD Debounce Time 7ms
+    MXC_SKBD_DBTM_TIME8MS = MXC_V_SKBD_CTRL1_DBTM_TIME8MS, ///< SKBD Debounce Time 8ms
+    MXC_SKBD_DBTM_TIME10MS = MXC_V_SKBD_CTRL1_DBTM_TIME10MS, ///< SKBD Debounce Time 10ms
+    MXC_SKBD_DBTM_TIME11MS = MXC_V_SKBD_CTRL1_DBTM_TIME11MS, ///< SKBD Debounce Time 11ms
+    MXC_SKBD_DBTM_TIME12MS = MXC_V_SKBD_CTRL1_DBTM_TIME12MS, ///< SKBD Debounce Time 12ms
+} mxc_skbd_debounce_time_t;
+
+/**
  * @brief   Keypad IRQ handler function
  *
  */

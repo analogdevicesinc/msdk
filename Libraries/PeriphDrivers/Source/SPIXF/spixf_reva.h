@@ -279,12 +279,8 @@ uint8_t MXC_SPIXF_RevA_GetIoctrlSCLKDrive(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSSDriveHigh(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSSDriveLow(mxc_spixfm_reva_regs_t *spixfm);
 uint8_t MXC_SPIXF_RevA_GetIoctrlSSDrive(mxc_spixfm_reva_regs_t *spixfm);
-void MXC_SPIXF_RevA_SetPuPdCtrl(
-    mxc_spixfm_reva_regs_t *spixfm,
-    mxc_spixf_padctrl_t pad); // Legacy Name. Will start using SetPadCtrl going forward. 1-23-2023
-uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(
-    mxc_spixfm_reva_regs_t
-        *spixfm); // Legacy Name. Will start using GetPadCtrl going forward. 1-23-2023
+void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad); // Legacy Name. Will start using SetPadCtrl going forward. 1-23-2023
+uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm); // Legacy Name. Will start using GetPadCtrl going forward. 1-23-2023
 void MXC_SPIXF_RevA_SetPadCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad);
 uint8_t MXC_SPIXF_RevA_GetPadCtrl(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetSCKDriveHigh(mxc_spixfc_reva_regs_t *spixfc);

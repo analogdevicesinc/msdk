@@ -52,7 +52,7 @@ extern "C" {
 
 #define EXT_FLASH_NAME "MX25"
 
-#define EXT_FLASH_Read_DUMMY \
+#define EXT_FLASH_READ_DUMMY \
     8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
 #define EXT_FLASH_DREAD_DUMMY \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
@@ -69,7 +69,7 @@ extern "C" {
 
 #define EXT_FLASH_NAME "W25"
 
-#define EXT_FLASH_Read_DUMMY \
+#define EXT_FLASH_READ_DUMMY \
     8 /**< Dummy byte sent on a standard read command per the W25 datasheet.         */
 #define EXT_FLASH_DREAD_DUMMY \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the W25 datasheet. */
@@ -86,7 +86,7 @@ extern "C" {
 
 #define EXT_FLASH_NAME "MX25_64MB"
 
-#define EXT_FLASH_Read_DUMMY \
+#define EXT_FLASH_READ_DUMMY \
     8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
 #define EXT_FLASH_DREAD_DUMMY \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
@@ -99,6 +99,28 @@ extern "C" {
 #define EXT_FLASH_CMD_DREAD 0xBB /**< Dual SPI Read                  */
 #define EXT_FLASH_CMD_QREAD 0xEB /**< Quad SPI Read                  */
 
+#elif defined(EXT_FLASH_IS25)
+
+#define EXT_FLASH_NAME "IS25"
+
+#define EXT_FLASH_READ_DUMMY \
+    8 /**< Dummy byte sent on a standard read command per the IS25 datasheet.         */
+#define EXT_FLASH_DREAD_DUMMY \
+    4 /**< Dummy data sent on a fast-read (Dual) read command per the IS25 datasheet. */
+#define EXT_FLASH_QREAD_DUMMY \
+    6 /**< Dummy data sent on a fast-read (Quad) read command per the IS25 datasheet. */
+
+#define EXT_FLASH_EXP_ID 0x009D7018
+
+#define EXT_FLASH_CMD_READ 0x0B /**< Read                           */
+#define EXT_FLASH_CMD_DREAD 0xBB /**< Dual SPI Read                  */
+#define EXT_FLASH_CMD_QREAD 0xEB /**< Quad SPI Read                  */
+
+#endif
+
+#ifdef EXT_FLASH_READ_DUMMY
+    // Deprecated name. Please use EXT_FLASH_READ_DUMMY
+    #define EXT_FLASH_Read_DUMMY EXT_FLASH_READ_DUMMY
 #endif
 
 /**

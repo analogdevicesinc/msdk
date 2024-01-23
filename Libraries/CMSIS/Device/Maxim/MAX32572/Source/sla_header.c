@@ -85,5 +85,3 @@ const flash_app_header_t sb_header =
 
 //__attribute__ ((section(".sb_sla_trailer"))) __attribute__ ((__used__))
 //const unsigned int dummy_signature=0xCAFEFADE;
-
-//#endif //__SLA_FWK__

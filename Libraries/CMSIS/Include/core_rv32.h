@@ -309,15 +309,20 @@ typedef struct {
 #define NVIC_STIR_INTID_Msk (0x1FFUL << NVIC_STIR_INTID_Pos) /*!< STIR: INTLINESNUM Mask */
 
 /*@} end of group CMSIS_NVIC */
+  
+/* For MCUs with extra RISCV core (RISCV1) */
+#ifdef __riscv1
+#define MXC_BASE_INTR   ((uint32_t)0xE5170000UL)
+#define MXC_BASE_EVENT  ((uint32_t)0xE5170020UL)
+#define MXC_BASE_SLEEP  ((uint32_t)0xE5170040UL)
+#else
+#define MXC_BASE_INTR   ((uint32_t)0xE5070000UL)
+#define MXC_BASE_EVENT  ((uint32_t)0xE5070020UL)
+#define MXC_BASE_SLEEP  ((uint32_t)0xE5070040UL)
+#endif
 
-#define MXC_BASE_INTR ((uint32_t)0xE5070000UL)
-//#define MXC_BASE_INTR                   ((uint32_t)0xE5000000UL)
 #define MXC_INTR ((mxc_intr_regs_t *)MXC_BASE_INTR)
-#define MXC_BASE_EVENT ((uint32_t)0xE5070020UL)
-//#define MXC_BASE_EVENT                  ((uint32_t)0xE5000020UL)
 #define MXC_EVENT ((mxc_event_regs_t *)MXC_BASE_EVENT)
-#define MXC_BASE_SLEEP ((uint32_t)0xE5070040UL)
-//#define MXC_BASE_SLEEP                  ((uint32_t)0xE5000040UL)
 #define MXC_SLEEP ((mxc_sleep_regs_t *)MXC_BASE_SLEEP)
 
 /*******************************************************************************

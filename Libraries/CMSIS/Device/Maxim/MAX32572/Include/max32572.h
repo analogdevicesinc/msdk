@@ -283,6 +283,7 @@ typedef enum {
 #define MXC_ROM_MEM_SIZE                MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE                0x08000000UL
 #define MXC_XIP_MEM_SIZE                0x08000000UL
+#define MXC_XIP_SECTOR_SIZE             0x00001000UL
 #define MXC_SRAM_MEM_BASE               0x20000000UL
 #define MXC_SRAM_MEM_SIZE               0x0006C000UL
 #define MXC_OTP_MEM_BASE                0x400C0000UL
