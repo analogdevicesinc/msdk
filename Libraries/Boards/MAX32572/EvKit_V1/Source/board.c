@@ -53,7 +53,6 @@ const mxc_gpio_cfg_t led_pin[] = {
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // clang-format on
 
-
 /******************************************************************************/
 #if defined(SPIXF_RAM) && IAR_PRAGMAS
 #pragma section = ".spix_config"
@@ -112,7 +111,6 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
 {
     return MXC_SPIXF_Clocks(len, deassert);
 }
-
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)
@@ -220,7 +218,7 @@ int Board_Init(void)
     /* TFT reset and backlight signal */
     mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO0,         MXC_GPIO_PIN_7,        MXC_GPIO_FUNC_OUT,
                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_6,       MXC_GPIO_FUNC_OUT,
+    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0,         MXC_GPIO_PIN_6,        MXC_GPIO_FUNC_OUT,
                                   MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
     /* Initialize TFT display */
@@ -235,8 +233,8 @@ int Board_Init(void)
     };
 
     /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t ts_int_pin = { MXC_GPIO1,         MXC_GPIO_PIN_1,       MXC_GPIO_FUNC_IN,
-                               MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    mxc_gpio_cfg_t ts_int_pin = { MXC_GPIO1,         MXC_GPIO_PIN_1,        MXC_GPIO_FUNC_IN,
+                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
     /* Pre-Initialize Touch Screen controller */
     MXC_TS_PreInit(&ts_i2c_config, &ts_int_pin);
@@ -328,7 +326,7 @@ int MXC_Ext_Write(uint32_t address, uint32_t length, uint8_t *buffer)
 #elif defined(SPIXF_RAM)
 __attribute__((section(".spix_config")))
 #endif
-int MXC_Ext_Read(int address, uint8_t* buffer, int len)
+int MXC_Ext_Read(int address, uint8_t *buffer, int len)
 {
     int err = E_NO_ERROR;
     // reset SPIXF peripheral (both SPIXFC and SPIXFM)
@@ -356,7 +354,7 @@ __attribute__((section(".spix_config")))
 #endif
 int MXC_Ext_SectorErase(int address)
 {
-    int err  = E_NO_ERROR;
+    int err = E_NO_ERROR;
     // reset SPIXF peripheral (both SPIXFC and SPIXFM)
     MXC_GCR->rst1 |= MXC_F_GCR_RST1_SPIXIPM | MXC_F_GCR_RST1_SPIXIP;
     // initialize spixfc
