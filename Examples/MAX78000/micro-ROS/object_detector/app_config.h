@@ -22,7 +22,7 @@
 
 #define IMG_XRES 160
 #define IMG_YRES 120
-#define PUBLISH_IMAGE
+// #define PUBLISH_IMAGE
 
 #define STRING_BUFFER_LEN (50)
 #define DEVICE_ID ("mxc_object_detector")

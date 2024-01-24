@@ -84,8 +84,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
         printf("\nFailed to run CNN\n");
         return;
     }
-
-    LED_On(1);
+    
 #ifdef PUBLISH_IMAGE
     error = rcl_publish(&image_publisher, &outgoing_image, NULL);
     if (error) {
@@ -95,12 +94,15 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
     }
 #endif
     
-    error = rcl_publish(&roi_publisher, &outgoing_roi, NULL);
-    if (error) {
-        
-        error_loop();
+    if (outgoing_roi.width > 0 && outgoing_roi.height > 0) {
+        LED_On(1);
+        error = rcl_publish(&roi_publisher, &outgoing_roi, NULL);
+        if (error) {
+            error_loop();
+        }
+    } else {
+        LED_Off(1);
     }
-    LED_Off(1);
 }
 
 
@@ -130,7 +132,7 @@ void appMain(void *argument)
 
     // Create a 5 seconds ping timer,
     rcl_timer_t timer;
-    RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(500), timer_callback));
+    RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(250), timer_callback));
 
     // Create executor
     rclc_executor_t executor;

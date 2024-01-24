@@ -81,7 +81,6 @@ int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img)
 
 	while (!camera_is_image_rcv()) {
         if ((row_data = get_camera_stream_buffer()) != NULL) {
-			LED_Toggle(1);
             for (int i = 0; i < row_buffer_size; i += 2) {
                 // RGB565 to packed 24-bit RGB
                 out_img->data.data[j + 2] = (*(row_data + i) & 0xF8); // Red

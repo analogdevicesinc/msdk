@@ -38,6 +38,7 @@
 #include "rtc.h"
 #include "mxc_sys.h"
 #include "tmr.h"
+#include "mxc_sys.h"
 
 #include "rmw_microros/rmw_microros.h"
 
@@ -86,8 +87,10 @@ int main(void)
 
     LED_On(0);
 
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+
     /* Print banner (RTOS scheduler not running) */
-    printf("\n-=- %s micro-ROS + FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
+    printf("\n-=- %s micro-ROS + FreeRTOS (%s) -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
     printf("SystemCoreClock = %d\n", SystemCoreClock);
 
     printf("Initializing RTC\n");
