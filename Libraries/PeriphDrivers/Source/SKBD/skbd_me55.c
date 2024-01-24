@@ -39,9 +39,8 @@ int MXC_SKBD_Init(mxc_skbd_config_t config)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CTB);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SKBD);
 
-    // MXC_GPIO_Config(&gpio_cfg_kbd_P0);
-    // MXC_GPIO_Config(&gpio_cfg_kbd_P1);
-    MXC_GPIO_Config(&gpio_cfg_kbd_P2);
+    /* Set the SKBD GPIO configs */
+    MXC_GPIO_Config(&gpio_cfg_skbd_P2);
 
     return MXC_SKBD_RevA_Init((mxc_skbd_reva_regs_t *)MXC_SKBD, config);
 }
