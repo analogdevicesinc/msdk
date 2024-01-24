@@ -21,14 +21,7 @@ MXC_OPTIMIZE_CFLAGS = -O2
 
 FONTS = LiberationSans12x12 LiberationSans16x16
 
-ifeq ($(BOARD),Aud01_RevA)
-$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+ifneq "$(BOARD)" "FTHR_RevA"
+$(error ERR_NOTSUPPORTED: This project is only supported for the MAX78000FTHR board.)
 endif
 
-ifeq ($(BOARD),CAM01_RevA)
-$(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
-endif
-
-ifeq ($(BOARD),EvKit_V1)
-$(error ERR_NOTSUPPORTED: This project is not supported for the EVKIT board)
-endif
