@@ -21,6 +21,7 @@
 #include "mxc_transports.h"
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
+#include "semphr.h"
 #include "task.h"
 #include "dma.h"
 #include "nvic_table.h"
@@ -46,6 +47,11 @@ frame request and the data request.
 QueueHandle_t rx_queue; // A FreeRTOS queue will work and has built-in mechanisms for thread safety
 uint8_t rx_buf; // Buffer for received byte
 mxc_uart_req_t rx_req; // UART request, initialized in MXC_Serial_Open
+
+SemaphoreHandle_t uart_tx_mutex;
+SemaphoreHandle_t uart_rx_mutex;
+
+extern int usleep (useconds_t __useconds);
 
 mxc_gpio_cfg_t indicator = {
     .port = MXC_GPIO2,
@@ -83,6 +89,9 @@ bool vMXC_Serial_Open(struct uxrCustomTransport* transport)
 
     MXC_GPIO_Config(&indicator);
     MXC_GPIO_OutClr(indicator.port, indicator.mask);
+
+    uart_tx_mutex = xSemaphoreCreateMutex();
+    uart_rx_mutex = xSemaphoreCreateMutex();
 
     int error = MXC_UART_Init(args->uart_instance, args->baudrate, MXC_UART_APB_CLK);
     if (error) {
@@ -148,13 +157,18 @@ size_t vMXC_Serial_Read (
     MXC_GPIO_OutSet(indicator.port, indicator.mask); // A
 
     unsigned int num_received = 0;
-    while(num_received < length && elapsed < xMaxBlockTime) {
-        if (uxQueueMessagesWaiting(rx_queue) > 0) {
-            if(xQueueReceive(rx_queue, &buffer[num_received], 1)) {
-                num_received++;
+    if (xSemaphoreTake(uart_tx_mutex, xMaxBlockTime) == pdTRUE) {
+        while(num_received < length && elapsed < timeout) {
+            if (uxQueueMessagesWaiting(rx_queue) > 0) {
+                if(xQueueReceive(rx_queue, &buffer[num_received], 1)) {
+                    num_received++;
+                }
             }
+            usleep(1000); // Sleep 1ms
+            elapsed++;
         }
-        elapsed++;
+
+        xSemaphoreGive(uart_tx_mutex);
     }
 
     /* 
@@ -186,10 +200,7 @@ size_t vMXC_Serial_Write (
         size_t length,
         uint8_t* error_code) 
 {
-    transport_config_t *args = (transport_config_t *)transport->args;    
-
-    configASSERT( xTaskToNotify == NULL );
-    xTaskToNotify = xTaskGetCurrentTaskHandle();
+    transport_config_t *args = (transport_config_t *)transport->args;
 
     uint32_t ulNotificationValue;
 
@@ -203,12 +214,20 @@ size_t vMXC_Serial_Write (
     };
 
     tx_flag = 0;
-    MXC_UART_TransactionDMA(&req);
-    ulNotificationValue = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    if (ulNotificationValue != 1) {
-        // TODO: Value is hitting here, which seems to indicate timeout.  Not sure why
+
+    xTaskToNotify = xTaskGetCurrentTaskHandle();
+
+    if (xSemaphoreTake(uart_tx_mutex, portMAX_DELAY) == pdTRUE) {
+        MXC_UART_TransactionDMA(&req);
+        ulNotificationValue = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        if (ulNotificationValue != 1) {
+            while(1) {}
+            // TODO: Value is hitting here, which seems to indicate timeout.  Not sure why
+        }
+        // while (!tx_flag); // TODO: ulTaskNotifyTake doesn't seem to be working?
+
+        xSemaphoreGive(uart_tx_mutex);
     }
-    while (!tx_flag); // TODO: ulTaskNotifyTake doesn't seem to be working?
 
     return req.txCnt;
 }
