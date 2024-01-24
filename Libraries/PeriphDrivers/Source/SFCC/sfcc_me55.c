@@ -27,30 +27,29 @@
 
 int MXC_SFCC_ID(mxc_sfcc_info_t cid)
 {
-    return MXC_SFCC_RevA_ID ((mxc_sfcc_reva_regs_t*) MXC_SFCC, cid);
+    return MXC_SFCC_RevA_ID((mxc_sfcc_reva_regs_t *)MXC_SFCC, cid);
 }
 
 void MXC_SFCC_Enable(void)
 {
-    MXC_SFCC_RevA_Enable ((mxc_sfcc_reva_regs_t*) MXC_SFCC);
+    MXC_SFCC_RevA_Enable((mxc_sfcc_reva_regs_t *)MXC_SFCC);
 }
 
 void MXC_SFCC_Disable(void)
 {
-    MXC_SFCC_RevA_Disable ((mxc_sfcc_reva_regs_t*) MXC_SFCC);
+    MXC_SFCC_RevA_Disable((mxc_sfcc_reva_regs_t *)MXC_SFCC);
 }
 
 void MXC_SFCC_Flush(void)
-{    
+{
     /* NOTE: MEMPROT authentication bytes are not flushed with the SFCC invalidate bits,
      * the GCR SFCC flush is required.
      */
     /* Flush all instruction caches */
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_SFCC_FLUSH;
-    
+
     /* Wait for flush to complete */
-    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_SFCC_FLUSH) {
-    }
+    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_SFCC_FLUSH) {}
 
     MXC_SFCC_Disable();
     MXC_SFCC_Enable();

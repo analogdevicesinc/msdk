@@ -39,7 +39,6 @@
 #define IS25_WEL_MASK 0x02 /**< Status Reg-1: Write Enable Latch mask   */
 #define IS25_QE_MASK 0x40 /**< Status Reg-2: Quad-SPI enable mask      */
 
-
 #define IS25_DEVICE_SIZE 0x1000000
 #define IS25_BLOCK_SIZE 0x10000
 #define IS25_PAGE_SIZE 256
@@ -242,7 +241,6 @@ uint32_t Ext_Flash_ID(void)
     int err = EF_E_SUCCESS;
     uint8_t cmd = IS25_CMD_ID;
     uint8_t id[IS25_ID_LEN];
-
 
     // Send the command
     if ((err = g_cfg.write(&cmd, 1, 0, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {

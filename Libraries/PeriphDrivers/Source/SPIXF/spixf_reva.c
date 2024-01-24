@@ -54,8 +54,8 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t *spixfc,
                                 mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, mxc_spixf_req_t *req);
 
 #if defined(SPIXF_RAM)
-    static int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value);
-    static void MXC_FreeLock_SPIXF(uint32_t *lock);
+static int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value);
+static void MXC_FreeLock_SPIXF(uint32_t *lock);
 #endif
 
 /******* Globals *******/
@@ -125,7 +125,8 @@ void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t *spixfc)
 }
 
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_padctrl_t padctrl)
+                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
+                           mxc_spixf_padctrl_t padctrl)
 {
     spixfm->io_ctrl = 0;
 
@@ -260,7 +261,7 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t *spixfc,
         return E_BUSY;
     }
 #else
-        // Lock this SPIXFC
+    // Lock this SPIXFC
     if (MXC_GetLock((uint32_t *)&states.req, 1) != E_NO_ERROR) {
         return E_BUSY;
     }
@@ -1506,7 +1507,6 @@ int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value)
     return E_NO_ERROR;
 }
 #endif
-
 
 // MXC_FreeLock
 #if defined(SPIXF_RAM)

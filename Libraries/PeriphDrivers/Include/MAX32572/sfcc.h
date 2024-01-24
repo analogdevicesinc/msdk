@@ -44,9 +44,9 @@ extern "C" {
  * @brief Enumeration type for the Cache ID Register
  */
 typedef enum {
-    SFCC_INFO_RELNUM,    ///< Identifies the Release Number
-    SFCC_INFO_PARTNUM,   ///< Specifies the value of Cache ID Part Number
-    SFCC_INFO_ID         ///< Specifies the value of Cache ID
+    SFCC_INFO_RELNUM, ///< Identifies the Release Number
+    SFCC_INFO_PARTNUM, ///< Specifies the value of Cache ID Part Number
+    SFCC_INFO_ID ///< Specifies the value of Cache ID
 } mxc_sfcc_info_t;
 
 /**
@@ -54,22 +54,22 @@ typedef enum {
  * @param   cid Enumeration type for Cache Id Register.
  * @retval  Returns the contents of Cache Id Register.
  */
-int MXC_SFCC_ID (mxc_sfcc_info_t cid);
+int MXC_SFCC_ID(mxc_sfcc_info_t cid);
 
 /**
  * @brief   Enable the instruction cache controller.
  */
-void MXC_SFCC_Enable (void);
+void MXC_SFCC_Enable(void);
 
 /**
  * @brief   Disable the instruction cache controller.
  */
-void MXC_SFCC_Disable (void);
+void MXC_SFCC_Disable(void);
 
 /**
  * @brief   Flush the instruction cache controller.
  */
-void MXC_SFCC_Flush (void);
+void MXC_SFCC_Flush(void);
 
 /**@} end of group sfcc */
 

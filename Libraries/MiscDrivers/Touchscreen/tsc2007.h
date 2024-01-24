@@ -23,7 +23,6 @@
 #include <i2c.h>
 #include <gpio.h>
 
-
 #ifndef TS_MAX_BUTTONS
 #define TS_MAX_BUTTONS 16
 #endif
@@ -32,32 +31,27 @@
 #define TSC2007_I2C_TARGET_ADDRESS 0x48
 
 typedef enum {
-    TSC_MEASURE_TEMP0                   = 0b0000,
-    TSC_MEASURE_AUX                     = 0b0010,
-    TSC_MEASURE_TEMP1                   = 0b0100,
-    TSC_ACTIVATE_X_NEGATIVE             = 0b1000,
-    TSC_ACTIVATE_Y_NEGATIVE             = 0b1001,
-    TSC_ACTIVATE_Y_POSITIVE_X_NEGATIVE  = 0b1010,
-    TSC_SETUP_COMMAND                   = 0b1011,
-    TSC_MEASURE_X                       = 0b1100,
-    TSC_MEASURE_Y                       = 0b1101,
-    TSC_MEASURE_Z1                      = 0b1110,
-    TSC_MEASURE_Z2                      = 0b1111
+    TSC_MEASURE_TEMP0 = 0b0000,
+    TSC_MEASURE_AUX = 0b0010,
+    TSC_MEASURE_TEMP1 = 0b0100,
+    TSC_ACTIVATE_X_NEGATIVE = 0b1000,
+    TSC_ACTIVATE_Y_NEGATIVE = 0b1001,
+    TSC_ACTIVATE_Y_POSITIVE_X_NEGATIVE = 0b1010,
+    TSC_SETUP_COMMAND = 0b1011,
+    TSC_MEASURE_X = 0b1100,
+    TSC_MEASURE_Y = 0b1101,
+    TSC_MEASURE_Z1 = 0b1110,
+    TSC_MEASURE_Z2 = 0b1111
 } mxc_ts_cmd_func_t;
 
-
 typedef enum {
-    TSC_POWER_DOWN_IRQ_EN               = 0b00,
-    TSC_ADC_ON_IRQ_DIS_0                = 0b01,
-    TSC_ADC_OFF_IRQ_EN                  = 0b10,
-    TSC_ADC_ON_IRQ_DIS_1                = 0b11
+    TSC_POWER_DOWN_IRQ_EN = 0b00,
+    TSC_ADC_ON_IRQ_DIS_0 = 0b01,
+    TSC_ADC_OFF_IRQ_EN = 0b10,
+    TSC_ADC_ON_IRQ_DIS_1 = 0b11
 } mxc_ts_cmd_pdown_t;
 
-typedef enum {
-    TSC_12_BIT                          = 0b0,
-    TSC_8_BIT                           = 0b1
-} mxc_ts_cmd_mode_t;
-
+typedef enum { TSC_12_BIT = 0b0, TSC_8_BIT = 0b1 } mxc_ts_cmd_mode_t;
 
 typedef struct {
     mxc_i2c_regs_t *regs; // The I2C instance the touchscreen controller is connected to

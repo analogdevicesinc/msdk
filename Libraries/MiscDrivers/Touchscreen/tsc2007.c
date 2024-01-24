@@ -72,15 +72,16 @@ int ts_event = false;
 
 uint16_t tsX, tsY, tsZ1;
 
-static uint8_t tsConstructCommand(mxc_ts_cmd_func_t function, mxc_ts_cmd_pdown_t pdown, mxc_ts_cmd_mode_t mode)
+static uint8_t tsConstructCommand(mxc_ts_cmd_func_t function, mxc_ts_cmd_pdown_t pdown,
+                                  mxc_ts_cmd_mode_t mode)
 {
     // Bits D7-D4: C3-C0     => converter function select bits
     // Bits D3-D2: PD1-PD0    => power-down bits
     // Bits D1: M            => mode bit
     // Bits D0: X            => don't care
-    uint8_t command = (uint8_t) function << 4;
-    command |= (uint8_t) pdown << 2;
-    command |= (uint8_t) mode << 1;
+    uint8_t command = (uint8_t)function << 4;
+    command |= (uint8_t)pdown << 2;
+    command |= (uint8_t)mode << 1;
     return command;
 }
 
@@ -109,11 +110,12 @@ static int tsGetXY(uint16_t *x, uint16_t *y)
 
         // Wait Release
         do {
-            TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Z1, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsZ1);
+            TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Z1, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT),
+                            &tsZ1);
         } while (tsZ1 & ADC_Z_THRESHOLD);
 
-        *x = (((tsX-ADC_X_MIN) * X_RES_T) / (ADC_X_MAX-ADC_X_MIN));
-        *y = (((tsY-ADC_Y_MIN) * Y_RES_T) / (ADC_Y_MAX-ADC_Y_MIN));    
+        *x = (((tsX - ADC_X_MIN) * X_RES_T) / (ADC_X_MAX - ADC_X_MIN));
+        *y = (((tsY - ADC_Y_MIN) * Y_RES_T) / (ADC_Y_MAX - ADC_Y_MIN));
 
 #if (FLIP_SCREEN == 1)
         *x = X_RES_T - *x;
@@ -157,7 +159,8 @@ static void tsHandler(void)
         if (pressed_key == 0) { // wait until prev key process
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-                    if (isInBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1, ts_buttons[i].y1)) {
+                    if (isInBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
+                                ts_buttons[i].y1)) {
                         // pressed key
                         pressed_key = ts_buttons[i].key_code;
                         break;
@@ -271,7 +274,8 @@ void MXC_TS_RemoveButton(int x0, int y0, int x1, int y1)
 
     for (i = 0; i < TS_MAX_BUTTONS; i++) {
         if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-            if (isInBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1, ts_buttons[i].y1)) {
+            if (isInBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
+                        ts_buttons[i].y1)) {
                 // clear flag
                 ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
             }
