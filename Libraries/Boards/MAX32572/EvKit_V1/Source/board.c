@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 /******************************************************************************
-=======
-/*******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc. (now owned by Analog
- * Devices, Inc.), Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary and confidential to Analog Devices, Inc. and its licensors.
->>>>>>> dev/me13b_me55-examples
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
