@@ -1492,6 +1492,7 @@ __attribute__((section(".spix_config")))
 #endif
 int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value)
 {
+#ifndef __riscv
     do {
         // Return if the lock is taken by a different thread
         if (__LDREXW((volatile uint32_t *)lock) != 0) {
@@ -1503,6 +1504,7 @@ int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value)
 
     // Do not start any other memory access until memory barrier is complete
     __DMB();
+#endif // __riscv
 
     return E_NO_ERROR;
 }
@@ -1517,8 +1519,10 @@ __attribute__((section(".spix_config")))
 #endif
 void MXC_FreeLock_SPIXF(uint32_t *lock)
 {
+#ifndef __riscv
     // Ensure memory operations complete before releasing lock
     __DMB();
+#endif // __riscv
     *lock = 0;
 }
 #endif
