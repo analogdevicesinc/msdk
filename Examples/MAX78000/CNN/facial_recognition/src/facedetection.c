@@ -38,6 +38,8 @@
 #include "lp.h"
 
 #define S_MODULE_NAME "facedetection"
+#define PRINT_TIME 1
+
 /************************************ VARIABLES ******************************/
 volatile uint32_t cnn_time; // Stopwatch
 
@@ -110,12 +112,13 @@ int face_detection(void)
 {
     // Capture the image
     camera_start_capture_image();
+    /* Sleep until camera interrupt */
+    MXC_LP_EnterSleepMode();
     #ifdef TFT_ENABLE
     MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
     #endif
     PR_DEBUG("Image received\n");
 
-#define PRINT_TIME 1
 #if (PRINT_TIME == 1)
     /* Get current time */
     uint32_t process_time = utils_get_time_ms();
@@ -145,12 +148,12 @@ int face_detection(void)
         run_cnn_1(0, 0);
 
 #if (PRINT_TIME == 1)
-        PR_DEBUG("Process Time Total : %dms", utils_get_time_ms() - process_time);
+        PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
 #endif
 
 #if (PRINT_TIME == 1)
-        PR_DEBUG("Capture Time : %dms", process_time - total_time);
-        PR_DEBUG("Total Time : %dms", utils_get_time_ms() - total_time);
+        PR_INFO("Capture Time : %dms", process_time - total_time);
+        PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
         total_time = utils_get_time_ms();
 #endif
     }
