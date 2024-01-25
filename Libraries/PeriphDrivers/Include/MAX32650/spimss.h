@@ -34,6 +34,7 @@
 #include "mxc_pins.h"
 #include "gpio.h"
 #include "spimss_regs.h"
+#include "stdbool.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -171,6 +172,65 @@ int MXC_SPIMSS_SlaveTransAsync(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req);
  *             MXC_Error_Codes "error" if unsuccessful.
  */
 int MXC_SPIMSS_AbortAsync(mxc_spimss_req_t *req);
+
+/**
+ * @brief     Execute a master transaction over DMA.
+ * @param     spi   Pointer to spi module.
+ * @param     req   Pointer to spi request.
+ *
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+ */
+int MXC_SPIMSS_MasterTransDMA(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req);
+
+/**
+ * @brief      Enable Disable auto dma handling. If set to true, dma channel for transaction
+ *             is acquired in the MXC_SPIMSS_MasterTransDMA function. Otherwise, user has to set
+ *             tx and rx channel for SPIMSS DMA transaction with MXC_SPIMSS_SetTXDMAChannel and 
+ *             MXC_SPIMSS_SetRXDMAChannel functions.
+ *
+ * @param      spi   Pointer to spi module
+ * @param      enable    Enable Disable auto handler
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+*/
+int MXC_SPIMSS_SetAutoDMAHandlers(mxc_spimss_regs_t *spi, bool enable);
+
+/**
+ * @brief      Set the TX channel id for DMA to be used in SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @param      channel    Id of the channel for TXDma Channel.
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+*/
+int MXC_SPIMSS_SetTXDMAChannel(mxc_spimss_regs_t *spi, unsigned int channel);
+
+/**
+ * @brief      Returns the current TX channel id set for SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @return  \c #TXDMA_ChannelId of the spi module.
+*/
+int MXC_SPIMSS_GetTXDMAChannel(mxc_spimss_regs_t *spi);
+
+/**
+ * @brief      Set the RX channel id for DMA to be used in SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @param      channel    Id of the channel for RXDma Channel.
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+*/
+int MXC_SPIMSS_SetRXDMAChannel(mxc_spimss_regs_t *spi, unsigned int channel);
+
+/**
+ * @brief      Returns the current RX channel id set for SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @return  \c #RXDMA_ChannelId of the spi module.
+*/
+int MXC_SPIMSS_GetRXDMAChannel(mxc_spimss_regs_t *spi);
 
 /**@} end of group spimss */
 
