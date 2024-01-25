@@ -110,6 +110,10 @@ static void start_tft_dma(uint32_t* src_ptr)
 
 int face_detection(void)
 {
+#if (PRINT_TIME == 1)
+    uint32_t start_time = utils_get_time_ms();
+    uint32_t capture_time, process_time, total_time;
+#endif
     // Capture the image
     camera_start_capture_image();
     /* Sleep until camera interrupt */
@@ -117,18 +121,13 @@ int face_detection(void)
     #ifdef TFT_ENABLE
     MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
     #endif
-    PR_DEBUG("Image received\n");
-
-#if (PRINT_TIME == 1)
-    /* Get current time */
-    uint32_t process_time = utils_get_time_ms();
-    uint32_t total_time = utils_get_time_ms();
-#endif
 
     /* Check for received image */
     if (camera_is_image_rcv()) {
+        PR_DEBUG("Image received\n");
 #if (PRINT_TIME == 1)
-        process_time = utils_get_time_ms();
+        capture_time = utils_get_time_ms() - start_time;
+        process_time = utils_get_time_ms(); // Mark the start of process_time.  Var will be re-used to re-calculate itself.
 #endif
 
 #ifdef IMAGE_TO_UART
@@ -148,13 +147,14 @@ int face_detection(void)
         run_cnn_1(0, 0);
 
 #if (PRINT_TIME == 1)
-        PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
+        process_time = utils_get_time_ms() - process_time;
+        total_time = utils_get_time_ms() - start_time;
 #endif
 
 #if (PRINT_TIME == 1)
-        PR_INFO("Capture Time : %dms", process_time - total_time);
-        PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
-        total_time = utils_get_time_ms();
+        PR_INFO("Image Capture Time : %dms", capture_time);
+        PR_INFO("FaceDetect Process Time : %dms", process_time);
+        PR_INFO("Total FaceDetect Time : %dms", total_time);
 #endif
     }
 

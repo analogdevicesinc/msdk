@@ -66,28 +66,25 @@ static int32_t ml_3_data32[(CNN_3_NUM_OUTPUTS + 3) / 4];
 int face_id(void)
 {
 #if (PRINT_TIME == 1)
-    /* Get current time */
-    uint32_t process_time = utils_get_time_ms();
-    uint32_t total_time = utils_get_time_ms();
-    uint32_t weight_load_time = 0;
+    uint32_t process_time;
 #endif
 
     /* Check for received image */
     if (camera_is_image_rcv()) {
 #if (PRINT_TIME == 1)
-        process_time = utils_get_time_ms();
+        process_time = utils_get_time_ms(); // Mark the start of process_time.  Var will be re-used to re-calculate itself.
 #endif
 
         // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
         // CNN clock: 50 MHz div 1
         cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-        weight_load_time = utils_get_time_ms();
         /* Configure CNN 2 to recognize a face */
         cnn_2_init(); // Bring state machine into consistent state
+        uint32_t weight_load_time = utils_get_time_ms();
         cnn_2_load_weights_from_SD(); // Load CNN kernels from SD card
         PR_DEBUG("CNN weight load time: %dms", utils_get_time_ms() - weight_load_time);
         cnn_2_load_bias(); // Reload CNN bias
-        PR_DEBUG("CNN bias load time");
+        PR_DEBUG("CNN bias load");
         cnn_2_configure(); // Configure state machine
         PR_DEBUG("CNN configure");
 
@@ -96,13 +93,8 @@ int face_id(void)
         PR_DEBUG("CNN RUN");
 
 #if (PRINT_TIME == 1)
-        PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
-#endif
-
-#if (PRINT_TIME == 1)
-        PR_INFO("Capture Time : %dms", process_time - total_time);
-        PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
-        total_time = utils_get_time_ms();
+        process_time = utils_get_time_ms() - process_time;
+        PR_INFO("FaceID Processing Time : %dms", process_time);
 #endif
     }
 
@@ -387,13 +379,13 @@ static void run_cnn_2(void)
     PR_DEBUG("CNN_3 max value index: %d \n", max_emb_index);
     if (max_emb > Threshold)
     {
-        printf("subject id: %d \n", max_emb_index);
+        PR_INFO("FaceID result: subject id: %d \n", max_emb_index);
         name =  (char*)names[max_emb_index];
-        printf("subject name: %s \n", name);
+        PR_INFO("FaceID result: subject name: %s \n", name);
             }
     else
     {
-        printf("Unknown subject \n");
+        PR_INFO("FaceID result: Unknown subject");
         name =  "Unknown";
             }
 

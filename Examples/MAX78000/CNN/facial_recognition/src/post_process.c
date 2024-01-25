@@ -316,7 +316,7 @@ void get_max_probable_box(void)
     }
 
     if (max_cls_prob < MIN_CLASS_SCORE) {
-        PR_DEBUG("No face detected\n");
+        PR_DEBUG("No face detected.");
         face_detected = 0;
         return;
     }

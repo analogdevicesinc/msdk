@@ -101,7 +101,7 @@ int main(void)
         return error;
     }
 
-    PR_INFO("\n\nMAX78000 Feather Facial Recognition Demo\n");
+    PR_INFO("\n\nMAX78000 Feather Facial Recognition Demo");
 
     PR_INFO("Initializing...\n");
     init_names();
@@ -116,40 +116,40 @@ int main(void)
     // Initialize the camera driver.
     error = camera_init(CAMERA_FREQ);
     if (error) {
-        PR_ERR("Camera initialization error (%i)\n", error);
+        PR_ERR("Camera initialization error (%i)", error);
         return error;
     }
 
     // Obtain the I2C slave address of the camera.
     slaveAddress = camera_get_slave_address();
-    PR_DEBUG("Camera I2C slave address is %02x\n", slaveAddress);
+    PR_DEBUG("Camera I2C slave address is %02x", slaveAddress);
 
     // Obtain the product ID of the camera.
     error = camera_get_product_id(&id);
 
     if (error) {
-        PR_ERR("Error returned from reading camera id. Error %d\n", error);
+        PR_ERR("Error returned from reading camera id. Error %d", error);
         return error;
     }
 
-    PR_DEBUG("Camera Product ID is %04x\n", id);
+    PR_DEBUG("Camera Product ID is %04x", id);
 
     // Obtain the manufacture ID of the camera.
     error = camera_get_manufacture_id(&id);
 
     if (error) {
-        PR_ERR("Error returned from reading camera id. Error %d\n", error);
+        PR_ERR("Error returned from reading camera id. Error %d", error);
         return error;
     }
 
-    PR_DEBUG("Camera Manufacture ID is %04x\n", id);
+    PR_DEBUG("Camera Manufacture ID is %04x", id);
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
     error = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel);
 
     if (error) {
-        PR_ERR("Error returned from setting up camera. Error %d\n", error);
+        PR_ERR("Error returned from setting up camera. Error %d", error);
         return error;
     }
 
@@ -178,36 +178,35 @@ int main(void)
 #endif
 
     /* Initilize SD card */
-    PR_INFO("Initializing SD Card...\n");
+    PR_INFO("Initializing SD Card...");
     SD_Init();
 
-    PR_INFO("Launching face detection loop...\n");
+    PR_INFO("Launching face detection loop...");
+    uint32_t loop_time;
     while (1) {
-        uint32_t loop_time = utils_get_time_ms();
-        LED_On(0);
+        PR_INFO("-----");
+        loop_time = utils_get_time_ms();
+        LED_On(0);        
         face_detection();
         LED_Off(0);
-        PR_DEBUG("face detection time: %d ms\n", utils_get_time_ms() - loop_time);
 
         if (face_detected) {
+            PR_INFO("Face detected!");
             LED_On(1);
-            uint32_t faceid_time = utils_get_time_ms();
             face_id();
-            PR_DEBUG("faceid time: %d ms\n", utils_get_time_ms() - faceid_time);
             face_detected = 0;
-            loop_time = utils_get_time_ms() - loop_time;
-            PR_DEBUG("loop time: %d ms\n", loop_time);
         } else {
+            PR_INFO("No face detected.");
             LED_Off(1);
         }
 
+        loop_time = utils_get_time_ms() - loop_time;
+        PR_INFO("----- (Total loop time: %dms)\n", loop_time);
+
 		#ifdef TFT_ENABLE
-		else
-		{
-            MXC_TFT_SetRotation(ROTATE_180);
-            MXC_TFT_ClearArea(&area, 4);
-            MXC_TFT_SetRotation(ROTATE_270);
-        }
+        MXC_TFT_SetRotation(ROTATE_180);
+        MXC_TFT_ClearArea(&area, 4);
+        MXC_TFT_SetRotation(ROTATE_270);
         #endif
 
     }

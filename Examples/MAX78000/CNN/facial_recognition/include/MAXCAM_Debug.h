@@ -29,16 +29,16 @@
 #ifndef IMAGE_TO_UART
 #define PR_DEBUG(fmt, args...) \
     if (0)                     \
-    printf("D[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    printf("D[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #define PR_INFO(fmt, args...) \
     if (1)                    \
-    printf("I[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    printf("I[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #define PR_WARN(fmt, args...) \
     if (1)                    \
-    printf("W[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    printf("W[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #define PR_ERR(fmt, args...) \
     if (1)                   \
-    printf("E[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    printf("E[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #else
 #define PR_DEBUG(fmt, args...)
 #define PR_INFO(fmt, args...)
