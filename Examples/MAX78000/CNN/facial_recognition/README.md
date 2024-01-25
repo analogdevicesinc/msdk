@@ -2,20 +2,21 @@
 
 ## Overview
 
-This demo includes **FaceDetection** and **FaceID** CNN models and runs them sequentially on MAX78000 Feather board only. The **FaceID** CNN model weight binary file (Include/weigths_2.bin) needs to be programmed to SD card using the "SDHC_weights" project which converts the FaceID weights (weights_2.h) into binary file (weights_2.bin) and writes it to the SD card.
-The **FaceDetection** CNN model detects a face and application draws a box around the face.
+This demo includes **FaceDetection** and **FaceID** CNN models and runs them sequentially on MAX78000FTHR board.  
 
-The **FaceID** CNN model demonstrates identification of a number of persons from their facial images.
+The **FaceDetection** CNN model detects a face and draws a bounding box around it.  Then, the bounding box is used to crop the image, which is passed to the **FaceID** CNN model.
 
-For this purpose, the **FaceID** CNN model generates a 64-length embedding for a given image, whose distance to whole embeddings stored for each subject is calculated. The image is identified as either one of these subjects or 'Unknown' depending on the embedding distances.
+The **FaceID** model classifies the face against a database of known users.  For this purpose, the **FaceID** CNN model generates a 64-length embedding for the cropped input image, whose distance to whole embeddings stored for each subject is calculated. The image is identified as either one of these subjects or 'Unknown' depending on the embedding distances.
+
+It should be noted that the **FaceID** model is loaded from an SD card due to memory constraints.  There isn't enough flash in the MAX78000 to store both (See [Loading Weights to SD Card](#loading-weights-to-sd-card)).
 
 ## Facial Recognition Demo Software
 
 ### Loading Weights to SD Card
 
-This project loads weights for the CNN model from an SD card.  The required file is `weights_2.bin`, and can be found in the [SDHC_weights](SDHC_weights) sub-folder.  Load this file into the root directory of a FAT32 formatted SD card before running this project.
+This project loads weights for the **FaceID** CNN model from an SD card.  It expects a `weights_2.bin` in the root directory of a FAT32-formatted micro-SDHC card.  The required file can be found at [SDHC_weights/weights_2.bin](./SDHC_weights/weights_2.bin).  Load this file into the root directory of a FAT32 formatted SD card before running this project.
 
-Alternatively, the [SDHC_weights](SDHC_weights) sub-project can be used to load the weights onto the SD card.  See [SDHC_weights/README.md](SDHC_weights/README.md) for more details.
+Alternatively, the [SDHC_weights](SDHC_weights) sub-project can be used to load the weights onto the SD card with the MAX78000FTHR.  See [SDHC_weights/README.md](SDHC_weights/README.md) for more details.
 
 ### Project Usage
 
@@ -28,8 +29,6 @@ Universal instructions on building, flashing, and debugging this project can be 
 * This project supports displaying its results to a TFT display.  The TFT display is **disabled** by default since it's not supplied with the MAX78000 Feather board. The compatible 2.4'' TFT FeatherWing display can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing).  To _enable_ the display code, set `TFT_ENABLE = 1` in [project.mk](project.mk)
 
 ## Required Connections
-
-Before running this project:
 
 * Load the CNN model's weights into the SD card (see [Loading Weights to SD Card](#loading-weights-to-sd-card)) and insert the SD card into the FTHR boards SD slot.
 * Insert a micro-USB cable into CN1 of the FTHR board.
@@ -44,33 +43,62 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in project.mk:
+To compile code with enabled TFT feature, set `TFT_ENABLE = 1` in [project.mk](project.mk)
 
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS+=-DTFT_ENABLE
-endif
+```Makefile
+# Project config options (see README):
+# -----------------------
+TFT_ENABLE = 1
+# -----------------------
 ```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 
 <img src="Resources/feather_tft.jpg" style="zoom: 25%;" />
 
+The FTHR board must be used in a specific orientation relative to the subject's face.  For example, a user taking a picture of one's own face should use the following orientation:
+
+<img src="Resources/feather_orientation.jpg" style="zoom: 25%;" />
+
+Status LEDs:
+- RED: No face detected
+- GREEN: Face detected
+- YELLOW: Face detected, recapturing image
+
 ### Using Debug Terminal
 
-Debug terminal shows more information on status and detected faces.
+The debug terminal shows more information on status and detected faces.
 
 The USB cable connected to CN1 (USB/PWR) provides power and serial communication to  MAX78000 Feather board.
 
-To configure PC terminal program select correct COM port and settings as follow:
+To configure PC terminal program select correct COM port and settings as follows:
 
 ![](Resources/terminal_setup.jpg)
 
+The serial terminal messages will output the following information, which logs the results and timing for each fo the models.
 
+```serial
+MAX78000 Feather Facial Recognition Demo
+I[main      : 106]      Initializing...
 
-Following message will appear in terminal window:
+I[main      : 180]      Initializing SD Card...
+I[sd        : 554]      Card inserted
 
-![](Resources/terminal.jpg)
+I[sd        :  86]      SD card mounted.
+
+I[sd        : 566]      SD Card Opened
+
+I[main      : 183]      Launching face detection loop...
+I[main      : 186]      -----
+I[facedetection: 148]   Image Capture Time : 47ms
+I[facedetection: 149]   FaceDetect Process Time : 74ms
+I[facedetection: 150]   Total FaceDetect Time : 122ms
+I[main      : 193]      Face detected!
+I[faceid    : 369]      FaceID result: Unknown subject
+I[faceid    :  97]      FaceID Processing Time : 326ms
+I[main      : 203]      ----- (Total loop time: 470ms)
+...
+```
 
 
 

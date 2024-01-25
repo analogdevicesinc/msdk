@@ -13,10 +13,10 @@
 
 # Add your config here!
 
-# This example is only compatible with the FTHR board,
-# so we override the BOARD value to hard-set it.
-override BOARD=FTHR_RevA
-$(warning Warning: This project is forced to compile for the FTHR board only!)
+BOARD = FTHR_RevA
 
 LIB_SDHC = 1
 
+ifneq "$(BOARD)" "FTHR_RevA"
+$(error ERR_NOTSUPPORTED: This project is only support for the MAX78000FTHR board!)
+endif
