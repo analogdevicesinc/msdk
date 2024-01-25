@@ -57,8 +57,6 @@
 /* Number of outputs for this network */
 #define CNN_2_NUM_OUTPUTS 64
 
-
-
 /* Perform minimum accelerator initialization so it can be configured */
 int cnn_2_init(void);
 

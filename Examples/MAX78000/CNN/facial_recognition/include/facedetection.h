@@ -23,7 +23,7 @@
 #define _FACEDETECTION_H_
 
 // Feather board default orientation: horizontal, camera at the top
-#define ROTATE_FEATHER_BOARD	// rotate 180 degree, camera at the bottom
+#define ROTATE_FEATHER_BOARD // rotate 180 degree, camera at the bottom
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 

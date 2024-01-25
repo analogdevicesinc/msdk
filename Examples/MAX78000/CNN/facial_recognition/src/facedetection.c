@@ -47,8 +47,8 @@ static void run_cnn_1(int x_offset, int y_offset);
 
 #ifdef TFT_ENABLE
 static int g_dma_channel_tft = 1;
-static uint8_t* rx_data = NULL;
-static void setup_dma_tft(uint32_t* src_ptr)
+static uint8_t *rx_data = NULL;
+static void setup_dma_tft(uint32_t *src_ptr)
 {
     printf("TFT DMA setup\n");
     // TFT DMA
@@ -57,56 +57,48 @@ static void setup_dma_tft(uint32_t* src_ptr)
     MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
     MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
 
-    MXC_DMA->ch[g_dma_channel_tft].ctrl = ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS)  +
-                                       (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) +
-                                       (0x0 << MXC_F_DMA_CTRL_DSTINC_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_DSTWD_POS)   +
-                                       (0x1 << MXC_F_DMA_CTRL_SRCINC_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_SRCWD_POS)   +
-                                       (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
-                                       (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) +
-                                       (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
-                                       (0x0 << MXC_F_DMA_CTRL_PRI_POS)     +  // High Priority
-									   (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)      // Disable Reload
-                                      );
+    MXC_DMA->ch[g_dma_channel_tft].ctrl =
+        ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
+         (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) + (0x0 << MXC_F_DMA_CTRL_DSTINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_DSTWD_POS) + (0x1 << MXC_F_DMA_CTRL_SRCINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_SRCWD_POS) + (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+         (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
+         (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) // Disable Reload
+        );
 
-	MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
-	MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR, (IMAGE_XRES*IMAGE_YRES) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
-    MXC_SPI0->dma   |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
+                 (IMAGE_XRES * IMAGE_YRES) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
 
     // Clear SPI master done flag
     MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
-    MXC_SETFIELD (MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SETFIELD(MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
     MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
 }
 
-static void start_tft_dma(uint32_t* src_ptr)
+static void start_tft_dma(uint32_t *src_ptr)
 {
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
     }
 
-    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
-    {
+    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
         MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
     }
 
-	MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
-	MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+    MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
 
-	// Enable DMA channel
-	MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
-	// Start DMA
-	MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+    // Enable DMA channel
+    MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    // Start DMA
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
 }
 #endif
-
-
-
 
 int face_detection(void)
 {
@@ -118,16 +110,17 @@ int face_detection(void)
     camera_start_capture_image();
     /* Sleep until camera interrupt */
     MXC_LP_EnterSleepMode();
-    #ifdef TFT_ENABLE
+#ifdef TFT_ENABLE
     MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
-    #endif
+#endif
 
     /* Check for received image */
     if (camera_is_image_rcv()) {
         PR_DEBUG("Image received\n");
 #if (PRINT_TIME == 1)
         capture_time = utils_get_time_ms() - start_time;
-        process_time = utils_get_time_ms(); // Mark the start of process_time.  Var will be re-used to re-calculate itself.
+        process_time =
+            utils_get_time_ms(); // Mark the start of process_time.  Var will be re-used to re-calculate itself.
 #endif
 
 #ifdef IMAGE_TO_UART
@@ -174,21 +167,19 @@ static void run_cnn_1(int x_offset, int y_offset)
 #ifdef TFT_ENABLE
 #ifdef BOARD_FTHR_REVA
     int dma_time = utils_get_time_ms();
-    setup_dma_tft((uint32_t*)raw);
-    start_tft_dma((uint32_t*)raw);
-	// Wait for DMA to finish
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+    setup_dma_tft((uint32_t *)raw);
+    start_tft_dma((uint32_t *)raw);
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
     }
 
-	setup_dma_tft((uint32_t*)(raw + IMAGE_XRES*IMAGE_YRES));
-	// Send a second half of captured image to TFT
-	start_tft_dma((uint32_t*)(raw + IMAGE_XRES*IMAGE_YRES));
-	// Wait for DMA to finish
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+    setup_dma_tft((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
+    // Send a second half of captured image to TFT
+    start_tft_dma((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
     }
     PR_DEBUG("DMA time : %d", utils_get_time_ms() - dma_time);
     //MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
@@ -247,11 +238,11 @@ static void run_cnn_1(int x_offset, int y_offset)
 
     uint32_t post_process_time = utils_get_time_ms();
     get_priors();
-    #ifdef RETURN_MAX_PROB
-        get_max_probable_box();
-    #else
-        localize_objects();
-    #endif
+#ifdef RETURN_MAX_PROB
+    get_max_probable_box();
+#else
+    localize_objects();
+#endif
     PR_DEBUG("CNN post process time : %dms", utils_get_time_ms() - post_process_time);
     // Power off CNN after unloading result to clear all CNN registers.
     // It's needed to load and run other CNN model

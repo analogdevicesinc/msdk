@@ -34,7 +34,7 @@
 
 uint32_t utils_get_time_ms(void)
 {
-   uint32_t sec, ssec;
+    uint32_t sec, ssec;
 
     MXC_RTC_GetSeconds(&sec);
     MXC_RTC_GetSubSeconds(&ssec);

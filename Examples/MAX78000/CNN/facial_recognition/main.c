@@ -56,15 +56,15 @@ extern volatile uint8_t face_detected;
 volatile char names[1024][7];
 mxc_uart_regs_t *CommUart;
 
-void init_names(){
-	char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wstringop-truncation" 
-	for (int i = 0; i < DEFAULT_EMBS_NUM; i++){
-		strncpy((char*)names[i], default_names[i], 7);
-		
-	}
-	#pragma GCC diagnostic pop
+void init_names()
+{
+    char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+    for (int i = 0; i < DEFAULT_EMBS_NUM; i++) {
+        strncpy((char *)names[i], default_names[i], 7);
+    }
+#pragma GCC diagnostic pop
 }
 #ifdef TFT_ENABLE
 area_t area = { 50, 290, 180, 30 };
@@ -146,7 +146,7 @@ int main(void)
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
     error = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel);
+                         dma_channel);
 
     if (error) {
         PR_ERR("Error returned from setting up camera. Error %d", error);
@@ -154,8 +154,7 @@ int main(void)
     }
 
     // Double PCLK
-    camera_write_reg(0x11, 0x80); 
-
+    camera_write_reg(0x11, 0x80);
 
 #ifdef ROTATE_FEATHER_BOARD
     //camera_set_hmirror(0);
@@ -186,7 +185,7 @@ int main(void)
     while (1) {
         PR_INFO("-----");
         loop_time = utils_get_time_ms();
-        LED_On(0);        
+        LED_On(0);
         face_detection();
         LED_Off(0);
 
@@ -203,12 +202,11 @@ int main(void)
         loop_time = utils_get_time_ms() - loop_time;
         PR_INFO("----- (Total loop time: %dms)\n", loop_time);
 
-		#ifdef TFT_ENABLE
+#ifdef TFT_ENABLE
         MXC_TFT_SetRotation(ROTATE_180);
         MXC_TFT_ClearArea(&area, 4);
         MXC_TFT_SetRotation(ROTATE_270);
-        #endif
-
+#endif
     }
 
     return 0;

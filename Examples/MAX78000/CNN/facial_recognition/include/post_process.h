@@ -41,7 +41,6 @@
 #define NUM_PRIORS_PER_AR 623
 #define NUM_PRIORS NUM_PRIORS_PER_AR *NUM_ARS
 
-
 #ifdef RETURN_LARGEST
 #define MAX_PRIORS 20
 #else

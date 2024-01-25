@@ -28,13 +28,13 @@
 void draw_obj_rect(float *xy, uint32_t w, uint32_t h)
 {
 #ifdef TFT_ENABLE
-    int x1 = w * xy[0] + X_START ;
+    int x1 = w * xy[0] + X_START;
     int y1 = h * xy[1] + Y_START;
     int x2 = w * xy[2] + X_START - 1;
     int y2 = h * xy[3] + Y_START - 1;
 
-    // Draw rectangle around detected face 
-    //Rotated here because the way DMA Stream works 
+    // Draw rectangle around detected face
+    //Rotated here because the way DMA Stream works
     MXC_TFT_Rectangle(y1, x1, y2, x2, FRAME_ORANGE);
     printf("x1: %d, y1: %d, x2: %d, y2: %d\n", x1, y1, x2, y2);
 #endif

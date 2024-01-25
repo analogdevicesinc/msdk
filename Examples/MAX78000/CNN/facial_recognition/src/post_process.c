@@ -293,16 +293,16 @@ void reset_nms(void)
     }
 }
 void get_max_probable_box(void)
-{   
+{
     /*Supports only one classes for now*/
-    int prior_idx, class_idx;  
+    int prior_idx, class_idx;
     uint16_t cls_prob;
     uint16_t max_cls_prob = 0;
     uint16_t max_prior_idx = 0;
     float prior_cxcy[4];
     float cxcy[4];
     float xy[4];
-    
+
     for (prior_idx = 0; prior_idx < NUM_PRIORS; ++prior_idx) {
         for (class_idx = 0; class_idx < (NUM_CLASSES - 2); ++class_idx) {
             cls_prob = prior_cls_softmax[prior_idx * NUM_CLASSES + class_idx + 1];
@@ -310,7 +310,6 @@ void get_max_probable_box(void)
             if (cls_prob > max_cls_prob) {
                 max_cls_prob = cls_prob;
                 max_prior_idx = prior_idx;
-
             }
         }
     }
@@ -321,7 +320,6 @@ void get_max_probable_box(void)
         return;
     }
 
-    
     get_cxcy(prior_cxcy, max_prior_idx);
     gcxgcy_to_cxcy(cxcy, max_prior_idx, prior_cxcy);
     cxcy_to_xy(xy, cxcy);
@@ -337,7 +335,6 @@ void get_max_probable_box(void)
 
     face_detected = 1;
     draw_obj_rect(xy, IMAGE_SIZE_X, IMAGE_SIZE_Y);
-    
 }
 void nms(void)
 {
