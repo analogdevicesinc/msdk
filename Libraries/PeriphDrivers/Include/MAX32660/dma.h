@@ -61,19 +61,25 @@ typedef enum {
     MXC_DMA_REQUEST_MEMTOMEM =
         MXC_S_DMA_CFG_REQSEL_MEMTOMEM, ///< Memory to Memory DMA Request Selection
     MXC_DMA_REQUEST_SPI0RX = MXC_S_DMA_CFG_REQSEL_SPI0RX, ///< SPI0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CFG_REQSEL_SPI1RX, ///< SPI1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPIMSSRX =
+        MXC_S_DMA_CFG_REQSEL_SPI1RX, ///< SPIMSS Receive DMA Request Selection
     MXC_DMA_REQUEST_UART0RX = MXC_S_DMA_CFG_REQSEL_UART0RX, ///< UART0 Receive DMA Request Selection
     MXC_DMA_REQUEST_UART1RX = MXC_S_DMA_CFG_REQSEL_UART1RX, ///< UART1 Receive DMA Request Selection
     MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CFG_REQSEL_I2C0RX, ///< I2C0 Receive DMA Request Selection
     MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CFG_REQSEL_I2C1RX, ///< I2C1 Receive DMA Request Selection
     MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CFG_REQSEL_SPI0TX, ///< SPI0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CFG_REQSEL_SPI1TX, ///< SPI1 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_SPIMSSTX =
+        MXC_S_DMA_CFG_REQSEL_SPI1TX, ///< SPIMSS Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART0TX =
         MXC_S_DMA_CFG_REQSEL_UART0TX, ///< UART0 Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART1TX =
         MXC_S_DMA_CFG_REQSEL_UART1TX, ///< UART1 Transmit DMA Request Selection
     MXC_DMA_REQUEST_I2C0TX = MXC_S_DMA_CFG_REQSEL_I2C0TX, ///< I2C0 Transmit DMA Request Selection
     MXC_DMA_REQUEST_I2C1TX = MXC_S_DMA_CFG_REQSEL_I2C1TX, ///< I2C1 Transmit DMA Request Selection
+
+    // Deprecated names
+    MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CFG_REQSEL_SPI1RX, ///< SPI1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CFG_REQSEL_SPI1TX, ///< SPI1 Transmit DMA Request Selection
 } mxc_dma_reqsel_t;
 
 /** @brief Enumeration for the DMA prescaler */

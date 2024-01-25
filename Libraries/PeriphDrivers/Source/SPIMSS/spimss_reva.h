@@ -87,9 +87,16 @@ int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t *spi, unsigned mode, unsigned fr
 int MXC_SPIMSS_RevA_Shutdown(mxc_spimss_reva_regs_t *spi);
 void MXC_SPIMSS_RevA_Handler(mxc_spimss_reva_regs_t *spi);
 int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
+int MXC_SPIMSS_RevA_MasterTransDMA(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_MasterTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_SlaveTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_AbortAsync(spimss_reva_req_t *req);
+
+int MXC_SPIMSS_RevA_SetAutoDMAHandlers(mxc_spimss_reva_regs_t *spi, bool enable);
+int MXC_SPIMSS_RevA_SetTXDMAChannel(mxc_spimss_reva_regs_t *spi, unsigned int channel);
+int MXC_SPIMSS_RevA_GetTXDMAChannel(mxc_spimss_reva_regs_t *spi);
+int MXC_SPIMSS_RevA_SetRXDMAChannel(mxc_spimss_reva_regs_t *spi, unsigned int channel);
+int MXC_SPIMSS_RevA_GetRXDMAChannel(mxc_spimss_reva_regs_t *spi);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPIMSS_SPIMSS_REVA_H_
