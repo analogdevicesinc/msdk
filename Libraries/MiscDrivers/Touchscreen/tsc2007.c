@@ -1,8 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +24,8 @@
 #include <stdio.h>
 
 #include "mxc_device.h"
-#include "tsc2046.h"
-#include "spi.h"
-#include "gpio.h"
+#include "mxc_delay.h"
+#include "tsc2007.h"
 
 /************************************ DEFINES ********************************/
 #ifndef FLIP_SCREEN
@@ -43,6 +40,15 @@
 #define X_RES_T 320
 #define Y_RES_T 240
 
+#define ADC_Z_THRESHOLD 0x7F0
+#define ADC_X_MIN 232
+#define ADC_X_MAX 3888
+#define ADC_Y_MIN 375
+#define ADC_Y_MAX 3799
+
+#define NOT_IN_BOX 0
+#define IN_BOX 1
+
 /******************************* TYPE DEFINITIONS ****************************/
 typedef struct _TS_Buttons_t {
     int x0;
@@ -52,61 +58,71 @@ typedef struct _TS_Buttons_t {
     int key_code;
 } TS_Buttons_t;
 
-/*********************************** VARIABLES *******************************/
 static TS_Buttons_t ts_buttons[TS_MAX_BUTTONS];
 static int pressed_key = 0;
-static mxc_spi_regs_t *t_spi;
-static int t_ssel;
-static unsigned int t_spi_freq;
+static mxc_i2c_regs_t *t_i2c;
+static unsigned int t_i2c_freq;
 static mxc_gpio_cfg_t int_gpio;
-static mxc_gpio_cfg_t busy_gpio;
-static mxc_gpio_cfg_t t_spi_gpio;
+static mxc_gpio_cfg_t t_i2c_gpio;
 unsigned int g_x, g_y = 0;
 // Global touchscreen event flag that can be polled by applications if needed.
 // The application should clear it to 0 if used.
 // It is set to 1 eve
 int ts_event = false;
 
-/********************************* Static Functions **************************/
-static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
+uint16_t tsX, tsY, tsZ1;
+
+static uint8_t tsConstructCommand(mxc_ts_cmd_func_t function, mxc_ts_cmd_pdown_t pdown,
+                                  mxc_ts_cmd_mode_t mode)
+{
+    // Bits D7-D4: C3-C0     => converter function select bits
+    // Bits D3-D2: PD1-PD0    => power-down bits
+    // Bits D1: M            => mode bit
+    // Bits D0: X            => don't care
+    uint8_t command = (uint8_t)function << 4;
+    command |= (uint8_t)pdown << 2;
+    command |= (uint8_t)mode << 1;
+    return command;
+}
+
+static int isInBox(int x, int y, int x0, int y0, int x1, int y1)
 {
     if ((x >= x0) && (x <= x1) && (y >= y0) && (y <= y1)) {
-        return 1;
+        return IN_BOX;
     }
 
-    return 0;
+    return NOT_IN_BOX;
 }
 
 static int tsGetXY(uint16_t *x, uint16_t *y)
 {
-    uint16_t tsX, tsY, tsZ1;
     int ret;
 
-    TS_SPI_Transmit(TSC_DIFFZ1, &tsZ1);
-
-    if (tsZ1 & 0x7F0) {
+    TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Z1, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsZ1);
+    if (tsZ1 & ADC_Z_THRESHOLD) {
 #if (SWAP_XY == 1)
-        TS_SPI_Transmit(TSC_DIFFY, &tsX);
-        TS_SPI_Transmit(TSC_DIFFX, &tsY);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Y, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsX);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_X, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsY);
 #else
-        TS_SPI_Transmit(TSC_DIFFY, &tsY);
-        TS_SPI_Transmit(TSC_DIFFX, &tsX);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Y, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsY);
+        TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_X, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT), &tsX);
 #endif
-
-        *x = tsX * 320 / 0x7FF;
-        *y = tsY * 240 / 0x7FF;
 
         // Wait Release
         do {
-            TS_SPI_Transmit(TSC_DIFFZ1, &tsZ1);
-        } while (tsZ1 & 0x7F0);
+            TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_Z1, TSC_ADC_ON_IRQ_DIS_0, TSC_12_BIT),
+                            &tsZ1);
+        } while (tsZ1 & ADC_Z_THRESHOLD);
+
+        *x = (((tsX - ADC_X_MIN) * X_RES_T) / (ADC_X_MAX - ADC_X_MIN));
+        *y = (((tsY - ADC_Y_MIN) * Y_RES_T) / (ADC_Y_MAX - ADC_Y_MIN));
 
 #if (FLIP_SCREEN == 1)
         *x = X_RES_T - *x;
         *y = Y_RES_T - *y;
 #elif (ROTATE_SCREEN == 1)
         uint16_t swap = *x;
-        *x = 240 - *y - 1;
+        *x = Y_RES_T - *y - 1;
         *y = swap;
 #endif
         ret = 1;
@@ -126,12 +142,15 @@ static int tsGetXY(uint16_t *x, uint16_t *y)
         ret = 0;
     }
 
+    // power down ADC and enable IRQ for next touch
+    TS_I2C_Transmit(tsConstructCommand(TSC_MEASURE_TEMP0, TSC_POWER_DOWN_IRQ_EN, TSC_12_BIT), NULL);
+
     return ret;
 }
 
 static void tsHandler(void)
 {
-    int i;
+    uint32_t i;
 
     MXC_TS_Stop();
 
@@ -140,8 +159,8 @@ static void tsHandler(void)
         if (pressed_key == 0) { // wait until prev key process
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-                    if (is_inBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
-                                 ts_buttons[i].y1)) {
+                    if (isInBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
+                                ts_buttons[i].y1)) {
                         // pressed key
                         pressed_key = ts_buttons[i].key_code;
                         break;
@@ -150,9 +169,7 @@ static void tsHandler(void)
             }
         }
     }
-
     MXC_GPIO_ClearFlags(int_gpio.port, int_gpio.mask);
-
     MXC_TS_Start();
 }
 
@@ -166,26 +183,18 @@ int MXC_TS_AssignInterruptPin(mxc_gpio_cfg_t pin)
     }
 }
 
-/********************************* Public Functions **************************/
-int MXC_TS_PreInit(mxc_ts_spi_config *spi_config, mxc_gpio_cfg_t *int_pin, mxc_gpio_cfg_t *busy_pin)
+int MXC_TS_PreInit(mxc_ts_i2c_config *i2c_config, mxc_gpio_cfg_t *int_pin)
 {
     int result = E_NO_ERROR;
 
-    if ((int_pin == NULL) || (spi_config == NULL)) {
-        return -1;
+    if ((int_pin == NULL) || (i2c_config == NULL)) {
+        return E_NULL_PTR;
     }
 
-    t_spi = spi_config->regs;
-    t_ssel = spi_config->ss_idx;
-    t_spi_freq = spi_config->freq;
+    t_i2c = i2c_config->regs;
+    t_i2c_freq = i2c_config->freq;
     int_gpio = *int_pin;
-    t_spi_gpio = spi_config->gpio;
-
-    if (busy_pin) {
-        busy_gpio = *busy_pin;
-    } else {
-        busy_gpio.port = NULL; // means not initialized
-    }
+    t_i2c_gpio = i2c_config->gpio;
 
     return result;
 }
@@ -194,18 +203,13 @@ int MXC_TS_Init(void)
 {
     int result = E_NO_ERROR;
 
-    // Configure GPIO Pins
-
-    if (busy_gpio.port) {
-        // Touchscreen busy pin
-        MXC_GPIO_Config(&busy_gpio);
-    }
     // Touchscreen interrupt pin
     MXC_GPIO_Config(&int_gpio);
     MXC_GPIO_RegisterCallback(&int_gpio, (mxc_gpio_callback_fn)tsHandler, NULL);
+    MXC_GPIO_IntConfig(&int_gpio, MXC_GPIO_INT_FALLING);
 
-    // Configure SPI Pins
-    TS_SPI_Init();
+    // Configure I2C Pins
+    TS_I2C_Init();
 
     MXC_TS_RemoveAllButton();
 
@@ -222,14 +226,12 @@ int MXC_TS_Init(void)
 
 void MXC_TS_Start(void)
 {
-    TS_SPI_Transmit(TSC_START, NULL);
     MXC_GPIO_EnableInt(int_gpio.port, int_gpio.mask);
 }
 
 void MXC_TS_Stop(void)
 {
     MXC_GPIO_DisableInt(int_gpio.port, int_gpio.mask);
-    TS_SPI_Transmit(TSC_STOP, NULL);
 }
 
 void MXC_TS_GetXY(unsigned int *x, unsigned int *y)
@@ -272,8 +274,8 @@ void MXC_TS_RemoveButton(int x0, int y0, int x1, int y1)
 
     for (i = 0; i < TS_MAX_BUTTONS; i++) {
         if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-            if (is_inBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
-                         ts_buttons[i].y1)) {
+            if (isInBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
+                        ts_buttons[i].y1)) {
                 // clear flag
                 ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
             }

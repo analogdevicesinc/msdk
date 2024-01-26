@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -494,7 +494,7 @@ static void tft_spi_init(void)
     int numSlaves = 2;
     int ssPol = 0;
 
-#if defined(OLD_SPI_API) // Defined in spi.h file if the driver if first version
+#if defined(OLD_SPI_API_FUNCTIONS) // Defined in spi.h file if the driver if first version
     MXC_SPI_Init((mxc_spi_regs_t *)spi, master, quadMode, numSlaves, ssPol, tft_spi_freq);
 
     // Todo:
