@@ -57,6 +57,20 @@ SECTIONS {
         KEEP(*(.init))
         KEEP(*(.fini))
 
+        /* .ctors */
+        *crtbegin.o(.ctors)
+        *crtbegin?.o(.ctors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+        *(SORT(.ctors.*))
+        *(.ctors)
+
+        /* .dtors */
+        *crtbegin.o(.dtors)
+        *crtbegin?.o(.dtors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+        *(SORT(.dtors.*))
+        *(.dtors)
+
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
@@ -84,7 +98,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > ROM
+    } > SPIX
 
     /* This section will keep the SPIX data until loaded into the external device */
     /* Upon initialization of SPIX (user code needs to do this) */

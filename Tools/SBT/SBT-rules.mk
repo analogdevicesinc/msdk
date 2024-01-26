@@ -14,7 +14,9 @@ sla: all
 	@echo " "
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
 	@echo " "
-	$(BUILD_SESSION) -c $(TARGET_SEC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
+	@if [ "$(TARGET_SEC)" != "MAX32572" ]; then \
+		$(BUILD_SESSION) -c $(TARGET_SEC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin ;\
+	fi
 
 # The SCPA target.
 # "make scpa" is a special rule for SCPA applet programs, which are
