@@ -25,6 +25,7 @@
 #include <std_msgs/msg/header.h>
 #include <sensor_msgs/msg/image.h>
 #include <sensor_msgs/msg/region_of_interest.h>
+#include <rcl_interfaces/msg/log.h>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -58,6 +59,9 @@ rcl_publisher_t image_publisher;
 sensor_msgs__msg__Image outgoing_image;
 uint8_t image_data_buffer[IMG_XRES * IMG_YRES * 3];
 
+rcl_publisher_t log_publisher;
+rcl_interfaces__msg__Log log_msg;
+
 void error_loop() {
     int i = 0;
     while(i < 10) {
@@ -65,6 +69,15 @@ void error_loop() {
         MXC_Delay(MXC_DELAY_MSEC(500));
         i++;
     }
+}
+
+#define LOG_MSG(fmt, args...) {\
+    struct timespec ts; \
+    clock_gettime(CLOCK_REALTIME, &ts); \
+    log_msg.stamp.sec = ts.tv_sec; \
+    log_msg.stamp.nanosec = ts.tv_nsec; \
+    snprintf(log_msg.msg.data, STRING_BUFFER_LEN, fmt, ##args);\
+    RCSOFTCHECK(rcl_publish(&log_publisher, &log_msg, NULL));\
 }
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
@@ -130,6 +143,9 @@ void appMain(void *argument)
         ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, Image), "/microROS/image"));
 #endif
 
+    RCCHECK(rclc_publisher_init_default(&log_publisher, &node, 
+        ROSIDL_GET_MSG_TYPE_SUPPORT(rcl_interfaces, msg, Log), "/rosout"));
+
     // Create a 5 seconds ping timer,
     rcl_timer_t timer;
     RCCHECK(rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(250), timer_callback));
@@ -157,9 +173,30 @@ void appMain(void *argument)
     outgoing_image.data.data = image_data_buffer;
     outgoing_image.data.size = outgoing_image.data.capacity;
 
+    // Initialize logger buffers
+    char log_name_buffer[STRING_BUFFER_LEN];
+    memset(log_name_buffer, '\0', STRING_BUFFER_LEN);
+    log_msg.name.capacity = STRING_BUFFER_LEN;
+    log_msg.name.data = log_name_buffer;
+    log_msg.name.size = STRING_BUFFER_LEN;
+    snprintf(log_name_buffer, STRING_BUFFER_LEN, DEVICE_ID);
+
+    char log_msg_buffer[STRING_BUFFER_LEN];
+    memset(log_msg_buffer, '\0', STRING_BUFFER_LEN);
+    log_msg.msg.capacity = STRING_BUFFER_LEN;
+    log_msg.msg.data = log_msg_buffer;
+    log_msg.msg.size = STRING_BUFFER_LEN;
+
+    log_msg.level = rcl_interfaces__msg__Log__INFO;
+
+    LOG_MSG("Hello logger!");
+
+    LOG_MSG("micro-ROS successfully initialized.");
+    LOG_MSG("Initializing camera...");
     // Initialize camera
     RCCHECK(mxc_microros_camera_init(IMG_XRES, IMG_YRES, "rgb8"));
 
+    LOG_MSG("Starting executor...");
     while(1){
         rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
         usleep(10000);

@@ -7,6 +7,7 @@ import rclpy # Python library for ROS 2
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from sensor_msgs.msg import Image, RegionOfInterest
+from rcl_interfaces.msg import Log
 from cv_bridge import CvBridge # Converts between ROS and OpenCV image formats
 import cv2
 
@@ -85,7 +86,27 @@ class ROISubscriber(Node):
                 g_img.save("./test.png")
                 self.get_logger().info("Saved image to test.png")
                 valid_image = False
-  
+
+class Logger(Node):
+    def __init__(self):
+        super().__init__('Logger')
+
+        self.get_logger().info("Initialized logger")
+
+        qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            depth=1)
+
+        self.subscription = self.create_subscription(
+          Log,
+          '/rosout', 
+          self.listener_callback,
+          qos_profile=qos_profile)
+        
+    def listener_callback(self, data:Log):
+        print(f"[{data.level}] [{data.stamp.sec}.{data.stamp.nanosec}] [{data.name}]: {data.msg}")
+
 def main(args=None):
   
     # Initialize the rclpy library
@@ -97,11 +118,14 @@ def main(args=None):
 
     box_subcriber = ROISubscriber()
     box_subcriber.get_logger().info("Initialized box subscriber,")
+
+    logger = Logger()
     
     # Spin the node so the callback function is called.
     while(rclpy.ok()):
       rclpy.spin_once(box_subcriber, timeout_sec=0.1)
       rclpy.spin_once(image_subscriber, timeout_sec=0.1)
+      rclpy.spin_once(logger, timeout_sec=0.1)
     
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
