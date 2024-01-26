@@ -53,6 +53,7 @@ SDHC_FAT
 SDHC_Raw
 Semaphore
 SPI
+SPI_3Wire
 TMR
 TRNG
 UART
