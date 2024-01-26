@@ -84,7 +84,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > ROM
+    } > SPIX
 
     /* This section will keep the SPIX data until loaded into the external device */
     /* Upon initialization of SPIX (user code needs to do this) */

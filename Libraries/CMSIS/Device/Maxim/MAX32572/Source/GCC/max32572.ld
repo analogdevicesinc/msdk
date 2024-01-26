@@ -26,7 +26,6 @@ MEMORY {
     SRAM_RV (rwx) : ORIGIN = 0x20060000, LENGTH = 0x0000C000
 }
 
-/* Added Oct 9, 2018 to go to correct reset vector. */
 ENTRY(Reset_Handler)
 PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
 PROVIDE_HIDDEN( _SLA_Size = __end_image - __end_header );
