@@ -8,7 +8,17 @@ VirtualBox allows for the easy creation and management of Virtual Machines ("VMs
 
 2. Download an Ubuntu Desktop 22.04 LTS .ISO image from the official Ubuntu page [here](https://ubuntu.com/download/desktop)
 
-3. Create a new virtual machine using the downloaded .ISO.  [This](https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview) tutorial hosted on the Ubuntu site is a great reference.
+3. Create a new virtual machine using the downloaded .ISO.  It's recommend to create a virtual hard drive with at least 50GB of storage.  [This](https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview) tutorial hosted on the Ubuntu site is a great reference.
+
+4. Launch your newly created Ubuntu VM, and log in to it.
+
+5. Add sudo permissions to your user account.
+
+    1. Run `$ su` to log in as root.
+
+    2. Run `$ sudo adduser $USER sudo`
+
+    3. Restart your VM.
 
 ## Setting Up USB Passthrough
 

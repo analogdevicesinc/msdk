@@ -28,17 +28,19 @@ For more details on basic ROS concepts see the official [ROS Concepts Documentat
 
 ### Why ROS?
 
-Robotics applications can be intricate, involving multiple systems written in different languages.  On top of its network topology, ROS offers a compelling advantage with its standardization of the [interfaces](https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html#) between nodes. ROS provides pre-defined message types that packages and applications can leverage, enabling the modularization of systems and libraries.
+As its name implies, the primary use-case for the Robot Operating System is the development of robots.  Robotic systems can be intricate, often involving multiple applications written in different languages and running on different hardware.  
 
-For example, the [sensor_msgs](https://index.ros.org/p/sensor_msgs/) messages establish standard "packets" for various data types, such as images, IMU data, temperature measurements, and battery information commonly emitted by low-level sensors. Consider a scenario where a robot needs to query its orientation by polling an IMU, which involves a microcontroller.  ROS facilitates the microcontroller in filling and publishing a standardized message packet, streamlining and decoupling robot development from any custom IMU interface code that might otherwise be necessary.
+As a result, robots are typically architected as a network of sub-systems.  These sub-systems need a way to communicate with each other, and ROS fills in that gap.  Fundamentally, it provides a publisher/subscriber relationship between nodes (see the official [Basic Concepts](https://docs.ros.org/en/humble/Concepts/Basic.html) documentation) .  The client library offers support for Python, C++, and C.  With micro-ROS, the C client library can also be run on resource-constrained embedded devices.  So the modularization and simplification of the connections in a robot's network alone makes it an attractive option.
 
-Additionally, ROS defines datatypes and interfaces comprehensively, supporting most common [field types](https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html#field-types) with built-in type conversions. ROS also offers robust support for defining custom messages, and messages can be transmitted seamlessly across C, C++, and Python code.  No more manual string scraping!
+ROS also offers a large ecosystem of software libraries and tools for the development of robots.  The modularization of the network implies the modularization of the software as well.  For example, there are existing libraries such as [moveit](https://moveit.ros.org/) that implement generalized inverse kinematics, motion planning, 3D perception, and more.  "Plugging in" a custom robot to these types of libraries is made much simpler with ROS.  An implementation typically involves fulfilling the low-level message types that the library expects.  The high-level library doesn't have to worry about the underlying details, and vice versa.  
+
+For example, the [sensor_msgs](https://index.ros.org/p/sensor_msgs/) messages establish standard messages for information commonly emitted by low-level sensors, such as images, IMU data, temperature measurements, and battery levels.  A 3D perception library might consume a [PointCloud](https://github.com/ros2/common_interfaces/blob/humble/sensor_msgs/msg/PointCloud2.msg) message, or a raw [Image](https://github.com/ros2/common_interfaces/blob/humble/sensor_msgs/msg/Image.msg) message.  A control-loop library might consume an [IMU](https://github.com/ros2/common_interfaces/blob/humble/sensor_msgs/msg/Imu.msg) message.
+
+Additionally, ROS defines datatypes and interfaces comprehensively, supporting most common [field types](https://docs.ros.org/en/humble/Concepts/Basic/About-Interfaces.html#field-types) with built-in type conversions. It also offers robust support for defining custom messages. 
 
 So - ROS is an attractive option for building robots, but historically required a full Linux distribution running on a powerful host machine.  With the development of [micro-ROS](https://micro.ros.org/docs/overview/features/), a ROS client implementation now exists for extremely resource constrained microcontrollers.  It builds on an RTOS layer, and the MSDK provides an implementation that builds on FreeRTOS with future plans for Zephyr support.
 
 ## Installation and Setup
-
-One of the disadvantages of ROS is that it can be difficult to set up.  To address this, the MSDK provides an installation script that can streamline these difficulties.
 
 ### Requirements
 
@@ -48,13 +50,32 @@ One of the disadvantages of ROS is that it can be difficult to set up.  To addre
 
 ROS development requires a linux environment with Ubuntu 22.04.  Windows 10 is technically supported by ROS, but the installation is non-trivial and is untested by the MSDK developers.
 
-A native Linux machine is ideal, but development can also be achieved from a virtual machine (recommend [VirtualBox](https://www.virtualbox.org/)), or on Windows via [WSL2](https://learn.microsoft.com/en-us/windows/wsl/).  If developing from a virtual machine or WSL2, it should be noted that some additional steps are required to pass through USB devices.  See [VirtualBox Setup](./VIRTUALBOX_SETUP.md).
+A native Linux machine is ideal, but development can also be achieved from a virtual machine (recommend [VirtualBox](https://www.virtualbox.org/)), or on Windows via [WSL2](https://learn.microsoft.com/en-us/windows/wsl/).  It should be noted that a virtual machine or WSL2 requires some additional steps for passing through USB devices.  
+
+- For native Ubuntu 22.04, the requirements above should be installed be default.
+- For VirtualBox, see [VirtualBox Setup](./VIRTUALBOX_SETUP.md).
+
+### MSDK Setup for micro-ROS Development
+
+1. First, follow the MSDK's instructions for [Developing from the Repo](https://github.com/Analog-Devices-MSDK/msdk?tab=readme-ov-file#developing-from-the-repo).  Afterwards, you should have a cloned MSDK repository with symbolic links to the auto-installers toolchain.
+
+2. Open a terminal and `cd` into the cloned MSDK repo.
+
+3. Check out the `dev/micro-ros` branch.
+
+    ```shell
+    $ git checkout dev/micro-ros
+    ```
 
 ### install.py
 
-The MSDK offers an installation and setup script [`install.py`](./install.py) that will install everything you need to get started with micro-ROS development.  It will install ROS2 and micro-ROS onto your system, and will also setup and build the micro-ROS Agent - a special "bridge" program that connects micro-ROS applications running on embedded devices to the main ROS network.
+One of the disadvantages of ROS is that it can be difficult to set up.  To address this, the MSDK provides an installation script that can streamline these difficulties.
 
-`install.py` can be run with Python (version 3+).  Ubuntu 22.04 comes with a [Python](https://www.python.org/) 3 installation by default.  It's accessible as `python3`.  The presence of Python on your system can be validated with the following command:
+The script is implemented in [`install.py`](./install.py), and will install everything you need to get started with micro-ROS development.  It installs ROS2 and micro-ROS onto your system, and will also setup and build the micro-ROS Agent - a special "bridge" program that connects micro-ROS applications running on embedded devices to the main ROS network.
+
+`install.py` can be run with Python (version 3+).  
+
+Ubuntu 22.04 comes with a [Python](https://www.python.org/) 3 installation by default.  It's accessible as `python3`.  The presence of Python on your system can be validated with the following command:
 
 ```shell
 $ python3 --version
@@ -120,11 +141,46 @@ The listener should start logging the published messages from the talker.
 
 Having validated the basic publisher/subscriber functionality of the ROS library across its C++ and Python packages, the micro-ROS library is ready for use.
 
+### Automatically Sourcing Setup Scripts
+
+ROS development demands a lot of active terminals.  Manually `source`-ing the setup scripts for each one can be cumbersome.  The setup scripts can be automatically sourced by modifying your shell's startup script.
+
+#### Bash
+
+For Bash, edit `~/.bashrc` to append the following lines.
+
+```shell
+```bash
+# Set MAXIM_PATH (if you haven't already)
+export MAXIM_PATH=$HOME/repos/msdk
+
+# ROS/micro-ROS setup
+source /opt/ros/humble/setup.bash
+source $MAXIM_PATH/Libraries/microROS/install/local_setup.bash
+```
+
+Reload your shell configuration with `source ~/.bashrc`
+
+#### Zsh
+
+For Zsh, edit `~/.zshrc` to append the following lines
+
+```bash
+# Set MAXIM_PATH (if you haven't already)
+export MAXIM_PATH=$HOME/repos/msdk
+
+# ROS/micro-ROS setup
+source /opt/ros/humble/setup.zsh
+source $MAXIM_PATH/Libraries/microROS/install/local_setup.zsh
+```
+
+Reload your shell configuration with `source ~/.zshrc`
+
 ### First micro-ROS Application
 
 The MSDK includes a pre-built micro-ROS library and some micro-ROS examples.  The best way to get started is with the ["ping-pong" application](../../Examples/MAX78000/micro-ROS/ping_pong/).  This will validate that the micro-ROS agent and any micro-ROS application code can communicate correctly, and that the messages from our microcontroller firmware are accessible in the ROS network.  It's a good application to get familiar with the basic concepts and tools.
 
-This section will use VS Code and the MAX78000FTHR to demonstrate the application's functionality.
+This section will use VS Code and the MAX78000FTHR to demonstrate the application's functionality.  Make sure you've set up automatic sourcing of the ROS setup scripts (see [Automatically Sourcing Setup Scripts](#automatically-sourcing-setup-scripts)).
 
 1. Open the ["ping-pong" application](../../Examples/MAX78000/micro-ROS/ping_pong/).
 
@@ -134,14 +190,7 @@ This section will use VS Code and the MAX78000FTHR to demonstrate the applicatio
 
 4. Build the firmware, but don't flash or run it yet.  ([how to build projects](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-tasks))
 
-5. In a new terminal, source the ROS setup script _and_ the micro-ROS setup script.  Run the following commands, where `$MAXIM_PATH` is the root directory of the MSDK.
-
-```shell
-$ source /opt/ros/humble/setup.bash
-$ source $MAXIM_PATH/Libraries/microROS/install/local_setup.zsh
-```
-
-6. Now, connect the micro-ROS agent to the serial port presented by your evaluation platform.  It may vary, but in the example below the MAX78000FTHR has presented `/dev/ttyACM0`.
+5. Now, open a new terminal and connect the micro-ROS agent to the serial port presented by your evaluation platform.  It may vary, but in the example below the MAX78000FTHR has presented `/dev/ttyACM0`.
 
 ```shell
 $ ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/ttyACM0 --baud 115200
@@ -156,7 +205,7 @@ The output should look something like this.
 
 The micro-ROS Agent has opened the serial port and is now listening for any connections from our micro-ROS firmware.
 
-7. While keeping the micro-ROS Agent open, [Flash and run](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#flash-run) the "ping-pong" application.
+6. While keeping the micro-ROS Agent open, [Flash and run](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#flash-run) the "ping-pong" application.
 
 After 2 seconds, you should see the micro-ROS agent register the application firmware and its ping-pong publishers/subscribers.  The agent log should look something like this:
 
@@ -184,10 +233,9 @@ After 2 seconds, you should see the micro-ROS agent register the application fir
 
 You will also notice an LED on the board blinking every 2 seconds.  This indicates that the application firmware is publishing "pings".  Next, we will examine those pings using ROS.
 
-8. In a _new_ terminal, source the ROS setup script again.  Then, echo the `/microROS/ping` topic with the command below.
+7. In a _new_ terminal, echo the `/microROS/ping` topic with the command below.
 
 ```shell
-$ source /opt/ros/humble/setup.bash
 $ ros2 topic echo /microROS/ping
 ```
 
@@ -222,14 +270,13 @@ stamp:
 frame_id: '858013871_1122375324'
 ```
 
-9. Now, we will test the "pong" functionality of the application by manually publishing a message into the ROS network.  First, open a _new_ terminal and source the ROS setup script.  Echo the `/microROS/pong` topic.
+9. Now, we will test the "pong" functionality of the application by manually publishing a message into the ROS network.  First, open a _new_ terminal.  Then, echo the `/microROS/pong` topic.  Nothing will happen yet after running the command, because we haven't sent a "ping" to our microcontroller to respond to yet.  We'll do so it the next step.
 
 ```shell
-$ source /opt/ros/humble/setup.bash
 $ ros2 topic echo /microROS/pong
 ```
 
-10. In (yet another) _new_ terminal, source the ROS setup script.  Then, run the command below to publish a ping message into the network.
+10. Now, in (yet another) _new_ terminal run the command below to manually publish a ping message into the network.
 
 ```shell
 $ source /opt/ros/humble/setup.bash
@@ -244,7 +291,7 @@ publisher: beginning loop
 publishing #1: std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=0, nanosec=0), frame_id='fake_ping')
 ```
 
-In the terminal that's echoing the `/microROS/pong` topic, you should now see a "pong" stamped with the "fake_ping" `frame_id`.
+In the terminal that's echoing the `/microROS/pong` topic, you should now see a "pong" stamped with the "fake_ping" `frame_id`.  This has been sent by our microcontroller as a response to our hand-crafted "fake_ping" message.
 
 ```shell
 ~/repos/msdk/Examples/MAX78000/micro-ROS/ping_pong (dev/micro-ros) » ros2 topic echo /microROS/pong
@@ -279,37 +326,3 @@ Congratulations!  You have successfully published and subscribed to your first m
 
 11. When you are finished, use `CTRL+C` to kill any active terminals.
 
-### Automatically Sourcing Setup Scripts
-
-ROS development demands a lot of active terminals.  Manually `source`-ing the setup scripts for each one can be cumbersome.  The setup scripts can be automatically sourced by modifying your shell's startup script.
-
-#### Bash
-
-For Bash, edit `~/.bashrc` to append the following lines.
-
-```shell
-```bash
-# Set MAXIM_PATH (if you haven't already)
-export MAXIM_PATH=$HOME/repos/msdk
-
-# ROS/micro-ROS setup
-source /opt/ros/humble/setup.bash
-source $MAXIM_PATH/Libraries/microROS/install/local_setup.bash
-```
-
-Reload your active shell with `source ~/.bashrc`
-
-#### Zsh
-
-For Zsh, edit `~/.zshrc` to append the following lines
-
-```bash
-# Set MAXIM_PATH (if you haven't already)
-export MAXIM_PATH=$HOME/repos/msdk
-
-# ROS/micro-ROS setup
-source /opt/ros/humble/setup.zsh
-source $MAXIM_PATH/Libraries/microROS/install/local_setup.zsh
-```
-
-Reload your active shell with `source ~/.zshrc`
