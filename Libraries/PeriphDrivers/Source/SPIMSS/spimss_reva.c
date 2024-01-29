@@ -34,6 +34,8 @@
 #include "mxc_sys.h"
 #include "spimss_reva.h"
 #include "mxc_lock.h"
+#include "dma.h"
+#include "nvic_table.h"
 
 /**
  * @ingroup spimss
@@ -45,6 +47,10 @@
 /* **** Globals **** */
 typedef struct {
     spimss_reva_req_t *req;
+    mxc_spimss_reva_regs_t *spi;
+    int channelTx;
+    int channelRx;
+    bool auto_dma_handlers;
 } spimss_reva_req_state_t;
 
 static spimss_reva_req_state_t states[MXC_SPIMSS_INSTANCES];
@@ -67,6 +73,11 @@ int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t *spi, unsigned mode, unsigned fr
 
     spi_num = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
     states[spi_num].req = NULL;
+    states[spi_num].channelTx = -1;
+    states[spi_num].channelRx = -1;
+    states[spi_num].auto_dma_handlers = false;
+    states[spi_num].spi = spi;
+
     spi->ctrl &= ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Keep the SPI Disabled (This is the SPI Start)
 
     // Set the bit rate
@@ -139,7 +150,7 @@ int MXC_SPIMSS_RevA_TransSetup(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *r
     spi_num = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (req->len == 0) {
+    if (0 == req->len) {
         return 0;
     }
 
@@ -159,11 +170,10 @@ int MXC_SPIMSS_RevA_TransSetup(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *r
     }
 
     // Setup the character size
-
     if (req->bits < 16) {
         MXC_SETFIELD(spi->mode, MXC_F_SPIMSS_REVA_MODE_NUMBITS,
                      req->bits << MXC_F_SPIMSS_REVA_MODE_NUMBITS_POS);
-
+        spi->mode |= MXC_F_SPIMSS_REVA_MODE_TX_LJ;
     } else {
         MXC_SETFIELD(spi->mode, MXC_F_SPIMSS_REVA_MODE_NUMBITS,
                      0 << MXC_F_SPIMSS_REVA_MODE_NUMBITS_POS);
@@ -228,6 +238,203 @@ int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *
     spi->ctrl &=
         ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Last of the SPIMSS value has been transmitted...
     // stop the transmission...
+    return E_NO_ERROR;
+}
+
+/* ************************************************************************** */
+void MXC_SPIMSS_RevA_DMA_Handler(int ch, int error)
+{
+    int transaction_size = 0;
+    spimss_reva_req_t *temp_req = NULL;
+
+    for (int i = 0; i < MXC_SPIMSS_INSTANCES; i++) {
+        temp_req = states[i].req;
+        transaction_size = (temp_req->bits / 8) * (temp_req->len);
+
+        if (ch == states[i].channelTx) {
+            states[i].req->tx_num = transaction_size - (MXC_DMA)->ch[ch].cnt;
+
+            if ((true == states[i].auto_dma_handlers) && (0 == (MXC_DMA)->ch[ch].cnt)) {
+                //Disable interrupts.
+                MXC_DMA_DisableInt(ch);
+                MXC_DMA_SetChannelInterruptEn(ch, false, false); // Disable ctz interrupt.
+                MXC_DMA_ReleaseChannel(ch);
+                states[i].spi->dma &=
+                    ~(MXC_F_SPIMSS_REVA_DMA_TX_DMA_EN); // Disable SPIMSS TX DMA requests
+                states[i].channelTx = -1;
+            }
+
+            if (NULL != temp_req->callback) {
+                temp_req->callback(temp_req, E_NO_ERROR);
+            }
+            break;
+        } else if (ch == states[i].channelRx) {
+            states[i].req->rx_num = transaction_size - (MXC_DMA)->ch[ch].cnt;
+
+            if ((true == states[i].auto_dma_handlers) && (0 == (MXC_DMA)->ch[ch].cnt)) {
+                //Disable interrupts.
+                MXC_DMA_DisableInt(ch);
+                MXC_DMA_SetChannelInterruptEn(ch, false, false); // Disable ctz interrupt.
+                MXC_DMA_ReleaseChannel(ch);
+
+                if (temp_req->deass) {
+                    states[i].spi->mode |= MXC_F_SPIMSS_REVA_MODE_SSV; // Set Slave Select to HIGH.
+                }
+                states[i].spi->ctrl &=
+                    ~MXC_F_SPIMSS_REVA_CTRL_ENABLE; // Disable SPIMSS transaction.
+
+                states[i].spi->dma &=
+                    ~MXC_F_SPIMSS_REVA_DMA_RX_DMA_EN; // Disable SPIMSS RX DMA requests
+
+                states[i].channelRx = -1;
+                states[i].auto_dma_handlers = false;
+                states[i].req = NULL;
+            }
+
+            MXC_FreeLock((uint32_t *)&states[i].req);
+            if (NULL != temp_req->callback) {
+                temp_req->callback(temp_req, E_NO_ERROR);
+            }
+            break;
+        }
+    }
+}
+
+static mxc_dma_config_t dma_config_tx;
+static mxc_dma_config_t dma_config_rx;
+static mxc_dma_adv_config_t dma_adv_config_tx;
+static mxc_dma_adv_config_t dma_adv_config_rx;
+static mxc_dma_srcdst_t srcdst_config_tx;
+static mxc_dma_srcdst_t srcdst_config_rx;
+/* ************************************************************************** */
+int MXC_SPIMSS_RevA_MasterTransDMA(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req)
+{
+    // Calculating the transaction size in byte.
+    int sent_byte_len = ((req->len * (req->bits / 8)) - req->tx_num);
+    int tx_channel_id = -1;
+    int rx_channel_id = -1;
+    int spi_num = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
+    int ret_val = E_NO_ERROR;
+
+    //Reset static variables.
+    memset(&dma_config_tx, 0, sizeof(dma_config_tx));
+    memset(&dma_config_rx, 0, sizeof(dma_config_rx));
+    memset(&srcdst_config_tx, 0, sizeof(srcdst_config_tx));
+    memset(&srcdst_config_rx, 0, sizeof(srcdst_config_rx));
+    memset(&dma_adv_config_tx, 0, sizeof(dma_adv_config_tx));
+    memset(&dma_adv_config_rx, 0, sizeof(dma_adv_config_rx));
+
+    //We use SPIMSS master trans function to send data from
+    ret_val = MXC_SPIMSS_RevA_TransSetup(spi, req, 1);
+    if (E_NO_ERROR != ret_val) {
+        return ret_val;
+    }
+
+    //Setting dmas fifo levels for tx and rx in spimss.
+    spi->dma &= ~(MXC_F_SPIMSS_DMA_RX_FIFO_LVL);
+    spi->dma &= ~(MXC_F_SPIMSS_DMA_TX_FIFO_LVL);
+
+    //Initialization of DMA
+    if (true == states[spi_num].auto_dma_handlers) {
+        MXC_DMA_Init();
+    }
+
+    if ((true == states[spi_num].auto_dma_handlers) && (0 > states[spi_num].channelTx)) {
+        //Getting the available tx channel id.
+        tx_channel_id = MXC_DMA_AcquireChannel();
+        if (tx_channel_id < 0) {
+            return tx_channel_id;
+        }
+        MXC_SPIMSS_RevA_SetTXDMAChannel(spi, tx_channel_id);
+
+    } else {
+        tx_channel_id = MXC_SPIMSS_RevA_GetTXDMAChannel(spi);
+        if (tx_channel_id < 0) {
+            return E_BAD_STATE;
+        }
+    }
+    //Enable NVIC interrupt of the dma channel which will be used as TX channel.
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(tx_channel_id), MXC_DMA_Handler);
+
+    if ((true == states[spi_num].auto_dma_handlers) && (0 > states[spi_num].channelRx)) {
+        rx_channel_id = MXC_DMA_AcquireChannel();
+        if (rx_channel_id < 0) {
+            return rx_channel_id;
+        }
+        MXC_SPIMSS_RevA_SetRXDMAChannel(spi, rx_channel_id);
+    } else {
+        rx_channel_id = MXC_SPIMSS_RevA_GetRXDMAChannel(spi);
+        if (rx_channel_id < 0) {
+            return E_BAD_STATE;
+        }
+    }
+    //Enable NVIC interrupt of the dma channel which will be used as RX channel.
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(rx_channel_id), MXC_DMA_Handler);
+
+    states[spi_num].req = req;
+
+    // TX dma configuration settings.
+    dma_config_tx.ch = tx_channel_id;
+    dma_config_tx.reqsel = MXC_DMA_REQUEST_SPIMSSTX;
+    dma_config_tx.dstwd = MXC_DMA_WIDTH_HALFWORD;
+    dma_config_tx.srcwd = MXC_DMA_WIDTH_HALFWORD;
+    dma_config_tx.dstinc_en = 0; // Ignored since the destination is set to SPIMSS TX fifo.
+    dma_config_tx.srcinc_en = 1;
+
+    // advanced config for tx channel
+    dma_adv_config_tx.ch = tx_channel_id;
+    dma_adv_config_tx.burst_size = req->bits < 16 ? 1 : 2;
+
+    // advanced config for rx channel
+    dma_adv_config_rx.ch = rx_channel_id;
+    dma_adv_config_rx.burst_size = req->bits < 16 ? 1 : 2;
+
+    dma_config_rx.ch = rx_channel_id;
+    dma_config_rx.reqsel = MXC_DMA_REQUEST_SPIMSSRX;
+    dma_config_rx.dstwd = MXC_DMA_WIDTH_HALFWORD;
+    dma_config_rx.srcwd = MXC_DMA_WIDTH_HALFWORD;
+    dma_config_rx.dstinc_en = 1;
+    dma_config_rx.srcinc_en = 0; // Ignored since the source is set to SPIMSS RX fifo.
+
+    //Setting TX configuration values for this spi transaction.
+    srcdst_config_tx.ch = tx_channel_id;
+    srcdst_config_tx.len = sent_byte_len;
+    srcdst_config_tx.source = req->tx_data;
+    MXC_DMA_ConfigChannel(dma_config_tx, srcdst_config_tx);
+    MXC_DMA_AdvConfigChannel(dma_adv_config_tx);
+
+    // Enable TX channel CTZ interrupt to be sure that TX operation is completed
+    MXC_DMA_ChannelClearFlags(tx_channel_id,
+                              MXC_DMA_ChannelGetFlags(tx_channel_id)); // Clear interrupts.
+    MXC_DMA_EnableInt(tx_channel_id); // Enable DMA peripheral
+    //interrupt for txChannel.
+
+    MXC_DMA_SetCallback(tx_channel_id, MXC_SPIMSS_RevA_DMA_Handler);
+    MXC_DMA_SetChannelInterruptEn(tx_channel_id, false, true); // Enable ctz interrupt.
+    MXC_DMA_Start(tx_channel_id);
+
+    // rx src dst config.
+    srcdst_config_rx.ch = rx_channel_id;
+    srcdst_config_rx.len = sent_byte_len;
+    srcdst_config_rx.dest = req->rx_data;
+    MXC_DMA_ConfigChannel(dma_config_rx, srcdst_config_rx);
+    MXC_DMA_AdvConfigChannel(dma_adv_config_rx);
+
+    //Enable RX channel CTZ interrupt to be sure that RX operation is completed.
+    MXC_DMA_ChannelClearFlags(rx_channel_id,
+                              MXC_DMA_ChannelGetFlags(rx_channel_id)); // Clear interrupts.
+    MXC_DMA_EnableInt(rx_channel_id); // Enable DMA peripheral
+    //interrupt for txChannel.
+    MXC_DMA_SetCallback(rx_channel_id, MXC_SPIMSS_RevA_DMA_Handler);
+    MXC_DMA_SetChannelInterruptEn(rx_channel_id, false, true); // Enable ctz interrupt.
+    MXC_DMA_Start(rx_channel_id);
+
+    spi->dma |= MXC_F_SPIMSS_REVA_DMA_TX_DMA_EN; // Enable TX DMA requests
+    spi->dma |= MXC_F_SPIMSS_REVA_DMA_RX_DMA_EN; // Enable RX DMA requests
+
+    spi->mode &= ~(MXC_F_SPIMSS_REVA_MODE_SSV); // Set Slave Select to LOW.
+    spi->ctrl |= (MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Start transaction.
+
     return E_NO_ERROR;
 }
 
@@ -483,5 +690,48 @@ int MXC_SPIMSS_RevA_AbortAsync(spimss_reva_req_t *req)
     }
 
     return E_BAD_PARAM;
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_RevA_SetAutoDMAHandlers(mxc_spimss_reva_regs_t *spi, bool enable)
+{
+    int n = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
+
+    states[n].auto_dma_handlers = enable;
+
+    return E_NO_ERROR;
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_RevA_SetTXDMAChannel(mxc_spimss_reva_regs_t *spi, unsigned int channel)
+{
+    int n = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
+
+    states[n].channelTx = channel;
+
+    return E_NO_ERROR;
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_RevA_GetTXDMAChannel(mxc_spimss_reva_regs_t *spi)
+{
+    int n = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
+    return states[n].channelTx;
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_RevA_SetRXDMAChannel(mxc_spimss_reva_regs_t *spi, unsigned int channel)
+{
+    int n = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
+
+    states[n].channelRx = channel;
+
+    return E_NO_ERROR;
+}
+int MXC_SPIMSS_RevA_GetRXDMAChannel(mxc_spimss_reva_regs_t *spi)
+{
+    int n = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t *)spi);
+
+    return states[n].channelRx;
 }
 /**@} end of group spimss */

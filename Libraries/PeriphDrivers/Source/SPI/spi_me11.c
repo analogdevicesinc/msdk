@@ -256,7 +256,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
             break;
 
         default:
@@ -271,7 +271,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1RX;
+            reqselTx = MXC_DMA_REQUEST_SPIMSSRX;
             break;
 
         default:
@@ -310,7 +310,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
             break;
 
         default:
@@ -325,7 +325,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
+            reqselRx = MXC_DMA_REQUEST_SPIMSSRX;
             break;
 
         default:

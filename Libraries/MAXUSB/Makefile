@@ -2,7 +2,7 @@
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ # Copyright (C) 2023-2024Analog Devices, Inc. All Rights Reserved. This software
  # is proprietary to Analog Devices, Inc. and its licensors.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,6 +48,9 @@ CMSIS_ROOT=../CMSIS
 endif
 
 # Select Full Speed or High Speed Library
+ifeq "$(TARGET_UC)" "MAX32572"
+TARGET_USB=MUSBHSFC
+endif
 ifeq "$(TARGET_UC)" "MAX32650"
 TARGET_USB=MUSBHSFC
 endif

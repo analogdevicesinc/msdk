@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -129,6 +129,21 @@ typedef enum {
     MXC_SKBD_KBDIO8 = (0x01 << 8), ///< SKBD pin 8
     MXC_SKBD_KBDIO9 = (0x01 << 9), ///< SKBD pin 9
 } mxc_skbd_io_pins_t;
+
+/**
+ * @brief   Keypad Debounce Time
+ *
+ */
+typedef enum {
+    MXC_SKBD_DBTM_TIME4MS = MXC_V_SKBD_CTRL1_DBTM_TIME4MS, ///< SKBD Debounce Time 4ms
+    MXC_SKBD_DBTM_TIME5MS = MXC_V_SKBD_CTRL1_DBTM_TIME5MS, ///< SKBD Debounce Time 5ms
+    MXC_SKBD_DBTM_TIME6MS = MXC_V_SKBD_CTRL1_DBTM_TIME6MS, ///< SKBD Debounce Time 6ms
+    MXC_SKBD_DBTM_TIME7MS = MXC_V_SKBD_CTRL1_DBTM_TIME7MS, ///< SKBD Debounce Time 7ms
+    MXC_SKBD_DBTM_TIME8MS = MXC_V_SKBD_CTRL1_DBTM_TIME8MS, ///< SKBD Debounce Time 8ms
+    MXC_SKBD_DBTM_TIME10MS = MXC_V_SKBD_CTRL1_DBTM_TIME10MS, ///< SKBD Debounce Time 10ms
+    MXC_SKBD_DBTM_TIME11MS = MXC_V_SKBD_CTRL1_DBTM_TIME11MS, ///< SKBD Debounce Time 11ms
+    MXC_SKBD_DBTM_TIME12MS = MXC_V_SKBD_CTRL1_DBTM_TIME12MS, ///< SKBD Debounce Time 12ms
+} mxc_skbd_debounce_time_t;
 
 /**
  * @brief   Keypad IRQ handler function
