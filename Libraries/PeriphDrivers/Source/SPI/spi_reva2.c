@@ -1418,13 +1418,13 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     //
     // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the Target Select (TS) pin based
     //   on the value of CTRL->SS_CTRL, which causes the glitch.
-    // Complete transaction once it started.
     if (deassert) {
         spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
     } else {
         spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
     }
     
+    // Complete transaction once it started.
     while (STATES[spi_num].transaction_done == false) {
         if (STATES[spi_num].tx_done == true && STATES[spi_num].rx_done == true) {
             if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
