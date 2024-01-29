@@ -1366,24 +1366,11 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
-    // Handle target-select (L. SS) deassertion if HW is selected as Target Select (TS) Control Scheme. This must be done
-    //   AFTER launching the transaction to avoid a glitch on the TS line if:
-    //     - The TS line is asserted
-    //     - We want to deassert the line as part of this transaction
-    //
-    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the Target Select (TS) pin based
-    //   on the value of CTRL->SS_CTRL, which causes the glitch.
     if (STATES[spi_num].ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
         // In HW Auto Scheme, only use the target index member.
         // Limitation: This implemention only support transactions with one target at a time.
         MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
                      ((1 << hw_ts_index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-
-        if (deassert) {
-            spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
-        } else {
-            spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
-        }
     }
 
     // Add support for SW_DRV TS Control here in the future.
@@ -1424,7 +1411,20 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
+    // Handle target-select (L. SS) deassertion if HW is selected as Target Select (TS) Control Scheme. This must be done
+    //   AFTER launching the transaction to avoid a glitch on the TS line if:
+    //     - The TS line is asserted
+    //     - We want to deassert the line as part of this transaction
+    //
+    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the Target Select (TS) pin based
+    //   on the value of CTRL->SS_CTRL, which causes the glitch.
     // Complete transaction once it started.
+    if (deassert) {
+        spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+    } else {
+        spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+    }
+    
     while (STATES[spi_num].transaction_done == false) {
         if (STATES[spi_num].tx_done == true && STATES[spi_num].rx_done == true) {
             if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
