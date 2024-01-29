@@ -81,7 +81,9 @@ int main()
     printf("I2S Signals may be viewed on pins P2.26-P2.29.\n");
 
     req.wordSize = MXC_I2S_WSIZE_HALFWORD;
-    req.bitsWord = MXC_I2S_BITSWORD_SIXTEEN;
+    req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
+    req.bitsWord = 16 - 1;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_LSB_JUSTIFY;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
     req.clkdiv = 100;

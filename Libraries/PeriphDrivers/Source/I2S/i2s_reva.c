@@ -148,11 +148,12 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
     i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD;
     i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE;
 
-    switch (req->bitsWord) {
-    case MXC_I2S_BITSWORD_EIGHT:
+    configure_data_sizes(i2s, req->bitsWord, req->sampleSize, req->wordSize);
 
-        configure_data_sizes(i2s, DATALENGTH_EIGHT, req->sampleSize, MXC_I2S_WSIZE_BYTE);
+    MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_ADJUST,
+                 (req->adjust) << MXC_F_I2S_REVA_CTRL1CH0_ADJUST_POS);
 
+    if (req->bitsWord <= DATALENGTH_EIGHT) {
         dataMask = 0x000000ff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -160,13 +161,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_8++ = *rawdata_8++ & dataMask;
             }
         }
-
-        break;
-
-    case MXC_I2S_BITSWORD_SIXTEEN:
-
-        configure_data_sizes(i2s, DATALENGTH_SIXTEEN, req->sampleSize, MXC_I2S_WSIZE_HALFWORD);
-
+    } else if (req->bitsWord <= DATALENGTH_SIXTEEN) {
         dataMask = 0x0000ffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -174,13 +169,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_16++ = *rawdata_16++ & dataMask;
             }
         }
-
-        break;
-
-    case MXC_I2S_BITSWORD_TWENTY:
-
-        configure_data_sizes(i2s, DATALENGTH_TWENTY, req->sampleSize, MXC_I2S_WSIZE_WORD);
-
+    } else if (req->bitsWord <= DATALENGTH_TWENTY) {
         dataMask = 0x00fffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -188,13 +177,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_32++ = (*rawdata_32++ & dataMask) << 12;
             }
         }
-
-        break;
-
-    case MXC_I2S_BITSWORD_TWENTYFOUR:
-
-        configure_data_sizes(i2s, DATALENGTH_TWENTYFOUR, req->sampleSize, MXC_I2S_WSIZE_WORD);
-
+    } else if (req->bitsWord <= DATALENGTH_TWENTYFOUR) {
         dataMask = 0x00ffffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -202,13 +185,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_32++ = (*rawdata_32++ & dataMask) << 8;
             }
         }
-
-        break;
-
-    case MXC_I2S_BITSWORD_THIRTYTWO:
-
-        configure_data_sizes(i2s, DATALENGTH_THIRTYTWO, req->sampleSize, MXC_I2S_WSIZE_WORD);
-
+    } else if (req->bitsWord <= DATALENGTH_THIRTYTWO) {
         dataMask = 0xffffffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -216,12 +193,6 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_32++ = *rawdata_32++ & dataMask;
             }
         }
-
-        break;
-
-    default:
-        return E_BAD_PARAM;
-        break;
     }
 
     return E_NO_ERROR;

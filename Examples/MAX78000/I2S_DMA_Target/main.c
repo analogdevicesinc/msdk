@@ -163,7 +163,10 @@ void i2s_init(void)
 #define I2S_CRUFT_PTR (void *)UINT32_MAX
 #define I2S_CRUFT_LEN UINT32_MAX
 
-    req.bitsWord = MXC_I2S_BITSWORD_TWENTYFOUR;
+    req.wordSize = MXC_I2S_WSIZE_WORD;
+    req.sampleSize = MXC_I2S_SAMPLESIZE_TWENTYFOUR;
+    req.bitsWord = 24 - 1;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     /* I2S Peripheral is in slave mode - no need to set clkdiv */
@@ -171,14 +174,6 @@ void i2s_init(void)
     req.stereoMode = MXC_I2S_STEREO;
 
     req.bitOrder = MXC_I2S_MSB_FIRST;
-
-    if (req.bitsWord == MXC_I2S_BITSWORD_EIGHT) {
-        req.wordSize = MXC_I2S_WSIZE_BYTE;
-    } else if (req.bitsWord == MXC_I2S_BITSWORD_SIXTEEN) {
-        req.wordSize = MXC_I2S_WSIZE_HALFWORD;
-    } else {
-        req.wordSize = MXC_I2S_WSIZE_WORD;
-    }
 
     req.rawData = NULL;
     req.txData = I2S_CRUFT_PTR;
