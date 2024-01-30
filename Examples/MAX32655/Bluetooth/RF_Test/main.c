@@ -746,42 +746,43 @@ void helpTask(void *pvParameters)
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
 
-        // clang-format off
-    printf("┌─────────┬──────────────────────────────────┬───────────────────────────────────────────────────────┐\r\n");
-    printf("│ Command │ parameters [optional] <required> │                      description                      │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
-    printf("│ cls     │ N/A                              │ clears the screen                                     │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ constTx │ <channel> <phy>                  │ Constant TX on given channel.                         │\r\n");
-    printf("│         │ ex: constTx 0 1M                 │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ e       │ N/A                              │ Ends any active RX/TX/Constant/Freq.hop RF test       │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ ps      │ N/A                              │ Display freeRTOS task stats                           │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ rx      │ <channel> <phy> <duration_ms>    │ RX test on given channel.                             │\r\n");
-    printf("│         │ ex: rx 0 2M 500                  │ Duration of 0 is max duration until stopped           │\r\n");
-    printf("│         │                                  │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n");
-    printf("│         │                                  │ (duaration in ms: 0 65535 )                           │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ sweep   │ <start_ch> <end_ch> <packet len> │ Sweeps TX tests through a range of RF channels given  │\r\n");
-    printf("│         │ <packet_type> <phy> <ms/per_ch>  │ their order of appearance on the spectrum.            │\r\n");
-    printf("│         │ ex: sweep 0 10 255 FF 2M 500     │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n");
-    printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
-    printf("│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ tx      │ <channel> <packet_len>           │ TX test on given RF channel.                          │\r\n");
-    printf("│         │ <packet_type> <phy> <duartion>   │ Duration of 0 is max duration until stopped           │\r\n");
-    printf("│         │ ex: tx 0 255 FF 2M 1000          │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n");
-    printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
-    printf("│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ power   │ <power>                          │ Select transmit power. Supported power levels (dBm)   │\r\n");
-    printf("│         │ ex: power -10                    │ -10 , 0 , 4                                           │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ help    │ N/A                              │ Displays this help table                              │\r\n");
-    printf("└─────────┴──────────────────────────────────┴───────────────────────────────────────────────────────┘\r\n");
-        // clang-format on
+        static const char *help =
+            "┌─────────┬──────────────────────────────────┬───────────────────────────────────────────────────────┐\r\n"
+            "│ Command │ parameters [optional] <required> │                      description                      │\r\n"
+            "├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n"
+            "│ cls     │ N/A                              │ clears the screen                                     │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ constTx │ <channel> <phy>                  │ Constant TX on given channel.                         │\r\n"
+            "│         │ ex: constTx 0 1M                 │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ e       │ N/A                              │ Ends any active RX/TX/Constant/Freq.hop RF test       │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ ps      │ N/A                              │ Display freeRTOS task stats                           │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ rx      │ <channel> <phy> <duration_ms>    │ RX test on given channel.                             │\r\n"
+            "│         │ ex: rx 0 2M 500                  │ Duration of 0 is max duration until stopped           │\r\n"
+            "│         │                                  │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n"
+            "│         │                                  │ (duaration in ms: 0 65535 )                           │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ sweep   │ <start_ch> <end_ch> <packet len> │ Sweeps TX tests through a range of RF channels given  │\r\n"
+            "│         │ <packet_type> <phy> <ms/per_ch>  │ their order of appearance on the spectrum.            │\r\n"
+            "│         │ ex: sweep 0 10 255 FF 2M 500     │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n"
+            "│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n"
+            "│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ tx      │ <channel> <packet_len>           │ TX test on given RF channel.                          │\r\n"
+            "│         │ <packet_type> <phy> <duartion>   │ Duration of 0 is max duration until stopped           │\r\n"
+            "│         │ ex: tx 0 255 FF 2M 1000          │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n"
+            "│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n"
+            "│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ power   │ <power>                          │ Select transmit power. Supported power levels (dBm)   │\r\n"
+            "│         │ ex: power -10                    │ -10 , 0 , 4                                           │\r\n"
+            "│         │                                  │                                                       │\r\n"
+            "│ help    │ N/A                              │ Displays this help table                              │\r\n"
+            "└─────────┴──────────────────────────────────┴───────────────────────────────────────────────────────┘\r\n";
+
+        puts(help);
 
         pausePrompt = false;
         prompt();
