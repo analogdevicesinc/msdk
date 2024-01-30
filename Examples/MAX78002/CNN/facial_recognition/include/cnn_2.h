@@ -106,18 +106,11 @@ typedef int16_t q15_t;
 /* Number of outputs for this network */
 #define CNN_2_NUM_OUTPUTS 64
 
-
-
-
 /* Stopwatch - holds the runtime when accelerator finishes */
 extern volatile uint32_t cnn_time;
 
-
-
 /* Enable clocks and power to accelerator, enable interrupt */
 int cnn_2_enable(uint32_t clock_source, uint32_t clock_divider);
-
-
 
 /* Perform minimum accelerator initialization so it can be configured */
 int cnn_2_init(void);
@@ -137,11 +130,7 @@ int cnn_2_load_bias(void);
 /* Start accelerator processing */
 int cnn_2_start(void);
 
-
-
 /* Unload results from accelerator */
 int cnn_2_unload(uint32_t *out_buf);
-
-
 
 #endif // __CNN_2_H__

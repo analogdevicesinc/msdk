@@ -42,22 +42,21 @@
 
 extern uint8_t box[4]; // x1, y1, x2, y2
 
-
-const int dims[NUM_SCALES][2] = {{28,21}, {7,5}};
- // NUM_PRIORS_PER_AR = SQUARE(dims[0]) + SQUARE(dims[1]) + SQUARE(dims[2]) + SQUARE(dims[3])
-const float scales[NUM_SCALES] = {0.35715f, 0.7143f};
-const float ars[NUM_ARS]       = {0.9f, 0.75f};
+const int dims[NUM_SCALES][2] = { { 28, 21 }, { 7, 5 } };
+// NUM_PRIORS_PER_AR = SQUARE(dims[0]) + SQUARE(dims[1]) + SQUARE(dims[2]) + SQUARE(dims[3])
+const float scales[NUM_SCALES] = { 0.35715f, 0.7143f };
+const float ars[NUM_ARS] = { 0.9f, 0.75f };
 
 //Arrays to store model outputs
 static int8_t prior_locs[LOC_DIM * NUM_PRIORS]; //(x, y, w, h)
 static int8_t prior_cls[NUM_CLASSES * NUM_PRIORS];
-static uint16_t prior_cls_softmax[NUM_CLASSES * NUM_PRIORS] = {0};
+static uint16_t prior_cls_softmax[NUM_CLASSES * NUM_PRIORS] = { 0 };
 
 //NMS related arrays
 static uint16_t nms_scores[NUM_CLASSES - 2][MAX_PRIORS];
 static uint16_t nms_indices[NUM_CLASSES - 2][MAX_PRIORS];
-static uint8_t nms_removed[NUM_CLASSES - 2][MAX_PRIORS] = {0};
-static int num_nms_priors[NUM_CLASSES - 2]              = {0};
+static uint8_t nms_removed[NUM_CLASSES - 2][MAX_PRIORS] = { 0 };
+static int num_nms_priors[NUM_CLASSES - 2] = { 0 };
 volatile uint8_t face_detected = 0;
 
 int get_prior_idx(int ar_idx, int scale_idx, int rel_idx)
@@ -72,7 +71,7 @@ int get_prior_idx(int ar_idx, int scale_idx, int rel_idx)
     return prior_idx;
 }
 
-void get_indices(int* ar_idx, int* scale_idx, int* rel_idx, int prior_idx)
+void get_indices(int *ar_idx, int *scale_idx, int *rel_idx, int prior_idx)
 {
     int s;
 
@@ -93,8 +92,8 @@ void get_indices(int* ar_idx, int* scale_idx, int* rel_idx, int prior_idx)
         in_scale_idx -= (NUM_ARS * MULT(dims[s][0], dims[s][1]));
     }
 
-    *ar_idx  = in_scale_idx % NUM_ARS;
-    *rel_idx = in_scale_idx / NUM_ARS; 
+    *ar_idx = in_scale_idx % NUM_ARS;
+    *rel_idx = in_scale_idx / NUM_ARS;
 }
 
 void softmax(void)
@@ -104,7 +103,7 @@ void softmax(void)
 
     memset(prior_cls_softmax, 0, sizeof(prior_cls_softmax));
     for (i = 0; i < NUM_PRIORS; ++i) {
-        sum          = 0.;
+        sum = 0.;
         calc_softmax = 0;
 
         for (ch = 1; ch < (NUM_CLASSES - 1); ++ch) {
@@ -132,48 +131,46 @@ void softmax(void)
 void get_prior_locs(void)
 {
     //int8_t* loc_addr = (int8_t*)0x50400000; // AI85
-	int8_t* loc_addr = (int8_t*)0x51800000;
+    int8_t *loc_addr = (int8_t *)0x51800000;
 
     int ar_idx, scale_idx, rel_idx, prior_idx, prior_count;
 
     for (ar_idx = 0; ar_idx < NUM_ARS; ++ar_idx) {
-        int8_t* loc_addr_temp = loc_addr;
+        int8_t *loc_addr_temp = loc_addr;
 
         for (scale_idx = 0; scale_idx < NUM_SCALES; ++scale_idx) {
             prior_count = MULT(dims[scale_idx][0], dims[scale_idx][1]);
-        
+
             for (rel_idx = 0; rel_idx < prior_count; ++rel_idx) {
                 prior_idx = get_prior_idx(ar_idx, scale_idx, rel_idx);
                 memcpy(&prior_locs[LOC_DIM * prior_idx], loc_addr_temp, LOC_DIM);
                 loc_addr_temp += LOC_DIM;
             }
         }
-        
-        //loc_addr += 0x8000; // AI85
-		loc_addr += 0x20000;
-    }
 
+        //loc_addr += 0x8000; // AI85
+        loc_addr += 0x20000;
+    }
 }
 
 void get_prior_cls(void)
 {
     //int8_t* cl_addr = (int8_t*)0x50410000; // AI85
-	int8_t* cl_addr = (int8_t*)0x51840000;
+    int8_t *cl_addr = (int8_t *)0x51840000;
 
-    int ar_idx, cl_idx, scale_idx, rel_idx, prior_idx, prior_count;   
+    int ar_idx, cl_idx, scale_idx, rel_idx, prior_idx, prior_count;
 
     for (scale_idx = 0; scale_idx < NUM_SCALES; ++scale_idx) {
         prior_count = MULT(dims[scale_idx][0], dims[scale_idx][1]);
 
         for (ar_idx = 0; ar_idx < NUM_ARS; ++ar_idx) {
-            int8_t* cl_addr_temp = cl_addr + ar_idx*2; //AR OFFSET
+            int8_t *cl_addr_temp = cl_addr + ar_idx * 2; //AR OFFSET
 
             for (rel_idx = 0; rel_idx < prior_count; ++rel_idx) {
-
-                for (cl_idx = 0; cl_idx < NUM_CLASSES-1; cl_idx += 1) { 
-                    cl_addr_temp += cl_idx;       
+                for (cl_idx = 0; cl_idx < NUM_CLASSES - 1; cl_idx += 1) {
+                    cl_addr_temp += cl_idx;
                     prior_idx = get_prior_idx(ar_idx, scale_idx, rel_idx);
-                    memcpy(&prior_cls[NUM_CLASSES * prior_idx + cl_idx], cl_addr_temp,1);                    
+                    memcpy(&prior_cls[NUM_CLASSES * prior_idx + cl_idx], cl_addr_temp, 1);
                 }
 
                 cl_addr_temp += 3;
@@ -181,7 +178,7 @@ void get_prior_cls(void)
         }
 
         //cl_addr = (int8_t*)0x50410930;
-		cl_addr = (int8_t*)0x51840930;
+        cl_addr = (int8_t *)0x51840930;
     }
 
     softmax();
@@ -193,11 +190,11 @@ void get_priors(void)
     get_prior_cls();
 }
 
-float calculate_IOU(float* box1, float* box2)
+float calculate_IOU(float *box1, float *box2)
 {
-    float x_left   = MAX(box1[0], box2[0]);
-    float y_top    = MAX(box1[1], box2[1]);
-    float x_right  = MIN(box1[2], box2[2]);
+    float x_left = MAX(box1[0], box2[0]);
+    float y_top = MAX(box1[1], box2[1]);
+    float x_right = MIN(box1[2], box2[2]);
     float y_bottom = MIN(box1[3], box2[3]);
     float intersection_area;
 
@@ -215,13 +212,13 @@ float calculate_IOU(float* box1, float* box2)
     return iou;
 }
 
-void get_cxcy(float* cxcy, int prior_idx)
+void get_cxcy(float *cxcy, int prior_idx)
 {
     int i, scale_idx, ar_idx, rel_idx, cx, cy;
 
     get_indices(&ar_idx, &scale_idx, &rel_idx, prior_idx);
-    cy      = rel_idx / dims[scale_idx][1];
-    cx      = rel_idx % dims[scale_idx][1];
+    cy = rel_idx / dims[scale_idx][1];
+    cx = rel_idx % dims[scale_idx][1];
     cxcy[0] = (float)((float)(cx + 0.5) / dims[scale_idx][1]);
     cxcy[1] = (float)((float)(cy + 0.5) / dims[scale_idx][0]);
     cxcy[2] = scales[scale_idx] * (float)sqrt(ars[ar_idx]);
@@ -231,10 +228,9 @@ void get_cxcy(float* cxcy, int prior_idx)
         cxcy[i] = MAX(0.0, cxcy[i]);
         cxcy[i] = MIN(cxcy[i], 1.0);
     }
-
 }
 
-void gcxgcy_to_cxcy(float* cxcy, int prior_idx, float* priors_cxcy)
+void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy)
 {
     float gcxgcy[4];
 
@@ -248,7 +244,7 @@ void gcxgcy_to_cxcy(float* cxcy, int prior_idx, float* priors_cxcy)
     cxcy[3] = (float)exp(gcxgcy[3] / 5) * priors_cxcy[3];
 }
 
-void cxcy_to_xy(float* xy, float* cxcy)
+void cxcy_to_xy(float *xy, float *cxcy)
 {
     xy[0] = cxcy[0] - cxcy[2] / 2;
     xy[1] = cxcy[1] - cxcy[3] / 2;
@@ -256,7 +252,7 @@ void cxcy_to_xy(float* xy, float* cxcy)
     xy[3] = cxcy[1] + cxcy[3] / 2;
 }
 
-void insert_val(uint16_t val, uint16_t* arr, int arr_len, int idx)
+void insert_val(uint16_t val, uint16_t *arr, int arr_len, int idx)
 {
     if (arr_len < MAX_PRIORS) {
         arr[arr_len] = arr[arr_len - 1];
@@ -269,7 +265,7 @@ void insert_val(uint16_t val, uint16_t* arr, int arr_len, int idx)
     arr[idx] = val;
 }
 
-void insert_idx(uint16_t val, uint16_t* arr, int arr_len, int idx)
+void insert_idx(uint16_t val, uint16_t *arr, int arr_len, int idx)
 {
     if (arr_len < MAX_PRIORS) {
         arr[arr_len] = arr[arr_len - 1];
@@ -282,7 +278,7 @@ void insert_idx(uint16_t val, uint16_t* arr, int arr_len, int idx)
     arr[idx] = val;
 }
 
-void insert_nms_prior(uint16_t val, int idx, uint16_t* val_arr, uint16_t* idx_arr, int* arr_len)
+void insert_nms_prior(uint16_t val, int idx, uint16_t *val_arr, uint16_t *idx_arr, int *arr_len)
 {
     if ((*arr_len == 0) || ((val <= val_arr[*arr_len - 1]) && (*arr_len != MAX_PRIORS))) {
         val_arr[*arr_len] = val;
@@ -306,7 +302,7 @@ void reset_nms(void)
         num_nms_priors[cl] = 0;
 
         for (int p_idx = 0; p_idx < MAX_PRIORS; ++p_idx) {
-            nms_scores[cl][p_idx]  = 0;
+            nms_scores[cl][p_idx] = 0;
             nms_indices[cl][p_idx] = 0;
             nms_removed[cl][p_idx] = 0;
         }
@@ -369,9 +365,8 @@ void nms(void)
     }
 }
 
-
-#ifdef RETURN_LARGEST 
-float calculate_area(float* xy)
+#ifdef RETURN_LARGEST
+float calculate_area(float *xy)
 {
     float area;
     area = (xy[3] - xy[1]) * (xy[2] - xy[0]);
@@ -379,59 +374,45 @@ float calculate_area(float* xy)
 }
 #endif
 
-
-void box_sanity_check(float* xy)
+void box_sanity_check(float *xy)
 {
-int error =0;
+    int error = 0;
 
-	if (xy[0] < 0)
-	{
-		xy[0] = 0;
-	    error++;
-	}
-	else if (xy[0] > 1.0)
-	{
-		xy[0] = 1.0;
-		error++;
-	}
-	
-	if (xy[1] < 0)
-	{
-		xy[1] = 0;
-		error++;
-	}
-	else if (xy[1] > 1.0)
-	{
-		xy[1] = 1.0;
-		error++;
-	}
-	
-	if (xy[2] < 0)
-	{
-		xy[2] = 0;
-		error++;
-	}
-	else if (xy[2] > 1.0)
-	{
-		xy[2] = 1.0;
-		error++;
-	}
-	
-	if (xy[3] < 0)
-	{
-		xy[3] = 0;
-		error++;
-	}
-	else if (xy[3] > 1.0)
-	{
-		xy[3] = 1.0;
-		error++;
-	}
+    if (xy[0] < 0) {
+        xy[0] = 0;
+        error++;
+    } else if (xy[0] > 1.0) {
+        xy[0] = 1.0;
+        error++;
+    }
+
+    if (xy[1] < 0) {
+        xy[1] = 0;
+        error++;
+    } else if (xy[1] > 1.0) {
+        xy[1] = 1.0;
+        error++;
+    }
+
+    if (xy[2] < 0) {
+        xy[2] = 0;
+        error++;
+    } else if (xy[2] > 1.0) {
+        xy[2] = 1.0;
+        error++;
+    }
+
+    if (xy[3] < 0) {
+        xy[3] = 0;
+        error++;
+    } else if (xy[3] > 1.0) {
+        xy[3] = 1.0;
+        error++;
+    }
 
     if (error)
-		PR_INFO("Corrected: %d\n", error);
+        PR_INFO("Corrected: %d\n", error);
 }
-
 
 void localize_objects(void)
 {
@@ -439,7 +420,7 @@ void localize_objects(void)
     float cxcy[4];
     float xy[4];
     int class_idx, prior_idx, global_prior_idx;
-#ifdef RETURN_LARGEST 
+#ifdef RETURN_LARGEST
     float area;
     float max_area = 0;
     float max_xy[4];
@@ -454,73 +435,72 @@ void localize_objects(void)
                 get_cxcy(prior_cxcy, global_prior_idx);
                 gcxgcy_to_cxcy(cxcy, global_prior_idx, prior_cxcy);
                 cxcy_to_xy(xy, cxcy);
-                
 
-                #ifdef RETURN_LARGEST
+#ifdef RETURN_LARGEST
                 area = calculate_area(xy);
-                if (area > max_area){
+                if (area > max_area) {
                     max_area = area;
-                    for (int i=0; i < 4; ++i){
+                    for (int i = 0; i < 4; ++i) {
                         max_xy[i] = xy[i];
                     }
                 }
-                #else
-			    
-			    box_sanity_check(&xy[0]);
-            
+#else
+
+                box_sanity_check(&xy[0]);
+
                 box[0] = (uint8_t)(WIDTH_DET * xy[0]);
                 box[1] = (uint8_t)(HEIGHT_DET * xy[1]);
                 box[2] = (uint8_t)(WIDTH_DET * xy[2]);
                 box[3] = (uint8_t)(HEIGHT_DET * xy[3]);
 
-				int x1 = HEIGHT_DET * (xy[1]) + X_START;
-				int y1 = WIDTH_DET * (xy[2]) + Y_START - 1;
-				int x2 = HEIGHT_DET * (xy[3]) + X_START - 1;
-				int y2 = WIDTH_DET * (xy[0]) + Y_START;
+                int x1 = HEIGHT_DET * (xy[1]) + X_START;
+                int y1 = WIDTH_DET * (xy[2]) + Y_START - 1;
+                int x2 = HEIGHT_DET * (xy[3]) + X_START - 1;
+                int y2 = WIDTH_DET * (xy[0]) + Y_START;
 
-				MXC_TFT_SetRotation(ROTATE_270);
-	            MXC_TFT_Rectangle(x1, y1, x2, y2, 0xFD20);
-				MXC_TFT_SetRotation(ROTATE_180);
-				
+                MXC_TFT_SetRotation(ROTATE_270);
+                MXC_TFT_Rectangle(x1, y1, x2, y2, 0xFD20);
+                MXC_TFT_SetRotation(ROTATE_180);
+
 #if 0
 			    PR_DEBUG("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
                        "%.2f \n",
                        class_idx + 1, prior_idx, global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
-#else 
-				PR_DEBUG("x1:%d y1:%d x2:%d y2:%d\n", box[0], box[1], box[2], box[3]);
-			    PR_DEBUG("width:%d heigth:%d\n", box[2] - box[0], box[3] - box[1]);
-#endif 
+#else
+                PR_DEBUG("x1:%d y1:%d x2:%d y2:%d\n", box[0], box[1], box[2], box[3]);
+                PR_DEBUG("width:%d heigth:%d\n", box[2] - box[0], box[3] - box[1]);
+#endif
                 face_detected = 1;
-				//draw_obj_rect(xy, WIDTH_DET, HEIGHT_DET);
-                #endif
+//draw_obj_rect(xy, WIDTH_DET, HEIGHT_DET);
+#endif
             }
         }
     }
-    
-	#ifdef RETURN_LARGEST
-    if (max_area != 0){
-		class_idx = 0;
-		
-		PR_DEBUG("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
-				"%.2f \n",
-				class_idx + 1, prior_idx, global_prior_idx, max_xy[0], max_xy[1], max_xy[2], max_xy[3]);
-					
-		box[0] = (uint8_t)(WIDTH_DET * max_xy[0]);
-		box[1] = (uint8_t)(HEIGHT_DET * max_xy[1]);
-		box[2] = (uint8_t)(WIDTH_DET * max_xy[2]);
-		box[3] = (uint8_t)(HEIGHT_DET * max_xy[3]);	
 
-		int x1 = HEIGHT_DET * (xy[1]) + X_START;
-		int y1 = WIDTH_DET * (xy[2]) + Y_START - 1;
-		int x2 = HEIGHT_DET * (xy[3]) + X_START - 1;
-		int y2 = WIDTH_DET * (xy[0]) + Y_START;
+#ifdef RETURN_LARGEST
+    if (max_area != 0) {
+        class_idx = 0;
 
-		MXC_TFT_SetRotation(ROTATE_270);
-	    MXC_TFT_Rectangle(x1, y1, x2, y2, 0xFD20);
-		MXC_TFT_SetRotation(ROTATE_180);
-		face_detected = 1;
-		//draw_obj_rect(max_xy, WIDTH_DET, HEIGHT_DET);
+        PR_DEBUG("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
+                 "%.2f \n",
+                 class_idx + 1, prior_idx, global_prior_idx, max_xy[0], max_xy[1], max_xy[2],
+                 max_xy[3]);
+
+        box[0] = (uint8_t)(WIDTH_DET * max_xy[0]);
+        box[1] = (uint8_t)(HEIGHT_DET * max_xy[1]);
+        box[2] = (uint8_t)(WIDTH_DET * max_xy[2]);
+        box[3] = (uint8_t)(HEIGHT_DET * max_xy[3]);
+
+        int x1 = HEIGHT_DET * (xy[1]) + X_START;
+        int y1 = WIDTH_DET * (xy[2]) + Y_START - 1;
+        int x2 = HEIGHT_DET * (xy[3]) + X_START - 1;
+        int y2 = WIDTH_DET * (xy[0]) + Y_START;
+
+        MXC_TFT_SetRotation(ROTATE_270);
+        MXC_TFT_Rectangle(x1, y1, x2, y2, 0xFD20);
+        MXC_TFT_SetRotation(ROTATE_180);
+        face_detected = 1;
+        //draw_obj_rect(max_xy, WIDTH_DET, HEIGHT_DET);
     }
-    #endif
-
+#endif
 }

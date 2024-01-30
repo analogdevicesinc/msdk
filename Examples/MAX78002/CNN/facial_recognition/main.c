@@ -54,9 +54,7 @@
 #include "pb.h"
 #include "utils.h"
 
-#define CONSOLE_BAUD  115200
-
-
+#define CONSOLE_BAUD 115200
 
 #define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO2
 #define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_7
@@ -194,39 +192,38 @@ static const uint8_t camera_settings[][2] = {
 };
 #endif
 
-mxc_uart_regs_t* CommUart;
+mxc_uart_regs_t *CommUart;
 unsigned int touch_x, touch_y;
 int font = (int)&Liberation_Sans16x16[0];
 
-void init_names(){
-	char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wstringop-truncation" 
-	for (int i = 0; i < DEFAULT_EMBS_NUM; i++){
-		strncpy((char*)names[i], default_names[i], 7);
-		
-	}
-	#pragma GCC diagnostic pop
+void init_names()
+{
+    char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+    for (int i = 0; i < DEFAULT_EMBS_NUM; i++) {
+        strncpy((char *)names[i], default_names[i], 7);
+    }
+#pragma GCC diagnostic pop
 }
 
 void gpio_isr(void *cbdata)
 {
-	record_mode = 1; //Toggle record mode
-	PR_DEBUG("TOGGLED record_mode = %d\n", record_mode);
+    record_mode = 1; //Toggle record mode
+    PR_DEBUG("TOGGLED record_mode = %d\n", record_mode);
 }
 
 void gpio_isr_2(void *cbdata)
 {
-	capture_key = 1;
+    capture_key = 1;
 }
 
 #ifdef TFT_ENABLE
-area_t area = {0, 290, 240, 30};
-area_t area_1 = {160, 260, 80, 30};
-area_t area_2 = {0, 260, 80, 30};
+area_t area = { 0, 290, 240, 30 };
+area_t area_1 = { 160, 260, 80, 30 };
+area_t area_2 = { 0, 260, 80, 30 };
 #endif
 // *****************************************************************************
-
 
 void WUT_IRQHandler()
 {
@@ -243,10 +240,10 @@ int main(void)
     int slaveAddress;
     int id;
     int dma_channel;
-	int key;
-	int after_record = 1;
-	mxc_uart_regs_t* ConsoleUart;
-	text_t text_buffer;
+    int key;
+    int after_record = 1;
+    mxc_uart_regs_t *ConsoleUart;
+    text_t text_buffer;
 
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
@@ -260,7 +257,7 @@ int main(void)
 
     if ((ret = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         PR_ERR("UART1 Init Error: %d\n", ret);
-		return ret;
+        return ret;
     }
 
     printf("Waiting...\n");
@@ -271,7 +268,7 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: PLL (200 MHz) div 4
     //cnn_2_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
-  	cnn_1_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
+    cnn_1_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
     cnn_1_init(); // Bring state machine into consistent state
     cnn_1_load_weights(); // Load kernels of CNN_1
     cnn_1_load_bias(); // Load bias data of CNN_1
@@ -281,16 +278,15 @@ int main(void)
     cnn_2_load_bias(); // Load bias data of CNN_2
     cnn_2_configure(); // Configure CNN_2 layers
 
-	cnn_3_load_weights(); // Load kernels of CNN_3
-	//reload_cnn(); // Reload CNN_3 weights with new data from flash
-  	cnn_3_load_bias(); // Load bias data of CNN_3
-  	cnn_3_configure(); // Configure CNN_3 layers
+    cnn_3_load_weights(); // Load kernels of CNN_3
+    //reload_cnn(); // Reload CNN_3 weights with new data from flash
+    cnn_3_load_bias(); // Load bias data of CNN_3
+    cnn_3_configure(); // Configure CNN_3 layers
 
-	//Initialize default names
-	init_names();
-	// Initialize Database from flash
-	init_cnn_from_flash();
-
+    //Initialize default names
+    init_names();
+    // Initialize Database from flash
+    init_cnn_from_flash();
 
     /* Initialize RTC */
     MXC_RTC_Init(0, 0);
@@ -335,52 +331,52 @@ int main(void)
 		camera_write_reg(camera_settings[i][0], camera_settings[i][1]);
 	}
 #endif
-	
+
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(HEIGHT_DET, WIDTH_DET, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel);
+    ret =
+        camera_setup(HEIGHT_DET, WIDTH_DET, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
 
     if (ret != STATUS_OK) {
         PR_ERR("Error returned from setting up camera. Error %d\n", ret);
         return -1;
     }
-	camera_set_vflip(0);
+    camera_set_vflip(0);
 
 #ifdef TFT_ENABLE
-    /* Initialize TFT display */	
-	MXC_TFT_Init(NULL, NULL);
+    /* Initialize TFT display */
+    MXC_TFT_Init(NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_180);
     MXC_TFT_SetBackGroundColor(4);
     MXC_TFT_SetForeGroundColor(WHITE); // set font color to white
-	#ifdef TS_ENABLE
-		MXC_TS_Init();	
-    	MXC_TS_Start();
-		
-	#else
-		mxc_gpio_cfg_t gpio_interrupt;
-		gpio_interrupt.port = MXC_GPIO_PORT_INTERRUPT_IN;
-    	gpio_interrupt.mask = MXC_GPIO_PIN_INTERRUPT_IN;
-    	gpio_interrupt.pad = MXC_GPIO_PAD_PULL_UP;
-    	gpio_interrupt.func = MXC_GPIO_FUNC_IN;
-    	gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIOH;
-    	MXC_GPIO_Config(&gpio_interrupt);
-    	MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, NULL);
-    	MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
-    	MXC_GPIO_EnableInt(gpio_interrupt.port, gpio_interrupt.mask);
-    	NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_INTERRUPT_IN)));
+#ifdef TS_ENABLE
+    MXC_TS_Init();
+    MXC_TS_Start();
 
-		mxc_gpio_cfg_t gpio_interrupt_2;
-		gpio_interrupt_2.port = MXC_GPIO_PORT_INTERRUPT_IN_2;
-    	gpio_interrupt_2.mask = MXC_GPIO_PIN_INTERRUPT_IN_2;
-    	gpio_interrupt_2.pad = MXC_GPIO_PAD_PULL_UP;
-    	gpio_interrupt_2.func = MXC_GPIO_FUNC_IN;
-    	gpio_interrupt_2.vssel = MXC_GPIO_VSSEL_VDDIOH;
-    	MXC_GPIO_Config(&gpio_interrupt_2);
-    	MXC_GPIO_RegisterCallback(&gpio_interrupt_2, gpio_isr_2, NULL);
-    	MXC_GPIO_IntConfig(&gpio_interrupt_2, MXC_GPIO_INT_FALLING);
-    	MXC_GPIO_EnableInt(gpio_interrupt_2.port, gpio_interrupt_2.mask);
-    	NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_INTERRUPT_IN_2)));
-	#endif
+#else
+    mxc_gpio_cfg_t gpio_interrupt;
+    gpio_interrupt.port = MXC_GPIO_PORT_INTERRUPT_IN;
+    gpio_interrupt.mask = MXC_GPIO_PIN_INTERRUPT_IN;
+    gpio_interrupt.pad = MXC_GPIO_PAD_PULL_UP;
+    gpio_interrupt.func = MXC_GPIO_FUNC_IN;
+    gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_interrupt);
+    MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, NULL);
+    MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
+    MXC_GPIO_EnableInt(gpio_interrupt.port, gpio_interrupt.mask);
+    NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_INTERRUPT_IN)));
+
+    mxc_gpio_cfg_t gpio_interrupt_2;
+    gpio_interrupt_2.port = MXC_GPIO_PORT_INTERRUPT_IN_2;
+    gpio_interrupt_2.mask = MXC_GPIO_PIN_INTERRUPT_IN_2;
+    gpio_interrupt_2.pad = MXC_GPIO_PAD_PULL_UP;
+    gpio_interrupt_2.func = MXC_GPIO_FUNC_IN;
+    gpio_interrupt_2.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_interrupt_2);
+    MXC_GPIO_RegisterCallback(&gpio_interrupt_2, gpio_isr_2, NULL);
+    MXC_GPIO_IntConfig(&gpio_interrupt_2, MXC_GPIO_INT_FALLING);
+    MXC_GPIO_EnableInt(gpio_interrupt_2.port, gpio_interrupt_2.mask);
+    NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_INTERRUPT_IN_2)));
+#endif
 
 #endif
 
@@ -389,7 +385,7 @@ int main(void)
     MXC_WUT_GetTicks(500, MXC_WUT_UNIT_MILLISEC, &ticks_1);
     MXC_WUT_GetTicks(100, MXC_WUT_UNIT_MILLISEC, &ticks_2);
     /* Configure structure for one shot timer to trigger in a number of ticks */
-    cfg.mode    = MXC_WUT_MODE_ONESHOT;
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks_1;
     /* Init WakeUp Timer */
     MXC_WUT_Init(MXC_WUT_PRES_1);
@@ -401,54 +397,46 @@ int main(void)
     NVIC_EnableIRQ(WUT_IRQn);
 #endif
     while (1) {
-		int loop_time = utils_get_time_ms();
-		#ifdef TS_ENABLE
-		if (after_record){
-			after_record = 0;
-			MXC_TS_AddButton(260, 0, 290, 80, 1);
-			MXC_TFT_FillRect(&area_1, 0xFD20);
-			text_buffer.data = "Record";
-    		text_buffer.len  = 6;
-    		MXC_TFT_PrintFont(162, 270, font, &text_buffer, NULL);}
+        int loop_time = utils_get_time_ms();
+#ifdef TS_ENABLE
+        if (after_record) {
+            after_record = 0;
+            MXC_TS_AddButton(260, 0, 290, 80, 1);
+            MXC_TFT_FillRect(&area_1, 0xFD20);
+            text_buffer.data = "Record";
+            text_buffer.len = 6;
+            MXC_TFT_PrintFont(162, 270, font, &text_buffer, NULL);
+        }
 
-		key = MXC_TS_GetKey();		
-		
-		if (key == 1) {
-			record_mode = 1;
-		}
+        key = MXC_TS_GetKey();
 
-		#endif 
-		if (record_mode)
-		{
-			
-			record();
-			// Delay for 0.5 seconds before continuing
-			MXC_Delay(MXC_DELAY_MSEC(500));
-			record_mode = 0;
-			after_record = 1;
-		}
-		else {
+        if (key == 1) {
+            record_mode = 1;
+        }
 
+#endif
+        if (record_mode) {
+            record();
+            // Delay for 0.5 seconds before continuing
+            MXC_Delay(MXC_DELAY_MSEC(500));
+            record_mode = 0;
+            after_record = 1;
+        } else {
             face_detection();
 
-			if(face_detected)
-			{	
-				face_id();
-			
-				face_detected = 0;
-			}
+            if (face_detected) {
+                face_id();
 
-			#ifdef TFT_ENABLE
-			else
-			{
-            	MXC_TFT_ClearArea(&area, 4);
-        	}
-			#endif
-
-		}
-		loop_time = utils_get_time_ms() - loop_time;
-		printf("Loop time: %dms\n", loop_time);
-		
+                face_detected = 0;
+            }
+#ifdef TFT_ENABLE
+            else {
+                MXC_TFT_ClearArea(&area, 4);
+            }
+#endif
+        }
+        loop_time = utils_get_time_ms() - loop_time;
+        printf("Loop time: %dms\n", loop_time);
     }
 
     return 0;

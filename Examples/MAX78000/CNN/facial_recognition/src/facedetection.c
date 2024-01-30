@@ -83,7 +83,8 @@ static void setup_dma_tft(uint32_t *src_ptr)
 static void start_tft_dma(uint32_t *src_ptr)
 {
     while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
+        {
+        }
     }
 
     if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
@@ -171,7 +172,8 @@ static void run_cnn_1(int x_offset, int y_offset)
     start_tft_dma((uint32_t *)raw);
     // Wait for DMA to finish
     while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
+        {
+        }
     }
 
     setup_dma_tft((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
@@ -179,7 +181,8 @@ static void run_cnn_1(int x_offset, int y_offset)
     start_tft_dma((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
     // Wait for DMA to finish
     while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
+        {
+        }
     }
     PR_DEBUG("DMA time : %d", utils_get_time_ms() - dma_time);
     //MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
@@ -212,8 +215,8 @@ static void run_cnn_1(int x_offset, int y_offset)
             r = ur - 128;
 
             // Loading data into the CNN fifo
-            while (((*((volatile uint32_t *)0x50000004) & 1)) != 0)
-                ; // Wait for FIFO 0
+            while (((*((volatile uint32_t *)0x50000004) & 1)) != 0) {}
+            // Wait for FIFO 0
 
             number = 0x00FFFFFF & ((((uint8_t)b) << 16) | (((uint8_t)g) << 8) | ((uint8_t)r));
 
