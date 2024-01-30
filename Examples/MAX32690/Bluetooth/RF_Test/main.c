@@ -683,16 +683,13 @@ void txTestTask(void *pvParameters)
 
         if (testConfig.testType == BLE_TX_TEST) {
             snprintf(str, sizeof(str),
-                     "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : ", testConfig.channel,
-                     getFreqFromRfChannel(testConfig.channel), packetLen);
-            snprintf(str, sizeof(str), "%s%s", str, (const char *)getPacketTypeStr());
+                     "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : :%s", testConfig.channel,
+                     getFreqFromRfChannel(testConfig.channel), packetLen, (const char *)getPhyStr(phy), (const char *)getPacketTypeStr());
         } else {
-            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
-                     getFreqFromRfChannel(testConfig.channel));
+            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: :%s", testConfig.channel,
+                     getFreqFromRfChannel(testConfig.channel),(const char *)getPhyStr(phy));
         }
 
-        snprintf(str, sizeof(str), "%s%s", str, " : ");
-        snprintf(str, sizeof(str), "%s%s", str, (const char *)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
@@ -831,7 +828,7 @@ void setTxPower(int8_t power)
 {
     // TODO(BLE): validate value
     txPower = power;
-    llc_api_set_txpower((int8_t)power);
+    
     LlSetAdvTxPower((int8_t)power);
     printf("> Power set to %d dBm\n", power);
 }
