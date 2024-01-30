@@ -128,15 +128,22 @@ typedef struct {
     float y2;
 } bounding_box_t;
 
-int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image *input, sensor_msgs__msg__RegionOfInterest *output)
+int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output)
 {
     // Union for in-place conversion from bytes to 32-bit word
     union {
         uint32_t w;
         uint8_t b[4];
     } m;
+    m.b[3] = 0;
 
-    printf("\n*** CNN Inference Test qrcode_tinierssd_nobias_ds_input ***\n");
+    unsigned int row_buffer_size = camera_get_stream_buffer_size();
+    uint8_t *row_data = NULL;
+    uint32_t img_length, width, height;
+    camera_get_image(NULL, &img_length, &width, &height);
+
+    // LED_On(0);
+
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: APB (50 MHz) div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
@@ -146,31 +153,30 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image *input, sensor_msgs__msg
     cnn_configure(); // Configure state
 
     cnn_start(); // Start CNN processing
+    camera_start_capture_image();
 
-    unsigned int i = 0;
-    for (int row = 0; row < (input->height * input->step); row += input->step) {
-        for (int col = 0; col < input->step; col += 3) {
-            i = row + col;
-            // CNN expectes 0x00BBGGRR
-            // sensors_msgs/Image packs rgb8 as 0xRRGGBB
-            m.b[0] = input->data.data[i + 2]; // Red
-            m.b[1] = input->data.data[i + 1]; // Green
-            m.b[2] = input->data.data[i];     // Blue
-            m.b[3] = 0;
+    while (!camera_is_image_rcv()) {
+        if ((row_data = get_camera_stream_buffer()) != NULL) {
+            for (int i = 0; i < row_buffer_size; i += 2) {
+                // RGB565 to packed 24-bit RGB
+                m.b[0] = (*(row_data + i) & 0xF8); // Red
+                m.b[1] = (*(row_data + i) << 5) | ((*((row_data + i) + 1) & 0xE0) >> 3); // Green
+                m.b[2] = (*((row_data + i) + 1) << 3); // Blue
 
-            // Remove the following line if there is no risk that the source would overrun the FIFO:
-            while (((*((volatile uint32_t *) 0x50000004) & 1)) != 0); // Wait for FIFO 0
-            *((volatile uint32_t *) 0x50000008) = m.w ^ 0x00808080U; // Write FIFO 0
-            // Note: XOR is to normalize uint8_t to signed int8_t
+                // Remove the following line if there is no risk that the source would overrun the FIFO:
+                while (((*((volatile uint32_t *) 0x50000004) & 1)) != 0); // Wait for FIFO 0
+                *((volatile uint32_t *) 0x50000008) = m.w ^ 0x00808080U; // Write FIFO 0
+                // Note: XOR is to normalize uint8_t to signed int8_t
+            }
+            // Release buffer in time for next row
+            release_camera_stream_buffer();
         }
-    }
-
-    LED_On(0);
+    }    
 
     while (cnn_time == 0) {}
-#ifdef CNN_INFERENCE_TIMER
-    printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
-#endif    
+// #ifdef CNN_INFERENCE_TIMER
+//     printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
+// #endif
 
     get_priors();
     nms();
@@ -181,14 +187,14 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image *input, sensor_msgs__msg
     bb.y1 = 0;
     bb.y2 = 0;
     print_detected_boxes(&bb.x1, &bb.y1, &bb.x2, &bb.y2);
-    output->x_offset = (uint32_t)(bb.x1 * input->width);
-    output->y_offset = (uint32_t)(bb.y1 * input->width);
-    output->width = (uint32_t)((bb.x2 - bb.x1) * input->height);
-    output->height = (uint32_t)((bb.y2 - bb.y1) * input->height);
+    output->x_offset = (uint32_t)(bb.x1 * width);
+    output->y_offset = (uint32_t)(bb.y1 * width);
+    output->width = (uint32_t)((bb.x2 - bb.x1) * height);
+    output->height = (uint32_t)((bb.y2 - bb.y1) * height);
     output->do_rectify = false;
 
     cnn_disable();
-    LED_Off(0);
+    // LED_Off(0);
 
     return E_NO_ERROR;
 }

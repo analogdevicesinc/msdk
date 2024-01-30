@@ -55,9 +55,11 @@
 rcl_publisher_t roi_publisher;
 sensor_msgs__msg__RegionOfInterest outgoing_roi;
 
+#ifdef PUBLISH_IMAGE
 rcl_publisher_t image_publisher;
 sensor_msgs__msg__Image outgoing_image;
 uint8_t image_data_buffer[IMG_XRES * IMG_YRES * 3];
+#endif
 
 rcl_publisher_t log_publisher;
 rcl_interfaces__msg__Log log_msg;
@@ -86,26 +88,26 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
     int error;
 
+#ifdef PUBLISH_IMAGE
     error = mxc_microros_camera_capture(&outgoing_image);
     if (error) {
         printf("\nFailed to capture image!\n");
         return;
     }
 
-    error = mxc_microros_camera_run_cnn(&outgoing_image, &outgoing_roi);
-    if (error) {
-        printf("\nFailed to run CNN\n");
-        return;
-    }
-    
-#ifdef PUBLISH_IMAGE
     error = rcl_publish(&image_publisher, &outgoing_image, NULL);
     if (error) {
         printf("\nImage send req error %i\n", error);
         error_loop();
         return;
     }
-#endif
+#else
+    error = mxc_microros_camera_run_cnn(&outgoing_roi);
+    if (error) {
+        printf("\nFailed to run CNN\n");
+        return;
+    }
+
     
     if (outgoing_roi.width > 0 && outgoing_roi.height > 0) {
         LED_On(1);
@@ -116,6 +118,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
     } else {
         LED_Off(1);
     }
+#endif
 }
 
 
@@ -155,6 +158,7 @@ void appMain(void *argument)
     RCCHECK(rclc_executor_init(&executor, &support.context, 1, &allocator));
     RCCHECK(rclc_executor_add_timer(&executor, &timer));
     
+#ifdef PUBLISH_IMAGE
     // Initialize buffers for the Image message
     // Frame ID string
     char outgoing_image_frameid_buffer[STRING_BUFFER_LEN];
@@ -172,6 +176,7 @@ void appMain(void *argument)
     outgoing_image.data.capacity = IMG_XRES * IMG_YRES * 3;
     outgoing_image.data.data = image_data_buffer;
     outgoing_image.data.size = outgoing_image.data.capacity;
+#endif
 
     // Initialize logger buffers
     char log_name_buffer[STRING_BUFFER_LEN];

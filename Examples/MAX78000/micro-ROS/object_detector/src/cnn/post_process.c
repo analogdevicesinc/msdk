@@ -48,7 +48,7 @@ void nms_memory_init(void)
 }
 
 void check_for_all_zero_output(void){
-    printf("Checking for all zero prior locs\n");
+    // printf("Checking for all zero prior locs\n");
     int8_t* loc_addr = (int8_t*)0x50400000;
     int loc_addr_offset_list[NUM_SCALES] = {0x5400, 0x66C0, 0x6B70, 0x6C88};
 
@@ -75,11 +75,11 @@ void check_for_all_zero_output(void){
         
         loc_addr += 0x8000;
     }
-    if (all_zeros){
-        printf("ALL ZERO PRIOR LOCS\n");
-    } else {
-        printf("Num Nonzero prior locs: %d\n", num_nonzeros);
-    }
+    // if (all_zeros){
+    //     printf("ALL ZERO PRIOR LOCS\n");
+    // } else {
+    //     printf("Num Nonzero prior locs: %d\n", num_nonzeros);
+    // }
 
     all_zeros = 1;
     num_nonzeros = 0;
@@ -109,11 +109,11 @@ void check_for_all_zero_output(void){
         }
     }
 
-    if (all_zeros){
-        printf("ALL ZERO PRIOR CLASSES\n");
-    } else {
-        printf("Num Nonzero prior classes: %d\n", num_nonzeros);
-    }
+    // if (all_zeros){
+    //     printf("ALL ZERO PRIOR CLASSES\n");
+    // } else {
+    //     printf("Num Nonzero prior classes: %d\n", num_nonzeros);
+    // }
 
 
 }
@@ -182,7 +182,7 @@ void get_prior_cls(void)
         }
     }
 
-    printf("Valid Priors: %d\n", num_valid_priors);
+    // printf("Valid Priors: %d\n", num_valid_priors);
 }
 
 int get_prior_idx(int ar_idx, int scale_idx, int rel_idx)
@@ -460,16 +460,16 @@ void print_detected_boxes(float *out_x1, float *out_y1, float *out_x2, float *ou
     float xy[4];
     int class_idx, prior_idx, global_prior_idx;
 
-    printf("################\n");
+    // printf("################\n");
     for (class_idx = 0; class_idx < (NUM_CLASSES - 1); ++class_idx) {
         for (prior_idx = 0; prior_idx < num_nms_priors[class_idx]; ++prior_idx) {
             if (nms_removed[class_idx][prior_idx] != 1) {
                 global_prior_idx = nms_indices[class_idx][prior_idx];
                 get_cxcy(prior_cxcy, global_prior_idx);
-                printf("%f, %f, %f, %f\n", prior_cxcy[0], prior_cxcy[1], prior_cxcy[2], prior_cxcy[3]);
+                // printf("%f, %f, %f, %f\n", prior_cxcy[0], prior_cxcy[1], prior_cxcy[2], prior_cxcy[3]);
                 gcxgcy_to_cxcy(cxcy, global_prior_idx, prior_cxcy);
                 cxcy_to_xy(xy, cxcy);
-                printf("Prior: %d, Box: [%f, %f, %f, %f]\n", global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
+                // printf("Prior: %d, Box: [%f, %f, %f, %f]\n", global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
                 *out_x1 = xy[0];
                 *out_y1 = xy[1];
                 *out_x2 = xy[2];
@@ -480,5 +480,5 @@ void print_detected_boxes(float *out_x1, float *out_y1, float *out_x2, float *ou
         }
     }
 
-    printf("################\n\n");
+    // printf("################\n\n");
 }

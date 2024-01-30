@@ -25,4 +25,4 @@
 
 int mxc_microros_camera_init(unsigned int width, unsigned int height, const char* encoding);
 int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img);
-int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image *input, sensor_msgs__msg__RegionOfInterest *output);
+int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output);
