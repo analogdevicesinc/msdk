@@ -31,7 +31,6 @@
 #include "mxc_sys.h"
 #include "pb.h"
 #include "spixf.h"
-#include "tft_st7735.h"
 #include "uart.h"
 
 /***** Global Variables *****/
