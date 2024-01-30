@@ -150,12 +150,12 @@ int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 {
-    if (clock > 31) {
-        clock -= 32;
-        MXC_GCR->pclkdis1 |= (0x1 << clock);
-    } else if (clock > 63) {
+    if (clock > 63) {
         clock -= 64;
         MXC_MCR->pclkdis |= (0x1 << clock);
+    } else if (clock > 31) {
+        clock -= 32;
+        MXC_GCR->pclkdis1 |= (0x1 << clock);
     } else {
         MXC_GCR->pclkdis0 |= (0x1 << clock);
     }
@@ -164,12 +164,12 @@ void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 {
-    if (clock > 31) {
-        clock -= 32;
-        MXC_GCR->pclkdis1 &= ~(0x1 << clock);
-    } else if (clock > 63) {
+    if (clock > 63) {
         clock -= 64;
         MXC_MCR->pclkdis &= ~(0x1 << clock);
+    } else if (clock > 31) {
+        clock -= 32;
+        MXC_GCR->pclkdis1 &= ~(0x1 << clock);
     } else {
         MXC_GCR->pclkdis0 &= ~(0x1 << clock);
     }
