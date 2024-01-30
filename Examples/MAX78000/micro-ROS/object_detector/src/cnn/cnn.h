@@ -1,26 +1,12 @@
-/******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- ******************************************************************************/
+/**************************************************************************************************
+* Copyright (C) 2019-2021 Maxim Integrated Products, Inc. All Rights Reserved.
+*
+* Maxim Integrated Products, Inc. Default Copyright Notice:
+* https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+**************************************************************************************************/
 
 /*
- * This header file was automatically @generated for the qrcode_tinierssd_ds_lowres_lpriors network from a template.
+ * This header file was automatically @generated for the qrcode_tinierssd_ds_lowres_lpriors_1dkpts network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
@@ -28,7 +14,6 @@
 #define __CNN_H__
 
 #include <stdint.h>
-#include "led.h"
 typedef int32_t q31_t;
 typedef int16_t q15_t;
 
@@ -38,7 +23,7 @@ typedef int16_t q15_t;
 
 /*
   SUMMARY OF OPS
-  Hardware: 432,092,720 ops (429,304,320 macc; 2,788,400 comp; 0 add; 0 mul; 0 bitwise)
+  Hardware: 433,871,408 ops (431,083,008 macc; 2,788,400 comp; 0 add; 0 mul; 0 bitwise)
     Layer 0: 17,203,200 ops (16,588,800 macc; 614,400 comp; 0 add; 0 mul; 0 bitwise)
     Layer 1: 177,561,600 ops (176,947,200 macc; 614,400 comp; 0 add; 0 mul; 0 bitwise)
     Layer 2: 89,395,200 ops (88,473,600 macc; 921,600 comp; 0 add; 0 mul; 0 bitwise)
@@ -56,21 +41,25 @@ typedef int16_t q15_t;
     Layer 14: 322,560 ops (322,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
     Layer 15: 69,120 ops (69,120 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
     Layer 16: 4,608 ops (4,608 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 17: 691,200 ops (691,200 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 18: 161,280 ops (161,280 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 19: 34,560 ops (34,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 20: 2,304 ops (2,304 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 17: 1,382,400 ops (1,382,400 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 18: 322,560 ops (322,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 19: 69,120 ops (69,120 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 20: 4,608 ops (4,608 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 21: 691,200 ops (691,200 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 22: 161,280 ops (161,280 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 23: 34,560 ops (34,560 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 24: 2,304 ops (2,304 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
-  Weight memory: 336,096 bytes out of 442,368 bytes total (76.0%)
-  Bias memory:   416 bytes out of 2,048 bytes total (20.3%)
+  Weight memory: 352,224 bytes out of 442,368 bytes total (79.6%)
+  Bias memory:   480 bytes out of 2,048 bytes total (23.4%)
 */
 
 /* Number of outputs for this network */
 #define CNN_NUM_OUTPUTS 16
 
 /* Use this timer to time the inference */
-#define CNN_INFERENCE_TIMER MXC_TMR1
+#define CNN_INFERENCE_TIMER MXC_TMR0
 
 /* Port pin actions used to signal that processing is active */
 
