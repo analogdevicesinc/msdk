@@ -35,6 +35,7 @@
 #define NUM_CLASSES 2
 
 #define LOC_DIM 4
+#define KPTS_DIM 4
 #define NUM_PRIORS_PER_AR 388
 #define NUM_PRIORS        NUM_PRIORS_PER_AR* NUM_ARS
 
@@ -49,6 +50,7 @@
 
 void get_priors(void);
 void get_prior_locs(void);
+void get_prior_kpts(void);
 void get_prior_cls(void);
 int get_prior_idx(int ar_idx, int scale_idx, int rel_idx);
 void get_indices(int* ar_idx, int* scale_idx, int* rel_idx, int prior_idx);
@@ -66,6 +68,7 @@ float calculate_IOU(float *box1, float *box2);
 void get_cxcy(float *cxcy, int prior_idx);
 void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy);
 void cxcy_to_xy(float *xy, float *cxcy);
+void get_kpts_coords(float* kpts, float* xy, int prior_idx);
 
-void print_detected_boxes(float* out_x1, float* out_y1, float* out_x2, float* out_y2);
+void print_detected_boxes(float *xy, float *kpts);
 void draw_obj_rect(float *xy, uint32_t w, uint32_t h, uint8_t scale);

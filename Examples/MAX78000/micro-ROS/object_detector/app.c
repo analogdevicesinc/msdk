@@ -25,6 +25,7 @@
 #include <std_msgs/msg/header.h>
 #include <sensor_msgs/msg/image.h>
 #include <sensor_msgs/msg/region_of_interest.h>
+#include <geometry_msgs/msg/polygon_stamped.h>
 #include <rcl_interfaces/msg/log.h>
 
 #include <stdio.h>
@@ -55,6 +56,9 @@
 rcl_publisher_t roi_publisher;
 sensor_msgs__msg__RegionOfInterest outgoing_roi;
 
+rcl_publisher_t polygon_publisher;
+geometry_msgs__msg__PolygonStamped outgoing_polygon;
+
 #ifdef PUBLISH_IMAGE
 rcl_publisher_t image_publisher;
 sensor_msgs__msg__Image outgoing_image;
@@ -64,15 +68,6 @@ uint8_t image_data_buffer[IMG_XRES * IMG_YRES * 3];
 rcl_publisher_t log_publisher;
 rcl_interfaces__msg__Log log_msg;
 
-void error_loop() {
-    int i = 0;
-    while(i < 10) {
-        LED_Toggle(0);
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        i++;
-    }
-}
-
 #define LOG_MSG(fmt, args...) {\
     struct timespec ts; \
     clock_gettime(CLOCK_REALTIME, &ts); \
@@ -80,6 +75,15 @@ void error_loop() {
     log_msg.stamp.nanosec = ts.tv_nsec; \
     snprintf(log_msg.msg.data, STRING_BUFFER_LEN, fmt, ##args);\
     RCSOFTCHECK(rcl_publish(&log_publisher, &log_msg, NULL));\
+}
+
+void error_loop() {
+    int i = 0;
+    while(i < 10) {
+        LED_Toggle(0);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+        i++;
+    }
 }
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
@@ -102,7 +106,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
         return;
     }
 #else
-    error = mxc_microros_camera_run_cnn(&outgoing_roi);
+    error = mxc_microros_camera_run_cnn(&outgoing_roi, &outgoing_polygon);
     if (error) {
         printf("\nFailed to run CNN\n");
         return;
@@ -112,6 +116,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
     if (outgoing_roi.width > 0 && outgoing_roi.height > 0) {
         LED_On(1);
         error = rcl_publish(&roi_publisher, &outgoing_roi, NULL);
+        error = rcl_publish(&polygon_publisher, &outgoing_polygon, NULL);
         if (error) {
             error_loop();
         }
@@ -137,6 +142,9 @@ void appMain(void *argument)
     // Create a bounding box publisher
     RCCHECK(rclc_publisher_init_best_effort(&roi_publisher, &node, 
         ROSIDL_GET_MSG_TYPE_SUPPORT(sensor_msgs, msg, RegionOfInterest), "/microROS/roi"));
+
+    RCCHECK(rclc_publisher_init_best_effort(&polygon_publisher, &node, 
+        ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, PolygonStamped), "/microROS/polygon"));
 
 #ifdef PUBLISH_IMAGE
     // Create an image publisher
@@ -177,6 +185,19 @@ void appMain(void *argument)
     outgoing_image.data.data = image_data_buffer;
     outgoing_image.data.size = outgoing_image.data.capacity;
 #endif
+
+    // Initialize Polygon
+    char polygon_header_buffer[STRING_BUFFER_LEN];
+    memset(polygon_header_buffer, '\0', STRING_BUFFER_LEN);
+    outgoing_polygon.header.frame_id.data = polygon_header_buffer;
+    outgoing_polygon.header.frame_id.size = STRING_BUFFER_LEN;
+    geometry_msgs__msg__Point32 point_array[4];
+    geometry_msgs__msg__Point32__Sequence points = {
+        .capacity = 4,
+        .data = point_array,
+        .size = 4
+    };
+    outgoing_polygon.polygon.points = points;
 
     // Initialize logger buffers
     char log_name_buffer[STRING_BUFFER_LEN];

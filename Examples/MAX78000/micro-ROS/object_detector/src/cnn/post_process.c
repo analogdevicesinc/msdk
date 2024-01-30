@@ -23,6 +23,7 @@
 
 //Arrays to Unload Model Outputs
 static int8_t prior_locs[LOC_DIM * NUM_PRIORS]; //(x, y, w, h)
+static int8_t prior_kpts[KPTS_DIM * NUM_PRIORS];
 static int8_t prior_cls[NUM_CLASSES * NUM_PRIORS] = { 0 };
 static uint8_t prior_cls_softmax[NUM_CLASSES * NUM_PRIORS] = { 0 };
 
@@ -122,8 +123,10 @@ void get_priors(void)
 {
     nms_memory_init();
     get_prior_locs();
+    get_prior_kpts();
     get_prior_cls();
 }
+
 
 void get_prior_locs(void)
 {
@@ -147,6 +150,31 @@ void get_prior_locs(void)
         }
         
         loc_addr += 0x8000;
+    }
+}
+
+void get_prior_kpts(void)
+{
+    int8_t* kpts_addr = (int8_t*)0x50C00000;
+    int kpts_addr_offset_list[NUM_SCALES] = {0x4000, 0x52C0, 0x5770, 0x5888};
+
+    int ar_idx, scale_idx, rel_idx, prior_idx, prior_count;
+
+    for (ar_idx = 0; ar_idx < NUM_ARS; ++ar_idx) {
+        
+        for (scale_idx = 0; scale_idx < NUM_SCALES; ++scale_idx) {
+            int8_t* kpts_addr_temp = kpts_addr + kpts_addr_offset_list[scale_idx];
+            prior_count = MULT(dims[scale_idx][0], dims[scale_idx][1]);
+        
+            for (rel_idx = 0; rel_idx < prior_count; ++rel_idx) {
+                prior_idx = get_prior_idx(ar_idx, scale_idx, rel_idx);
+                
+                memcpy(&prior_kpts[LOC_DIM * prior_idx], kpts_addr_temp, LOC_DIM);
+                kpts_addr_temp += LOC_DIM;
+            }
+        }
+        
+        kpts_addr += 0x8000;
     }
 }
 
@@ -389,6 +417,23 @@ void cxcy_to_xy(float *xy, float *cxcy)
     xy[3] = cxcy[1] + cxcy[3] / 2;
 }
 
+void get_kpts_coords(float* kpts, float* cxcy, int prior_idx)
+{
+    float x1 = cxcy[0] - cxcy[2] / 2;
+    float y1 = cxcy[1] - cxcy[3] / 2;
+    float w = cxcy[2];
+    float h = cxcy[3];
+
+    kpts[0] = (float)prior_kpts[KPTS_DIM * prior_idx] / 128. * w + x1;
+    kpts[1] = y1;
+    kpts[2] = x1;
+    kpts[3] = (float)prior_kpts[KPTS_DIM * prior_idx + 1] / 128. * h + y1;
+    kpts[4] = (float)prior_kpts[KPTS_DIM * prior_idx + 2] / 128. * w + x1;
+    kpts[5] = y1 + h;
+    kpts[6] = x1 + w;
+    kpts[7] = (float)prior_kpts[KPTS_DIM * prior_idx + 3] / 128. * h + y1;
+}
+
 float calculate_IOU(float *box1, float *box2)
 {
     float x_left = MAX(box1[0], box2[0]);
@@ -454,10 +499,9 @@ float calculate_IOU(float *box1, float *box2)
 // }
 
 
-void print_detected_boxes(float *out_x1, float *out_y1, float *out_x2, float *out_y2){
+void print_detected_boxes(float *out_xy, float *out_kpts) {
     float prior_cxcy[4];
     float cxcy[4];
-    float xy[4];
     int class_idx, prior_idx, global_prior_idx;
 
     // printf("################\n");
@@ -468,12 +512,9 @@ void print_detected_boxes(float *out_x1, float *out_y1, float *out_x2, float *ou
                 get_cxcy(prior_cxcy, global_prior_idx);
                 // printf("%f, %f, %f, %f\n", prior_cxcy[0], prior_cxcy[1], prior_cxcy[2], prior_cxcy[3]);
                 gcxgcy_to_cxcy(cxcy, global_prior_idx, prior_cxcy);
-                cxcy_to_xy(xy, cxcy);
+                cxcy_to_xy(out_xy, cxcy);
                 // printf("Prior: %d, Box: [%f, %f, %f, %f]\n", global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
-                *out_x1 = xy[0];
-                *out_y1 = xy[1];
-                *out_x2 = xy[2];
-                *out_y2 = xy[3];
+                get_kpts_coords(out_kpts, cxcy, global_prior_idx);
 
                 // draw_obj_rect(xy, TFT_W, TFT_H, 1);
             }

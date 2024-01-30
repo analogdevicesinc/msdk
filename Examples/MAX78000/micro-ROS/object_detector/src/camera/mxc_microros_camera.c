@@ -94,7 +94,7 @@ int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img)
     }
 	LED_Off(0);
 
-    stream_stat_t *stat = get_camera_stream_statistic();    
+    stream_stat_t *stat = get_camera_stream_statistic();
 
     if (stat->overflow_count > 0) {
         printf("DMA transfer count = %d\n", stat->dma_transfer_count);
@@ -128,7 +128,7 @@ typedef struct {
     float y2;
 } bounding_box_t;
 
-int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output)
+int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output_roi, geometry_msgs__msg__PolygonStamped *output_polygon)
 {
     // Union for in-place conversion from bytes to 32-bit word
     union {
@@ -136,6 +136,16 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output)
         uint8_t b[4];
     } m;
     m.b[3] = 0;
+
+    // Fill the message header
+    //  - Timestamp
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    output_polygon->header.stamp.sec = ts.tv_sec;
+    output_polygon->header.stamp.nanosec = ts.tv_nsec;
+    //  - Frame ID = (g_img_no)_(device_id)
+    snprintf(output_polygon->header.frame_id.data, STRING_BUFFER_LEN, "%d_%d", ++g_img_no, DEVICE_ID);
+    output_polygon->header.frame_id.size = strlen(output_polygon->header.frame_id.data);
 
     unsigned int row_buffer_size = camera_get_stream_buffer_size();
     uint8_t *row_data = NULL;
@@ -181,17 +191,22 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output)
     get_priors();
     nms();
 
-    bounding_box_t bb;
-    bb.x1 = 0;
-    bb.x2 = 0;
-    bb.y1 = 0;
-    bb.y2 = 0;
-    print_detected_boxes(&bb.x1, &bb.y1, &bb.x2, &bb.y2);
-    output->x_offset = (uint32_t)(bb.x1 * width);
-    output->y_offset = (uint32_t)(bb.y1 * width);
-    output->width = (uint32_t)((bb.x2 - bb.x1) * height);
-    output->height = (uint32_t)((bb.y2 - bb.y1) * height);
-    output->do_rectify = false;
+    float xy[4];
+    memset(xy, 0, 4 * sizeof(float));
+    float kpts[8];
+    memset(kpts, 0, 8 * sizeof(float));
+    print_detected_boxes(xy, kpts);
+    output_roi->x_offset = (uint32_t)(xy[0] * width);
+    output_roi->y_offset = (uint32_t)(xy[1] * width);
+    output_roi->width = (uint32_t)((xy[2] - xy[0]) * height);
+    output_roi->height = (uint32_t)((xy[3] - xy[1]) * height);
+    output_roi->do_rectify = false;
+
+    for (int i = 0; i < output_polygon->polygon.points.size; i++) {
+        output_polygon->polygon.points.data[i].x = kpts[(2*i)] * width;
+        output_polygon->polygon.points.data[i].y = kpts[(2*i) + 1] * height;
+        output_polygon->polygon.points.data[i].z = 0;
+    }
 
     cnn_disable();
     // LED_Off(0);
