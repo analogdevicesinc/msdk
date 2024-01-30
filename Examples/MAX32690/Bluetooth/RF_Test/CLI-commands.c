@@ -86,8 +86,6 @@ extern bool pausePrompt;
 extern bool clearScreen;
 extern xSemaphoreHandle rfTestMutex;
 
-
-
 /* helpers */
 static bool isDigit(const char *symbol, uint8_t len);
 static bool isChannel(const char *commandstring, uint8_t paramIndex);
