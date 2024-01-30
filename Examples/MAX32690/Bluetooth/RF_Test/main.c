@@ -793,17 +793,32 @@ void helpTask(void *pvParameters)
         prompt();
     }
 }
+const char *toPhyStr(uint8_t phy)
+{
+    if(phy == LL_TEST_PHY_LE_1M)
+    {
+        return "1M";
+    }
+    else if(phy == LL_TEST_PHY_LE_2M)
+    {
+        return "2M";
+    }
+    else if(phy == LL_TEST_PHY_LE_CODED_S8)
+    {
+        return "S8";
+    }
+    else
+    {
+        return "S2";
+    }
+}
 /*************************************************************************************************/
 void setPhy(uint8_t newPhy)
 {
     phy = newPhy;
-    char str[20] = "> Phy now set to ";
-    snprintf(str, sizeof(str), "%s%s", "> Phy now set to ",
-             (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
-             (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
-             (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
-             (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
-                                                "");
+
+    char str[20] = {0};
+    snprintf(str, sizeof(str), "> Phy now set to %s", getPhyStr(phy));
     APP_TRACE_INFO1("%s", str);
 }
 /*************************************************************************************************/
