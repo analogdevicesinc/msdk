@@ -81,12 +81,7 @@ bool pausePrompt = false;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
-/* Physical layer functions. */
-extern void llc_api_set_txpower(int8_t power);
-extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
-extern void llc_api_tx_ldo_setup(void);
-extern void dbb_seq_tx_enable(void);
-extern void dbb_seq_tx_disable(void);
+
 extern const CLI_Command_Definition_t xCommandList[];
 void vRegisterCLICommands(void);
 /*************************************************************************************************/
@@ -681,17 +676,14 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            snprintf(str, sizeof(str),
-                     "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : ", testConfig.channel,
-                     getFreqFromRfChannel(testConfig.channel), packetLen);
-            snprintf(str, sizeof(str), "%s%s", str, (const char *)getPacketTypeStr());
+            snprintf(str, sizeof(str), "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt :  %s :",
+                     testConfig.channel, getFreqFromRfChannel(testConfig.channel), packetLen,
+                     (const char *)getPacketTypeStr(), (const char *)getPhyStr(phy));
         } else {
-            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
-                     getFreqFromRfChannel(testConfig.channel));
+            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: :", testConfig.channel,
+                     getFreqFromRfChannel(testConfig.channel), (const char *)getPhyStr(phy));
         }
 
-        snprintf(str, sizeof(str), "%s%s", str, " : ");
-        snprintf(str, sizeof(str), "%s%s", str, (const char *)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
@@ -831,7 +823,6 @@ void setTxPower(int8_t power)
 {
     // TODO(BLE): validate value
     txPower = power;
-    llc_api_set_txpower((int8_t)power);
     LlSetAdvTxPower((int8_t)power);
     printf("> Power set to %d dBm\n", power);
 }
