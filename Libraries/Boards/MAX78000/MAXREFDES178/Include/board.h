@@ -64,12 +64,35 @@ extern "C" {
  *  References to LEDs on the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED_RED 0
-#define LED_BLUE 1
-#define LED_GREEN 2
-#define LED1 LED_RED
-#define LED2 LED_GREEN
-#define LED3 LED_BLUE
+#ifdef LED_RED
+#undef LED_RED
+#endif
+#define LED_RED 0 /// Override LED_RED
+
+#ifdef LED_BLUE
+#undef LED_BLUE
+#endif
+#define LED_BLUE 1 /// Override LED_BLUE
+
+#ifdef LED_GREEN
+#undef LED_GREEN
+#endif
+#define LED_GREEN 2 /// Override LED_GREEN
+
+#ifdef LED1
+#undef LED1
+#endif
+#define LED1 LED_RED /// Override LED1
+
+#ifdef LED2
+#undef LED2
+#endif
+#define LED2 LED_GREEN /// Override LED2
+
+#ifdef LED3
+#undef LED3
+#endif
+#define LED3 LED_BLUE /// Override LED3
 
 /**
  * \brief   Initialize the BSP and board interfaces.

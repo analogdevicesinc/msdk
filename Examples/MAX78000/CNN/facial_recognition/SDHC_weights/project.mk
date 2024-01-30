@@ -13,14 +13,10 @@
 
 # Add your config here!
 
-# This example is only compatible with the FTHR board
 BOARD = FTHR_RevA
-ifneq ($(BOARD),FTHR_RevA)
-$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000FTHR.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
-endif
 
-# Enable SDHC library
 LIB_SDHC = 1
-# Use FatFS R0.15
-FATFS_VERSION = ff15
 
+ifneq "$(BOARD)" "FTHR_RevA"
+$(error ERR_NOTSUPPORTED: This project is only support for the MAX78000FTHR board!)
+endif

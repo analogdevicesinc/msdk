@@ -24,11 +24,11 @@ import numpy as np
 import torch
 
 import parse_qat_yaml
-from .ai85net_faceid import AI85FaceIDNet
+import ai85.ai85net_faceid_112 as ai85netfaceidnet_112
 import ai85.ai8x as ai8x
 from .ai8x import set_device #pylint: disable=relative-beyond-top-level
 import torchvision
-
+from distiller import apputils
 class Simulator:
     """
     MAX78000 Simulator.
@@ -39,10 +39,12 @@ class Simulator:
         self.device = self.__get_device()
         #load model
         set_device(85, True, True)
-        self.model = AI85FaceIDNet().to(self.device)
+        self.model = ai85netfaceidnet_112.ai85faceidnet_112(bias = True, num_classes=None).to(self.device)
         ai8x.fuse_bn_layers(self.model)
-        checkpoint = torch.load(checkpoint_path, map_location=self.device)
-        self.model.load_state_dict(checkpoint['state_dict'])
+        #checkpoint = torch.load(checkpoint_path, map_location=self.device)
+        self.model = apputils.load_lean_checkpoint(self.model, checkpoint_path, model_device=self.device)
+
+        #self.model.load_state_dict(checkpoint['state_dict'])
         ai8x.update_model(self.model)
         self.model = self.model.to(self.device)
         self.model.eval()
@@ -65,7 +67,7 @@ class Simulator:
             in_tensor = 255 * in_tensor - in_tensor.min() / (in_tensor.max() - in_tensor.min())
             in_tensor = np.round(in_tensor) - 128
         in_tensor = torch.from_numpy(in_tensor).to(self.device)
-        print(in_tensor.min(), in_tensor.max(), in_tensor.shape)
+        #print(in_tensor.min(), in_tensor.max(), in_tensor.shape)
         data_out = self.model(in_tensor)
         return data_out.detach().cpu().numpy()
 
