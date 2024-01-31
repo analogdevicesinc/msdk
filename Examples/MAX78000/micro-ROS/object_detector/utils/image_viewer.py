@@ -7,6 +7,7 @@ import rclpy # Python library for ROS 2
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 from sensor_msgs.msg import Image, RegionOfInterest
+from geometry_msgs.msg import PolygonStamped, Point32
 from rcl_interfaces.msg import Log
 from cv_bridge import CvBridge # Converts between ROS and OpenCV image formats
 import cv2
@@ -87,6 +88,63 @@ class ROISubscriber(Node):
                 self.get_logger().info("Saved image to test.png")
                 valid_image = False
 
+class PolygonSubscriber(Node):
+    x: int
+    y: int
+
+    def __init__(self):
+        super().__init__('polygon_subscriber')
+
+        qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            depth=1)
+
+        self.subscription = self.create_subscription(
+          PolygonStamped,
+          '/microROS/polygon', 
+          self.listener_callback,
+          qos_profile = qos_profile)
+
+        self.x = 0
+        self.y = 0
+    
+    def listener_callback(self, data:PolygonStamped):
+        self.get_logger().info(f'Received polygon box:')
+
+        bottom_left : Point32 = data.polygon.points[0]
+        top_left : Point32 = data.polygon.points[1]
+        top_right : Point32 = data.polygon.points[2]
+        bottom_right : Point32 = data.polygon.points[3]
+        print(f"BL: ({bottom_left.x},{bottom_left.y})")
+        print(f"TL: ({top_left.x},{top_left.y})")
+        print(f"TR: ({top_right.x},{top_right.y})")
+        print(f"BR: ({bottom_right.x},{bottom_right.y})")
+
+        top_middle = top_left.x + ((top_right.x - top_left.x) / 2)
+        print(f"Top middle: {top_middle}")
+        bottom_middle = bottom_left.x + (bottom_right.x - bottom_left.x) / 2
+        print(f"Bottom middle: {bottom_middle}")
+        x = top_middle + ((bottom_middle - top_middle) / 2)
+        self.x = x
+
+        left_middle = top_left.y + ((bottom_left.y - top_left.y) / 2)
+        right_middle = top_right.y + ((bottom_right.y - top_right.y) / 2)
+        y = left_middle + ((right_middle - left_middle) / 2)
+        self.y = y
+        self.get_logger().info(f"\tmiddle: {self.x},{self.y}")
+
+        # if (data.width > 0 and data.height > 0):
+        #     global valid_image
+        #     global g_img
+        #     if valid_image:
+        #         drawer = ImageDraw.Draw(g_img)
+        #         drawer.rectangle((data.x_offset, data.y_offset, data.x_offset + data.width, data.y_offset + data.height), outline="red", width=3)
+        #         drawer.point((self.x, self.y), fill="red")
+        #         g_img.save("./test.png")
+        #         self.get_logger().info("Saved image to test.png")
+        #         valid_image = False
+
 class Logger(Node):
     def __init__(self):
         super().__init__('Logger')
@@ -117,7 +175,10 @@ def main(args=None):
     image_subscriber.get_logger().info("Initialized image subscriber.")
 
     box_subcriber = ROISubscriber()
-    box_subcriber.get_logger().info("Initialized box subscriber,")
+    box_subcriber.get_logger().info("Initialized box subscriber.")
+
+    polygon_subsciber = PolygonSubscriber()
+    polygon_subsciber.get_logger().info("Initialized box subscriber.")
 
     logger = Logger()
     
@@ -125,6 +186,7 @@ def main(args=None):
     while(rclpy.ok()):
       rclpy.spin_once(box_subcriber, timeout_sec=0.1)
       rclpy.spin_once(image_subscriber, timeout_sec=0.1)
+      rclpy.spin_once(polygon_subsciber, timeout_sec=0.1)
       rclpy.spin_once(logger, timeout_sec=0.1)
     
     # Destroy the node explicitly
