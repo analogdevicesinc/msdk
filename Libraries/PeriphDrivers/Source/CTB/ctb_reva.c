@@ -342,7 +342,8 @@ void MXC_CTB_RevA_DMA_SetReadSource(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_dma_read_source_t MXC_CTB_RevA_DMA_GetReadSource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (mxc_ctb_reva_dma_read_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RDSRC) >> MXC_F_CTB_REVA_CTRL_RDSRC_POS);
+    return (mxc_ctb_reva_dma_read_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RDSRC) >>
+                                            MXC_F_CTB_REVA_CTRL_RDSRC_POS);
 }
 
 void MXC_CTB_RevA_DMA_SetWriteSource(mxc_ctb_reva_regs_t *ctb_regs,
@@ -354,7 +355,8 @@ void MXC_CTB_RevA_DMA_SetWriteSource(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_dma_write_source_t MXC_CTB_RevA_DMA_GetWriteSource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (mxc_ctb_reva_dma_write_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_WRSRC) >> MXC_F_CTB_REVA_CTRL_WRSRC_POS);
+    return (mxc_ctb_reva_dma_write_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_WRSRC) >>
+                                             MXC_F_CTB_REVA_CTRL_WRSRC_POS);
 }
 
 void MXC_CTB_RevA_DMA_SetSource(mxc_ctb_reva_regs_t *ctb_regs, uint8_t *source)
@@ -643,7 +645,8 @@ void MXC_CTB_RevA_CRC_SetDirection(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_crc_bitorder_t MXC_CTB_RevA_CRC_GetDirection(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (mxc_ctb_reva_crc_bitorder_t)((ctb_regs->crc_ctrl & MXC_F_CTB_REVA_CRC_CTRL_MSB) >> MXC_F_CTB_REVA_CRC_CTRL_MSB_POS);
+    return (mxc_ctb_reva_crc_bitorder_t)((ctb_regs->crc_ctrl & MXC_F_CTB_REVA_CRC_CTRL_MSB) >>
+                                         MXC_F_CTB_REVA_CRC_CTRL_MSB_POS);
 }
 
 void MXC_CTB_RevA_CRC_SetPoly(mxc_ctb_reva_regs_t *ctb_regs, uint32_t poly)
@@ -749,7 +752,7 @@ void MXC_CTB_RevA_Hash_SetFunction(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_h
 mxc_ctb_reva_hash_func_t MXC_CTB_RevA_Hash_GetFunction(mxc_ctb_reva_regs_t *ctb_regs)
 {
     return (mxc_ctb_reva_hash_func_t)((ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_HASH) >>
-           MXC_F_CTB_REVA_HASH_CTRL_HASH_POS);
+                                      MXC_F_CTB_REVA_HASH_CTRL_HASH_POS);
 }
 
 void MXC_CTB_RevA_Hash_SetAutoPad(mxc_ctb_reva_regs_t *ctb_regs, int pad)
@@ -782,7 +785,8 @@ void MXC_CTB_RevA_Hash_SetSource(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_has
 
 mxc_ctb_reva_hash_source_t MXC_CTB_RevA_Hash_GetSource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (mxc_ctb_reva_hash_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_SRC) >> MXC_F_CTB_REVA_CTRL_SRC_POS);
+    return (mxc_ctb_reva_hash_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_SRC) >>
+                                        MXC_F_CTB_REVA_CTRL_SRC_POS);
 }
 
 void MXC_CTB_RevA_Hash_InitializeHash(mxc_ctb_reva_regs_t *ctb_regs)
@@ -927,7 +931,7 @@ void MXC_CTB_RevA_Cipher_SetMode(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_cip
 mxc_ctb_reva_cipher_mode_t MXC_CTB_RevA_Cipher_GetMode(mxc_ctb_reva_regs_t *ctb_regs)
 {
     return (mxc_ctb_reva_cipher_mode_t)((ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_MODE) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS);
+                                        MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS);
 }
 
 void MXC_CTB_RevA_Cipher_SetCipher(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_cipher_t cipher)
@@ -939,7 +943,7 @@ void MXC_CTB_RevA_Cipher_SetCipher(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_c
 mxc_ctb_reva_cipher_t MXC_CTB_RevA_Cipher_GetCipher(mxc_ctb_reva_regs_t *ctb_regs)
 {
     return (mxc_ctb_reva_cipher_t)((ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS);
+                                   MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS);
 }
 
 void MXC_CTB_RevA_Cipher_SetKeySource(mxc_ctb_reva_regs_t *ctb_regs,
@@ -952,7 +956,7 @@ void MXC_CTB_RevA_Cipher_SetKeySource(mxc_ctb_reva_regs_t *ctb_regs,
 mxc_ctb_reva_cipher_key_t MXC_CTB_RevA_Cipher_GetKeySource(mxc_ctb_reva_regs_t *ctb_regs)
 {
     return (mxc_ctb_reva_cipher_key_t)((ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_SRC) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS);
+                                       MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS);
 }
 
 void MXC_CTB_RevA_Cipher_LoadKey(mxc_ctb_reva_regs_t *ctb_regs)

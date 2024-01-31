@@ -51,11 +51,7 @@ extern "C" {
  * @brief   Enumeration type for voltage selection
  *
  */
-typedef enum {
-    MXC_LP_V0_9 = 0,
-    MXC_LP_V1_0,
-    MXC_LP_V1_1
-} mxc_lp_ovr_t;
+typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
 
 /**
  * @brief      Places the device into SLEEP mode.  This function returns once an RTC or external interrupt occur.

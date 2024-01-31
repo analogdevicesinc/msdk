@@ -936,7 +936,9 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     uint8_t error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = { 0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0 };
+    mxc_dma_adv_config_t advConfig = {
+        0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0
+    };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
 
@@ -1115,7 +1117,9 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     uint8_t error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = { 0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0 };
+    mxc_dma_adv_config_t advConfig = {
+        0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0
+    };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
 

@@ -52,7 +52,7 @@ const mxc_gpio_cfg_t tft_mosi = { .port = MXC_GPIO2,
                                   .func = MXC_GPIO_FUNC_OUT,
                                   .pad = MXC_GPIO_PAD_NONE,
                                   .vssel = MXC_GPIO_VSSEL_VDDIOH,
-                                                  .drvstr = MXC_GPIO_DRVSTR_0 };
+                                  .drvstr = MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t tft_clk = { .port = MXC_GPIO2,
                                  .mask = MXC_GPIO_PIN_25,
                                  .func = MXC_GPIO_FUNC_OUT,

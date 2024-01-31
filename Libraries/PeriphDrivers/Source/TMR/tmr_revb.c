@@ -65,14 +65,16 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
     //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
     if (cfg->bitMode == TMR_BIT_MODE_16A || cfg->bitMode == TMR_BIT_MODE_32) {
-        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A, (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
         MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, cfg->pres);
     }
     if (cfg->bitMode == TMR_BIT_MODE_16B || cfg->bitMode == TMR_BIT_MODE_32) {
-        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B, (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
         // mxc_tmr_pres_t is for for CLKDIV_A register settings [4:7]
         // Field positions for CLKDIV_B are Located at [16:19]. Shift 12 more bits.
-        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres)<<12);
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres) << 12);
     }
 
     //TIMER_16B only supports compare, oneshot and continuous modes.

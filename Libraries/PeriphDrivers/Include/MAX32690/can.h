@@ -264,7 +264,8 @@ typedef enum {
  * @brief  Selects the control operation for the CAN driver to perform
  */
 typedef enum {
-    MXC_CAN_CTRL_SET_FD_MODE = 0, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
+    MXC_CAN_CTRL_SET_FD_MODE =
+        0, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
     MXC_CAN_CTRL_ABORT_TX, ///< Abort transmission
     MXC_CAN_CTRL_RETRANSMISSION, ///< Enable/disable auto retransmission on error
     MXC_CAN_CTRL_TRANSCEIVER_DLY, ///< Set transceiver delay
