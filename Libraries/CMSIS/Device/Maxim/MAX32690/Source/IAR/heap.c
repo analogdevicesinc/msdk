@@ -52,7 +52,7 @@ void *_sbrk(int incr)
     char *prev_heap_end;
 
     if (0 == heap_end) {
-        heap_end = HeapBase; //&__HeapBase;			/* Initialize first time round */
+        heap_end = HeapBase; //&__HeapBase; /* Initialize first time round */
     }
 
     prev_heap_end = heap_end;

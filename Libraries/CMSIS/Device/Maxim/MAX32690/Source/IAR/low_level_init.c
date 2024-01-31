@@ -1,5 +1,9 @@
 /* *************************************************
  *
+ * Copyright 1999-2004 IAR Systems. All rights reserved.
+ *
+ * Portions Copyright (C) 2023-2024 Analog Devices, Inc.
+ *
  * This module contains the function `__low_level_init', a function
  * that is called before the `main' function of the program.  Normally
  * low-level initializations - such as setting the prefered interrupt
@@ -13,10 +17,6 @@
  * initialization of the data segments. The result is faster startup,
  * the drawback is that neither global nor static data will be
  * initialized.
- *
- * Copyright 1999-2004 IAR Systems. All rights reserved.
- *
- * Portions Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  ************************************************* */
 
