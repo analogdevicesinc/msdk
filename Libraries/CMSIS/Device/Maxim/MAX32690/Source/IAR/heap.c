@@ -19,14 +19,13 @@
  *
  ******************************************************************************/
 
-#if defined __ICCARM__ 
-#pragma diag_suppress=Pe513,Pe042
+#if defined __ICCARM__
+#pragma diag_suppress = Pe513, Pe042
 #endif
 
 #include <stdlib.h>
-#pragma section="CSTACK"
-#pragma section="HEAP"
-
+#pragma section = "CSTACK"
+#pragma section = "HEAP"
 
 //#include <sys/types.h>
 #include <errno.h>
@@ -44,28 +43,26 @@
 //extern char __HeapBase;//set by linker
 //extern char __HeapLimit;//set by linker
 
-    unsigned char *HeapBase   = __section_begin("HEAP");
-    unsigned char *HeapLimit  = __section_end("HEAP"); 
+unsigned char *HeapBase = __section_begin("HEAP");
+unsigned char *HeapLimit = __section_end("HEAP");
 
-void * _sbrk (int  incr)
+void *_sbrk(int incr)
 {
+    static char *heap_end = 0; /* Previous end of heap or 0 if none */
+    char *prev_heap_end;
 
-	static char *heap_end=0;	  	/* Previous end of heap or 0 if none */
-	char        *prev_heap_end;
+    if (0 == heap_end) {
+        heap_end = HeapBase; //&__HeapBase;			/* Initialize first time round */
+    }
 
-	if (0 == heap_end) {
-		heap_end = HeapBase; //&__HeapBase;			/* Initialize first time round */
-	}
+    prev_heap_end = heap_end;
+    heap_end += incr;
+    //check
+    if (heap_end < HeapLimit /*(&__HeapLimit)*/) {
+    } else {
+        errno = 132; //ENOMEM;
+        return (char *)-1;
+    }
+    return (void *)prev_heap_end;
 
-	prev_heap_end  = heap_end;
-	heap_end      += incr;
-	//check
-	if( heap_end < HeapLimit /*(&__HeapLimit)*/) {
-
-	} else {
-		errno = 132; //ENOMEM;
-		return (char*)-1;
-	}
-	return (void *) prev_heap_end;
-
-}	/* _sbrk () */
+} /* _sbrk () */
