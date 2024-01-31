@@ -54,13 +54,12 @@ void *_sbrk(int incr)
 
    prev_heap_end = heap_end;
    heap_end += incr;
-   
+
    //check
    if (heap_end >= HeapLimit) {
       errno = 132; //ENOMEM;
       return (char *)-1;
    }
 
-   return (void *)prev_heap_end;   
-
+   return (void *)prev_heap_end;
 } /* _sbrk () */
