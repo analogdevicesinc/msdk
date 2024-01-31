@@ -40,29 +40,27 @@
    @return  A pointer to the start of the new block of memory                */
 /* ------------------------------------------------------------------------- */
 
-//extern char __HeapBase;//set by linker
-//extern char __HeapLimit;//set by linker
-
 unsigned char *HeapBase = __section_begin("HEAP");
 unsigned char *HeapLimit = __section_end("HEAP");
 
 void *_sbrk(int incr)
 {
-    static char *heap_end = 0; /* Previous end of heap or 0 if none */
-    char *prev_heap_end;
+   static char *heap_end = 0; /* Previous end of heap or 0 if none */
+   char *prev_heap_end;
 
-    if (0 == heap_end) {
-        heap_end = HeapBase; //&__HeapBase; /* Initialize first time round */
-    }
+   if (0 == heap_end) {
+      heap_end = HeapBase; /* Initialize first time round */
+   }
 
-    prev_heap_end = heap_end;
-    heap_end += incr;
-    //check
-    if (heap_end < HeapLimit /*(&__HeapLimit)*/) {
-    } else {
-        errno = 132; //ENOMEM;
-        return (char *)-1;
-    }
-    return (void *)prev_heap_end;
+   prev_heap_end = heap_end;
+   heap_end += incr;
+   
+   //check
+   if (heap_end >= HeapLimit) {
+      errno = 132; //ENOMEM;
+      return (char *)-1;
+   }
+
+   return (void *)prev_heap_end;   
 
 } /* _sbrk () */
