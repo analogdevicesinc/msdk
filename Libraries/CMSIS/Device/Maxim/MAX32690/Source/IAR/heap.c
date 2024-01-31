@@ -45,21 +45,21 @@ unsigned char *HeapLimit = __section_end("HEAP");
 
 void *_sbrk(int incr)
 {
-   static char *heap_end = 0; /* Previous end of heap or 0 if none */
-   char *prev_heap_end;
+    static char *heap_end = 0; /* Previous end of heap or 0 if none */
+    char *prev_heap_end;
 
-   if (0 == heap_end) {
-      heap_end = HeapBase; /* Initialize first time round */
-   }
+    if (0 == heap_end) {
+        heap_end = HeapBase; /* Initialize first time round */
+    }
 
-   prev_heap_end = heap_end;
-   heap_end += incr;
+    prev_heap_end = heap_end;
+    heap_end += incr;
 
-   //check
-   if (heap_end >= HeapLimit) {
-      errno = 132; //ENOMEM;
-      return (char *)-1;
-   }
+    //check
+    if (heap_end >= HeapLimit) {
+        errno = 132; //ENOMEM;
+        return (char *)-1;
+    }
 
-   return (void *)prev_heap_end;
+    return (void *)prev_heap_end;
 } /* _sbrk () */
