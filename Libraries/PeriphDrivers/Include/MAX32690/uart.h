@@ -51,7 +51,7 @@ typedef struct _mxc_uart_req_t mxc_uart_req_t;
  * 
  */
 typedef enum {
-    MXC_UART_STOP_1, ///< UART Stop 1 clock cycle
+    MXC_UART_STOP_1 = 0, ///< UART Stop 1 clock cycle
     MXC_UART_STOP_2, ///< UART Stop 2 clock cycle (1.5 clocks for 5 bit characters)
 } mxc_uart_stop_t;
 
@@ -60,7 +60,7 @@ typedef enum {
  * 
  */
 typedef enum {
-    MXC_UART_PARITY_DISABLE, ///< UART Parity Disabled
+    MXC_UART_PARITY_DISABLE = 0, ///< UART Parity Disabled
     MXC_UART_PARITY_EVEN_0, ///< UART Parity Even, 0 based
     MXC_UART_PARITY_EVEN_1, ///< UART Parity Even, 1 based
     MXC_UART_PARITY_ODD_0, ///< UART Parity Odd, 0 based
@@ -72,7 +72,7 @@ typedef enum {
  * 
  */
 typedef enum {
-    MXC_UART_FLOW_DIS, ///< UART Flow Control Disabled
+    MXC_UART_FLOW_DIS = 0, ///< UART Flow Control Disabled
     MXC_UART_FLOW_EN, ///< UART Flow Control Enabled
 } mxc_uart_flow_t;
 

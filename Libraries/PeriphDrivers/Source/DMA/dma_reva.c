@@ -366,8 +366,6 @@ int MXC_DMA_RevA_ChannelGetFlags(int ch)
     } else {
         return E_BAD_PARAM;
     }
-
-    return E_NO_ERROR;
 }
 
 int MXC_DMA_RevA_ChannelClearFlags(int ch, int flags)

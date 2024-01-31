@@ -675,17 +675,30 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
     uint32_t saved_index;
     uint32_t in_flags, out_flags, MXC_USB_flags, MXC_USB_mxm_flags;
     int i, aborted = 0;
+    uint32_t intrusb, intrusben, intrin, intrinen, introut, introuten, mxm_int, mxm_int_en;
 
     /* Save current index register */
     saved_index = MXC_USBHS->index;
 
     /* Note: Hardware clears these after read, so we must process them all or they are lost */
-    MXC_USB_flags = MXC_USBHS->intrusb & MXC_USBHS->intrusben;
-    in_flags = MXC_USBHS->intrin & MXC_USBHS->intrinen;
-    out_flags = MXC_USBHS->introut & MXC_USBHS->introuten;
+    /*  Order of volatile accesses must be separated for IAR */
+    intrusb = MXC_USBHS->intrusb;
+    intrusben = MXC_USBHS->intrusben;
+    MXC_USB_flags = intrusb & intrusben;
+
+    intrin = MXC_USBHS->intrin;
+    intrinen = MXC_USBHS->intrinen;
+    in_flags = intrin & intrinen;
+
+    introut = MXC_USBHS->introut;
+    introuten = MXC_USBHS->introuten;
+    out_flags = introut & introuten;
 
     /* These USB interrupt flags are W1C. */
-    MXC_USB_mxm_flags = MXC_USBHS->mxm_int & MXC_USBHS->mxm_int_en;
+    /*  Order of volatile accesses must be separated for IAR */
+    mxm_int = MXC_USBHS->mxm_int;
+    mxm_int_en = MXC_USBHS->mxm_int_en;
+    MXC_USB_mxm_flags = mxm_int & mxm_int_en;
     MXC_USBHS->mxm_int = MXC_USB_mxm_flags;
 
     /* Map hardware-specific signals to generic stack events */

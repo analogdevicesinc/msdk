@@ -129,7 +129,7 @@ struct _i2c_req_t {
  * application to handle these events.
  */
 typedef enum {
-    MXC_I2C_EVT_MASTER_WR, ///< A slave address match occurred with the master
+    MXC_I2C_EVT_MASTER_WR = 0, ///< A slave address match occurred with the master
     ///< requesting a write to the slave.
     MXC_I2C_EVT_MASTER_RD, ///< A slave address match occurred with the master
     ///< requesting a read from the slave.
