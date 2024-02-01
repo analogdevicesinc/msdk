@@ -62,14 +62,14 @@ typedef enum { MXC_I2S_MSB_JUSTIFY, MXC_I2S_LSB_JUSTIFY } mxc_i2s_justify_t;
 
 /** @brief  I2S transaction word size */
 typedef enum {
-    MXC_I2S_DATASIZE_BYTE,
+    MXC_I2S_DATASIZE_BYTE = 0,
     MXC_I2S_DATASIZE_HALFWORD,
     MXC_I2S_DATASIZE_WORD
 } mxc_i2s_wsize_t;
 
 /** @brief  I2S transaction sample size */
 typedef enum {
-    MXC_I2S_SAMPLESIZE_EIGHT,
+    MXC_I2S_SAMPLESIZE_EIGHT = 0,
     MXC_I2S_SAMPLESIZE_SIXTEEN,
     MXC_I2S_SAMPLESIZE_TWENTY,
     MXC_I2S_SAMPLESIZE_TWENTYFOUR,
@@ -78,7 +78,7 @@ typedef enum {
 
 /** @brief  I2S channel mode */
 typedef enum {
-    MXC_I2S_INTERNAL_SCK_WS_0,
+    MXC_I2S_INTERNAL_SCK_WS_0 = 0,
     MXC_I2S_INTERNAL_SCK_WS_1,
     MXC_I2S_EXTERNAL_SCK_INTERNAL_WS,
     MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS,

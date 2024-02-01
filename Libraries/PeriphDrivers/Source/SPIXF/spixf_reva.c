@@ -767,7 +767,8 @@ int MXC_SPIXF_RevA_SetMode(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_
 
 mxc_spixf_mode_t MXC_SPIXF_RevA_GetMode(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_MODE) >> MXC_F_SPIXFC_REVA_CFG_MODE_POS);
+    return (mxc_spixf_mode_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_MODE) >>
+                              MXC_F_SPIXFC_REVA_CFG_MODE_POS);
 }
 
 int MXC_SPIXF_RevA_SetSSPolActiveHigh(mxc_spixfc_reva_regs_t *spixfc,
@@ -915,7 +916,8 @@ int MXC_SPIXF_RevA_SetSSActiveTime(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_re
 
 mxc_spixf_ssact_t MXC_SPIXF_RevA_GetSSActiveTime(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSACT) >> MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
+    return (mxc_spixf_ssact_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSACT) >>
+                               MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
 }
 
 #if defined(SPIXF_RAM) && IAR_PRAGMAS
@@ -935,7 +937,8 @@ int MXC_SPIXF_RevA_SetSSInactiveTime(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_
 
 mxc_spixf_ssiact_t MXC_SPIXF_RevA_GetSSInactiveTime(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSIACT) >> MXC_F_SPIXFC_REVA_CFG_SSIACT_POS);
+    return (mxc_spixf_ssiact_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSIACT) >>
+                                MXC_F_SPIXFC_REVA_CFG_SSIACT_POS);
 }
 
 #if defined(SPIXF_RAM) && IAR_PRAGMAS
@@ -954,8 +957,8 @@ int MXC_SPIXF_RevA_SetCmdWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwidt
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetCmdWidth(mxc_spixfm_reva_regs_t *spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
+    return (mxc_spixf_spiwidth_t)((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH) >>
+                                  MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
 }
 
 #if defined(SPIXF_RAM) && IAR_PRAGMAS
@@ -974,8 +977,8 @@ int MXC_SPIXF_RevA_SetAddrWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwid
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetAddrWidth(mxc_spixfm_reva_regs_t *spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
+    return (mxc_spixf_spiwidth_t)((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH) >>
+                                  MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
 }
 
 #if defined(SPIXF_RAM) && IAR_PRAGMAS
@@ -994,8 +997,8 @@ int MXC_SPIXF_RevA_SetDataWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwid
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetDataWidth(mxc_spixfm_reva_regs_t *spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
+    return (mxc_spixf_spiwidth_t)((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH) >>
+                                  MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
 }
 
 int MXC_SPIXF_RevA_Set4ByteAddr(mxc_spixfm_reva_regs_t *spixfm)
@@ -1213,7 +1216,8 @@ void MXC_SPIXF_RevA_SetPageSize(mxc_spixfc_reva_regs_t *spixfc, mxc_spixf_page_s
 
 mxc_spixf_page_size_t MXC_SPIXF_RevA_GetPageSize(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE) >> MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE_POS);
+    return (mxc_spixf_page_size_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE) >>
+                                   MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE_POS);
 }
 
 int MXC_SPIXF_RevA_SimpleRXEnabled(mxc_spixfc_reva_regs_t *spixfc)

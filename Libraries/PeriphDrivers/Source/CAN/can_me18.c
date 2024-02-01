@@ -414,7 +414,7 @@ void MXC_CAN_SignalUnitEvent(uint32_t can_idx, mxc_can_unit_evt_t event)
 {
     if (can_idx >= MXC_CAN_INSTANCES) {
         return;
-    } else if (event < MXC_CAN_UNIT_EVT_INACTIVE || event > MXC_CAN_UNIT_EVT_BUS_OFF) {
+    } else if (event > MXC_CAN_UNIT_EVT_BUS_OFF) {
         return;
     }
 
@@ -426,7 +426,7 @@ void MXC_CAN_SignalObjectEvent(uint32_t can_idx, mxc_can_obj_evt_t event)
 {
     if (can_idx >= MXC_CAN_INSTANCES) {
         return;
-    } else if (event < MXC_CAN_OBJ_EVT_TX_COMPLETE || event > MXC_CAN_OBJ_EVT_RX_OVERRUN) {
+    } else if (event > MXC_CAN_OBJ_EVT_RX_OVERRUN) {
         return;
     }
 

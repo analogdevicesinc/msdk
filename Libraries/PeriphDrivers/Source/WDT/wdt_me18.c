@@ -130,8 +130,10 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
     uint8_t idx = 0;
     uint8_t instance = 0;
     mxc_wdt_clock_t clock_sources[2][8] = {
-        { MXC_WDT_PCLK, MXC_WDT_IBRO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
-        { MXC_WDT_IBRO_CLK, MXC_WDT_INRO_CLK, MXC_WDT_ERTCO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+        { MXC_WDT_PCLK, MXC_WDT_IBRO_CLK, MXC_WDT_NO_CLK, MXC_WDT_NO_CLK, MXC_WDT_NO_CLK,
+          MXC_WDT_NO_CLK, MXC_WDT_NO_CLK, MXC_WDT_NO_CLK },
+        { MXC_WDT_IBRO_CLK, MXC_WDT_INRO_CLK, MXC_WDT_ERTCO_CLK, MXC_WDT_NO_CLK, MXC_WDT_NO_CLK,
+          MXC_WDT_NO_CLK, MXC_WDT_NO_CLK, MXC_WDT_NO_CLK }
     };
 
     if (wdt == MXC_WDT0) {
