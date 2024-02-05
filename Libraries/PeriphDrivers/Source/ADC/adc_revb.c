@@ -205,7 +205,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     channel = req->dma_channel;
 
-    config.reqsel = MXC_S_DMA_CTRL_REQUEST_ADC;
+    config.reqsel = MXC_DMA_REQUEST_ADC;
     config.ch = channel;
 
     config.srcwd = MXC_DMA_WIDTH_WORD;

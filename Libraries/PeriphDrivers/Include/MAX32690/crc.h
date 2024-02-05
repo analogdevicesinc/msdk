@@ -55,7 +55,7 @@ typedef struct _mxc_crc_req_t {
  * @brief CRC data bit order
  *  
  */
-typedef enum { CRC_LSB_FIRST, CRC_MSB_FIRST } mxc_crc_bitorder_t;
+typedef enum { CRC_LSB_FIRST = 0, CRC_MSB_FIRST } mxc_crc_bitorder_t;
 
 /***** Function Prototypes *****/
 
