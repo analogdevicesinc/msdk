@@ -19,8 +19,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
-#define EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
+#ifndef EXAMPLES_MAX32665_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
+#define EXAMPLES_MAX32665_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -169,4 +169,4 @@ typedef union {
 
 /******************************* Public Functions ****************************/
 
-#endif // EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
+#endif // EXAMPLES_MAX32665_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_

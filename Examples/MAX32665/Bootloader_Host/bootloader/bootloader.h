@@ -19,8 +19,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
-#define EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#ifndef EXAMPLES_MAX32665_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#define EXAMPLES_MAX32665_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
 
 /*******************************      INCLUDES    ****************************/
 #include "bootloader_cmd.h"
@@ -75,4 +75,4 @@ int bl_update_cfg_set_bl_exit_mode(BLExitMode_t mode);
 int b_update_cfg_set_bl_exit_timeout(uint16_t timeout);
 int bl_flash_bl_cfg(void);
 
-#endif // EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#endif // EXAMPLES_MAX32665_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_

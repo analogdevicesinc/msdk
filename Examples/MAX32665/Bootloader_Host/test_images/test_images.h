@@ -20,7 +20,7 @@
  ******************************************************************************/
 
 #ifndef EXAMPLES_MAX32665_BOOTLOADER_HOST_TEST_IMAGES_TEST_IMAGES_H_
-#define EXAMPLES_MAX32665_BBOOTLOADER_HOST_TEST_IMAGES_TEST_IMAGES_H_
+#define EXAMPLES_MAX32665_BOOTLOADER_HOST_TEST_IMAGES_TEST_IMAGES_H_
 
 /*******************************      INCLUDES    ****************************/
 
