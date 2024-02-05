@@ -19,8 +19,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
-#define EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
+#ifndef EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
+#define EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -47,4 +47,4 @@ int plt_gpio_get(unsigned int idx);
 // delay
 void plt_delay_ms(unsigned int ms);
 
-#endif // EXAMPLES_MAX32665_BLUETOOTH_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
+#endif // EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
