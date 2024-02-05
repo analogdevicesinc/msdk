@@ -25,8 +25,9 @@ Bluetooth/BLE_mcs
 Bluetooth/BLE_otac
 Bluetooth/BLE_otas
 Bluetooth/BLE_periph
-Bluetooth/Bootloader
 Bluetooth/RF_Test
+Bootloader
+Bootloader_Host
 CAN
 Coremark
 CRC
