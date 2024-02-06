@@ -971,11 +971,6 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
 
         states[spi_num].mtFirstTrans = 0;
 
-        MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
-        MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
-        MXC_DMA_EnableInt(states[spi_num].channelTx);
-        MXC_DMA_EnableInt(states[spi_num].channelRx);
-
         // Configure SS for per-transaction or always on
         if (req->ssDeassert) {
             req->spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
@@ -986,7 +981,23 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
 
     bits = MXC_SPI_GetDataSize((mxc_spi_regs_t *)req->spi);
 
-    MXC_SPI_RevA1_TransHandler(req->spi, req);
+    /*
+    There is a known issue with the SPI hardware and DMA.  The SPI FIFO must be pre-loaded before DMA is initiated,
+    otherwise the it will not work properly.  To do that, we leverage the TransHandler function, which will load the
+    FIFOs as much as possible.
+
+    If the TX or RX length is less than the FIFO size, there will be nothing for the DMA to transfer.  We need extra logic
+    to ensure that the callbacks are still run in this case.  The TransHandler function returns a mask indicating the enabled
+    interrupts.  Interrupts are only enabled if DMA is still needed.  We check this mask to see if DMA is still needed for RX/TX.
+    Otherwise, we start the transmission (FIFOs are loaded, but a start is still needed to empty them) and then manually run the callbacks.
+    */
+    uint32_t enabled_interrupts = MXC_SPI_RevA1_TransHandler(req->spi, req);
+    // TX FIFO is loaded completely.  DMA is not needed.
+    bool tx_is_complete = !(enabled_interrupts & MXC_F_SPI_REVA_INTEN_TX_THD) &&
+                          (req->txCnt == req->txLen);
+    // RX FIFO is loaded completely.  DMA is not needed.
+    bool rx_is_complete = !(enabled_interrupts & MXC_F_SPI_REVA_INTEN_RX_THD) &&
+                          (req->rxCnt == req->rxLen);
 
     if (bits <= 8) {
         MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)req->spi, 1); //set threshold to 1 byte
@@ -997,7 +1008,9 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     //tx
-    if (req->txData != NULL) {
+    if (req->txData != NULL && !tx_is_complete) {
+        MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
+        MXC_DMA_EnableInt(states[spi_num].channelTx);
         config.reqsel = (mxc_dma_reqsel_t)reqselTx;
         config.ch = states[spi_num].channelTx;
         advConfig.ch = states[spi_num].channelTx;
@@ -1034,7 +1047,10 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
         }
     }
 
-    if (req->rxData != NULL) {
+    // rx
+    if (req->rxData != NULL && !rx_is_complete) {
+        MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
+        MXC_DMA_EnableInt(states[spi_num].channelRx);
         config.reqsel = (mxc_dma_reqsel_t)reqselRx;
         config.ch = states[spi_num].channelRx;
         config.srcinc_en = 0;
@@ -1070,11 +1086,22 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
         }
     }
 
-    (req->spi)->dma |= (MXC_F_SPI_REVA_DMA_DMA_TX_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    // Enable TX/RX DMA, but only if it's still needed.
+    (req->spi)->dma |= ((!(tx_is_complete) << MXC_F_SPI_REVA_DMA_DMA_TX_EN_POS) |
+                        (!(rx_is_complete) << MXC_F_SPI_REVA_DMA_DMA_RX_EN_POS));
 
     if (!states[spi_num].started) {
         MXC_SPI_StartTransmission((mxc_spi_regs_t *)req->spi);
         states[spi_num].started = 1;
+    }
+
+    // Manually run TX/RX callbacks if the FIFO pre-load already completed that portion of the transaction
+    if (tx_is_complete) {
+        MXC_SPI_RevA1_DMACallback(states[spi_num].channelTx, E_NO_ERROR);
+    }
+
+    if (rx_is_complete) {
+        MXC_SPI_RevA1_DMACallback(states[spi_num].channelRx, E_NO_ERROR);
     }
 
     return E_NO_ERROR;
