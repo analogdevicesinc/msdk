@@ -923,16 +923,14 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
     if (btnId == 1) {
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
-            
             /*Protect against spurious interupts in initialization*/
-            if(!btnTmrIsEnabled(BTN_1_TMR))
-            {
+            if (!btnTmrIsEnabled(BTN_1_TMR)) {
                 APP_TRACE_INFO0("Software timer is not enabled!");
                 return;
-            }            
+            }
 
             /* Button Up, stop the timer, call the action function */
-        
+
             uint32_t btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
