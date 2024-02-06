@@ -71,7 +71,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/github-script@v7
         with:
-          token: ${{ secrets.FORK_TOKEN }}
+          github-token: ${{ secrets.FORK_TOKEN }}
           script: |
             const failmsg = {
               issue_number: context.issue.number,
