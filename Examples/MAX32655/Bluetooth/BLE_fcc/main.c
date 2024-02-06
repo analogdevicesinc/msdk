@@ -52,7 +52,6 @@ typedef enum {
     PAL_BB_CW,
     PAL_BB_PRBS9,
     PAL_BB_PRBS15,
-
 } PalBbDbbPrbsType_t;
 /**************************************************************************************************
   Global Variables
