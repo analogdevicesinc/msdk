@@ -911,8 +911,17 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
     if (btnId == 1) {
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
+            
+            /*Protect against spurious interupts in initialization*/
+            if(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B))
+            {
+                APP_TRACE_INFO0("Software timer is not enabled!");
+                return;
+            }            
+
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
+        
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {
@@ -930,7 +939,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {
