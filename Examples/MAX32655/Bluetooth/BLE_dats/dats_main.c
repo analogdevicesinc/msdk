@@ -895,7 +895,19 @@ static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
                         pInfo->param.alloc.taskId, pInfo->param.alloc.len);
     }
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief     Check to see if btn timer is enabled.
+ *
+ *  \param[in] tmr  btn timer.
+ *
+ *  \return    TRUE if enabled, FALSE otherwise.
+ */
+/*************************************************************************************************/
+static bool_t btnTmrIsEnabled(mxc_tmr_regs_t *tmr)
+{
+    return (bool_t)(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B));
+}
 /*************************************************************************************************/
 /*!
  *  \brief     Platform button press handler.
@@ -913,7 +925,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         if (state == PAL_BTN_POS_UP) {
             
             /*Protect against spurious interupts in initialization*/
-            if(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B))
+            if(!btnTmrIsEnabled(BTN_1_TMR))
             {
                 APP_TRACE_INFO0("Software timer is not enabled!");
                 return;

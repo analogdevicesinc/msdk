@@ -82,7 +82,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    uint32_t channel = 0;
+
     
 
     /* Decode and consume command packet. */
@@ -215,7 +215,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     case LHCI_OPCODE_VS_GET_RSSI:
     {
         status = LL_SUCCESS;
-        channel = pBuf[0];
         evtParamLen += sizeof(int8_t);
         break;
     }
@@ -268,7 +267,8 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             int8_t rssi = 0xff;
             if (PalBbIsEnabled()) {
 #ifndef __FREERTOS__
-                PalBbGetRssi(&rssi, pBuf[0]);
+                const uint8_t channel = pBuf[0];
+                PalBbGetRssi(&rssi, channel);
 #endif
             }
             UINT8_TO_BSTREAM(pBuf, rssi);
