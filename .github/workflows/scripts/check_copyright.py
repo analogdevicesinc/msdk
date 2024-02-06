@@ -25,8 +25,8 @@ import re
 from datetime import datetime
 
 
-command_git_diff = "ls" #"git diff --ignore-submodules --name-only @ remotes/origin/main"
-args = list(get_changed_files.split(" "))
+command_git_diff = "git diff --ignore-submodules --name-only @ remotes/origin/main"
+args = list(command_git_diff.split(" "))
 
 # Run git command to find all changed files
 git_command_ret_files = subprocess.run(args, capture_output=True, text=True)
@@ -53,8 +53,6 @@ for file in changed_files:
             # Typically, the copyright line should exist within the first 15 lines of a file.
             if i == 30:
                 break
-
-
 
             # Print file if there's no copyright. File is printed so workflow bash can easily handle it.
             # Stop searching.
