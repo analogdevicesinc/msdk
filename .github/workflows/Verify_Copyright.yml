@@ -42,23 +42,6 @@ jobs:
               core.setFailed(`Request failed with error ${err}`)
             }
 
-      - name: Acknowledged.
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const acknowledge = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: context.payload.comment.id,
-              content: 'rocket'
-            }
-
-            core.info(`Getting comment ID: ${acknowledge.comment_id}`)
-          
-            github.rest.reactions.createForIssueComment(acknowledge)
-
-            core.info(`Comment: ${{ github.event.comment.body }}`)
-
       - name: Checkout source repository.
         uses: actions/checkout@v3
         with:
