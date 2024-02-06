@@ -132,7 +132,7 @@ void TMR2_IRQHandler(void)
 
     /* Restart the timeout */
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
-    MXC_TMR_EnableInt(MXC_TMR2);
+    NVIC_EnableIRQ(TMR2_IRQn);
 }
 
 /*************************************************************************************************/
@@ -350,7 +350,6 @@ static void processConsoleRX(uint8_t rxByte)
         APP_TRACE_INFO0("Starting frequency hopping");
         NVIC_EnableIRQ(TMR2_IRQn);
         MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
-        MXC_TMR_EnableInt(MXC_TMR2);
         cmd = 0;
         break;
 
