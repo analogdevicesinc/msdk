@@ -2,7 +2,7 @@
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ # Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  # is proprietary to Analog Devices, Inc. and its licensors.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
@@ -94,9 +94,13 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/RTC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RTC/rtc_me55.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RTC/rtc_reva.c
 
-# PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SKBD
-# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SKBD/skbd_me55.c
-# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SKBD/skbd_reva.c
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SFCC
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SFCC/sfcc_me55.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SFCC/sfcc_reva.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SKBD
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SKBD/skbd_me55.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SKBD/skbd_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SMON
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SMON/smon_me55.c

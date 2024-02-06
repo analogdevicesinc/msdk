@@ -335,7 +335,7 @@ int MXC_CAN_RevA_SetBitRate(mxc_can_reva_regs_t *can, int can_clk, mxc_can_bitra
 int MXC_CAN_RevA_SetMode(mxc_can_reva_regs_t *can, mxc_can_mode_t mode)
 {
     // Ensure valid mode
-    if (mode < MXC_CAN_MODE_INITIALIZATION || mode > MXC_CAN_MODE_LOOPBACK_W_TXD) {
+    if (mode > MXC_CAN_MODE_LOOPBACK_W_TXD) {
         return E_BAD_PARAM;
     }
 
@@ -926,8 +926,8 @@ int MXC_CAN_RevA_MessageReadDMA(mxc_can_reva_regs_t *can, mxc_can_req_t *req,
     advConfig.ch = ch;
     advConfig.prio = MXC_DMA_PRIO_HIGH;
     advConfig.reqwait_en = 0;
-    advConfig.tosel = 0;
-    advConfig.pssel = 0;
+    advConfig.tosel = MXC_DMA_TIMEOUT_4_CLK; // 0
+    advConfig.pssel = MXC_DMA_PRESCALE_DISABLE; // 0
     advConfig.burst_size = 4;
     MXC_DMA_AdvConfigChannel(advConfig);
 

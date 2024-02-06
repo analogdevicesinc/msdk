@@ -57,7 +57,34 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         MXC_GCR->perckcn1 &= ~(MXC_F_GCR_PERCKCN1_SPI0D);
         if (map == MAP_A) {
             MXC_GPIO_Config(&gpio_cfg_spi0a);
+
+            // Configure Chip Select GPIOs
+            if (numSlaves == 1) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0a);
+            }
+            if (numSlaves == 2) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0a);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+            }
+            if (numSlaves == 3) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0a);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss2);
+            }
         } else if (map == MAP_B) {
+            // Configure Chip Select GPIOs
+            if (numSlaves == 1) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0b);
+            }
+            if (numSlaves == 2) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0b);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+            }
+            if (numSlaves == 3) {
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss0b);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+                MXC_GPIO_Config(&gpio_cfg_spi0_ss2);
+            }
             MXC_GPIO_Config(&gpio_cfg_spi0b);
         } else {
             return E_BAD_PARAM;
@@ -67,11 +94,38 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_SPI1) {}
         MXC_GCR->perckcn0 &= ~(MXC_F_GCR_PERCKCN0_SPI1D);
         MXC_GPIO_Config(&gpio_cfg_spi1);
+        // Configure Chip Select GPIOs
+        if (numSlaves == 1) {
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
+        }
+        if (numSlaves == 2) {
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss1);
+        }
+        if (numSlaves == 3) {
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss1);
+            MXC_GPIO_Config(&gpio_cfg_spi1_ss2);
+        }
     } else if (spi == MXC_SPI2) {
         MXC_GCR->rstr0 |= MXC_F_GCR_RSTR0_SPI2;
         while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_SPI2) {}
         MXC_GCR->perckcn0 &= ~(MXC_F_GCR_PERCKCN0_SPI2D);
         MXC_GPIO_Config(&gpio_cfg_spi2);
+
+        // Configure Chip Select GPIOs
+        if (numSlaves == 1) {
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss0);
+        }
+        if (numSlaves == 2) {
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss1);
+        }
+        if (numSlaves == 3) {
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss1);
+            MXC_GPIO_Config(&gpio_cfg_spi2_ss2);
+        }
     } else {
         return E_NO_DEVICE;
     }

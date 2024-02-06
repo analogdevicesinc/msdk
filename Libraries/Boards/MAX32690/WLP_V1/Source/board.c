@@ -31,7 +31,6 @@
 #include "mxc_sys.h"
 #include "pb.h"
 #include "spixf.h"
-#include "tft_st7735.h"
 #include "uart.h"
 
 /***** Global Variables *****/
@@ -48,24 +47,24 @@ const mxc_gpio_cfg_t led_pin[] = {
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // clang-format on
 
-const mxc_gpio_cfg_t tft_mosi = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
-                                                  .mask = MXC_GPIO_PIN_24,
-                                                  .func = MXC_GPIO_FUNC_OUT,
-                                                  .pad = MXC_GPIO_PAD_NONE,
-                                                  .vssel = MXC_GPIO_VSSEL_VDDIOH,
-                                                  .drvstr = MXC_GPIO_DRVSTR_0 };
-const mxc_gpio_cfg_t tft_clk = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
-                                                 .mask = MXC_GPIO_PIN_25,
-                                                 .func = MXC_GPIO_FUNC_OUT,
-                                                 .pad = MXC_GPIO_PAD_NONE,
-                                                 .vssel = MXC_GPIO_VSSEL_VDDIOH,
-                                                 .drvstr = MXC_GPIO_DRVSTR_0 };
-const mxc_gpio_cfg_t tft_cs = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
-                                                .mask = MXC_GPIO_PIN_11,
-                                                .func = MXC_GPIO_FUNC_OUT,
-                                                .pad = MXC_GPIO_PAD_NONE,
-                                                .vssel = MXC_GPIO_VSSEL_VDDIOH,
-                                                .drvstr = MXC_GPIO_DRVSTR_0 };
+const mxc_gpio_cfg_t tft_mosi = { .port = MXC_GPIO2,
+                                  .mask = MXC_GPIO_PIN_24,
+                                  .func = MXC_GPIO_FUNC_OUT,
+                                  .pad = MXC_GPIO_PAD_NONE,
+                                  .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                                  .drvstr = MXC_GPIO_DRVSTR_0 };
+const mxc_gpio_cfg_t tft_clk = { .port = MXC_GPIO2,
+                                 .mask = MXC_GPIO_PIN_25,
+                                 .func = MXC_GPIO_FUNC_OUT,
+                                 .pad = MXC_GPIO_PAD_NONE,
+                                 .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                                 .drvstr = MXC_GPIO_DRVSTR_0 };
+const mxc_gpio_cfg_t tft_cs = { .port = MXC_GPIO2,
+                                .mask = MXC_GPIO_PIN_11,
+                                .func = MXC_GPIO_FUNC_OUT,
+                                .pad = MXC_GPIO_PAD_NONE,
+                                .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                                .drvstr = MXC_GPIO_DRVSTR_0 };
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)

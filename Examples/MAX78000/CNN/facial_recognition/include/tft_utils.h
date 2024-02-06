@@ -20,5 +20,3 @@
  ******************************************************************************/
 
 void draw_obj_rect(float *xy, uint32_t w, uint32_t h);
-void setup_dma_tft(uint32_t *src_ptr);
-void start_tft_dma(uint32_t *src_ptr);

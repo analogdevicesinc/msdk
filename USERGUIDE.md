@@ -1973,6 +1973,8 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 | [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html)     | `MAX78000`     | `EvKit_V1`     |
 | [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html)      | `MAX78000`     | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html)                                          | `MAX78000`     |  `MAXREFDES178` |
+| MAX78000CAM01 (Engineering samples only)      | `MAX78000`     | `CAM01_RevA`    |
+| MAX78000CAM02 (Engineering samples only)      | `MAX78000`     | `CAM02_RevA`    |
 | [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html)     | `MAX78002`     | `EvKit_V1`     |
 
 ### Custom BSPs

@@ -69,6 +69,7 @@ typedef enum {
     MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CTRL_REQUEST_I2C0RX, ///< I2C0 Receive DMA Request Selection
     MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CTRL_REQUEST_I2C1RX, ///< I2C1 Receive DMA Request Selection
     MXC_DMA_REQUEST_I2C2RX = MXC_S_DMA_CTRL_REQUEST_I2C2RX, ///< I2C2 Receive DMA Request Selection
+    MXC_DMA_REQUEST_ADC = MXC_S_DMA_CTRL_REQUEST_ADC, ///< ADC Receive DMA Request Selection
     MXC_DMA_REQUEST_UART2RX =
         MXC_S_DMA_CTRL_REQUEST_UART2RX, ///< UART2 Receive DMA Request Selection
     MXC_DMA_REQUEST_AESRX = MXC_S_DMA_CTRL_REQUEST_AESRX, ///< AES Receive DMA Request Selection

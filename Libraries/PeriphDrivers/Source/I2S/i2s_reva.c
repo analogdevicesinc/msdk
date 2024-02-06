@@ -421,7 +421,7 @@ int MXC_I2S_RevA_FillTXFIFO(mxc_i2s_reva_regs_t *i2s, void *txData, mxc_i2s_wsiz
 
     if (txData == NULL) { // Check for bad parameters
         return E_NULL_PTR;
-    } else if (wordSize < MXC_I2S_DATASIZE_BYTE || wordSize > MXC_I2S_DATASIZE_WORD) {
+    } else if (wordSize > MXC_I2S_DATASIZE_WORD) {
         return E_BAD_PARAM;
     } else if (len == 0) {
         return E_NO_ERROR;
@@ -472,7 +472,7 @@ int MXC_I2S_RevA_ReadRXFIFO(mxc_i2s_reva_regs_t *i2s, void *rxData, mxc_i2s_wsiz
 
     if (rxData == NULL) { // Check for bad parameters
         return E_NULL_PTR;
-    } else if (wordSize < MXC_I2S_DATASIZE_BYTE || wordSize > MXC_I2S_DATASIZE_WORD) {
+    } else if (wordSize > MXC_I2S_DATASIZE_WORD) {
         return E_BAD_PARAM;
     } else if (len == 0) {
         return E_NO_ERROR;
@@ -690,10 +690,10 @@ int MXC_I2S_RevA_TXDMAConfig(mxc_i2s_reva_regs_t *i2s, void *src_addr, int len)
     config.dstinc_en = 0;
 
     advConfig.ch = channel;
-    advConfig.prio = 0;
+    advConfig.prio = MXC_DMA_PRIO_HIGH; // 0
     advConfig.reqwait_en = 0;
-    advConfig.tosel = 0;
-    advConfig.pssel = 0;
+    advConfig.tosel = MXC_DMA_TIMEOUT_4_CLK; // 0
+    advConfig.pssel = MXC_DMA_PRESCALE_DISABLE; // 0
 
     srcdst.ch = channel;
     srcdst.source = src_addr;
@@ -767,10 +767,10 @@ int MXC_I2S_RevA_RXDMAConfig(mxc_i2s_reva_regs_t *i2s, void *dest_addr, int len)
     config.dstinc_en = 1;
 
     advConfig.ch = channel;
-    advConfig.prio = 0;
+    advConfig.prio = MXC_DMA_PRIO_HIGH; // 0
     advConfig.reqwait_en = 0;
-    advConfig.tosel = 0;
-    advConfig.pssel = 0;
+    advConfig.tosel = MXC_DMA_TIMEOUT_4_CLK; // 0
+    advConfig.pssel = MXC_DMA_PRESCALE_DISABLE; // 0
 
     srcdst.ch = channel;
     srcdst.dest = dest_addr;

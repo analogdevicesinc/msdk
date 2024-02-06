@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -283,6 +283,7 @@ typedef enum {
 #define MXC_ROM_MEM_SIZE                MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE                0x08000000UL
 #define MXC_XIP_MEM_SIZE                0x08000000UL
+#define MXC_XIP_SECTOR_SIZE             0x00001000UL
 #define MXC_SRAM_MEM_BASE               0x20000000UL
 #define MXC_SRAM_MEM_SIZE               0x0006C000UL
 #define MXC_OTP_MEM_BASE                0x400C0000UL
@@ -367,9 +368,7 @@ typedef enum {
 
 #define MXC_GPIO_GET_GPIO(i) ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : 0)
 
-#ifndef __riscv
 #define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : 0)
-#endif
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
@@ -396,7 +395,6 @@ typedef enum {
 #define MXC_BASE_TMR5                   ((uint32_t)0x40115000UL)
 #define MXC_TMR5                        ((mxc_tmr_regs_t *)MXC_BASE_TMR5)
 
-#ifndef __riscv
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
                 (i) == 1 ? TMR1_IRQn : \
@@ -405,9 +403,6 @@ typedef enum {
                 (i) == 4 ? TMR4_IRQn : \
                 (i) == 5 ? TMR5_IRQn : \
                            0)
-#else
-#define MXC_TMR_GET_IRQ(i) ((i) == 5 ? TMR5_IRQn : 0)
-#endif
 
 #define MXC_TMR_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_TMR0 : \
@@ -453,9 +448,7 @@ typedef enum {
 #define MXC_BASE_I2C1                   ((uint32_t)0x4001E000UL)
 #define MXC_I2C1                        ((mxc_i2c_regs_t *)MXC_BASE_I2C1)
 
-#ifndef __riscv
 #define MXC_I2C_GET_IRQ(i) (IRQn_Type)((i) == 0 ? I2C0_IRQn : (i) == 1 ? I2C1_IRQn : 0)
-#endif
 
 #define MXC_I2C_GET_BASE(i) ((i) == 0 ? MXC_BASE_I2C0 : (i) == 1 ? MXC_BASE_I2C1 : 0)
 
@@ -640,14 +633,12 @@ typedef enum {
 #define MXC_BASE_UART3                  ((uint32_t)0x40045000UL)
 #define MXC_UART3                       ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
-#ifndef __riscv
 #define MXC_UART_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? UART0_IRQn : \
                 (i) == 1 ? UART1_IRQn : \
                 (i) == 2 ? UART2_IRQn : \
                 (i) == 3 ? UART3_IRQn : \
                            0)
-#endif
 
 #define MXC_UART_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_UART0 : \

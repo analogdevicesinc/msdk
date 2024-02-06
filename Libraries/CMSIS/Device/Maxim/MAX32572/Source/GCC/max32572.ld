@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,6 @@ MEMORY {
     SRAM_RV (rwx) : ORIGIN = 0x20060000, LENGTH = 0x0000C000
 }
 
-/* Added Oct 9, 2018 to go to correct reset vector. */
 ENTRY(Reset_Handler)
 PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
 PROVIDE_HIDDEN( _SLA_Size = __end_image - __end_header );
@@ -76,6 +75,16 @@ SECTIONS {
         _etext = .;
     } > SPIX
 
+    /* Binary import */
+    .bin_storage :
+    {
+       FILL(0xFF)
+      _bin_start_ = .;
+      KEEP(*(.bin_storage_img))
+      _bin_end_ = .;
+      . = ALIGN(4);
+    } > SPIX
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
@@ -88,7 +97,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > ROM
+    } > SPIX
 
     /* This section will keep the SPIX data until loaded into the external device */
     /* Upon initialization of SPIX (user code needs to do this) */

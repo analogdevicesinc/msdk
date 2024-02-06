@@ -55,7 +55,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_FALLING);
         MXC_GPIO_EnableInt(pb_pin[pb].port, pb_pin[pb].mask);
-        NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
+        NVIC_EnableIRQ((IRQn_Type)MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
     } else {
         // Disable interrupt and clear callback
         MXC_GPIO_DisableInt(pb_pin[pb].port, pb_pin[pb].mask);
@@ -79,7 +79,7 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_BOTH);
         MXC_GPIO_EnableInt(pb_pin[pb].port, pb_pin[pb].mask);
-        NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
+        NVIC_EnableIRQ((IRQn_Type)MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
     } else {
         // Disable interrupt and clear callback
         MXC_GPIO_DisableInt(pb_pin[pb].port, pb_pin[pb].mask);

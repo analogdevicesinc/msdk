@@ -97,7 +97,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     }
 #endif
 
-    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
+    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, (mxc_uart_revb_clock_t)clock);
 }
 
 int MXC_UART_Shutdown(mxc_uart_regs_t *uart)
@@ -328,7 +328,7 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
-    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock);
+    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, (mxc_uart_revb_clock_t)clock);
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
@@ -482,7 +482,7 @@ int MXC_UART_SetTXThreshold(mxc_uart_regs_t *uart, unsigned int numBytes)
 
 unsigned int MXC_UART_GetTXThreshold(mxc_uart_regs_t *uart)
 {
-    return E_NOT_SUPPORTED;
+    return 0;
 }
 
 unsigned int MXC_UART_GetFlags(mxc_uart_regs_t *uart)

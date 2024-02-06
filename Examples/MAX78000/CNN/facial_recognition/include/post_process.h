@@ -25,6 +25,7 @@
 #include <math.h>
 
 //#define RETURN_LARGEST // If defined returns the largest face detected
+#define RETURN_MAX_PROB // If defined returns the face with the highest probability Note: This doesn't need nms
 
 #define SQUARE(x) ((x) * (x))
 #define MULT(x, y) ((x) * (y))
@@ -55,3 +56,5 @@ void get_cxcy(float *cxcy, int prior_idx);
 void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy);
 void cxcy_to_xy(float *xy, float *cxcy);
 void localize_objects(void);
+void box_sanity_check(float *xy);
+void get_max_probable_box(void);

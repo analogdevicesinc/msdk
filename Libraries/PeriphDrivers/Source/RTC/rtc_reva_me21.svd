@@ -25,7 +25,7 @@
             <name>SEC</name>
             <description>Seconds Counter.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>8</bitWidth>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>
@@ -39,7 +39,7 @@
             <name>SSEC</name>
             <description>Sub-Seconds Counter (12-bit).</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>8</bitWidth>
+            <bitWidth>12</bitWidth>
           </field>
         </fields>
       </register>

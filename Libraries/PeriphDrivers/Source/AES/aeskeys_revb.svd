@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!-- AESKEYS-->
+    <name>AESKEYS</name>
+    <description>AES Key Registers.</description>
+    <baseAddress>0x40007800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>KEY0</name>
+        <description>AES Key 0.</description>
+        <addressOffset>0x00</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY1</name>
+        <description>AES Key 1.</description>
+        <addressOffset>0x04</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY2</name>
+        <description>AES Key 2.</description>
+        <addressOffset>0x08</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY3</name>
+        <description>AES Key 3.</description>
+        <addressOffset>0x0C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY4</name>
+        <description>AES Key 4.</description>
+        <addressOffset>0x10</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY5</name>
+        <description>AES Key 5.</description>
+        <addressOffset>0x14</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY6</name>
+        <description>AES Key 6.</description>
+        <addressOffset>0x18</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY7</name>
+        <description>AES Key 7.</description>
+        <addressOffset>0x1C</addressOffset>
+        <size>32</size>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- AES -->
+</device>

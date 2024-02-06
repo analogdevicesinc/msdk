@@ -70,7 +70,7 @@ typedef struct {
  * Enumeration type for the system clock scale types
  */
 typedef enum {
-    MXC_PT_CLK_DIV1,
+    MXC_PT_CLK_DIV1 = 0,
     MXC_PT_CLK_DIV2,
     MXC_PT_CLK_DIV4,
     MXC_PT_CLK_DIV8,

@@ -1,0 +1,54 @@
+##############################################################################
+ #
+ # Copyright 2023 Analog Devices, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ ##############################################################################
+
+ifeq "$(BOARD_DIR)" ""
+BOARD_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
+
+BOARD ?= CAM02_RevA
+$(info Loaded BSP: $(BOARD))
+
+# Source files for this test (add path to VPATH below)
+SRCS += board.c
+SRCS += stdio.c
+SRCS += led.c
+
+MISC_DRIVERS_DIR=$(BOARD_DIR)/../../../MiscDrivers
+
+# Set GC0308 camera
+CAMERA = GC0308
+include $(MISC_DRIVERS_DIR)/Camera/camera.mk
+
+# Where to find BSP source files
+VPATH += $(BOARD_DIR)/Source
+VPATH += $(BOARD_DIR)/../Source # Add core BSP source directory
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
+VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
+
+
+# Where to find BSP header files
+IPATH += $(BOARD_DIR)/Include
+IPATH += $(BOARD_DIR)/../Include # Add core BSP include directory
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton
+IPATH += $(MISC_DRIVERS_DIR)/Touchscreen

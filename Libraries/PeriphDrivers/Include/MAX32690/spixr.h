@@ -64,7 +64,7 @@ typedef enum {
  * @note        modes 1 and 2 are not supported
  */
 typedef enum {
-    MXC_SPIXR_MODE_0,
+    MXC_SPIXR_MODE_0 = 0,
     MXC_SPIXR_MODE_1,
     MXC_SPIXR_MODE_2,
     MXC_SPIXR_MODE_3,

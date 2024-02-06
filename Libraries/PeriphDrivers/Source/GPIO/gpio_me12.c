@@ -70,6 +70,12 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     port = MXC_GPIO_GET_IDX(cfg->port);
     MXC_GPIO_Init(1 << port);
 
+    // Configure the vssel
+    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
 
@@ -81,41 +87,20 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
         gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_WEAK_PULL_UP:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        gpio->ps &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
         gpio->ps |= cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps |= cfg->mask;
+        gpio->padctrl0 |= cfg->mask;
+        gpio->ps &= ~cfg->mask;
         break;
 
     default:
         return E_BAD_PARAM;
-    }
-
-    // Configure the vssel
-    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (error != E_NO_ERROR) {
-        return error;
     }
 
     // Configure the drive strength

@@ -108,4 +108,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_ain5;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
 
+extern const mxc_gpio_cfg_t gpio_cfg_skbd_P2;
+
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_PINS_H_
