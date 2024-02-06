@@ -45,3 +45,5 @@ endif
 ifneq ($(HCI_TR_MAIL),)
 CFG_DEV     += HCI_TR_MAIL=${HCI_TR_MAIL}
 endif
+
+PROJ_CFLAGS += -DMAX32655

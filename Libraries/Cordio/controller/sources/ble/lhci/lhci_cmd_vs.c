@@ -266,17 +266,18 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_GET_RSSI: {
 
             int8_t rssi = INT8_MIN;
-            
-#if !defined(__FREERTOS__) && (defined(MAX32655) || defined(MAX32655))
-            if (PalBbIsEnabled()) {
-                const uint8_t channel = pBuf[0];
-                bool_t timeoutOccured = PalBbGetRssi(&rssi, channel);
 
-                if(timeoutOccured)
-                {
-                    rssi = INT8_MIN;
-                }
+            
+#if !defined(__FREERTOS__) && (defined(MAX32655) || defined(MAX32690))
+            
+            const uint8_t channel = pBuf[0];
+            bool_t timeoutOccured = PalBbGetRssi(&rssi, channel);
+
+            if(timeoutOccured)
+            {
+                rssi = INT8_MIN;
             }
+            
 #else
     LL_TRACE_INFO0("MAX32665 RSSI by CCA not supported!!");
 #endif
