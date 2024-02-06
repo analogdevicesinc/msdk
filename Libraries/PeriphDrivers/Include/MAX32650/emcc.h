@@ -38,6 +38,7 @@
  * @file    emcc.h
  * @brief   This file contains all functions prototypes and data types for the
  *          External Memory Cache Controller (EMCC) driver
+ *          This file is @deprecated.
  ******************************************************************************
 */
 
