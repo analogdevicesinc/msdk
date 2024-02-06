@@ -59,9 +59,7 @@ jobs:
 
           files_need_copyright=$(python .github/workflows/scripts/check_copyright.py)
 
-          echo $files_need_copyright
-
-          exit 1
+          echo "Files to change: $files_need_copyright"
 
           if [[ -n $files_need_copyright ]]; then
             exit 1
