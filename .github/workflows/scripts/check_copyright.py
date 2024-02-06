@@ -21,6 +21,7 @@
 
 import subprocess
 import re
+import os.path
 
 from datetime import datetime
 
@@ -32,9 +33,7 @@ args = list(command_git_diff.split(" "))
 git_command_ret_files = subprocess.run(args, capture_output=True, text=True)
 
 # Place in list
-changed_files = list(git_command_ret_files.stdout.split("\n"))
-
-print(changed_files)
+changed_files = list(filter(None, git_command_ret_files.stdout.split("\n")))
 
 current_year = datetime.now().year
 
@@ -42,28 +41,32 @@ files_with_incorrect_copyright = []
 
 # Iterate through all files
 for file in changed_files:
-    with open("file") as f:
-        # Flag whether copyright exists
-        has_copyright = false
+    try: 
+        with open(file, 'r') as f:
+            # Flag whether copyright exists
+            has_copyright = False
 
-        # Using enumerate because the copyright is always at the beginning of a file
-        # so there's no point to search in rest of the file.
-        for i, line in enumerate(f):
-            # 30 is a generous limit to find the Copyright line
-            #   Format: "Copyright (C) YEAR Analog Devices, Inc.".
-            #   This should be on the same line.
-            # Typically, the copyright line should exist within the first 15 lines of a file.
-            if i == 30:
-                break
+            # Using enumerate because the copyright is always at the beginning of a file
+            # so there's no point to search in rest of the file.
+            for i, line in enumerate(f):
+                # 30 is a generous limit to find the Copyright line
+                #   Format: "Copyright (C) YEAR Analog Devices, Inc.".
+                #   This should be on the same line.
+                # Typically, the copyright line should exist within the first 15 lines of a file.
+                if i == 30:
+                    break
 
-            # Print file if there's no copyright. File is printed so workflow bash can easily handle it.
-            # Stop searching.
-            if ("Copyright (C)" in line and "Analog Devices, Inc." in line and current_year in line):
-                has_copyright = true
-                break
+                # Print file if there's no copyright. File is printed so workflow bash can easily handle it.
+                # Stop searching.
+                if ("Copyright (C)" in line and "Analog Devices, Inc." in line and current_year in line):
+                    has_copyright = true
+                    break
 
-        if not has_copyright:
-            files_with_incorrect_copyright.append(file)
+            if not has_copyright:
+                files_with_incorrect_copyright.append(file)
+    except:
+        print("error")
 
+# Print list with only space delimiters for workflow to easily grab
+print(*files_with_incorrect_copyright,sep=' ')
 
-print(files_with_incorrect_copyright)
