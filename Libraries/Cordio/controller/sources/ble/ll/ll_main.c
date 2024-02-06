@@ -92,7 +92,7 @@ void LlGetBdAddr(uint8_t *pAddr)
 {
   WSF_ASSERT(pAddr);
 
-  LL_TRACE_INFO0("### LlApi ###  LlGetBdAddr");
+  // LL_TRACE_INFO0("### LlApi ###  LlGetBdAddr");
 
   BDA64_TO_BSTREAM(pAddr, lmgrPersistCb.bdAddr);
 }
