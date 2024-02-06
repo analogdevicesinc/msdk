@@ -32,7 +32,9 @@ args = list(command_git_diff.split(" "))
 git_command_ret_files = subprocess.run(args, capture_output=True, text=True)
 
 # Place in list
-changed_files = list(files.stdout.split("\n"))
+changed_files = list(git_command_ret_files.stdout.split("\n"))
+
+print("List of changed files: " + changed_files)
 
 current_year = datetime.now().year
 
