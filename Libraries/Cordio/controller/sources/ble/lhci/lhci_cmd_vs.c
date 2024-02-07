@@ -271,9 +271,9 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 #if !defined(__FREERTOS__) && (defined(MAX32655) || defined(MAX32690))
             
             const uint8_t channel = pBuf[0];
-            bool_t timeoutOccured = PalBbGetRssi(&rssi, channel);
+            bool_t captureOk = PalBbGetRssi(&rssi, channel);
 
-            if(timeoutOccured)
+            if(!captureOk)
             {
                 rssi = INT8_MIN;
             }
