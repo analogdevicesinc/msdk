@@ -90,11 +90,11 @@ typedef enum {
     MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS,
 } mxc_i2s_ch_mode_t;
 
-#define MXC_I2S_SAMPLESIZE_EIGHT (8 - 1)
-#define MXC_I2S_SAMPLESIZE_SIXTEEN (16 - 1)
-#define MXC_I2S_SAMPLESIZE_TWENTY (20 - 1)
-#define MXC_I2S_SAMPLESIZE_TWENTYFOUR (24 - 1)
-#define MXC_I2S_SAMPLESIZE_THIRTYTWO (32 - 1)
+#define MXC_I2S_SAMPLESIZE_EIGHT (8)
+#define MXC_I2S_SAMPLESIZE_SIXTEEN (16)
+#define MXC_I2S_SAMPLESIZE_TWENTY (20)
+#define MXC_I2S_SAMPLESIZE_TWENTYFOUR (24)
+#define MXC_I2S_SAMPLESIZE_THIRTYTWO (32)
 
 typedef uint8_t mxc_i2s_samplesize_t;
 
@@ -105,12 +105,12 @@ typedef uint8_t mxc_i2s_samplesize_t;
  * |   Audio Sample  | bitsWord | sampleSize |        wordSize        |
  * | Width / Samples |          |            |  \ref mxc_i2s_wsize_t  |
  * |------------------------------------------------------------------|
- * |     8 bits / 16 |    8 - 1 |      8 - 1 |     MXC_I2S_WSIZE_BYTE |
- * |    16 bits / 32 |   16 - 1 |     16 - 1 | MXC_I2S_WSIZE_HALFWORD |
- * |    20 bits / 40 |   20 - 1 |     20 - 1 |     MXC_I2S_WSIZE_WORD |
- * |    24 bits / 48 |   24 - 1 |     24 - 1 |     MXC_I2S_WSIZE_WORD |
- * |    24 bits / 64 |   32 - 1 |     24 - 1 |     MXC_I2S_WSIZE_WORD |
- * |    32 bits / 64 |   32 - 1 |     32 - 1 |     MXC_I2S_WSIZE_WORD |
+ * |     8 bits / 16 |    8     |      8     |     MXC_I2S_WSIZE_BYTE |
+ * |    16 bits / 32 |   16     |     16     | MXC_I2S_WSIZE_HALFWORD |
+ * |    20 bits / 40 |   20     |     20     |     MXC_I2S_WSIZE_WORD |
+ * |    24 bits / 48 |   24     |     24     |     MXC_I2S_WSIZE_WORD |
+ * |    24 bits / 64 |   32     |     24     |     MXC_I2S_WSIZE_WORD |
+ * |    32 bits / 64 |   32     |     32     |     MXC_I2S_WSIZE_WORD |
  * |_________________|__________|____________|________________________|
 */
 typedef struct {
@@ -124,7 +124,7 @@ typedef struct {
         sampleSize; ///< Optional - Between zero and bitsWord. Consider setting 'adjust' field with this.
     uint16_t clkdiv;
     mxc_i2s_adjust_t adjust;
-    uint8_t bitsWord; ///< Set <desired_value - 1>. MAX=0x1F.
+    uint8_t bitsWord; ///< MAX=0x1F.
     void *rawData;
     void *txData;
     void *rxData;

@@ -78,7 +78,7 @@ int main()
     /* Configure I2S interface parameters */
     req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
-    req.bitsWord = 32 - 1;
+    req.bitsWord = 32;
     req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;

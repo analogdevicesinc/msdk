@@ -33,11 +33,11 @@
 #include "i2s.h"
 
 /* ***** Definitions ***** */
-#define DATALENGTH_EIGHT (8 - 1)
-#define DATALENGTH_SIXTEEN (16 - 1)
-#define DATALENGTH_TWENTY (20 - 1)
-#define DATALENGTH_TWENTYFOUR (24 - 1)
-#define DATALENGTH_THIRTYTWO (32 - 1)
+#define DATALENGTH_EIGHT (8)
+#define DATALENGTH_SIXTEEN (16)
+#define DATALENGTH_TWENTY (20)
+#define DATALENGTH_TWENTYFOUR (24)
+#define DATALENGTH_THIRTYTWO (32)
 
 // #define USE_LEGACY_I2S_DMA_CFG
 
@@ -59,11 +59,19 @@ static uint32_t txn_lock = 0;
 static void configure_data_sizes(mxc_i2s_reva_regs_t *i2s, uint8_t bits_word, uint8_t smp_sz,
                                  uint8_t wsize)
 {
-    i2s->ctrl1ch0 |= (bits_word << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+    if (bits_word > 0) {
+        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS, (bits_word - 1) << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS); // Subtract 1
+    } else {
+        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS, 0); // Clear to 0
+    }
 
     //Set sample length if defined:
     //The SMP_SIZE is equal to bitsWord when sampleSize == 0 or sampleSize > bitsWord
-    i2s->ctrl1ch0 |= (smp_sz << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
+    if (smp_sz > 0) {
+        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS, (smp_sz - 1) << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS); // Subtract 1
+    } else {
+        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS, smp_sz); // Clear to 0
+    }
 
     //Set datasize to load in FIFO
     MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,

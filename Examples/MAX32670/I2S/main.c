@@ -83,7 +83,7 @@ int main()
 
     req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
-    req.bitsWord = 16 - 1;
+    req.bitsWord = 16;
     req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_LSB_JUSTIFY;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;

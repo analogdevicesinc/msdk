@@ -79,7 +79,7 @@ int main()
     req.bitOrder = MXC_I2S_MSB_FIRST;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
-    req.bitsWord = 16 - 1;
+    req.bitsWord = 16;
     req.adjust = MXC_I2S_ADJUST_LEFT;
     req.clkdiv =
         ERFO_FREQ / (2 * 16 * 16000); // SRC_CLK / (2 * BITS_PER_SAMPLE * DESIRED_WSCLK_FREQ)

@@ -85,7 +85,7 @@ int i2s_init(void)
 
     i2s_req.wordSize = MXC_I2S_WSIZE_HALFWORD; // Configure I2S interface parameters
     i2s_req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
-    i2s_req.bitsWord = 16 - 1;
+    i2s_req.bitsWord = 16;
     i2s_req.adjust = MXC_I2S_ADJUST_LEFT;
     i2s_req.justify = MXC_I2S_LSB_JUSTIFY;
     i2s_req.wsPolarity = MXC_I2S_POL_NORMAL;

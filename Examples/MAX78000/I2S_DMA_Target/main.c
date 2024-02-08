@@ -165,7 +165,7 @@ void i2s_init(void)
 
     req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_TWENTYFOUR;
-    req.bitsWord = 24 - 1;
+    req.bitsWord = 24;
     req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
