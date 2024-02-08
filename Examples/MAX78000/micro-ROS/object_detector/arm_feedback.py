@@ -25,6 +25,24 @@ import sys
 global g_stopped
 g_stopped = False
 
+home = [1.514991, -0.754719, 0.391165, 1.184233, -0.010]
+
+present_joint_angle = deepcopy(home)
+goal_joint_angle = deepcopy(home)
+prev_goal_joint_angle = [0.0, 0.0, 0.0, 0.0]
+present_kinematics_pose = [0.009, 0.147, 0.162, 0.666, -0.221, 0.217, 0.679]
+goal_kinematics_pose = [0.009, 0.147, 0.162, 0.666, -0.221, 0.217, 0.679]
+prev_goal_kinematics_pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+height_drop = 0
+drop_angle = []
+
+debug = True
+task_position_delta = 0.01 / 3  # meter
+joint_angle_delta = 0.2 / 2  # radian
+global path_time
+path_time = 0.2 # second
+dry_run = False
+
 class BoxSubscriber(Node):
   x: int
   y: int
@@ -125,6 +143,10 @@ class PolygonSubscriber(Node):
         print(f"--- AREA: {self.area}")
         if self.area > 3000:
             goal_kinematics_pose[2] += task_position_delta
+        
+        if goal_kinematics_pose[2] < 0.1:
+            print("*** FLOOR") 
+            goal_kinematics_pose[2] = 0.1
 
         teleop_keyboard.send_goal_task_space()
         while(teleop_keyboard.state != "IS_MOVING"):
@@ -140,11 +162,11 @@ class PolygonSubscriber(Node):
         if (self.skew < 0.8):
             step_size = task_position_delta * (1 * ((0.8 - self.skew)/0.8))
             goal_kinematics_pose[1] += delta_xy.y
-            goal_kinematics_pose[2] += step_size
+            goal_kinematics_pose[2] += (step_size * 1.25)
         elif (self.skew > 1.2):
-            step_size = task_position_delta * (1 * ((self.skew - 0.8)/0.8))
+            step_size = task_position_delta * (1 * ((self.skew - 1.2)/1.2))
             goal_kinematics_pose[1] -= delta_xy.y
-            goal_kinematics_pose[2] -= step_size
+            goal_kinematics_pose[2] -= (step_size * 1.25)
 
         teleop_keyboard.send_goal_task_space()
         while(teleop_keyboard.state != "IS_MOVING"):
@@ -178,15 +200,12 @@ class PolygonSubscriber(Node):
     def grab_reposition(self):
         print("--- GRAB REPOS")
         global goal_kinematics_pose
-        global present_kinematics_pose
-        global path_time
+        global present_kinematics_pose        
         xy = Vec2D(x = present_kinematics_pose[0], y = present_kinematics_pose[1])
         correction = xy.unit() * (task_position_delta * -10)
         goal_kinematics_pose[0] += correction.x
         goal_kinematics_pose[1] += correction.y
         goal_kinematics_pose[2] -= task_position_delta * 15
-
-        path_time = 3.0
 
         teleop_keyboard.send_goal_task_space()
         while(teleop_keyboard.state != "IS_MOVING"):
@@ -202,6 +221,7 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_tool_control()
 
     def process_state(self):
+        global path_time
         if self.x > 0 and self.y > 0 and teleop_keyboard.state != "IS_MOVING" and not teleop_keyboard.locked:
             if self.state == 0: # Position
                 self.correct_pos()
@@ -222,30 +242,41 @@ class PolygonSubscriber(Node):
                     self.state = 4
 
             elif self.state == 4: # Grab Pos
+                temp_path_time = path_time
+                path_time = 3.0
                 self.grab_reposition()
                 self.state = 5
+                path_time = temp_path_time
 
             elif self.state == 5:  # Close grabber
+                temp_path_time = path_time
+                path_time = 3.0
                 self.grab()
                 self.state = 6
+                path_time = temp_path_time
 
             elif self.state == 6:
                 global goal_joint_angle
                 global height_drop
                 global drop_angle
-                height_drop = deepcopy(present_kinematics_pose[2])
+                height_drop = (deepcopy(present_kinematics_pose[2]) * 1.3)
                 drop_angle = deepcopy(present_kinematics_pose[3:6])
                 goal_joint_angle = home
+
+                temp_path_time = path_time
+                path_time = 3.0
+
                 teleop_keyboard.send_goal_joint_space()
                 while(teleop_keyboard.state != "IS_MOVING"):
                     rclpy.spin_once(teleop_keyboard, timeout_sec=0.01)
                 while(teleop_keyboard.state != "STOPPED"):
                     rclpy.spin_once(teleop_keyboard, timeout_sec=0.01)
                 self.state = 7
+                path_time = temp_path_time
 
             elif self.state == 7:
                 global goal_kinematics_pose
-                global path_time
+                temp_path_time = path_time
                 path_time = 5.0
                 goal_kinematics_pose = deepcopy(present_kinematics_pose)
                 goal_kinematics_pose[0:2] = [-0.11, 0.2, height_drop]
@@ -265,6 +296,7 @@ class PolygonSubscriber(Node):
                 while(teleop_keyboard.state != "STOPPED"):
                     rclpy.spin_once(teleop_keyboard, timeout_sec=0.01)
 
+                path_time = 0.2
                 self.state = 0
 
 
@@ -331,23 +363,6 @@ class PolygonSubscriber(Node):
         self.last_top = top
         self.last_right = right
         self.last_bottom = bottom
-
-home = [1.514991, -0.754719, 0.391165, 1.184233, -0.010]
-
-present_joint_angle = deepcopy(home)
-goal_joint_angle = deepcopy(home)
-prev_goal_joint_angle = [0.0, 0.0, 0.0, 0.0]
-present_kinematics_pose = [0.009, 0.147, 0.162, 0.666, -0.221, 0.217, 0.679]
-goal_kinematics_pose = [0.009, 0.147, 0.162, 0.666, -0.221, 0.217, 0.679]
-prev_goal_kinematics_pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-height_drop = 0
-drop_angle = []
-
-debug = True
-task_position_delta = 0.01 / 3  # meter
-joint_angle_delta = 0.2 / 2  # radian
-path_time = 0.4 # second
-dry_run = False
 
 class TeleopKeyboard(Node):
 
