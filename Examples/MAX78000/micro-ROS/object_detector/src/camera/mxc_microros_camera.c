@@ -59,6 +59,9 @@ int mxc_microros_camera_init(unsigned int width, unsigned int height, const char
     }
     printf("Camera ID detected: %04x\n", id);
 
+    camera_set_vflip(1);
+    camera_set_hmirror(1);
+
     ret = camera_setup(width, height, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, g_camera_dma_channel);
     if (ret) {
         return ret;
