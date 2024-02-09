@@ -69,6 +69,8 @@
 #define WUT_ENABLE // enables WUT timer
 #define WUT_USEC 380 // continuous WUT duration close to I2S polling time in usec
 //#define ENERGY            // if enabled, turn off LED2, toggle LED1 for 10sec for energy measurements on Power monitor (System Power)
+#define SAMPLE_RATE 16000
+#define EXT_I2S_FREQ 12288000
 
 #if SLEEP_MODE == 2 // need WakeUp Timer (WUT) for deepsleep (LPM)
 #ifndef WUT_ENABLE
@@ -138,7 +140,6 @@
 
 #if defined(ENABLE_CODEC_MIC)
 #define PMIC_AUDIO_I2C MXC_I2C1
-#define CODEC_MCLOCK 12288000
 #endif
 
 /* DEBUG Print */
@@ -234,6 +235,7 @@ uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outS
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
 void I2SInit();
+static void codec_init(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 #ifdef TFT_ENABLE
@@ -357,10 +359,7 @@ int main(void)
 
 #ifdef ENABLE_MIC_PROCESSING
 #if defined(ENABLE_CODEC_MIC)
-    int err;
-    if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK, 1)) != E_NO_ERROR) {
-        PR_DEBUG("\nError in max9867_init: %d\n", err);
-    }
+    codec_init();
 #elif defined(BOARD_FTHR_REVA)
     /* Enable microphone power on Feather board only if codec is not enabled */
     Microphone_Power(POWER_ON);
@@ -898,6 +897,24 @@ int main(void)
 /* **************************************************************************** */
 
 #ifdef ENABLE_MIC_PROCESSING
+#ifdef ENABLE_CODEC_MIC
+static void codec_init(void)
+{
+    int err;
+    if (MXC_I2C_Init(PMIC_AUDIO_I2C, 1, 0) != E_NO_ERROR)
+        printf("Error initializing I2C controller");
+    else
+        printf("I2C initialized successfully \n");
+
+    MXC_I2C_SetFrequency(PMIC_AUDIO_I2C, CODEC_I2C_FREQ);
+    if ((err = max9867_init(PMIC_AUDIO_I2C, EXT_I2S_FREQ, 1)) != E_NO_ERROR) {
+        PR_DEBUG("\nError in max9867_init: %d\n", err);
+    }
+
+    if (max9867_enable_record(1) != E_NO_ERROR)
+        printf("Error enabling record path");
+}
+#endif
 void I2SInit()
 {
     mxc_i2s_req_t req;
@@ -909,8 +926,10 @@ void I2SInit()
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
-    req.wordSize = MXC_I2S_DATASIZE_WORD;
+    req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
+    req.bitsWord = 32;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
@@ -918,13 +937,15 @@ void I2SInit()
     req.stereoMode = MXC_I2S_MONO_LEFT_CH;
     req.bitOrder = MXC_I2S_MSB_FIRST;
     /* I2S clock = PT freq / (2*(req.clkdiv + 1)) */
-    /* I2S sample rate = I2S clock/64 = 16kHz */
-    req.clkdiv = 5;
+    /* I2S sample rate = I2S clock/(2*wsize) = 16kHz */
+    req.clkdiv = MXC_I2S_CalculateClockDiv(SAMPLE_RATE, req.wordSize, EXT_I2S_FREQ);
     req.rawData = NULL;
     req.txData = NULL;
     req.rxData = i2s_rx_buffer;
     req.length = I2S_RX_BUFFER_SIZE;
-
+#ifdef ENABLE_CODEC_MIC
+    req.channelMode = MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS;
+#endif
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         PR_DEBUG("\nError in I2S_Init: %d\n", err);
 
@@ -1182,11 +1203,7 @@ uint8_t MicReadChunk(uint16_t *avg)
         sample = (int32_t)MXC_I2S->fifoch0;
 
         /* The actual value is 18 MSB of 32-bit word */
-#ifdef ENABLE_CODEC_MIC
-        temp = sample >> 19; // adjusted for codec
-#else
         temp = sample >> 14;
-#endif
 
         /* Remove DC from microphone signal */
         sample = HPF((int16_t)temp); // filter needs about 1K sample to converge
