@@ -341,6 +341,13 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)
 {
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
     int err;
     uint32_t info_blk_addr;
     uint32_t lock_sequence[4];
@@ -367,6 +374,7 @@ int MXC_SYS_LockDAP_Permanent(void)
     MXC_FLC_LockInfoBlock(info_blk_addr);
 
     return err;
+#endif
 }
 
 /**@} end of mxc_sys */
