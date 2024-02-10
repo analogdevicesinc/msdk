@@ -506,7 +506,7 @@ int MXC_SYS_SysTick_DelayUs(uint32_t us);
  * @warning After executing this function you will never be able
  *          to reprogram the target micro.
  */
-int MXC_SYS_LockDAP(void);
+int MXC_SYS_LockDAP_Permanent(void);
 
 /**@} end of group mxc_sys */
 

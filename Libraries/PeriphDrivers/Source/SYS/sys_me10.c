@@ -594,7 +594,7 @@ int MXC_SYS_SysTick_DelayUs(uint32_t us)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_LockDAP(void)
+int MXC_SYS_LockDAP_Permanent(void)
 {
     int err;
     uint32_t info_blk_addr;

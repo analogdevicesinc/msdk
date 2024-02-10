@@ -487,7 +487,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_LockDAP(void)
+int MXC_SYS_LockDAP_Permanent(void)
 {
     int err;
     uint32_t info_blk_addr;

@@ -567,7 +567,7 @@ uint32_t MXC_SYS_RiscVClockRate(void)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_LockDAP(void)
+int MXC_SYS_LockDAP_Permanent(void)
 {
     int err;
     uint32_t info_blk_addr;

@@ -400,7 +400,7 @@ uint32_t MXC_SYS_RiscVClockRate(void);
  * @warning After executing this function you will never be able
  *          to reprogram the target micro.
  */
-int MXC_SYS_LockDAP(void);
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }

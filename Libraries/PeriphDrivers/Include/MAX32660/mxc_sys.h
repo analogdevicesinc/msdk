@@ -309,7 +309,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
  * @warning After executing this function you will never be able
  *          to reprogram the target micro.
  */
-int MXC_SYS_LockDAP(void);
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }

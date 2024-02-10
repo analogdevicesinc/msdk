@@ -438,7 +438,7 @@ int MXC_SYS_GetUSN(uint8_t *serialNumber, int len);
  * @warning After executing this function you will never be able
  *          to reprogram the target micro.
  */
-int MXC_SYS_LockDAP(void);
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }
