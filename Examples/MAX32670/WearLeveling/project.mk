@@ -13,4 +13,8 @@
 
 # Add your config here!
 
+# Enable the LittleFS Library
 LIB_LITTLEFS = 1
+
+# Enable the CLI Library
+LIB_CLI = 1
