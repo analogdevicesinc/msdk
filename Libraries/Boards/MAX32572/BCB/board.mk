@@ -27,9 +27,16 @@ endif
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
+SRCS += is25.c
 SRCS += pb.c
+SRCS += tsc2007.c
+SRCS += tft_ssd2119.c
 
-MISC_DRIVERS_DIR ?= $(LIBS_DIR)/MiscDrivers
+PROJ_CFLAGS+=-DSPIXF_RAM
+PROJ_CFLAGS+=-DEXT_FLASH_IS25
+PROJ_CFLAGS+=-DTS_TSC2007
+
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
@@ -37,6 +44,8 @@ VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
+VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
@@ -44,3 +53,5 @@ IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
+IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/Touchscreen
