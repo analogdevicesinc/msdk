@@ -285,6 +285,10 @@ typedef enum {
 
 /* ************************************************************************** */
 /*                                                                      Timer */
+#define SEC(s) (((uint32_t)s) * 1000000UL)
+#define MSEC(ms) (ms * 1000UL)
+#define USEC(us) (us)
+
 #define MXC_CFG_TMR_INSTANCES (6)
 
 #define MXC_BASE_TMR0 ((uint32_t)0x40010000UL)
