@@ -27,9 +27,13 @@ endif
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
+SRCS += w25.c
 SRCS += pb.c
 
-MISC_DRIVERS_DIR ?= $(LIBS_DIR)/MiscDrivers
+PROJ_CFLAGS+=-DSPIXF_RAM
+PROJ_CFLAGS+=-DEXT_FLASH_W25
+
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
