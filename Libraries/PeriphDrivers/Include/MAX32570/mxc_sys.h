@@ -432,6 +432,14 @@ uint8_t MXC_SYS_GetRev(void);
  */
 int MXC_SYS_GetUSN(uint8_t *serialNumber, int len);
 
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
+
 #ifdef __cplusplus
 }
 #endif

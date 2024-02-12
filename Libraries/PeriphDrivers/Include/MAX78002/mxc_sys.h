@@ -384,6 +384,14 @@ void MXC_SYS_RISCVShutdown(void);
  */
 uint32_t MXC_SYS_RiscVClockRate(void);
 
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
+
 #ifdef __cplusplus
 }
 #endif

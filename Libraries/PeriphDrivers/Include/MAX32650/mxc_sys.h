@@ -500,6 +500,14 @@ uint32_t MXC_SYS_SysTick_GetFreq(void);
  */
 int MXC_SYS_SysTick_DelayUs(uint32_t us);
 
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
+
 /**@} end of group mxc_sys */
 
 #ifdef __cplusplus

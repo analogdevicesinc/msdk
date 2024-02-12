@@ -48,6 +48,11 @@
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(5)
 
+// DAP Lock macros
+#define INFOBLOCK_DAP_LOCK_OFFSET 0x30
+#define DAP_LOCK_SEQUENCE_01 0x5A5AA5A5
+#define DAP_LOCK_SEQUENCE_23 0xFFFFFFFF
+
 /* **** Globals **** */
 
 /* Symbol defined by the build system when loading RISCV image */
@@ -552,6 +557,45 @@ uint32_t MXC_SYS_RiscVClockRate(void)
     } else {
         return ISO_FREQ;
     }
+}
+
+/* ************************************************************************** */
+int MXC_SYS_LockDAP_Permanent(void)
+{
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
+    int err;
+    uint32_t info_blk_addr;
+    uint32_t lock_sequence[4];
+
+    // Infoblock address to write lock sequence to
+    info_blk_addr = MXC_INFO_MEM_BASE + INFOBLOCK_DAP_LOCK_OFFSET;
+
+    // Set lock sequence
+    lock_sequence[0] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[1] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[2] = DAP_LOCK_SEQUENCE_23;
+    lock_sequence[3] = DAP_LOCK_SEQUENCE_23;
+
+    // Initialize FLC
+    MXC_FLC_Init();
+
+    // Unlock infoblock
+    MXC_FLC_UnlockInfoBlock(info_blk_addr);
+
+    // Write DAP lock sequence to infoblock
+    err = MXC_FLC_Write128(info_blk_addr, lock_sequence);
+
+    // Re-lock infoblock
+    MXC_FLC_LockInfoBlock(info_blk_addr);
+
+    return err;
+#endif
 }
 
 /**@} end of mxc_sys */

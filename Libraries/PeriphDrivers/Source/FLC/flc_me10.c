@@ -64,9 +64,9 @@ int MXC_FLC_ME10_GetByAddress(mxc_flc_regs_t **flc, uint32_t addr)
 int MXC_FLC_ME10_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 {
     if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
-        *result = addr - MXC_FLASH_MEM_BASE;
+        *result = (addr & (MXC_FLASH_MEM_SIZE - 1));
     } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
-        *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
+        *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + (MXC_INFO_MEM_BASE - MXC_FLASH_MEM_BASE);
     } else {
         return E_BAD_PARAM;
     }

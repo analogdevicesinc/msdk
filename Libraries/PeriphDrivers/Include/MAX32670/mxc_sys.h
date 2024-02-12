@@ -322,11 +322,20 @@ mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
 int MXC_SYS_Clock_Timeout(uint32_t ready);
+
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param reset The peripheral to reset
  */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
+
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }
