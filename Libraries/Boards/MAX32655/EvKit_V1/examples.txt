@@ -42,6 +42,7 @@ GPIO
 Hello_World
 Hello_World-riscv
 I2C
+I2C_EEPROM
 I2C_MNGR
 I2C_SCAN
 I2C_Sensor
