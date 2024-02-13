@@ -6,6 +6,7 @@ var group__msradc__registers =
     [ "MSRADC_FIFO", "group___m_s_r_a_d_c___f_i_f_o.html", "group___m_s_r_a_d_c___f_i_f_o" ],
     [ "MSRADC_INTEN", "group___m_s_r_a_d_c___i_n_t_e_n.html", "group___m_s_r_a_d_c___i_n_t_e_n" ],
     [ "MSRADC_INTFL", "group___m_s_r_a_d_c___i_n_t_f_l.html", "group___m_s_r_a_d_c___i_n_t_f_l" ],
+    [ "msradc_regs.h", "msradc__regs_8h.html", null ],
     [ "mxc_msradc_regs_t", "group__msradc__registers.html#structmxc__msradc__regs__t", [
       [ "cmd", "group__msradc__registers.html#acc6d293a6e770be2fd23312449bd4011", null ],
       [ "ctrl", "group__msradc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],

@@ -1,7 +1,7 @@
 var group___s_p_i_x_f_m___m_o_d_e_d_a_t_a =
 [
-    [ "MXC_F_SPIXFM_MODEDATA_MDDATA", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#ga047b5da8f0de613b1d6ae0bd754cb142", null ],
-    [ "MXC_F_SPIXFM_MODEDATA_MDDATA_POS", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#gadaf5cfcd8ac18ca2b03ed1f16f048418", null ],
-    [ "MXC_F_SPIXFM_MODEDATA_MDOUT_EN", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#ga26f76d0feccb834d0d2193eb6cf70edc", null ],
-    [ "MXC_F_SPIXFM_MODEDATA_MDOUT_EN_POS", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#ga8c637ce7ac5b2b487ac06b8dc82c8dc7", null ]
+    [ "MXC_F_SPIXFM_MODEDATA_DATA", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#gaf44e017beec065d7eabcc62637676418", null ],
+    [ "MXC_F_SPIXFM_MODEDATA_DATA_POS", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#gae1336b70f84393af2ca911ca5973745e", null ],
+    [ "MXC_F_SPIXFM_MODEDATA_OUT_EN", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#gab789302c59377dee40d4840c3baad142", null ],
+    [ "MXC_F_SPIXFM_MODEDATA_OUT_EN_POS", "group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html#gad263097ab6f2d3e65b1126edd0b5a871", null ]
 ];

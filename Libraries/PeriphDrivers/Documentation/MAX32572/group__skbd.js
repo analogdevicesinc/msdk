@@ -27,6 +27,16 @@ var group__skbd =
       [ "MXC_SKBD_INTERRUPT_STATUS_RELEASEIS", "group__skbd.html#gga3a9f5380ee8b32d6e6fccb0f3c2b743aa7880ce8cf5eef1267085f71f0d060cbc", null ],
       [ "MXC_SKBD_INTERRUPT_STATUS_OVERIS", "group__skbd.html#gga3a9f5380ee8b32d6e6fccb0f3c2b743aaacfa4d5f0441868512f01d89d61fd971", null ]
     ] ],
+    [ "mxc_skbd_debounce_time_t", "group__skbd.html#ga096f43fdc5993a3a939fb1b9f6c5df32", [
+      [ "MXC_SKBD_DBTM_TIME4MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32a724670dd4825d26f64dd2c1d8eadc129", null ],
+      [ "MXC_SKBD_DBTM_TIME5MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32a8fe67c20169a7291f7471559cb97248e", null ],
+      [ "MXC_SKBD_DBTM_TIME6MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32a4727a14d7cd64b77ce0496f07d633607", null ],
+      [ "MXC_SKBD_DBTM_TIME7MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32af2c676faca4be554bf9a796dc7ae05ad", null ],
+      [ "MXC_SKBD_DBTM_TIME8MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32aed8e13890a590ad12edfd85be25e397f", null ],
+      [ "MXC_SKBD_DBTM_TIME10MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32af8fea072ecaaf6fefee4dd3a86494b3d", null ],
+      [ "MXC_SKBD_DBTM_TIME11MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32aae02a6b16b560406d278aaddfce88922", null ],
+      [ "MXC_SKBD_DBTM_TIME12MS", "group__skbd.html#gga096f43fdc5993a3a939fb1b9f6c5df32aa03217e7b3a742e597c9889d5a67cfe8", null ]
+    ] ],
     [ "mxc_skbd_errors_t", "group__skbd.html#ga403b317820e5845800f58e6c450e0d43", [
       [ "MXC_SKBD_ERR_NOT_INITIALIZED", "group__skbd.html#gga403b317820e5845800f58e6c450e0d43aea4f6cda9b7a61f7f7c6b71712967368", null ],
       [ "MXC_SKBD_ERR_ALREAD_INITIALIZED", "group__skbd.html#gga403b317820e5845800f58e6c450e0d43ad31cd257881bbdf428200e97f231afc1", null ],

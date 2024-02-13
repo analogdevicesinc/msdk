@@ -35,6 +35,9 @@ var group__ctb__registers =
     [ "CTB_SCA_RES_ADDR", "group___c_t_b___s_c_a___r_e_s___a_d_d_r.html", "group___c_t_b___s_c_a___r_e_s___a_d_d_r" ],
     [ "CTB_SCA_OP_BUFF_ADDR", "group___c_t_b___s_c_a___o_p___b_u_f_f___a_d_d_r.html", "group___c_t_b___s_c_a___o_p___b_u_f_f___a_d_d_r" ],
     [ "CTB_SCA_MODDATA", "group___c_t_b___s_c_a___m_o_d_d_a_t_a.html", "group___c_t_b___s_c_a___m_o_d_d_a_t_a" ],
+    [ "CTB_SCA_NRNG", "group___c_t_b___s_c_a___n_r_n_g.html", "group___c_t_b___s_c_a___n_r_n_g" ],
+    [ "CTB_SCA_WASH", "group___c_t_b___s_c_a___w_a_s_h.html", "group___c_t_b___s_c_a___w_a_s_h" ],
+    [ "ctb_regs.h", "ctb__regs_8h.html", null ],
     [ "mxc_ctb_regs_t", "group__ctb__registers.html#structmxc__ctb__regs__t", [
       [ "aad_length", "group__ctb__registers.html#ad8e1e6bef68139a50614df6c82c9be04", null ],
       [ "cipher_ctrl", "group__ctb__registers.html#ac2afd62d12a270c7db8a7090f7f783ac", null ],
@@ -60,6 +63,7 @@ var group__ctb__registers =
       [ "sca_ctrl0", "group__ctb__registers.html#a1848729c8ecdca894694da42ee2b6f3b", null ],
       [ "sca_ctrl1", "group__ctb__registers.html#ad5e39fa09eea820c87bef9debb082e6a", null ],
       [ "sca_moddata", "group__ctb__registers.html#af81e072790187ff8cb8919e52bf1d8d0", null ],
+      [ "sca_nrng", "group__ctb__registers.html#a83b9204d88d250d9c098687711587bf7", null ],
       [ "sca_op_buff_addr", "group__ctb__registers.html#ae80a18c9363568b4e57ae74b63f017db", null ],
       [ "sca_ppx_addr", "group__ctb__registers.html#ae06a23d2f9e6293af3df7310346c9447", null ],
       [ "sca_ppy_addr", "group__ctb__registers.html#a28a2a02cf24e8d8949d7d3715b7c179a", null ],
@@ -70,6 +74,7 @@ var group__ctb__registers =
       [ "sca_rdsa_addr", "group__ctb__registers.html#a84c3b5bd3485361e08510a7fbd781663", null ],
       [ "sca_res_addr", "group__ctb__registers.html#ac156c4ed504e078805d1a09f4d4cf1c3", null ],
       [ "sca_stat", "group__ctb__registers.html#a8a081112da880f56bbbd7efa0dc38595", null ],
+      [ "sca_wash", "group__ctb__registers.html#a86bf6d89725d16a162610bd5533f7fb8", null ],
       [ "tagmic", "group__ctb__registers.html#af1a4b2dc9792c4051c5f97ef7887f0fd", null ]
     ] ]
 ];

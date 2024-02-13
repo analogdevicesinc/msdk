@@ -2985,6 +2985,16 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td><code>MAXREFDES178</code></td>
 </tr>
 <tr>
+<td>MAX78000CAM01 (Engineering samples only)</td>
+<td><code>MAX78000</code></td>
+<td><code>CAM01_RevA</code></td>
+</tr>
+<tr>
+<td>MAX78000CAM02 (Engineering samples only)</td>
+<td><code>MAX78000</code></td>
+<td><code>CAM02_RevA</code></td>
+</tr>
+<tr>
 <td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html">MAX78002EVKIT</a></td>
 <td><code>MAX78002</code></td>
 <td><code>EvKit_V1</code></td>
@@ -3389,7 +3399,7 @@ int main(void)
 <tr>
 <td><code>SDHC_CLK_FREQ</code></td>
 <td>Sets the clock freq. for the SDHC library (Hz)</td>
-<td>Sets the target clock frequency in units of Hz (Default is 40Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues.</td>
+<td>Sets the target clock frequency in units of Hz (Default is 30Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues.</td>
 </tr>
 </tbody>
 </table>
@@ -3822,13 +3832,8 @@ int main(void)
 <td>MAX32650<br>MAX32655<br>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32675<br>MAX32680<br>MAX32690<br>MAX78000<br>MAX78002</td>
 </tr>
 <tr>
-<td><strong>faceid</strong></td>
-<td>Known Answer Test (KAT) for the faceid model</td>
-<td>MAX78000<br>MAX78002</td>
-</tr>
-<tr>
-<td><strong>faceid_evkit</strong></td>
-<td>FaceID EvKit Demo</td>
+<td><strong>facial_recognition</strong></td>
+<td>MAX78000 Feather Facial Recognition Demo</td>
 <td>MAX78000<br>MAX78002</td>
 </tr>
 <tr>
@@ -3838,7 +3843,7 @@ int main(void)
 </tr>
 <tr>
 <td><strong>src</strong></td>
-<td>Bootloader Host Example</td>
+<td>Secure ROM Bootloader Host Example</td>
 <td>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670</td>
 </tr>
 </tbody>
@@ -3956,6 +3961,11 @@ int main(void)
 <td><em>Local:</em><code>Examples/MAX32655/I2C_EEPROM</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/I2C_EEPROM">link</a></td>
 </tr>
 <tr>
+<td><strong>I2C_Sensor_ADT7420</strong></td>
+<td>I2C generic sensor Example</td>
+<td><em>Local:</em><code>Examples/MAX32655/I2C_Sensor_ADT7420</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/I2C_Sensor_ADT7420">link</a></td>
+</tr>
+<tr>
 <td><strong>I2S_Playback</strong></td>
 <td>I2S Transmitter Example</td>
 <td><em>Local:</em><code>Examples/MAX32655/I2S_Playback</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/I2S_Playback">link</a></td>
@@ -3974,9 +3984,9 @@ int main(void)
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
-<td></td>
+<td><strong>SPIMSS_DMA</strong></td>
+<td>SPI Master DMA Demo</td>
+<td><em>Local:</em><code>Examples/MAX32660/SPIMSS_DMA</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32660/SPIMSS_DMA">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4010,6 +4020,16 @@ int main(void)
 </thead>
 <tbody>
 <tr>
+<td><strong>ADT7320_TempMonitor</strong></td>
+<td>ADT7320 Temp Sensor Demo</td>
+<td><em>Local:</em><code>Examples/MAX32665/ADT7320_TempMonitor</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/ADT7320_TempMonitor">link</a></td>
+</tr>
+<tr>
+<td><strong>AUDIO_Playback</strong></td>
+<td>Audio Playback Example</td>
+<td><em>Local:</em><code>Examples/MAX32665/AUDIO_Playback</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/AUDIO_Playback">link</a></td>
+</tr>
+<tr>
 <td><strong>BLE_LR_Central</strong></td>
 <td>Long range demo on a central device</td>
 <td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Central</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Central">link</a></td>
@@ -4033,6 +4053,11 @@ int main(void)
 <td><strong>SPIXF_SFCC</strong></td>
 <td>Demonstrates the SPIXF Cache Controller (SFCC)</td>
 <td><em>Local:</em><code>Examples/MAX32665/SPIXF_SFCC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/SPIXF_SFCC">link</a></td>
+</tr>
+<tr>
+<td><strong>SPI_3Wire</strong></td>
+<td>3 Wire SPI Demo</td>
+<td><em>Local:</em><code>Examples/MAX32665/SPI_3Wire</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/SPI_3Wire">link</a></td>
 </tr>
 <tr>
 <td><strong>SRCC</strong></td>
@@ -4158,6 +4183,11 @@ int main(void)
 </thead>
 <tbody>
 <tr>
+<td><strong>FTHR_SRAM</strong></td>
+<td>Demonstrates SRAM drivers for the N01S830HA on the MAX78000FTHR</td>
+<td><em>Local:</em><code>Examples/MAX78000/FTHR_SRAM</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/FTHR_SRAM">link</a></td>
+</tr>
+<tr>
 <td><strong>I2C_ADXL343</strong></td>
 <td>Empty Description</td>
 <td><em>Local:</em><code>Examples/MAX78000/I2C_ADXL343</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/I2C_ADXL343">link</a></td>
@@ -4188,6 +4218,11 @@ int main(void)
 <td><em>Local:</em><code>Examples/MAX78000/CNN/UNet-highres-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/UNet-highres-demo">link</a></td>
 </tr>
 <tr>
+<td><strong>actionrecognition-demo</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/actionrecognition-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/actionrecognition-demo">link</a></td>
+</tr>
+<tr>
 <td><strong>aisegment_unet</strong></td>
 <td>Empty Description</td>
 <td><em>Local:</em><code>Examples/MAX78000/CNN/aisegment_unet</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/aisegment_unet">link</a></td>
@@ -4211,6 +4246,11 @@ int main(void)
 <td><strong>cam01_facedetect_demo</strong></td>
 <td>Empty Description</td>
 <td><em>Local:</em><code>Examples/MAX78000/CNN/cam01_facedetect_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cam01_facedetect_demo">link</a></td>
+</tr>
+<tr>
+<td><strong>cam02_facedetect_demo</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cam02_facedetect_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cam02_facedetect_demo">link</a></td>
 </tr>
 <tr>
 <td><strong>camvid_unet</strong></td>
@@ -4263,14 +4303,9 @@ int main(void)
 <td><em>Local:</em><code>Examples/MAX78000/CNN/digit-detection-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/digit-detection-demo">link</a></td>
 </tr>
 <tr>
-<td><strong>faceid_evkit-riscv</strong></td>
-<td>FaceID EvKit Demo</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/faceid_evkit-riscv</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/faceid_evkit-riscv">link</a></td>
-</tr>
-<tr>
-<td><strong>facial_recognition</strong></td>
-<td>MAX78000 Feather Facial Recognition Demo</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/facial_recognition</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/facial_recognition">link</a></td>
+<td><strong>faceid_112</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/faceid_112</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/faceid_112">link</a></td>
 </tr>
 <tr>
 <td><strong>kws20_demo-riscv</strong></td>
@@ -4364,6 +4399,16 @@ int main(void)
 <td><strong>imagenet-riscv</strong></td>
 <td>Empty Description</td>
 <td><em>Local:</em><code>Examples/MAX78002/CNN/imagenet-riscv</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/imagenet-riscv">link</a></td>
+</tr>
+<tr>
+<td><strong>kinetics</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/kinetics</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/kinetics">link</a></td>
+</tr>
+<tr>
+<td><strong>mobilefacenet-112</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/mobilefacenet-112</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/mobilefacenet-112">link</a></td>
 </tr>
 <tr>
 <td><strong>pascalvoc-retinanetv7_3</strong></td>
@@ -4638,7 +4683,7 @@ void DMA_RX_IRQHandler(void)
 
   <div role="contentinfo">
     <!-- Copyright etc -->
-      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+      <p>Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved. (now owned by Analog Devices, Inc.), Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software is proprietary to Analog Devices, Inc. and its licensors.</p>
   </div>
 
   Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

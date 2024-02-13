@@ -1,7 +1,7 @@
 var group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l =
 [
-    [ "MXC_F_SPIXFM_MEMSECCTRL_AUTH_DISABLE", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#ga3310005839998693844eefdac2303048", null ],
-    [ "MXC_F_SPIXFM_MEMSECCTRL_AUTH_DISABLE_POS", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#ga6db2c9ee725447c1993bb025c43cb29e", null ],
+    [ "MXC_F_SPIXFM_MEMSECCTRL_AUTH_DIS", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#gadcb6d9f5add7f16c1abda563f4066628", null ],
+    [ "MXC_F_SPIXFM_MEMSECCTRL_AUTH_DIS_POS", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#ga165501072bb40ff53a31b09cbff30caf", null ],
     [ "MXC_F_SPIXFM_MEMSECCTRL_AUTHERR_FL", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#ga92e280b11f08b0b3a1d2dc6a6de0f31f", null ],
     [ "MXC_F_SPIXFM_MEMSECCTRL_AUTHERR_FL_POS", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#gae80be4bbf51e06341f69b6fb2cf0de73", null ],
     [ "MXC_F_SPIXFM_MEMSECCTRL_CNTOPT_EN", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html#ga7633179f750e15d6591dbb48467c44bf", null ],

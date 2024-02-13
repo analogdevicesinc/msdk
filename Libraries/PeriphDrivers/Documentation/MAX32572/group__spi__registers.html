@@ -86,8 +86,9 @@ $(document).ready(function(){initNavTree('group__spi__registers.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
+<a href="#files">Files</a> &#124;
 <a href="#nested-classes">Data Structures</a>  </div>
-  <div class="headertitle"><div class="title">SPI_Registers<div class="ingroups"><a class="el" href="group__spi.html">Serial Peripheral Interface (SPI)</a></div></div></div>
+  <div class="headertitle"><div class="title">SPI_Registers<div class="ingroups"><a class="el" href="group__spi.html">SPI</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
@@ -121,7 +122,12 @@ Modules</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group___s_p_i___w_k_e_n"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___w_k_e_n.html">SPI_WKEN</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group___s_p_i___s_t_a_t"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___s_t_a_t.html">SPI_STAT</a></td></tr>
+<tr class="memitem:group___s_p_i___s_t_a_t_u_s"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___s_t_a_t_u_s.html">SPI_STATUS</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:spi__regs_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="spi__regs_8h.html">spi_regs.h</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -167,8 +173,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:a71c81fbb80641b4b170ab374e553582c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a180fb4301217e58b8b04d69910d55e7d"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi__registers.html#a180fb4301217e58b8b04d69910d55e7d">wken</a></td></tr>
 <tr class="separator:a180fb4301217e58b8b04d69910d55e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a165ffa7e0db53fbc622c375b63a436d7"><td class="memItemLeft" align="right" valign="top">__I uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7">stat</a></td></tr>
-<tr class="separator:a165ffa7e0db53fbc622c375b63a436d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b79764f6dc9cf227c2ddd91219e8ac9"><td class="memItemLeft" align="right" valign="top">__I uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9">status</a></td></tr>
+<tr class="separator:a4b79764f6dc9cf227c2ddd91219e8ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34ffaa2a4eeed4455af3a5e90085b623"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi__registers.html#a34ffaa2a4eeed4455af3a5e90085b623">fifo32</a></td></tr>
 <tr class="separator:a34ffaa2a4eeed4455af3a5e90085b623"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2111734d9cad2c32f9f0a899ae9077f0"><td class="memItemLeft" align="right" valign="top">__IO uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi__registers.html#a2111734d9cad2c32f9f0a899ae9077f0">fifo16</a> [2]</td></tr>
@@ -342,18 +348,18 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
-<a id="a165ffa7e0db53fbc622c375b63a436d7" name="a165ffa7e0db53fbc622c375b63a436d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a165ffa7e0db53fbc622c375b63a436d7">&#9670;&nbsp;</a></span>stat</h2>
+<a id="a4b79764f6dc9cf227c2ddd91219e8ac9" name="a4b79764f6dc9cf227c2ddd91219e8ac9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b79764f6dc9cf227c2ddd91219e8ac9">&#9670;&nbsp;</a></span>status</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">__I uint32_t stat</td>
+          <td class="memname">__I uint32_t status</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><code><b>0x30:</code></b> SPI STAT Register </p>
+<p ><code><b>0x30:</code></b> SPI STATUS Register </p>
 
 </div>
 </div>
@@ -395,7 +401,7 @@ Data Structures</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 12 2023 13:32:06 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Feb 13 2024 22:35:09 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

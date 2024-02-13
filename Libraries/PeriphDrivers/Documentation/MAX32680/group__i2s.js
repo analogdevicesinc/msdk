@@ -1,14 +1,30 @@
 var group__i2s =
 [
     [ "I2S_Registers", "group__i2s__registers.html", "group__i2s__registers" ],
-    [ "mxc_i2s_req_t", "group__i2s.html#structmxc__i2s__req__t", null ],
+    [ "mxc_i2s_req_t", "group__i2s.html#structmxc__i2s__req__t", [
+      [ "bitsWord", "group__i2s.html#ga3736972d909c5528d19886acd60ca37e", null ],
+      [ "sampleSize", "group__i2s.html#gad353f9339b434e7b38926662eb144c95", null ]
+    ] ],
+    [ "mxc_i2s_adjust_t", "group__i2s.html#ga6cbc4a2ddb50f259177bc09ec01e1a56", null ],
     [ "mxc_i2s_bitorder_t", "group__i2s.html#gaa8cffbae538bd8de2c5a4e87b3cce352", null ],
     [ "mxc_i2s_ch_mode_t", "group__i2s.html#ga1ef3fa913346974a732fb1356ebc3a83", null ],
     [ "mxc_i2s_justify_t", "group__i2s.html#ga476163c23e244a12d09fab68892308bc", null ],
     [ "mxc_i2s_polarity_t", "group__i2s.html#ga8a90ed22f96d6fa8df6637836a6398e9", null ],
-    [ "mxc_i2s_samplesize_t", "group__i2s.html#ga59260f21077f9264f0ca0441daff8019", null ],
     [ "mxc_i2s_stereo_t", "group__i2s.html#gae9e17ff5419d083c12dd7ab6cf775c0a", null ],
-    [ "mxc_i2s_wsize_t", "group__i2s.html#ga69ac34ac897436c1b47ada8fb1dd0582", null ],
+    [ "mxc_i2s_wsize_t", "group__i2s.html#ga69ac34ac897436c1b47ada8fb1dd0582", [
+      [ "MXC_I2S_WSIZE_BYTE", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6fd3997432a713ab20896361da039ea1", null ],
+      [ "MXC_I2S_WSIZE_HALFWORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582ad1f55719f120947733a6a2b836b64f62", null ],
+      [ "MXC_I2S_WSIZE_WORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a1c3b33dcd6d2b75579d8c9fdefd212c4", null ],
+      [ "MXC_I2S_DATASIZE_BYTE", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6d7d609875c92c2b310d50a6989942e5", null ],
+      [ "MXC_I2S_DATASIZE_HALFWORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a9e28fcde08c189ec5e01bba3e72259a9", null ],
+      [ "MXC_I2S_DATASIZE_WORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a4a6bb75f786cf70e426619374a5f9218", null ]
+    ] ],
+    [ "MXC_I2S_DATASIZE_BYTE", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6d7d609875c92c2b310d50a6989942e5", null ],
+    [ "MXC_I2S_DATASIZE_HALFWORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a9e28fcde08c189ec5e01bba3e72259a9", null ],
+    [ "MXC_I2S_DATASIZE_WORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a4a6bb75f786cf70e426619374a5f9218", null ],
+    [ "MXC_I2S_WSIZE_BYTE", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6fd3997432a713ab20896361da039ea1", null ],
+    [ "MXC_I2S_WSIZE_HALFWORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582ad1f55719f120947733a6a2b836b64f62", null ],
+    [ "MXC_I2S_WSIZE_WORD", "group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a1c3b33dcd6d2b75579d8c9fdefd212c4", null ],
     [ "MXC_I2S_ClearFlags", "group__i2s.html#gabb681ef254bf67f6652da18748766c5d", null ],
     [ "MXC_I2S_ConfigData", "group__i2s.html#ga5981df9127d06340164cf5f5c2bd68fd", null ],
     [ "MXC_I2S_DisableInt", "group__i2s.html#ga9b2857203f73170c4f07ce710bebff10", null ],
@@ -31,5 +47,7 @@ var group__i2s =
     [ "MXC_I2S_TransactionAsync", "group__i2s.html#gaf24367e32ae160027d456e9f8cb0273a", null ],
     [ "MXC_I2S_TXDisable", "group__i2s.html#ga640b17fbe37a6a25ea3bac6b90a40c54", null ],
     [ "MXC_I2S_TXDMAConfig", "group__i2s.html#gaa5ff23332a0f2a085dac268f1eda9975", null ],
-    [ "MXC_I2S_TXEnable", "group__i2s.html#gaa5d86a8f40d40994193f966e0e668f12", null ]
+    [ "MXC_I2S_TXEnable", "group__i2s.html#gaa5d86a8f40d40994193f966e0e668f12", null ],
+    [ "mxc_i2s_req_t::bitsWord", "group__i2s.html#ga3736972d909c5528d19886acd60ca37e", null ],
+    [ "mxc_i2s_req_t::sampleSize", "group__i2s.html#gad353f9339b434e7b38926662eb144c95", null ]
 ];

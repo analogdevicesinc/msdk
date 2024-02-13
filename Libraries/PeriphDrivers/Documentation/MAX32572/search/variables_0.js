@@ -18,5 +18,5 @@ var searchData=
   ['aes_5fkey7_15',['aes_key7',['../group__aes__key__registers.html#ad09528c1fb348e3a4f397fa9dd08ef0f',1,'mxc_aes_key_regs_t']]],
   ['authoffset_16',['authoffset',['../group__spixfm__registers.html#ad94dc28c2150c1e77a75ea3676f4cb2b',1,'mxc_spixfm_regs_t']]],
   ['autocmd_17',['autocmd',['../group__spixfc__registers.html#a3bafab421380b331ee60d9a0013dc94d',1,'mxc_spixfc_regs_t']]],
-  ['autocn_18',['autocn',['../group__spixfc__registers.html#afb83f5b81c5d88e7bc9c54a546dfaee5',1,'mxc_spixfc_regs_t']]]
+  ['autoctrl_18',['autoctrl',['../group__spixfc__registers.html#afabf7858c37040c46cc31b9d9d322722',1,'mxc_spixfc_regs_t']]]
 ];

@@ -1,5 +1,7 @@
 var group___s_k_b_d___i_n_t_e_n =
 [
+    [ "MXC_F_SKBD_INTEN_KBD_PINS", "group___s_k_b_d___i_n_t_e_n.html#ga8fdc46df31297cb5c20b58b5ebf85033", null ],
+    [ "MXC_F_SKBD_INTEN_KBD_PINS_POS", "group___s_k_b_d___i_n_t_e_n.html#ga3552318360fbf5c02c412e3a73772dc1", null ],
     [ "MXC_F_SKBD_INTEN_OVERRUN", "group___s_k_b_d___i_n_t_e_n.html#ga0e264289cf705cfa97b8efe8679ad69b", null ],
     [ "MXC_F_SKBD_INTEN_OVERRUN_POS", "group___s_k_b_d___i_n_t_e_n.html#gad844a0b1fdda83948a1fba668a795762", null ],
     [ "MXC_F_SKBD_INTEN_PUSH", "group___s_k_b_d___i_n_t_e_n.html#ga9737f2cbd239ecf3adc29f3d71e3a438", null ],

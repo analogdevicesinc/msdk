@@ -9,6 +9,7 @@ var group__skbd__registers =
     [ "SKBD_EVT", "group___s_k_b_d___e_v_t.html", "group___s_k_b_d___e_v_t" ],
     [ "SKBD_GPIO0", "group___s_k_b_d___g_p_i_o0.html", "group___s_k_b_d___g_p_i_o0" ],
     [ "SKBD_GPIO1", "group___s_k_b_d___g_p_i_o1.html", "group___s_k_b_d___g_p_i_o1" ],
+    [ "skbd_regs.h", "skbd__regs_8h.html", null ],
     [ "mxc_skbd_regs_t", "group__skbd__registers.html#structmxc__skbd__regs__t", [
       [ "ctrl0", "group__skbd__registers.html#a01beaa79871f6d4fa5ac69f6e29ab45d", null ],
       [ "ctrl1", "group__skbd__registers.html#adef50da3520f7ff420a0ef7fdaa17256", null ],

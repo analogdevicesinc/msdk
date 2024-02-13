@@ -11,5 +11,7 @@ var group___s_c_n___p_n =
     [ "MXC_F_SCN_PN_CRDIO", "group___s_c_n___p_n.html#ga1c2b9cce043d37a51d26bb484183c1d6", null ],
     [ "MXC_F_SCN_PN_CRDIO_POS", "group___s_c_n___p_n.html#ga8d919dbd050fab0064abff6ba38dcd0e", null ],
     [ "MXC_F_SCN_PN_CRDRST", "group___s_c_n___p_n.html#gafc3c60bdd12ae60fad28893c506b81b9", null ],
-    [ "MXC_F_SCN_PN_CRDRST_POS", "group___s_c_n___p_n.html#ga35fe4ec2b3c9d91d4f2b7d26ab1c43ab", null ]
+    [ "MXC_F_SCN_PN_CRDRST_POS", "group___s_c_n___p_n.html#ga35fe4ec2b3c9d91d4f2b7d26ab1c43ab", null ],
+    [ "MXC_F_SCN_PN_IO_C48_EN", "group___s_c_n___p_n.html#ga1293ac41cf54c510bffcaea68428227f", null ],
+    [ "MXC_F_SCN_PN_IO_C48_EN_POS", "group___s_c_n___p_n.html#gada0927dfbcc9c6fa9098ac933b30ffb4", null ]
 ];

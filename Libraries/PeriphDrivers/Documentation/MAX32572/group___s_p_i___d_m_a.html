@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group___s_p_i___d_m_a.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
-  <div class="headertitle"><div class="title">SPI_DMA<div class="ingroups"><a class="el" href="group__spi.html">Serial Peripheral Interface (SPI)</a> &raquo; <a class="el" href="group__spi__registers.html">SPI_Registers</a></div></div></div>
+  <div class="headertitle"><div class="title">SPI_DMA<div class="ingroups"><a class="el" href="group__spi.html">SPI</a> &raquo; <a class="el" href="group__spi__registers.html">SPI_Registers</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
@@ -108,10 +108,10 @@ Macros</h2></td></tr>
 <tr class="separator:gada8c24bc70283196654adb08b69b9e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaea39d4a596770a2ec2e057b1b9bb91d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#gaea39d4a596770a2ec2e057b1b9bb91d4">MXC_F_SPI_DMA_TX_LVL</a>&#160;&#160;&#160;((uint32_t)(0x3FUL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#gada8c24bc70283196654adb08b69b9e99">MXC_F_SPI_DMA_TX_LVL_POS</a>))</td></tr>
 <tr class="separator:gaea39d4a596770a2ec2e057b1b9bb91d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga97777d8e5a25a4c07bc5efaa8a18f819"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#ga97777d8e5a25a4c07bc5efaa8a18f819">MXC_F_SPI_DMA_DMA_TX_EN_POS</a>&#160;&#160;&#160;15</td></tr>
-<tr class="separator:ga97777d8e5a25a4c07bc5efaa8a18f819"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga45b3ae02cfe19194bd79a539f1127a4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#ga45b3ae02cfe19194bd79a539f1127a4c">MXC_F_SPI_DMA_DMA_TX_EN</a>&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#ga97777d8e5a25a4c07bc5efaa8a18f819">MXC_F_SPI_DMA_DMA_TX_EN_POS</a>))</td></tr>
-<tr class="separator:ga45b3ae02cfe19194bd79a539f1127a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14f9d8aab76c78dffff1b509d9865491"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#ga14f9d8aab76c78dffff1b509d9865491">MXC_F_SPI_DMA_TX_EN_POS</a>&#160;&#160;&#160;15</td></tr>
+<tr class="separator:ga14f9d8aab76c78dffff1b509d9865491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9dcf9646164f962747cbdcf991596e8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#gaf9dcf9646164f962747cbdcf991596e8">MXC_F_SPI_DMA_TX_EN</a>&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#ga14f9d8aab76c78dffff1b509d9865491">MXC_F_SPI_DMA_TX_EN_POS</a>))</td></tr>
+<tr class="separator:gaf9dcf9646164f962747cbdcf991596e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabc1c0907721c100288371d710cbf8063"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#gabc1c0907721c100288371d710cbf8063">MXC_F_SPI_DMA_RX_THD_VAL_POS</a>&#160;&#160;&#160;16</td></tr>
 <tr class="separator:gabc1c0907721c100288371d710cbf8063"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga065ebefafd128e332492cc61fdb47a63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#ga065ebefafd128e332492cc61fdb47a63">MXC_F_SPI_DMA_RX_THD_VAL</a>&#160;&#160;&#160;((uint32_t)(0x1FUL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#gabc1c0907721c100288371d710cbf8063">MXC_F_SPI_DMA_RX_THD_VAL_POS</a>))</td></tr>
@@ -128,71 +128,41 @@ Macros</h2></td></tr>
 <tr class="separator:gab54bb2c80909fa4ee418cae71bd03a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadbfb25a18d83c9bf39ea49c7cc816b20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#gadbfb25a18d83c9bf39ea49c7cc816b20">MXC_F_SPI_DMA_RX_LVL</a>&#160;&#160;&#160;((uint32_t)(0x3FUL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#gab54bb2c80909fa4ee418cae71bd03a86">MXC_F_SPI_DMA_RX_LVL_POS</a>))</td></tr>
 <tr class="separator:gadbfb25a18d83c9bf39ea49c7cc816b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaecbc88067785c454c246e6ad1e1bc858"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#gaecbc88067785c454c246e6ad1e1bc858">MXC_F_SPI_DMA_DMA_RX_EN_POS</a>&#160;&#160;&#160;31</td></tr>
-<tr class="separator:gaecbc88067785c454c246e6ad1e1bc858"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac138bfdd4df76d3f8ab58fe6d71dbc00"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#gac138bfdd4df76d3f8ab58fe6d71dbc00">MXC_F_SPI_DMA_DMA_RX_EN</a>&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#gaecbc88067785c454c246e6ad1e1bc858">MXC_F_SPI_DMA_DMA_RX_EN_POS</a>))</td></tr>
-<tr class="separator:gac138bfdd4df76d3f8ab58fe6d71dbc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7e6b6f1e75a8036347bc4e8a06b98d1d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#ga7e6b6f1e75a8036347bc4e8a06b98d1d">MXC_F_SPI_DMA_RX_EN_POS</a>&#160;&#160;&#160;31</td></tr>
+<tr class="separator:ga7e6b6f1e75a8036347bc4e8a06b98d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga90032db9f8da56e85dddfd228c0dd29d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_p_i___d_m_a.html#ga90032db9f8da56e85dddfd228c0dd29d">MXC_F_SPI_DMA_RX_EN</a>&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#ga7e6b6f1e75a8036347bc4e8a06b98d1d">MXC_F_SPI_DMA_RX_EN_POS</a>))</td></tr>
+<tr class="separator:ga90032db9f8da56e85dddfd228c0dd29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Register for controlling DMA. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="gac138bfdd4df76d3f8ab58fe6d71dbc00" name="gac138bfdd4df76d3f8ab58fe6d71dbc00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac138bfdd4df76d3f8ab58fe6d71dbc00">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_DMA_RX_EN</h2>
+<a id="ga90032db9f8da56e85dddfd228c0dd29d" name="ga90032db9f8da56e85dddfd228c0dd29d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90032db9f8da56e85dddfd228c0dd29d">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_RX_EN</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MXC_F_SPI_DMA_DMA_RX_EN&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#gaecbc88067785c454c246e6ad1e1bc858">MXC_F_SPI_DMA_DMA_RX_EN_POS</a>))</td>
+          <td class="memname">#define MXC_F_SPI_DMA_RX_EN&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#ga7e6b6f1e75a8036347bc4e8a06b98d1d">MXC_F_SPI_DMA_RX_EN_POS</a>))</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >DMA_DMA_RX_EN Mask </p>
+<p >DMA_RX_EN Mask </p>
 
 </div>
 </div>
-<a id="gaecbc88067785c454c246e6ad1e1bc858" name="gaecbc88067785c454c246e6ad1e1bc858"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaecbc88067785c454c246e6ad1e1bc858">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_DMA_RX_EN_POS</h2>
+<a id="ga7e6b6f1e75a8036347bc4e8a06b98d1d" name="ga7e6b6f1e75a8036347bc4e8a06b98d1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7e6b6f1e75a8036347bc4e8a06b98d1d">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_RX_EN_POS</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MXC_F_SPI_DMA_DMA_RX_EN_POS&#160;&#160;&#160;31</td>
+          <td class="memname">#define MXC_F_SPI_DMA_RX_EN_POS&#160;&#160;&#160;31</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >DMA_DMA_RX_EN Position </p>
-
-</div>
-</div>
-<a id="ga45b3ae02cfe19194bd79a539f1127a4c" name="ga45b3ae02cfe19194bd79a539f1127a4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga45b3ae02cfe19194bd79a539f1127a4c">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_DMA_TX_EN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MXC_F_SPI_DMA_DMA_TX_EN&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#ga97777d8e5a25a4c07bc5efaa8a18f819">MXC_F_SPI_DMA_DMA_TX_EN_POS</a>))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >DMA_DMA_TX_EN Mask </p>
-
-</div>
-</div>
-<a id="ga97777d8e5a25a4c07bc5efaa8a18f819" name="ga97777d8e5a25a4c07bc5efaa8a18f819"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga97777d8e5a25a4c07bc5efaa8a18f819">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_DMA_TX_EN_POS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MXC_F_SPI_DMA_DMA_TX_EN_POS&#160;&#160;&#160;15</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >DMA_DMA_TX_EN Position </p>
+<p >DMA_RX_EN Position </p>
 
 </div>
 </div>
@@ -313,6 +283,36 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p >DMA_RX_THD_VAL Position </p>
+
+</div>
+</div>
+<a id="gaf9dcf9646164f962747cbdcf991596e8" name="gaf9dcf9646164f962747cbdcf991596e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf9dcf9646164f962747cbdcf991596e8">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_TX_EN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MXC_F_SPI_DMA_TX_EN&#160;&#160;&#160;((uint32_t)(0x1UL &lt;&lt; <a class="el" href="group___s_p_i___d_m_a.html#ga14f9d8aab76c78dffff1b509d9865491">MXC_F_SPI_DMA_TX_EN_POS</a>))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >DMA_TX_EN Mask </p>
+
+</div>
+</div>
+<a id="ga14f9d8aab76c78dffff1b509d9865491" name="ga14f9d8aab76c78dffff1b509d9865491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga14f9d8aab76c78dffff1b509d9865491">&#9670;&nbsp;</a></span>MXC_F_SPI_DMA_TX_EN_POS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MXC_F_SPI_DMA_TX_EN_POS&#160;&#160;&#160;15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >DMA_TX_EN Position </p>
 
 </div>
 </div>
@@ -441,7 +441,7 @@ Macros</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 12 2023 13:32:06 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Feb 13 2024 22:35:09 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

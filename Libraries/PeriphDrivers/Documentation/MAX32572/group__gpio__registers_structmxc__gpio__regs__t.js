@@ -30,7 +30,7 @@ var group__gpio__registers_structmxc__gpio__regs__t =
     [ "outen_set", "group__gpio__registers.html#a5ba41ac1c1776c941c8e502e7b86bdfb", null ],
     [ "padctrl0", "group__gpio__registers.html#a5ce8578a8db8fe9ccf724fd5a4143afc", null ],
     [ "padctrl1", "group__gpio__registers.html#a1554ce7e4f4917c9d3659f8fdef65eec", null ],
-    [ "ps", "group__gpio__registers.html#a5a1d26602cf5c5fa9f23c0fcfa2ccb12", null ],
+    [ "pssel", "group__gpio__registers.html#ad88bf49b067c948255ded28f8a303259", null ],
     [ "srsel", "group__gpio__registers.html#a47d2d7a96dd66dee1572bb4c0ccf6f3b", null ],
     [ "vssel", "group__gpio__registers.html#a8d5d18509b33e19dcdd4f5b63d269f90", null ],
     [ "wken", "group__gpio__registers.html#a180fb4301217e58b8b04d69910d55e7d", null ],

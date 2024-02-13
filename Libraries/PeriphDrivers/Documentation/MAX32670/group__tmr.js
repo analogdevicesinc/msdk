@@ -10,9 +10,9 @@ var group__tmr =
       [ "pres", "group__tmr.html#a5003c035ba324f076222cc14167b5950", null ]
     ] ],
     [ "mxc_tmr_bit_mode_t", "group__tmr.html#gaa24c4c54f7c5e0ffef2d410c75e3c0ea", [
-      [ "TMR_BIT_MODE_32", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaab9b873c630fb356d87341905315c655b", null ],
-      [ "TMR_BIT_MODE_16A", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa996dbdde62a530e2fd51042c39ef1afe", null ],
-      [ "TMR_BIT_MODE_16B", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaaa67bbce5fdd5a3d57f1328d35b1a7501", null ]
+      [ "MXC_TMR_BIT_MODE_32", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa74fc1cc399896ba86b69bcf026406f94", null ],
+      [ "MXC_TMR_BIT_MODE_16A", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa26ba84d2eb7c0d256e1e03c58700d651", null ],
+      [ "MXC_TMR_BIT_MODE_16B", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc", null ]
     ] ],
     [ "mxc_tmr_clock_t", "group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83", [
       [ "MXC_TMR_APB_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c", null ],
@@ -23,35 +23,36 @@ var group__tmr =
       [ "MXC_TMR_80K_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a6333d67bf210e5146a28eb9820e6adbe", null ]
     ] ],
     [ "mxc_tmr_mode_t", "group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da", [
-      [ "TMR_MODE_ONESHOT", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daae7303dc834c0ee36694a2e25658792c9", null ],
-      [ "TMR_MODE_CONTINUOUS", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6a097db2261286e787a34eb08cc610aa", null ],
-      [ "TMR_MODE_COUNTER", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa8c51323e1a787e560b92a259c7d1a075", null ],
-      [ "TMR_MODE_PWM", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa8c99bcdde0f804e02fbd7c86ac069d9a", null ],
-      [ "TMR_MODE_CAPTURE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa1f3a7e9c5fb5deee163471e7212ded43", null ],
-      [ "TMR_MODE_COMPARE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daad99d98483fc55690aa9c78618cb3267e", null ],
-      [ "TMR_MODE_GATED", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daab0b90c2ef57ff7df5f9dda0ef72f7ab6", null ],
-      [ "TMR_MODE_CAPTURE_COMPARE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daafbb601e3292cb98d6dc282f19b20c444", null ]
+      [ "MXC_TMR_MODE_ONESHOT", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6b11b6cafb392b67e1641097778dc986", null ],
+      [ "MXC_TMR_MODE_CONTINUOUS", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daabcd9d29e94609eb514b54fb00f27eb9b", null ],
+      [ "MXC_TMR_MODE_COUNTER", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daaf44070db3f02ebb83722e8f4de92228b", null ],
+      [ "MXC_TMR_MODE_PWM", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa1a6d6bdab29679e47ad7927689702882", null ],
+      [ "MXC_TMR_MODE_CAPTURE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa9b893781cbeebd233e27ed47dae7e0ec", null ],
+      [ "MXC_TMR_MODE_COMPARE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daacf401e331379fec07e06d27ddd8ad0a5", null ],
+      [ "MXC_TMR_MODE_GATED", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daad637ba81b6daeb3542cb59c008ec4ce5", null ],
+      [ "MXC_TMR_MODE_CAPTURE_COMPARE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa3bc58b246a68511d5f78b4d465f0997d", null ],
+      [ "MXC_TMR_MODE_DUAL_EDGE", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daae87aa000232d7dab66684c13126d886d", null ]
     ] ],
     [ "mxc_tmr_pres_t", "group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3", [
-      [ "TMR_PRES_1", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3ab923668f522e031a8a1ed3a812c38fd2", null ],
-      [ "TMR_PRES_2", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3acf4e4b064505d5c9a2e68e07efdb8619", null ],
-      [ "TMR_PRES_4", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a4dca208928ecba6af6211d5e97de9aec", null ],
-      [ "TMR_PRES_8", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a0e06943c8ca12d3b6e687992acd00c61", null ],
-      [ "TMR_PRES_16", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af12d76322f02e0ae63b59963fdedd963", null ],
-      [ "TMR_PRES_32", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3aab033a113daa3d8be4b468a6cd22c9d4", null ],
-      [ "TMR_PRES_64", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a3dccec18243d070c9e013249436eb4d8", null ],
-      [ "TMR_PRES_128", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a0bc7367ebff4ea201cc9661b5af4443a", null ],
-      [ "TMR_PRES_256", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a0e142e82398d262742a4a5a8516092e4", null ],
-      [ "TMR_PRES_512", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af8be33d6101bc4f04414466279fc6774", null ],
-      [ "TMR_PRES_1024", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3aaf6eb6a98e9858679080ee8a0fc908d3", null ],
-      [ "TMR_PRES_2048", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a8e41d22d79da856177027eeaa31fe217", null ],
-      [ "TMR_PRES_4096", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3ac222ef58d33714e336a8488e88e6b358", null ]
+      [ "MXC_TMR_PRES_1", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3ab5fea17f034c388d90e31ee9869cf0c4", null ],
+      [ "MXC_TMR_PRES_2", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a2dc519470609a45c72752fc1fca43090", null ],
+      [ "MXC_TMR_PRES_4", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a092a0216aff8094e5842b7c309f182ad", null ],
+      [ "MXC_TMR_PRES_8", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a5cc7f8834c340319084d5357dbbbd45f", null ],
+      [ "MXC_TMR_PRES_16", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3afa69cc8c271bbf9ce13c19592b738a23", null ],
+      [ "MXC_TMR_PRES_32", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a9f9425aa14233bb29e9728cdda3bb453", null ],
+      [ "MXC_TMR_PRES_64", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a47aed942f49a783371b52087ca99e929", null ],
+      [ "MXC_TMR_PRES_128", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a8433dc773a16a2069688be2b3339ee70", null ],
+      [ "MXC_TMR_PRES_256", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3aa53c5372551a7af0a6458e960a561f98", null ],
+      [ "MXC_TMR_PRES_512", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af389f6d0d93bae6e93e6a83b3a98208e", null ],
+      [ "MXC_TMR_PRES_1024", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a62ef6702c74d1e591c3db28b35a8920c", null ],
+      [ "MXC_TMR_PRES_2048", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af20929e4d84c9953c398050564a78d3d", null ],
+      [ "MXC_TMR_PRES_4096", "group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af0d6582e3508e1f4221b979585329801", null ]
     ] ],
     [ "mxc_tmr_unit_t", "group__tmr.html#gaa0d647d7ed191977d06968a0594b9eeb", [
-      [ "TMR_UNIT_NANOSEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebab8f996e33a7db25ad4a9bdd0cd8c4683", null ],
-      [ "TMR_UNIT_MICROSEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba131e891bdd5c315820e1c997407e6400", null ],
-      [ "TMR_UNIT_MILLISEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebaf1b005e4ef751c17a37364cf002091be", null ],
-      [ "TMR_UNIT_SEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebacb8bc0791c9684cca5735d34747ff8eb", null ]
+      [ "MXC_TMR_UNIT_NANOSEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebab8bd9fe43f772df67b3b2dffbac083da", null ],
+      [ "MXC_TMR_UNIT_MICROSEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba8b9c044adc728b43871d1be68e55d118", null ],
+      [ "MXC_TMR_UNIT_MILLISEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba727d161251381d5bde5c66c9be6a1f81", null ],
+      [ "MXC_TMR_UNIT_SEC", "group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba3a58f8d48214a0685aa3a5b54d1a78c9", null ]
     ] ],
     [ "MXC_TMR_ClearFlags", "group__tmr.html#ga0cffb0acccf89461d81a330dda6639bb", null ],
     [ "MXC_TMR_Delay", "group__tmr.html#gaf5f910fb8442d3f8f716297b8f7c6cf5", null ],

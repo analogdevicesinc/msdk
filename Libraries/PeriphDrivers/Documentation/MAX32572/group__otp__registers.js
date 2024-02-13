@@ -8,6 +8,7 @@ var group__otp__registers =
     [ "OTP_WDATA", "group___o_t_p___w_d_a_t_a.html", "group___o_t_p___w_d_a_t_a" ],
     [ "OTP_ACTRL0", "group___o_t_p___a_c_t_r_l0.html", "group___o_t_p___a_c_t_r_l0" ],
     [ "OTP_ACTRL1", "group___o_t_p___a_c_t_r_l1.html", "group___o_t_p___a_c_t_r_l1" ],
+    [ "otp_regs.h", "otp__regs_8h.html", null ],
     [ "mxc_otp_regs_t", "group__otp__registers.html#structmxc__otp__regs__t", [
       [ "actrl0", "group__otp__registers.html#a21b27645b4319d9226fe6ac4015c1ef4", null ],
       [ "actrl1", "group__otp__registers.html#a9bc38e2f0ed2c903f4c6ad8ad73acb0e", null ],

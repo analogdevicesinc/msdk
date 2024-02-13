@@ -30,7 +30,7 @@ var group___g_p_i_o___register___offsets =
     [ "MXC_R_GPIO_OUTEN_SET", "group___g_p_i_o___register___offsets.html#gab2029e4a07c94b03038bb58a4ebae892", null ],
     [ "MXC_R_GPIO_PADCTRL0", "group___g_p_i_o___register___offsets.html#ga0708dc3d60594136d3903ead31d7d378", null ],
     [ "MXC_R_GPIO_PADCTRL1", "group___g_p_i_o___register___offsets.html#gaf423df4a0426a6d7bc9b8e8163c6398c", null ],
-    [ "MXC_R_GPIO_PS", "group___g_p_i_o___register___offsets.html#ga3f5e991f9954a9be74d40e3d41707266", null ],
+    [ "MXC_R_GPIO_PSSEL", "group___g_p_i_o___register___offsets.html#ga03a5281be8bf7227d83c8c579f1c85c7", null ],
     [ "MXC_R_GPIO_SRSEL", "group___g_p_i_o___register___offsets.html#ga74b38bf05fae5bf319091085feb9c838", null ],
     [ "MXC_R_GPIO_VSSEL", "group___g_p_i_o___register___offsets.html#ga263d5b2fe4fa353b8ca726894799497d", null ],
     [ "MXC_R_GPIO_WKEN", "group___g_p_i_o___register___offsets.html#gac7228686b2faac049221c6a125767120", null ],

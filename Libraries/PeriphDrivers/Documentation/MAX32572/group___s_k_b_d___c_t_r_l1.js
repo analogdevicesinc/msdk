@@ -1,9 +1,9 @@
 var group___s_k_b_d___c_t_r_l1 =
 [
-    [ "MXC_F_SKBD_CTRL1_AUTOEN", "group___s_k_b_d___c_t_r_l1.html#ga59b6e18431f38eef045b0a68bf9cd62a", null ],
-    [ "MXC_F_SKBD_CTRL1_AUTOEN_POS", "group___s_k_b_d___c_t_r_l1.html#ga1f44d91af6ff9f93d44d9833853f5ab8", null ],
-    [ "MXC_F_SKBD_CTRL1_CLEAR", "group___s_k_b_d___c_t_r_l1.html#gabccdfdd2b9b1bd04afdd1876335a69ce", null ],
-    [ "MXC_F_SKBD_CTRL1_CLEAR_POS", "group___s_k_b_d___c_t_r_l1.html#gadb72691964c01b0fd3f56e4d1ec09db1", null ],
+    [ "MXC_F_SKBD_CTRL1_AUTOCLEAR", "group___s_k_b_d___c_t_r_l1.html#ga93dc4d52b8aa113eb7f93f4fc7756e7b", null ],
+    [ "MXC_F_SKBD_CTRL1_AUTOCLEAR_POS", "group___s_k_b_d___c_t_r_l1.html#ga836217297c08f4639c07c40dcb38c801", null ],
+    [ "MXC_F_SKBD_CTRL1_AUTOSCAN_EN", "group___s_k_b_d___c_t_r_l1.html#gaac630c6269be2e1fc45aae4651b6892b", null ],
+    [ "MXC_F_SKBD_CTRL1_AUTOSCAN_EN_POS", "group___s_k_b_d___c_t_r_l1.html#gafc8aba3d10a7eee2b2a94c4ebafa81b9", null ],
     [ "MXC_F_SKBD_CTRL1_DBTM", "group___s_k_b_d___c_t_r_l1.html#gac7fb3e1bea57fd8a5f56de5410b8e6c6", null ],
     [ "MXC_F_SKBD_CTRL1_DBTM_POS", "group___s_k_b_d___c_t_r_l1.html#ga0e2ef58e437918287fefdd82e4f6725f", null ],
     [ "MXC_F_SKBD_CTRL1_OUTNUM", "group___s_k_b_d___c_t_r_l1.html#ga03345832fce796ae17ee7d0001e6a050", null ],

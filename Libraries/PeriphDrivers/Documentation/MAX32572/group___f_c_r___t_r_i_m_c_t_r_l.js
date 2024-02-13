@@ -1,0 +1,25 @@
+var group___f_c_r___t_r_i_m_c_t_r_l =
+[
+    [ "MXC_F_FCR_TRIMCTRL_MSR_R1", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga8fbc211fb2210ecbeb4a9850ea3f11c8", null ],
+    [ "MXC_F_FCR_TRIMCTRL_MSR_R1_POS", "group___f_c_r___t_r_i_m_c_t_r_l.html#gab318ef9ecc58d133a278e83b82936ec2", null ],
+    [ "MXC_F_FCR_TRIMCTRL_MSR_R2", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga1691db10acef2109750eb9125dbdca18", null ],
+    [ "MXC_F_FCR_TRIMCTRL_MSR_R2_POS", "group___f_c_r___t_r_i_m_c_t_r_l.html#gae2d359d1927f80dedb1cf1bdac1f7b60", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R1_0K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga0c07ca38299273422f8a1c2640fb5b6f", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R1_1P2K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga611464c6f276001c6522975fad7483be", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R1_2P4K", "group___f_c_r___t_r_i_m_c_t_r_l.html#gaa7653f6d7e6800fd4b198d18d4755e91", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R1_4P8K", "group___f_c_r___t_r_i_m_c_t_r_l.html#gab1e80543113d2d4f5c742a0b7331b39d", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R2_12K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga8bc05d41f1e84a7ca3465d8f13ceffca", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R2_24K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga20ba28d16b4f5cf12801dd4b3f2ed0d5", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R2_3K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga01a86dad01a21dba40d60c580018278c", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R2_6K", "group___f_c_r___t_r_i_m_c_t_r_l.html#gab6e8fd09d2b2127e30f228947b7ce0c8", null ],
+    [ "MXC_S_FCR_TRIMCTRL_MSR_R2_OPEN", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga5f5cb40b322c116dfa3fe2aa1c40eab0", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R1_0K", "group___f_c_r___t_r_i_m_c_t_r_l.html#gaeef3dbdc0d0f3bdc820b517279e45580", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R1_1P2K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga87b8c69d0a82a699384399a418d6cfdb", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R1_2P4K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga9310b7912833b8a5b5a1ef0d06847481", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R1_4P8K", "group___f_c_r___t_r_i_m_c_t_r_l.html#gaa66c6cf559657c129a2c003a3a9042f3", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R2_12K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga821ecae3e44d130ec92c2bb5e21ea75e", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R2_24K", "group___f_c_r___t_r_i_m_c_t_r_l.html#gabe59d9edafe15f2e803185d76a693368", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R2_3K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga45bb6917c72bdba5dc031aba179e8920", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R2_6K", "group___f_c_r___t_r_i_m_c_t_r_l.html#ga3c3b89baf480af890fdce403377e4b4d", null ],
+    [ "MXC_V_FCR_TRIMCTRL_MSR_R2_OPEN", "group___f_c_r___t_r_i_m_c_t_r_l.html#gadf0713b1baf1530ef0416f126ff18007", null ]
+];

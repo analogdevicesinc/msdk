@@ -1,9 +1,9 @@
 var group___g_p_i_o___d_u_a_l_e_d_g_e =
 [
-    [ "MXC_F_GPIO_DUALEDGE_GPIO_DUALEDGE", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gae20ea4ab9b17f855f403730eb4a074e1", null ],
-    [ "MXC_F_GPIO_DUALEDGE_GPIO_DUALEDGE_POS", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gace6f628bc3913d7432d037a312326eb1", null ],
-    [ "MXC_S_GPIO_DUALEDGE_GPIO_DUALEDGE_EN", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gac714408ae0373b0ff172a77874daf298", null ],
-    [ "MXC_S_GPIO_DUALEDGE_GPIO_DUALEDGE_NO", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#ga856870e57d4415a4690fc5c6bb02d8ba", null ],
-    [ "MXC_V_GPIO_DUALEDGE_GPIO_DUALEDGE_EN", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#ga2a3d8cbd5f612a099da8cd74c7f0af03", null ],
-    [ "MXC_V_GPIO_DUALEDGE_GPIO_DUALEDGE_NO", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gae7843f7ae9e2173efe8cc04453c2b16e", null ]
+    [ "MXC_F_GPIO_DUALEDGE_ALL", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#ga4a9cec018445c4f7d4281ba24b05d350", null ],
+    [ "MXC_F_GPIO_DUALEDGE_ALL_POS", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#ga90a7733f1403bfea9250e2c51dc3b48e", null ],
+    [ "MXC_S_GPIO_DUALEDGE_ALL_EN", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gaf3b3d33fb3f68f837079644c6db1e69a", null ],
+    [ "MXC_S_GPIO_DUALEDGE_ALL_NO", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gaca3302f3a3f42f4b29476da5f64b6217", null ],
+    [ "MXC_V_GPIO_DUALEDGE_ALL_EN", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gaf35ea631d520d1b25484481b8aafb7ff", null ],
+    [ "MXC_V_GPIO_DUALEDGE_ALL_NO", "group___g_p_i_o___d_u_a_l_e_d_g_e.html#gad1fc751a59d75739da47f71786d7739b", null ]
 ];

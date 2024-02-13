@@ -1,6 +1,7 @@
 var group__rtc__registers =
 [
     [ "Register Offsets", "group___r_t_c___register___offsets.html", "group___r_t_c___register___offsets" ],
+    [ "RTC_SEC", "group___r_t_c___s_e_c.html", "group___r_t_c___s_e_c" ],
     [ "RTC_SSEC", "group___r_t_c___s_s_e_c.html", "group___r_t_c___s_s_e_c" ],
     [ "RTC_RAS", "group___r_t_c___r_a_s.html", "group___r_t_c___r_a_s" ],
     [ "RTC_RSSA", "group___r_t_c___r_s_s_a.html", "group___r_t_c___r_s_s_a" ],

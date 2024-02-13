@@ -90,171 +90,142 @@ $(document).ready(function(){initNavTree('hart__uart_8h_source.html',''); initRe
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/******************************************************************************</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * (now owned by Analog Devices, Inc.)</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * to deal in the Software without restriction, including without limitation</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * the rights to use, copy, modify, merge, publish, distribute, sublicense,</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * and/or sell copies of the Software, and to permit persons to whom the</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Software is furnished to do so, subject to the following conditions:</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * The above copyright notice and this permission notice shall be included</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * in all copies or substantial portions of the Software.</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * OTHER DEALINGS IN THE SOFTWARE.</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> * Except as contained in this notice, the name of Maxim Integrated</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * Products, Inc. shall not be used except as stated in the Maxim Integrated</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * Products, Inc. Branding Policy.</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> * The mere transfer of this software does not imply any licenses</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * of trade secrets, proprietary technology, copyrights, patents,</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> * trademarks, maskwork rights, or any other form of intellectual</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> * property whatsoever. Maxim Integrated Products, Inc. retains all</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> * ownership rights.</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> ******************************************************************************</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> * Copyright 2023 Analog Devices, Inc.</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"> ******************************************************************************/</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">/***** Includes *******/</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#include &quot;stdint.h&quot;</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#include &quot;afe.h&quot;</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#include &quot;<a class="code" href="afe__adc__zero__regs_8h.html">afe_adc_zero_regs.h</a>&quot;</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#include &quot;<a class="code" href="afe__adc__one__regs_8h.html">afe_adc_one_regs.h</a>&quot;</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#include &quot;<a class="code" href="afe__dac__regs_8h.html">afe_dac_regs.h</a>&quot;</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#include &quot;<a class="code" href="afe__hart__regs_8h.html">afe_hart_regs.h</a>&quot;</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#include &quot;mxc_assert.h&quot;</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">/***** Definitions *****/</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#define NORMAL_HART_TRANSCEIVE_MODE 0</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#define HART_TEST_MODE_TX_1200 1</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#define HART_TEST_MODE_TX_2200 2</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * (now owned by Analog Devices, Inc.),</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * is proprietary to Analog Devices, Inc. and its licensors.</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">/***** Includes *******/</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;stdint.h&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;afe.h&quot;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;<a class="code" href="afe__adc__zero__regs_8h.html">afe_adc_zero_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;<a class="code" href="afe__adc__one__regs_8h.html">afe_adc_one_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &quot;<a class="code" href="afe__dac__regs_8h.html">afe_dac_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &quot;<a class="code" href="afe__hart__regs_8h.html">afe_hart_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;mxc_assert.h&quot;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/***** Definitions *****/</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#define NORMAL_HART_TRANSCEIVE_MODE 0</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#define HART_TEST_MODE_TX_1200 1</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#define HART_TEST_MODE_TX_2200 2</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#define HART_TEST_MODE_EXTERNAL 3</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#define TPDLL_COMM_ERROR_INDICATOR 0x80</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#define TPDLL_VERTICAL_PARITY_ERROR 0x40</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#define TPDLL_OVERRUN_ERROR 0x20</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#define TPDLL_FRAMING_ERROR 0x10</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define TPDLL_BUFFER_OVERFLOW_ERROR 0x02</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#define HART_STATE_IDLE 0</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#define HART_STATE_TRANSMIT 1</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#define HART_STATE_RECEIVE_ACTIVE 2</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// Note: no flag in UARTn_INT_FL register map for buffer overflow since</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">//      since its a SW error</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#define UART_FLAG_BUFFER_OVERFLOW_ERROR 0x80</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">typedef</span> void (*reset_confirm_callback_t)(void);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">typedef</span> void (*enable_confirm_callback_t)(uint32_t);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="keyword">typedef</span> void (*enable_indicate_callback_t)(uint32_t);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">typedef</span> void (*data_confirm_callback_t)(uint8_t);</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#define TPDLL_COMM_ERROR_INDICATOR 0x80</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#define TPDLL_VERTICAL_PARITY_ERROR 0x40</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#define TPDLL_OVERRUN_ERROR 0x20</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#define TPDLL_FRAMING_ERROR 0x10</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#define TPDLL_BUFFER_OVERFLOW_ERROR 0x02</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">#define HART_STATE_IDLE 0</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#define HART_STATE_TRANSMIT 1</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">#define HART_STATE_RECEIVE_ACTIVE 2</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">// Note: no flag in UARTn_INT_FL register map for buffer overflow since</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">//      since its a SW error</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#define UART_FLAG_BUFFER_OVERFLOW_ERROR 0x80</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">typedef</span> void (*data_indicate_callback_t)(uint8_t);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">typedef</span> void (*error_indicate_callback_t)(uint8_t, uint8_t);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html">   86</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83">   87</a></span>    reset_confirm_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83">reset_confirm_cb</a>; </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200">   88</a></span>    enable_confirm_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200">enable_confirm_cb</a>; </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac">   89</a></span>    enable_indicate_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac">enable_indicate_cb</a>; </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd">   90</a></span>    data_confirm_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd">data_confirm_cb</a>; </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577">   91</a></span>    data_indicate_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577">data_indicate_cb</a>; </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    error_indicate_callback_t</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0">   93</a></span>        <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0">error_indicate_cb</a>; </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>} <a class="code hl_struct" href="structhart__uart__callbacks__t.html">hart_uart_callbacks_t</a>;</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">typedef</span> void (*reset_confirm_callback_t)(void);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">typedef</span> void (*enable_confirm_callback_t)(uint32_t);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">typedef</span> void (*enable_indicate_callback_t)(uint32_t);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keyword">typedef</span> void (*data_confirm_callback_t)(uint8_t);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">/***** Function Prototypes *****/</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">int</span> hart_uart_setup(uint32_t test_mode);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">typedef</span> void (*data_indicate_callback_t)(uint8_t);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keyword">typedef</span> void (*error_indicate_callback_t)(uint8_t, uint8_t);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html">  115</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83">  116</a></span>    reset_confirm_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83">reset_confirm_cb</a>; </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200">  117</a></span>    enable_confirm_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200">enable_confirm_cb</a>; </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac">  118</a></span>    enable_indicate_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac">enable_indicate_cb</a>; </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd">  119</a></span>    data_confirm_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd">data_confirm_cb</a>; </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577">  120</a></span>    data_indicate_callback_t <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577">data_indicate_cb</a>; </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    error_indicate_callback_t</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0">  122</a></span>        <a class="code hl_variable" href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0">error_indicate_cb</a>; </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>} <a class="code hl_struct" href="structhart__uart__callbacks__t.html">hart_uart_callbacks_t</a>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment">/***** Function Prototypes *****/</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="keywordtype">int</span> hart_uart_setup(uint32_t test_mode);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keywordtype">void</span> hart_uart_setup_saps(<a class="code hl_struct" href="structhart__uart__callbacks__t.html">hart_uart_callbacks_t</a> callbacks);</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="keywordtype">int</span> hart_uart_enable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keywordtype">int</span> hart_uart_disable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="keywordtype">void</span> hart_uart_test_transmit_1200(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keywordtype">void</span> hart_uart_test_transmit_2200(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="keywordtype">int</span> hart_uart_send(uint8_t *data, uint32_t length);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keywordtype">void</span> hart_uart_setup_saps(<a class="code hl_struct" href="structhart__uart__callbacks__t.html">hart_uart_callbacks_t</a> callbacks);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keywordtype">int</span> hart_uart_enable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keywordtype">int</span> hart_uart_disable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keywordtype">void</span> hart_uart_test_transmit_1200(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="keywordtype">void</span> hart_uart_test_transmit_2200(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="keywordtype">int</span> hart_uart_send(uint8_t *data, uint32_t length);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keywordtype">int</span> hart_uart_check_transmit_complete(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keywordtype">int</span> hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length, uint32_t *comm_errors);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="keywordtype">void</span> hart_uart_handler(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keywordtype">int</span> hart_uart_check_transmit_complete(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="keywordtype">int</span> hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length, uint32_t *comm_errors);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keywordtype">void</span> hart_uart_handler(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keywordtype">void</span> hart_rts_receive_mode(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="keywordtype">void</span> hart_rts_transmit_mode(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="keywordtype">int</span> hart_clock_enable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="keywordtype">void</span> hart_clock_disable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keywordtype">void</span> hart_sap_reset_request(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="keywordtype">int</span> hart_sap_data_request(uint8_t data);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keywordtype">void</span> hart_sap_enable_request(uint32_t state);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>}</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keywordtype">void</span> hart_rts_receive_mode(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="keywordtype">void</span> hart_rts_transmit_mode(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keywordtype">int</span> hart_clock_enable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keywordtype">void</span> hart_clock_disable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="keywordtype">void</span> hart_sap_reset_request(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keywordtype">int</span> hart_sap_data_request(uint8_t data);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keywordtype">void</span> hart_sap_enable_request(uint32_t state);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>}</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_</span></div>
 <div class="ttc" id="aafe__adc__one__regs_8h_html"><div class="ttname"><a href="afe__adc__one__regs_8h.html">afe_adc_one_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the AFE_ADC_ONE Peripheral Module.</div></div>
 <div class="ttc" id="aafe__adc__zero__regs_8h_html"><div class="ttname"><a href="afe__adc__zero__regs_8h.html">afe_adc_zero_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the AFE_ADC_ZERO Peripheral Module.</div></div>
 <div class="ttc" id="aafe__dac__regs_8h_html"><div class="ttname"><a href="afe__dac__regs_8h.html">afe_dac_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the AFE_DAC Peripheral Module.</div></div>
 <div class="ttc" id="aafe__hart__regs_8h_html"><div class="ttname"><a href="afe__hart__regs_8h.html">afe_hart_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the AFE_HART Peripheral Module.</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html"><div class="ttname"><a href="structhart__uart__callbacks__t.html">hart_uart_callbacks_t</a></div><div class="ttdef"><b>Definition:</b> hart_uart.h:115</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html_a4396c2fe64b83704667033dd855b24a0"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0">hart_uart_callbacks_t::error_indicate_cb</a></div><div class="ttdeci">error_indicate_callback_t error_indicate_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:122</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html_a606c373a9df92ff9525db12ed7de5577"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577">hart_uart_callbacks_t::data_indicate_cb</a></div><div class="ttdeci">data_indicate_callback_t data_indicate_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:120</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html_a8cc99ca76e2c53914c4a59007e387bbd"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd">hart_uart_callbacks_t::data_confirm_cb</a></div><div class="ttdeci">data_confirm_callback_t data_confirm_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:119</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html_a8de530c8b7d9ce43dbef6fb523282dac"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac">hart_uart_callbacks_t::enable_indicate_cb</a></div><div class="ttdeci">enable_indicate_callback_t enable_indicate_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:118</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html_ac3e6abbd56bd3d4cd1339c73c4bdb200"><div class="ttname"><a href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200">hart_uart_callbacks_t::enable_confirm_cb</a></div><div class="ttdeci">enable_confirm_callback_t enable_confirm_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:117</div></div>
-<div class="ttc" id="astructhart__uart__callbacks__t_html_aca30327730730ab538a304dba2f9db83"><div class="ttname"><a href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83">hart_uart_callbacks_t::reset_confirm_cb</a></div><div class="ttdeci">reset_confirm_callback_t reset_confirm_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:116</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html"><div class="ttname"><a href="structhart__uart__callbacks__t.html">hart_uart_callbacks_t</a></div><div class="ttdef"><b>Definition:</b> hart_uart.h:86</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html_a4396c2fe64b83704667033dd855b24a0"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0">hart_uart_callbacks_t::error_indicate_cb</a></div><div class="ttdeci">error_indicate_callback_t error_indicate_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:93</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html_a606c373a9df92ff9525db12ed7de5577"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577">hart_uart_callbacks_t::data_indicate_cb</a></div><div class="ttdeci">data_indicate_callback_t data_indicate_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:91</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html_a8cc99ca76e2c53914c4a59007e387bbd"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd">hart_uart_callbacks_t::data_confirm_cb</a></div><div class="ttdeci">data_confirm_callback_t data_confirm_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:90</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html_a8de530c8b7d9ce43dbef6fb523282dac"><div class="ttname"><a href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac">hart_uart_callbacks_t::enable_indicate_cb</a></div><div class="ttdeci">enable_indicate_callback_t enable_indicate_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:89</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html_ac3e6abbd56bd3d4cd1339c73c4bdb200"><div class="ttname"><a href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200">hart_uart_callbacks_t::enable_confirm_cb</a></div><div class="ttdeci">enable_confirm_callback_t enable_confirm_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:88</div></div>
+<div class="ttc" id="astructhart__uart__callbacks__t_html_aca30327730730ab538a304dba2f9db83"><div class="ttname"><a href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83">hart_uart_callbacks_t::reset_confirm_cb</a></div><div class="ttdeci">reset_confirm_callback_t reset_confirm_cb</div><div class="ttdef"><b>Definition:</b> hart_uart.h:87</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_03f1957c86f3d9e3a649879bc454c302.html">MAX32675</a></li><li class="navelem"><b>hart_uart.h</b></li>
-    <li class="footer">Generated on Tue Dec 12 2023 13:32:34 for MAX32675 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Feb 13 2024 22:35:37 for MAX32675 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -1,11 +1,11 @@
 var group___g_p_i_o___p_a_d_c_t_r_l1 =
 [
-    [ "MXC_F_GPIO_PADCTRL1_GPIO_PADCTRL1", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga0fa39b0b9b2215efadd976ebc2bd289a", null ],
-    [ "MXC_F_GPIO_PADCTRL1_GPIO_PADCTRL1_POS", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga634ae16a72e0b6571223e3f1787dc2b3", null ],
-    [ "MXC_S_GPIO_PADCTRL1_GPIO_PADCTRL1_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga82cfdaf11b4f9c095712eb95188d6f57", null ],
-    [ "MXC_S_GPIO_PADCTRL1_GPIO_PADCTRL1_PD", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga619e0a601a41eaf10b59b285779c33cb", null ],
-    [ "MXC_S_GPIO_PADCTRL1_GPIO_PADCTRL1_PU", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga0560ba4408a1dc1aacf0a9b7779b5be1", null ],
-    [ "MXC_V_GPIO_PADCTRL1_GPIO_PADCTRL1_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l1.html#gaee83603c2083b8f43c06c601c4b24cd4", null ],
-    [ "MXC_V_GPIO_PADCTRL1_GPIO_PADCTRL1_PD", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga62535d350ca03938fa681c808f292e5e", null ],
-    [ "MXC_V_GPIO_PADCTRL1_GPIO_PADCTRL1_PU", "group___g_p_i_o___p_a_d_c_t_r_l1.html#gafd1215ee046e416b0138954dc5824758", null ]
+    [ "MXC_F_GPIO_PADCTRL1_ALL", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga9b65a4ccd69cfff415926526ccc10e71", null ],
+    [ "MXC_F_GPIO_PADCTRL1_ALL_POS", "group___g_p_i_o___p_a_d_c_t_r_l1.html#gadb81a6c016a2d96fe63e0fe92f9e75ec", null ],
+    [ "MXC_S_GPIO_PADCTRL1_ALL_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga7bc623651aef16355604bf8bd454ac7e", null ],
+    [ "MXC_S_GPIO_PADCTRL1_ALL_PD", "group___g_p_i_o___p_a_d_c_t_r_l1.html#gab79e790eafc0aff6541b4260aa005e7d", null ],
+    [ "MXC_S_GPIO_PADCTRL1_ALL_PU", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga08c2a02a22165be4a1252e193d6e89d4", null ],
+    [ "MXC_V_GPIO_PADCTRL1_ALL_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga66cdc242e0aff797a00a746d8cad0010", null ],
+    [ "MXC_V_GPIO_PADCTRL1_ALL_PD", "group___g_p_i_o___p_a_d_c_t_r_l1.html#gac017de439be3b3cb79f5b7c7feb4c89f", null ],
+    [ "MXC_V_GPIO_PADCTRL1_ALL_PU", "group___g_p_i_o___p_a_d_c_t_r_l1.html#ga64e616684b289ac5d51b4858b1cb6418", null ]
 ];

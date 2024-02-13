@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('group__ctb__registers.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
+<a href="#files">Files</a> &#124;
 <a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle"><div class="title">CTB_Registers<div class="ingroups"><a class="el" href="group__ctb.html">CTB</a></div></div></div>
 </div><!--header-->
@@ -162,6 +163,15 @@ Modules</h2></td></tr>
 <tr class="memitem:group___c_t_b___s_c_a___o_p___b_u_f_f___a_d_d_r"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_t_b___s_c_a___o_p___b_u_f_f___a_d_d_r.html">CTB_SCA_OP_BUFF_ADDR</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group___c_t_b___s_c_a___m_o_d_d_a_t_a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_t_b___s_c_a___m_o_d_d_a_t_a.html">CTB_SCA_MODDATA</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group___c_t_b___s_c_a___n_r_n_g"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_t_b___s_c_a___n_r_n_g.html">CTB_SCA_NRNG</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group___c_t_b___s_c_a___w_a_s_h"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_t_b___s_c_a___w_a_s_h.html">CTB_SCA_WASH</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:ctb__regs_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ctb__regs_8h.html">ctb_regs.h</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -257,6 +267,10 @@ Data Structures</h2></td></tr>
 <tr class="separator:ae80a18c9363568b4e57ae74b63f017db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af81e072790187ff8cb8919e52bf1d8d0"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ctb__registers.html#af81e072790187ff8cb8919e52bf1d8d0">sca_moddata</a></td></tr>
 <tr class="separator:af81e072790187ff8cb8919e52bf1d8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83b9204d88d250d9c098687711587bf7"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ctb__registers.html#a83b9204d88d250d9c098687711587bf7">sca_nrng</a></td></tr>
+<tr class="separator:a83b9204d88d250d9c098687711587bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86bf6d89725d16a162610bd5533f7fb8"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ctb__registers.html#a86bf6d89725d16a162610bd5533f7fb8">sca_wash</a></td></tr>
+<tr class="separator:a86bf6d89725d16a162610bd5533f7fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h4 class="groupheader">Field Documentation</h4>
 <a id="ad8e1e6bef68139a50614df6c82c9be04" name="ad8e1e6bef68139a50614df6c82c9be04"></a>
@@ -619,6 +633,21 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
+<a id="a83b9204d88d250d9c098687711587bf7" name="a83b9204d88d250d9c098687711587bf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83b9204d88d250d9c098687711587bf7">&#9670;&nbsp;</a></span>sca_nrng</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__IO uint32_t sca_nrng</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x734:</code></b> CTB SCA_NRNG Register </p>
+
+</div>
+</div>
 <a id="ae80a18c9363568b4e57ae74b63f017db" name="ae80a18c9363568b4e57ae74b63f017db"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae80a18c9363568b4e57ae74b63f017db">&#9670;&nbsp;</a></span>sca_op_buff_addr</h2>
 
@@ -769,6 +798,21 @@ Data Structures</h2></td></tr>
 
 </div>
 </div>
+<a id="a86bf6d89725d16a162610bd5533f7fb8" name="a86bf6d89725d16a162610bd5533f7fb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86bf6d89725d16a162610bd5533f7fb8">&#9670;&nbsp;</a></span>sca_wash</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__IO uint32_t sca_wash</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x738:</code></b> CTB SCA_WASH Register </p>
+
+</div>
+</div>
 <a id="af1a4b2dc9792c4051c5f97ef7887f0fd" name="af1a4b2dc9792c4051c5f97ef7887f0fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af1a4b2dc9792c4051c5f97ef7887f0fd">&#9670;&nbsp;</a></span>tagmic</h2>
 
@@ -792,7 +836,7 @@ Data Structures</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 12 2023 13:32:05 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Feb 13 2024 22:35:09 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

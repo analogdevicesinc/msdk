@@ -13,18 +13,19 @@ var group__scn__registers =
     [ "SCN_TXR", "group___s_c_n___t_x_r.html", "group___s_c_n___t_x_r" ],
     [ "SCN_RXR", "group___s_c_n___r_x_r.html", "group___s_c_n___r_x_r" ],
     [ "SCN_CCR", "group___s_c_n___c_c_r.html", "group___s_c_n___c_c_r" ],
+    [ "scn_regs.h", "scn__regs_8h.html", null ],
     [ "mxc_scn_regs_t", "group__scn__registers.html#structmxc__scn__regs__t", [
-      [ "SC_CCR", "group__scn__registers.html#ab90f624ef3cb8c4ec39f65e83db5a28a", null ],
-      [ "SC_CR", "group__scn__registers.html#a43d295c218769e910a1d0cba146ca7ca", null ],
-      [ "SC_ETUR", "group__scn__registers.html#a53e06fee41f43ce51981d261be482d1b", null ],
-      [ "SC_GTR", "group__scn__registers.html#a208a17d48beac6178d76dd8c99c73b5d", null ],
-      [ "SC_IER", "group__scn__registers.html#a55a46a2ca13bbea9aadab7b6b7c21c42", null ],
-      [ "SC_ISR", "group__scn__registers.html#a81a3e86f7c4d688b05ed3b05383e24dc", null ],
-      [ "SC_PN", "group__scn__registers.html#a3e8421a7416e4829721bd710e551eb6c", null ],
-      [ "SC_RXR", "group__scn__registers.html#ac68248d7247f5778c190fc0f32c38296", null ],
-      [ "SC_SR", "group__scn__registers.html#a30385983ccf5e77d5ee8eb82138d65d9", null ],
-      [ "SC_TXR", "group__scn__registers.html#a27606eb0d4aa409d5ce653c4f2f87ac6", null ],
-      [ "SC_WT0R", "group__scn__registers.html#ad378ac36e797741e81fee16690070504", null ],
-      [ "SC_WT1R", "group__scn__registers.html#a6b665c90fc778724a9c64ebfa21332d4", null ]
+      [ "ccr", "group__scn__registers.html#ab5313cbd938dbc79687ec64f835ed61e", null ],
+      [ "cr", "group__scn__registers.html#aca366ab15cfbbd67e1235d33fe2c1a7e", null ],
+      [ "etur", "group__scn__registers.html#ae477534daecdac340d1a5816ffd5b871", null ],
+      [ "gtr", "group__scn__registers.html#a67828c77e4c1e888d4c4b3a0e73420dc", null ],
+      [ "ier", "group__scn__registers.html#a0d4794d6dcd2af21dc604a2b3616352e", null ],
+      [ "isr", "group__scn__registers.html#a5688fcdb2e1d46b14da9a9d4e02436e9", null ],
+      [ "pn", "group__scn__registers.html#a6403c063571f5df008d2bb08ec00342b", null ],
+      [ "rxr", "group__scn__registers.html#a43f9116ba2baa02b6add958249922a8b", null ],
+      [ "sr", "group__scn__registers.html#a27bd59373a3c3b2a4e9322fde99f6f4c", null ],
+      [ "txr", "group__scn__registers.html#a58fb28e38e12aeb2abf6d2779cc9290b", null ],
+      [ "wt0r", "group__scn__registers.html#a94fd018752ee82cc4d818e4adc59fa95", null ],
+      [ "wt1r", "group__scn__registers.html#a70cbf381c785d4bf434499226c658ed4", null ]
     ] ]
 ];

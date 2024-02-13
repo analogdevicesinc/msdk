@@ -113,10 +113,13 @@ var group__mxc__sys =
     [ "MXC_SYS_ClockSourceEnable", "group__mxc__sys.html#gae281e8f30ddaa90d30ba423c84f9b993", null ],
     [ "MXC_SYS_Crit_Enter", "group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44", null ],
     [ "MXC_SYS_Crit_Exit", "group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0", null ],
+    [ "MXC_SYS_GetClockDiv", "group__mxc__sys.html#gaf97d7a9daa7beb54ff5c3e169d9c7ab5", null ],
     [ "MXC_SYS_GetUSN", "group__mxc__sys.html#ga64494ce7b5aa5ee70e716f6a02f30d81", null ],
     [ "MXC_SYS_In_Crit_Section", "group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229", null ],
     [ "MXC_SYS_IsClockEnabled", "group__mxc__sys.html#ga99851205dae88b405f598e68fe984943", null ],
+    [ "MXC_SYS_LockDAP_Permanent", "group__mxc__sys.html#ga1c5d4a29edae167a9480becd6e51b471", null ],
     [ "MXC_SYS_Reset_Periph", "group__mxc__sys.html#gad29f8c0ad27ccb5905322a5fe96a127c", null ],
     [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga05ea0d4c5465ee7061ea1d3c2ffc3e22", null ],
-    [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a", null ]
+    [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a", null ],
+    [ "MXC_SYS_SetClockDiv", "group__mxc__sys.html#ga7443406c13f225d18a3023cc39e20265", null ]
 ];

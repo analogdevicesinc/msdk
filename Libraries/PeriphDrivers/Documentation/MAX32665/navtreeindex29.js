@@ -1,5 +1,6 @@
 var NAVTREEINDEX29 =
 {
+"group__uart.html#gaadbee118385dd3e6c476c2ce95eed267":[1,26,45],
 "group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c":[1,26,4],
 "group__uart.html#gab4fd61ab1f4adc924521ecce8d8f9630":[1,26,3],
 "group__uart.html#gab560eff2540977f5a8690c79cc84f46d":[1,26,41],
@@ -248,6 +249,5 @@ var NAVTREEINDEX29 =
 "modules.html":[1],
 "owm__regs_8h.html":[1,13,0,7],
 "pages.html":[],
-"pt__regs_8h.html":[1,14,0,4],
-"ptg__regs_8h.html":[1,35,7]
+"pt__regs_8h.html":[1,14,0,4]
 };

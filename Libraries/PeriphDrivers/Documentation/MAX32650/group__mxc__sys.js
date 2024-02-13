@@ -99,6 +99,7 @@ var group__mxc__sys =
     [ "MXC_SYS_GetUSN", "group__mxc__sys.html#ga75a557ab4342d521c52fd95f1a143042", null ],
     [ "MXC_SYS_In_Crit_Section", "group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229", null ],
     [ "MXC_SYS_IsClockEnabled", "group__mxc__sys.html#ga99851205dae88b405f598e68fe984943", null ],
+    [ "MXC_SYS_LockDAP_Permanent", "group__mxc__sys.html#ga1c5d4a29edae167a9480becd6e51b471", null ],
     [ "MXC_SYS_Reset_Periph", "group__mxc__sys.html#ga17d1dfd7917527ba53a613a6d92f0c24", null ],
     [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga8c7f04d1f3e8b9ff4e8ba50d0db6bb27", null ],
     [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga9f625d3a7d7beb23cc402d29da6be185", null ],

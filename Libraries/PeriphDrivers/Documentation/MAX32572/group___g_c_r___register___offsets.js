@@ -1,10 +1,6 @@
 var group___g_c_r___register___offsets =
 [
     [ "MXC_R_GCR_CLKCTRL", "group___g_c_r___register___offsets.html#ga546d34278bd54632084295bbac9f37ba", null ],
-    [ "MXC_R_GCR_ECCADDR", "group___g_c_r___register___offsets.html#ga958606a1c73759081c3794c23859153b", null ],
-    [ "MXC_R_GCR_ECCCED", "group___g_c_r___register___offsets.html#ga4f58423da0e6ec081a6428ea6b4732e4", null ],
-    [ "MXC_R_GCR_ECCERR", "group___g_c_r___register___offsets.html#ga22520c84ac4a539a63c0a7691cdeecc9", null ],
-    [ "MXC_R_GCR_ECCIE", "group___g_c_r___register___offsets.html#ga5862f5a54da369035a3b9ea7a05bbcd7", null ],
     [ "MXC_R_GCR_EVENTEN", "group___g_c_r___register___offsets.html#ga7e80c82dc0f46b2be65746c57d8ef0c0", null ],
     [ "MXC_R_GCR_IPOCNT", "group___g_c_r___register___offsets.html#ga6d07ad25cfe3a6fdb12eb3cff3929c51", null ],
     [ "MXC_R_GCR_MEMCTRL", "group___g_c_r___register___offsets.html#ga8a3e9c0584019be48db00ce58014e13e", null ],

@@ -2,9 +2,9 @@ var searchData=
 [
   ['mcr_5fclkctrl_0',['MCR_CLKCTRL',['../group___m_c_r___c_l_k_c_t_r_l.html',1,'']]],
   ['mcr_5fctrl_1',['MCR_CTRL',['../group___m_c_r___c_t_r_l.html',1,'']]],
-  ['mcr_5feccen_2',['MCR_ECCEN',['../group___m_c_r___e_c_c_e_n.html',1,'']]],
-  ['mcr_5fldoctrl_3',['MCR_LDOCTRL',['../group___m_c_r___l_d_o_c_t_r_l.html',1,'']]],
-  ['mcr_5fpdown_4',['MCR_PDOWN',['../group___m_c_r___p_d_o_w_n.html',1,'']]],
+  ['mcr_5fldoctrl_2',['MCR_LDOCTRL',['../group___m_c_r___l_d_o_c_t_r_l.html',1,'']]],
+  ['mcr_5fpdown_3',['MCR_PDOWN',['../group___m_c_r___p_d_o_w_n.html',1,'']]],
+  ['mcr_5fpwrmonst_4',['MCR_PWRMONST',['../group___m_c_r___p_w_r_m_o_n_s_t.html',1,'']]],
   ['mcr_5fregisters_5',['MCR_Registers',['../group__mcr__registers.html',1,'']]],
   ['mcr_5frst_6',['MCR_RST',['../group___m_c_r___r_s_t.html',1,'']]],
   ['mcr_5frtctrim_7',['MCR_RTCTRIM',['../group___m_c_r___r_t_c_t_r_i_m.html',1,'']]],

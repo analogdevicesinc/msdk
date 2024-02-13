@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "MAX32572 Peripheral Driver API", "index.html", [
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -33,38 +34,43 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Variables", "functions_vars.html", "functions_vars" ]
       ] ]
+    ] ],
+    [ "Globals", "globals.html", [
+      [ "All", "globals.html", "globals_dup" ],
+      [ "Macros", "globals_defs.html", "globals_defs" ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"group___c_t_b___c_t_r_l.html",
-"group___d_m_a___c_t_r_l.html#ga1604406efd0831ed4690d174dd04c309",
-"group___f_c_r___f_c_t_r_l0.html",
-"group___g_c_r___p_c_l_k_d_i_s0.html#ga524e738bb901271587f7f92ad4400492",
-"group___g_p_i_o___d_s0.html",
-"group___h_t_m_r___r_a_s.html",
-"group___i2_c___t_x_c_t_r_l0.html#gaa4499a96d8fb888e7b579ee1f44ba412",
-"group___o_t_p___c_t_r_l.html#ga5708886ab52c9a7d14397179bc2c79ab",
-"group___p_t_g___s_t_o_p___i_n_t_f_l.html#ga4e0e673905d49bc1d801bc313a7effb3",
-"group___s_c_n___i_s_r.html#gab0b92af99a3ca3f63c0d657de4c62e0e",
-"group___s_i_r___s_i_a_d_d_r.html",
-"group___s_m_o_n___s_e_c_d_i_a_g.html",
-"group___s_p_i___s_s_t_i_m_e.html#gaadcdd463d1632844439d5274b191005a",
-"group___s_p_i_x_f_m___b_y_p_a_s_s___m_o_d_e.html#gacba60261a6e85b18b3356f3118116755",
-"group___t_r_n_g___d_a_t_a___n_i_s_t.html#ga1e9bef5a12c3a0aa44ba432a8513cb15",
-"group___u_s_b_h_s___f_i_f_o1.html",
-"group___u_s_b_h_s___m_x_m___r_e_g___a4.html#ga90c853ba752f14f115f3617b4111ded7",
-"group___w_d_t___r_s_t.html#ga0eec04443b6104365555c0d0ca8f50fa",
-"group__dma.html#ga0785016e54a398dd26eff367bff3e4ff",
-"group__gpio__registers.html#a4713ab6ab471a96ea60a11dd4a7cb43c",
-"group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a9ebc7ba5e0ccde5af6d987c54a693162",
-"group__pwrseq.html#gade526c51833160698517cf9e207cfcf2",
-"group__smon__registers.html#a9e3cac9f744050c11ef0042e8b2dc108",
-"group__spixfm__registers.html#a5f3ab705a4a67b17dcc04560cef193f3",
-"group__usbhs__registers.html#af6aa9a54b890896488476861d9aa4839"
+"adc__regs_8h.html",
+"group___c_t_b___c_r_c___c_t_r_l.html#ga382aff7134da84ef69916519f7317900",
+"group___c_t_b___s_c_a___w_a_s_h.html#ga2ab73063e0aa41b3b94c67269bac7515",
+"group___d_m_a___register___offsets.html#ga189611ca6406f6f1a39e48279e460c2d",
+"group___g_c_r___m_e_m_z.html#gafe9d0aac5a0c639c21edfbd4f0b57dff",
+"group___g_c_r___s_y_s_i_e.html#ga7abba4d58f7b365a73e1d00c13661d75",
+"group___h_t_m_r___l_n_i_a_l_m.html#gabf1666648304842818046443892ffae5",
+"group___i2_c___t_i_m_e_o_u_t.html",
+"group___m_s_r_a_d_c___i_n_t_f_l.html#gabd83f88ca6ee3e65e3ad3fab202453d6",
+"group___p_t_g___r_e_s_y_n_c.html#gadcedcbd05f56a92dea5e7079126e2ce4",
+"group___r_t_c___t_r_i_m.html",
+"group___s_e_m_a___s_t_a_t_u_s.html",
+"group___s_m_o_n___i_n_t_s_c_t_r_l.html#gab375afd20b21d410b785b520b3f2751c",
+"group___s_p_i___f_i_f_o8.html",
+"group___s_p_i_x_f_c___i_n_t_e_n.html#ga44e437500c11898fcdb3ba3ed69a4c46",
+"group___t_m_r___c_t_r_l.html#gac5ba7a0bcf98cc70b7681cd4d5f6dc0f",
+"group___u_a_r_t___s_t_a_t_u_s.html#ga573a740fe7e20e556ed98adf8b08af25",
+"group___u_s_b_h_s___i_n_t_r_o_u_t.html#gad81a41162e71d080aa230b158270539d",
+"group___w_d_t___c_t_r_l.html#ga167542c746e9d4a433ceb9bd2b70c200",
+"group__ctb.html#ga0b8242317ebcff51b590885626c808de",
+"group__dma__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb",
+"group__i2c.html#gab4e7832da2a21d8b456af63e24ce36ca",
+"group__mxc__sys.html#ggadf14ad3a77c60331855f811d1f004870ae3503f4c126f05b07a90af96ea35f03e",
+"group__sdma__registers.html#a8d0cc0a39ca15f7030d36badb3e2edf0",
+"group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af81d265e20049a145b1b62a36bee2928",
+"group__tmr__registers.html#a4043deaf58b8c69a3d760825df5d9074",
+"sfcc__regs_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

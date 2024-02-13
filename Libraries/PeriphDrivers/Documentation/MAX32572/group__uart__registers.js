@@ -13,6 +13,7 @@ var group__uart__registers =
     [ "UART_DMA", "group___u_a_r_t___d_m_a.html", "group___u_a_r_t___d_m_a" ],
     [ "UART_WKEN", "group___u_a_r_t___w_k_e_n.html", "group___u_a_r_t___w_k_e_n" ],
     [ "UART_WKFL", "group___u_a_r_t___w_k_f_l.html", "group___u_a_r_t___w_k_f_l" ],
+    [ "uart_regs.h", "uart__regs_8h.html", null ],
     [ "mxc_uart_regs_t", "group__uart__registers.html#structmxc__uart__regs__t", [
       [ "clkdiv", "group__uart__registers.html#a3ff181197a99f058ba2e1899d7beb5a5", null ],
       [ "ctrl", "group__uart__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],

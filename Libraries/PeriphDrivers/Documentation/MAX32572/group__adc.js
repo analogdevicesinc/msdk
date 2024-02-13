@@ -32,6 +32,7 @@ var group__adc =
       [ "MXC_ADC_CH_VTXOUT", "group__adc.html#gga835531087194a290825c7f7d0dcc3ce3a9376d8ea845c5bf376a9b6daaa98c6e4", null ]
     ] ],
     [ "mxc_adc_monitor_t", "group__adc.html#ga0bf789826dc750730468833195f10f7d", null ],
+    [ "mxc_adc_ref_t", "group__adc.html#gaab155093f5d24533fc0ef7d8bcb2ac9e", null ],
     [ "mxc_adc_scale_t", "group__adc.html#gaa4e5fc7a535be112966a9bece8aaa8aa", [
       [ "MXC_ADC_SCALE_2X", "group__adc.html#ggaa4e5fc7a535be112966a9bece8aaa8aaab0d1ddf9e39878669d3b4a32b80fe3d6", null ],
       [ "MXC_ADC_SCALE_1", "group__adc.html#ggaa4e5fc7a535be112966a9bece8aaa8aaaa9336f1152d891b5bdc6976c6a671ad0", null ],

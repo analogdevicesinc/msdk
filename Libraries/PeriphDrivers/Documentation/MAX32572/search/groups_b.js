@@ -16,7 +16,7 @@ var searchData=
   ['ptg_5fsafe_5fen_13',['PTG_SAFE_EN',['../group___p_t_g___s_a_f_e___e_n.html',1,'']]],
   ['ptg_5fstop_5finten_14',['PTG_STOP_INTEN',['../group___p_t_g___s_t_o_p___i_n_t_e_n.html',1,'']]],
   ['ptg_5fstop_5fintfl_15',['PTG_STOP_INTFL',['../group___p_t_g___s_t_o_p___i_n_t_f_l.html',1,'']]],
-  ['pulse_20train_20engine_16',['Pulse Train Engine',['../group__pt.html',1,'']]],
+  ['pulse_20train_20engine_16',['Pulse Train Engine',['../group__pulsetrain.html',1,'']]],
   ['pwrseq_5flpctrl_17',['PWRSEQ_LPCTRL',['../group___p_w_r_s_e_q___l_p_c_t_r_l.html',1,'']]],
   ['pwrseq_5flpmemsd_18',['PWRSEQ_LPMEMSD',['../group___p_w_r_s_e_q___l_p_m_e_m_s_d.html',1,'']]],
   ['pwrseq_5flppwken_19',['PWRSEQ_LPPWKEN',['../group___p_w_r_s_e_q___l_p_p_w_k_e_n.html',1,'']]],

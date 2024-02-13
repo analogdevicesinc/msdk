@@ -4,7 +4,6 @@ var group__usbhs__registers_structmxc__usbhs__regs__t =
     [ "csr0", "group__usbhs__registers.html#adc0a0364ff9df767e4c4866d5e0dafee", null ],
     [ "cthsrtn", "group__usbhs__registers.html#ac867c11e33423ee5e414f002c39ccaf6", null ],
     [ "ctuch", "group__usbhs__registers.html#a9b520433b48d213bb4c87efcbf94af86", null ],
-    [ "earlydma", "group__usbhs__registers.html#a7351b42936897dd5644f6125147abedf", null ],
     [ "epinfo", "group__usbhs__registers.html#ae28a9f94717b2808e6cc6ee6ef4e98a3", null ],
     [ "faddr", "group__usbhs__registers.html#a122f19d064c435f4b93b03c3f254ee1a", null ],
     [ "fifo0", "group__usbhs__registers.html#a02a5a57804e03525e58ac5c3b6811b9c", null ],

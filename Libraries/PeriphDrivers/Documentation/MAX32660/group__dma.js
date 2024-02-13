@@ -40,17 +40,19 @@ var group__dma =
     [ "mxc_dma_reqsel_t", "group__dma.html#gac5462bed630944916330f584bd0b10e3", [
       [ "MXC_DMA_REQUEST_MEMTOMEM", "group__dma.html#ggac5462bed630944916330f584bd0b10e3adabd40b45d87dbaed3249bbb851c0b2c", null ],
       [ "MXC_DMA_REQUEST_SPI0RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a120852c562276035a82329d652108f5c", null ],
-      [ "MXC_DMA_REQUEST_SPI1RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a04f2532612dbcbf11f8228102be3baa9", null ],
+      [ "MXC_DMA_REQUEST_SPIMSSRX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a41761373674ece9f5fee0231b3167748", null ],
       [ "MXC_DMA_REQUEST_UART0RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a3227be29ef9ff017303ee0394736b75e", null ],
       [ "MXC_DMA_REQUEST_UART1RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a88131ea4c128e19265a010320fc57b45", null ],
       [ "MXC_DMA_REQUEST_I2C0RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a6581250f4709b56830e50f657eb71878", null ],
       [ "MXC_DMA_REQUEST_I2C1RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a146c55de7d4832ea99c99165bc482e49", null ],
       [ "MXC_DMA_REQUEST_SPI0TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a568d9362cf11302e081da4a2db5a8b52", null ],
-      [ "MXC_DMA_REQUEST_SPI1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ae94894558704ac84f7a5dd60c674879a", null ],
+      [ "MXC_DMA_REQUEST_SPIMSSTX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a0d663eb4797f96e2da406374f0ccfbb1", null ],
       [ "MXC_DMA_REQUEST_UART0TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a0681f5a083d7e528acbb7f3bf30a2aaa", null ],
       [ "MXC_DMA_REQUEST_UART1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ac46857f03461dad3f1af8f282db4f8c0", null ],
       [ "MXC_DMA_REQUEST_I2C0TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a5a557a2247336c3e09517404b9459508", null ],
-      [ "MXC_DMA_REQUEST_I2C1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ad76f922bf33c3640d79ee9b0a6b48cfc", null ]
+      [ "MXC_DMA_REQUEST_I2C1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ad76f922bf33c3640d79ee9b0a6b48cfc", null ],
+      [ "MXC_DMA_REQUEST_SPI1RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a04f2532612dbcbf11f8228102be3baa9", null ],
+      [ "MXC_DMA_REQUEST_SPI1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ae94894558704ac84f7a5dd60c674879a", null ]
     ] ],
     [ "mxc_dma_timeout_t", "group__dma.html#gab010374c529e9da4bf17c357dfa637eb", [
       [ "MXC_DMA_TIMEOUT_4_CLK", "group__dma.html#ggab010374c529e9da4bf17c357dfa637eba80d70301bac34677bdc45221ed7f8549", null ],

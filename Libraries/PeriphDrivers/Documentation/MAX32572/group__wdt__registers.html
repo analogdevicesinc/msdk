@@ -86,8 +86,9 @@ $(document).ready(function(){initNavTree('group__wdt__registers.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
+<a href="#files">Files</a> &#124;
 <a href="#nested-classes">Data Structures</a>  </div>
-  <div class="headertitle"><div class="title">WDT_Registers<div class="ingroups"><a class="el" href="group__wdt.html">Watchdog Timer (WDT)</a></div></div></div>
+  <div class="headertitle"><div class="title">WDT_Registers<div class="ingroups"><a class="el" href="group__wdt.html">WDT</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
@@ -99,6 +100,15 @@ Modules</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group___w_d_t___r_s_t"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___w_d_t___r_s_t.html">WDT_RST</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group___w_d_t___c_l_k_s_e_l"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___w_d_t___c_l_k_s_e_l.html">WDT_CLKSEL</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group___w_d_t___c_n_t"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___w_d_t___c_n_t.html">WDT_CNT</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:wdt__regs_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wdt__regs_8h.html">wdt_regs.h</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -107,7 +117,7 @@ Data Structures</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Registers, Bit Masks and Bit Positions for the WDT Peripheral Module. </p>
-<p >Watchdog Timer 0 </p>
+<p >Windowed Watchdog Timer </p>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="structmxc__wdt__regs__t" id="structmxc__wdt__regs__t"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structmxc__wdt__regs__t">&#9670;&nbsp;</a></span>mxc_wdt_regs_t</h2>
@@ -127,8 +137,42 @@ Data Structures</h2></td></tr>
 <tr class="separator:a5f3ab705a4a67b17dcc04560cef193f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e60cc2ae13ed2a525bbee7118ac69cd"><td class="memItemLeft" align="right" valign="top">__O uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt__registers.html#a5e60cc2ae13ed2a525bbee7118ac69cd">rst</a></td></tr>
 <tr class="separator:a5e60cc2ae13ed2a525bbee7118ac69cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32316738119c2d4ad5fc15f39a743974"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt__registers.html#a32316738119c2d4ad5fc15f39a743974">clksel</a></td></tr>
+<tr class="separator:a32316738119c2d4ad5fc15f39a743974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257571c52dc7169c2428058d20d02cd2"><td class="memItemLeft" align="right" valign="top">__I uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt__registers.html#a257571c52dc7169c2428058d20d02cd2">cnt</a></td></tr>
+<tr class="separator:a257571c52dc7169c2428058d20d02cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h4 class="groupheader">Field Documentation</h4>
+<a id="a32316738119c2d4ad5fc15f39a743974" name="a32316738119c2d4ad5fc15f39a743974"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32316738119c2d4ad5fc15f39a743974">&#9670;&nbsp;</a></span>clksel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__IO uint32_t clksel</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x08:</code></b> WDT CLKSEL Register </p>
+
+</div>
+</div>
+<a id="a257571c52dc7169c2428058d20d02cd2" name="a257571c52dc7169c2428058d20d02cd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257571c52dc7169c2428058d20d02cd2">&#9670;&nbsp;</a></span>cnt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__I uint32_t cnt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x0C:</code></b> WDT CNT Register </p>
+
+</div>
+</div>
 <a id="a5f3ab705a4a67b17dcc04560cef193f3" name="a5f3ab705a4a67b17dcc04560cef193f3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f3ab705a4a67b17dcc04560cef193f3">&#9670;&nbsp;</a></span>ctrl</h2>
 
@@ -167,7 +211,7 @@ Data Structures</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 12 2023 13:32:06 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Feb 13 2024 22:35:09 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

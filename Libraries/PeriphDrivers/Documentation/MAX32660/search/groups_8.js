@@ -7,6 +7,7 @@ var searchData=
   ['rtc_5fras_4',['RTC_RAS',['../group___r_t_c___r_a_s.html',1,'']]],
   ['rtc_5fregisters_5',['RTC_Registers',['../group__rtc__registers.html',1,'']]],
   ['rtc_5frssa_6',['RTC_RSSA',['../group___r_t_c___r_s_s_a.html',1,'']]],
-  ['rtc_5fssec_7',['RTC_SSEC',['../group___r_t_c___s_s_e_c.html',1,'']]],
-  ['rtc_5ftrim_8',['RTC_TRIM',['../group___r_t_c___t_r_i_m.html',1,'']]]
+  ['rtc_5fsec_7',['RTC_SEC',['../group___r_t_c___s_e_c.html',1,'']]],
+  ['rtc_5fssec_8',['RTC_SSEC',['../group___r_t_c___s_s_e_c.html',1,'']]],
+  ['rtc_5ftrim_9',['RTC_TRIM',['../group___r_t_c___t_r_i_m.html',1,'']]]
 ];

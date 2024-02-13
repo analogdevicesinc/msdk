@@ -4,6 +4,7 @@ var group__pt__registers =
     [ "PT_RATE_LENGTH", "group___p_t___r_a_t_e___l_e_n_g_t_h.html", "group___p_t___r_a_t_e___l_e_n_g_t_h" ],
     [ "PT_LOOP", "group___p_t___l_o_o_p.html", "group___p_t___l_o_o_p" ],
     [ "PT_RESTART", "group___p_t___r_e_s_t_a_r_t.html", "group___p_t___r_e_s_t_a_r_t" ],
+    [ "pt_regs.h", "pt__regs_8h.html", null ],
     [ "mxc_pt_regs_t", "group__pt__registers.html#structmxc__pt__regs__t", [
       [ "loop", "group__pt__registers.html#a2949fe4a3abbab17d8f16ea7449c81cd", null ],
       [ "rate_length", "group__pt__registers.html#a4731a4f820319edf87f6137bf131c7a1", null ],

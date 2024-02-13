@@ -1,7 +1,7 @@
 var group___s_p_i_x_f_c___s_s_p_o_l =
 [
-    [ "MXC_F_SPIXFC_SSPOL_FC_POL", "group___s_p_i_x_f_c___s_s_p_o_l.html#ga736407f752a5062d88a67c1608341e69", null ],
-    [ "MXC_F_SPIXFC_SSPOL_FC_POL_POS", "group___s_p_i_x_f_c___s_s_p_o_l.html#gaa76293a0c90e4bc6d303fed6e7cbd381", null ],
-    [ "MXC_F_SPIXFC_SSPOL_SS_POL", "group___s_p_i_x_f_c___s_s_p_o_l.html#ga1497fa81317c8fa111131cd4bdadbf68", null ],
-    [ "MXC_F_SPIXFC_SSPOL_SS_POL_POS", "group___s_p_i_x_f_c___s_s_p_o_l.html#ga7ef0848df4a77ee7e3d46e85eb0b9439", null ]
+    [ "MXC_F_SPIXFC_SSPOL_FCPOL", "group___s_p_i_x_f_c___s_s_p_o_l.html#gae1f906a07c15910036399823c6186ac9", null ],
+    [ "MXC_F_SPIXFC_SSPOL_FCPOL_POS", "group___s_p_i_x_f_c___s_s_p_o_l.html#ga2c26c68db9b995c00037db3072a59139", null ],
+    [ "MXC_F_SPIXFC_SSPOL_SSPOL", "group___s_p_i_x_f_c___s_s_p_o_l.html#gab8fd3c897457d33dc64cad779f7eb4a4", null ],
+    [ "MXC_F_SPIXFC_SSPOL_SSPOL_POS", "group___s_p_i_x_f_c___s_s_p_o_l.html#gab708a03bd46508386823c0a7783221c3", null ]
 ];

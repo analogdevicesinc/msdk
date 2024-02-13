@@ -14,7 +14,8 @@ var group__spi__registers =
     [ "SPI_INTEN", "group___s_p_i___i_n_t_e_n.html", "group___s_p_i___i_n_t_e_n" ],
     [ "SPI_WKFL", "group___s_p_i___w_k_f_l.html", "group___s_p_i___w_k_f_l" ],
     [ "SPI_WKEN", "group___s_p_i___w_k_e_n.html", "group___s_p_i___w_k_e_n" ],
-    [ "SPI_STAT", "group___s_p_i___s_t_a_t.html", "group___s_p_i___s_t_a_t" ],
+    [ "SPI_STATUS", "group___s_p_i___s_t_a_t_u_s.html", "group___s_p_i___s_t_a_t_u_s" ],
+    [ "spi_regs.h", "spi__regs_8h.html", null ],
     [ "mxc_spi_regs_t", "group__spi__registers.html#structmxc__spi__regs__t", [
       [ "clkctrl", "group__spi__registers.html#a5614e3d3d61a7b8e1e1c753d4442f209", null ],
       [ "ctrl0", "group__spi__registers.html#a01beaa79871f6d4fa5ac69f6e29ab45d", null ],
@@ -27,7 +28,7 @@ var group__spi__registers =
       [ "inten", "group__spi__registers.html#ac739c97e3dfed1c05d96249bc00d2578", null ],
       [ "intfl", "group__spi__registers.html#a4043deaf58b8c69a3d760825df5d9074", null ],
       [ "sstime", "group__spi__registers.html#a53352010f5744128e401d3c2581745a0", null ],
-      [ "stat", "group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7", null ],
+      [ "status", "group__spi__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9", null ],
       [ "wken", "group__spi__registers.html#a180fb4301217e58b8b04d69910d55e7d", null ],
       [ "wkfl", "group__spi__registers.html#a71c81fbb80641b4b170ab374e553582c", null ]
     ] ]

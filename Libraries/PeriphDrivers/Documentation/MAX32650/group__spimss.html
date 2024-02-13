@@ -158,6 +158,18 @@ Functions</h2></td></tr>
 <tr class="separator:gafbd94ff9e47ef4a71c50c280edf9392b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1dee28040de0569a5a6db6494b4bf531"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#ga1dee28040de0569a5a6db6494b4bf531">MXC_SPIMSS_AbortAsync</a> (mxc_spimss_req_t *req)</td></tr>
 <tr class="separator:ga1dee28040de0569a5a6db6494b4bf531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84881d246f54e3f60512abf47013e1a5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#ga84881d246f54e3f60512abf47013e1a5">MXC_SPIMSS_MasterTransDMA</a> (<a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *spi, mxc_spimss_req_t *req)</td></tr>
+<tr class="separator:ga84881d246f54e3f60512abf47013e1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d6762b7c3fad93a230f3c40feb3009f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#ga0d6762b7c3fad93a230f3c40feb3009f">MXC_SPIMSS_SetAutoDMAHandlers</a> (<a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *spi, bool enable)</td></tr>
+<tr class="separator:ga0d6762b7c3fad93a230f3c40feb3009f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab7c294c47490aa829bf1dc200171c5e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#gab7c294c47490aa829bf1dc200171c5e7">MXC_SPIMSS_SetTXDMAChannel</a> (<a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *spi, unsigned int channel)</td></tr>
+<tr class="separator:gab7c294c47490aa829bf1dc200171c5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga050b7263072704662ab2afcf84151790"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#ga050b7263072704662ab2afcf84151790">MXC_SPIMSS_GetTXDMAChannel</a> (<a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *spi)</td></tr>
+<tr class="separator:ga050b7263072704662ab2afcf84151790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5483a480f8398f40e3c8f4702a9cf143"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#ga5483a480f8398f40e3c8f4702a9cf143">MXC_SPIMSS_SetRXDMAChannel</a> (<a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *spi, unsigned int channel)</td></tr>
+<tr class="separator:ga5483a480f8398f40e3c8f4702a9cf143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6a865a3ba4b0828948864887ee401e3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spimss.html#gab6a865a3ba4b0828948864887ee401e3">MXC_SPIMSS_GetRXDMAChannel</a> (<a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *spi)</td></tr>
+<tr class="separator:gab6a865a3ba4b0828948864887ee401e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -746,6 +758,60 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gab6a865a3ba4b0828948864887ee401e3" name="gab6a865a3ba4b0828948864887ee401e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6a865a3ba4b0828948864887ee401e3">&#9670;&nbsp;</a></span>MXC_SPIMSS_GetRXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPIMSS_GetRXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current RX channel id set for SPIMSS DMA transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to spi module </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>#RXDMA_ChannelId</code> of the spi module. </dd></dl>
+
+</div>
+</div>
+<a id="ga050b7263072704662ab2afcf84151790" name="ga050b7263072704662ab2afcf84151790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga050b7263072704662ab2afcf84151790">&#9670;&nbsp;</a></span>MXC_SPIMSS_GetTXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPIMSS_GetTXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current TX channel id set for SPIMSS DMA transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to spi module </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>#TXDMA_ChannelId</code> of the spi module. </dd></dl>
+
+</div>
+</div>
 <a id="gaa379ce4608aacf8bf4901f44b8d940ad" name="gaa379ce4608aacf8bf4901f44b8d940ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa379ce4608aacf8bf4901f44b8d940ad">&#9670;&nbsp;</a></span>MXC_SPIMSS_Handler()</h2>
 
@@ -894,6 +960,158 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga84881d246f54e3f60512abf47013e1a5" name="ga84881d246f54e3f60512abf47013e1a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga84881d246f54e3f60512abf47013e1a5">&#9670;&nbsp;</a></span>MXC_SPIMSS_MasterTransDMA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPIMSS_MasterTransDMA </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mxc_spimss_req_t *&#160;</td>
+          <td class="paramname"><em>req</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Execute a master transaction over DMA. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to spi module. </td></tr>
+    <tr><td class="paramname">req</td><td>Pointer to spi request.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a></code> if successful, <a class="el" href="group___m_x_c___error___codes.html">error</a> if unsuccessful. </dd></dl>
+
+</div>
+</div>
+<a id="ga0d6762b7c3fad93a230f3c40feb3009f" name="ga0d6762b7c3fad93a230f3c40feb3009f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0d6762b7c3fad93a230f3c40feb3009f">&#9670;&nbsp;</a></span>MXC_SPIMSS_SetAutoDMAHandlers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPIMSS_SetAutoDMAHandlers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable Disable auto dma handling. If set to true, dma channel for transaction is acquired in the MXC_SPIMSS_MasterTransDMA function. Otherwise, user has to set tx and rx channel for SPIMSS DMA transaction with MXC_SPIMSS_SetTXDMAChannel and MXC_SPIMSS_SetRXDMAChannel functions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to spi module </td></tr>
+    <tr><td class="paramname">enable</td><td>Enable Disable auto handler </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a></code> if successful, <a class="el" href="group___m_x_c___error___codes.html">error</a> if unsuccessful. </dd></dl>
+
+</div>
+</div>
+<a id="ga5483a480f8398f40e3c8f4702a9cf143" name="ga5483a480f8398f40e3c8f4702a9cf143"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5483a480f8398f40e3c8f4702a9cf143">&#9670;&nbsp;</a></span>MXC_SPIMSS_SetRXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPIMSS_SetRXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the RX channel id for DMA to be used in SPIMSS DMA transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to spi module </td></tr>
+    <tr><td class="paramname">channel</td><td>Id of the channel for RXDma Channel. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a></code> if successful, <a class="el" href="group___m_x_c___error___codes.html">error</a> if unsuccessful. </dd></dl>
+
+</div>
+</div>
+<a id="gab7c294c47490aa829bf1dc200171c5e7" name="gab7c294c47490aa829bf1dc200171c5e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab7c294c47490aa829bf1dc200171c5e7">&#9670;&nbsp;</a></span>MXC_SPIMSS_SetTXDMAChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPIMSS_SetTXDMAChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spimss__registers.html#structmxc__spimss__regs__t">mxc_spimss_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the TX channel id for DMA to be used in SPIMSS DMA transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to spi module </td></tr>
+    <tr><td class="paramname">channel</td><td>Id of the channel for TXDma Channel. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a></code> if successful, <a class="el" href="group___m_x_c___error___codes.html">error</a> if unsuccessful. </dd></dl>
+
+</div>
+</div>
 <a id="ga7baf01022a96065ab81477b2f113909d" name="ga7baf01022a96065ab81477b2f113909d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7baf01022a96065ab81477b2f113909d">&#9670;&nbsp;</a></span>MXC_SPIMSS_Shutdown()</h2>
 
@@ -1002,7 +1220,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 12 2023 13:32:09 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Feb 13 2024 22:35:13 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

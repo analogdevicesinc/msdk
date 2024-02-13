@@ -1,7 +1,7 @@
 var group___i2_c___c_t_r_l =
 [
-    [ "MXC_F_I2C_CTRL_BB_MODE", "group___i2_c___c_t_r_l.html#gafc518928d4138461b70c156cfcb6400e", null ],
-    [ "MXC_F_I2C_CTRL_BB_MODE_POS", "group___i2_c___c_t_r_l.html#gac697d5428b3e018f36fedf0da8fca0f3", null ],
+    [ "MXC_F_I2C_CTRL_BB_EN", "group___i2_c___c_t_r_l.html#ga0d6c1715c92caad969edef5b7dc29e2f", null ],
+    [ "MXC_F_I2C_CTRL_BB_EN_POS", "group___i2_c___c_t_r_l.html#gad86d1d5f19d15c15f5a3c5eec10edda1", null ],
     [ "MXC_F_I2C_CTRL_CLKSTR_DIS", "group___i2_c___c_t_r_l.html#gae16d553178db6759abb198ecbfb5b230", null ],
     [ "MXC_F_I2C_CTRL_CLKSTR_DIS_POS", "group___i2_c___c_t_r_l.html#gad233f2e58a9414ba32037ebef0ae1998", null ],
     [ "MXC_F_I2C_CTRL_EN", "group___i2_c___c_t_r_l.html#ga0bf9e2a8d2039174e13d24993807c1bb", null ],

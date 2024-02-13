@@ -1,11 +1,11 @@
 var group___g_p_i_o___p_a_d_c_t_r_l0 =
 [
-    [ "MXC_F_GPIO_PADCTRL0_GPIO_PADCTRL0", "group___g_p_i_o___p_a_d_c_t_r_l0.html#gaaafbd35c43c10a8fd7fb2e0e5075cc8b", null ],
-    [ "MXC_F_GPIO_PADCTRL0_GPIO_PADCTRL0_POS", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga20bdf1e65fa190056a7d7b354a64ee32", null ],
-    [ "MXC_S_GPIO_PADCTRL0_GPIO_PADCTRL0_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l0.html#gaf61f034d2b25b63c59729a84b9516652", null ],
-    [ "MXC_S_GPIO_PADCTRL0_GPIO_PADCTRL0_PD", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga8b84cd34801e3fd061dc90a800c77e57", null ],
-    [ "MXC_S_GPIO_PADCTRL0_GPIO_PADCTRL0_PU", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga6115a1ed4e1aa865e77ac1381098114e", null ],
-    [ "MXC_V_GPIO_PADCTRL0_GPIO_PADCTRL0_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l0.html#gaac08e3ba4500d716525ccace852a1dc7", null ],
-    [ "MXC_V_GPIO_PADCTRL0_GPIO_PADCTRL0_PD", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga6915fa3961c620878d30140d6c5da6cb", null ],
-    [ "MXC_V_GPIO_PADCTRL0_GPIO_PADCTRL0_PU", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga10aa4318d65462c60f7e20f47611679d", null ]
+    [ "MXC_F_GPIO_PADCTRL0_ALL", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga694128f2fd651763909694980a2f1bfa", null ],
+    [ "MXC_F_GPIO_PADCTRL0_ALL_POS", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga4d07e7f1c74ee188f665725f895869ac", null ],
+    [ "MXC_S_GPIO_PADCTRL0_ALL_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga5ce81f9f998e13a9e8b8e61a33e61ea7", null ],
+    [ "MXC_S_GPIO_PADCTRL0_ALL_PD", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga827e2d058e62c26d9e4ba1ea4ed13239", null ],
+    [ "MXC_S_GPIO_PADCTRL0_ALL_PU", "group___g_p_i_o___p_a_d_c_t_r_l0.html#ga81729911dd63b406a8dea353b76c14e1", null ],
+    [ "MXC_V_GPIO_PADCTRL0_ALL_IMPEDANCE", "group___g_p_i_o___p_a_d_c_t_r_l0.html#gadb479d48818f5c0ff6fc1fa64ebe6fec", null ],
+    [ "MXC_V_GPIO_PADCTRL0_ALL_PD", "group___g_p_i_o___p_a_d_c_t_r_l0.html#gab6c98481d732b929b55442765b99cb56", null ],
+    [ "MXC_V_GPIO_PADCTRL0_ALL_PU", "group___g_p_i_o___p_a_d_c_t_r_l0.html#gad88c995caad0417b49fb507413c0cb88", null ]
 ];

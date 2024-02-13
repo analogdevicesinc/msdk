@@ -1,5 +1,6 @@
 var NAVTREEINDEX30 =
 {
+"ptg__regs_8h.html":[1,35,7],
 "pwrseq__regs_8h.html":[1,7,0,12],
 "rpu__regs_8h.html":[1,15,0,70],
 "rtc__regs_8h.html":[1,16,0,8],

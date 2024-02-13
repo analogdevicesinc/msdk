@@ -24,6 +24,7 @@ var group___c_t_b___register___offsets =
     [ "MXC_R_CTB_SCA_CTRL0", "group___c_t_b___register___offsets.html#ga857f6afa616da5782fdaf4450f32556e", null ],
     [ "MXC_R_CTB_SCA_CTRL1", "group___c_t_b___register___offsets.html#ga204a9a3e4b37320110a31ffbfd265685", null ],
     [ "MXC_R_CTB_SCA_MODDATA", "group___c_t_b___register___offsets.html#gafda62166ef681c118a1867e65e845b50", null ],
+    [ "MXC_R_CTB_SCA_NRNG", "group___c_t_b___register___offsets.html#gad1ee58e80293aa8adc190040fc3a5cc4", null ],
     [ "MXC_R_CTB_SCA_OP_BUFF_ADDR", "group___c_t_b___register___offsets.html#ga0eac0a76b75aacb54c24d3b7950e8664", null ],
     [ "MXC_R_CTB_SCA_PPX_ADDR", "group___c_t_b___register___offsets.html#gae7c94cd1256eafc03cc2f14c986a32ba", null ],
     [ "MXC_R_CTB_SCA_PPY_ADDR", "group___c_t_b___register___offsets.html#gad34c03bc68685c63082b6c1d86425d80", null ],
@@ -34,5 +35,6 @@ var group___c_t_b___register___offsets =
     [ "MXC_R_CTB_SCA_RDSA_ADDR", "group___c_t_b___register___offsets.html#gaac73ef73712932c6de5d26545685cede", null ],
     [ "MXC_R_CTB_SCA_RES_ADDR", "group___c_t_b___register___offsets.html#gafb92c59ff6d1a6af68e51c753dcd6cd9", null ],
     [ "MXC_R_CTB_SCA_STAT", "group___c_t_b___register___offsets.html#ga19ae24ba7aae5e8631dba7d31ce8bcab", null ],
+    [ "MXC_R_CTB_SCA_WASH", "group___c_t_b___register___offsets.html#gaa5a495ee0c091274b9213e3a8bfea077", null ],
     [ "MXC_R_CTB_TAGMIC", "group___c_t_b___register___offsets.html#ga7ef6e14b9915e304c6926579b3731fce", null ]
 ];

@@ -31,7 +31,7 @@ var annotated_dup =
     [ "mxc_i2c_regs_t", "group__i2c__registers.html#structmxc__i2c__regs__t", "group__i2c__registers_structmxc__i2c__regs__t" ],
     [ "mxc_i2c_req_t", "group__i2c.html#struct__i2c__req__t", "group__i2c_struct__i2c__req__t" ],
     [ "mxc_i2s_regs_t", "group__i2s__registers.html#structmxc__i2s__regs__t", "group__i2s__registers_structmxc__i2s__regs__t" ],
-    [ "mxc_i2s_req_t", "group__i2s.html#structmxc__i2s__req__t", null ],
+    [ "mxc_i2s_req_t", "group__i2s.html#structmxc__i2s__req__t", "group__i2s_structmxc__i2s__req__t" ],
     [ "mxc_icc_regs_t", "group__icc__registers.html#structmxc__icc__regs__t", "group__icc__registers_structmxc__icc__regs__t" ],
     [ "mxc_mcr_regs_t", "group__mcr__registers.html#structmxc__mcr__regs__t", "group__mcr__registers_structmxc__mcr__regs__t" ],
     [ "mxc_pt_cfg_t", "group__pulsetrain.html#structmxc__pt__cfg__t", "group__pulsetrain_structmxc__pt__cfg__t" ],

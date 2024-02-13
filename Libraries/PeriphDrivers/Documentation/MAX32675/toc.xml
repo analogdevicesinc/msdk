@@ -1052,6 +1052,8 @@
         <topic label="MXC_GPIO_PAD_NONE" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfa07ae78bcceb4384d088867ba5858b7ac"/>
         <topic label="MXC_GPIO_PAD_PULL_UP" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfa768189022725c5c8584403b78c828af6"/>
         <topic label="MXC_GPIO_PAD_PULL_DOWN" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfacb557da7b4c0b0c00debd10385565719"/>
+        <topic label="MXC_GPIO_PAD_WEAK_PULL_UP" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3"/>
+        <topic label="MXC_GPIO_PAD_WEAK_PULL_DOWN" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05"/>
       </topic>
       <topic label="mxc_gpio_vssel_t" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">
         <topic label="MXC_GPIO_VSSEL_VDDIO" href="group__gpio.html#gga03b13c78f2f773dabd26b93943a4b201a4e42e5c053549b9c688e5150ccd48259"/>
@@ -1541,6 +1543,10 @@
         </topic>
       </topic>
       <topic label="mxc_i2s_req_t" href="group__i2s.html#structmxc__i2s__req__t">
+        <topic label="bitsWord" href="group__i2s.html#ga3736972d909c5528d19886acd60ca37e"/>
+        <topic label="sampleSize" href="group__i2s.html#gad353f9339b434e7b38926662eb144c95"/>
+      </topic>
+      <topic label="mxc_i2s_adjust_t" href="group__i2s.html#ga6cbc4a2ddb50f259177bc09ec01e1a56">
       </topic>
       <topic label="mxc_i2s_bitorder_t" href="group__i2s.html#gaa8cffbae538bd8de2c5a4e87b3cce352">
       </topic>
@@ -1550,12 +1556,22 @@
       </topic>
       <topic label="mxc_i2s_polarity_t" href="group__i2s.html#ga8a90ed22f96d6fa8df6637836a6398e9">
       </topic>
-      <topic label="mxc_i2s_samplesize_t" href="group__i2s.html#ga59260f21077f9264f0ca0441daff8019">
-      </topic>
       <topic label="mxc_i2s_stereo_t" href="group__i2s.html#gae9e17ff5419d083c12dd7ab6cf775c0a">
       </topic>
       <topic label="mxc_i2s_wsize_t" href="group__i2s.html#ga69ac34ac897436c1b47ada8fb1dd0582">
+        <topic label="MXC_I2S_WSIZE_BYTE" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6fd3997432a713ab20896361da039ea1"/>
+        <topic label="MXC_I2S_WSIZE_HALFWORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582ad1f55719f120947733a6a2b836b64f62"/>
+        <topic label="MXC_I2S_WSIZE_WORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a1c3b33dcd6d2b75579d8c9fdefd212c4"/>
+        <topic label="MXC_I2S_DATASIZE_BYTE" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6d7d609875c92c2b310d50a6989942e5"/>
+        <topic label="MXC_I2S_DATASIZE_HALFWORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a9e28fcde08c189ec5e01bba3e72259a9"/>
+        <topic label="MXC_I2S_DATASIZE_WORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a4a6bb75f786cf70e426619374a5f9218"/>
       </topic>
+      <topic label="MXC_I2S_DATASIZE_BYTE" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6d7d609875c92c2b310d50a6989942e5"/>
+      <topic label="MXC_I2S_DATASIZE_HALFWORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a9e28fcde08c189ec5e01bba3e72259a9"/>
+      <topic label="MXC_I2S_DATASIZE_WORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a4a6bb75f786cf70e426619374a5f9218"/>
+      <topic label="MXC_I2S_WSIZE_BYTE" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a6fd3997432a713ab20896361da039ea1"/>
+      <topic label="MXC_I2S_WSIZE_HALFWORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582ad1f55719f120947733a6a2b836b64f62"/>
+      <topic label="MXC_I2S_WSIZE_WORD" href="group__i2s.html#gga69ac34ac897436c1b47ada8fb1dd0582a1c3b33dcd6d2b75579d8c9fdefd212c4"/>
       <topic label="MXC_I2S_CalculateClockDiv" href="group__i2s.html#gae6d8f7d448c1c7b7121d4b287b7d7ddc"/>
       <topic label="MXC_I2S_ClearFlags" href="group__i2s.html#gabb681ef254bf67f6652da18748766c5d"/>
       <topic label="MXC_I2S_ConfigData" href="group__i2s.html#ga5981df9127d06340164cf5f5c2bd68fd"/>
@@ -1582,6 +1598,8 @@
       <topic label="MXC_I2S_TXDisable" href="group__i2s.html#ga640b17fbe37a6a25ea3bac6b90a40c54"/>
       <topic label="MXC_I2S_TXDMAConfig" href="group__i2s.html#gaa5ff23332a0f2a085dac268f1eda9975"/>
       <topic label="MXC_I2S_TXEnable" href="group__i2s.html#gaa5d86a8f40d40994193f966e0e668f12"/>
+      <topic label="mxc_i2s_req_t::bitsWord" href="group__i2s.html#ga3736972d909c5528d19886acd60ca37e"/>
+      <topic label="mxc_i2s_req_t::sampleSize" href="group__i2s.html#gad353f9339b434e7b38926662eb144c95"/>
     </topic>
     <topic label="ICC" href="group__icc.html">
       <topic label="ICC_Registers" href="group__icc__registers.html">
@@ -2010,12 +2028,15 @@
       <topic label="MXC_SYS_ClockSourceEnable" href="group__mxc__sys.html#gae281e8f30ddaa90d30ba423c84f9b993"/>
       <topic label="MXC_SYS_Crit_Enter" href="group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44"/>
       <topic label="MXC_SYS_Crit_Exit" href="group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0"/>
+      <topic label="MXC_SYS_GetClockDiv" href="group__mxc__sys.html#gaf97d7a9daa7beb54ff5c3e169d9c7ab5"/>
       <topic label="MXC_SYS_GetUSN" href="group__mxc__sys.html#ga64494ce7b5aa5ee70e716f6a02f30d81"/>
       <topic label="MXC_SYS_In_Crit_Section" href="group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229"/>
       <topic label="MXC_SYS_IsClockEnabled" href="group__mxc__sys.html#ga99851205dae88b405f598e68fe984943"/>
+      <topic label="MXC_SYS_LockDAP_Permanent" href="group__mxc__sys.html#ga1c5d4a29edae167a9480becd6e51b471"/>
       <topic label="MXC_SYS_Reset_Periph" href="group__mxc__sys.html#gad29f8c0ad27ccb5905322a5fe96a127c"/>
       <topic label="MXC_SYS_RTCClockDisable" href="group__mxc__sys.html#ga05ea0d4c5465ee7061ea1d3c2ffc3e22"/>
       <topic label="MXC_SYS_RTCClockEnable" href="group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a"/>
+      <topic label="MXC_SYS_SetClockDiv" href="group__mxc__sys.html#ga7443406c13f225d18a3023cc39e20265"/>
     </topic>
     <topic label="Real Time Clock (RTC)" href="group__rtc.html">
       <topic label="RTC_Registers" href="group__rtc__registers.html">
@@ -2699,9 +2720,9 @@
         <topic label="pres" href="group__tmr.html#a5003c035ba324f076222cc14167b5950"/>
       </topic>
       <topic label="mxc_tmr_bit_mode_t" href="group__tmr.html#gaa24c4c54f7c5e0ffef2d410c75e3c0ea">
-        <topic label="TMR_BIT_MODE_32" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaab9b873c630fb356d87341905315c655b"/>
-        <topic label="TMR_BIT_MODE_16A" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa996dbdde62a530e2fd51042c39ef1afe"/>
-        <topic label="TMR_BIT_MODE_16B" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaaa67bbce5fdd5a3d57f1328d35b1a7501"/>
+        <topic label="MXC_TMR_BIT_MODE_32" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa74fc1cc399896ba86b69bcf026406f94"/>
+        <topic label="MXC_TMR_BIT_MODE_16A" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa26ba84d2eb7c0d256e1e03c58700d651"/>
+        <topic label="MXC_TMR_BIT_MODE_16B" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc"/>
       </topic>
       <topic label="mxc_tmr_clock_t" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">
         <topic label="MXC_TMR_APB_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c"/>
@@ -2712,35 +2733,36 @@
         <topic label="MXC_TMR_80K_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a6333d67bf210e5146a28eb9820e6adbe"/>
       </topic>
       <topic label="mxc_tmr_mode_t" href="group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da">
-        <topic label="TMR_MODE_ONESHOT" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daae7303dc834c0ee36694a2e25658792c9"/>
-        <topic label="TMR_MODE_CONTINUOUS" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6a097db2261286e787a34eb08cc610aa"/>
-        <topic label="TMR_MODE_COUNTER" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa8c51323e1a787e560b92a259c7d1a075"/>
-        <topic label="TMR_MODE_PWM" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa8c99bcdde0f804e02fbd7c86ac069d9a"/>
-        <topic label="TMR_MODE_CAPTURE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa1f3a7e9c5fb5deee163471e7212ded43"/>
-        <topic label="TMR_MODE_COMPARE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daad99d98483fc55690aa9c78618cb3267e"/>
-        <topic label="TMR_MODE_GATED" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daab0b90c2ef57ff7df5f9dda0ef72f7ab6"/>
-        <topic label="TMR_MODE_CAPTURE_COMPARE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daafbb601e3292cb98d6dc282f19b20c444"/>
+        <topic label="MXC_TMR_MODE_ONESHOT" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6b11b6cafb392b67e1641097778dc986"/>
+        <topic label="MXC_TMR_MODE_CONTINUOUS" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daabcd9d29e94609eb514b54fb00f27eb9b"/>
+        <topic label="MXC_TMR_MODE_COUNTER" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daaf44070db3f02ebb83722e8f4de92228b"/>
+        <topic label="MXC_TMR_MODE_PWM" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa1a6d6bdab29679e47ad7927689702882"/>
+        <topic label="MXC_TMR_MODE_CAPTURE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa9b893781cbeebd233e27ed47dae7e0ec"/>
+        <topic label="MXC_TMR_MODE_COMPARE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daacf401e331379fec07e06d27ddd8ad0a5"/>
+        <topic label="MXC_TMR_MODE_GATED" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daad637ba81b6daeb3542cb59c008ec4ce5"/>
+        <topic label="MXC_TMR_MODE_CAPTURE_COMPARE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa3bc58b246a68511d5f78b4d465f0997d"/>
+        <topic label="MXC_TMR_MODE_DUAL_EDGE" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daae87aa000232d7dab66684c13126d886d"/>
       </topic>
       <topic label="mxc_tmr_pres_t" href="group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3">
-        <topic label="TMR_PRES_1" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3ab923668f522e031a8a1ed3a812c38fd2"/>
-        <topic label="TMR_PRES_2" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3acf4e4b064505d5c9a2e68e07efdb8619"/>
-        <topic label="TMR_PRES_4" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a4dca208928ecba6af6211d5e97de9aec"/>
-        <topic label="TMR_PRES_8" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a0e06943c8ca12d3b6e687992acd00c61"/>
-        <topic label="TMR_PRES_16" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af12d76322f02e0ae63b59963fdedd963"/>
-        <topic label="TMR_PRES_32" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3aab033a113daa3d8be4b468a6cd22c9d4"/>
-        <topic label="TMR_PRES_64" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a3dccec18243d070c9e013249436eb4d8"/>
-        <topic label="TMR_PRES_128" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a0bc7367ebff4ea201cc9661b5af4443a"/>
-        <topic label="TMR_PRES_256" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a0e142e82398d262742a4a5a8516092e4"/>
-        <topic label="TMR_PRES_512" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af8be33d6101bc4f04414466279fc6774"/>
-        <topic label="TMR_PRES_1024" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3aaf6eb6a98e9858679080ee8a0fc908d3"/>
-        <topic label="TMR_PRES_2048" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a8e41d22d79da856177027eeaa31fe217"/>
-        <topic label="TMR_PRES_4096" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3ac222ef58d33714e336a8488e88e6b358"/>
+        <topic label="MXC_TMR_PRES_1" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3ab5fea17f034c388d90e31ee9869cf0c4"/>
+        <topic label="MXC_TMR_PRES_2" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a2dc519470609a45c72752fc1fca43090"/>
+        <topic label="MXC_TMR_PRES_4" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a092a0216aff8094e5842b7c309f182ad"/>
+        <topic label="MXC_TMR_PRES_8" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a5cc7f8834c340319084d5357dbbbd45f"/>
+        <topic label="MXC_TMR_PRES_16" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3afa69cc8c271bbf9ce13c19592b738a23"/>
+        <topic label="MXC_TMR_PRES_32" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a9f9425aa14233bb29e9728cdda3bb453"/>
+        <topic label="MXC_TMR_PRES_64" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a47aed942f49a783371b52087ca99e929"/>
+        <topic label="MXC_TMR_PRES_128" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a8433dc773a16a2069688be2b3339ee70"/>
+        <topic label="MXC_TMR_PRES_256" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3aa53c5372551a7af0a6458e960a561f98"/>
+        <topic label="MXC_TMR_PRES_512" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af389f6d0d93bae6e93e6a83b3a98208e"/>
+        <topic label="MXC_TMR_PRES_1024" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3a62ef6702c74d1e591c3db28b35a8920c"/>
+        <topic label="MXC_TMR_PRES_2048" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af20929e4d84c9953c398050564a78d3d"/>
+        <topic label="MXC_TMR_PRES_4096" href="group__tmr.html#ggaa8ad001ef87dfd27884960ac2769fdd3af0d6582e3508e1f4221b979585329801"/>
       </topic>
       <topic label="mxc_tmr_unit_t" href="group__tmr.html#gaa0d647d7ed191977d06968a0594b9eeb">
-        <topic label="TMR_UNIT_NANOSEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebab8f996e33a7db25ad4a9bdd0cd8c4683"/>
-        <topic label="TMR_UNIT_MICROSEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba131e891bdd5c315820e1c997407e6400"/>
-        <topic label="TMR_UNIT_MILLISEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebaf1b005e4ef751c17a37364cf002091be"/>
-        <topic label="TMR_UNIT_SEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebacb8bc0791c9684cca5735d34747ff8eb"/>
+        <topic label="MXC_TMR_UNIT_NANOSEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eebab8bd9fe43f772df67b3b2dffbac083da"/>
+        <topic label="MXC_TMR_UNIT_MICROSEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba8b9c044adc728b43871d1be68e55d118"/>
+        <topic label="MXC_TMR_UNIT_MILLISEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba727d161251381d5bde5c66c9be6a1f81"/>
+        <topic label="MXC_TMR_UNIT_SEC" href="group__tmr.html#ggaa0d647d7ed191977d06968a0594b9eeba3a58f8d48214a0685aa3a5b54d1a78c9"/>
       </topic>
       <topic label="MXC_TMR_ClearFlags" href="group__tmr.html#ga0cffb0acccf89461d81a330dda6639bb"/>
       <topic label="MXC_TMR_Delay" href="group__tmr.html#gaf5f910fb8442d3f8f716297b8f7c6cf5"/>
@@ -6327,6 +6349,8 @@
         <topic label="intfl" href="group__i2s__registers.html#a4043deaf58b8c69a3d760825df5d9074"/>
       </topic>
       <topic label="mxc_i2s_req_t" href="group__i2s.html#structmxc__i2s__req__t">
+        <topic label="bitsWord" href="group__i2s.html#ga3736972d909c5528d19886acd60ca37e"/>
+        <topic label="sampleSize" href="group__i2s.html#gad353f9339b434e7b38926662eb144c95"/>
       </topic>
       <topic label="mxc_icc_regs_t" href="group__icc__registers.html#structmxc__icc__regs__t">
         <topic label="ctrl" href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>

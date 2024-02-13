@@ -1,9 +1,9 @@
 var group___g_p_i_o___o_u_t =
 [
-    [ "MXC_F_GPIO_OUT_GPIO_OUT", "group___g_p_i_o___o_u_t.html#ga6c818e902ab9cc94006b0d8e854ac83c", null ],
-    [ "MXC_F_GPIO_OUT_GPIO_OUT_POS", "group___g_p_i_o___o_u_t.html#gac4fab39a1a698b572f8d168ce195a7b0", null ],
-    [ "MXC_S_GPIO_OUT_GPIO_OUT_HIGH", "group___g_p_i_o___o_u_t.html#ga9d390b39684e0cafbaf219c0f1a97261", null ],
-    [ "MXC_S_GPIO_OUT_GPIO_OUT_LOW", "group___g_p_i_o___o_u_t.html#ga942cbf531303a8a158225a34ea6a31a2", null ],
-    [ "MXC_V_GPIO_OUT_GPIO_OUT_HIGH", "group___g_p_i_o___o_u_t.html#gac39c2062974b8158195592699626e109", null ],
-    [ "MXC_V_GPIO_OUT_GPIO_OUT_LOW", "group___g_p_i_o___o_u_t.html#ga49c5cb2a9bea00ef5c93f8e0d1181341", null ]
+    [ "MXC_F_GPIO_OUT_ALL", "group___g_p_i_o___o_u_t.html#ga1cae3cfdf8595cdf8df958f74b82a559", null ],
+    [ "MXC_F_GPIO_OUT_ALL_POS", "group___g_p_i_o___o_u_t.html#ga7c8d30b2d74d11c1724b5b367ca16b77", null ],
+    [ "MXC_S_GPIO_OUT_ALL_HIGH", "group___g_p_i_o___o_u_t.html#gab07227b8e2544675669118366ef68870", null ],
+    [ "MXC_S_GPIO_OUT_ALL_LOW", "group___g_p_i_o___o_u_t.html#ga1393a4f0ec8045eb6dc976d55436274f", null ],
+    [ "MXC_V_GPIO_OUT_ALL_HIGH", "group___g_p_i_o___o_u_t.html#gaf975fb0b7c9564843ebfa1b6168aefc4", null ],
+    [ "MXC_V_GPIO_OUT_ALL_LOW", "group___g_p_i_o___o_u_t.html#ga17a88787480e92b99979be12b328ad2c", null ]
 ];

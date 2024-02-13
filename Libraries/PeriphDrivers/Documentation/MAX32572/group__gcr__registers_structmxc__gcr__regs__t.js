@@ -1,10 +1,6 @@
 var group__gcr__registers_structmxc__gcr__regs__t =
 [
     [ "clkctrl", "group__gcr__registers.html#a5614e3d3d61a7b8e1e1c753d4442f209", null ],
-    [ "eccaddr", "group__gcr__registers.html#a86a9c8da4c98f1feec252973106f11bc", null ],
-    [ "eccced", "group__gcr__registers.html#a528b8e5513397c4fd224f8e1ab137b63", null ],
-    [ "eccerr", "group__gcr__registers.html#a3d9300f370fea5ec743ab5e6d12db523", null ],
-    [ "eccie", "group__gcr__registers.html#af22a3cb8fed5c7882995ff8e36131a8b", null ],
     [ "eventen", "group__gcr__registers.html#abb33e43ce55ab7142a4ea3ebc11b1e24", null ],
     [ "ipocnt", "group__gcr__registers.html#a566d0512a45bcc87310b7347b8be2c18", null ],
     [ "memctrl", "group__gcr__registers.html#a4d2fd2c661cc165f36e3b36cb794cafe", null ],

@@ -1,7 +1,5 @@
 var group___t_r_n_g___c_t_r_l =
 [
-    [ "MXC_F_TRNG_CTRL_AES_KEYGEN", "group___t_r_n_g___c_t_r_l.html#ga0a45c09a7e88bbd297fa9bec44296186", null ],
-    [ "MXC_F_TRNG_CTRL_AES_KEYGEN_POS", "group___t_r_n_g___c_t_r_l.html#ga849fba2b6c7fcf0f2ee36cc0c75121bd", null ],
     [ "MXC_F_TRNG_CTRL_EBLS", "group___t_r_n_g___c_t_r_l.html#ga9a22ce7f6b36de3f7a06fe8bf673cf57", null ],
     [ "MXC_F_TRNG_CTRL_EBLS_POS", "group___t_r_n_g___c_t_r_l.html#gaba57ef9ab6639e72fe035b5dad432c5a", null ],
     [ "MXC_F_TRNG_CTRL_EE_DONE_IE", "group___t_r_n_g___c_t_r_l.html#ga687a14b28d25f94b6aa1dfa4f9eed864", null ],
@@ -12,6 +10,8 @@ var group___t_r_n_g___c_t_r_l =
     [ "MXC_F_TRNG_CTRL_HEALTH_IE_POS", "group___t_r_n_g___c_t_r_l.html#ga4482a8140bb221d3c2396f1922f17bba", null ],
     [ "MXC_F_TRNG_CTRL_KEYWIPE", "group___t_r_n_g___c_t_r_l.html#ga545c46796ad7fa2fe080bef8af32f8b6", null ],
     [ "MXC_F_TRNG_CTRL_KEYWIPE_POS", "group___t_r_n_g___c_t_r_l.html#gafc1f152af1557dcf07109d4fadb10993", null ],
+    [ "MXC_F_TRNG_CTRL_MEU_KEYGEN", "group___t_r_n_g___c_t_r_l.html#ga1429d47ece1a14ffd681e62a5ea49ac9", null ],
+    [ "MXC_F_TRNG_CTRL_MEU_KEYGEN_POS", "group___t_r_n_g___c_t_r_l.html#ga2b3976241a55bb62dd0d467d79be7fd9", null ],
     [ "MXC_F_TRNG_CTRL_OD_EE", "group___t_r_n_g___c_t_r_l.html#ga956af6471121562bbe69af0cb6a2bf95", null ],
     [ "MXC_F_TRNG_CTRL_OD_EE_POS", "group___t_r_n_g___c_t_r_l.html#gacf27d3931c48d4eb5d46f04c4cda24dc", null ],
     [ "MXC_F_TRNG_CTRL_OD_HEALTH", "group___t_r_n_g___c_t_r_l.html#gae545d196622f59bc98cdd1b2209b1c7a", null ],
@@ -26,6 +26,8 @@ var group___t_r_n_g___c_t_r_l =
     [ "MXC_F_TRNG_CTRL_ROMON_EE_FOD_POS", "group___t_r_n_g___c_t_r_l.html#gaff95de29e1e4b9aab4e850d26180031e", null ],
     [ "MXC_F_TRNG_CTRL_ROMON_EE_FOE", "group___t_r_n_g___c_t_r_l.html#ga03ae44268524278b261a2325dbf4b288", null ],
     [ "MXC_F_TRNG_CTRL_ROMON_EE_FOE_POS", "group___t_r_n_g___c_t_r_l.html#ga9b21b1895742f45880c058a1be382b1b", null ],
+    [ "MXC_F_TRNG_CTRL_XIP_KEYGEN", "group___t_r_n_g___c_t_r_l.html#ga106a6cdb3342e193e46347698c5deae0", null ],
+    [ "MXC_F_TRNG_CTRL_XIP_KEYGEN_POS", "group___t_r_n_g___c_t_r_l.html#gaa7ae1ef792a7c2299b5d1362934c4f47", null ],
     [ "MXC_S_TRNG_CTRL_ROMON_DIS_RO_0", "group___t_r_n_g___c_t_r_l.html#gad4f6f874bb3a4b47f3da6b48dab05903", null ],
     [ "MXC_S_TRNG_CTRL_ROMON_DIS_RO_1", "group___t_r_n_g___c_t_r_l.html#gab5361c5a61484d77a47dd590bc02e243", null ],
     [ "MXC_S_TRNG_CTRL_ROMON_DIS_RO_2", "group___t_r_n_g___c_t_r_l.html#ga5526f87f93511b57a2447c0efb99444f", null ],

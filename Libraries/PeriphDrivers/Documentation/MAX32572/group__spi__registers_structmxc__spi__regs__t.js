@@ -11,7 +11,7 @@ var group__spi__registers_structmxc__spi__regs__t =
     [ "inten", "group__spi__registers.html#ac739c97e3dfed1c05d96249bc00d2578", null ],
     [ "intfl", "group__spi__registers.html#a4043deaf58b8c69a3d760825df5d9074", null ],
     [ "sstime", "group__spi__registers.html#a53352010f5744128e401d3c2581745a0", null ],
-    [ "stat", "group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7", null ],
+    [ "status", "group__spi__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9", null ],
     [ "wken", "group__spi__registers.html#a180fb4301217e58b8b04d69910d55e7d", null ],
     [ "wkfl", "group__spi__registers.html#a71c81fbb80641b4b170ab374e553582c", null ]
 ];

@@ -39,7 +39,9 @@ var group__gpio =
     [ "mxc_gpio_pad_t", "group__gpio.html#ga7547d2cdf42ac3ed10586c8d3d44cdcf", [
       [ "MXC_GPIO_PAD_NONE", "group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfa07ae78bcceb4384d088867ba5858b7ac", null ],
       [ "MXC_GPIO_PAD_PULL_UP", "group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfa768189022725c5c8584403b78c828af6", null ],
-      [ "MXC_GPIO_PAD_PULL_DOWN", "group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfacb557da7b4c0b0c00debd10385565719", null ]
+      [ "MXC_GPIO_PAD_PULL_DOWN", "group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfacb557da7b4c0b0c00debd10385565719", null ],
+      [ "MXC_GPIO_PAD_WEAK_PULL_UP", "group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3", null ],
+      [ "MXC_GPIO_PAD_WEAK_PULL_DOWN", "group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05", null ]
     ] ],
     [ "mxc_gpio_vssel_t", "group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201", [
       [ "MXC_GPIO_VSSEL_VDDIO", "group__gpio.html#gga03b13c78f2f773dabd26b93943a4b201a4e42e5c053549b9c688e5150ccd48259", null ],

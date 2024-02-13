@@ -1,9 +1,9 @@
 var group___g_p_i_o___s_r_s_e_l =
 [
-    [ "MXC_F_GPIO_SRSEL_GPIO_SRSEL", "group___g_p_i_o___s_r_s_e_l.html#ga2d811fc0d876916f8b471fba9173c82e", null ],
-    [ "MXC_F_GPIO_SRSEL_GPIO_SRSEL_POS", "group___g_p_i_o___s_r_s_e_l.html#ga7119527ad3e68a398e982aab610237ec", null ],
-    [ "MXC_S_GPIO_SRSEL_GPIO_SRSEL_FAST", "group___g_p_i_o___s_r_s_e_l.html#ga3fc35c1362de4c64349638f83f7ba43b", null ],
-    [ "MXC_S_GPIO_SRSEL_GPIO_SRSEL_SLOW", "group___g_p_i_o___s_r_s_e_l.html#gad87a578c91d0b43dea5d8f800ddd8534", null ],
-    [ "MXC_V_GPIO_SRSEL_GPIO_SRSEL_FAST", "group___g_p_i_o___s_r_s_e_l.html#ga54488572ccfeb099d168bcd58a7ef3de", null ],
-    [ "MXC_V_GPIO_SRSEL_GPIO_SRSEL_SLOW", "group___g_p_i_o___s_r_s_e_l.html#gada4616bb3ef839599f3c0d3385a2397e", null ]
+    [ "MXC_F_GPIO_SRSEL_ALL", "group___g_p_i_o___s_r_s_e_l.html#ga71ea92023ec4e89297723a2ebdb9632b", null ],
+    [ "MXC_F_GPIO_SRSEL_ALL_POS", "group___g_p_i_o___s_r_s_e_l.html#ga1e3677aa4f81f52efbe91f96203659d6", null ],
+    [ "MXC_S_GPIO_SRSEL_ALL_FAST", "group___g_p_i_o___s_r_s_e_l.html#ga648bf16cff616d63685e540b7f8f9161", null ],
+    [ "MXC_S_GPIO_SRSEL_ALL_SLOW", "group___g_p_i_o___s_r_s_e_l.html#gab8d0453238eb4fc4b295f4a588b7209e", null ],
+    [ "MXC_V_GPIO_SRSEL_ALL_FAST", "group___g_p_i_o___s_r_s_e_l.html#gacbf407a8ce99ce37c926601facc229e4", null ],
+    [ "MXC_V_GPIO_SRSEL_ALL_SLOW", "group___g_p_i_o___s_r_s_e_l.html#ga07fe726346e5e11e48bf1892d20d8792", null ]
 ];

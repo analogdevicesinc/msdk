@@ -6,6 +6,8 @@ var group___s_c_n___c_r =
     [ "MXC_F_SCN_CR_CONV_POS", "group___s_c_n___c_r.html#ga34240bc708d832a63fe8f3856947b3dc", null ],
     [ "MXC_F_SCN_CR_CREP", "group___s_c_n___c_r.html#gacf458029ffbb71f8b6c29dae7f31a753", null ],
     [ "MXC_F_SCN_CR_CREP_POS", "group___s_c_n___c_r.html#ga96a32595e2d198595947a3ea83a62d96", null ],
+    [ "MXC_F_SCN_CR_DUAL_MODE", "group___s_c_n___c_r.html#ga4809a994298a0ced8eb33f98e75e9988", null ],
+    [ "MXC_F_SCN_CR_DUAL_MODE_POS", "group___s_c_n___c_r.html#gacfd8c7304d543032d0cfe4e271fc49fc", null ],
     [ "MXC_F_SCN_CR_RXFLUSH", "group___s_c_n___c_r.html#ga4adee34588d8bf8cb9041f3da471390d", null ],
     [ "MXC_F_SCN_CR_RXFLUSH_POS", "group___s_c_n___c_r.html#gab982f053d6bd49ca190deeccacfeb954", null ],
     [ "MXC_F_SCN_CR_RXTHD", "group___s_c_n___c_r.html#ga17186775c980efa600d5475d9efa3269", null ],
