@@ -4,13 +4,13 @@
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
-    
+
     "terminal.integrated.env.linux": {
-        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
+        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${config:Make_path}:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.env.osx": {
-        "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
+        "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${config:Make_path}:{env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     
@@ -55,8 +55,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/SRAM"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -73,20 +72,13 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/SRAM"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.defines": [
         
     ],
     "C_Cpp.default.forcedInclude": [
         "${workspaceFolder}/build/project_defines.h"
-    ],
-    "files.associations": {
-        "fastspi.h": "c",
-        "n01s830ha.h": "c",
-        "n01s830ha_config.h": "c",
-        "fastspi_config.h": "c"
-    }
+    ]
 }
 

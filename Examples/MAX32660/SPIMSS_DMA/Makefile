@@ -1,56 +1,44 @@
-################################################################################
- # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
- #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
- #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
- #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
- #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
- #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
 ###############################################################################
+ #
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ # (now owned by Analog Devices, Inc.),
+ # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ # is proprietary to Analog Devices, Inc. and its licensors.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ ##############################################################################
 
 # ** Readme! **
-# Don't edit this file! This is the core Makefile for a MaximSDK
-# project. The available configuration options can be overridden
-# in "project.mk", on the command-line, or with system environment
+# Don't edit this file! This is the core Makefile for a MaximSDK 
+# project. The available configuration options can be overridden 
+# in "project.mk", on the command-line, or with system environment 
 # variables.
 
 # See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
-# The detailed instructions mentioned above are easier to read than
-# this file, but the comments found in this file also outline the
-# available configuration variables. This file is organized into
+# The detailed instructions mentioned above are easier to read than 
+# this file, but the comments found in this file also outline the 
+# available configuration variables. This file is organized into 
 # sub-sections, some of which expose config variables.
 
 
 # *******************************************************************************
-# Set the target microcontroller and board to compile for.
+# Set the target microcontroller and board to compile for.  
 
-# Every TARGET microcontroller has some Board Support Packages (BSPs) that are
-# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP
+# Every TARGET microcontroller has some Board Support Packages (BSPs) that are 
+# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP 
 # that gets selected is MaximSDK/Libraries/Boards/TARGET/BOARD.
 
 # Configuration Variables:
@@ -81,7 +69,7 @@ BOARD ?= EvKit_V1
 # should point to the root directory of the MaximSDK installation.  Setting this manually
 # is usually only required if you're working on the command-line.
 
-# If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK
+# If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK 
 # and move up from this project's original location.
 
 # Configuration Variables:
@@ -97,7 +85,7 @@ CMSIS_ROOT := $(LIBS_DIR)/CMSIS
 endif
 
 # *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH
+# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
 # in case project.mk needs to reference those values.  However, we also include
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
@@ -150,10 +138,10 @@ export CMSIS_ROOT
 
 # Configuration Variables:
 # - VPATH : Tell this Makefile to search additional locations for source (.c) files.
-# 			You should use the "+=" operator with this option.
+# 			You should use the "+=" operator with this option.  
 #			Ex:  VPATH += your/new/path
 # - IPATH : Tell this Makefile to search additional locations for header (.h) files.
-# 			You should use the "+=" operator with this option.
+# 			You should use the "+=" operator with this option.  
 #			Ex:  VPATH += your/new/path
 # - SRCS : Tell this Makefile to explicitly add a source (.c) file to the build.
 # 			This is really only useful if you want to add a source file that isn't
@@ -203,10 +191,10 @@ PROJECT ?= $(TARGET_LC)
 # Configuration Variables:
 # - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
 #			symbols and sets -Og as the default optimization level.
-# - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.
+# - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
-#			You should use the "+=" operator with this option.
+#			You should use the "+=" operator with this option. 
 #			Ex:  PROJ_CFLAGS += -Wextra
 # - MFLOAT_ABI : Set the floating point acceleration level.
 #			The only options are "hard", "soft", or "softfp".
@@ -296,7 +284,7 @@ endif # SBT
 # (ie. just running 'make' instead of 'make all')
 
 # Configuration variables:
-#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the
+#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the 
 #			command-line
 #			** "override" must be used with this variable. **
 #			Ex: "override .DEFAULT_GOAL = mygoal"
@@ -385,10 +373,10 @@ all:
 # 	Extend the functionality of the "all" recipe here
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 
-libclean:
+libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
-
-clean:
+	
+clean: 
 #	Extend the functionality of the "clean" recipe here
 
 # The rule to clean out all the build products.

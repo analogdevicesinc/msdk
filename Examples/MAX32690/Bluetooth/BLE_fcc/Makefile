@@ -164,7 +164,6 @@ VPATH := $(VPATH)
 IPATH += .
 IPATH += include
 IPATH := $(IPATH)
-IPATH += ${LIBS_DIR}/MiscDrivers/Display/fonts/
 
 AUTOSEARCH ?= 1
 ifeq ($(AUTOSEARCH), 1)
