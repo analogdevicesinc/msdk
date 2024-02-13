@@ -4,35 +4,23 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -158,7 +146,7 @@ typedef struct {
  * @brief  Selects power state of the CAN peripherals
  */
 typedef enum {
-    MXC_CAN_PWR_CTRL_OFF, ///< Shut off power to peripherals
+    MXC_CAN_PWR_CTRL_OFF = 0, ///< Shut off power to peripherals
     MXC_CAN_PWR_CTRL_SLEEP, ///< Put peripherals to sleep
     MXC_CAN_PWR_CTRL_FULL, ///< Peripherals fully awake
 } mxc_can_pwr_ctrl_t;
@@ -167,7 +155,7 @@ typedef enum {
  * @brief  Selects which bitrate to perform operation on
  */
 typedef enum {
-    MXC_CAN_BITRATE_SEL_NOMINAL, ///< Set bitrate for classic CAN frames
+    MXC_CAN_BITRATE_SEL_NOMINAL = 0, ///< Set bitrate for classic CAN frames
     MXC_CAN_BITRATE_SEL_FD_DATA, ///< Reserved for future use. Not supported on MAX32690, included to prevent build errors.
 } mxc_can_bitrate_sel_t;
 
@@ -175,7 +163,7 @@ typedef enum {
  * @brief  Selects the CAN driver's mode of operation
  */
 typedef enum {
-    MXC_CAN_MODE_INITIALIZATION, ///< Reset mode
+    MXC_CAN_MODE_INITIALIZATION = 0, ///< Reset mode
     MXC_CAN_MODE_NORMAL, ///< Normal operating mode
     MXC_CAN_MODE_RESTRICTED, ///< Restricted mode
     MXC_CAN_MODE_MONITOR, ///< Listen-only mode
@@ -265,7 +253,7 @@ typedef struct {
  * @brief  Used to set the features available to a CAN object
  */
 typedef enum {
-    MXC_CAN_OBJ_CFG_INACTIVE, ///< Object disabled
+    MXC_CAN_OBJ_CFG_INACTIVE = 0, ///< Object disabled
     MXC_CAN_OBJ_CFG_TXRX, ///< Object can transmit and/or receive messages
     MXC_CAN_OBJ_CFG_RSV, ///< Reserved for future use
     MXC_CAN_OBJ_CFG_RX_RTR_TX_DATA, ///< NOT SUPPORTED ON MAX32690
@@ -276,7 +264,8 @@ typedef enum {
  * @brief  Selects the control operation for the CAN driver to perform
  */
 typedef enum {
-    MXC_CAN_CTRL_SET_FD_MODE, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
+    MXC_CAN_CTRL_SET_FD_MODE =
+        0, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
     MXC_CAN_CTRL_ABORT_TX, ///< Abort transmission
     MXC_CAN_CTRL_RETRANSMISSION, ///< Enable/disable auto retransmission on error
     MXC_CAN_CTRL_TRANSCEIVER_DLY, ///< Set transceiver delay
@@ -286,7 +275,7 @@ typedef enum {
  * @brief  State which bus has entered to trigger unit event
  */
 typedef enum {
-    MXC_CAN_UNIT_EVT_INACTIVE, ///< Peripherals entered inactive state (sleep, shutdown)
+    MXC_CAN_UNIT_EVT_INACTIVE = 0, ///< Peripherals entered inactive state (sleep, shutdown)
     MXC_CAN_UNIT_EVT_ACTIVE, ///< Peripherals entered active state
     MXC_CAN_UNIT_EVT_WARNING, ///< Peripheral received error warning
     MXC_CAN_UNIT_EVT_PASSIVE, ///< Peripheral entered passive state
@@ -297,7 +286,7 @@ typedef enum {
  * @brief  Selects which object to notify/handle
  */
 typedef enum {
-    MXC_CAN_OBJ_EVT_TX_COMPLETE, ///< Transmission complete
+    MXC_CAN_OBJ_EVT_TX_COMPLETE = 0, ///< Transmission complete
     MXC_CAN_OBJ_EVT_RX, ///< Message received
     MXC_CAN_OBJ_EVT_RX_OVERRUN, ///< RXFIFO overflow
 } mxc_can_obj_evt_t;

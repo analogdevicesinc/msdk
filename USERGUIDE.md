@@ -1973,6 +1973,8 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 | [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html)     | `MAX78000`     | `EvKit_V1`     |
 | [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html)      | `MAX78000`     | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html)                                          | `MAX78000`     |  `MAXREFDES178` |
+| MAX78000CAM01 (Engineering samples only)      | `MAX78000`     | `CAM01_RevA`    |
+| MAX78000CAM02 (Engineering samples only)      | `MAX78000`     | `CAM02_RevA`    |
 | [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html)     | `MAX78002`     | `EvKit_V1`     |
 
 ### Custom BSPs
@@ -2298,6 +2300,7 @@ Once enabled, the following [build configuration variables](#build-configuration
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `FATFS_VERSION`            | Specify the version of [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) to use | FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the [version](http://elm-chan.org/fsw/ff/updates.html) to use.  Acceptable values are `ff13` (R0.13), `ff14` (R0.14b), or `ff15` (R0.15) |
+| `SDHC_CLK_FREQ`            | Sets the clock freq. for the SDHC library (Hz) | Sets the target clock frequency in units of Hz (Default is 30Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues. |
 
 ---
 

@@ -4,35 +4,23 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -69,7 +57,7 @@ extern "C" {
   *
   */
 typedef enum {
-    MXC_ADC_CH_0, ///< Select Channel 0
+    MXC_ADC_CH_0 = 0, ///< Select Channel 0
     MXC_ADC_CH_1, ///< Select Channel 1
     MXC_ADC_CH_2, ///< Select Channel 2
     MXC_ADC_CH_3, ///< Select Channel 3
@@ -100,7 +88,7 @@ typedef enum {
  * @brief       Enumeration type for ADC clock divider
  */
 typedef enum {
-    MXC_ADC_CLKDIV_2, ///< ADC Scale by 1/2
+    MXC_ADC_CLKDIV_2 = 0, ///< ADC Scale by 1/2
     MXC_ADC_CLKDIV_4, ///< ADC Scale by 1/4
     MXC_ADC_CLKDIV_8, ///< ADC Scale by 1/8
     MXC_ADC_CLKDIV_16, ///< ADC Scale by 1/16
@@ -111,7 +99,7 @@ typedef enum {
  * @brief       Clock settings
  */
 typedef enum {
-    MXC_ADC_HCLK, ///< HCLK CLock
+    MXC_ADC_HCLK = 0, ///< HCLK CLock
     MXC_ADC_CLK_ADC0, ///< ADC0 Clock
     MXC_ADC_CLK_ADC1, ///< ADC1 Clock
     MXC_ADC_CLK_ADC2, ///< ADC2 Clock
@@ -121,7 +109,7 @@ typedef enum {
  * @brief       Calibration settings 
  */
 typedef enum {
-    MXC_ADC_SKIP_CAL, ///< HCLK CLock
+    MXC_ADC_SKIP_CAL = 0, ///< HCLK CLock
     MXC_ADC_EN_CAL, ///< ADC0 Clock
 } mxc_adc_calibration_t;
 
@@ -129,7 +117,7 @@ typedef enum {
  * @brief       trigger mode settings 
  */
 typedef enum {
-    MXC_ADC_TRIG_SOFTWARE, ///< Software Trigger
+    MXC_ADC_TRIG_SOFTWARE = 0, ///< Software Trigger
     MXC_ADC_TRIG_HARDWARE, ///< Hardware Trigger
 } mxc_adc_trig_mode_t;
 
@@ -137,7 +125,7 @@ typedef enum {
  * @brief       Hardware trigger select options
  */
 typedef enum {
-    MXC_ADC_TRIG_SEL_TMR0, ///< Timer 0 Out Rising edge
+    MXC_ADC_TRIG_SEL_TMR0 = 0, ///< Timer 0 Out Rising edge
     MXC_ADC_TRIG_SEL_TMR1, ///< Timer 1 Out Rising Edge
     MXC_ADC_TRIG_SEL_TMR2, ///< Timer 2 Out Rising Edge
     MXC_ADC_TRIG_SEL_TMR3, ///< Timer 3 Out Rising Edge
@@ -151,7 +139,7 @@ typedef enum {
  * @brief       trigger mode settings 
  */
 typedef enum {
-    MXC_ADC_ATOMIC_CONV, ///< Software Trigger
+    MXC_ADC_ATOMIC_CONV = 0, ///< Software Trigger
     MXC_ADC_CONTINUOUS_CONV, ///< Hardware Trigger
 } mxc_adc_conversion_mode_t;
 
@@ -168,7 +156,7 @@ typedef enum {
  * @brief  Reference voltage select type.
  */
 typedef enum {
-    MXC_ADC_REF_EXT, ///< Use external reference voltage source
+    MXC_ADC_REF_EXT = 0, ///< Use external reference voltage source
     MXC_ADC_REF_INT_1V25, ///< Use internal 1.25V source
     MXC_ADC_REF_INT_2V048, ///< Use internal 2.048V souce
 } mxc_adc_refsel_t;
@@ -178,7 +166,7 @@ typedef enum {
  */
 
 typedef enum {
-    MXC_ADC_DIV_2_5K_50K_ENABLE, ///< 2.5K and 50K divide by 2 enable in lpmode
+    MXC_ADC_DIV_2_5K_50K_ENABLE = 0, ///< 2.5K and 50K divide by 2 enable in lpmode
     MXC_ADC_DIV_2_5K_DISABLE, ///< 2.5K disable and 50K divide  by 2 enable in lpmode
     MXC_ADC_DIV_50K_DISABLE, ///< 2.5K enable and 50K divide  by 2 disable in lpmode
     MXC_ADC_DIV_2_5K_50K_DISABLE, ///< 2.5K and 50K divide by 2 disable in lpmode
@@ -188,7 +176,7 @@ typedef enum {
  * @brief  Data FIFO data format
  */
 typedef enum {
-    MXC_ADC_DATA_STATUS, ///< Data(12-bit) plus Status
+    MXC_ADC_DATA_STATUS = 0, ///< Data(12-bit) plus Status
     MXC_ADC_DATA, ///< Data(12-bit) only
     MXC_ADC_RAW_DATA, ///< 18-bit raw data
 } mxc_adc_fifodataformat_t;

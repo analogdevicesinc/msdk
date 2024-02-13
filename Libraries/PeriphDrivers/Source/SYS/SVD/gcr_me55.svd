@@ -412,6 +412,24 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>CRYPTOCLK_DIV</name>
+            <description>Cryptographic clock divider</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>non_div</name>
+                <description>The cryptographic accelerator clock is running in non-divided mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div</name>
+                <description>The cryptographic accelerator clock is running in divided mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
             <name>SYSCLK_RDY</name>
             <description>Clock Ready. This read only bit reflects whether the currently selected system clock source is running.</description>
             <bitOffset>13</bitOffset>
@@ -431,21 +449,30 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CRYPTOCLK_DIV</name>
-            <description>Cryptographic clock divider</description>
-            <bitOffset>15</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-only</access>
+            <name>IPO_DIV</name>
+            <description>IPO Divider.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>non_div</name>
-                <description>The cryptographic accelerator clock is running in non-divided mode.</description>
+                <name>DIV1</name>
+                <description>Divide by 1.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>div</name>
-                <description>The cryptographic accelerator clock is running in divided mode.</description>
+                <name>DIV2</name>
+                <description>Divide by 2.</description>
                 <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV4</name>
+                <description>Divide by 4.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV8</name>
+                <description>Divide by 8.</description>
+                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
@@ -466,12 +493,6 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
-          </field>
-          <field derivedFrom="ERFO_EN">
-            <name>ERTCO_EN</name>
-            <description>32 kHz Oscillator Enable.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="ERFO_EN">
             <name>ISO_EN</name>
@@ -891,9 +912,27 @@
             <bitWidth>3</bitWidth>
           </field>
           <field>
-            <name>SRAM_WS</name>
-            <description>SYSRAM WS Select.</description>
+            <name>RAM4_WS</name>
+            <description>System RAM4 WS Select.</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM5_WS</name>
+            <description>System RAM5 WS Select.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM6_WS</name>
+            <description>System RAM6 WS Select.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ROM1_WS</name>
+            <description>ROM1 WS Select.</description>
+            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
@@ -948,12 +987,6 @@
             <name>RAM6LS_EN</name>
             <description>System RAM 6 Light Sleep Mode.</description>
             <bitOffset>22</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="RAM0LS_EN">
-            <name>ICCLS_EN</name>
-            <description>ICache RAM Light Sleep Mode.</description>
-            <bitOffset>24</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
@@ -1204,8 +1237,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>SPI2</name>
-            <description>SPI2 Reset.</description>
+            <name>SPI3</name>
+            <description>SPI3 Reset.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1325,14 +1358,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>ICCXIP</name>
-            <description>ICC XIP Clock Disable.</description>
-            <bitOffset>12</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
-            <name>SPI2</name>
-            <description>SPI2 Clock Disable.</description>
+            <name>SPI3</name>
+            <description>SPI3 Clock Disable.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1454,160 +1481,6 @@
             <description>TBD</description>
             <bitOffset>0</bitOffset>
             <bitWidth>10</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>ECCERR</name>
-        <description>ECC Error Register</description>
-        <addressOffset>0x64</addressOffset>
-        <fields>
-          <field>
-            <name>RAM0</name>
-            <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM1</name>
-            <description>ECC System RAM1 Error Flag. Write 1 to clear.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM2</name>
-            <description>ECC System RAM2 Error Flag. Write 1 to clear.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM3</name>
-            <description>ECC System RAM3 Error Flag. Write 1 to clear.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>ICCXIP</name>
-            <description>ECC System ICACHEXIP Error Flag. Write 1 to clear.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>ECCCED</name>
-        <description>ECC Not Double Error Detect Register</description>
-        <addressOffset>0x68</addressOffset>
-        <fields>
-          <field>
-            <name>RAM0</name>
-            <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM1</name>
-            <description>ECC System RAM1 Error Flag. Write 1 to clear.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM2</name>
-            <description>ECC System RAM2 Error Flag. Write 1 to clear.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM3</name>
-            <description>ECC System RAM3 Error Flag. Write 1 to clear.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>ICCXIP</name>
-            <description>ECC System ICACHEXIP Error Flag. Write 1 to clear.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>ECCIE</name>
-        <description>ECC IRQ Enable Register</description>
-        <addressOffset>0x6C</addressOffset>
-        <fields>
-          <field>
-            <name>RAM0</name>
-            <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM1</name>
-            <description>ECC System RAM1 Error Flag. Write 1 to clear.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM2</name>
-            <description>ECC System RAM2 Error Flag. Write 1 to clear.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RAM3</name>
-            <description>ECC System RAM3 Error Flag. Write 1 to clear.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>ICCXIP</name>
-            <description>ECC System ICACHEXIP Error Flag. Write 1 to clear.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>ECCADDR</name>
-        <description>ECC Error Address Register</description>
-        <addressOffset>0x70</addressOffset>
-        <fields>
-          <field>
-            <name>DADDR</name>
-            <description>Address of Error in Data RAM.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>14</bitWidth>
-          </field>
-          <field>
-            <name>DB</name>
-            <description>Data Bank,</description>
-            <bitOffset>14</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>DE</name>
-            <description>Data Error Flag.</description>
-            <bitOffset>15</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TADDR</name>
-            <description>Address of Error in Tag RAM.</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>14</bitWidth>
-          </field>
-          <field>
-            <name>TB</name>
-            <description>Tag Bank.</description>
-            <bitOffset>30</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TE</name>
-            <description>Tag Error Flag.</description>
-            <bitOffset>31</bitOffset>
-            <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>

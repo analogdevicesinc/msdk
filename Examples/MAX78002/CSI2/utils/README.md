@@ -42,17 +42,39 @@ pip install -r requirements.txt
     Started ImgCapture console and opened COM8
     MCU: *SYNC*
     MCU: Established communications with host!
-    MCU: Registered 7 total commands:
+    MCU: Registered 5 total commands:
     MCU: -----
     MCU: 'help' : Print this help string
     MCU: 'reset' : Issue a soft reset to the host MCU.
     MCU: 'capture' : Perform a standard blocking capture of a single image
+    MCU: 'set-reg' <register> <value> : Write a value to a camera register.
+    MCU: 'get-reg' <register> : Prints the value in a camera register.
     MCU: -----
-    MCU: Initializing DMA
-    MCU: Initializing camera
-    MCU: Camera I2C slave address: 3c
-    MCU: Camera ID detected: 7fa2
-    MCU: Ready!
+    MCU:
+    MCU:
+    MCU: **** MIPI CSI-2 Example ****
+    MCU: This example streams the image data through the COM port
+    MCU: and a script running on the host pc converts the data into
+    MCU: a .png image.
+    MCU:
+    MCU: Go into the pc_utility folder and run the script:
+    MCU: python console.py [COM#]
+    MCU:
+    MCU: Press PB1 (SW4) or send the 'capture' command to trigger a frame capture.
+    MCU:
+    MCU: Initializing camera...
+    MCU: Camera ID = 5640
+    MCU: Initializing SRAM...
+    MCU: RAM ID:
+    MCU: MFID: 0x0d
+    MCU: KGD: 0x5d
+    MCU: Density: 0x02
+    MCU: EID: 0x588e670d
+    MCU: Capturing image...
+    MCU: Done! (took 73321 us)
+    MCU: Sending image over serial port...
+    MCU: *IMG* RGB565 153600 320 240
+    Collecting 153600 bytes...
     $
     ```
 

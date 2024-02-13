@@ -11,6 +11,9 @@
 
 # **********************************************************
 
+# Uncomment the line below to build for the MAX78000FTHR
+#BOARD=FTHR_RevA
+
 # Set a higher optimization level.  The increased performance
 # is required for the CameraIF DMA code to work within the
 # timing requirements of the Parallel Camera Interface.
@@ -18,7 +21,7 @@ MXC_OPTIMIZE_CFLAGS = -O2
 
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
-PROJ_CFLAGS+=-DENABLE_TFT
+PROJ_CFLAGS+=-DTFT_ENABLE
 IPATH += TFT/evkit/
 VPATH += TFT/evkit/
 endif
@@ -29,7 +32,7 @@ endif
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
-#PROJ_CFLAGS+=-DENABLE_TFT
+#PROJ_CFLAGS+=-DTFT_ENABLE
 
 # If enabled, it saves out the Mic samples used for inference to SDCARD
 # Note that if both SDCARD and TFT are enabled, the TFT will be disabled to avoid SPI driver conflict.
@@ -41,9 +44,15 @@ ifeq "$(BOARD)" "FTHR_RevA"
 LIB_SDHC = 1
 IPATH += TFT/fthr
 VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 ifeq ($(BOARD),CAM01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
 endif
+
+ifeq ($(BOARD),CAM02_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM02 board)
+endif
+
 

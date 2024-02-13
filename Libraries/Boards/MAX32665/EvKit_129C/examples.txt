@@ -1,4 +1,5 @@
 ADC
+ADT7320_TempMonitor
 AES
 ARM-DSP/arm_bayes_example
 ARM-DSP/arm_class_marks_example
@@ -13,10 +14,10 @@ ARM-DSP/arm_signal_converge_example
 ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
-BLE4_ctr
-BLE_dats
-BLE_periph
-Bootloader_Host
+Bluetooth/BLE4_ctr
+Bluetooth/BLE_dats
+Bluetooth/BLE_periph
+Bluetooth/Bootloader_Host
 CRC
 DES
 DMA
@@ -45,11 +46,11 @@ SRCC
 TMR
 TRNG
 UART
-USB_CDCACM
-USB_CompositeDevice_MSC_CDC
-USB_CompositeDevice_MSC_HID
-USB_HIDKeyboard
-USB_MassStorage
+USB/USB_CDCACM
+USB/USB_CompositeDevice_MSC_CDC
+USB/USB_CompositeDevice_MSC_HID
+USB/USB_HIDKeyboard
+USB/USB_MassStorage
 Watchdog
 WearLeveling
 WUT

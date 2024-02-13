@@ -21,6 +21,8 @@ SBT=0
 IPATH += resources
 VPATH += resources/tft_demo
 
+FONTS = LiberationSans12x12 LiberationSans24x24 LiberationSans28x28 LiberationSans16x16
+
 ifeq ($(BOARD),FTHR)
 $(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
 endif

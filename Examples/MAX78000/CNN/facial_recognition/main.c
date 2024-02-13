@@ -1,33 +1,21 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -58,31 +46,40 @@
 #include "MAXCAM_Debug.h"
 #include "facedetection.h"
 #include "post_process.h"
+#include "embeddings.h"
 #include "faceID.h"
-#include "embedding_process.h"
 #include "utils.h"
-
 #define CONSOLE_BAUD 115200
 
 extern void SD_Init(void);
 extern volatile uint8_t face_detected;
-extern int reload_faceid;
-extern int reload_facedet;
-extern int8_t prev_decision;
+volatile char names[1024][7];
 mxc_uart_regs_t *CommUart;
+
+void init_names()
+{
+    char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+    for (int i = 0; i < DEFAULT_EMBS_NUM; i++) {
+        strncpy((char *)names[i], default_names[i], 7);
+    }
+#pragma GCC diagnostic pop
+}
 #ifdef TFT_ENABLE
 area_t area = { 50, 290, 180, 30 };
+//area_t area = { 290, 50, 30, 180 };
 #endif
-
 // *****************************************************************************
 int main(void)
 {
-    int ret = 0;
+    int error = 0;
     int slaveAddress;
     int id;
     int dma_channel;
-    int undetect_count = 0;
     mxc_uart_regs_t *ConsoleUart;
+
+    MXC_Delay(MXC_DELAY_SEC(2)); // Provide window for debugger to connect
 
 #ifdef BOARD_FTHR_REVA
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
@@ -99,19 +96,15 @@ int main(void)
 
     ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 
-    if ((ret = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
-        PR_ERR("UART1 Init Error: %d\n", ret);
-        return ret;
+    if ((error = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+        PR_ERR("UART1 Init Error: %d\n", error);
+        return error;
     }
 
-    PR_DEBUG("\n\nMAX78000 Feather Facial Recognition Demo\n");
+    PR_INFO("\n\nMAX78000 Feather Facial Recognition Demo");
 
-    // Initialize FaceID embeddings database
-    if (init_database() < 0) {
-        PR_ERR("Could not initialize the database");
-        return -1;
-    }
-
+    PR_INFO("Initializing...\n");
+    init_names();
     /* Initialize RTC */
     MXC_RTC_Init(0, 0);
     MXC_RTC_Start();
@@ -121,48 +114,52 @@ int main(void)
     dma_channel = MXC_DMA_AcquireChannel();
 
     // Initialize the camera driver.
-    camera_init(CAMERA_FREQ);
+    error = camera_init(CAMERA_FREQ);
+    if (error) {
+        PR_ERR("Camera initialization error (%i)", error);
+        return error;
+    }
 
     // Obtain the I2C slave address of the camera.
     slaveAddress = camera_get_slave_address();
-    PR_DEBUG("Camera I2C slave address is %02x\n", slaveAddress);
+    PR_DEBUG("Camera I2C slave address is %02x", slaveAddress);
 
     // Obtain the product ID of the camera.
-    ret = camera_get_product_id(&id);
+    error = camera_get_product_id(&id);
 
-    if (ret != STATUS_OK) {
-        PR_ERR("Error returned from reading camera id. Error %d\n", ret);
-        return -1;
+    if (error) {
+        PR_ERR("Error returned from reading camera id. Error %d", error);
+        return error;
     }
 
-    PR_DEBUG("Camera Product ID is %04x\n", id);
+    PR_DEBUG("Camera Product ID is %04x", id);
 
     // Obtain the manufacture ID of the camera.
-    ret = camera_get_manufacture_id(&id);
+    error = camera_get_manufacture_id(&id);
 
-    if (ret != STATUS_OK) {
-        PR_ERR("Error returned from reading camera id. Error %d\n", ret);
-        return -1;
+    if (error) {
+        PR_ERR("Error returned from reading camera id. Error %d", error);
+        return error;
     }
 
-    PR_DEBUG("Camera Manufacture ID is %04x\n", id);
+    PR_DEBUG("Camera Manufacture ID is %04x", id);
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel);
+    error = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+                         dma_channel);
 
-    if (ret != STATUS_OK) {
-        PR_ERR("Error returned from setting up camera. Error %d\n", ret);
-        return -1;
+    if (error) {
+        PR_ERR("Error returned from setting up camera. Error %d", error);
+        return error;
     }
 
-    // double camera PCLK speed
+    // Double PCLK
     camera_write_reg(0x11, 0x80);
 
 #ifdef ROTATE_FEATHER_BOARD
-    camera_set_hmirror(0);
+    //camera_set_hmirror(0);
 #else
-    camera_set_vflip(1); // for DMA TFT
+    camera_set_vflip(0);
 #endif
 
 #ifdef TFT_ENABLE
@@ -170,53 +167,46 @@ int main(void)
     /* Initialize TFT display */
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
 #ifdef ROTATE_FEATHER_BOARD
-    MXC_TFT_SetRotation(ROTATE_0);
+    MXC_TFT_SetRotation(ROTATE_270);
 #else
-    MXC_TFT_SetRotation(ROTATE_270); // for DMA TFT
+    MXC_TFT_SetRotation(ROTATE_180);
 #endif
     MXC_TFT_SetBackGroundColor(4);
     MXC_TFT_SetForeGroundColor(WHITE); // set font color to white
-    MXC_TFT_Rectangle(X_START - 4, Y_START - 4, X_START + IMAGE_XRES + 4, Y_START + IMAGE_YRES + 4,
-                      FRAME_GREEN);
 #endif
 #endif
 
     /* Initilize SD card */
+    PR_INFO("Initializing SD Card...");
     SD_Init();
-    uint32_t t1 = utils_get_time_ms();
 
+    PR_INFO("Launching face detection loop...");
+    uint32_t loop_time;
     while (1) {
-        if (face_detected == 0) {
-            // run face detection
-            face_detection();
-            undetect_count++;
-        } else // face is detected
-        {
-            PR_DEBUG("Face Detected");
-            // run face id
-            face_id();
-            undetect_count = 0;
+        PR_INFO("-----");
+        loop_time = utils_get_time_ms();
+        LED_On(0);
+        face_detection();
+        LED_Off(0);
 
-            if (reload_faceid) {
-                // redo face id
-                face_detected = 0;
-            }
-            // reload weights for next face detection
-            reload_facedet = 1;
+        if (face_detected) {
+            PR_INFO("Face detected!");
+            LED_On(1);
+            face_id();
+            face_detected = 0;
+        } else {
+            PR_INFO("No face detected.");
+            LED_Off(1);
         }
+
+        loop_time = utils_get_time_ms() - loop_time;
+        PR_INFO("----- (Total loop time: %dms)\n", loop_time);
 
 #ifdef TFT_ENABLE
-        if (undetect_count > 5) {
-            MXC_TFT_SetRotation(ROTATE_180);
-            MXC_TFT_ClearArea(&area, 4);
-            MXC_TFT_SetRotation(ROTATE_270);
-            undetect_count = 0;
-            prev_decision = -5;
-        }
+        MXC_TFT_SetRotation(ROTATE_180);
+        MXC_TFT_ClearArea(&area, 4);
+        MXC_TFT_SetRotation(ROTATE_270);
 #endif
-
-        PR_DEBUG("\nTotal time: %dms", utils_get_time_ms() - t1);
-        t1 = utils_get_time_ms();
     }
 
     return 0;

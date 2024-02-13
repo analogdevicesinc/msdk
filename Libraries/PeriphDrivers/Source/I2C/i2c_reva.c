@@ -1,33 +1,21 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -969,7 +957,8 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
             return E_COMM_ERR;
         }
 
-        if ((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE) && (req->rx_len < read)) {
+        if ((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE) && (req->rx_len > read) &&
+            (MXC_I2C_RevA_GetRXFIFOAvailable(i2c) == 0)) {
             if ((req->rx_len - read) > MXC_I2C_REVA_MAX_FIFO_TRANSACTION) {
                 i2c->rxctrl1 = 0;
             } else {
@@ -1440,11 +1429,7 @@ void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
         }
 
         /* Call the callback */
-        if (i2c->intfl0 & MXC_I2C_REVA_ERROR) {
-            MXC_I2C_RevA_AsyncCallback(i2c, E_COMM_ERR);
-        } else {
-            MXC_I2C_RevA_AsyncCallback(i2c, E_NO_ERROR);
-        }
+        MXC_I2C_RevA_AsyncCallback(i2c, E_NO_ERROR);
 
         /* Clear the async state */
         MXC_I2C_RevA_AsyncStop(i2c);
@@ -1531,9 +1516,36 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
         }
     }
 
+    // Check if transaction completed or restart occurred
+    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_DONE) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
+            // Stop/NACK condition occurred, transaction complete
+            *retVal = E_NO_ERROR;
+
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
+            int_en[0] = 0;
+            int_en[1] = 0;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+        } else if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
+            // Restart detected, re-arm address match interrupt
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
+            int_en[0] = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+        }
+    }
+
     // Check for address match interrupt
     if (int_en[0] & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
         if (tFlags & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
+            // Address match occurred, prepare for transaction
+            if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP && !(tFlags & MXC_F_I2C_REVA_INTFL0_DONE)) {
+                // Clear stop flag if it was asserted in a previous transaction
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
+            }
+
             if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_READ) {
                 // Read request received from the master
                 if (callback != NULL) {
@@ -1559,27 +1571,6 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
                             MXC_I2C_REVA_ERROR;
                 int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
             }
-        }
-    }
-
-    // Check if transaction completed or restart occurred
-    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_DONE) {
-        if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
-            // Stop/NACK condition occurred, transaction complete
-            *retVal = E_NO_ERROR;
-
-            if (callback != NULL) {
-                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
-            }
-
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
-            int_en[0] = 0;
-            int_en[1] = 0;
-            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
-        } else if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
-            // Restart detected, re-arm address match interrupt
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
-            int_en[0] = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
         }
     }
 }

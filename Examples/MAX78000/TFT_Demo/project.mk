@@ -12,6 +12,8 @@
 # **********************************************************
 
 # Add your config here!
+# Uncomment the line below to build for the MAX78000FTHR
+#BOARD=FTHR_RevA
 
 IPATH += resources
 
@@ -23,6 +25,7 @@ endif
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 VPATH += resources/tft_fthr
+FONTS = LiberationSans12x12 LiberationSans16x16 LiberationSans19x19 LiberationSans24x24 LiberationSans28x28
 endif
 
 
@@ -33,4 +36,9 @@ endif
 ifeq ($(BOARD),CAM01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
 endif
+
+ifeq ($(BOARD),CAM02_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM02 board)
+endif
+
 

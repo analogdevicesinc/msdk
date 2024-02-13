@@ -7,6 +7,8 @@
  *  Copyright (c) 2016-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
+ *
+ *  Partial Copyright (c) 2023 Analog Devices, Inc.
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -142,7 +144,7 @@ void dmAdvActSetData(dmAdvMsg_t *pMsg)
 
   DM_TRACE_INFO1("dmAdvActSetData: state: %d", dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT]);
 
-  if (dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT] == DM_ADV_STATE_IDLE)
+  if ((dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT] == DM_ADV_STATE_IDLE) || (dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT] == DM_ADV_STATE_ADVERTISING))
   {
     /* set new data in HCI */
     if (pMsg->apiSetData.location == DM_DATA_LOC_ADV)

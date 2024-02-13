@@ -1,38 +1,45 @@
 {
-	"name":"MiscDrivers",
-	"ipaths":[
-		"Camera",
-		"Display",
-		"ExtMemory",
-		"LED",
-		"PMIC",
-		"PushButton",
-		"Touchscreen",
+    "name":"MiscDrivers",
+    "ipaths":[
+        "Camera",
+        "Display",
+        "Display/fonts",
+        "EEPROM",
+        "ExtMemory",
+        "LED",
+        "PMIC",
+        "PushButton",
+        "Touchscreen",
         "CODEC"
-	],
-	"vpaths":[
-		"ADC",
-		"Camera",
-		"Display",
-		"LED",
-		"PMIC",
-		"PushButton",
-		"Touchscreen",
+    ],
+    "vpaths":[
+        "ADC",
+        "Camera",
+        "Display",
+        "Display/fonts",
+        "EEPROM",
+        "LED",
+        "PMIC",
+        "PushButton",
+        "Touchscreen",
         "CODEC",
-		"./"],
-	"whitelist":"True",
-	"targets":[
+        "./"],
+    "whitelist":"True",
+    "targets":[
+        {
+            "name":"MAX32655"
+        },
         {
             "name":"MAX32665"
         },
         {
             "name":"MAX32672"
         },
-		{
-			"name":"MAX78000"
-		},
-		{
-			"name":"MAX78002"
-		}
-	]
+        {
+            "name":"MAX78000"
+        },
+        {
+            "name":"MAX78002"
+        }
+    ]
 }
