@@ -63,7 +63,7 @@ int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
     rtc->ctrl |= mask;
 
     /* If TOD and SSEC interrupt enable, check busy after CTRL register write*/
-    mask &= MXC_F_RTC_REVA_CTRL_RDY_IE;
+    mask &= ~MXC_F_RTC_REVA_CTRL_RDY_IE;
 
     if (mask) {
         MXC_RTC_RevA_waitBusyToClear();
