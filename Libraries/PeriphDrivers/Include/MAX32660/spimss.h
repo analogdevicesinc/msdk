@@ -84,7 +84,7 @@ typedef void (*mxc_spimss_callback_fn)(mxc_spimss_req_t *req, int error_code);
 struct mxc_spimss_req {
     uint8_t ssel; /**< Not Used*/
     uint8_t deass; /**< Not Used*/
-    const void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
+    void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
     void *rx_data; /**< Pointer to a buffer to store data received. NULL if undesired.*/
     mxc_spimss_width_t width; /**< Not Used */
     unsigned len; /**< Number of transfer units to send from the \p tx_data buffer. */
