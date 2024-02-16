@@ -4,7 +4,7 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 
 ## Quick Links
 
-* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+* [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
 * [VSCode-Maxim Github](https://github.com/Analog-Devices-MSDK/VSCode-Maxim)
 
 ## Introduction
@@ -23,17 +23,17 @@ The following features are supported:
 * [Visual Studio Code](https://code.visualstudio.com/)
   * [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
   * [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
-* [Analog Devices MSDK](https://analog-devices-msdk.github.io/msdk/)
+* [Analog Devices MSDK](https://analogdevicesinc.github.io/msdk/)
 
 ## Installation
 
 Install the MSDK, then set `"MAXIM_PATH"` in your _user_ VS Code settings.
 
-See [Getting Started with Visual Studio Code](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started-with-visual-studio-code) in the MSDK User Guide for detailed instructions.
+See [Getting Started with Visual Studio Code](https://analogdevicesinc.github.io/msdk/USERGUIDE/#getting-started-with-visual-studio-code) in the MSDK User Guide for detailed instructions.
 
 ## Usage
 
-See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#visual-studio-code) for detailed usage info.
+See the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/#visual-studio-code) for detailed usage info.
 
 ## Issue Tracker
 
