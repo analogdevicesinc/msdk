@@ -251,6 +251,7 @@ CFLAGS+= \
 	     -MD                     \
 	     -Wall                   \
 	     -Wno-format             \
+		 -Werror=implicit-function-declaration \
 	     $(MXC_OPTIMIZE_CFLAGS)  \
 	     -c
 

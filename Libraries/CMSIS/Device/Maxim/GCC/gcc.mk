@@ -237,7 +237,7 @@ endif
 
 # Universal optimization flags added to all builds
 DEFAULT_OPTIMIZE_FLAGS ?= -ffunction-sections -fdata-sections -fsingle-precision-constant
-DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion
+DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion -Werror=implicit-function-declaration
 
 CFLAGS=-mthumb                                                                 \
        -mcpu=cortex-m4                                                         \
