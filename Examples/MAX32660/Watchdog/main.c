@@ -45,9 +45,11 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define OVERFLOW //Test Windowed timer \
-                 //OVERFLOW            \
-                 //UNDERFLOW
+
+// Test Windowed timer:
+//  OVERFLOW
+//  UNDERFLOW
+#define OVERFLOW
 
 #define RESET_PERIOD MXC_WDT_PERIOD_2_28
 #define INT_PERIOD MXC_WDT_PERIOD_2_27
