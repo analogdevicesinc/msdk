@@ -37,15 +37,16 @@ External_Flash
 Flash
 Flash_CLI
 FreeRTOSDemo
-FTHR_I2C
 GPIO
 Hello_World
+Hello_World_Cpp
 Hello_World-riscv
 I2C
 I2C_EEPROM
 I2C_MNGR
 I2C_SCAN
 I2C_Sensor
+I2C_Sensor_ADT7420
 I2S
 I2S_Playback
 ICC
