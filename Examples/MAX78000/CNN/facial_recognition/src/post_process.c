@@ -368,6 +368,9 @@ void nms(void)
             if (nms_removed[class_idx][nms_idx1] != 1 &&
                 nms_idx1 != num_nms_priors[class_idx] - 1) {
                 for (nms_idx2 = nms_idx1 + 1; nms_idx2 < num_nms_priors[class_idx]; ++nms_idx2) {
+                    if (nms_idx2 > MAX_PRIORS) {
+                        nms_idx2 = MAX_PRIORS - 1;
+                    }
                     prior1_idx = nms_indices[class_idx][nms_idx1];
                     prior2_idx = nms_indices[class_idx][nms_idx2];
 
