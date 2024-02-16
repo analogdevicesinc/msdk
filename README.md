@@ -4,7 +4,7 @@
 
 The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.  Full documentation can be found in the User Guide:
 
-* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+* [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
 
 **This repository** contains the latest **_source code_** of the MSDK and is being used for _development_.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used for building, programming, and debugging.
 
