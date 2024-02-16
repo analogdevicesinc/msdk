@@ -14,5 +14,5 @@ CAMERA = HM0360_COLOR
 BOARD = CAM01_RevA
 
 ifneq ($(BOARD),CAM01_RevA)
-$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000CAM01 board.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
+$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000CAM01 board.  (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages))
 endif

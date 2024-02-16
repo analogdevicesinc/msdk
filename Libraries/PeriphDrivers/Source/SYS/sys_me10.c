@@ -600,7 +600,7 @@ int MXC_SYS_LockDAP_Permanent(void)
     // Locking the DAP is not supported while in DEBUG.
     // To use this function, build for release ("make release")
     // or set DEBUG = 0
-    // (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-tables)
+    // (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-tables)
     return E_NOT_SUPPORTED;
 #else
     int err;

@@ -21,7 +21,7 @@ The _second_ time the example is run the application will see the "magic" 32-bit
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -42,9 +42,9 @@ If using the MAX32520FTHR:
 
 ## Building and Running
 
-**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
+**See the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
 
-This example supports all available MAX32520 evaluation platforms but comes _pre-configured_ for the MAX32520-KIT by default.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
+This example supports all available MAX32520 evaluation platforms but comes _pre-configured_ for the MAX32520-KIT by default.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
 
 ## Expected Output
 
