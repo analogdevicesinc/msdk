@@ -30,6 +30,7 @@
 #include <stdint.h>
 
 #include "mxc_errors.h"
+#include "nvic_table.h"
 #include "adc.h"
 #include "dma.h"
 #include "led.h"
