@@ -237,7 +237,7 @@ endif
 
 # Universal optimization flags added to all builds
 DEFAULT_OPTIMIZE_FLAGS ?= -ffunction-sections -fdata-sections -fsingle-precision-constant
-DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion -Werror=implicit-function-declaration
+DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion
 
 CFLAGS=-mthumb                                                                 \
        -mcpu=cortex-m4                                                         \
@@ -286,6 +286,9 @@ endif
 
 CFLAGS+=$(PROJ_CFLAGS)
 CXXFLAGS+=$(CFLAGS)
+
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
 
 # The command for calling the library archiver.
 AR=${PREFIX}-ar

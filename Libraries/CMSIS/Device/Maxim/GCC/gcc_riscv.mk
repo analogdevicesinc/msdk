@@ -251,7 +251,6 @@ CFLAGS+= \
 	     -MD                     \
 	     -Wall                   \
 	     -Wno-format             \
-		 -Werror=implicit-function-declaration \
 	     $(MXC_OPTIMIZE_CFLAGS)  \
 	     -c
 
@@ -290,6 +289,9 @@ CXXFLAGS += \
 	-fno-rtti				\
 	-fno-exceptions			\
 	-std=c++11				\
+
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
