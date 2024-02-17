@@ -54,8 +54,6 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/SDHC/Include",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
@@ -72,7 +70,6 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
