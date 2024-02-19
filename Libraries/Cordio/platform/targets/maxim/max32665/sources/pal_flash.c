@@ -36,6 +36,7 @@
 #include <string.h>
 #include "pal_flash.h"
 #include "pal_sys.h"
+#include "wsf_cs.h"
 #include "mxc_device.h"
 #include "flc.h"
 

@@ -156,6 +156,10 @@ void line_accumulator(uint8_t user_char)
         }
         break;
 
+    case NEW_LINE:
+        // Do nothing.  We don't want to store or echo new lines
+        break;
+
     case ENTER:
         // Handle Enter or carriage return
         MXC_UART_WriteCharacter(cli_uart, NEW_LINE);

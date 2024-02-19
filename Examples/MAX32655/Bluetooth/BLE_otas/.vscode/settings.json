@@ -48,6 +48,7 @@
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
@@ -66,7 +67,6 @@
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
@@ -77,6 +77,7 @@
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
@@ -92,7 +93,6 @@
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/sources",
         "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/max32655/sources",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],

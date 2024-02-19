@@ -73,7 +73,7 @@ typedef void (*spimss_reva_callback_fn)(spimss_reva_req_t *req, int error_code);
 struct spimss_reva_req {
     uint8_t ssel; /**< Not Used*/
     uint8_t deass; /**< Not Used*/
-    const void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
+    void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
     void *rx_data; /**< Pointer to a buffer to store data received. NULL if undesired.*/
     spimss_reva_width_t width; /**< Not Used */
     unsigned len; /**< Number of transfer units to send from the \p tx_data buffer. */

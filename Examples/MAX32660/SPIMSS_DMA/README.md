@@ -31,5 +31,5 @@ console UART shares the same pins as the SPIMSS. One DMA channel is used as tx f
 memory to SPIMSS TX FIFO and another dma channel is used for reading data from SPIMSS
 RX FIFO to memory.
 
-Test successful!
+Test successful.
 ```

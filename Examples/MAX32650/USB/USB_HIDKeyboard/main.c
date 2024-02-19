@@ -79,7 +79,7 @@ int main(void)
 {
     maxusb_cfg_options_t usb_opts;
 
-    printf("\n\n***** " TOSTRING(TARGET) " USB HID Keyboard Example *****\n");
+    printf("\n\n***** USB HID Keyboard Example *****\n");
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */

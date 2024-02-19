@@ -26,6 +26,7 @@
 #include "nms.h"
 #include "rtc.h"
 #include "tft_utils.h"
+#include "mxc_delay.h"
 
 #define SQUARE(x) ((x) * (x))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))

@@ -2,7 +2,7 @@
 
 This example utilizes the MAX32690 to emulate a 64KiB EEPROM chip with an I2C interface.
 
-This "EEEPROM" can only perform read and write operations.
+This "EEPROM" can only perform read and write operations.
 
 To write data to the EEPROM emulator execute the following steps:
 ```

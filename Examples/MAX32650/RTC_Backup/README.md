@@ -30,8 +30,6 @@ The time-of-day alarm is set to wake the device every 7 seconds.
 When the alarm goes off it will print the current time to the console.
 
 RTC started
-RTC Trimmed to 32768 Hz
-MXC_TRIMSIR->rtc = 0x2730000
 
 Current Time (dd:hh:mm:ss): 00:00:00:07
 

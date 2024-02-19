@@ -290,6 +290,9 @@ CXXFLAGS += \
 	-fno-exceptions			\
 	-std=c++11				\
 
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
+
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
 # option...  I don't think that was correct.  I have updated LDFLAGS

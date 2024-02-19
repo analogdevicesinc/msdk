@@ -119,6 +119,8 @@ int main(void)
                 MXC_LP_ClearWakeStatus();
                 MXC_LP_EnterDeepSleepMode();
             } else if (!strcmp(rxBuf, "quit\r")) { //If "quit\r" received, end example.
+                printf("\nStopping application.\n");
+                while (MXC_UART_Busy(ConsoleUART)) {}
                 break;
             }
 
@@ -127,9 +129,6 @@ int main(void)
             memset(rxBuf, 0x0, RXBUF_SIZE * sizeof(char));
         }
     }
-
-    printf("Example complete!");
-    while (MXC_UART_Busy(ConsoleUART)) {}
 
     return 0;
 }
