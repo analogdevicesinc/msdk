@@ -4,13 +4,13 @@
 
 The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.  Full documentation can be found in the User Guide:
 
-* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+* [MSDK User Guide](https://analogdevicesinc.github.io/msdk//USERGUIDE/)
 
 **This repository** contains the latest **_source code_** of the MSDK and is being used for _development_.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used for building, programming, and debugging.
 
 ## Installation
 
-The MSDK source code is bundled alongside its toolchain into releases that are available via an Automatic Installer.  See the ["Installation"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) section in the MSDK User Guide for instructions.
+The MSDK source code is bundled alongside its toolchain into releases that are available via an Automatic Installer.  See the ["Installation"](https://analogdevicesinc.github.io/msdk//USERGUIDE/#installation) section in the MSDK User Guide for instructions.
 
 Users who would like to use the latest bleeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the release MSDK above.
 
@@ -52,7 +52,7 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
 
 This repository contains the MSDK's *source code* only.  In order to develop on it directly the toolchain must be made available at the same file-paths as the full MSDK installation.  The easiest way to do this is to retrieve the toolchain with the automatic installer and then create symbolic links.  This section walks through the process.
 
-1. Install the MSDK via the [Automatic Installer](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation).
+1. Install the MSDK via the [Automatic Installer](https://analogdevicesinc.github.io/msdk//USERGUIDE/#installation).
 
     At ***minimum***, install the following components:
     * GNU RISC-V Embedded GCC
@@ -150,7 +150,7 @@ This repository contains the MSDK's *source code* only.  In order to develop on 
 
 ### Environment Setup (Visual Studio Code)
 
-If you have not previously configured VS Code, see [Setup (VS Code)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started-with-visual-studio-code) in the User Guide.
+If you have not previously configured VS Code, see [Setup (VS Code)](https://analogdevicesinc.github.io/msdk//USERGUIDE/#getting-started-with-visual-studio-code) in the User Guide.
 
 To configure Visual Studio Code for the _development repository_ simply set `MAXIM_PATH` to the cloned location of the _development repo_ instead of the release MSDK in your user settings.json file.  After making the change, reload VS Code.  
 
@@ -225,13 +225,13 @@ This option can be used to configure _all_ Eclipse projects to use the developme
 
 ### Environment Setup (Command-Line)
 
-If you have not previously configured the command-line, see [Setup (Command-Line)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started-with-command-line-development) in the User Guide.
+If you have not previously configured the command-line, see [Setup (Command-Line)](https://analogdevicesinc.github.io/msdk//USERGUIDE/#getting-started-with-command-line-development) in the User Guide.
 
 To configure the command-line for use with the development repo:
 
 1. Set the `MAXIM_PATH` environment variable to the cloned location of the development repo instead of the release MSDK.
 
     - Windows:  Edit `setenv.bat` in the root directory of the MSDK.
-    - Linux/MacOS:  Edit your shell's profile/startup script.  Alternatively, edit `setenv.sh` in the root directory of the MSDK and `source` it from the shell's profile/startup script (see [here](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-command-line))
+    - Linux/MacOS:  Edit your shell's profile/startup script.  Alternatively, edit `setenv.sh` in the root directory of the MSDK and `source` it from the shell's profile/startup script (see [here](https://analogdevicesinc.github.io/msdk//USERGUIDE/#setup-command-line))
     
 2. Restart your shell

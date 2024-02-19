@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,7 +63,7 @@ int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
     rtc->ctrl |= mask;
 
     /* If TOD and SSEC interrupt enable, check busy after CTRL register write*/
-    mask &= MXC_F_RTC_REVA_CTRL_RDY_IE;
+    mask &= ~MXC_F_RTC_REVA_CTRL_RDY_IE;
 
     if (mask) {
         MXC_RTC_RevA_waitBusyToClear();

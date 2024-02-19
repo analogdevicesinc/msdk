@@ -10,7 +10,7 @@ When SW3 (P0.18) is pressed, the application will intentionally force a watchdog
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 

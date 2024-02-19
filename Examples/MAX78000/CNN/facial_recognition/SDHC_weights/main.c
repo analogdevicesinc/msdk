@@ -126,7 +126,9 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
+    MKFS_PARM format_options = { .fmt = FM_FAT32 };
+
+    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
@@ -580,8 +582,7 @@ int main(void)
     if ((err = f_open(&file, "weights_2.bin", FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
         printf("ERROR opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("Opened file 'weights_2.bin'\n");
@@ -595,8 +596,7 @@ int main(void)
         if ((err = f_write(&file, wr_ptr, write_size, &bytes_written)) != FR_OK) {
             printf("ERROR writing file %d: %s\n", i, FF_ERRORS[err]);
             f_mount(NULL, "", 0);
-            while (1)
-                ;
+            while (1) {}
         }
 
         // Calculate residual bytes
@@ -615,16 +615,14 @@ int main(void)
     if ((err = f_close(&file)) != FR_OK) {
         printf("ERROR closing file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("File Closed\n");
 
     if ((err = f_mount(NULL, "", 0)) != FR_OK) {
         printf("ERROR unmounting volume: %s\n", FF_ERRORS[err]);
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("SD Unmonted\n");

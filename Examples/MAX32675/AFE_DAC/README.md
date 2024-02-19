@@ -7,7 +7,7 @@ This example configures the MAX32675 AFE 12-Bit DAC to output 1V.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 

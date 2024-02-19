@@ -1455,7 +1455,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
         # "Makefile" that is located next to this one.
         
         # For instructions on how to use this system, see
-        # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
+        # https://analogdevicesinc.github.io/msdk/USERGUIDE/
         
         # **********************************************************
         
@@ -1783,7 +1783,7 @@ For example, to enable hardware floating-point acceleration for a project, the *
     # "Makefile" that is located next to this one.
     
     # For instructions on how to use this system, see
-    # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
+    # https://analogdevicesinc.github.io/msdk/USERGUIDE/
     
     # **********************************************************
     

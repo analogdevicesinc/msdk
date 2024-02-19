@@ -104,9 +104,16 @@ int main()
 {
     int i = 0;
     int ret_val = 0;
+    int fail = 0;
 
-    printf(
-        "\n\n************** SPIMSS-DMA Master Demo **************** \nThis example configures the SPIMSS to send data between the MISO (P0.10) and \nMOSI (P0.11) pins over dma channel 0 and dma channel 1.  Connect these two pins\ntogether. This demo shows 1024 byte data transfer for 100 times using dma.\n During this demo you may see junk data printed to the serial port because the\nconsole UART shares the same pins as the SPIMSS.One DMA channel is used as tx from\nmemory to SPIMSS TX FIFO and another dma channel is used for reading data from\nSPIMSS RX FIFO to memory.\n\n");
+    printf("\n\n************** SPIMSS-DMA Master Demo **************** \n");
+    printf("This example configures the SPIMSS to send data between the MISO (P0.10) and \n");
+    printf("MOSI (P0.11) pins over dma channel 0 and dma channel 1. Connect these two pins\n");
+    printf("together. This demo shows 1024 byte data transfer for 100 times using dma.\n");
+    printf("During this demo you may see junk data printed to the serial port because the\n");
+    printf("console UART shares the same pins as the SPIMSS. One DMA channel is used as tx from\n");
+    printf("memory to SPIMSS TX FIFO and another dma channel is used for reading data from\n");
+    printf("SPIMSS RX FIFO to memory.\n\n");
 
     // Preparation of the transmission data and receive data buffer.
     for (i = 0; i < NUMBER_OF_UNIT_SIZE; i++) {
@@ -163,17 +170,21 @@ int main()
 
         // Wait for 10 ms to see the transaction on analyser clearly.
         MXC_Delay(MXC_DELAY_MSEC(10));
-        if (0 ==
-            memcmp((void *)rx_data, (void *)tx_data, TRANSFER_UNIT_SIZE * NUMBER_OF_UNIT_SIZE)) {
-            printf("Test %d -> Successful\n\r", i);
-        } else {
-            printf("Test %d -> Failed!\n", i);
+        if (memcmp((void *)rx_data, (void *)tx_data, TRANSFER_UNIT_SIZE * NUMBER_OF_UNIT_SIZE)) {
+            fail++;
         }
     }
 
     MXC_SPIMSS_Shutdown(SPIMSS);
 
-    while (1) {}
+    // SPIMSS and Console UART share pins. Re-initialize Console UART.
+    MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), CONSOLE_BAUD, MAP_A);
 
-    return 0;
+    if (fail) {
+        printf("\n\nTest Failed.\n\r");
+        return E_FAIL;
+    } else {
+        printf("\n\nTest Successful.\n\r");
+        return 0;
+    }
 }

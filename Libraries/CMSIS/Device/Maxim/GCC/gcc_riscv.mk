@@ -290,6 +290,9 @@ CXXFLAGS += \
 	-fno-exceptions			\
 	-std=c++11				\
 
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
+
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
 # option...  I don't think that was correct.  I have updated LDFLAGS
@@ -621,10 +624,10 @@ ifeq "$(SUPPRESS_HELP)" "0"
 ifneq "$(HELP_COMPLETE)" "1"
 $(info ****************************************************************************)
 $(info * Analog Devices MSDK)
-$(info * - User Guide: https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
 $(info * - Get Support: https://www.analog.com/support/technical-support.html)
 $(info * - Report Issues: https://github.com/Analog-Devices-MSDK/msdk/issues)
-$(info * - Contributing: https://analog-devices-msdk.github.io/msdk/CONTRIBUTING/)
+$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
 $(info ****************************************************************************)
 # export HELP_COMPLETE so that it's only printed once.
 HELP_COMPLETE = 1

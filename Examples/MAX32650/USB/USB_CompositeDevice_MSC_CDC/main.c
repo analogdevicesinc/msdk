@@ -112,8 +112,7 @@ int main(void)
 {
     maxusb_cfg_options_t usb_opts;
 
-    printf("\n\n***** " TOSTRING(
-        TARGET) " USB Composite Device (CDCACM and Mass Storage) Example *****\n");
+    printf("\n\n***** USB Composite Device (CDCACM and Mass Storage) Example *****\n");
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */
