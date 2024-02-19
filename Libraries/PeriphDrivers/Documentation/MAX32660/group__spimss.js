@@ -9,7 +9,7 @@ var group__spimss =
       [ "rx_data", "group__spimss.html#a145057319bd95286db0e0ad0e635f93f", null ],
       [ "rx_num", "group__spimss.html#a055028ba55168ec192fd28f23dd6295b", null ],
       [ "ssel", "group__spimss.html#ad4ca6358ae581fb4a2f11827985dac5f", null ],
-      [ "tx_data", "group__spimss.html#abe34326720491c8c1b6dfa0cc732c91a", null ],
+      [ "tx_data", "group__spimss.html#ac5b2b9db8286b9c85c956556cfa42b92", null ],
       [ "tx_num", "group__spimss.html#af0e31a86cdacabf7e823c4476c67a6a1", null ],
       [ "width", "group__spimss.html#a71b78c5e1be8cc81fcf5b5cced428243", null ]
     ] ],

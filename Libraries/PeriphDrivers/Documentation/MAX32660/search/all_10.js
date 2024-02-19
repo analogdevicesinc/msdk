@@ -12,7 +12,7 @@ var searchData=
   ['tosel_9',['tosel',['../group__dma.html#a0a09d983e28062a1f69ff01ada58ab96',1,'mxc_dma_adv_config_t']]],
   ['trim_10',['trim',['../group__rtc__registers.html#a9d47e29f781e748ae7d3528ebc2d6da1',1,'mxc_rtc_regs_t']]],
   ['tx_5fbuf_11',['tx_buf',['../group__i2c.html#aaa1e595f5ac351991634b247bd470b0a',1,'_i2c_req_t']]],
-  ['tx_5fdata_12',['tx_data',['../group__spimss.html#abe34326720491c8c1b6dfa0cc732c91a',1,'mxc_spimss_req']]],
+  ['tx_5fdata_12',['tx_data',['../group__spimss.html#ac5b2b9db8286b9c85c956556cfa42b92',1,'mxc_spimss_req']]],
   ['tx_5flen_13',['tx_len',['../group__i2c.html#ab8559300006eda5958ac86551a6ff8cd',1,'_i2c_req_t']]],
   ['tx_5fnum_14',['tx_num',['../group__spimss.html#af0e31a86cdacabf7e823c4476c67a6a1',1,'mxc_spimss_req']]],
   ['txcnt_15',['txCnt',['../group__uart.html#a204f0cb05dab7675aa7b7f7a2fd0e886',1,'_mxc_uart_req_t::txCnt()'],['../group__spi.html#ab08c6d802a1534b503d57b1cfb785bbf',1,'_mxc_spi_req_t::txCnt()']]],

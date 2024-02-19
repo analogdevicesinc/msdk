@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"group__rtc.html#ggac5db0f84d3ced6519a0378e1f0ec99ceabcdfe5a068a54811c05fa53d87346e47":[1,16,3,0],
 "group__rtc.html#ggac5db0f84d3ced6519a0378e1f0ec99ceac1cd3c6e30ee22bf471290810877346c":[1,16,3,2],
 "group__rtc__registers.html":[1,16,0],
 "group__rtc__registers.html#a42840f18466e61b7fe0bde5d005a6a66":[1,16,0,9,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "group__uart.html#ga724bb717925ccf2f4c4643a9d9949315":[1,20,19],
 "group__uart.html#ga7445f1b48110715c38070749e0952235":[1,20,4],
 "group__uart.html#ga7537c2778db77d788c0b92ada5128013":[1,20,43],
-"group__uart.html#ga7bea3ce501d2c4b9841ee2292f4cb350":[1,20,6],
-"group__uart.html#ga8d50d63b25df5fc82d066a881d84d733":[1,20,25]
+"group__uart.html#ga7bea3ce501d2c4b9841ee2292f4cb350":[1,20,6]
 };

@@ -66,6 +66,7 @@ var group__gpio =
     [ "MXC_GPIO_RegisterCallback", "group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1", null ],
     [ "MXC_GPIO_Reset", "group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345", null ],
     [ "MXC_GPIO_SetDriveStrength", "group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2", null ],
+    [ "MXC_GPIO_SetVSSEL", "group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549", null ],
     [ "MXC_GPIO_SetWakeEn", "group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f", null ],
     [ "MXC_GPIO_Shutdown", "group__gpio.html#ga573834d158ef9678e57c5f677b3a5c22", null ]
 ];

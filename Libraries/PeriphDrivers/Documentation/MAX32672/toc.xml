@@ -1934,6 +1934,7 @@
       <topic label="MXC_GPIO_RegisterCallback" href="group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1"/>
       <topic label="MXC_GPIO_Reset" href="group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345"/>
       <topic label="MXC_GPIO_SetDriveStrength" href="group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2"/>
+      <topic label="MXC_GPIO_SetVSSEL" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549"/>
       <topic label="MXC_GPIO_SetWakeEn" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f"/>
       <topic label="MXC_GPIO_Shutdown" href="group__gpio.html#ga573834d158ef9678e57c5f677b3a5c22"/>
     </topic>
