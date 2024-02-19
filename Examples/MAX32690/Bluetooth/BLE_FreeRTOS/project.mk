@@ -15,6 +15,9 @@ SBT=0
 # Enable FreeRTOS library
 LIB_FREERTOS = 1
 
+# Enable FreeRTOS tickless idle mode
+USE_TICKLESS_IDLE=0
+
 # Enable Cordio library
 LIB_CORDIO = 1
 

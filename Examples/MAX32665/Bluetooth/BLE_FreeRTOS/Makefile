@@ -231,6 +231,9 @@ MXC_OPTIMIZE_CFLAGS ?= -Og
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
 PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
+ifeq ($(USE_TICKLESS_IDLE),1)
+PROJ_CFLAGS += -DconfigUSE_TICKLESS_IDLE
+endif
 
 # Set hardware floating point acceleration.
 # Options are:
