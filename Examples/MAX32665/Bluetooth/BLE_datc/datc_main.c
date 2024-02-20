@@ -52,6 +52,7 @@
 #include "pal_uart.h"
 #include "tmr.h"
 #include "sdsc_api.h"
+#include "bb_ble_api.h"
 /**************************************************************************************************
 Macros
 **************************************************************************************************/
@@ -85,6 +86,23 @@ Macros
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
+wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
+static void datcSendData(dmConnId_t connId);
+void myTimerHandlerCB(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+ uint32_t delayStart_ms = 500;
+
+    BbBleDataPktStats_t stats;
+    BbBleGetConnStats(&stats);
+    float per = ((float)stats.rxDataCrc + (float)stats.rxDataTimeout) / ((float)stats.rxData + (float)stats.rxDataCrc + (float)stats.rxDataTimeout);
+    if(AppConnIsOpen()){
+        datcSendData(AppConnIsOpen());
+    }
+
+    WsfTimerStartMs(&myTimer, delayStart_ms);
+
+}
 
 /*! application control block */
 struct {
@@ -147,7 +165,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    FALSE /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -635,7 +653,7 @@ static void datcValueNtf(attEvt_t *pMsg)
         APP_TRACE_INFO0(">> Notification from secure data service <<<");
     /* print the received data */
     if (datcCb.speedTestCounter == 0) {
-        APP_TRACE_INFO0((const char *)pMsg->pValue);
+       // APP_TRACE_INFO0((const char *)pMsg->pValue);
     }
 }
 
@@ -1390,6 +1408,11 @@ void DatcStart(void)
 
     /* Initialize with button press handler */
     PalBtnInit(btnPressHandler);
+    myTimerHandlerId = WsfOsSetNextHandler(myTimerHandlerCB);
+	myTimer.handlerId = myTimerHandlerId;
+
+	// somewhere you have to start the timer
+	WsfTimerStartMs(&myTimer, 100);
 
     /* Reset the device */
     DmDevReset();
