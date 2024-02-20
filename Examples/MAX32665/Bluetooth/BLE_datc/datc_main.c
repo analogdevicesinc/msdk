@@ -173,7 +173,7 @@ dmConnId_t oobConnId;
 */
 static const smpCfg_t datcSmpCfg = {
     500, /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_KEY_ONLY, /*! I/O Capability */
+    SMP_IO_DISP_ONLY, /*! I/O Capability */
     7, /*! Minimum encryption key length */
     16, /*! Maximum encryption key length */
     1, /*! Attempts to trigger 'repeated attempts' timeout */
@@ -569,9 +569,14 @@ static void datcScanReport(dmEvt_t *pMsg)
     if (!connect && ((pData = DmFindAdType(DM_ADV_TYPE_LOCAL_NAME, pMsg->scanReport.len,
                                            pMsg->scanReport.pData)) != NULL)) {
         /* check length and device name */
-        if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'D') &&
-            (pData[DM_AD_DATA_IDX + 1] == 'A') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
-            (pData[DM_AD_DATA_IDX + 3] == 'S')) {
+        if (pData[DM_AD_LEN_IDX] >= 6 && 
+            (pData[DM_AD_DATA_IDX] == 'i') &&
+            (pData[DM_AD_DATA_IDX + 1] == 'R') && 
+            (pData[DM_AD_DATA_IDX + 2] == 'h') &&
+            (pData[DM_AD_DATA_IDX + 3] == 'y') && 
+            (pData[DM_AD_DATA_IDX + 4] == 't') &&
+            (pData[DM_AD_DATA_IDX + 5] == 'h') &&
+            (pData[DM_AD_DATA_IDX + 6] == 'm')) {
             connect = TRUE;
         }
     }
@@ -864,41 +869,30 @@ static void datcBtnCback(uint8_t btn)
 
 #if (BT_VER > 8)
         case APP_UI_BTN_2_SHORT: {
-            static uint32_t coded_phy_cnt = 0;
+            static bool_t phy2MIsSet = TRUE;
             /* Toggle PHY Test Mode */
-            coded_phy_cnt++;
-            switch (coded_phy_cnt & 0x3) {
-            case 0:
+            if(phy2MIsSet){
+
                 /* 1M PHY */
                 APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
                 DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT, HCI_PHY_LE_1M_BIT,
                          HCI_PHY_OPTIONS_NONE);
                 datcCb.phyMode[connId - 1] = DATC_PHY_1M;
-                break;
-            case 1:
+                phy2MIsSet = FALSE;
+            }
+
+            else{
+             
                 /* 2M PHY */
                 APP_TRACE_INFO0("2 MBit TX and RX PHY Requested");
                 DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT, HCI_PHY_LE_2M_BIT,
                          HCI_PHY_OPTIONS_NONE);
                 datcCb.phyMode[connId - 1] = DATC_PHY_2M;
-                break;
-            case 2:
-                /* Coded S2 PHY */
-                APP_TRACE_INFO0("LE Coded S2 TX and RX PHY Requested");
-                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
-                         HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S2_PREFERRED);
-                datcCb.phyMode[connId - 1] = DATC_PHY_CODED;
-                break;
-            case 3:
-                /* Coded S8 PHY */
-                APP_TRACE_INFO0("LE Coded S8 TX and RX PHY Requested");
-                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
-                         HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S8_PREFERRED);
-                datcCb.phyMode[connId - 1] = DATC_PHY_CODED;
-                break;
+                phy2MIsSet = TRUE;
             }
-            break;
-        }
+        } break;
+
+        
 #endif /* BT_VER */
         case APP_UI_BTN_2_MED:
             secDatSendData(connId);
