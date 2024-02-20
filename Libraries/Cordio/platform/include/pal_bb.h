@@ -204,6 +204,15 @@ void PalBbDisable(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Check if the BB hardware is enabled.
+ *
+ * \return     TRUE if the BB hardware is enabled, FALSE otherwise.
+ */
+/*************************************************************************************************/
+bool_t PalBbIsEnabled(void);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Load BB timing configuration.
  *
  *  \param      pCfg                Return configuration values.

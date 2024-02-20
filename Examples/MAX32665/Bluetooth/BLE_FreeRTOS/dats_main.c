@@ -59,6 +59,23 @@
 #include "svc_batt.h"
 #include "svc_hrs.h"
 #include "svc_dis.h"
+// Debuggin
+#include "pal_timer.h"
+wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
+stats_t myStats = {0,0,0,0,0};
+bool_t advertOn = TRUE;
+//this is the callback to the timer
+void myTimerHandlerCB(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    uint32_t delayStart_ms = 100;
+    //print stats
+    APP_TRACE_INFO6("-------\r\nStats: %d %d %d %d : S:%d:W:%d", myStats.tp1, myStats.tp2, myStats.tp3, myStats.tp4, myStats.sleepCount,myStats.wakeCount);
+
+    //kick off timer again
+    WsfTimerStartMs(&myTimer, delayStart_ms);
+    
+}
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -960,6 +977,7 @@ static void datsBtnCback(uint8_t btn)
         switch (btn) {
         case APP_UI_BTN_1_SHORT:
             /* start advertising */
+            advertOn = TRUE;
             AppAdvStart(APP_MODE_AUTO_INIT);
             break;
 
@@ -982,6 +1000,7 @@ static void datsBtnCback(uint8_t btn)
 
         case APP_UI_BTN_2_SHORT:
             /* stop advertising */
+            advertOn = FALSE;
             AppAdvStop();
             break;
 
@@ -1145,6 +1164,13 @@ void DatsStart(void)
 
     /* Initialize with button press handler */
     PalBtnInit(btnPressHandler);
+    //some where you have to set up the timer
+	/* Setup the erase handler */
+	myTimerHandlerId = WsfOsSetNextHandler(myTimerHandlerCB);
+	myTimer.handlerId = myTimerHandlerId;
+
+	// somewhere you have to start the timer
+	WsfTimerStartMs(&myTimer, 100);
 
     /* Reset the device */
     DmDevReset();

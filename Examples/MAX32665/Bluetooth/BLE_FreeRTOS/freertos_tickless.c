@@ -42,6 +42,26 @@
 #include "pal_timer.h"
 #include "pal_uart.h"
 #include "pal_bb.h"
+#include "wsf_trace.h"
+
+// Debugging
+#include "dats_api.h"
+extern stats_t myStats;
+extern bool_t advertOn;
+#define DEBUG_PORT MXC_GPIO1
+#define SLEEP_PIN 10
+#define DBG_PIN 12
+#define ALLDBG_PINS_LOW() do { \
+    DEBUG_PORT->out_clr = 1 << SLEEP_PIN;\
+    DEBUG_PORT->out_clr = 1 << DBG_PIN;\
+    DEBUG_PORT->out_clr = 1 << 13;\
+    DEBUG_PORT->out_clr = 1 << 14;\
+} while(0)
+
+#define DEEP_DBG_PIN_HIGH()   DEBUG_PORT->out_set = 1 << DBG_PIN
+#define DEEP_DBG_PIN_LOW()   DEBUG_PORT->out_clr = 1 << DBG_PIN
+#define DEEP_SLEEP_PIN_LOW()   DEBUG_PORT->out_set = 1 << SLEEP_PIN
+#define DEEP_SLEEP_PIN_HIGH()   DEBUG_PORT->out_clr = 1 << SLEEP_PIN
 
 #define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
 #define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
@@ -139,8 +159,9 @@ static void deepSleep(void)
 
     /* Reduce VCOREB to 0.81v */
     MXC_SIMO_SetVregO_B(810);
-
+    
     MXC_LP_EnterDeepSleepMode();
+    
 
     /*  If VCOREA not ready and VCOREB ready, switch VCORE=VCOREB 
     (set VDDCSW=2’b01). Configure VCOREB=1.1V wait for VCOREB ready. */
@@ -180,12 +201,16 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     uint32_t preCapture, postCapture, schUsec, dsTicks, dsWutTicks;
     uint64_t bleSleepTicks, idleTicks, dsSysTickPeriods, schUsecElapsed;
     bool_t schTimerActive;
-
+    // if(advertOn == FALSE || !AppConnIsOpen())
+    // {
+    //     return;
+    // }
     /* We do not currently handle to case where the WUT is slower than the RTOS tick */
     MXC_ASSERT(configRTC_TICK_RATE_HZ >= configTICK_RATE_HZ);
 
     if (SysTick->VAL < MIN_SYSTICK) {
         /* Avoid sleeping too close to a systick interrupt */
+        myStats.tp1++;
         return;
     }
 
@@ -199,6 +224,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
     /* Check to see if we meet the minimum requirements for deep sleep */
     if (idleTicks < (MIN_WUT_TICKS + WAKEUP_US)) {
+        myStats.tp2++;
         return;
     }
 
@@ -214,7 +240,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         /* Re-enable interrupts - see comments above the cpsid instruction()
            above. */
         __asm volatile("cpsie i");
-
+        myStats.tp3++;
         return;
     }
 
@@ -225,19 +251,20 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         schTimerActive = FALSE;
     }
 
-    if (!schTimerActive) {
-        uint32_t ts;
-        if (PalBbGetTimestamp(&ts)) {
+    if (schTimerActive == FALSE) {
+        // uint32_t ts;
+        //if (PalBbGetTimestamp(&ts)) {
             /*Determine if PalBb is active, return if we get a valid time stamp indicating 
              * that the scheduler is waiting for a PalBb event */
 
             /* Re-enable interrupts - see comments above the cpsid instruction()
                above. */
+            myStats.tp4++;
             __asm volatile("cpsie i");
-
             return;
-        }
+        //}
     }
+
 
     /* Disable SysTick */
     SysTick->CTRL &= ~(SysTick_CTRL_ENABLE_Msk);
@@ -245,6 +272,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Enable wakeup from WUT */
     NVIC_EnableIRQ(WUT_IRQn);
     MXC_LP_EnableWUTAlarmWakeup();
+
 
     /* Determine if we need to snapshot the PalBb clock */
     if (schTimerActive) {
@@ -292,14 +320,17 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
             /* Stop the BLE scheduler timer */
             PalTimerStop();
 
-            /* Shutdown BB hardware */
             PalBbDisable();
+            /* Shutdown BB hardware */
         }
 
         LED_Off(SLEEP_LED);
         LED_Off(DEEPSLEEP_LED);
-
+        DEEP_SLEEP_PIN_HIGH();
+        myStats.sleepCount++;
         deepSleep();
+        myStats.wakeCount++;
+        DEEP_SLEEP_PIN_LOW();
 
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
@@ -323,7 +354,9 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
                 palTimerStartTicks = 1;
             }
             PalTimerStart(palTimerStartTicks);
+            myStats.tp4++;
         }
+        
     }
 
     /* Recalculate dsWutTicks for the FreeRTOS tick counter update */

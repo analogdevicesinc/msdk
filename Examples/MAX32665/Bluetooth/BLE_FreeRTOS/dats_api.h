@@ -32,7 +32,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+// debugging
+typedef struct stats {
+    uint32_t tp1;
+    uint32_t tp2;
+    uint32_t tp3;
+    uint32_t tp4;
+    uint32_t sleepCount;
+    uint32_t wakeCount;
+} stats_t;
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
