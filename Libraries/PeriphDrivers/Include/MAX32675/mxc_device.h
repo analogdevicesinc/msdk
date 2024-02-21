@@ -31,7 +31,7 @@
 #include "mxc_errors.h"
 #include "mxc_pins.h"
 
-#if defined(__ICCARM__) || (__CC_ARM)
+#if defined(__CC_ARM)
 #include "RTE_Components.h"
 #endif
 
