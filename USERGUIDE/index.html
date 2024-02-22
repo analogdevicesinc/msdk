@@ -466,7 +466,7 @@
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">MSDK User Guide</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/USERGUIDE.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/analogdevicesinc/msdk/edit/master/docs/USERGUIDE.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -477,7 +477,7 @@
                 <h1 id="msdk-user-guide">MSDK User Guide</h1>
 <h2 id="overview">Overview</h2>
 <p>The Maxim Microcontrollers SDK (MSDK), now a part of <a href="https://www.analog.com/en/index.html">Analog Devices</a>, contains the necessary software and tools to develop firmware for the <a href="https://www.analog.com/en/parametricsearch/10984">MAX32xxx and MAX78xxx Microcontrollers</a>. That includes register and system startup files to enable low-level development for its <a href="#supported-parts">supported parts</a>. It also provides higher-level peripheral driver APIs (written in C) alongside various utilities, third-party libraries, Board Support Packages (BSPs), and a set of example programs for each microcontroller.</p>
-<p>Additionally, the MSDK includes a GCC-based toolchain, and builds are managed by a system of Makefiles (See <a href="https://www.gnu.org/software/make/manual/">GNU Make</a>). A <a href="https://github.com/Analog-Devices-MSDK/openocd">custom fork of OpenOCD</a> enables flashing and debugging. The MSDK's toolchain and build system offers a Command Line Interface (CLI), and project files for <a href="#supported-development-environments">supported development environments</a> are maintained that build on top of that CLI.</p>
+<p>Additionally, the MSDK includes a GCC-based toolchain, and builds are managed by a system of Makefiles (See <a href="https://www.gnu.org/software/make/manual/">GNU Make</a>). A <a href="https://github.com/analogdevicesinc/openocd">custom fork of OpenOCD</a> enables flashing and debugging. The MSDK's toolchain and build system offers a Command Line Interface (CLI), and project files for <a href="#supported-development-environments">supported development environments</a> are maintained that build on top of that CLI.</p>
 <p>This document describes the MSDK's installation, setup, and usage.</p>
 <h3 id="supported-operating-systems">Supported Operating Systems</h3>
 <ul>
@@ -935,145 +935,26 @@ drwxr-xr-x 112 username     username        12288 Jul 13 20:41 installerResource
 <summary>⚠️ <strong>Warning</strong></summary>
 <p>On MacOS, some additional missing packages must be manually installed with <a href="https://brew.sh/">Homebrew</a>.  There are also some manual setup steps required to retrieve <code>make</code> version 4.  The instructions in this section are critical.</p>
 </details>
-<details class="note">
-<summary>ℹ️ <strong>Instructions for M1 platforms</strong></summary>
-<p>The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a <a href="https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment">Rosetta</a> terminal on M1 platforms to install the <em>i386 version</em> of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.</p>
-<p>Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.</p>
-<p>The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.</p>
 <ol>
 <li>
-<p>Open a terminal and update Rosetta.</p>
-<pre class="codehilite"><code class="language-shell">softwareupdate --install-rosetta --agree-to-license
+<p>Install <a href="https://brew.sh/">Homebrew</a>.</p>
+</li>
+<li>
+<p>Run the command below to install dependencies for OpenOCD.</p>
+<pre class="codehilite"><code class="language-shell">brew install libusb-compat libftdi hidapi libusb
 </code></pre>
 
-</li>
-<li>
-<p>Close the terminal.</p>
-</li>
-<li>
-<p>Create a new Rosetta terminal:</p>
-<ol>
-<li>
-<p>Launch Finder.</p>
-</li>
-<li>
-<p>Navigate to Applications and find the "Terminal" application.</p>
-</li>
-<li>
-<p>Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.</p>
-</li>
-<li>
-<p>Right-Click "Terminal i386" &gt; Get Info &gt; Enable "Open using Rosetta"</p>
-</li>
-<li>
-<p>Launch the new "Terminal i386" and type <code>arch</code> to verify that it says <code>i386</code> now.</p>
 </li>
 </ol>
-</li>
-<li>
-<p>From your Rosetta terminal, follow the instructions on the <a href="https://brew.sh/">Homebrew home page</a> to install Homebrew on your system.</p>
-</li>
-<li>
-<p>Verify the correct version of Homebrew is running from your Rosetta terminal using the <code>which brew</code> command. This command should return a path beginning with <code>/usr/local</code>.</p>
-<p><strong>Note:</strong> On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If <code>which brew</code> contains <code>/opt/homebrew</code> instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.</p>
-</li>
-<li>
-<p>Run the command</p>
-<pre class="codehilite"><code class="language-shell">brew install make libusb-compat libftdi hidapi libusb
-</code></pre>
-
-<p>(or, if you need to use the absolute path)</p>
-<pre class="codehilite"><code class="language-shell">/usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
-</code></pre>
-
-</li>
-<li>
-<p>The MSDK toolchain is dependent on GNU make 4.x+ being available as <code>make</code>, but Homebrew will install it as <code>gmake</code>.  Modify your shell's startup script (<code>~/.zshrc</code>) to account for this.  Run <code>brew info make</code> for more details, and check the "caveats" section.</p>
-<pre class="codehilite"><code class="language-shell">==&gt; make: stable 4.4.1 (bottled)
-Utility for directing compilation
-https://www.gnu.org/software/make/
-/usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-License: GPL-3.0-only
-==&gt; Dependencies
-Build: lzip, lzip
-==&gt; Caveats
-GNU &quot;make&quot; has been installed as &quot;gmake&quot;.
-If you need to use it as &quot;make&quot;, you can add a &quot;gnubin&quot; directory
-to your PATH from your bashrc like:
-
-    PATH=&quot;/usr/local/opt/make/libexec/gnubin:$PATH&quot;
-==&gt; Analytics
-install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-build-error: 0 (30 days)
-</code></pre>
-
-<p>This involves adding the following line to your shell's startup script. Open the <code>~/.zshrc</code> in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to <code>~/.zshrc</code>.  The exact path may vary across different systems and Homebrew versions.</p>
-<pre class="codehilite"><code class="language-bash">PATH=&quot;/usr/local/opt/make/libexec/gnubin:$PATH&quot;
-</code></pre>
-
-</li>
-<li>
-<p>Restart your shell and verify that <code>make --version</code> returns 4.x+.</p>
-</li>
-</ol>
-</details>
-<details class="note">
-<summary>ℹ️ <strong>Instructions for non-M1 platforms</strong></summary>
-<ol>
-<li>
-<p>Follow the instructions on the <a href="https://brew.sh/">Homebrew home page</a> to install Homebrew on your system.</p>
-</li>
-<li>
-<p>Then, open a terminal and run the command</p>
-<pre class="codehilite"><code>brew install make libusb-compat libftdi hidapi libusb
-</code></pre>
-
-</li>
-<li>
-<p>The MSDK toolchain is dependent on GNU make 4.x+ being available as <code>make</code>, but Homebrew will install it as <code>gmake</code>.  Modify your shell's startup script (<code>~/.zshrc</code>) to account for this.  Run <code>brew info make</code> for more details, and check the "caveats" section.</p>
-<pre class="codehilite"><code class="language-shell">==&gt; make: stable 4.4.1 (bottled)
-Utility for directing compilation
-https://www.gnu.org/software/make/
-/usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-License: GPL-3.0-only
-==&gt; Dependencies
-Build: lzip, lzip
-==&gt; Caveats
-GNU &quot;make&quot; has been installed as &quot;gmake&quot;.
-If you need to use it as &quot;make&quot;, you can add a &quot;gnubin&quot; directory
-to your PATH from your bashrc like:
-
-    PATH=&quot;/usr/local/opt/make/libexec/gnubin:$PATH&quot;
-==&gt; Analytics
-install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-build-error: 0 (30 days)
-</code></pre>
-
-<p>This involves adding the following line to your shell's startup script. Open the <code>~/.zshrc</code> in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to <code>~/.zshrc</code>.  The exact path may vary across different systems and Homebrew versions.</p>
-<pre class="codehilite"><code class="language-bash">PATH=&quot;/usr/local/opt/make/libexec/gnubin:$PATH&quot;
-</code></pre>
-
-</li>
-<li>
-<p>Restart your shell and verify that <code>make --version</code> returns 4.x+.</p>
-</li>
-</ol>
-</details>
 <h3 id="maintenance">Maintenance</h3>
 <p>An MSDK installation contains a <code>MaintenanceTool</code> executable program in its root directory. Use the Maintenance Tool to retrieve updates, manage components, and uninstall the MSDK.</p>
 <p><img alt="Figure 11" src="../res/Fig11.jpg" /></p>
 <h4 id="updates">Updates</h4>
 <p>The MSDK releases updates quarterly, and the Maintenance Tool will retrieve the latest release when <strong>Update components</strong> is run.</p>
 <h4 id="older-versions-and-offline-installer">Older Versions and Offline Installer</h4>
-<p>Older versions of the MSDK are available as an <strong><em>offline installer</em></strong> for each release tag. They are available on the <a href="https://github.com/Analog-Devices-MSDK/msdk/releases">Releases page</a> of the MSDK GitHub and can be used to roll back to a specific MSDK release.</p>
+<p>Older versions of the MSDK are available as an <strong><em>offline installer</em></strong> for each release tag. They are available on the <a href="https://github.com/analogdevicesinc/msdk/releases">Releases page</a> of the MSDK GitHub and can be used to roll back to a specific MSDK release.</p>
 <h4 id="development-resources">Development Resources</h4>
-<p>Users can obtain development copies of the MSDK resources from <a href="https://github.com/Analog-Devices-MSDK/msdk">Github</a>.  Setup instructions can be found in the repository's <a href="https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md">README</a>.</p>
+<p>Users can obtain development copies of the MSDK resources from <a href="https://github.com/analogdevicesinc/msdk">Github</a>.  Setup instructions can be found in the repository's <a href="https://github.com/analogdevicesinc/msdk/blob/main/README.md">README</a>.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>The MSDK is designed for both evaluation and end-application development. The typical <strong>evaluation</strong> cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an <em>evaluation platform</em>. The typical <strong>development</strong> cycle typically involves building a prototype application on an <em>evaluation platform</em> first, then porting the application to a custom board. This section describes how to get started with the MSDK focusing on the <em>evaluation</em> cycle.</p>
 <p><strong>First</strong>, review the <a href="#key-concepts"><strong>Key Concepts</strong></a> below.  Then, proceed to the section for your preferred IDE. Each sub-section is written as a self-contained quick-start with links to additional documentation on important topics.</p>
@@ -1166,7 +1047,7 @@ For example, you might set <code>"MAXIM_PATH":"C:/MaximSDK"</code> on Windows an
 </details>
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note: Automatic Updates</strong></summary>
-<p><code>"update.mode: "manual"</code> and <code>"extensions.autoUpdate": false</code> <em>disable</em> automatic updates of VS Code and its extensions, respectively.  This is an <em>optional</em> (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases">VSCode-Maxim Releases</a> page.</p>
+<p><code>"update.mode: "manual"</code> and <code>"extensions.autoUpdate": false</code> <em>disable</em> automatic updates of VS Code and its extensions, respectively.  This is an <em>optional</em> (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the <a href="https://github.com/analogdevicesinc/VSCode-Maxim/releases">VSCode-Maxim Releases</a> page.</p>
 </details>
 </li>
 <li>
@@ -1374,7 +1255,7 @@ export MAXIM_PATH=$HOME/MaximSDK
 <h4 id="building-and-running-an-example-command-line">Building and Running an Example (Command-Line)</h4>
 <ol>
 <li>
-<p>First, copy an <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples">example project</a> to an accessible directory outside of the SDK. The <code>Hello_World</code> project is a good one to start with.</p>
+<p>First, copy an <a href="https://github.com/analogdevicesinc/msdk/tree/main/Examples">example project</a> to an accessible directory outside of the SDK. The <code>Hello_World</code> project is a good one to start with.</p>
 <details class="warning" open="open">
 <summary><strong>⚠️ Copying Examples</strong></summary>
 <p>It's strongly recommended to copy example projects to an <em>outside</em> folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location <em>without</em> any spaces in its filepath.</p>
@@ -1441,7 +1322,7 @@ text    data     bss     dec     hex filename
 
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note: Flashing with Make</strong></summary>
-<p>The command <code>make flash.openocd</code> is a build target added to the MSDK as of the <a href="https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06">June 2023 Release</a> to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the <code>Tools/Flash/flash.mk</code> file for implementation details, and <a href="#flashing-on-the-command-line">Flashing on the Command-Line</a> for more details on launching debug server/clients manually.</p>
+<p>The command <code>make flash.openocd</code> is a build target added to the MSDK as of the <a href="https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06">June 2023 Release</a> to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the <code>Tools/Flash/flash.mk</code> file for implementation details, and <a href="#flashing-on-the-command-line">Flashing on the Command-Line</a> for more details on launching debug server/clients manually.</p>
 </details>
 <p>Expected output:</p>
 <pre class="codehilite"><code class="language-bash">Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
@@ -1485,7 +1366,7 @@ shutdown command invoked
 </li>
 </ol>
 <h2 id="visual-studio-code">Visual Studio Code</h2>
-<p>Support for <a href="https://code.visualstudio.com/">Visual Studio Code</a> is maintained for the MSDK and developed on the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim">VSCode-Maxim</a> GitHub repository.</p>
+<p>Support for <a href="https://code.visualstudio.com/">Visual Studio Code</a> is maintained for the MSDK and developed on the <a href="https://github.com/analogdevicesinc/VSCode-Maxim">VSCode-Maxim</a> GitHub repository.</p>
 <p>For setup/quick-start instructions, see <a href="#getting-started-with-visual-studio-code">"Getting Started with Visual Studio Code"</a> first.  This section offers detailed usage info focusing on the typical development cycle.</p>
 <h3 id="opening-example-projects">Opening Example Projects</h3>
 <p>Visual Studio Code is built around a "working directory" paradigm. The editor is always rooted in a working directory, and the main mechanism for changing that directory is <strong>File -&gt; Open Folder...</strong></p>
@@ -1526,7 +1407,7 @@ shutdown command invoked
 <p>To set the BSP for an open project:</p>
 <ol>
 <li>
-<p>Set the <code>"board"</code> <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration">project configuration</a> option in <code>.vscode/settings.json</code>, which maps to the <code>BOARD</code> <em><a href="#build-tables">Build Configuration Variable</a></em>.</p>
+<p>Set the <code>"board"</code> <a href="https://github.com/analogdevicesinc/VSCode-Maxim/tree/main#project-configuration">project configuration</a> option in <code>.vscode/settings.json</code>, which maps to the <code>BOARD</code> <em><a href="#build-tables">Build Configuration Variable</a></em>.</p>
 <p>See <a href="#board-support-packages">Board Support Packages</a> for a table of possible values.</p>
 <p><img alt="Figure 17" src="../res/Fig17.jpg" /></p>
 </li>
@@ -1538,7 +1419,7 @@ shutdown command invoked
 </ol>
 <h3 id="build-tasks">Build Tasks</h3>
 <p>Once a project is opened 4 available build tasks will become available via <code>Terminal &gt; Run Build task...</code> or the shortcut <code>Ctrl+Shift+B</code>.  These tasks are configured by the <code>.vscode/task.json</code> file.</p>
-<p><img alt="Build Tasks Image" src="https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG" /></p>
+<p><img alt="Build Tasks Image" src="https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/buildtasks.JPG" /></p>
 <h4 id="build">Build</h4>
 <ul>
 <li>Compiles the code with a <code>make all</code> command.</li>
@@ -1610,7 +1491,7 @@ shutdown command invoked
 <p><img alt="Figure 37" src="../res/Fig37.jpg" /></p>
 <h4 id="peripheral-browsing">Peripheral Browsing</h4>
 <p>A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug.</p>
-<p>As of the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases/tag/v1.6.0">v1.6.0</a> VSCode-Maxim project files, pre-made <a href="https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug">Cortex-Debug</a> launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.</p>
+<p>As of the <a href="https://github.com/analogdevicesinc/VSCode-Maxim/releases/tag/v1.6.0">v1.6.0</a> VSCode-Maxim project files, pre-made <a href="https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug">Cortex-Debug</a> launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.</p>
 <p><img alt="Figure 47" src="../res/Fig47.jpg" /></p>
 <p>Alternatively, <em>watch expressions</em> can be used.  These can be set for registers and variables. (For example, the <code>sysctrl</code> register below).</p>
 <p><img alt="image" src="https://user-images.githubusercontent.com/38844790/177819247-ccf90782-e1e6-44f2-8605-c39fc15c09a6.png" /></p>
@@ -1693,7 +1574,7 @@ shutdown command invoked
 <h3 id="project-settings">Project Settings</h3>
 <p><code>.vscode/settings.json</code> is the main project configuration file.  Values set here are parsed into the other .json config files.  </p>
 <p><strong>When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -&gt; Reload Window (or alternatively restarted completely) to force a re-parse.</strong></p>
-<p><img alt="Reload Window" src="https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG" /></p>
+<p><img alt="Reload Window" src="https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/reload_window.JPG" /></p>
 <p>The default project configuration should work for most use cases as long as <a href="#target"><code>"target"</code></a> and <a href="#board"><code>"board"</code></a> are set correctly.</p>
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note</strong></summary>
@@ -1935,7 +1816,7 @@ shutdown command invoked
 <p><img alt="Figure 23" src="../res/Fig23.jpg" /></p>
 </li>
 <li>
-<p><strong>Browse</strong> to the <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples"><code>Examples</code></a> folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.</p>
+<p><strong>Browse</strong> to the <a href="https://github.com/analogdevicesinc/msdk/tree/main/Examples"><code>Examples</code></a> folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.</p>
 <p><img alt="Figure 24" src="../res/Fig24.jpg" /></p>
 </li>
 <li>
@@ -2135,7 +2016,7 @@ Info : SWD DPIDR 0x2ba01477
 shutdown command invoked
 </code></pre>
 
-<p>This command is a build target added to the MSDK as of the <a href="https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06">June 2023 Release</a> to make flashing over the command-line easier.  It will <strong>flash</strong> <em>and</em> <strong>run</strong> the project with OpenOCD.  See the <code>Tools/Flash/flash.mk</code> file for implementation details.</p>
+<p>This command is a build target added to the MSDK as of the <a href="https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06">June 2023 Release</a> to make flashing over the command-line easier.  It will <strong>flash</strong> <em>and</em> <strong>run</strong> the project with OpenOCD.  See the <code>Tools/Flash/flash.mk</code> file for implementation details.</p>
 </details>
 </li>
 <li>
@@ -3314,7 +3195,7 @@ int main(void)
 </ul>
 <hr />
 <h3 id="cmsis-dsp">CMSIS-DSP</h3>
-<p>The CMSIS-DSP library provides a suite of common <strong>Digital Signal Processing <em>(DSP)</em></strong> functions that take advantage of hardware accelerated <em>Floating Point Unit (FPU)</em> available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the <strong>ARM-DSP</strong> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples">Examples</a> folder for each microcontroller.</p>
+<p>The CMSIS-DSP library provides a suite of common <strong>Digital Signal Processing <em>(DSP)</em></strong> functions that take advantage of hardware accelerated <em>Floating Point Unit (FPU)</em> available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the <strong>ARM-DSP</strong> <a href="https://github.com/analogdevicesinc/msdk/tree/main/Examples">Examples</a> folder for each microcontroller.</p>
 <p>Please refer to the <a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html">CMSIS-DSP official documentation</a> for more detailed documentation on the library functions and usage.</p>
 <h4 id="cmsis-dsp-supported-parts">CMSIS-DSP Supported Parts</h4>
 <ul>
@@ -3400,6 +3281,11 @@ int main(void)
 <td><code>SDHC_CLK_FREQ</code></td>
 <td>Sets the clock freq. for the SDHC library (Hz)</td>
 <td>Sets the target clock frequency in units of Hz (Default is 30Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues.</td>
+</tr>
+<tr>
+<td><code>FF_CONF_DIR</code></td>
+<td>Sets the search directory for <code>ffconf.h</code></td>
+<td>(Available for <code>FATFS_VERSION = ff15</code> only) FatFS configuration is done via an <code>ffconf.h</code> file.  This option allows specifying the location of a custom <code>ffconf.h</code> file for a project.</td>
 </tr>
 </tbody>
 </table>
@@ -3862,27 +3748,27 @@ int main(void)
 <tr>
 <td><strong>ECDSA</strong></td>
 <td>ECDSA using Free UCL</td>
-<td><em>Local:</em><code>Examples/MAX32520/ECDSA</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32520/ECDSA">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32520/ECDSA</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32520/ECDSA">link</a></td>
 </tr>
 <tr>
 <td><strong>LockDebug</strong></td>
 <td>Lock Debug</td>
-<td><em>Local:</em><code>Examples/MAX32520/LockDebug</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32520/LockDebug">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32520/LockDebug</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32520/LockDebug">link</a></td>
 </tr>
 <tr>
 <td><strong>SFE</strong></td>
 <td>SPI Master Demo</td>
-<td><em>Local:</em><code>Examples/MAX32520/SFE</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32520/SFE">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32520/SFE</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32520/SFE">link</a></td>
 </tr>
 <tr>
 <td><strong>SFE_Host</strong></td>
 <td>SPI Master Demo</td>
-<td><em>Local:</em><code>Examples/MAX32520/SFE_Host</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32520/SFE_Host">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32520/SFE_Host</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32520/SFE_Host">link</a></td>
 </tr>
 <tr>
 <td><strong>SMON</strong></td>
 <td>Security Monitor example</td>
-<td><em>Local:</em><code>Examples/MAX32520/SMON</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32520/SMON">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32520/SMON</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32520/SMON">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -3900,27 +3786,27 @@ int main(void)
 <tr>
 <td><strong>ADC_MAX11261</strong></td>
 <td>MAX11261 ADC demo application</td>
-<td><em>Local:</em><code>Examples/MAX32650/ADC_MAX11261</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32650/ADC_MAX11261">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32650/ADC_MAX11261</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/ADC_MAX11261">link</a></td>
 </tr>
 <tr>
 <td><strong>CLCD</strong></td>
 <td>CLCD Example</td>
-<td><em>Local:</em><code>Examples/MAX32650/CLCD</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32650/CLCD">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32650/CLCD</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/CLCD">link</a></td>
 </tr>
 <tr>
 <td><strong>EMCC</strong></td>
 <td>External Memory Cache Controller (EMCC) using SPID, writing to external SRAM</td>
-<td><em>Local:</em><code>Examples/MAX32650/EMCC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32650/EMCC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32650/EMCC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/EMCC">link</a></td>
 </tr>
 <tr>
 <td><strong>SPIXF_ICC</strong></td>
 <td>Hello World!</td>
-<td><em>Local:</em><code>Examples/MAX32650/SPIXF_ICC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32650/SPIXF_ICC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32650/SPIXF_ICC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/SPIXF_ICC">link</a></td>
 </tr>
 <tr>
 <td><strong>SysTick</strong></td>
 <td>Demonstrates the SysTick timer and interrupt. Toggles LED0 every SysTick period.</td>
-<td><em>Local:</em><code>Examples/MAX32650/SysTick</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32650/SysTick">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32650/SysTick</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/SysTick">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -3938,32 +3824,32 @@ int main(void)
 <tr>
 <td><strong>BLE_fit_FreeRTOS</strong></td>
 <td>BLE_fit_FreeRTOS</td>
-<td><em>Local:</em><code>Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS">link</a></td>
 </tr>
 <tr>
 <td><strong>Dual_core_sync_arm</strong></td>
 <td>A basic getting started program for the RISCV, run from the ARM</td>
-<td><em>Local:</em><code>Examples/MAX32655/Dual_core_sync/Dual_core_sync_arm</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/Dual_core_sync/Dual_core_sync_arm">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/Dual_core_sync/Dual_core_sync_arm</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Dual_core_sync/Dual_core_sync_arm">link</a></td>
 </tr>
 <tr>
 <td><strong>Dual_core_sync_riscv</strong></td>
 <td>Dual-core synchronization demo code for RISC-V core.</td>
-<td><em>Local:</em><code>Examples/MAX32655/Dual_core_sync/Dual_core_sync_riscv</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/Dual_core_sync/Dual_core_sync_riscv">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/Dual_core_sync/Dual_core_sync_riscv</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Dual_core_sync/Dual_core_sync_riscv">link</a></td>
 </tr>
 <tr>
 <td><strong>External_Flash</strong></td>
 <td>External flash example.</td>
-<td><em>Local:</em><code>Examples/MAX32655/External_Flash</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/External_Flash">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/External_Flash</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/External_Flash">link</a></td>
 </tr>
 <tr>
 <td><strong>I2C_EEPROM</strong></td>
 <td>24LC256 EEPROM I2C Communication Example</td>
-<td><em>Local:</em><code>Examples/MAX32655/I2C_EEPROM</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/I2C_EEPROM">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/I2C_EEPROM</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/I2C_EEPROM">link</a></td>
 </tr>
 <tr>
 <td><strong>I2C_Sensor_ADT7420</strong></td>
 <td>I2C generic sensor Example</td>
-<td><em>Local:</em><code>Examples/MAX32655/I2C_Sensor_ADT7420</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32655/I2C_Sensor_ADT7420">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32655/I2C_Sensor_ADT7420</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/I2C_Sensor_ADT7420">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -3981,7 +3867,7 @@ int main(void)
 <tr>
 <td><strong>SPIMSS_DMA</strong></td>
 <td>SPI Master DMA Demo</td>
-<td><em>Local:</em><code>Examples/MAX32660/SPIMSS_DMA</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32660/SPIMSS_DMA">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32660/SPIMSS_DMA</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32660/SPIMSS_DMA">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4017,47 +3903,47 @@ int main(void)
 <tr>
 <td><strong>ADT7320_TempMonitor</strong></td>
 <td>ADT7320 Temp Sensor Demo</td>
-<td><em>Local:</em><code>Examples/MAX32665/ADT7320_TempMonitor</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/ADT7320_TempMonitor">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/ADT7320_TempMonitor</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/ADT7320_TempMonitor">link</a></td>
 </tr>
 <tr>
 <td><strong>AUDIO_Playback</strong></td>
 <td>Audio Playback Example</td>
-<td><em>Local:</em><code>Examples/MAX32665/AUDIO_Playback</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/AUDIO_Playback">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/AUDIO_Playback</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/AUDIO_Playback">link</a></td>
 </tr>
 <tr>
 <td><strong>BLE_LR_Central</strong></td>
 <td>Long range demo on a central device</td>
-<td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Central</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Central">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Central</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Central">link</a></td>
 </tr>
 <tr>
 <td><strong>BLE_LR_Peripheral</strong></td>
 <td>BLE long range application demo on a peripheral device.</td>
-<td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Peripheral</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Peripheral">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Peripheral</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Peripheral">link</a></td>
 </tr>
 <tr>
 <td><strong>HTMR</strong></td>
 <td>Configures and starts the HTMR and demonstrates the use of the alarms.</td>
-<td><em>Local:</em><code>Examples/MAX32665/HTMR</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/HTMR">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/HTMR</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/HTMR">link</a></td>
 </tr>
 <tr>
 <td><strong>RPU</strong></td>
 <td>Resource Protection Unit Example</td>
-<td><em>Local:</em><code>Examples/MAX32665/RPU</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/RPU">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/RPU</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/RPU">link</a></td>
 </tr>
 <tr>
 <td><strong>SPIXF_SFCC</strong></td>
 <td>Demonstrates the SPIXF Cache Controller (SFCC)</td>
-<td><em>Local:</em><code>Examples/MAX32665/SPIXF_SFCC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/SPIXF_SFCC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/SPIXF_SFCC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/SPIXF_SFCC">link</a></td>
 </tr>
 <tr>
 <td><strong>SPI_3Wire</strong></td>
 <td>3 Wire SPI Demo</td>
-<td><em>Local:</em><code>Examples/MAX32665/SPI_3Wire</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/SPI_3Wire">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/SPI_3Wire</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/SPI_3Wire">link</a></td>
 </tr>
 <tr>
 <td><strong>SRCC</strong></td>
 <td>External Memory Cache Controller (SRCC) using SPIXR, writing to external SRAM</td>
-<td><em>Local:</em><code>Examples/MAX32665/SRCC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/SRCC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32665/SRCC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/SRCC">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4075,12 +3961,12 @@ int main(void)
 <tr>
 <td><strong>EXT_CLK</strong></td>
 <td>External Clock</td>
-<td><em>Local:</em><code>Examples/MAX32670/EXT_CLK</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32670/EXT_CLK">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32670/EXT_CLK</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32670/EXT_CLK">link</a></td>
 </tr>
 <tr>
 <td><strong>SPI_Usecase</strong></td>
 <td>SPI Usecase!</td>
-<td><em>Local:</em><code>Examples/MAX32670/SPI_Usecase</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32670/SPI_Usecase">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32670/SPI_Usecase</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32670/SPI_Usecase">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4098,17 +3984,17 @@ int main(void)
 <tr>
 <td><strong>Comparator</strong></td>
 <td>ADC comparator example</td>
-<td><em>Local:</em><code>Examples/MAX32672/Comparator</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32672/Comparator">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32672/Comparator</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32672/Comparator">link</a></td>
 </tr>
 <tr>
 <td><strong>OLED_Demo</strong></td>
 <td>Display Demo</td>
-<td><em>Local:</em><code>Examples/MAX32672/OLED_Demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32672/OLED_Demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32672/OLED_Demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32672/OLED_Demo">link</a></td>
 </tr>
 <tr>
 <td><strong>QDEC</strong></td>
 <td>QDEC</td>
-<td><em>Local:</em><code>Examples/MAX32672/QDEC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32672/QDEC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32672/QDEC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32672/QDEC">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4126,7 +4012,7 @@ int main(void)
 <tr>
 <td><strong>AFE_DAC</strong></td>
 <td>AFE_DAC Example</td>
-<td><em>Local:</em><code>Examples/MAX32675/AFE_DAC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32675/AFE_DAC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32675/AFE_DAC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32675/AFE_DAC">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4144,7 +4030,7 @@ int main(void)
 <tr>
 <td><strong>AFE_ADC</strong></td>
 <td>ADC Example</td>
-<td><em>Local:</em><code>Examples/MAX32680/AFE_ADC</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32680/AFE_ADC">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32680/AFE_ADC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32680/AFE_ADC">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4162,7 +4048,7 @@ int main(void)
 <tr>
 <td><strong>Bootloader</strong></td>
 <td>Bootloader</td>
-<td><em>Local:</em><code>Examples/MAX32690/Bluetooth/Bootloader</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32690/Bluetooth/Bootloader">link</a></td>
+<td><em>Local:</em><code>Examples/MAX32690/Bluetooth/Bootloader</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32690/Bluetooth/Bootloader">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4180,167 +4066,167 @@ int main(void)
 <tr>
 <td><strong>FTHR_SRAM</strong></td>
 <td>Demonstrates SRAM drivers for the N01S830HA on the MAX78000FTHR</td>
-<td><em>Local:</em><code>Examples/MAX78000/FTHR_SRAM</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/FTHR_SRAM">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/FTHR_SRAM</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/FTHR_SRAM">link</a></td>
 </tr>
 <tr>
 <td><strong>I2C_ADXL343</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/I2C_ADXL343</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/I2C_ADXL343">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/I2C_ADXL343</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/I2C_ADXL343">link</a></td>
 </tr>
 <tr>
 <td><strong>I2S_DMA_Target</strong></td>
 <td>Main for I2S CODEC loopback</td>
-<td><em>Local:</em><code>Examples/MAX78000/I2S_DMA_Target</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/I2S_DMA_Target">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/I2S_DMA_Target</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/I2S_DMA_Target">link</a></td>
 </tr>
 <tr>
 <td><strong>SDHC_FTHR</strong></td>
 <td>read and write sdhc</td>
-<td><em>Local:</em><code>Examples/MAX78000/SDHC_FTHR</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/SDHC_FTHR">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/SDHC_FTHR</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/SDHC_FTHR">link</a></td>
 </tr>
 <tr>
 <td><strong>SDHC_weights</strong></td>
 <td>read and write sdhc</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/facial_recognition/SDHC_weights</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/facial_recognition/SDHC_weights">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/facial_recognition/SDHC_weights</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/facial_recognition/SDHC_weights">link</a></td>
 </tr>
 <tr>
 <td><strong>UNet-demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/UNet-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/UNet-demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/UNet-demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/UNet-demo">link</a></td>
 </tr>
 <tr>
 <td><strong>UNet-highres-demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/UNet-highres-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/UNet-highres-demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/UNet-highres-demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/UNet-highres-demo">link</a></td>
 </tr>
 <tr>
 <td><strong>actionrecognition-demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/actionrecognition-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/actionrecognition-demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/actionrecognition-demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/actionrecognition-demo">link</a></td>
 </tr>
 <tr>
 <td><strong>aisegment_unet</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/aisegment_unet</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/aisegment_unet">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/aisegment_unet</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/aisegment_unet">link</a></td>
 </tr>
 <tr>
 <td><strong>aisegment_unet-demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/aisegment_unet-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/aisegment_unet-demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/aisegment_unet-demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/aisegment_unet-demo">link</a></td>
 </tr>
 <tr>
 <td><strong>asl</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/asl</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/asl">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/asl</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/asl">link</a></td>
 </tr>
 <tr>
 <td><strong>asl_demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/asl_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/asl_demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/asl_demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/asl_demo">link</a></td>
 </tr>
 <tr>
 <td><strong>cam01_facedetect_demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cam01_facedetect_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cam01_facedetect_demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cam01_facedetect_demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cam01_facedetect_demo">link</a></td>
 </tr>
 <tr>
 <td><strong>cam02_facedetect_demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cam02_facedetect_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cam02_facedetect_demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cam02_facedetect_demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cam02_facedetect_demo">link</a></td>
 </tr>
 <tr>
 <td><strong>camvid_unet</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/camvid_unet</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/camvid_unet">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/camvid_unet</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/camvid_unet">link</a></td>
 </tr>
 <tr>
 <td><strong>cats-dogs</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cats-dogs</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cats-dogs">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cats-dogs</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cats-dogs">link</a></td>
 </tr>
 <tr>
 <td><strong>cats-dogs_demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cats-dogs_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cats-dogs_demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cats-dogs_demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cats-dogs_demo">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-10</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-10</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cifar-10">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-10</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cifar-10">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-10-auto-test</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-10-auto-test</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cifar-10-auto-test">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-10-auto-test</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cifar-10-auto-test">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cifar-100">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cifar-100">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-mixed</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100-mixed</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cifar-100-mixed">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100-mixed</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cifar-100-mixed">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-residual</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100-residual</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cifar-100-residual">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100-residual</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cifar-100-residual">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-simplewide2x-mixed</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100-simplewide2x-mixed</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/cifar-100-simplewide2x-mixed">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/cifar-100-simplewide2x-mixed</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/cifar-100-simplewide2x-mixed">link</a></td>
 </tr>
 <tr>
 <td><strong>digit-detection-demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/digit-detection-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/digit-detection-demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/digit-detection-demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/digit-detection-demo">link</a></td>
 </tr>
 <tr>
 <td><strong>faceid_112</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/faceid_112</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/faceid_112">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/faceid_112</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/faceid_112">link</a></td>
 </tr>
 <tr>
 <td><strong>kws20_demo-riscv</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/kws20_demo-riscv</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/kws20_demo-riscv">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/kws20_demo-riscv</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/kws20_demo-riscv">link</a></td>
 </tr>
 <tr>
 <td><strong>kws20_v3</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/kws20_v3</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/kws20_v3">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/kws20_v3</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/kws20_v3">link</a></td>
 </tr>
 <tr>
 <td><strong>mnist</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/mnist</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/mnist">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/mnist</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/mnist">link</a></td>
 </tr>
 <tr>
 <td><strong>mnist-riscv</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/mnist-riscv</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/mnist-riscv">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/mnist-riscv</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/mnist-riscv">link</a></td>
 </tr>
 <tr>
 <td><strong>rps</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/rps</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/rps">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/rps</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/rps">link</a></td>
 </tr>
 <tr>
 <td><strong>rps-demo</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/rps-demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/rps-demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/rps-demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/rps-demo">link</a></td>
 </tr>
 <tr>
 <td><strong>snake_game_demo</strong></td>
 <td>Main for Snake game</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/snake_game_demo</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/snake_game_demo">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/snake_game_demo</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/snake_game_demo">link</a></td>
 </tr>
 <tr>
 <td><strong>svhn_tinierssd</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78000/CNN/svhn_tinierssd</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78000/CNN/svhn_tinierssd">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78000/CNN/svhn_tinierssd</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/CNN/svhn_tinierssd">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4358,57 +4244,57 @@ int main(void)
 <tr>
 <td><strong>CSI2</strong></td>
 <td>MIPI CSI-2 Demo.</td>
-<td><em>Local:</em><code>Examples/MAX78002/CSI2</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CSI2">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CSI2</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CSI2">link</a></td>
 </tr>
 <tr>
 <td><strong>QSPI</strong></td>
 <td>Hello World!</td>
-<td><em>Local:</em><code>Examples/MAX78002/QSPI</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/QSPI">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/QSPI</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/QSPI">link</a></td>
 </tr>
 <tr>
 <td><strong>SPI_ControllerTarget</strong></td>
 <td>SPI_ControllerTarget Demo</td>
-<td><em>Local:</em><code>Examples/MAX78002/SPI_ControllerTarget</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/SPI_ControllerTarget">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/SPI_ControllerTarget</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/SPI_ControllerTarget">link</a></td>
 </tr>
 <tr>
 <td><strong>USB_MassStorage_ThroughPut</strong></td>
 <td>USB Mass Storage Class example</td>
-<td><em>Local:</em><code>Examples/MAX78002/USB/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/USB/USB_MassStorage_ThroughPut">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/USB/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/USB/USB_MassStorage_ThroughPut">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-effnet2</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/cifar-100-effnet2</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/cifar-100-effnet2">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/cifar-100-effnet2</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/cifar-100-effnet2">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-mobilenet-v2-0.75</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/cifar-100-mobilenet-v2-0.75</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/cifar-100-mobilenet-v2-0.75">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/cifar-100-mobilenet-v2-0.75</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/cifar-100-mobilenet-v2-0.75">link</a></td>
 </tr>
 <tr>
 <td><strong>imagenet</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/imagenet</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/imagenet">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/imagenet</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/imagenet">link</a></td>
 </tr>
 <tr>
 <td><strong>imagenet-riscv</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/imagenet-riscv</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/imagenet-riscv">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/imagenet-riscv</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/imagenet-riscv">link</a></td>
 </tr>
 <tr>
 <td><strong>kinetics</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/kinetics</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/kinetics">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/kinetics</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/kinetics">link</a></td>
 </tr>
 <tr>
 <td><strong>mobilefacenet-112</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/mobilefacenet-112</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/mobilefacenet-112">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/mobilefacenet-112</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/mobilefacenet-112">link</a></td>
 </tr>
 <tr>
 <td><strong>pascalvoc-retinanetv7_3</strong></td>
 <td>Empty Description</td>
-<td><em>Local:</em><code>Examples/MAX78002/CNN/pascalvoc-retinanetv7_3</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/CNN/pascalvoc-retinanetv7_3">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/CNN/pascalvoc-retinanetv7_3</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/CNN/pascalvoc-retinanetv7_3">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -4695,7 +4581,7 @@ void DMA_RX_IRQHandler(void)
   <span class="rst-current-version" data-toggle="rst-current-version">
     
         <span>
-          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/analogdevicesinc/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
         </span>
     
     

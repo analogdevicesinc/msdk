@@ -134,7 +134,7 @@
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">Contributing</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/CONTRIBUTING.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/analogdevicesinc/msdk/edit/master/docs/CONTRIBUTING.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -148,7 +148,7 @@
 <p>For beginners, <a href="https://learngitbranching.js.org/">learngitbranching.js.org</a> is a great hands-on starting resource.</p>
 <h2 id="contribution-guidelines">Contribution Guidelines</h2>
 <p>The MSDK follows the <a href="https://docs.github.com/en/get-started/quickstart/contributing-to-projects">GitHub contribution guidelines</a>.  </p>
-<p>External contributions from outside the <a href="https://github.com/Analog-Devices-MSDK">Analog Devices organization</a> should be made via a Pull Request opened from a fork.  Internal contributions should also preferrably use a fork where possible.</p>
+<p>External contributions from outside the <a href="https://github.com/analogdevicesinc">Analog Devices organization</a> should be made via a Pull Request opened from a fork.  Internal contributions should also preferrably use a fork where possible.</p>
 <p>If a direct branch on the mainline MSDK repo is made, the following branch naming conventions should be used when possible:</p>
 <ul>
 <li>Bugfix/ticket: <code>fix/ticketnumber</code></li>
@@ -159,7 +159,7 @@
 <h2 id="pr-title-subject-responsibilites-for-reviewersmergerspr-owners">PR Title - Subject Responsibilites for Reviewers/Mergers/PR Owners</h2>
 <p>Format: 
 <code>type(scope)&lt;!&gt;: Subject</code></p>
-<p>For more information of the format, please review the <a href="https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/pull_request_template.md">pull_request_template.md</a>.</p>
+<p>For more information of the format, please review the <a href="https://github.com/analogdevicesinc/msdk/blob/main/Documentation/pull_request_template.md">pull_request_template.md</a>.</p>
 <p>These are the rules for the <code>Subject</code>.</p>
 <ol>
 <li>The first character is capitalized and the subject must not end with any punctuation (!,.?) </li>
@@ -333,13 +333,13 @@ Formatting [5/24] Examples/MAX78000/ARM-DSP/arm_dotproduct_example_f32/arm_dotpr
 <p>First, ensure that the example project has been linted and formatted to follow the <a href="#style-guide">Style Guide</a></p>
 </li>
 <li>
-<p>Copy the example project into the <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples">Examples</a> folder of the SDK for the applicable target microcontrollers.</p>
+<p>Copy the example project into the <a href="https://github.com/analogdevicesinc/msdk/tree/main/Examples">Examples</a> folder of the SDK for the applicable target microcontrollers.</p>
 </li>
 <li>
 <p><code>git add</code> and <code>git commit</code> the Example project.  <strong>Commit your project files before running MSDKGen.</strong></p>
 </li>
 <li>
-<p>Run the <a href="https://github.com/Analog-Devices-MSDK/MSDKGen">MSDKGen</a> utility to ensure the example project's support files are updated to the latest version.</p>
+<p>Run the <a href="https://github.com/analogdevicesinc/MSDKGen">MSDKGen</a> utility to ensure the example project's support files are updated to the latest version.</p>
 <pre class="codehilite"><code>python msdkgen.py update-all --projects yourprojectname --overwrite
 </code></pre>
 
@@ -360,10 +360,10 @@ Formatting [5/24] Examples/MAX78000/ARM-DSP/arm_dotproduct_example_f32/arm_dotpr
 </li>
 </ol>
 <h2 id="contributing-libraries">Contributing Libraries</h2>
-<p>Libraries should be added to the <a href="Libraries">Libraries</a> sub-folder of the MSDK.</p>
+<p>Libraries should be added to the <code>Libraries</code> sub-folder of the MSDK.</p>
 <ul>
 <li>
-<p>All libraries should include a <code>libraryname.mk</code> file that can be added to <code>Libraries/libs.mk</code> via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration">configuration variables</a>.</p>
+<p>All libraries should include a <code>libraryname.mk</code> file that can be added to <code>Libraries/libs.mk</code> via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required <a href="https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration">configuration variables</a>.</p>
 </li>
 <li>
 <p>If necessary, a library may also include a "core" Makefile or set of Makefiles to build it as a standalone static library file.  The naming convention is <code>lib&lt;libraryname&gt;.a</code>.</p>
@@ -388,16 +388,16 @@ SRCS += libfile1.c
 SRCS += libfile2.c
 </code></pre>
 
-<p>An example of this is <a href="Libraries/MiscDrivers/">MiscDrivers</a>, which is a simple source-file-only library.  It gets its source code selectively added to the build via <code>Libraries/Boards/MAX78000/EvKit_V1/board.mk</code> files.</p>
+<p>An example of this is <code>MiscDrivers</code>, which is a simple source-file-only library.  It gets its source code selectively added to the build via files like <code>Libraries/Boards/MAX78000/EvKit_V1/board.mk</code>.</p>
 <h3 id="advanced-libraries">Advanced Libraries</h3>
 <p>More advanced libraries (including those with a large number of source files) should include a rule to build as a static library file with a <a href="https://www.gnu.org/software/make/manual/make.html#Recursion">recursive Make call</a>.  </p>
-<p>This type of library should also set up the appropriate <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration">configuration variables</a> to include that static library to the build.</p>
+<p>This type of library should also set up the appropriate <a href="https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration">configuration variables</a> to include that static library to the build.</p>
 <h2 id="contributing-documentation">Contributing Documentation</h2>
 <h3 id="code-maintainers">Code Maintainers</h3>
 <p>MSDK code should be documented using Doxygen syntax on all public functions, data structures, and variables.  See the <a href="https://www.doxygen.nl/manual/docblocks.html"><strong>DoxyGen Manual</strong></a> for more details on syntax for C-like languages.</p>
 <p>DoxyGen is automatically run across the MSDK code as part of the User Guide's build process.  A Peripheral API reference is generated for each target microcontroller using the Doxygen files located in <code>Libraries/PeriphDrivers/Documentation</code>, and the output is packaged as a sub-component of the User Guide when it's built.  For code maintainers no action is needed other than maintaining up to date Doxygen documentation for all source code.</p>
 <h3 id="user-guide">User Guide</h3>
-<p>An MSDK User Guide is maintained in the <a href="../USERGUIDE/">USERUIDE.md</a> file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.</p>
+<p>An MSDK User Guide is maintained in the <a href="../USERGUIDE/">USERGUIDE.md</a> file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.</p>
 <p>When writing markdown links, relative paths should always be used.  Additionally, links to local files on the user's filesystem <strong>cannot</strong> be used, since the online copy of the docs will throw a 404 on them.  See <a href="https://www.mkdocs.org/user-guide/writing-your-docs/">Writing Your Docs</a> for more details.</p>
 <p>Static resources such as images should be placed in the <code>res</code> folder.</p>
 <h3 id="building-the-documentation">Building the Documentation</h3>
@@ -453,7 +453,7 @@ SRCS += libfile2.c
   <span class="rst-current-version" data-toggle="rst-current-version">
     
         <span>
-          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/analogdevicesinc/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
         </span>
     
     
