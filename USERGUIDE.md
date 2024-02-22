@@ -4,7 +4,7 @@
 
 The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984). That includes register and system startup files to enable low-level development for its [supported parts](#supported-parts). It also provides higher-level peripheral driver APIs (written in C) alongside various utilities, third-party libraries, Board Support Packages (BSPs), and a set of example programs for each microcontroller.
 
-Additionally, the MSDK includes a GCC-based toolchain, and builds are managed by a system of Makefiles (See [GNU Make](https://www.gnu.org/software/make/manual/)). A [custom fork of OpenOCD](https://github.com/Analog-Devices-MSDK/openocd) enables flashing and debugging. The MSDK's toolchain and build system offers a Command Line Interface (CLI), and project files for [supported development environments](#supported-development-environments) are maintained that build on top of that CLI.
+Additionally, the MSDK includes a GCC-based toolchain, and builds are managed by a system of Makefiles (See [GNU Make](https://www.gnu.org/software/make/manual/)). A [custom fork of OpenOCD](https://github.com/analogdevicesinc/openocd) enables flashing and debugging. The MSDK's toolchain and build system offers a Command Line Interface (CLI), and project files for [supported development environments](#supported-development-environments) are maintained that build on top of that CLI.
 
 This document describes the MSDK's installation, setup, and usage.
 
@@ -369,116 +369,12 @@ To run a _headless_ installation:
 ???+ warning "⚠️ **Warning**"
     On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/).  There are also some manual setup steps required to retrieve `make` version 4.  The instructions in this section are critical.
 
-??? note "ℹ️ **Instructions for M1 platforms**"
+1. Install [Homebrew](https://brew.sh/).
 
-    The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
+2. Run the command below to install dependencies for OpenOCD.
 
-    Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
-
-    The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
-
-    1. Open a terminal and update Rosetta.
-
-            :::shell
-            softwareupdate --install-rosetta --agree-to-license
-
-    2. Close the terminal.
-
-    3. Create a new Rosetta terminal:
-
-        1. Launch Finder.
-
-        2. Navigate to Applications and find the "Terminal" application.
-
-        3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
-
-        4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
-
-        5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
-
-    4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-    5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command. This command should return a path beginning with `/usr/local`.
-
-        **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.
-
-    6. Run the command
-
-            :::shell
-            brew install make libusb-compat libftdi hidapi libusb
-
-        (or, if you need to use the absolute path)
-
-            :::shell
-            /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
-
-    7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
-
-            :::shell
-            ==> make: stable 4.4.1 (bottled)
-            Utility for directing compilation
-            https://www.gnu.org/software/make/
-            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-            License: GPL-3.0-only
-            ==> Dependencies
-            Build: lzip, lzip
-            ==> Caveats
-            GNU "make" has been installed as "gmake".
-            If you need to use it as "make", you can add a "gnubin" directory
-            to your PATH from your bashrc like:
-
-                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-            ==> Analytics
-            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-            build-error: 0 (30 days)
-
-        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
-
-            :::bash
-            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-
-    8. Restart your shell and verify that `make --version` returns 4.x+.
-
-??? note "ℹ️ **Instructions for non-M1 platforms**"
-
-    1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-    2. Then, open a terminal and run the command
-
-            brew install make libusb-compat libftdi hidapi libusb
-
-    3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
-
-            :::shell
-            ==> make: stable 4.4.1 (bottled)
-            Utility for directing compilation
-            https://www.gnu.org/software/make/
-            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-            License: GPL-3.0-only
-            ==> Dependencies
-            Build: lzip, lzip
-            ==> Caveats
-            GNU "make" has been installed as "gmake".
-            If you need to use it as "make", you can add a "gnubin" directory
-            to your PATH from your bashrc like:
-
-                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-            ==> Analytics
-            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-            build-error: 0 (30 days)
-
-        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
-
-            :::bash
-            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-
-    4. Restart your shell and verify that `make --version` returns 4.x+.
+        :::shell
+        brew install libusb-compat libftdi hidapi libusb
 
 ### Maintenance
 
@@ -492,11 +388,11 @@ The MSDK releases updates quarterly, and the Maintenance Tool will retrieve the 
 
 #### Older Versions and Offline Installer
 
-Older versions of the MSDK are available as an **_offline installer_** for each release tag. They are available on the [Releases page](https://github.com/Analog-Devices-MSDK/msdk/releases) of the MSDK GitHub and can be used to roll back to a specific MSDK release.
+Older versions of the MSDK are available as an **_offline installer_** for each release tag. They are available on the [Releases page](https://github.com/analogdevicesinc/msdk/releases) of the MSDK GitHub and can be used to roll back to a specific MSDK release.
 
 #### Development Resources
 
-Users can obtain development copies of the MSDK resources from [Github](https://github.com/Analog-Devices-MSDK/msdk).  Setup instructions can be found in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
+Users can obtain development copies of the MSDK resources from [Github](https://github.com/analogdevicesinc/msdk).  Setup instructions can be found in the repository's [README](https://github.com/analogdevicesinc/msdk/blob/main/README.md).
 
 ## Getting Started
 
@@ -588,7 +484,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
         For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows and `"MAXIM_PATH":"/home/username/MaximSDK"` on Ubuntu/MacOS.
 
     ???+ note "ℹ️ **Note: Automatic Updates**"
-        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases) page.
+        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/analogdevicesinc/VSCode-Maxim/releases) page.
 
 8. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
@@ -793,7 +689,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 #### Building and Running an Example (Command-Line)
 
-1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. The `Hello_World` project is a good one to start with.
+1. First, copy an [example project](https://github.com/analogdevicesinc/msdk/tree/main/Examples) to an accessible directory outside of the SDK. The `Hello_World` project is a good one to start with.
 
     ???+ warning "**⚠️ Copying Examples**"
         It's strongly recommended to copy example projects to an _outside_ folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location _without_ any spaces in its filepath.
@@ -850,7 +746,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         make flash.openocd
 
     ???+ note "ℹ️ **Note: Flashing with Make**"
-        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
+        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
 
     Expected output:
 
@@ -892,7 +788,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 ## Visual Studio Code
 
-Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) GitHub repository.
+Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/analogdevicesinc/VSCode-Maxim) GitHub repository.
 
 For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](#getting-started-with-visual-studio-code) first.  This section offers detailed usage info focusing on the typical development cycle.
 
@@ -937,7 +833,7 @@ To open a project:
 
 To set the BSP for an open project:
 
-1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
+1. Set the `"board"` [project configuration](https://github.com/analogdevicesinc/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -953,7 +849,7 @@ To set the BSP for an open project:
 
 Once a project is opened 4 available build tasks will become available via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.  These tasks are configured by the `.vscode/task.json` file.
 
-![Build Tasks Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG)
+![Build Tasks Image](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/buildtasks.JPG)
 
 #### Build
 
@@ -1036,7 +932,7 @@ The condition and condition type can be modified with the dropdown. This is usef
 
 A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug.
 
-As of the [v1.6.0](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases/tag/v1.6.0) VSCode-Maxim project files, pre-made [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.
+As of the [v1.6.0](https://github.com/analogdevicesinc/VSCode-Maxim/releases/tag/v1.6.0) VSCode-Maxim project files, pre-made [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.
 
 ![Figure 47](res/Fig47.jpg)
 
@@ -1127,7 +1023,7 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
 **When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
 
-![Reload Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG)
+![Reload Window](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/reload_window.JPG)
 
 The default project configuration should work for most use cases as long as [`"target"`](#target) and [`"board"`](#board) are set correctly.
 
@@ -1356,7 +1252,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
     ![Figure 23](res/Fig23.jpg)
 
-4. **Browse** to the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
+4. **Browse** to the [`Examples`](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
 
     ![Figure 24](res/Fig24.jpg)
 
@@ -1537,7 +1433,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
                 Info : SWD DPIDR 0x2ba01477
                 shutdown command invoked
 
-            This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
+            This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
 
     - ???+ note "ℹ️ **OpenOCD Flash & Hold**"
         The following command template can be used if you just want to flash the program with OpenOCD manually, and halt the target micro.  This is used when you want to start a command-line debugging session.
@@ -2226,7 +2122,7 @@ The following table matches external part numbers to internal die types.  This i
 
 ### CMSIS-DSP
 
-The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder for each microcontroller.
+The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder for each microcontroller.
 
 Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) for more detailed documentation on the library functions and usage.
 
@@ -2301,6 +2197,7 @@ Once enabled, the following [build configuration variables](#build-configuration
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `FATFS_VERSION`            | Specify the version of [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) to use | FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the [version](http://elm-chan.org/fsw/ff/updates.html) to use.  Acceptable values are `ff13` (R0.13), `ff14` (R0.14b), or `ff15` (R0.15) |
 | `SDHC_CLK_FREQ`            | Sets the clock freq. for the SDHC library (Hz) | Sets the target clock frequency in units of Hz (Default is 30Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues. |
+| `FF_CONF_DIR`            | Sets the search directory for `ffconf.h` | (Available for `FATFS_VERSION = ff15` only) FatFS configuration is done via an `ffconf.h` file.  This option allows specifying the location of a custom `ffconf.h` file for a project. |
 
 ---
 
