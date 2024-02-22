@@ -155,7 +155,8 @@ void get_prior_locs(void)
 
 void get_prior_kpts(void)
 {
-    int8_t* kpts_addr = (int8_t*)0x50C00000;
+    int8_t* kpts_addr1 = (int8_t*)0x50C00000;
+    int8_t* kpts_addr2 = (int8_t*)0x50C08000;
     int kpts_addr_offset_list[NUM_SCALES] = {0x4000, 0x52C0, 0x5770, 0x5888};
 
     int ar_idx, scale_idx, rel_idx, prior_idx, prior_count;
@@ -163,18 +164,27 @@ void get_prior_kpts(void)
     for (ar_idx = 0; ar_idx < NUM_ARS; ++ar_idx) {
         
         for (scale_idx = 0; scale_idx < NUM_SCALES; ++scale_idx) {
-            int8_t* kpts_addr_temp = kpts_addr + kpts_addr_offset_list[scale_idx];
+            int8_t* kpts_addr_temp1 = kpts_addr1 + kpts_addr_offset_list[scale_idx];
+            int8_t* kpts_addr_temp2 = kpts_addr2 + kpts_addr_offset_list[scale_idx];
             prior_count = MULT(dims[scale_idx][0], dims[scale_idx][1]);
         
             for (rel_idx = 0; rel_idx < prior_count; ++rel_idx) {
                 prior_idx = get_prior_idx(ar_idx, scale_idx, rel_idx);
                 
-                memcpy(&prior_kpts[LOC_DIM * prior_idx], kpts_addr_temp, LOC_DIM);
-                kpts_addr_temp += LOC_DIM;
+                memcpy(&prior_kpts[KPTS_DIM * prior_idx], kpts_addr_temp1, 4);
+                memcpy(&prior_kpts[KPTS_DIM * prior_idx + 4], kpts_addr_temp2, 4);
+                kpts_addr_temp1 += 4;
+                kpts_addr_temp2 += 4;
             }
         }
         
-        kpts_addr += 0x8000;
+        kpts_addr1 += 0x10000;
+        kpts_addr2 += 0x10000;
+
+        if ((kpts_addr1 == (int8_t *)0x50C20000)) {
+            kpts_addr1 += 0x003e0000;
+            kpts_addr2 += 0x003e0000;
+        }
     }
 }
 
@@ -425,13 +435,13 @@ void get_kpts_coords(float* kpts, float* cxcy, int prior_idx)
     float h = cxcy[3];
 
     kpts[0] = (float)prior_kpts[KPTS_DIM * prior_idx] / 128. * w + x1;
-    kpts[1] = y1;
-    kpts[2] = x1;
-    kpts[3] = (float)prior_kpts[KPTS_DIM * prior_idx + 1] / 128. * h + y1;
-    kpts[4] = (float)prior_kpts[KPTS_DIM * prior_idx + 2] / 128. * w + x1;
-    kpts[5] = y1 + h;
-    kpts[6] = x1 + w;
-    kpts[7] = (float)prior_kpts[KPTS_DIM * prior_idx + 3] / 128. * h + y1;
+    kpts[1] = (float)prior_kpts[KPTS_DIM * prior_idx + 1] / 128. * h +y1;
+    kpts[2] = (float)prior_kpts[KPTS_DIM * prior_idx + 2] / 128. * w + x1;
+    kpts[3] = (float)prior_kpts[KPTS_DIM * prior_idx + 3] / 128. * h + y1;
+    kpts[4] = (float)prior_kpts[KPTS_DIM * prior_idx + 4] / 128. * w + x1;
+    kpts[5] = (float)prior_kpts[KPTS_DIM * prior_idx + 5] / 128. * h + y1;
+    kpts[6] = (float)prior_kpts[KPTS_DIM * prior_idx + 6] / 128. * w + x1;
+    kpts[7] = (float)prior_kpts[KPTS_DIM * prior_idx + 7] / 128. * h + y1;
 }
 
 float calculate_IOU(float *box1, float *box2)

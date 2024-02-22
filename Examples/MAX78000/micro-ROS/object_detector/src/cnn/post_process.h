@@ -35,7 +35,7 @@
 #define NUM_CLASSES 2
 
 #define LOC_DIM 4
-#define KPTS_DIM 4
+#define KPTS_DIM 8
 #define NUM_PRIORS_PER_AR 388
 #define NUM_PRIORS        NUM_PRIORS_PER_AR* NUM_ARS
 

@@ -21,6 +21,7 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 import os
 import select
 import sys
+import math
 
 global g_stopped
 g_stopped = False
@@ -159,14 +160,14 @@ class PolygonSubscriber(Node):
         goal_kinematics_pose = deepcopy(present_kinematics_pose)
         current_xy = Vec2D(x = goal_kinematics_pose[0], y = goal_kinematics_pose[1])
         delta_xy : Vec2D = current_xy.unit() * task_position_delta
-        if (self.skew < 0.8):
-            step_size = task_position_delta * (1 * ((0.8 - self.skew)/0.8))
+        if (self.skew < 0.9):
+            step_size = task_position_delta * (1 * ((0.9 - self.skew)/0.9))
             goal_kinematics_pose[1] += delta_xy.y
-            goal_kinematics_pose[2] += (step_size * 1.25)
-        elif (self.skew > 1.2):
-            step_size = task_position_delta * (1 * ((self.skew - 1.2)/1.2))
+            goal_kinematics_pose[2] += (step_size * 1.1)
+        elif (self.skew > 1.1):
+            step_size = task_position_delta * (1 * ((self.skew - 1.1)/1.1))
             goal_kinematics_pose[1] -= delta_xy.y
-            goal_kinematics_pose[2] -= (step_size * 1.25)
+            goal_kinematics_pose[2] -= (step_size * 1.1)
 
         teleop_keyboard.send_goal_task_space()
         while(teleop_keyboard.state != "IS_MOVING"):
@@ -231,12 +232,11 @@ class PolygonSubscriber(Node):
             
             elif self.state == 1: # Skew
                 self.correct_skew()
-                self.skew = 1.0
                 self.state = 2
             
             elif self.state == 2: # Height
                 self.correct_height()
-                if self.area < 4000:
+                if self.area < 6700 and math.fabs(self.skew - 1.0) > 0.1:
                     self.state = 0
                 else:
                     self.state = 4
@@ -311,10 +311,12 @@ class PolygonSubscriber(Node):
         ]
 
         for i in range(len(points) - 1):
-            if points[i].x > points[i + 1].x or points[i].y > points[i + 1].y:
-                tmp = points[i + 1]
-                points[i + 1] = points[i]
-                points[i] = tmp
+            j = i
+            while((points[j].x > points[j + 1].x or points[j].y > points[j + 1].y) and j < len(points) - 2):
+                tmp = points[j + 1]
+                points[j + 1] = points[j]
+                points[j] = tmp
+                j += 1
 
         bottom_left = points[1]
         top_left = points[0]
