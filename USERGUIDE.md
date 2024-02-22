@@ -4,7 +4,7 @@
 
 The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984). That includes register and system startup files to enable low-level development for its [supported parts](#supported-parts). It also provides higher-level peripheral driver APIs (written in C) alongside various utilities, third-party libraries, Board Support Packages (BSPs), and a set of example programs for each microcontroller.
 
-Additionally, the MSDK includes a GCC-based toolchain, and builds are managed by a system of Makefiles (See [GNU Make](https://www.gnu.org/software/make/manual/)). A [custom fork of OpenOCD](https://github.com/Analog-Devices-MSDK/openocd) enables flashing and debugging. The MSDK's toolchain and build system offers a Command Line Interface (CLI), and project files for [supported development environments](#supported-development-environments) are maintained that build on top of that CLI.
+Additionally, the MSDK includes a GCC-based toolchain, and builds are managed by a system of Makefiles (See [GNU Make](https://www.gnu.org/software/make/manual/)). A [custom fork of OpenOCD](https://github.com/analogdevicesinc/openocd) enables flashing and debugging. The MSDK's toolchain and build system offers a Command Line Interface (CLI), and project files for [supported development environments](#supported-development-environments) are maintained that build on top of that CLI.
 
 This document describes the MSDK's installation, setup, and usage.
 
@@ -492,11 +492,11 @@ The MSDK releases updates quarterly, and the Maintenance Tool will retrieve the 
 
 #### Older Versions and Offline Installer
 
-Older versions of the MSDK are available as an **_offline installer_** for each release tag. They are available on the [Releases page](https://github.com/Analog-Devices-MSDK/msdk/releases) of the MSDK GitHub and can be used to roll back to a specific MSDK release.
+Older versions of the MSDK are available as an **_offline installer_** for each release tag. They are available on the [Releases page](https://github.com/analogdevicesinc/msdk/releases) of the MSDK GitHub and can be used to roll back to a specific MSDK release.
 
 #### Development Resources
 
-Users can obtain development copies of the MSDK resources from [Github](https://github.com/Analog-Devices-MSDK/msdk).  Setup instructions can be found in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
+Users can obtain development copies of the MSDK resources from [Github](https://github.com/analogdevicesinc/msdk).  Setup instructions can be found in the repository's [README](https://github.com/analogdevicesinc/msdk/blob/main/README.md).
 
 ## Getting Started
 
@@ -588,7 +588,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
         For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows and `"MAXIM_PATH":"/home/username/MaximSDK"` on Ubuntu/MacOS.
 
     ???+ note "ℹ️ **Note: Automatic Updates**"
-        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases) page.
+        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/analogdevicesinc/VSCode-Maxim/releases) page.
 
 8. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
@@ -793,7 +793,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 #### Building and Running an Example (Command-Line)
 
-1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. The `Hello_World` project is a good one to start with.
+1. First, copy an [example project](https://github.com/analogdevicesinc/msdk/tree/main/Examples) to an accessible directory outside of the SDK. The `Hello_World` project is a good one to start with.
 
     ???+ warning "**⚠️ Copying Examples**"
         It's strongly recommended to copy example projects to an _outside_ folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location _without_ any spaces in its filepath.
@@ -850,7 +850,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         make flash.openocd
 
     ???+ note "ℹ️ **Note: Flashing with Make**"
-        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
+        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
 
     Expected output:
 
@@ -892,7 +892,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 ## Visual Studio Code
 
-Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) GitHub repository.
+Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/analogdevicesinc/VSCode-Maxim) GitHub repository.
 
 For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](#getting-started-with-visual-studio-code) first.  This section offers detailed usage info focusing on the typical development cycle.
 
@@ -937,7 +937,7 @@ To open a project:
 
 To set the BSP for an open project:
 
-1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
+1. Set the `"board"` [project configuration](https://github.com/analogdevicesinc/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -953,7 +953,7 @@ To set the BSP for an open project:
 
 Once a project is opened 4 available build tasks will become available via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.  These tasks are configured by the `.vscode/task.json` file.
 
-![Build Tasks Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG)
+![Build Tasks Image](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/buildtasks.JPG)
 
 #### Build
 
@@ -1036,7 +1036,7 @@ The condition and condition type can be modified with the dropdown. This is usef
 
 A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug.
 
-As of the [v1.6.0](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases/tag/v1.6.0) VSCode-Maxim project files, pre-made [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.
+As of the [v1.6.0](https://github.com/analogdevicesinc/VSCode-Maxim/releases/tag/v1.6.0) VSCode-Maxim project files, pre-made [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.
 
 ![Figure 47](res/Fig47.jpg)
 
@@ -1127,7 +1127,7 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
 **When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
 
-![Reload Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG)
+![Reload Window](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/reload_window.JPG)
 
 The default project configuration should work for most use cases as long as [`"target"`](#target) and [`"board"`](#board) are set correctly.
 
@@ -1356,7 +1356,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
     ![Figure 23](res/Fig23.jpg)
 
-4. **Browse** to the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
+4. **Browse** to the [`Examples`](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
 
     ![Figure 24](res/Fig24.jpg)
 
@@ -1537,7 +1537,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
                 Info : SWD DPIDR 0x2ba01477
                 shutdown command invoked
 
-            This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
+            This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
 
     - ???+ note "ℹ️ **OpenOCD Flash & Hold**"
         The following command template can be used if you just want to flash the program with OpenOCD manually, and halt the target micro.  This is used when you want to start a command-line debugging session.
@@ -2226,7 +2226,7 @@ The following table matches external part numbers to internal die types.  This i
 
 ### CMSIS-DSP
 
-The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder for each microcontroller.
+The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder for each microcontroller.
 
 Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) for more detailed documentation on the library functions and usage.
 

@@ -25,7 +25,7 @@
 # in "project.mk", on the command-line, or with system environment 
 # variables.
 
-# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
+# See https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration 
 # for more detailed instructions on how to use this system.
 
 # The detailed instructions mentioned above are easier to read than 

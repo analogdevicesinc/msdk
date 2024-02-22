@@ -24,7 +24,7 @@
 # project.
 ################################################################################
 
-$(warning Warning: Building with FatFS R0.14.  The MSDK will update the default FatFS version to R0.15 next release.  See https://github.com/Analog-Devices-MSDK/msdk/pull/720)
+$(warning Warning: Building with FatFS R0.14.  The MSDK will update the default FatFS version to R0.15 next release.  See https://github.com/analogdevicesinc/msdk/pull/720)
 
 ifeq "$(FAT32_DRIVER_DIR)" ""
 $(error FAT32_DRIVER_DIR must be specified")
