@@ -369,116 +369,12 @@ To run a _headless_ installation:
 ???+ warning "⚠️ **Warning**"
     On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/).  There are also some manual setup steps required to retrieve `make` version 4.  The instructions in this section are critical.
 
-??? note "ℹ️ **Instructions for M1 platforms**"
+1. Install [Homebrew](https://brew.sh/).
 
-    The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
+2. Run the command below to install dependencies for OpenOCD.
 
-    Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
-
-    The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
-
-    1. Open a terminal and update Rosetta.
-
-            :::shell
-            softwareupdate --install-rosetta --agree-to-license
-
-    2. Close the terminal.
-
-    3. Create a new Rosetta terminal:
-
-        1. Launch Finder.
-
-        2. Navigate to Applications and find the "Terminal" application.
-
-        3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
-
-        4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
-
-        5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
-
-    4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-    5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command. This command should return a path beginning with `/usr/local`.
-
-        **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.
-
-    6. Run the command
-
-            :::shell
-            brew install make libusb-compat libftdi hidapi libusb
-
-        (or, if you need to use the absolute path)
-
-            :::shell
-            /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
-
-    7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
-
-            :::shell
-            ==> make: stable 4.4.1 (bottled)
-            Utility for directing compilation
-            https://www.gnu.org/software/make/
-            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-            License: GPL-3.0-only
-            ==> Dependencies
-            Build: lzip, lzip
-            ==> Caveats
-            GNU "make" has been installed as "gmake".
-            If you need to use it as "make", you can add a "gnubin" directory
-            to your PATH from your bashrc like:
-
-                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-            ==> Analytics
-            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-            build-error: 0 (30 days)
-
-        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
-
-            :::bash
-            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-
-    8. Restart your shell and verify that `make --version` returns 4.x+.
-
-??? note "ℹ️ **Instructions for non-M1 platforms**"
-
-    1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-    2. Then, open a terminal and run the command
-
-            brew install make libusb-compat libftdi hidapi libusb
-
-    3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
-
-            :::shell
-            ==> make: stable 4.4.1 (bottled)
-            Utility for directing compilation
-            https://www.gnu.org/software/make/
-            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-            License: GPL-3.0-only
-            ==> Dependencies
-            Build: lzip, lzip
-            ==> Caveats
-            GNU "make" has been installed as "gmake".
-            If you need to use it as "make", you can add a "gnubin" directory
-            to your PATH from your bashrc like:
-
-                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-            ==> Analytics
-            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-            build-error: 0 (30 days)
-
-        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
-
-            :::bash
-            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-
-    4. Restart your shell and verify that `make --version` returns 4.x+.
+        :::shell
+        brew install libusb-compat libftdi hidapi libusb
 
 ### Maintenance
 
@@ -2301,6 +2197,7 @@ Once enabled, the following [build configuration variables](#build-configuration
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `FATFS_VERSION`            | Specify the version of [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) to use | FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the [version](http://elm-chan.org/fsw/ff/updates.html) to use.  Acceptable values are `ff13` (R0.13), `ff14` (R0.14b), or `ff15` (R0.15) |
 | `SDHC_CLK_FREQ`            | Sets the clock freq. for the SDHC library (Hz) | Sets the target clock frequency in units of Hz (Default is 30Mhz).  Reducing the SDHC clock frequency is a good troubleshooting step when debugging communication issues. |
+| `FF_CONF_DIR`            | Sets the search directory for `ffconf.h` | (Available for `FATFS_VERSION = ff15` only) FatFS configuration is done via an `ffconf.h` file.  This option allows specifying the location of a custom `ffconf.h` file for a project. |
 
 ---
 
