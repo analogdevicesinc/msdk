@@ -122,6 +122,9 @@ __weak void SystemInit(void)
     /* Make sure interrupts are enabled. */
     __enable_irq();
 
+    /* Enable SPIXF cache */
+    MXC_SFCC_Enable();
+
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11 */
     /* Grant full access, per "Table B3-24 CPACR bit assignments". */
     /* DDI0403D "ARMv7-M Architecture Reference Manual" */
