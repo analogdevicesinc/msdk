@@ -139,6 +139,11 @@ struct _mxc_spi_req_t {
  * SPI Mode - 0
  * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
  *
+ * @note    On default this function enables SPI peripheral clock and spi gpio pins.
+ * if you wish to manage clock and gpio related things in upper level instead of here.
+ * Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ * By this flag this function will remove clock and gpio related codes from file.
+ *
  * These parameters can be modified after initialization using low level functions
  *
  * @param   spi             Pointer to SPI registers (selects the SPI block used.)

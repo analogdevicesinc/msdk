@@ -48,6 +48,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         return E_BAD_PARAM;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     // Configure GPIO for spi
     if (spi == MXC_SPI0) {
         MXC_GCR->rst0 |= MXC_F_GCR_RST0_SPI0;
@@ -57,6 +58,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     } else {
         return E_NO_DEVICE;
     }
+#endif
 
     return MXC_SPI_RevA1_Init((mxc_spi_reva_regs_t *)spi, masterMode, quadModeUsed, numSlaves,
                               ssPolarity, hz);
