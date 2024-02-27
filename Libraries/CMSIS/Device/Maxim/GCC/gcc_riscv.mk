@@ -618,6 +618,27 @@ $(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
 
+################################################################################
+# Add a rule for querying the value of any Makefile variable.  This is useful for
+# IDEs when they need to figure out include paths, value of the target, etc. for a
+# project
+# Set QUERY_VAR to the variable to inspect.
+# The output must be parsed, since other Makefiles may print additional info strings.
+# The relevant content will be on its own line, and separated by an '=' character.
+# Ex: make query QUERY_VAR=TARGET
+# will return
+# TARGET=MAXxxxxx
+ifeq "$(MAKECMDGOALS)" "query"
+SUPPRESS_HELP := 1
+endif
+.PHONY: query
+query:
+ifneq "$(QUERY_VAR)" ""
+	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+else
+	$(MAKE) debug
+endif
+
 #################################################################################
 SUPPRESS_HELP ?= 0
 ifeq "$(SUPPRESS_HELP)" "0"
