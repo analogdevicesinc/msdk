@@ -19,14 +19,17 @@
  #
  ##############################################################################
 
+ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
+endif
+
 SUPPRESS_HELP ?= 0
 ifeq "$(SUPPRESS_HELP)" "0"
 ifneq "$(HELP_COMPLETE)" "1"
 
 $(info ****************************************************************************)
 $(info * Analog Devices MSDK)
-ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
-include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
+ifneq "$(MSDK_VERSION_STRING)" ""
 $(info * $(MSDK_VERSION_STRING))
 endif
 $(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
