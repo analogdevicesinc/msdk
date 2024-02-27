@@ -645,8 +645,13 @@ endif
 SUPPRESS_HELP ?= 0
 ifeq "$(SUPPRESS_HELP)" "0"
 ifneq "$(HELP_COMPLETE)" "1"
+
 $(info ****************************************************************************)
 $(info * Analog Devices MSDK)
+ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/msdk_version.mk)" ""
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/msdk_version.mk
+$(info * $(MSDK_VERSION_STRING))
+endif
 $(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
 $(info * - Get Support: https://www.analog.com/support/technical-support.html)
 $(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
