@@ -19,6 +19,27 @@
  #
  ##############################################################################
 
+SUPPRESS_HELP ?= 0
+ifeq "$(SUPPRESS_HELP)" "0"
+ifneq "$(HELP_COMPLETE)" "1"
+
+$(info ****************************************************************************)
+$(info * Analog Devices MSDK)
+ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
+$(info * $(MSDK_VERSION_STRING))
+endif
+$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+$(info * - Get Support: https://www.analog.com/support/technical-support.html)
+$(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
+$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
+$(info ****************************************************************************)
+# export HELP_COMPLETE so that it's only printed once.
+HELP_COMPLETE = 1
+export HELP_COMPLETE
+endif
+endif
+
 # The build directory
 ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=$(CURDIR)/build
@@ -639,27 +660,5 @@ ifneq "$(QUERY_VAR)" ""
 	@echo $(QUERY_VAR)=$($(QUERY_VAR))
 else
 	$(MAKE) debug
-endif
-
-#################################################################################
-SUPPRESS_HELP ?= 0
-ifeq "$(SUPPRESS_HELP)" "0"
-ifneq "$(HELP_COMPLETE)" "1"
-
-$(info ****************************************************************************)
-$(info * Analog Devices MSDK)
-ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/msdk_version.mk)" ""
-include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/msdk_version.mk
-$(info * $(MSDK_VERSION_STRING))
-endif
-$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
-$(info * - Get Support: https://www.analog.com/support/technical-support.html)
-$(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
-$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
-$(info ****************************************************************************)
-# export HELP_COMPLETE so that it's only printed once.
-HELP_COMPLETE = 1
-export HELP_COMPLETE
-endif
 endif
 
