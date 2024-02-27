@@ -27,8 +27,10 @@ if __name__ == "__main__":
     result = run(command, shell=True, capture_output=True)
     if result.returncode != 0:
         print(f"Failed to run {command} with error {result.returncode}:\n{result.stderr.decode(encoding='utf-8')}")
+        exit(result.returncode)
     
     version = result.stdout.decode(encoding="utf-8").strip()
+    print(version)
     # Our tagging convention is v{version_year}_{version_month}
     # git describe will sometimes return something like v2024_02-5-g5f0770a64e
     version_year = int(version.split("_")[0][1:]) # Split the year and month based on the '_', and strip off the leading 'v'
