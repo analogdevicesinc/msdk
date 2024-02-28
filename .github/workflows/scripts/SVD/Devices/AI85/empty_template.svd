@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <vendor>Maxim-Integrated</vendor>
+  <vendorID>Maxim</vendorID>
+  <name>max78000</name>
+  <series>ARMCM4</series>
+  <!-- device series the device belongs to -->
+  <version>1.0</version>
+  <description>MAX78000 Machine Learning System-on-Chip.</description>
+  <cpu>
+    <!-- details about the cpu embedded in the device -->
+    <name>CM4</name>
+    <revision>r2p1</revision>
+    <endian>little</endian>
+    <mpuPresent>true</mpuPresent>
+    <fpuPresent>true</fpuPresent>
+    <nvicPrioBits>3</nvicPrioBits>
+    <vendorSystickConfig>false</vendorSystickConfig>
+  </cpu>
+  <addressUnitBits>8</addressUnitBits>
+  <width>32</width>
+  <size>0x20</size>
+  <access>read-write</access>
+  <resetValue>0x00000000</resetValue>
+  <resetMask>0xFFFFFFFF</resetMask>
+  <peripherals></peripherals>
+</device>

@@ -38,3 +38,4 @@ node_modules
 package-lock.json
 package.json
 .python-version
+.github/workflows/scripts/SVD/Devices/*/chip_test/

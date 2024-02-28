@@ -1,0 +1,21 @@
+./Libraries/PeriphDrivers/Source/AES/AESKEYS/aeskeys_revb.svd; 0x40007800
+./Libraries/PeriphDrivers/Source/AES/aes_revb.svd; 0x40007400 97
+./Libraries/PeriphDrivers/Source/CRC/crc_reva.svd; 0x4000F000 98
+./Libraries/PeriphDrivers/Source/DMA/dma_reva_me15.svd; 0x40028000 28
+./Libraries/PeriphDrivers/Source/SYS/SVD/fcr_me15.svd; 0x40000800
+./Libraries/PeriphDrivers/Source/FLC/flc_revb_me15.svd; 0x40029000 23
+./Libraries/PeriphDrivers/Source/SYS/SVD/gcr_me15.svd; 0x40000000
+./Libraries/PeriphDrivers/Source/GPIO/gpio_reva_me15.svd; 0x40008000 24; 0x40009000 25
+./Libraries/PeriphDrivers/Source/I2C/i2c_reva_me15.svd; 0x4001D000 13; 0x4001E000 36; 0x4001F000 62
+./Libraries/PeriphDrivers/Source/I2S/i2s_reva_me15.svd; 0x40060000 99
+./Libraries/PeriphDrivers/Source/ICC/icc_reva.svd; 0x4002A000
+./Libraries/PeriphDrivers/Source/SYS/SVD/mcr_me15.svd; 0x40106C00
+./Libraries/PeriphDrivers/Source/LP/pwrseq_me15.svd; 0x40106800
+./Libraries/PeriphDrivers/Source/RTC/rtc_reva_me15.svd; 0x40106000 3
+./Libraries/PeriphDrivers/Source/SYS/SVD/sir_me15.svd; 0x40000400 
+./Libraries/PeriphDrivers/Source/SPI/spi_reva_me15.svd; 0x40046000 16; 0x40047000 17; 0x40048000 18
+./Libraries/PeriphDrivers/Source/TMR/tmr_revb_me15.svd; 0x40010000 5; 0x40011000 6; 0x40012000 7; 0x40013000 8; 0x40114000 9; 0x40115000 10
+./Libraries/PeriphDrivers/Source/SYS/SVD/trimsir_me15.svd; 0x40105400
+./Libraries/PeriphDrivers/Source/TRNG/trng_revb2_me15b.svd; 0x4004D000 4
+./Libraries/PeriphDrivers/Source/UART/uart_revb_me15.svd; 0x40042000 14; 0x40043000 15; 0x40044000 34; 0x40145000 88
+./Libraries/PeriphDrivers/Source/WDT/wdt_revb.svd; 0x40003000 1; 0x40003400 57
