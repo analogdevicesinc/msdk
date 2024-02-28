@@ -44,6 +44,7 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock, sys_map_t map)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
     retval = MXC_UART_Shutdown(uart);
@@ -82,6 +83,9 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     } else {
         return E_BAD_PARAM;
     }
+#else
+    (void)map;
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
 }
