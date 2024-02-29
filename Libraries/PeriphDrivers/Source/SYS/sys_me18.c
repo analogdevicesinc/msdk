@@ -255,7 +255,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERFO:
-        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_LDOTXEN | MXC_F_GCR_BTLELDOCTRL_LDORXEN;
+        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_LDORFEN | MXC_F_GCR_BTLELDOCTRL_LDOBBEN;
 
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY);

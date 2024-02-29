@@ -58,8 +58,7 @@ static BbRtCfg_t mainBbRtCfg;
 static LlRtCfg_t mainLlRtCfg;
 
 static uint8_t phy = LL_PHY_LE_1M;
-static uint8_t phy_str[16];
-static uint8_t packetType_str[16];
+
 static uint8_t txFreqHopCh;
 static uint8_t packetLen = 255;
 static uint8_t packetType = LL_TEST_PKT_TYPE_AA;
@@ -85,12 +84,7 @@ bool pausePrompt = false;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
-/* Physical layer functions. */
-extern void llc_api_set_txpower(int8_t power);
-extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
-extern void llc_api_tx_ldo_setup(void);
-extern void dbb_seq_tx_enable(void);
-extern void dbb_seq_tx_disable(void);
+
 extern const CLI_Command_Definition_t xCommandList[];
 void vRegisterCLICommands(void);
 /*************************************************************************************************/
@@ -104,24 +98,20 @@ void vRegisterCLICommands(void);
  *  \return Pointer to string describing the PHY.
  */
 /*************************************************************************************************/
-static uint8_t *getPhyStr(uint8_t phy)
+static const char *getPhyStr(uint8_t phy)
 {
     switch (phy) {
+    case LL_TEST_PHY_LE_2M:
+        return "2M PHY";
+    case LL_TEST_PHY_LE_CODED_S8:
+        return "S8 PHY";
+    case LL_TEST_PHY_LE_CODED_S2:
+        return "S2 PHY";
+
     case LL_TEST_PHY_LE_1M:
     default:
-        memcpy(phy_str, "1M PHY", 7);
-        break;
-    case LL_TEST_PHY_LE_2M:
-        memcpy(phy_str, "2M PHY", 7);
-        break;
-    case LL_TEST_PHY_LE_CODED_S8:
-        memcpy(phy_str, "S8 PHY", 7);
-        break;
-    case LL_TEST_PHY_LE_CODED_S2:
-        memcpy(phy_str, "S2 PHY", 7);
-        break;
+        return "1M PHY";
     }
-    return phy_str;
 }
 /*************************************************************************************************/
 /*!
@@ -134,36 +124,27 @@ static uint8_t *getPhyStr(uint8_t phy)
  *  \return Pointer to string describing the PHY.
  */
 /*************************************************************************************************/
-static uint8_t *getPacketTypeStr(void)
+static const char *getPacketTypeStr(void)
 {
     switch (packetType) {
     case LL_TEST_PKT_TYPE_PRBS9:
-        memcpy(packetType_str, "PRBS9", 6);
-        break;
+        return "PRBS9";
     case LL_TEST_PKT_TYPE_0F:
-        memcpy(packetType_str, "0x0F", 5);
-        break;
+        return "0x0F";
     case LL_TEST_PKT_TYPE_55:
-        memcpy(packetType_str, "0x55", 5);
-        break;
+        return "0x55";
     case LL_TEST_PKT_TYPE_PRBS15:
-        memcpy(packetType_str, "PRBS15", 7);
-        break;
+        return "PRBS15";
     case LL_TEST_PKT_TYPE_FF:
-        memcpy(packetType_str, "0xFF", 5);
-        break;
+        return "0xFF";
     case LL_TEST_PKT_TYPE_00:
-        memcpy(packetType_str, "0x00", 5);
-        break;
+        return "0x00";
     case LL_TEST_PKT_TYPE_F0:
-        memcpy(packetType_str, "0xF0", 5);
-        break;
+        return "0xF0";
     case LL_TEST_PKT_TYPE_AA:
     default:
-        memcpy(packetType_str, "0xAA", 5);
-        break;
+        return "0xAA";
     }
-    return packetType_str;
 }
 /*************************************************************************************************/
 /*!
@@ -682,17 +663,14 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            snprintf(str, sizeof(str),
-                     "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : ", testConfig.channel,
-                     getFreqFromRfChannel(testConfig.channel), packetLen);
-            snprintf(str, sizeof(str), "%s%s", str, (const char *)getPacketTypeStr());
+            snprintf(str, sizeof(str), "Transmit RF channel %d on Freq %dMHz, %dbytes/pkt : :%s",
+                     testConfig.channel, getFreqFromRfChannel(testConfig.channel), packetLen,
+                     (const char *)getPhyStr(phy), (const char *)getPacketTypeStr());
         } else {
-            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
-                     getFreqFromRfChannel(testConfig.channel));
+            snprintf(str, sizeof(str), "Receive RF channel %d Freq %dMHz: :%s", testConfig.channel,
+                     getFreqFromRfChannel(testConfig.channel), (const char *)getPhyStr(phy));
         }
 
-        snprintf(str, sizeof(str), "%s%s", str, " : ");
-        snprintf(str, sizeof(str), "%s%s", str, (const char *)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
@@ -796,17 +774,14 @@ void helpTask(void *pvParameters)
         prompt();
     }
 }
+
 /*************************************************************************************************/
 void setPhy(uint8_t newPhy)
 {
     phy = newPhy;
-    char str[20] = "> Phy now set to ";
-    snprintf(str, sizeof(str), "%s%s", "> Phy now set to ",
-             (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
-             (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
-             (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
-             (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
-                                                "");
+
+    char str[20] = { 0 };
+    snprintf(str, sizeof(str), "> Phy now set to %s", getPhyStr(phy));
     APP_TRACE_INFO1("%s", str);
 }
 /*************************************************************************************************/
@@ -831,7 +806,7 @@ void setTxPower(int8_t power)
 {
     // TODO(BLE): validate value
     txPower = power;
-    llc_api_set_txpower((int8_t)power);
+
     LlSetAdvTxPower((int8_t)power);
     printf("> Power set to %d dBm\n", power);
 }

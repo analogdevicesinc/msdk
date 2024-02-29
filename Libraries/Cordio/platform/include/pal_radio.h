@@ -128,6 +128,17 @@ void PalRadioReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp);
 /*************************************************************************************************/
 int8_t PalRadioGetRxRfPathComp(void);
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Get available TX Powers.
+ *  \param      txPowers Return buffer for available TX powers
+ *  \param      size Return buffer for length of txPowers array
+ *  \return     Number of available TX Powers
+ */
+/*************************************************************************************************/
+uint8_t PalRadioGetAvailableTxPowers(int8_t *txPowers, uint8_t size);
+uint32_t PalRadioGetNumAvailableTxPowers(void);
+
 /*! \} */    /* PAL_RADIO */
 
 #ifdef __cplusplus

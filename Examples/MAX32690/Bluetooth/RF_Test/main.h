@@ -55,6 +55,7 @@
 #include "uart.h"
 #include "mxc_delay.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 
 typedef enum uint8_t {
     NO_TEST,

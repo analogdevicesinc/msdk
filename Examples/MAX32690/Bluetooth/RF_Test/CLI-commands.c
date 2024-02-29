@@ -86,13 +86,6 @@ extern bool pausePrompt;
 extern bool clearScreen;
 extern xSemaphoreHandle rfTestMutex;
 
-/*! \brief Physical layer functions. */
-extern void llc_api_set_txpower(int8_t power);
-extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
-extern void llc_api_tx_ldo_setup(void);
-extern void dbb_seq_tx_enable(void);
-extern void dbb_seq_tx_disable(void);
-
 /* helpers */
 static bool isDigit(const char *symbol, uint8_t len);
 static bool isChannel(const char *commandstring, uint8_t paramIndex);

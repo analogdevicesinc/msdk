@@ -191,6 +191,8 @@ void setAdvTxPower(void)
 /*************************************************************************************************/
 int main(void)
 {
+    // MXC_GCR->memctrl |= (2 << MXC_F_GCR_MEMCTRL_FWS_POS);
+
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     /* Configurations must be persistent. */
     static BbRtCfg_t mainBbRtCfg;
@@ -203,7 +205,7 @@ int main(void)
 #endif
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
+    // PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
 #endif
 
     /* Set the 32k sleep clock accuracy into one of the following bins, default is 20
