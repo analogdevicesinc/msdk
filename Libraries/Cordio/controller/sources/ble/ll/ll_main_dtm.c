@@ -1033,7 +1033,18 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
 
     return LL_SUCCESS;
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief      Check whether a test is active.
+ *  \return     TRUE if active FALSE otherwise.
+ *
+ * Checke test mode and return true or false
+ */
+/*************************************************************************************************/
+bool_t LlTestIsActive(void)
+{
+    return llTestCb.state == LL_TEST_STATE_TX || llTestCb.state == LL_TEST_STATE_RX;
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Set pattern of errors for Tx test mode.

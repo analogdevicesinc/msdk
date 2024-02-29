@@ -3691,7 +3691,15 @@ uint8_t LlTxTestV3(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t phy, ui
  */
 /*************************************************************************************************/
 uint8_t LlEndTest(LlTestReport_t *pRpt);
-
+/*************************************************************************************************/
+/*!
+ *  \brief      Check whether a test is active.
+ *  \return     TRUE if active FALSE otherwise.
+ *
+ * Checke test mode and return true or false
+ */
+/*************************************************************************************************/
+bool_t LlTestIsActive(void);
 /*************************************************************************************************/
 /*!
  *  \brief      Set pattern of errors for Tx test mode.
