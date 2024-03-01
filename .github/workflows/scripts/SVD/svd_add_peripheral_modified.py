@@ -27,18 +27,19 @@ import copy
 import re
 import xml.etree.ElementTree as ET
 import textwrap
+import argparse
 
-# Input Arugment
-# script, directory, master = argv
-directory=sys.argv[1]
-master=sys.argv[2]
+# Input Arugments
+parser = argparse.ArgumentParser("python3 svd_add_peripheral_modified.py")
+parser.add_argument("chip_periph_txt_path", type=str, help="Location of the device's chip_periph.txt file. This file lists all the individual peripheral SVD files that a device supports")
+parser.add_argument("device_svd_path", type=str, help="Location of the device's SVD file (e.g. max32670.svd, max78002.svd)")
+parser.add_argument("MAXIM_PATH", type=str, help="Location of the MaximSDK (msdk repo).")
 
-# Check for path
-msdk_path="./"
-if(len(sys.argv) == 4):
-	msdk_path=(sys.argv[3])[:-1] + "/"
-elif(len(sys.argv) >= 4):
-	msdk_path=(sys.argv[3]) + "/"
+args = parser.parse_args()
+
+msdk_path=args.MAXIM_PATH
+chip_periph=args.chip_periph_txt_path
+device_svd=args.device_svd_path
 
 revx_check=0
 # Check array for the special arguments
@@ -46,19 +47,18 @@ for arg in sys.argv:
   if(arg == "-r"):
     revx_check = 1
 
-
-with open(directory) as f:
+with open(chip_periph) as f:
 	file_directories = f.readlines()
 
 # get file paths
 file_path = [x.strip().split(';') for x in file_directories]
 
-#set up master xml tree
-tree = ET.parse(master)
+#set up device.svd xml tree
+tree = ET.parse(device_svd)
 root = tree.getroot() 
 masterPeriph = root.find("./peripherals")
 
-# go through every file path in file
+# go through every file path in chip_periph.txt
 for i in range(len(file_path)):
 	# Don't do anything if empty line
 	if not ''.join(file_path[i]).strip():
@@ -73,22 +73,10 @@ for i in range(len(file_path)):
 				rev = revx[0]
 				break
 
-	# Set up periphial file to xml tree
-	# Specify SVD path if not relative
-	svd = file_path[i][0]
-	if(msdk_path != "./"):
-		path = file_path[i][0].split("/")
-
-		# Remove "/../" at beginning of relative path
-		# Use copy of path so removing an item doesn't effect iteration of original path
-		for rel_path in list(path):
-			if(rel_path == '..'):
-				path.remove(rel_path)
-
-		# SVD file paths in chip_periph.txt should start at /Libraries/ when in msdk root
-		lib_path = "/".join(path)
-
-		svd = msdk_path + lib_path
+	# Set up periphial SVD file paths to read for xml tree
+	svd = msdk_path + "/" + file_path[i][0]
+	svd = svd.replace("//", "/")
+	svd = svd.replace("/./", "/")
 
 	svd_tree = ET.parse(svd)
 	svd_root = svd_tree.getroot()
@@ -101,8 +89,8 @@ for i in range(len(file_path)):
 	per_description = ""
 	for k in file_path[i]:
 		#skip the first itteration of loop because this arg is the file we are accessing
-		if(count==0):
-			count +=1
+		if (count == 0):
+			count += 1
 			continue
 
 		#split up periphial arguments
@@ -115,13 +103,13 @@ for i in range(len(file_path)):
 		# check that it is the first itteration of adding the periphial
 		if(count==1):
 			#Go through peripherials in tree
-			for added_peripheral in peripherals :
+			for added_peripheral in peripherals:
 				if revx_check:
-						per = added_peripheral.find('name')
-						if(per.text.endswith('0') == True): # If base peripheral ends in 0, replace with nothing for better naming on the regs files
-							per.text = re.sub('0', "", per.text)
-						if rev: #if string is empty returns false
-							per.text = per.text+ "_"+rev.upper()
+					per = added_peripheral.find('name')
+					if(per.text.endswith('0') == True): # If base peripheral ends in 0, replace with nothing for better naming on the regs files
+						per.text = re.sub('0', "", per.text)
+					if rev: #if string is empty returns false
+						per.text = per.text+ "_"+rev.upper()
 						
 				per_name = added_peripheral.find('name').text
 				per_description = added_peripheral.find('description').text
@@ -142,7 +130,7 @@ for i in range(len(file_path)):
 						print("Error missing Interupt Vector Argument")
 						print(per_name)
 						break
-				# write new periphial to master tree
+				# write new periphial to device_svd tree
 				test = copy.copy(added_peripheral)
 				masterPeriph.append(test)
 				masterPeriph.append(ET.Comment(per_name + " " + per_description))
@@ -175,10 +163,10 @@ for i in range(len(file_path)):
 					print("Error missing Interupt Vector Argument")
 					print(per_name)
 					break
-			#add to master tree
+			#add to device_svd tree
 			masterPeriph.append(ET.Comment(per_name_iteration + " " + description_tag.text))
 		#incrememt iterations
 		count+=1
 
-		#write to master tree to master file with encoding utf8 and add the XML declaration
-		tree.write(master, "utf-8", True)
+		#write to device_svd tree to device_svd file with encoding utf8 and add the XML declaration
+		tree.write(device_svd, "utf-8", True)

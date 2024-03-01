@@ -14,6 +14,18 @@ Sometimes, the **makeRegs.sh** files are formatted in DOS and need to be re-form
 `sudo apt install dos2unix`
 `dos2unix makeRegs.sh`
 
+### How to run the makeRegs.sh script
+
+`bash makeRegs.sh [TARGET] [MAXIM_PATH] [windows/ubuntu]`
+
+The **makeRegs.sh** script will call all the SVD scripts and generate the register files for the specified part.
+
+[TARGET] - Generate register files for specified target. You can use the die type name or chip name for target (capitilization doesn't matter).
+
+[MAXIM_PATH] - Points to top level directory of MSDK.
+
+[windows/ubuntu] - optional argument to specify OS. This parameter is mainly used for the GitHub workflows because ubuntu runners can't run SVDConv.exe utility.
+
 ### How to run svd_add_peripheral_modified.py in shell scripts
 
 The **svd_add_peripheral_modified.py** script consolidates all the peripheral SVD files, that a device supports, into a generated part SVD file (e.g. max32572.svd). All supported peripheral SVD files are listed in **chip_periph.txt** for each MCU in **SVD/Devices/**.
@@ -21,8 +33,6 @@ The **svd_add_peripheral_modified.py** script consolidates all the peripheral SV
 Example: makeRegs.sh for ME55
 
 `python3 ../../svd_add_peripheral_modified.py chip_periph.txt chip_test/max32572.svd [MAXIM_PATH]`
-
-### Notes for Shell Scripts
 
 The optional `-r` parameter is used to generate the reva register files (private).
 
