@@ -83,7 +83,8 @@ f"""{copyright_c}
  */
 #define MSDK_VERSION_MONTH {version_month}
 
-#endif  // MXC_VERSION_H_""")
+#endif // MXC_VERSION_H_
+""")
         
     # Place msdk_version.mk next to the gcc/gcc_riscv.mk files.
     # This file will be used to print version info at build time.
