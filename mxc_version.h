@@ -24,7 +24,7 @@
  * Format: `[Release tag]-[commits since release tag]-g[commit SHA]`
  * If exactly on a release tag, this string will match the tag
  */
-#define MSDK_VERSION_STRING "v2024_02-9-g22dee44906"
+#define MSDK_VERSION_STRING "v2024_02-11-g151e993588"
 /**
  * @brief The month of the current MSDK version
  */
