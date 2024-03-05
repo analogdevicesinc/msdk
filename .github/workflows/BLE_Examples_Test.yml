@@ -37,7 +37,7 @@ env:
 jobs:
   BLE_Tests:
     # The type of runner that the job will run on
-    runs-on: [self-hosted, btm-ci]
+    runs-on: [self-hosted]
     if: github.event.pull_request.draft == false
 
     #----------------------------------------------------------------------------------------------
