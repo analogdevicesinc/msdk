@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,7 +126,7 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    MKFS_PARM format_options = { .fmt = FM_ANY };
+    MKFS_PARM format_options = { .fmt = FM_FAT32 };
 
     if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
@@ -407,6 +377,137 @@ int delete ()
     return err;
 }
 
+int example()
+{
+    unsigned int length = 256;
+
+    if ((err = formatSDHC()) != FR_OK) {
+        printf("Error Formatting SD Card: %s\n", FF_ERRORS[err]);
+        return err;
+    }
+
+    //open SD Card
+    if ((err = mount()) != FR_OK) {
+        printf("Error opening SD Card: %s\n", FF_ERRORS[err]);
+        return err;
+    }
+
+    printf("SD Card Opened!\n");
+
+    if ((err = f_setlabel("MAXIM")) != FR_OK) {
+        printf("Error setting drive label: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_getfree(&volume, &clusters_free, &fs)) != FR_OK) {
+        printf("Error finding free size of card: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_getlabel(&volume, volume_label, &volume_sn)) != FR_OK) {
+        printf("Error reading drive label: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_open(&file, "0:HelloWorld.txt", FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
+        printf("Error opening file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("File opened!\n");
+
+    generateMessage(length);
+
+    if ((err = f_write(&file, &message, length, &bytes_written)) != FR_OK) {
+        printf("Error writing file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("%d bytes written to file!\n", bytes_written);
+
+    if ((err = f_close(&file)) != FR_OK) {
+        printf("Error closing file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("File Closed!\n");
+
+    if ((err = f_chmod("HelloWorld.txt", 0, AM_RDO | AM_ARC | AM_SYS | AM_HID)) != FR_OK) {
+        printf("Error in chmod: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    err = f_stat("MaximSDHC", &fno);
+
+    if (err == FR_NO_FILE) {
+        printf("Creating Directory...\n");
+
+        if ((err = f_mkdir("MaximSDHC")) != FR_OK) {
+            printf("Error creating directory: %s\n", FF_ERRORS[err]);
+            f_mount(NULL, "", 0);
+            return err;
+        }
+    }
+
+    printf("Renaming File...\n");
+
+    if ((err = f_rename("0:HelloWorld.txt", "0:MaximSDHC/HelloMaxim.txt")) !=
+        FR_OK) { //cr: clearify 0:file notation
+        printf("Error moving file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_chdir("/MaximSDHC")) != FR_OK) {
+        printf("Error in chdir: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("Attempting to read back file...\n");
+
+    if ((err = f_open(&file, "HelloMaxim.txt", FA_READ)) != FR_OK) {
+        printf("Error opening file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    if ((err = f_read(&file, &message, bytes_written, &bytes_read)) != FR_OK) {
+        printf("Error reading file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("Read Back %d bytes\n", bytes_read);
+    printf("Message: ");
+    printf("%s", message);
+    printf("\n");
+
+    if ((err = f_close(&file)) != FR_OK) {
+        printf("Error closing file: %s\n", FF_ERRORS[err]);
+        f_mount(NULL, "", 0);
+        return err;
+    }
+
+    printf("File Closed!\n");
+
+    //unmount SD Card
+    //f_mount(fs, "", 0);
+    if ((err = f_mount(NULL, "", 0)) != FR_OK) {
+        printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
+        return err;
+    }
+
+    return 0;
+}
+
 void waitCardInserted()
 {
     // On the MAX78000FTHR board, P0.12 will be pulled low when a card is inserted.
@@ -416,7 +517,6 @@ void waitCardInserted()
     cardDetect.func = MXC_GPIO_FUNC_IN;
     cardDetect.pad = MXC_GPIO_PAD_NONE;
     cardDetect.vssel = MXC_GPIO_VSSEL_VDDIOH;
-    cardDetect.drvstr = MXC_GPIO_DRVSTR_0;
 
     MXC_GPIO_Config(&cardDetect);
 
@@ -482,8 +582,7 @@ int main(void)
     if ((err = f_open(&file, "weights_2.bin", FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
         printf("ERROR opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("Opened file 'weights_2.bin'\n");
@@ -497,8 +596,7 @@ int main(void)
         if ((err = f_write(&file, wr_ptr, write_size, &bytes_written)) != FR_OK) {
             printf("ERROR writing file %d: %s\n", i, FF_ERRORS[err]);
             f_mount(NULL, "", 0);
-            while (1)
-                ;
+            while (1) {}
         }
 
         // Calculate residual bytes
@@ -517,16 +615,14 @@ int main(void)
     if ((err = f_close(&file)) != FR_OK) {
         printf("ERROR closing file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("File Closed\n");
 
     if ((err = f_mount(NULL, "", 0)) != FR_OK) {
         printf("ERROR unmounting volume: %s\n", FF_ERRORS[err]);
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("SD Unmonted\n");

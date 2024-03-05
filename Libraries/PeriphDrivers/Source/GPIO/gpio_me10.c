@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,6 +102,12 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     int err;
     mxc_gpio_regs_t *gpio = cfg->port;
 
+    // Configure the vssel
+    err = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    if (err != E_NO_ERROR) {
+        return err;
+    }
+
     // Set the GPIO type
     if ((err = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask)) !=
         E_NO_ERROR) {
@@ -167,12 +143,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         break;
     default:
         return E_BAD_PARAM;
-    }
-
-    // Configure the vssel
-    err = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (err != E_NO_ERROR) {
-        return err;
     }
 
     // Configure the drive strength

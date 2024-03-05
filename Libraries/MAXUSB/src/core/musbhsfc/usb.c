@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -705,17 +675,30 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
     uint32_t saved_index;
     uint32_t in_flags, out_flags, MXC_USB_flags, MXC_USB_mxm_flags;
     int i, aborted = 0;
+    uint32_t intrusb, intrusben, intrin, intrinen, introut, introuten, mxm_int, mxm_int_en;
 
     /* Save current index register */
     saved_index = MXC_USBHS->index;
 
     /* Note: Hardware clears these after read, so we must process them all or they are lost */
-    MXC_USB_flags = MXC_USBHS->intrusb & MXC_USBHS->intrusben;
-    in_flags = MXC_USBHS->intrin & MXC_USBHS->intrinen;
-    out_flags = MXC_USBHS->introut & MXC_USBHS->introuten;
+    /*  Order of volatile accesses must be separated for IAR */
+    intrusb = MXC_USBHS->intrusb;
+    intrusben = MXC_USBHS->intrusben;
+    MXC_USB_flags = intrusb & intrusben;
+
+    intrin = MXC_USBHS->intrin;
+    intrinen = MXC_USBHS->intrinen;
+    in_flags = intrin & intrinen;
+
+    introut = MXC_USBHS->introut;
+    introuten = MXC_USBHS->introuten;
+    out_flags = introut & introuten;
 
     /* These USB interrupt flags are W1C. */
-    MXC_USB_mxm_flags = MXC_USBHS->mxm_int & MXC_USBHS->mxm_int_en;
+    /*  Order of volatile accesses must be separated for IAR */
+    mxm_int = MXC_USBHS->mxm_int;
+    mxm_int_en = MXC_USBHS->mxm_int_en;
+    MXC_USB_mxm_flags = mxm_int & mxm_int_en;
     MXC_USBHS->mxm_int = MXC_USB_mxm_flags;
 
     /* Map hardware-specific signals to generic stack events */

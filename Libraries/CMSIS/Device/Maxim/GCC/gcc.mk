@@ -1,39 +1,9 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # (now owned by Analog Devices, Inc.)
- #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
- #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
- #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
- #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
- #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
- ##############################################################################
- #
- # Copyright 2023 Analog Devices, Inc.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ # (now owned by Analog Devices, Inc.),
+ # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ # is proprietary to Analog Devices, Inc. and its licensors.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -296,6 +266,13 @@ ifneq "$(TARGET)" ""
 CFLAGS+=-DTARGET=$(TARGET)
 endif
 
+ifneq "$(TARGET_UC)" ""
+# Define a flag that the pre-processor can actually work with
+# (i.e. #ifdef MAX78000 ...)
+# TARGET_UC typically comes from the project core Makefile
+CFLAGS += -D$(TARGET_UC)
+endif
+
 ifneq "$(TARGET_REV)" ""
 CFLAGS+=-DTARGET_REV=$(TARGET_REV)
 endif
@@ -309,6 +286,9 @@ endif
 
 CFLAGS+=$(PROJ_CFLAGS)
 CXXFLAGS+=$(CFLAGS)
+
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
 
 # The command for calling the library archiver.
 AR=${PREFIX}-ar
@@ -640,19 +620,41 @@ $(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
 
+################################################################################
+# Add a rule for querying the value of any Makefile variable.  This is useful for
+# IDEs when they need to figure out include paths, value of the target, etc. for a
+# project
+# Set QUERY_VAR to the variable to inspect.
+# The output must be parsed, since other Makefiles may print additional info strings.
+# The relevant content will be on its own line, and separated by an '=' character.
+# Ex: make query QUERY_VAR=TARGET
+# will return
+# TARGET=MAXxxxxx
+ifeq "$(MAKECMDGOALS)" "query"
+SUPPRESS_HELP := 1
+endif
+.PHONY: query
+query:
+ifneq "$(QUERY_VAR)" ""
+	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+else
+	$(MAKE) debug
+endif
+
 #################################################################################
 SUPPRESS_HELP ?= 0
 ifeq "$(SUPPRESS_HELP)" "0"
 ifneq "$(HELP_COMPLETE)" "1"
 $(info ****************************************************************************)
 $(info * Analog Devices MSDK)
-$(info * - User Guide: https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
 $(info * - Get Support: https://www.analog.com/support/technical-support.html)
-$(info * - Report Issues: https://github.com/Analog-Devices-MSDK/msdk/issues)
-$(info * - Contributing: https://analog-devices-msdk.github.io/msdk/CONTRIBUTING/)
+$(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
+$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
 $(info ****************************************************************************)
 # export HELP_COMPLETE so that it's only printed once.
 HELP_COMPLETE = 1
 export HELP_COMPLETE
 endif
 endif
+

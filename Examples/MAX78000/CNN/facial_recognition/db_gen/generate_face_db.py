@@ -1,39 +1,9 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # (now owned by Analog Devices, Inc.)
- #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
- #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
- #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
- #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
- #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
- ##############################################################################
- #
- # Copyright 2023 Analog Devices, Inc.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ # (now owned by Analog Devices, Inc.),
+ # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ # is proprietary to Analog Devices, Inc. and its licensors.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -53,17 +23,16 @@
 Script to generate Face Id embeddings
 """
 import argparse
-import os.path as path
 import numpy as np
-import torch
+import os
+import os.path as path
 from ai85.ai85_adapter import AI85SimulatorAdapter
-from ai85.ai85_facedet_adapter import Facedet_AI85SimulatorAdapter
+from hawk_eyes.face import RetinaFace
 
-from utils import append_db_file_from_path, save_embedding_db, create_embeddings_include_file
+from utils import append_db_file_from_path, create_weights_include_file, create_embeddings_include_file, create_baseaddr_include_file
 
 CURRENT_DIR = path.abspath(path.dirname(path.abspath(__file__)))
-MODEL_PATH = path.join(CURRENT_DIR, 'model', 'ai85_faceid_aug_qat_best-q.pth.tar')
-FACEDET_PATH = path.join(CURRENT_DIR, 'model', 'facedet_qat_best.pth.tar')
+MODEL_PATH = path.join(CURRENT_DIR, 'model', 'ai85-faceid_112-qat-q.pth.tar')
 
 
 def create_db_from_folder(args):
@@ -74,18 +43,16 @@ def create_db_from_folder(args):
 
 
     ai85_adapter = AI85SimulatorAdapter(MODEL_PATH)
-    face_detector = Facedet_AI85SimulatorAdapter(FACEDET_PATH)
+    face_detector = RetinaFace(model_name='retina_l', conf=0.1)
+    
+    os.makedirs(args.db, exist_ok=True)
 
-    embedding_db, _ = append_db_file_from_path(args.db, face_detector, ai85_adapter,
-                                               db_dict=None, verbose=True)
-    if not embedding_db:
-        print(f'Cannot create a DB file. No face could be detected from the images in folder ',
-              f'`{args.db}`')
-        return
+    emb_array, recorded_subject = append_db_file_from_path(args.db, face_detector, ai85_adapter)
 
-    save_embedding_db(embedding_db, path.join(CURRENT_DIR, args.db_filename + '.bin'),
-                      add_prev_imgs=True)
-    create_embeddings_include_file(CURRENT_DIR, args.db_filename, args.include_path)
+    baseaddr = create_baseaddr_include_file(args.base)
+    create_weights_include_file(emb_array, args.weights, baseaddr)
+    create_embeddings_include_file(recorded_subject, args.emb)
+    print(f'Created weights and embeddings files from {len(recorded_subject)} images.')
 
 
 def parse_arguments():
@@ -95,10 +62,12 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='Create embedding database file.')
     parser.add_argument('--db', '-db-path', type=str, default='db',
                         help='path for face images')
-    parser.add_argument('--db-filename', type=str, default='embeddings',
-                        help='filename to store embeddings')
-    parser.add_argument('--include-path', type=str, default='embeddings',
-                        help='path to include folder')
+    parser.add_argument('--base', '-base-path', type=str, default='include\\baseaddr.h',
+                        help='path for baseaddr header file')
+    parser.add_argument('--emb', '-emb-path', type=str, default='include\embeddings.h',
+                        help='path for embeddings header file')
+    parser.add_argument('--weights', '-weights-path', type=str, default='include\weights_3.h',
+                        help='path for weights header file')
 
     args = parser.parse_args()
     return args
@@ -109,10 +78,6 @@ def main():
     Entry point of the script to parse command line arguments and run the function to generate
     embeddings.
     """
-    # make deterministic
-    torch.manual_seed(0)
-    np.random.seed(0)
-    
     args = parse_arguments()
     create_db_from_folder(args)
 

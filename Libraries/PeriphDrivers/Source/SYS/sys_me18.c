@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +47,11 @@
 
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(1)
+
+// DAP Lock macros
+#define INFOBLOCK_DAP_LOCK_OFFSET 0x30
+#define DAP_LOCK_SEQUENCE_01 0x5A5AA5A5
+#define DAP_LOCK_SEQUENCE_23 0xFFFFFFFF
 
 /* **** Globals **** */
 
@@ -356,15 +331,6 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     /* TODO: Timeout on clock switch, use this for untrimmed parts. */
     while (!(MXC_GCR->clkctrl & ready)) {}
     return E_NO_ERROR;
-
-    do {
-        if (MXC_GCR->clkctrl & ready) {
-            MXC_DelayAbort();
-            return E_NO_ERROR;
-        }
-    } while (MXC_DelayCheck() == E_BUSY);
-
-    return E_TIME_OUT;
 #else
     return E_NO_ERROR;
 #endif
@@ -530,4 +496,44 @@ uint32_t MXC_SYS_RiscVClockRate(void)
         return PeripheralClock;
     }
 }
+
+/* ************************************************************************** */
+int MXC_SYS_LockDAP_Permanent(void)
+{
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
+    int err;
+    uint32_t info_blk_addr;
+    uint32_t lock_sequence[4];
+
+    // Infoblock address to write lock sequence to
+    info_blk_addr = MXC_INFO_MEM_BASE + INFOBLOCK_DAP_LOCK_OFFSET;
+
+    // Set lock sequence
+    lock_sequence[0] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[1] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[2] = DAP_LOCK_SEQUENCE_23;
+    lock_sequence[3] = DAP_LOCK_SEQUENCE_23;
+
+    // Initialize FLC
+    MXC_FLC_Init();
+
+    // Unlock infoblock
+    MXC_FLC_UnlockInfoBlock(info_blk_addr);
+
+    // Write DAP lock sequence to infoblock
+    err = MXC_FLC_Write128(info_blk_addr, lock_sequence);
+
+    // Re-lock infoblock
+    MXC_FLC_LockInfoBlock(info_blk_addr);
+
+    return err;
+#endif
+}
+
 /**@} end of mxc_sys */

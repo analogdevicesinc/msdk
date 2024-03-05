@@ -5,40 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,14 +84,15 @@ typedef enum {
  * @brief Timer modes
  */
 typedef enum {
-    MXC_TMR_MODE_ONESHOT = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT, /**< Timer Mode ONESHOT */
-    MXC_TMR_MODE_CONTINUOUS = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS, /**< Timer Mode CONTINUOUS */
-    MXC_TMR_MODE_COUNTER = MXC_V_TMR_CTRL0_MODE_A_COUNTER, /**< Timer Mode COUNTER */
-    MXC_TMR_MODE_PWM = MXC_V_TMR_CTRL0_MODE_A_PWM, /**< Timer Mode PWM */
-    MXC_TMR_MODE_CAPTURE = MXC_V_TMR_CTRL0_MODE_A_CAPTURE, /**< Timer Mode CAPTURE */
-    MXC_TMR_MODE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_COMPARE, /**< Timer Mode COMPARE */
-    MXC_TMR_MODE_GATED = MXC_V_TMR_CTRL0_MODE_A_GATED, /**< Timer Mode GATED */
-    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP, /**< Timer Mode CAPTURECOMPARE */
+    MXC_TMR_MODE_ONESHOT = MXC_V_TMR_CTRL0_MODE_A_ONE_SHOT, ///< Timer Mode ONESHOT
+    MXC_TMR_MODE_CONTINUOUS = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS, ///< Timer Mode CONTINUOUS
+    MXC_TMR_MODE_COUNTER = MXC_V_TMR_CTRL0_MODE_A_COUNTER, ///< Timer Mode COUNTER
+    MXC_TMR_MODE_PWM = MXC_V_TMR_CTRL0_MODE_A_PWM, ///< Timer Mode PWM
+    MXC_TMR_MODE_CAPTURE = MXC_V_TMR_CTRL0_MODE_A_CAPTURE, ///< Timer Mode CAPTURE
+    MXC_TMR_MODE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_COMPARE, ///< Timer Mode COMPARE
+    MXC_TMR_MODE_GATED = MXC_V_TMR_CTRL0_MODE_A_GATED, ///< Timer Mode GATED
+    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_CAPCOMP, ///< Timer Mode CAPTURECOMPARE
+    MXC_TMR_MODE_DUAL_EDGE = MXC_V_TMR_CTRL0_MODE_A_DUAL_EDGE, ///< Timer Mode DUALEDGE
 
     // Legacy names
     TMR_MODE_ONESHOT = MXC_TMR_MODE_ONESHOT,
@@ -132,7 +102,8 @@ typedef enum {
     TMR_MODE_CAPTURE = MXC_TMR_MODE_CAPTURE,
     TMR_MODE_COMPARE = MXC_TMR_MODE_COMPARE,
     TMR_MODE_GATED = MXC_TMR_MODE_GATED,
-    TMR_MODE_CAPTURE_COMPARE = MXC_TMR_MODE_CAPTURE_COMPARE
+    TMR_MODE_CAPTURE_COMPARE = MXC_TMR_MODE_CAPTURE_COMPARE,
+    TMR_MODE_DUAL_EDGE = MXC_TMR_MODE_DUAL_EDGE
 } mxc_tmr_mode_t;
 
 /**

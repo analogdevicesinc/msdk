@@ -1,39 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,14 +50,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
         return E_NULL_PTR;
     }
 
-    uint32_t timerOffset;
-
-    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
-        timerOffset = TIMER_16B_OFFSET;
-    } else {
-        timerOffset = TIMER_16A_OFFSET;
-    }
-
     // Default 32 bit timer
     if (cfg->bitMode & (MXC_TMR_BIT_MODE_16A | MXC_TMR_BIT_MODE_16B)) {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_CASCADE;
@@ -99,11 +60,21 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Clear interrupt flag
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 
-    // Set the prescale
-    tmr->ctrl0 |= (cfg->pres << timerOffset);
-
-    // Select clock Source
-    tmr->ctrl1 |= ((clk_src << MXC_F_TMR_REVB_CTRL1_CLKSEL_A_POS) << timerOffset);
+    // Select clock Source and prescaler
+    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
+    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
+    if (cfg->bitMode == TMR_BIT_MODE_16A || cfg->bitMode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, cfg->pres);
+    }
+    if (cfg->bitMode == TMR_BIT_MODE_16B || cfg->bitMode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
+        // mxc_tmr_pres_t is for for CLKDIV_A register settings [4:7]
+        // Field positions for CLKDIV_B are Located at [16:19]. Shift 12 more bits.
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres) << 12);
+    }
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
@@ -144,6 +115,14 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
         break;
 
     case MXC_TMR_MODE_CAPTURE_COMPARE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
+
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
+
+    case MXC_TMR_MODE_DUAL_EDGE:
         if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
@@ -234,6 +213,8 @@ void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // Stop timer before disable it.
+    MXC_TMR_RevB_Stop(tmr);
     // Disable timer and clear settings
     tmr->ctrl0 = 0;
     while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A) {}
@@ -269,10 +250,28 @@ int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
         return E_BAD_PARAM;
     }
 
-    while (tmr->cnt >= pwm) {}
+    bool timera_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_A;
+    bool timerb_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_B;
+
+    if (timera_is_running || timerb_is_running) {
+        MXC_TMR_RevB_ClearFlags(tmr); // Clear flags so we can catch the next one
+        while (!MXC_TMR_RevB_GetFlags(tmr)) {} // Wait for next PWM transition
+        MXC_TMR_RevB_Stop(tmr); // Pause timer
+        MXC_TMR_RevB_SetCount(tmr, 0); // Reset the count
+        MXC_TMR_RevB_ClearFlags(
+            tmr); // Clear flags since app code wants the new PWM transitions set by this function
+    }
 
     tmr->pwm = pwm;
     while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
+
+    if (timera_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A; // Unpause A
+    }
+
+    if (timerb_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B; // Unpause B
+    }
 
     return E_NO_ERROR;
 }
@@ -428,7 +427,7 @@ void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, uint32_t us)
         ++clk_shift;
     }
 
-    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)clk_shift << MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
+    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)(clk_shift << MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS);
     mxc_tmr_cfg_t cfg;
 
     // Initialize the timer in one-shot mode

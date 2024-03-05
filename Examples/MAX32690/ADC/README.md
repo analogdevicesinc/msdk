@@ -10,7 +10,7 @@ Additionally the trigger source that starts the ADC conversion can be selected a
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project on supported boards can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+Universal instructions on building, flashing, and debugging this project on supported boards can be found in the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/).
 
 ### Project-Specific Build Notes
 

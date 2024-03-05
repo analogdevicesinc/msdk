@@ -1,39 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -217,7 +186,8 @@ int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *
                         uint32_t cmdval, uint32_t frequency);
 void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t *spixfc);
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_padctrl_t padctrl);
+                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
+                           mxc_spixf_padctrl_t padctrl);
 int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                           mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, uint32_t len, uint8_t deass);
 int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t *spixfc,
@@ -308,8 +278,12 @@ uint8_t MXC_SPIXF_RevA_GetIoctrlSCLKDrive(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSSDriveHigh(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSSDriveLow(mxc_spixfm_reva_regs_t *spixfm);
 uint8_t MXC_SPIXF_RevA_GetIoctrlSSDrive(mxc_spixfm_reva_regs_t *spixfm);
-void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad); // Legacy Name. Will start using SetPadCtrl going forward. 1-23-2023
-uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm); // Legacy Name. Will start using GetPadCtrl going forward. 1-23-2023
+void MXC_SPIXF_RevA_SetPuPdCtrl(
+    mxc_spixfm_reva_regs_t *spixfm,
+    mxc_spixf_padctrl_t pad); // Legacy Name. Will start using SetPadCtrl going forward. 1-23-2023
+uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(
+    mxc_spixfm_reva_regs_t
+        *spixfm); // Legacy Name. Will start using GetPadCtrl going forward. 1-23-2023
 void MXC_SPIXF_RevA_SetPadCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad);
 uint8_t MXC_SPIXF_RevA_GetPadCtrl(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetSCKDriveHigh(mxc_spixfc_reva_regs_t *spixfc);

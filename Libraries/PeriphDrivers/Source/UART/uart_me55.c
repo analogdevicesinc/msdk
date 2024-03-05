@@ -1,33 +1,21 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -143,59 +131,12 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t *uart)
 int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int freq;
-    int mod = 0;
-    int clkdiv = 0;
 
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    // check if the uart is LPUART
-    if (uart == MXC_UART3) {
-        // OSR default value
-        uart->osr = 5;
-
-        switch (clock) {
-        case MXC_UART_APB_CLK:
-            clkdiv = ((IBRO_FREQ) / baud);
-            mod = ((IBRO_FREQ) % baud);
-            break;
-
-        case MXC_UART_EXT_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            break;
-
-        case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-            if (baud == 9600) {
-                clkdiv = 7;
-                mod = 0;
-            } else {
-                clkdiv = ((ERTCO_FREQ * 2) / baud);
-                mod = ((ERTCO_FREQ * 2) % baud);
-            }
-
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
-
-        if (!clkdiv || mod > (baud / 2)) {
-            clkdiv++;
-        }
-        uart->clkdiv = clkdiv;
-
-        freq = MXC_UART_GetFrequency(uart);
-    } else {
-        freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
-    }
+    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
 
     if (freq > 0) {
         // Enable baud clock and wait for it to become ready.
@@ -208,30 +149,11 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
 int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
 {
-    int periphClock = 0;
-
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    // check if UARt is LP UART
-    if (uart == MXC_UART3) {
-        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-            return E_NOT_SUPPORTED;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
-                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
-            periphClock = IBRO_FREQ;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = ERTCO_FREQ * 2;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK3) {
-            periphClock = INRO_FREQ * 2;
-        } else {
-            return E_BAD_PARAM;
-        }
-        return (periphClock / uart->clkdiv);
-    } else {
-        return MXC_UART_RevB_GetFrequency((mxc_uart_revb_regs_t *)uart);
-    }
+    return MXC_UART_RevB_GetFrequency((mxc_uart_revb_regs_t *)uart);
 }
 
 int MXC_UART_SetDataSize(mxc_uart_regs_t *uart, int dataSize)

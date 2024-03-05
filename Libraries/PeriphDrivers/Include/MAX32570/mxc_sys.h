@@ -4,37 +4,22 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
- * 
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -234,7 +219,22 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
 } mxc_sys_system_clock_t;
 
+<<<<<<< HEAD
 #define MXC_SYS_SRCC_CLK 1 // Enable SRCC CLK
+=======
+typedef enum {
+    MXC_SYS_CLOCK_DIV_1 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1,
+    MXC_SYS_CLOCK_DIV_2 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV2,
+    MXC_SYS_CLOCK_DIV_4 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV4,
+    MXC_SYS_CLOCK_DIV_8 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV8,
+    MXC_SYS_CLOCK_DIV_16 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV16,
+    MXC_SYS_CLOCK_DIV_32 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV32,
+    MXC_SYS_CLOCK_DIV_64 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64,
+    MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
+} mxc_sys_system_clock_div_t;
+
+#define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
+>>>>>>> main
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
 /***** Function Prototypes *****/
@@ -393,6 +393,18 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
 
 /**
+ * @brief Set the system clock divider.
+ * @param div       Enumeration for desired clock divider.
+ */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
+
+/**
+ * @brief Get the system clock divider.
+ * @returns         System clock divider.
+ */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
+
+/**
  * @brief Wait for a clock to enable with timeout
  * @param      ready The clock to wait for
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
@@ -418,6 +430,14 @@ uint8_t MXC_SYS_GetRev(void);
  * @returns    #E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *serialNumber, int len);
+
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }

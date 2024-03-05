@@ -1,0 +1,58 @@
+<<<<<<<< HEAD:Libraries/PeriphDrivers/Include/MAX32572/mxc.h
+/**
+ * @file    mxc.h
+ * @brief   Includes all the required dependancies.
+ */
+
+/******************************************************************************
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+
+#ifndef EXAMPLES_MAX32650_SDHC_FAT_INCLUDE_SDHC_EXAMPLE_H_
+#define EXAMPLES_MAX32650_SDHC_FAT_INCLUDE_SDHC_EXAMPLE_H_
+
+int sdhc_init(void);
+
+void generateMessage(unsigned length);
+
+int mount();
+
+int umount();
+
+int formatSDHC();
+
+int getSize();
+
+int ls();
+
+int createFile(char *file_name, unsigned int length);
+
+int appendFile(char *file_name, unsigned int length);
+
+int mkdir(char *dir_name);
+
+int cd(char *dir_name);
+
+int deleteFile(char *file_name);
+
+int example();
+
+void waitCardInserted();
+
+#endif // EXAMPLES_MAX32650_SDHC_FAT_INCLUDE_SDHC_EXAMPLE_H_

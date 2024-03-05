@@ -33,6 +33,7 @@
 #include "util/bstream.h"
 #include "lmgr_api.h"
 #include <string.h>
+#include "bb_ble_api.h"
 
 /*************************************************************************************************/
 /*!
@@ -266,9 +267,11 @@ static void lhciCommonSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t
     /* --- test --- */
 
     case HCI_OPCODE_LE_RECEIVER_TEST:
+    
       lhciPackCmdCompleteEvtStatus(pBuf, status);
       break;
     case HCI_OPCODE_LE_TRANSMITTER_TEST:
+ 
       lhciPackCmdCompleteEvtStatus(pBuf, status);
       break;
     case HCI_OPCODE_LE_TEST_END:
@@ -420,10 +423,13 @@ bool_t lhciCommonDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     /* --- test --- */
 
     case HCI_OPCODE_LE_RECEIVER_TEST:
+
       status = LlRxTest(pBuf[0], 0);
       paramLen = LHCI_LEN_LE_RECEIVER_TEST_EVT;
       break;
     case HCI_OPCODE_LE_TRANSMITTER_TEST:
+      
+      
       status = LlTxTest(pBuf[0], pBuf[1], pBuf[2], 0);
       paramLen = LHCI_LEN_LE_TRANSMITTER_TEST_EVT;
       break;

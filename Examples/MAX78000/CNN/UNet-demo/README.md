@@ -16,11 +16,11 @@ This demo shows a U-Net network, trained to segment images into four categories 
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 * Before building the firmware, please make sure to enable your intended mode of operation by enabling/disabling the following defines in [main.c](main.c):
 

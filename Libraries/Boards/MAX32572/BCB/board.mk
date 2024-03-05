@@ -1,53 +1,38 @@
-################################################################################
- # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
- # 
- # This software is protected by copyright laws of the United States and
- # of foreign countries. This material may also be protected by patent laws
- # and technology transfer regulations of the United States and of foreign
- # countries. This software is furnished under a license agreement and/or a
- # nondisclosure agreement and may only be used or reproduced in accordance
- # with the terms of those agreements. Dissemination of this information to
- # any party or parties not specified in the license agreement and/or
- # nondisclosure agreement is expressly prohibited.
+###############################################################################
  #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
  #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
+ #     http://www.apache.org/licenses/LICENSE-2.0
  #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
  #
- ###############################################################################
+ ##############################################################################
 
 ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
-# PROJ_CFLAGS+=-DRO_FREQ=46000000
-# PROJ_CFLAGS+=-DCRYPTO_FREQ=46000000
-
-#PROJ_CFLAGS+=-DPeripheralClock=60000000
 # Source files for this test (add path to VPATH below)
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
+SRCS += w25.c
 SRCS += pb.c
 
-MISC_DRIVERS_DIR ?= $(LIBS_DIR)/MiscDrivers
+PROJ_CFLAGS+=-DSPIXF_RAM
+PROJ_CFLAGS+=-DEXT_FLASH_W25
+
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source

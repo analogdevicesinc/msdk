@@ -360,10 +360,21 @@ extern "C" {
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x302) /*!< Reset connection stats. */
 #define LHCI_OPCODE_VS_TX_TEST \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x303) /*!< Vendor specific TX test that takes numPkt param. */
-
-#define LHCI_OPCODE_VS_END_TEST     \
+#define LHCI_OPCODE_VS_RESET_TEST_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x304) /*!<Vendor specific End Test Returning More than RX Packets*/
+#define LHCI_OPCODE_VS_RX_TEST     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x305) /*!<Vendor specific RX Test*/
+#define LHCI_OPCODE_VS_GET_RSSI     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x306) /*!<Vendor specific Get RSSI*/
+#define LHCI_OPCODE_VS_PHY_EN     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x307) /*!<Vendor specific Get RSSI*/
+#define LHCI_OPCODE_VS_PHY_DIS     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x308) /*!<Vendor specific Get RSSI*/
 /* Vendor specific event masks. */
 #define LHCI_VS_EVT_MASK_SCAN_REPORT_EVT 0x01 /*!< (Byte 0) VS event bit, scan report. */
 #define LHCI_VS_EVT_MASK_DIAG_TRACE_EVT 0x02 /*!< (Byte 0) VS event bit, diagnostic tracing. */

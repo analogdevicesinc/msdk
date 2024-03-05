@@ -7,40 +7,10 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,7 +107,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_RTC_SEC_SEC_POS                          0 /**< SEC_SEC Position */
-#define MXC_F_RTC_SEC_SEC                              ((uint32_t)(0xFFUL << MXC_F_RTC_SEC_SEC_POS)) /**< SEC_SEC Mask */
+#define MXC_F_RTC_SEC_SEC                              ((uint32_t)(0xFFFFFFFFUL << MXC_F_RTC_SEC_SEC_POS)) /**< SEC_SEC Mask */
 
 /**@} end of group RTC_SEC_Register */
 
@@ -149,7 +119,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_RTC_SSEC_SSEC_POS                        0 /**< SSEC_SSEC Position */
-#define MXC_F_RTC_SSEC_SSEC                            ((uint32_t)(0xFFUL << MXC_F_RTC_SSEC_SSEC_POS)) /**< SSEC_SSEC Mask */
+#define MXC_F_RTC_SSEC_SSEC                            ((uint32_t)(0xFFFUL << MXC_F_RTC_SSEC_SSEC_POS)) /**< SSEC_SSEC Mask */
 
 /**@} end of group RTC_SSEC_Register */
 

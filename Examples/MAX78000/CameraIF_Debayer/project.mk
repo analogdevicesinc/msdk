@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -22,4 +22,8 @@ endif
 
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif
+
+ifeq ($(BOARD),CAM02_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM02 board.  Use the ImgCapture project instead.)
 endif

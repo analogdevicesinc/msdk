@@ -13,11 +13,11 @@ Please refer to the App Note [The MAX32655: Why Two Cores Are Better Than One](h
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
 
 ## Required Connections
 If using the MAX32655EVKIT (EvKit\_V1):
@@ -82,11 +82,11 @@ If RV32 Control Register field memsel is 0, the sysram2 and sysram3 are shared c
 In this demo program, the operations on the semaphore 0 and semaphore 1 make sure at a time, there is only one core can modify the data in the mxcSemaBox0 and mxcSemaBox1 which are located in the sysram2.
 
 ## How to debug CM4 and RV32 cores at the same time
-The document https://github.com/Analog-Devices-MSDK/VSCode-Maxim#debugging introduces how to debug both ARM and RISC-V cores using VSCode.
+The document https://github.com/analogdevicesinc/VSCode-Maxim#debugging introduces how to debug both ARM and RISC-V cores using VSCode.
 
 This document will show how to debug both cores by sending commands in terminals.
 
-(1) Setup the RISC-V debugger according to [RISC-V-Debugging-Guide](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/wiki/RISC-V-Debugging-Guide).
+(1) Setup the RISC-V debugger according to [RISC-V-Debugging-Guide](https://github.com/analogdevicesinc/VSCode-Maxim/wiki/RISC-V-Debugging-Guide).
 Note that doc is for MAX78000. For MAX32655EVKIT, in the folder of MaximSDK/Tools/OpenOCD/scripts/target, run command:
 `ln -s max78000_riscv.cfg MAX32655_riscv.cfg`.
 

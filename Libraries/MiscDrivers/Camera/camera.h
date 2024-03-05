@@ -1,39 +1,9 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc., All Rights Reserved.
- * (now owned by Analog Devices, Inc.)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+ * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +25,10 @@
 // includes
 #include <stdio.h>
 #include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #if defined(CAMERA_HM01B0)
 #include "hm01b0_regs.h"
@@ -148,103 +122,275 @@ typedef struct _stream_stat {
 } stream_stat_t;
 
 /******************************** Public Functions ***************************/
-// Initialize the sensor hardware and probe the image sensor.
+/**
+ * @brief Initialize the sensor hardware and probe the image sensor.
+ *
+ * @param freq Frequency for sensor initialization.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_init(uint32_t freq);
 
-// Return sensor i2c slave address.
+/**
+ * @brief Return sensor I2C slave address.
+ *
+ * @return Sensor I2C slave address.
+ */
 int camera_get_slave_address();
 
-// Return sensor Product ID.
+/**
+ * @brief Read the camera sensor's Product ID.
+ *
+ * @param id Pointer to store the Product ID.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_get_product_id(int *id);
 
-// Return sensor Manufacturer ID.
+/**
+ * @brief Read the camera sensor's Manufacturer ID.
+ *
+ * @param id Pointer to store the Manufacturer ID.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_get_manufacture_id(int *id);
 
-// dump all registers of camera
+/**
+ * @brief Dump all registers of the camera to 'printf'.
+ *
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_dump_registers();
 
-// Reset the sensor to its default state.
+/**
+ * @brief Reset the sensor to its default state.
+ *
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_reset();
 
-// Sleep mode.
+/**
+ * @brief Set the sensor to sleep mode or wake it up.
+ *
+ * @param enable 1 to enable sleep mode, 0 to disable sleep mode.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_sleep(int enable);
 
-// Shutdown mode.
+/**
+ * @brief Shutdown the camera completely.  Typically, this involves shutting down its power supply.
+ * All registers will be lost when.
+ *
+ * @param enable 1 to enable shutdown mode, 0 to disable.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_shutdown(int enable);
 
 #if defined(CAMERA_HM01B0) || (CAMERA_HM0360_MONO) || (CAMERA_HM0360_COLOR) || \
     defined(CAMERA_OV5642) || defined(CAMERA_OV5640)
-// Write a sensor register.
+/**
+ * @brief Write a sensor register.
+ *
+ * @param reg_addr Register address to write.
+ * @param reg_data Data to write to the register.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_write_reg(uint16_t reg_addr, uint8_t reg_data);
+
+/**
+ * @brief Read a sensor register.
+ *
+ * @param reg_addr Register address to read.
+ * @param reg_data Pointer to store the read data.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_read_reg(uint16_t reg_addr, uint8_t *reg_data);
 #else //(CAMERA_OV7692) || (CAMERA_PAG7920)
-// Write a sensor register.
+/**
+ * @brief Write a sensor register.
+ *
+ * @param reg_addr Register address to write.
+ * @param reg_data Data to write to the register.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_write_reg(uint8_t reg_addr, uint8_t reg_data);
-// Read a sensor register.
+
+/**
+ * @brief Read a sensor register.
+ *
+ * @param reg_addr Register address to read.
+ * @param reg_data Pointer to store the read data.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_read_reg(uint8_t reg_addr, uint8_t *reg_data);
 #endif
 
-// Set the sensor frame size and pixel format.
+/**
+ * @brief Set the sensor frame size and pixel format.
+ *
+ * @param width Frame width.
+ * @param height Frame height.
+ * @param pixformat Pixel format.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_frame_info(int width, int height, pixformat_t pixformat);
 
-// Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option.
+/**
+ * @brief Setup the camera parameters for capturing.
+ *
+ * @param xres X resolution.
+ * @param yres Y resolution.
+ * @param pixformat Pixel format.
+ * @param fifo_mode FIFO mode.
+ * @param dma_mode DMA mode.
+ * @param dma_channel DMA channel.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
                  dmamode_t dma_mode, int dma_channel);
 
-// Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option and stream to TFT
+/**
+ * @brief Setup the camera parameters for capturing and stream to TFT.
+ *
+ * @param xres X resolution.
+ * @param yres Y resolution.
+ * @param pixformat Pixel format.
+ * @param fifo_mode FIFO mode.
+ * @param dma_mode DMA mode.
+ * @param dma_channel DMA channel.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
                      dmamode_t dma_mode, int dma_channel);
 
-// Set the sensor contrast level (from -2 to +2).
+/**
+ * @brief Set the sensor contrast level.
+ *
+ * @param level Contrast level.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_contrast(int level);
 
-// Set the sensor brightness level (from -2 to +2).
+/**
+ * @brief Set the sensor brightness level.
+ *
+ * @param level Brightness level.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_brightness(int level);
 
-// Set the sensor saturation level (from -2 to +2).
+/**
+ * @brief Set the sensor saturation level.
+ *
+ * @param level Saturation level.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_saturation(int level);
 
-// Set the sensor AGC gain ceiling.
-// Note: This function has no effect when AGC (Automatic Gain Control) is disabled.
+/**
+ * @brief Set the sensor AGC gain ceiling.
+ *
+ * @param gainceiling AGC gain ceiling.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_gainceiling(gainceiling_t gainceiling);
 
-// Enable/disable the colorbar mode.
+/**
+ * @brief Enable/disable the colorbar mode.
+ *
+ * @param enable 1 to enable colorbar, 0 to disable.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_colorbar(int enable);
 
-// Enable/disable the hmirror mode.
+/**
+ * @brief Enable/disable the horizontal mirror mode.
+ *
+ * @param enable 1 to enable horizontal mirror, 0 to disable.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_hmirror(int enable);
 
-// Enable/disable the vflip mode.
+/**
+ * @brief Enable/disable the vertical flip mode.
+ *
+ * @param enable 1 to enable vertical flip, 0 to disable.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_set_vflip(int enable);
 
-// start to capture image
+/**
+ * @brief Start capturing an image.
+ *
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_start_capture_image(void);
 
-// start to capture image
+/**
+ * @brief Start capturing an image and stream to TFT.
+ *
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_start_capture_image_tft(void);
 
-// check whether all image data rcv or not
+/**
+ * @brief Check whether all image data has been received.
+ *
+ * @return 1 if image data received, 0 otherwise.
+ */
 int camera_is_image_rcv(void);
 
-// Retrieve the camera pixel format of the camera.
+/**
+ * @brief Retrieve the camera pixel format.
+ *
+ * @return Pointer to the camera pixel format.
+ */
 uint8_t *camera_get_pixel_format(void);
 
-// Get a pointer to the camera frame buffer, also get the image length and resolution.
+/**
+ * @brief Get a pointer to the camera frame buffer, image length, and resolution.
+ *
+ * @param img Pointer to store the image buffer.
+ * @param imgLen Pointer to store the image length.
+ * @param w Pointer to store the image width.
+ * @param h Pointer to store the image height.
+ */
 void camera_get_image(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h);
 
-// Get luminance level from camera.
+/**
+ * @brief Get luminance level from the camera.
+ *
+ * @param lum Pointer to store the luminance level.
+ * @return 0 on success, otherwise an error code.
+ */
 int camera_get_luminance_level(int *lum);
 
-// Get camera streaming buffer.
+/**
+ * @brief Get a pointer to the camera streaming buffer.
+ *
+ * @return Pointer to the camera streaming buffer.
+ */
 uint8_t *get_camera_stream_buffer(void);
 
-// Get camera streaming buffer size (in bytes)
+/**
+ * @brief Get the size of the camera streaming buffer (in bytes).
+ *
+ * @return Size of the camera streaming buffer.
+ */
 int camera_get_stream_buffer_size(void);
 
-// Release camera streaming buffer.
+/**
+ * @brief Release the camera streaming buffer.
+ */
 void release_camera_stream_buffer(void);
 
-// Get statistics of DMA streaming mode.
+/**
+ * @brief Get statistics of DMA streaming mode.
+ *
+ * @return Pointer to the structure containing DMA streaming statistics.
+ */
 stream_stat_t *get_camera_stream_statistic(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_CAMERA_H_
