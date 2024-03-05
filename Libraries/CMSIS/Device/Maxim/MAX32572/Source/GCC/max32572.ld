@@ -114,6 +114,7 @@ SECTIONS {
         *(vtable)
         *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
+        *(.sram_code*)      /* Place any functions that need to run from SRAM here.
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);

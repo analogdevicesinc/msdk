@@ -26,7 +26,6 @@ MEMORY {
     SRAM_RV (rwx) : ORIGIN = 0x20060000, LENGTH = 0x0000C000
 }
 
-/* Added Oct 9, 2018 to go to correct reset vector. */
 ENTRY(Reset_Handler)
 PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
 PROVIDE_HIDDEN( _SLA_Size = __end_image - __end_header );
@@ -56,6 +55,20 @@ SECTIONS {
 
         KEEP(*(.init))
         KEEP(*(.fini))
+
+        /* .ctors */
+        *crtbegin.o(.ctors)
+        *crtbegin?.o(.ctors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+        *(SORT(.ctors.*))
+        *(.ctors)
+
+        /* .dtors */
+        *crtbegin.o(.dtors)
+        *crtbegin?.o(.dtors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+        *(SORT(.dtors.*))
+        *(.dtors)
 
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
@@ -101,6 +114,7 @@ SECTIONS {
         *(vtable)
         *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
+        *(.sram_code*)      /* Place any functions that need to run from SRAM here.
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
