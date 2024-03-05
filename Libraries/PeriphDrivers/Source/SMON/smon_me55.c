@@ -39,14 +39,12 @@ void MXC_SMON_Shutdown()
 
 int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)
 {
-    return MXC_SMON_RevA_ExtSensorEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                         (mxc_smon_reva_ext_cfg_t *)cfg, delay);
+    return MXC_SMON_RevA_ExtSensorEnable((mxc_smon_reva_regs_t *)MXC_SMON, cfg, delay);
 }
 
 int MXC_SMON_SetSensorFrequency(mxc_smon_ext_cfg_t *cfg)
 {
-    return MXC_SMON_RevA_SetSensorFrequency((mxc_smon_reva_regs_t *)MXC_SMON,
-                                            (mxc_smon_reva_ext_cfg_t *)cfg);
+    return MXC_SMON_RevA_SetSensorFrequency((mxc_smon_reva_regs_t *)MXC_SMON, cfg);
 }
 
 int MXC_SMON_SetErrorCount(uint8_t errorCount)
@@ -56,26 +54,22 @@ int MXC_SMON_SetErrorCount(uint8_t errorCount)
 
 int MXC_SMON_TempSensorEnable(mxc_smon_temp_t threshold, uint32_t delay)
 {
-    return MXC_SMON_RevA_TempSensorEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                          (mxc_smon_reva_temp_t)threshold, delay);
+    return MXC_SMON_RevA_TempSensorEnable((mxc_smon_reva_regs_t *)MXC_SMON, threshold, delay);
 }
 
 int MXC_SMON_SetTempThreshold(mxc_smon_temp_t threshold)
 {
-    return MXC_SMON_RevA_SetTempThreshold((mxc_smon_reva_regs_t *)MXC_SMON,
-                                          (mxc_smon_reva_temp_t)threshold);
+    return MXC_SMON_RevA_SetTempThreshold((mxc_smon_reva_regs_t *)MXC_SMON, threshold);
 }
 
 int MXC_SMON_VoltageMonitorEnable(mxc_smon_vtm_t threshold, uint32_t delay)
 {
-    return MXC_SMON_RevA_VoltageMonitorEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                              (mxc_smon_reva_temp_t)threshold, delay);
+    return MXC_SMON_RevA_VoltageMonitorEnable((mxc_smon_reva_regs_t *)MXC_SMON, threshold, delay);
 }
 
 int MXC_SMON_SetVTMThreshold(mxc_smon_vtm_t threshold)
 {
-    return MXC_SMON_RevA_SetVTMThreshold((mxc_smon_reva_regs_t *)MXC_SMON,
-                                         (mxc_smon_reva_temp_t)threshold);
+    return MXC_SMON_RevA_SetVTMThreshold((mxc_smon_reva_regs_t *)MXC_SMON, threshold);
 }
 
 int MXC_SMON_ActiveDieShieldEnable(uint32_t delay)
@@ -85,26 +79,23 @@ int MXC_SMON_ActiveDieShieldEnable(uint32_t delay)
 
 int MXC_SMON_SelfDestructByteEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)
 {
-    return MXC_SMON_RevA_SelfDestructByteEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                                (mxc_smon_reva_ext_cfg_t *)cfg, delay);
+    return MXC_SMON_RevA_SelfDestructByteEnable((mxc_smon_reva_regs_t *)MXC_SMON, cfg, delay);
 }
 
-void MXC_SMON_EnablePUFTrimErase()
+int MXC_SMON_EnablePUFTrimErase()
 {
-    MXC_SMON_RevA_EnablePUFTrimErase((mxc_smon_reva_regs_t *)MXC_SMON);
+    return E_NOT_SUPPORTED;
 }
 
-void MXC_SMON_DisablePUFTrimErase()
+int MXC_SMON_DisablePUFTrimErase()
 {
-    MXC_SMON_RevA_DisablePUFTrimErase((mxc_smon_reva_regs_t *)MXC_SMON);
+    return E_NOT_SUPPORTED;
 }
 
 int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
                                         mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay)
 {
-    return MXC_SMON_RevA_DigitalFaultDetectorEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                                    (mxc_smon_reva_interrupt_mode_t)interruptMode,
-                                                    (mxc_smon_lowpower_mode_t)lowPowerMode, delay);
+    return MXC_SMON_RevA_DigitalFaultDetectorEnable((mxc_smon_reva_regs_t *)MXC_SMON, interruptMode, lowPowerMode, delay);
 }
 
 uint32_t MXC_SMON_GetFlags()
@@ -112,9 +103,16 @@ uint32_t MXC_SMON_GetFlags()
     return MXC_SMON_RevA_GetFlags((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
+void MXC_SMON_ClearTamper(void)
+{
+    MXC_SMON_RevA_ClearTamper((mxc_smon_reva_regs_t *)MXC_SMON);
+}
+
+// Deprecated implementation - Must check and clear all flags to clear 
+//  tamper alarm. Please use MXC_SMON_ClearTamper instead.
 void MXC_SMON_ClearFlags(uint32_t flags)
 {
-    MXC_SMON_RevA_ClearFlags((mxc_smon_reva_regs_t *)MXC_SMON, flags);
+    MXC_SMON_RevA_ClearTamper((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
 void MXC_SMON_ExtSensorLock()
@@ -129,5 +127,5 @@ void MXC_SMON_IntSensorLock()
 
 int MXC_SMON_isBusy(mxc_smon_busy_t reg, uint32_t delay)
 {
-    return MXC_SMON_RevA_isBusy((mxc_smon_reva_regs_t *)MXC_SMON, (mxc_smon_reva_busy_t)reg, delay);
+    return MXC_SMON_RevA_isBusy((mxc_smon_reva_regs_t *)MXC_SMON, reg, delay);
 }

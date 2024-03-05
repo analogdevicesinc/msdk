@@ -1,13 +1,15 @@
 /**
  * @file    smon_reva_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SMON_REVA Peripheral Module.
+ * @note    This file is @generated.
+ * @ingroup smon_reva_registers
  */
 
 /******************************************************************************
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,8 +26,8 @@
  *
  ******************************************************************************/
 
-#ifndef _SMON_REVA_REGS_H_
-#define _SMON_REVA_REGS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_REGS_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -33,11 +35,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -65,7 +67,7 @@ extern "C" {
  * @ingroup     smon_reva
  * @defgroup    smon_reva_registers SMON_REVA_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the SMON_REVA Peripheral Module.
- * @details The Security Monitor block used to monitor system threat conditions.
+ * @details     The Security Monitor block used to monitor system threat conditions.
  */
 
 /**
@@ -73,155 +75,141 @@ extern "C" {
  * Structure type to access the SMON_REVA Registers.
  */
 typedef struct {
-    __IO uint32_t extscn;               /**< <tt>\b 0x00:</tt> SMON_REVA EXTSCN Register */
-    __IO uint32_t intscn;               /**< <tt>\b 0x04:</tt> SMON_REVA INTSCN Register */
+    __IO uint32_t extsctrl;             /**< <tt>\b 0x00:</tt> SMON_REVA EXTSCTRL Register */
+    __IO uint32_t intsctrl;             /**< <tt>\b 0x04:</tt> SMON_REVA INTSCTRL Register */
     __IO uint32_t secalm;               /**< <tt>\b 0x08:</tt> SMON_REVA SECALM Register */
     __I  uint32_t secdiag;              /**< <tt>\b 0x0C:</tt> SMON_REVA SECDIAG Register */
     __I  uint32_t dlrtc;                /**< <tt>\b 0x10:</tt> SMON_REVA DLRTC Register */
     __R  uint32_t rsv_0x14_0x23[4];
-    __IO uint32_t meucfg;               /**< <tt>\b 0x24:</tt> SMON_REVA MEUCFG Register */
+    __IO uint32_t meuctrl;              /**< <tt>\b 0x24:</tt> SMON_REVA MEUCTRL Register */
     __R  uint32_t rsv_0x28_0x33[3];
     __I  uint32_t secst;                /**< <tt>\b 0x34:</tt> SMON_REVA SECST Register */
     __IO uint32_t sdbe;                 /**< <tt>\b 0x38:</tt> SMON_REVA SDBE Register */
 } mxc_smon_reva_regs_t;
 
-/* Register offsets for module SMON_REVA */
-/**
- * @ingroup    smon_reva_registers
- * @defgroup   SMON_REVA_Register_Offsets Register Offsets
- * @brief      SMON_REVA Peripheral Register Offsets from the SMON_REVA Base Peripheral Address. 
- * @{
- */
- #define MXC_R_SMON_REVA_EXTSCN             ((uint32_t)0x00000000UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_SMON_REVA_INTSCN             ((uint32_t)0x00000004UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_SMON_REVA_SECALM             ((uint32_t)0x00000008UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_SMON_REVA_SECDIAG            ((uint32_t)0x0000000CUL) /**< Offset from SMON_REVA Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_SMON_REVA_DLRTC              ((uint32_t)0x00000010UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_SMON_REVA_MEUCFG             ((uint32_t)0x00000024UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0024</tt> */ 
- #define MXC_R_SMON_REVA_SECST              ((uint32_t)0x00000034UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0034</tt> */ 
- #define MXC_R_SMON_REVA_SDBE               ((uint32_t)0x00000038UL) /**< Offset from SMON_REVA Base Address: <tt> 0x0038</tt> */ 
-/**@} end of group smon_reva_registers */
-
 /**
  * @ingroup  smon_reva_registers
- * @defgroup SMON_REVA_EXTSCN SMON_REVA_EXTSCN
+ * @defgroup SMON_REVA_EXTSCTRL SMON_REVA_EXTSCTRL
  * @brief    External Sensor Control Register.
  * @{
  */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN0_POS            0 /**< EXTSCN_EXTS_EN0 Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN0                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_EXTS_EN0_POS)) /**< EXTSCN_EXTS_EN0 Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN0_POS          0 /**< EXTSCTRL_EXTS_EN0 Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN0              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN0_POS)) /**< EXTSCTRL_EXTS_EN0 Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN1_POS            1 /**< EXTSCN_EXTS_EN1 Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN1                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_EXTS_EN1_POS)) /**< EXTSCN_EXTS_EN1 Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN1_POS          1 /**< EXTSCTRL_EXTS_EN1 Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN1              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN1_POS)) /**< EXTSCTRL_EXTS_EN1 Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN2_POS            2 /**< EXTSCN_EXTS_EN2 Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN2                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_EXTS_EN2_POS)) /**< EXTSCN_EXTS_EN2 Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN2_POS          2 /**< EXTSCTRL_EXTS_EN2 Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN2              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN2_POS)) /**< EXTSCTRL_EXTS_EN2 Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN3_POS            3 /**< EXTSCN_EXTS_EN3 Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN3                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_EXTS_EN3_POS)) /**< EXTSCN_EXTS_EN3 Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN3_POS          3 /**< EXTSCTRL_EXTS_EN3 Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN3              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN3_POS)) /**< EXTSCTRL_EXTS_EN3 Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN4_POS            4 /**< EXTSCN_EXTS_EN4 Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN4                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_EXTS_EN4_POS)) /**< EXTSCN_EXTS_EN4 Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN4_POS          4 /**< EXTSCTRL_EXTS_EN4 Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN4              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN4_POS)) /**< EXTSCTRL_EXTS_EN4 Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN5_POS            5 /**< EXTSCN_EXTS_EN5 Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTS_EN5                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_EXTS_EN5_POS)) /**< EXTSCN_EXTS_EN5 Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN5_POS          5 /**< EXTSCTRL_EXTS_EN5 Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN5              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN5_POS)) /**< EXTSCTRL_EXTS_EN5 Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTCNT_POS              16 /**< EXTSCN_EXTCNT Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTCNT                  ((uint32_t)(0x1FUL << MXC_F_SMON_REVA_EXTSCN_EXTCNT_POS)) /**< EXTSCN_EXTCNT Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_ERRCNT_POS            16 /**< EXTSCTRL_ERRCNT Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_ERRCNT                ((uint32_t)(0x1FUL << MXC_F_SMON_REVA_EXTSCTRL_ERRCNT_POS)) /**< EXTSCTRL_ERRCNT Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS              21 /**< EXTSCN_EXTFRQ Position */
- #define MXC_F_SMON_REVA_EXTSCN_EXTFRQ                  ((uint32_t)(0x7UL << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS)) /**< EXTSCN_EXTFRQ Mask */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ2000HZ       ((uint32_t)0x0UL) /**< EXTSCN_EXTFRQ_FREQ2000HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ2000HZ       (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ2000HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ2000HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ1000HZ       ((uint32_t)0x1UL) /**< EXTSCN_EXTFRQ_FREQ1000HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ1000HZ       (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ1000HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ1000HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ500HZ        ((uint32_t)0x2UL) /**< EXTSCN_EXTFRQ_FREQ500HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ500HZ        (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ500HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ500HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ250HZ        ((uint32_t)0x3UL) /**< EXTSCN_EXTFRQ_FREQ250HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ250HZ        (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ250HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ250HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ125HZ        ((uint32_t)0x4UL) /**< EXTSCN_EXTFRQ_FREQ125HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ125HZ        (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ125HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ125HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ63HZ         ((uint32_t)0x5UL) /**< EXTSCN_EXTFRQ_FREQ63HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ63HZ         (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ63HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ63HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ31HZ         ((uint32_t)0x6UL) /**< EXTSCN_EXTFRQ_FREQ31HZ Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ31HZ         (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_FREQ31HZ << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_FREQ31HZ Setting */
- #define MXC_V_SMON_REVA_EXTSCN_EXTFRQ_RFU              ((uint32_t)0x7UL) /**< EXTSCN_EXTFRQ_RFU Value */
- #define MXC_S_SMON_REVA_EXTSCN_EXTFRQ_RFU              (MXC_V_SMON_REVA_EXTSCN_EXTFRQ_RFU << MXC_F_SMON_REVA_EXTSCN_EXTFRQ_POS) /**< EXTSCN_EXTFRQ_RFU Setting */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS            21 /**< EXTSCTRL_EXTFRQ Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ                ((uint32_t)(0x7UL << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS)) /**< EXTSCTRL_EXTFRQ Mask */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ2000HZ     ((uint32_t)0x0UL) /**< EXTSCTRL_EXTFRQ_FREQ2000HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ2000HZ     (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ2000HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ2000HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ1000HZ     ((uint32_t)0x1UL) /**< EXTSCTRL_EXTFRQ_FREQ1000HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ1000HZ     (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ1000HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ1000HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ500HZ      ((uint32_t)0x2UL) /**< EXTSCTRL_EXTFRQ_FREQ500HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ500HZ      (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ500HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ500HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ250HZ      ((uint32_t)0x3UL) /**< EXTSCTRL_EXTFRQ_FREQ250HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ250HZ      (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ250HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ250HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ125HZ      ((uint32_t)0x4UL) /**< EXTSCTRL_EXTFRQ_FREQ125HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ125HZ      (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ125HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ125HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ63HZ       ((uint32_t)0x5UL) /**< EXTSCTRL_EXTFRQ_FREQ63HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ63HZ       (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ63HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ63HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ31HZ       ((uint32_t)0x6UL) /**< EXTSCTRL_EXTFRQ_FREQ31HZ Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ31HZ       (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_FREQ31HZ << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_FREQ31HZ Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_RFU            ((uint32_t)0x7UL) /**< EXTSCTRL_EXTFRQ_RFU Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_EXTFRQ_RFU            (MXC_V_SMON_REVA_EXTSCTRL_EXTFRQ_RFU << MXC_F_SMON_REVA_EXTSCTRL_EXTFRQ_POS) /**< EXTSCTRL_EXTFRQ_RFU Setting */
 
- #define MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS              24 /**< EXTSCN_DIVCLK Position */
- #define MXC_F_SMON_REVA_EXTSCN_DIVCLK                  ((uint32_t)(0x7UL << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS)) /**< EXTSCN_DIVCLK Mask */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV1             ((uint32_t)0x0UL) /**< EXTSCN_DIVCLK_DIV1 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV1             (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV1 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV1 Setting */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV2             ((uint32_t)0x1UL) /**< EXTSCN_DIVCLK_DIV2 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV2             (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV2 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV2 Setting */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV4             ((uint32_t)0x2UL) /**< EXTSCN_DIVCLK_DIV4 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV4             (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV4 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV4 Setting */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV8             ((uint32_t)0x3UL) /**< EXTSCN_DIVCLK_DIV8 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV8             (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV8 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV8 Setting */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV16            ((uint32_t)0x4UL) /**< EXTSCN_DIVCLK_DIV16 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV16            (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV16 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV16 Setting */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV32            ((uint32_t)0x5UL) /**< EXTSCN_DIVCLK_DIV32 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV32            (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV32 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV32 Setting */
- #define MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV64            ((uint32_t)0x6UL) /**< EXTSCN_DIVCLK_DIV64 Value */
- #define MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV64            (MXC_V_SMON_REVA_EXTSCN_DIVCLK_DIV64 << MXC_F_SMON_REVA_EXTSCN_DIVCLK_POS) /**< EXTSCN_DIVCLK_DIV64 Setting */
+#define MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS            24 /**< EXTSCTRL_CLKDIV Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_CLKDIV                ((uint32_t)(0x7UL << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS)) /**< EXTSCTRL_CLKDIV Mask */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV1           ((uint32_t)0x0UL) /**< EXTSCTRL_CLKDIV_DIV1 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV1           (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV1 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV1 Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV2           ((uint32_t)0x1UL) /**< EXTSCTRL_CLKDIV_DIV2 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV2           (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV2 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV2 Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV4           ((uint32_t)0x2UL) /**< EXTSCTRL_CLKDIV_DIV4 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV4           (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV4 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV4 Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV8           ((uint32_t)0x3UL) /**< EXTSCTRL_CLKDIV_DIV8 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV8           (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV8 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV8 Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV16          ((uint32_t)0x4UL) /**< EXTSCTRL_CLKDIV_DIV16 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV16          (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV16 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV16 Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV32          ((uint32_t)0x5UL) /**< EXTSCTRL_CLKDIV_DIV32 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV32          (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV32 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV32 Setting */
+#define MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV64          ((uint32_t)0x6UL) /**< EXTSCTRL_CLKDIV_DIV64 Value */
+#define MXC_S_SMON_REVA_EXTSCTRL_CLKDIV_DIV64          (MXC_V_SMON_REVA_EXTSCTRL_CLKDIV_DIV64 << MXC_F_SMON_REVA_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV64 Setting */
 
- #define MXC_F_SMON_REVA_EXTSCN_BUSY_POS                30 /**< EXTSCN_BUSY Position */
- #define MXC_F_SMON_REVA_EXTSCN_BUSY                    ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_BUSY_POS)) /**< EXTSCN_BUSY Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_BUSY_POS              30 /**< EXTSCTRL_BUSY Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_BUSY                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_BUSY_POS)) /**< EXTSCTRL_BUSY Mask */
 
- #define MXC_F_SMON_REVA_EXTSCN_LOCK_POS                31 /**< EXTSCN_LOCK Position */
- #define MXC_F_SMON_REVA_EXTSCN_LOCK                    ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCN_LOCK_POS)) /**< EXTSCN_LOCK Mask */
+#define MXC_F_SMON_REVA_EXTSCTRL_LOCK_POS              31 /**< EXTSCTRL_LOCK Position */
+#define MXC_F_SMON_REVA_EXTSCTRL_LOCK                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_EXTSCTRL_LOCK_POS)) /**< EXTSCTRL_LOCK Mask */
 
-/**@} end of group SMON_REVA_EXTSCN_Register */
+/**@} end of group SMON_REVA_EXTSCTRL_Register */
 
 /**
  * @ingroup  smon_reva_registers
- * @defgroup SMON_REVA_INTSCN SMON_REVA_INTSCN
+ * @defgroup SMON_REVA_INTSCTRL SMON_REVA_INTSCTRL
  * @brief    Internal Sensor Control Register.
  * @{
  */
- #define MXC_F_SMON_REVA_INTSCN_SHIELD_EN_POS           0 /**< INTSCN_SHIELD_EN Position */
- #define MXC_F_SMON_REVA_INTSCN_SHIELD_EN               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_SHIELD_EN_POS)) /**< INTSCN_SHIELD_EN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_SHIELD_EN_POS         0 /**< INTSCTRL_SHIELD_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_SHIELD_EN             ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_SHIELD_EN_POS)) /**< INTSCTRL_SHIELD_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_TEMP_EN_POS             1 /**< INTSCN_TEMP_EN Position */
- #define MXC_F_SMON_REVA_INTSCN_TEMP_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_TEMP_EN_POS)) /**< INTSCN_TEMP_EN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_TEMP_EN_POS           1 /**< INTSCTRL_TEMP_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_TEMP_EN               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_TEMP_EN_POS)) /**< INTSCTRL_TEMP_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_VBAT_EN_POS             2 /**< INTSCN_VBAT_EN Position */
- #define MXC_F_SMON_REVA_INTSCN_VBAT_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_VBAT_EN_POS)) /**< INTSCN_VBAT_EN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_VBAT_EN_POS           2 /**< INTSCTRL_VBAT_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_VBAT_EN               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_VBAT_EN_POS)) /**< INTSCTRL_VBAT_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_DFD_EN_POS              3 /**< INTSCN_DFD_EN Position */
- #define MXC_F_SMON_REVA_INTSCN_DFD_EN                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_DFD_EN_POS)) /**< INTSCN_DFD_EN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_DFD_EN_POS            3 /**< INTSCTRL_DFD_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_DFD_EN                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_DFD_EN_POS)) /**< INTSCTRL_DFD_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_DFD_NMI_POS             4 /**< INTSCN_DFD_NMI Position */
- #define MXC_F_SMON_REVA_INTSCN_DFD_NMI                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_DFD_NMI_POS)) /**< INTSCN_DFD_NMI Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_DFD_NMI_EN_POS        4 /**< INTSCTRL_DFD_NMI_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_DFD_NMI_EN            ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_DFD_NMI_EN_POS)) /**< INTSCTRL_DFD_NMI_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_DFD_STDBY_POS           8 /**< INTSCN_DFD_STDBY Position */
- #define MXC_F_SMON_REVA_INTSCN_DFD_STDBY               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_DFD_STDBY_POS)) /**< INTSCN_DFD_STDBY Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_TAMPOUT_DIS_POS       7 /**< INTSCTRL_TAMPOUT_DIS Position */
+#define MXC_F_SMON_REVA_INTSCTRL_TAMPOUT_DIS           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_TAMPOUT_DIS_POS)) /**< INTSCTRL_TAMPOUT_DIS Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_PUF_TRIM_ERASE_POS      10 /**< INTSCN_PUF_TRIM_ERASE Position */
- #define MXC_F_SMON_REVA_INTSCN_PUF_TRIM_ERASE          ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_PUF_TRIM_ERASE_POS)) /**< INTSCN_PUF_TRIM_ERASE Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_DFD_STDBY_POS         8 /**< INTSCTRL_DFD_STDBY Position */
+#define MXC_F_SMON_REVA_INTSCTRL_DFD_STDBY             ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_DFD_STDBY_POS)) /**< INTSCTRL_DFD_STDBY Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_LOTEMP_SEL_POS          16 /**< INTSCN_LOTEMP_SEL Position */
- #define MXC_F_SMON_REVA_INTSCN_LOTEMP_SEL              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_LOTEMP_SEL_POS)) /**< INTSCN_LOTEMP_SEL Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_PUF_TRIM_ERASE_POS    10 /**< INTSCTRL_PUF_TRIM_ERASE Position */
+#define MXC_F_SMON_REVA_INTSCTRL_PUF_TRIM_ERASE        ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_PUF_TRIM_ERASE_POS)) /**< INTSCTRL_PUF_TRIM_ERASE Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_VCORELOEN_POS           18 /**< INTSCN_VCORELOEN Position */
- #define MXC_F_SMON_REVA_INTSCN_VCORELOEN               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_VCORELOEN_POS)) /**< INTSCN_VCORELOEN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_LOTEMP_SEL_POS        16 /**< INTSCTRL_LOTEMP_SEL Position */
+#define MXC_F_SMON_REVA_INTSCTRL_LOTEMP_SEL            ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_LOTEMP_SEL_POS)) /**< INTSCTRL_LOTEMP_SEL Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_VCOREHIEN_POS           19 /**< INTSCN_VCOREHIEN Position */
- #define MXC_F_SMON_REVA_INTSCN_VCOREHIEN               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_VCOREHIEN_POS)) /**< INTSCN_VCOREHIEN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN_POS        18 /**< INTSCTRL_VCORELO_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN            ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN_POS)) /**< INTSCTRL_VCORELO_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_VDDLOEN_POS             20 /**< INTSCN_VDDLOEN Position */
- #define MXC_F_SMON_REVA_INTSCN_VDDLOEN                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_VDDLOEN_POS)) /**< INTSCN_VDDLOEN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN_POS        19 /**< INTSCTRL_VCOREHI_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN            ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN_POS)) /**< INTSCTRL_VCOREHI_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_VDDHIEN_POS             21 /**< INTSCN_VDDHIEN Position */
- #define MXC_F_SMON_REVA_INTSCN_VDDHIEN                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_VDDHIEN_POS)) /**< INTSCN_VDDHIEN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_VDDLO_EN_POS          20 /**< INTSCTRL_VDDLO_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_VDDLO_EN              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_VDDLO_EN_POS)) /**< INTSCTRL_VDDLO_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_VGLEN_POS               22 /**< INTSCN_VGLEN Position */
- #define MXC_F_SMON_REVA_INTSCN_VGLEN                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_VGLEN_POS)) /**< INTSCN_VGLEN Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_VDDHI_EN_POS          21 /**< INTSCTRL_VDDHI_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_VDDHI_EN              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_VDDHI_EN_POS)) /**< INTSCTRL_VDDHI_EN Mask */
 
- #define MXC_F_SMON_REVA_INTSCN_LOCK_POS                31 /**< INTSCN_LOCK Position */
- #define MXC_F_SMON_REVA_INTSCN_LOCK                    ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCN_LOCK_POS)) /**< INTSCN_LOCK Mask */
+#define MXC_F_SMON_REVA_INTSCTRL_VGL_EN_POS            22 /**< INTSCTRL_VGL_EN Position */
+#define MXC_F_SMON_REVA_INTSCTRL_VGL_EN                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_VGL_EN_POS)) /**< INTSCTRL_VGL_EN Mask */
 
-/**@} end of group SMON_REVA_INTSCN_Register */
+#define MXC_F_SMON_REVA_INTSCTRL_LOCK_POS              31 /**< INTSCTRL_LOCK Position */
+#define MXC_F_SMON_REVA_INTSCTRL_LOCK                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_INTSCTRL_LOCK_POS)) /**< INTSCTRL_LOCK Mask */
+
+/**@} end of group SMON_REVA_INTSCTRL_Register */
 
 /**
  * @ingroup  smon_reva_registers
@@ -229,80 +217,80 @@ typedef struct {
  * @brief    Security Alarm Register.
  * @{
  */
- #define MXC_F_SMON_REVA_SECALM_DRS_POS                 0 /**< SECALM_DRS Position */
- #define MXC_F_SMON_REVA_SECALM_DRS                     ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_DRS_POS)) /**< SECALM_DRS Mask */
+#define MXC_F_SMON_REVA_SECALM_DRS_POS                 0 /**< SECALM_DRS Position */
+#define MXC_F_SMON_REVA_SECALM_DRS                     ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_DRS_POS)) /**< SECALM_DRS Mask */
 
- #define MXC_F_SMON_REVA_SECALM_KEYWIPE_POS             1 /**< SECALM_KEYWIPE Position */
- #define MXC_F_SMON_REVA_SECALM_KEYWIPE                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_KEYWIPE_POS)) /**< SECALM_KEYWIPE Mask */
+#define MXC_F_SMON_REVA_SECALM_KEYWIPE_POS             1 /**< SECALM_KEYWIPE Position */
+#define MXC_F_SMON_REVA_SECALM_KEYWIPE                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_KEYWIPE_POS)) /**< SECALM_KEYWIPE Mask */
 
- #define MXC_F_SMON_REVA_SECALM_SHIELDF_POS             2 /**< SECALM_SHIELDF Position */
- #define MXC_F_SMON_REVA_SECALM_SHIELDF                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_SHIELDF_POS)) /**< SECALM_SHIELDF Mask */
+#define MXC_F_SMON_REVA_SECALM_SHIELD_FL_POS           2 /**< SECALM_SHIELD_FL Position */
+#define MXC_F_SMON_REVA_SECALM_SHIELD_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_SHIELD_FL_POS)) /**< SECALM_SHIELD_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_LOTEMP_POS              3 /**< SECALM_LOTEMP Position */
- #define MXC_F_SMON_REVA_SECALM_LOTEMP                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_LOTEMP_POS)) /**< SECALM_LOTEMP Mask */
+#define MXC_F_SMON_REVA_SECALM_LOTEMP_FL_POS           3 /**< SECALM_LOTEMP_FL Position */
+#define MXC_F_SMON_REVA_SECALM_LOTEMP_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_LOTEMP_FL_POS)) /**< SECALM_LOTEMP_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_HITEMP_POS              4 /**< SECALM_HITEMP Position */
- #define MXC_F_SMON_REVA_SECALM_HITEMP                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_HITEMP_POS)) /**< SECALM_HITEMP Mask */
+#define MXC_F_SMON_REVA_SECALM_HITEMP_FL_POS           4 /**< SECALM_HITEMP_FL Position */
+#define MXC_F_SMON_REVA_SECALM_HITEMP_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_HITEMP_FL_POS)) /**< SECALM_HITEMP_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_BATLO_POS               5 /**< SECALM_BATLO Position */
- #define MXC_F_SMON_REVA_SECALM_BATLO                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_BATLO_POS)) /**< SECALM_BATLO Mask */
+#define MXC_F_SMON_REVA_SECALM_BATLO_FL_POS            5 /**< SECALM_BATLO_FL Position */
+#define MXC_F_SMON_REVA_SECALM_BATLO_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_BATLO_FL_POS)) /**< SECALM_BATLO_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_BATHI_POS               6 /**< SECALM_BATHI Position */
- #define MXC_F_SMON_REVA_SECALM_BATHI                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_BATHI_POS)) /**< SECALM_BATHI Mask */
+#define MXC_F_SMON_REVA_SECALM_BATHI_FL_POS            6 /**< SECALM_BATHI_FL Position */
+#define MXC_F_SMON_REVA_SECALM_BATHI_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_BATHI_FL_POS)) /**< SECALM_BATHI_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTF_POS                7 /**< SECALM_EXTF Position */
- #define MXC_F_SMON_REVA_SECALM_EXTF                    ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTF_POS)) /**< SECALM_EXTF Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS_FL_POS             7 /**< SECALM_EXTS_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS_FL                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS_FL_POS)) /**< SECALM_EXTS_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_VDDLO_POS               8 /**< SECALM_VDDLO Position */
- #define MXC_F_SMON_REVA_SECALM_VDDLO                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VDDLO_POS)) /**< SECALM_VDDLO Mask */
+#define MXC_F_SMON_REVA_SECALM_DFD_FL_POS              8 /**< SECALM_DFD_FL Position */
+#define MXC_F_SMON_REVA_SECALM_DFD_FL                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_DFD_FL_POS)) /**< SECALM_DFD_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_VCORELO_POS             9 /**< SECALM_VCORELO Position */
- #define MXC_F_SMON_REVA_SECALM_VCORELO                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VCORELO_POS)) /**< SECALM_VCORELO Mask */
+#define MXC_F_SMON_REVA_SECALM_VCORELO_FL_POS          9 /**< SECALM_VCORELO_FL Position */
+#define MXC_F_SMON_REVA_SECALM_VCORELO_FL              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VCORELO_FL_POS)) /**< SECALM_VCORELO_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_VCOREHI_POS             10 /**< SECALM_VCOREHI Position */
- #define MXC_F_SMON_REVA_SECALM_VCOREHI                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VCOREHI_POS)) /**< SECALM_VCOREHI Mask */
+#define MXC_F_SMON_REVA_SECALM_VCOREHI_FL_POS          10 /**< SECALM_VCOREHI_FL Position */
+#define MXC_F_SMON_REVA_SECALM_VCOREHI_FL              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VCOREHI_FL_POS)) /**< SECALM_VCOREHI_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_VDDHI_POS               11 /**< SECALM_VDDHI Position */
- #define MXC_F_SMON_REVA_SECALM_VDDHI                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VDDHI_POS)) /**< SECALM_VDDHI Mask */
+#define MXC_F_SMON_REVA_SECALM_VDDHI_FL_POS            11 /**< SECALM_VDDHI_FL Position */
+#define MXC_F_SMON_REVA_SECALM_VDDHI_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VDDHI_FL_POS)) /**< SECALM_VDDHI_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_VGL_POS                 12 /**< SECALM_VGL Position */
- #define MXC_F_SMON_REVA_SECALM_VGL                     ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VGL_POS)) /**< SECALM_VGL Mask */
+#define MXC_F_SMON_REVA_SECALM_VGL_FL_POS              12 /**< SECALM_VGL_FL Position */
+#define MXC_F_SMON_REVA_SECALM_VGL_FL                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_VGL_FL_POS)) /**< SECALM_VGL_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT0_POS            16 /**< SECALM_EXTSTAT0 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT0                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSTAT0_POS)) /**< SECALM_EXTSTAT0 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS0_FL_POS            16 /**< SECALM_EXTS0_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS0_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS0_FL_POS)) /**< SECALM_EXTS0_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT1_POS            17 /**< SECALM_EXTSTAT1 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT1                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSTAT1_POS)) /**< SECALM_EXTSTAT1 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS1_FL_POS            17 /**< SECALM_EXTS1_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS1_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS1_FL_POS)) /**< SECALM_EXTS1_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT2_POS            18 /**< SECALM_EXTSTAT2 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT2                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSTAT2_POS)) /**< SECALM_EXTSTAT2 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS2_FL_POS            18 /**< SECALM_EXTS2_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS2_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS2_FL_POS)) /**< SECALM_EXTS2_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT3_POS            19 /**< SECALM_EXTSTAT3 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT3                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSTAT3_POS)) /**< SECALM_EXTSTAT3 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS3_FL_POS            19 /**< SECALM_EXTS3_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS3_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS3_FL_POS)) /**< SECALM_EXTS3_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT4_POS            20 /**< SECALM_EXTSTAT4 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT4                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSTAT4_POS)) /**< SECALM_EXTSTAT4 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS4_FL_POS            20 /**< SECALM_EXTS4_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS4_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS4_FL_POS)) /**< SECALM_EXTS4_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT5_POS            21 /**< SECALM_EXTSTAT5 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSTAT5                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSTAT5_POS)) /**< SECALM_EXTSTAT5 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS5_FL_POS            21 /**< SECALM_EXTS5_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS5_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS5_FL_POS)) /**< SECALM_EXTS5_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN0_POS           24 /**< SECALM_EXTSWARN0 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN0               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSWARN0_POS)) /**< SECALM_EXTSWARN0 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS0_WARN_FL_POS       24 /**< SECALM_EXTS0_WARN_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS0_WARN_FL           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS0_WARN_FL_POS)) /**< SECALM_EXTS0_WARN_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN1_POS           25 /**< SECALM_EXTSWARN1 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN1               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSWARN1_POS)) /**< SECALM_EXTSWARN1 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS1_WARN_FL_POS       25 /**< SECALM_EXTS1_WARN_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS1_WARN_FL           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS1_WARN_FL_POS)) /**< SECALM_EXTS1_WARN_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN2_POS           26 /**< SECALM_EXTSWARN2 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN2               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSWARN2_POS)) /**< SECALM_EXTSWARN2 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS2_WARN_FL_POS       26 /**< SECALM_EXTS2_WARN_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS2_WARN_FL           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS2_WARN_FL_POS)) /**< SECALM_EXTS2_WARN_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN3_POS           27 /**< SECALM_EXTSWARN3 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN3               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSWARN3_POS)) /**< SECALM_EXTSWARN3 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS3_WARN_FL_POS       27 /**< SECALM_EXTS3_WARN_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS3_WARN_FL           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS3_WARN_FL_POS)) /**< SECALM_EXTS3_WARN_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN4_POS           28 /**< SECALM_EXTSWARN4 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN4               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSWARN4_POS)) /**< SECALM_EXTSWARN4 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS4_WARN_FL_POS       28 /**< SECALM_EXTS4_WARN_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS4_WARN_FL           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS4_WARN_FL_POS)) /**< SECALM_EXTS4_WARN_FL Mask */
 
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN5_POS           29 /**< SECALM_EXTSWARN5 Position */
- #define MXC_F_SMON_REVA_SECALM_EXTSWARN5               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTSWARN5_POS)) /**< SECALM_EXTSWARN5 Mask */
+#define MXC_F_SMON_REVA_SECALM_EXTS5_WARN_FL_POS       29 /**< SECALM_EXTS5_WARN_FL Position */
+#define MXC_F_SMON_REVA_SECALM_EXTS5_WARN_FL           ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECALM_EXTS5_WARN_FL_POS)) /**< SECALM_EXTS5_WARN_FL Mask */
 
 /**@} end of group SMON_REVA_SECALM_Register */
 
@@ -312,47 +300,68 @@ typedef struct {
  * @brief    Security Diagnostic Register.
  * @{
  */
- #define MXC_F_SMON_REVA_SECDIAG_BORF_POS               0 /**< SECDIAG_BORF Position */
- #define MXC_F_SMON_REVA_SECDIAG_BORF                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_BORF_POS)) /**< SECDIAG_BORF Mask */
+#define MXC_F_SMON_REVA_SECDIAG_BOR_FL_POS             0 /**< SECDIAG_BOR_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_BOR_FL                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_BOR_FL_POS)) /**< SECDIAG_BOR_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_SHIELDF_POS            2 /**< SECDIAG_SHIELDF Position */
- #define MXC_F_SMON_REVA_SECDIAG_SHIELDF                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_SHIELDF_POS)) /**< SECDIAG_SHIELDF Mask */
+#define MXC_F_SMON_REVA_SECDIAG_SHIELD_FL_POS          2 /**< SECDIAG_SHIELD_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_SHIELD_FL              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_SHIELD_FL_POS)) /**< SECDIAG_SHIELD_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_LOTEMP_POS             3 /**< SECDIAG_LOTEMP Position */
- #define MXC_F_SMON_REVA_SECDIAG_LOTEMP                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_LOTEMP_POS)) /**< SECDIAG_LOTEMP Mask */
+#define MXC_F_SMON_REVA_SECDIAG_LOTEMP_FL_POS          3 /**< SECDIAG_LOTEMP_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_LOTEMP_FL              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_LOTEMP_FL_POS)) /**< SECDIAG_LOTEMP_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_HITEMP_POS             4 /**< SECDIAG_HITEMP Position */
- #define MXC_F_SMON_REVA_SECDIAG_HITEMP                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_HITEMP_POS)) /**< SECDIAG_HITEMP Mask */
+#define MXC_F_SMON_REVA_SECDIAG_HITEMP_FL_POS          4 /**< SECDIAG_HITEMP_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_HITEMP_FL              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_HITEMP_FL_POS)) /**< SECDIAG_HITEMP_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_BATLO_POS              5 /**< SECDIAG_BATLO Position */
- #define MXC_F_SMON_REVA_SECDIAG_BATLO                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_BATLO_POS)) /**< SECDIAG_BATLO Mask */
+#define MXC_F_SMON_REVA_SECDIAG_BATLO_FL_POS           5 /**< SECDIAG_BATLO_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_BATLO_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_BATLO_FL_POS)) /**< SECDIAG_BATLO_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_BATHI_POS              6 /**< SECDIAG_BATHI Position */
- #define MXC_F_SMON_REVA_SECDIAG_BATHI                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_BATHI_POS)) /**< SECDIAG_BATHI Mask */
+#define MXC_F_SMON_REVA_SECDIAG_BATHI_FL_POS           6 /**< SECDIAG_BATHI_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_BATHI_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_BATHI_FL_POS)) /**< SECDIAG_BATHI_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_DYNF_POS               7 /**< SECDIAG_DYNF Position */
- #define MXC_F_SMON_REVA_SECDIAG_DYNF                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_DYNF_POS)) /**< SECDIAG_DYNF Mask */
+#define MXC_F_SMON_REVA_SECDIAG_DYNS_FL_POS            7 /**< SECDIAG_DYNS_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_DYNS_FL                ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_DYNS_FL_POS)) /**< SECDIAG_DYNS_FL Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_AESKT_POS              8 /**< SECDIAG_AESKT Position */
- #define MXC_F_SMON_REVA_SECDIAG_AESKT                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_AESKT_POS)) /**< SECDIAG_AESKT Mask */
+#define MXC_F_SMON_REVA_SECDIAG_AESKT_MEU_POS          8 /**< SECDIAG_AESKT_MEU Position */
+#define MXC_F_SMON_REVA_SECDIAG_AESKT_MEU              ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_AESKT_MEU_POS)) /**< SECDIAG_AESKT_MEU Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT0_POS           16 /**< SECDIAG_EXTSTAT0 Position */
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT0               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTSTAT0_POS)) /**< SECDIAG_EXTSTAT0 Mask */
+#define MXC_F_SMON_REVA_SECDIAG_AESKT_MEMPROT_XIP_POS  9 /**< SECDIAG_AESKT_MEMPROT_XIP Position */
+#define MXC_F_SMON_REVA_SECDIAG_AESKT_MEMPROT_XIP      ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_AESKT_MEMPROT_XIP_POS)) /**< SECDIAG_AESKT_MEMPROT_XIP Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT1_POS           17 /**< SECDIAG_EXTSTAT1 Position */
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT1               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTSTAT1_POS)) /**< SECDIAG_EXTSTAT1 Mask */
+#define MXC_F_SMON_REVA_SECDIAG_MEU_KEY_CLR_POS        10 /**< SECDIAG_MEU_KEY_CLR Position */
+#define MXC_F_SMON_REVA_SECDIAG_MEU_KEY_CLR            ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_MEU_KEY_CLR_POS)) /**< SECDIAG_MEU_KEY_CLR Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT2_POS           18 /**< SECDIAG_EXTSTAT2 Position */
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT2               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTSTAT2_POS)) /**< SECDIAG_EXTSTAT2 Mask */
+#define MXC_F_SMON_REVA_SECDIAG_MEMPROT_XIP_KEY_CLR_POS 11 /**< SECDIAG_MEMPROT_XIP_KEY_CLR Position */
+#define MXC_F_SMON_REVA_SECDIAG_MEMPROT_XIP_KEY_CLR    ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_MEMPROT_XIP_KEY_CLR_POS)) /**< SECDIAG_MEMPROT_XIP_KEY_CLR Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT3_POS           19 /**< SECDIAG_EXTSTAT3 Position */
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT3               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTSTAT3_POS)) /**< SECDIAG_EXTSTAT3 Mask */
+#define MXC_F_SMON_REVA_SECDIAG_MEMPROT_DIP_KEY_CLR_POS 12 /**< SECDIAG_MEMPROT_DIP_KEY_CLR Position */
+#define MXC_F_SMON_REVA_SECDIAG_MEMPROT_DIP_KEY_CLR    ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_MEMPROT_DIP_KEY_CLR_POS)) /**< SECDIAG_MEMPROT_DIP_KEY_CLR Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT4_POS           20 /**< SECDIAG_EXTSTAT4 Position */
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT4               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTSTAT4_POS)) /**< SECDIAG_EXTSTAT4 Mask */
+#define MXC_F_SMON_REVA_SECDIAG_SW_DRS_POS             13 /**< SECDIAG_SW_DRS Position */
+#define MXC_F_SMON_REVA_SECDIAG_SW_DRS                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_SW_DRS_POS)) /**< SECDIAG_SW_DRS Mask */
 
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT5_POS           21 /**< SECDIAG_EXTSTAT5 Position */
- #define MXC_F_SMON_REVA_SECDIAG_EXTSTAT5               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTSTAT5_POS)) /**< SECDIAG_EXTSTAT5 Mask */
+#define MXC_F_SMON_REVA_SECDIAG_AESKT_MEMPROT_DIP_POS  14 /**< SECDIAG_AESKT_MEMPROT_DIP Position */
+#define MXC_F_SMON_REVA_SECDIAG_AESKT_MEMPROT_DIP      ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_AESKT_MEMPROT_DIP_POS)) /**< SECDIAG_AESKT_MEMPROT_DIP Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_DFD_FL_POS             15 /**< SECDIAG_DFD_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_DFD_FL                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_DFD_FL_POS)) /**< SECDIAG_DFD_FL Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_EXTS0_FL_POS           16 /**< SECDIAG_EXTS0_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_EXTS0_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTS0_FL_POS)) /**< SECDIAG_EXTS0_FL Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_EXTS1_FL_POS           17 /**< SECDIAG_EXTS1_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_EXTS1_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTS1_FL_POS)) /**< SECDIAG_EXTS1_FL Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_EXTS2_FL_POS           18 /**< SECDIAG_EXTS2_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_EXTS2_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTS2_FL_POS)) /**< SECDIAG_EXTS2_FL Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_EXTS3_FL_POS           19 /**< SECDIAG_EXTS3_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_EXTS3_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTS3_FL_POS)) /**< SECDIAG_EXTS3_FL Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_EXTS4_FL_POS           20 /**< SECDIAG_EXTS4_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_EXTS4_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTS4_FL_POS)) /**< SECDIAG_EXTS4_FL Mask */
+
+#define MXC_F_SMON_REVA_SECDIAG_EXTS5_FL_POS           21 /**< SECDIAG_EXTS5_FL Position */
+#define MXC_F_SMON_REVA_SECDIAG_EXTS5_FL               ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECDIAG_EXTS5_FL_POS)) /**< SECDIAG_EXTS5_FL Mask */
 
 /**@} end of group SMON_REVA_SECDIAG_Register */
 
@@ -363,21 +372,24 @@ typedef struct {
  *           register when the last DRS event occurred.
  * @{
  */
- #define MXC_F_SMON_REVA_DLRTC_DLRTC_POS                0 /**< DLRTC_DLRTC Position */
- #define MXC_F_SMON_REVA_DLRTC_DLRTC                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_SMON_REVA_DLRTC_DLRTC_POS)) /**< DLRTC_DLRTC Mask */
+#define MXC_F_SMON_REVA_DLRTC_DLRTC_POS                0 /**< DLRTC_DLRTC Position */
+#define MXC_F_SMON_REVA_DLRTC_DLRTC                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_SMON_REVA_DLRTC_DLRTC_POS)) /**< DLRTC_DLRTC Mask */
 
 /**@} end of group SMON_REVA_DLRTC_Register */
 
 /**
  * @ingroup  smon_reva_registers
- * @defgroup SMON_REVA_MEUCFG SMON_REVA_MEUCFG
- * @brief    MEU Configuration
+ * @defgroup SMON_REVA_MEUCTRL SMON_REVA_MEUCTRL
+ * @brief    MEU Configuration Register.
  * @{
  */
- #define MXC_F_SMON_REVA_MEUCFG_MEUCFG_POS              0 /**< MEUCFG_MEUCFG Position */
- #define MXC_F_SMON_REVA_MEUCFG_MEUCFG                  ((uint32_t)(0x7FUL << MXC_F_SMON_REVA_MEUCFG_MEUCFG_POS)) /**< MEUCFG_MEUCFG Mask */
+#define MXC_F_SMON_REVA_MEUCTRL_ENC_EN_POS             0 /**< MEUCTRL_ENC_EN Position */
+#define MXC_F_SMON_REVA_MEUCTRL_ENC_EN                 ((uint32_t)(0xFFUL << MXC_F_SMON_REVA_MEUCTRL_ENC_EN_POS)) /**< MEUCTRL_ENC_EN Mask */
 
-/**@} end of group SMON_REVA_MEUCFG_Register */
+#define MXC_F_SMON_REVA_MEUCTRL_LOCK_POS               31 /**< MEUCTRL_LOCK Position */
+#define MXC_F_SMON_REVA_MEUCTRL_LOCK                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_MEUCTRL_LOCK_POS)) /**< MEUCTRL_LOCK Mask */
+
+/**@} end of group SMON_REVA_MEUCTRL_Register */
 
 /**
  * @ingroup  smon_reva_registers
@@ -385,14 +397,17 @@ typedef struct {
  * @brief    Security Monitor Status Register.
  * @{
  */
- #define MXC_F_SMON_REVA_SECST_EXTSRS_POS               0 /**< SECST_EXTSRS Position */
- #define MXC_F_SMON_REVA_SECST_EXTSRS                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_EXTSRS_POS)) /**< SECST_EXTSRS Mask */
+#define MXC_F_SMON_REVA_SECST_EXTSCTRL_POS             0 /**< SECST_EXTSCTRL Position */
+#define MXC_F_SMON_REVA_SECST_EXTSCTRL                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_EXTSCTRL_POS)) /**< SECST_EXTSCTRL Mask */
 
- #define MXC_F_SMON_REVA_SECST_INTSRS_POS               1 /**< SECST_INTSRS Position */
- #define MXC_F_SMON_REVA_SECST_INTSRS                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_INTSRS_POS)) /**< SECST_INTSRS Mask */
+#define MXC_F_SMON_REVA_SECST_INTSCTRL_POS             1 /**< SECST_INTSCTRL Position */
+#define MXC_F_SMON_REVA_SECST_INTSCTRL                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_INTSCTRL_POS)) /**< SECST_INTSCTRL Mask */
 
- #define MXC_F_SMON_REVA_SECST_SECALRS_POS              2 /**< SECST_SECALRS Position */
- #define MXC_F_SMON_REVA_SECST_SECALRS                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_SECALRS_POS)) /**< SECST_SECALRS Mask */
+#define MXC_F_SMON_REVA_SECST_SECALM_POS               2 /**< SECST_SECALM Position */
+#define MXC_F_SMON_REVA_SECST_SECALM                   ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_SECALM_POS)) /**< SECST_SECALM Mask */
+
+#define MXC_F_SMON_REVA_SECST_MEUCTRL_POS              7 /**< SECST_MEUCTRL Position */
+#define MXC_F_SMON_REVA_SECST_MEUCTRL                  ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SECST_MEUCTRL_POS)) /**< SECST_MEUCTRL Mask */
 
 /**@} end of group SMON_REVA_SECST_Register */
 
@@ -402,11 +417,11 @@ typedef struct {
  * @brief    Security Monitor Self Destruct Byte.
  * @{
  */
- #define MXC_F_SMON_REVA_SDBE_DBYTE_POS                 0 /**< SDBE_DBYTE Position */
- #define MXC_F_SMON_REVA_SDBE_DBYTE                     ((uint32_t)(0xFFUL << MXC_F_SMON_REVA_SDBE_DBYTE_POS)) /**< SDBE_DBYTE Mask */
+#define MXC_F_SMON_REVA_SDBE_SDBYTE_POS                0 /**< SDBE_SDBYTE Position */
+#define MXC_F_SMON_REVA_SDBE_SDBYTE                    ((uint32_t)(0xFFUL << MXC_F_SMON_REVA_SDBE_SDBYTE_POS)) /**< SDBE_SDBYTE Mask */
 
- #define MXC_F_SMON_REVA_SDBE_SBDEN_POS                 31 /**< SDBE_SBDEN Position */
- #define MXC_F_SMON_REVA_SDBE_SBDEN                     ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SDBE_SBDEN_POS)) /**< SDBE_SBDEN Mask */
+#define MXC_F_SMON_REVA_SDBE_SDBYTE_EN_POS             31 /**< SDBE_SDBYTE_EN Position */
+#define MXC_F_SMON_REVA_SDBE_SDBYTE_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_REVA_SDBE_SDBYTE_EN_POS)) /**< SDBE_SDBYTE_EN Mask */
 
 /**@} end of group SMON_REVA_SDBE_Register */
 
@@ -414,4 +429,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _SMON_REVA_REGS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_REGS_H_
