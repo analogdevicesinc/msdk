@@ -32,6 +32,8 @@ Coremark
 CRC
 CTB_AES
 DMA
+Dual_Core_Sync/Dual_core_sync_arm
+Dual_Core_Sync/Dual_core_sync_riscv
 EEPROM_Emulator
 Flash
 Flash_CLI
