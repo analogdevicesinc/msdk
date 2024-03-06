@@ -19,6 +19,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 * This project comes pre-configured for the MAX32655EVKIT. See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
 
+* This project will build and load the `Dual_core_sync_riscv` example into the RISC-V core.  See the [project.mk](project.mk) file and [Build Variables for RISC-V Cores](https://analogdevicesinc.github.io/msdk//USERGUIDE/#build-variables-for-risc-v-cores) documentation.
+
 ## Required Connections
 
 If using the MAX32690EVKIT:

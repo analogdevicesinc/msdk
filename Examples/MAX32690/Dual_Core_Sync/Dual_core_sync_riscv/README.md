@@ -17,6 +17,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 * This project comes pre-configured for the MAX32690EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
 
+* **This project is not typically compiled on its own**.  Instead, the `Dual_core_sync_arm` project should be used to build and load it.
+
 ## Required Connections
 
 If using the MAX32690EVKIT:
