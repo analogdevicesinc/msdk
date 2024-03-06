@@ -51,12 +51,11 @@ jobs:
             core.setFailed(`Request failed with error ${err}`)
           }
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
         ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
         fetch-depth: 0
-        token: ${{ secrets.WORKFLOW_TOKEN }}
 
     - name: clang-format-run
       run: |

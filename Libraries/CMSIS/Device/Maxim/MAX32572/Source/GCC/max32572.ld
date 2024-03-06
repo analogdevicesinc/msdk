@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
