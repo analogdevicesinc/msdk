@@ -63,8 +63,8 @@ typedef int16_t q15_t;
 
 /* Port pin actions used to signal that processing is active */
 
-#define CNN_START LED_On(1)
-#define CNN_COMPLETE LED_Off(1)
+#define CNN_START LED_On(0)
+#define CNN_COMPLETE LED_Off(0)
 #define SYS_START LED_On(0)
 #define SYS_COMPLETE LED_Off(0)
 

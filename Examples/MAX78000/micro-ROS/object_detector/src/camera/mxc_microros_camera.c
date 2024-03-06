@@ -79,6 +79,17 @@ int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img)
     unsigned int row_buffer_size = camera_get_stream_buffer_size();
     unsigned int j = 0;
 
+    // Fill the message header
+    //  - Timestamp
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    out_img->header.stamp.sec = ts.tv_sec;
+    out_img->header.stamp.nanosec = ts.tv_nsec;
+    //  - Frame ID = (g_img_no)_(device_id)
+    snprintf(out_img->header.frame_id.data, STRING_BUFFER_LEN, "%d-%d_%s", g_img_no, ts.tv_sec, DEVICE_ID);
+    g_img_no++;
+    out_img->header.frame_id.size = strlen(out_img->header.frame_id.data);
+
 	camera_start_capture_image();
 	LED_On(0);
 
@@ -105,16 +116,6 @@ int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img)
         return E_OVERFLOW;
     }
 
-    // Fill the message header
-    //  - Timestamp
-    struct timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-    out_img->header.stamp.sec = ts.tv_sec;
-    out_img->header.stamp.nanosec = ts.tv_nsec;
-    //  - Frame ID = (g_img_no)_(device_id)
-    snprintf(out_img->header.frame_id.data, STRING_BUFFER_LEN, "%d_%d", g_img_no, DEVICE_ID);
-    out_img->header.frame_id.size = strlen(out_img->header.frame_id.data);
-
     // Fill image info
     strncpy(out_img->encoding.data, g_encoding, STRING_BUFFER_LEN);
     out_img->width = g_width;
@@ -131,7 +132,7 @@ typedef struct {
     float y2;
 } bounding_box_t;
 
-int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output_roi, geometry_msgs__msg__PolygonStamped *output_polygon)
+int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image* input_image, sensor_msgs__msg__RegionOfInterest *output_roi, geometry_msgs__msg__PolygonStamped *output_polygon)
 {
     // Union for in-place conversion from bytes to 32-bit word
     union {
@@ -146,14 +147,13 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output_roi, 
     clock_gettime(CLOCK_REALTIME, &ts);
     output_polygon->header.stamp.sec = ts.tv_sec;
     output_polygon->header.stamp.nanosec = ts.tv_nsec;
-    //  - Frame ID = (g_img_no)_(device_id)
-    snprintf(output_polygon->header.frame_id.data, STRING_BUFFER_LEN, "%d_%d", ++g_img_no, DEVICE_ID);
-    output_polygon->header.frame_id.size = strlen(output_polygon->header.frame_id.data);
+    //  - Copy same frame ID as input image so we can match them later
+    output_polygon->header = input_image->header;
 
-    unsigned int row_buffer_size = camera_get_stream_buffer_size();
-    uint8_t *row_data = NULL;
-    uint32_t img_length, width, height;
-    camera_get_image(NULL, &img_length, &width, &height);
+    // unsigned int row_buffer_size = camera_get_stream_buffer_size();
+    // uint8_t *row_data = NULL;
+    // uint32_t img_length, width, height;
+    // camera_get_image(NULL, &img_length, &width, &height);
 
     // LED_On(0);
 
@@ -166,25 +166,35 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output_roi, 
     cnn_configure(); // Configure state
 
     cnn_start(); // Start CNN processing
-    camera_start_capture_image();
+    // camera_start_capture_image();
+    for (int i = 0; i < input_image->data.size; i += 3) {
+        m.b[0] = input_image->data.data[i + 2]; // Red
+        m.b[1] = input_image->data.data[i + 1]; // Green
+        m.b[2] = input_image->data.data[i];     // Blue
 
-    while (!camera_is_image_rcv()) {
-        if ((row_data = get_camera_stream_buffer()) != NULL) {
-            for (int i = 0; i < row_buffer_size; i += 2) {
-                // RGB565 to packed 24-bit RGB
-                m.b[0] = (*(row_data + i) & 0xF8); // Red
-                m.b[1] = (*(row_data + i) << 5) | ((*((row_data + i) + 1) & 0xE0) >> 3); // Green
-                m.b[2] = (*((row_data + i) + 1) << 3); // Blue
+        // Remove the following line if there is no risk that the source would overrun the FIFO:
+        while (((*((volatile uint32_t *) 0x50000004) & 1)) != 0); // Wait for FIFO 0
+        *((volatile uint32_t *) 0x50000008) = m.w ^ 0x00808080U; // Write FIFO 0
+        // Note: XOR is to normalize uint8_t to signed int8_t
+    }
 
-                // Remove the following line if there is no risk that the source would overrun the FIFO:
-                while (((*((volatile uint32_t *) 0x50000004) & 1)) != 0); // Wait for FIFO 0
-                *((volatile uint32_t *) 0x50000008) = m.w ^ 0x00808080U; // Write FIFO 0
-                // Note: XOR is to normalize uint8_t to signed int8_t
-            }
-            // Release buffer in time for next row
-            release_camera_stream_buffer();
-        }
-    }    
+    // while (!camera_is_image_rcv()) {
+    //     if ((row_data = get_camera_stream_buffer()) != NULL) {
+    //         for (int i = 0; i < row_buffer_size; i += 2) {
+    //             // RGB565 to packed 24-bit RGB
+    //             m.b[0] = (*(row_data + i) & 0xF8); // Red
+    //             m.b[1] = (*(row_data + i) << 5) | ((*((row_data + i) + 1) & 0xE0) >> 3); // Green
+    //             m.b[2] = (*((row_data + i) + 1) << 3); // Blue
+
+    //             // Remove the following line if there is no risk that the source would overrun the FIFO:
+    //             while (((*((volatile uint32_t *) 0x50000004) & 1)) != 0); // Wait for FIFO 0
+    //             *((volatile uint32_t *) 0x50000008) = m.w ^ 0x00808080U; // Write FIFO 0
+    //             // Note: XOR is to normalize uint8_t to signed int8_t
+    //         }
+    //         // Release buffer in time for next row
+    //         release_camera_stream_buffer();
+    //     }
+    // }    
 
     while (cnn_time == 0) {}
 // #ifdef CNN_INFERENCE_TIMER
@@ -199,15 +209,15 @@ int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output_roi, 
     float kpts[8];
     memset(kpts, 0, 8 * sizeof(float));
     print_detected_boxes(xy, kpts);
-    output_roi->x_offset = (uint32_t)(xy[0] * width);
-    output_roi->y_offset = (uint32_t)(xy[1] * width);
-    output_roi->width = (uint32_t)((xy[2] - xy[0]) * height);
-    output_roi->height = (uint32_t)((xy[3] - xy[1]) * height);
+    output_roi->x_offset = (uint32_t)(xy[0] * input_image->width);
+    output_roi->y_offset = (uint32_t)(xy[1] * input_image->width);
+    output_roi->width = (uint32_t)((xy[2] - xy[0]) * input_image->height);
+    output_roi->height = (uint32_t)((xy[3] - xy[1]) * input_image->height);
     output_roi->do_rectify = false;
 
     for (int i = 0; i < output_polygon->polygon.points.size; i++) {
-        output_polygon->polygon.points.data[i].x = kpts[(2*i)] * width;
-        output_polygon->polygon.points.data[i].y = kpts[(2*i) + 1] * height;
+        output_polygon->polygon.points.data[i].x = kpts[(2*i)] * input_image->width;
+        output_polygon->polygon.points.data[i].y = kpts[(2*i) + 1] * input_image->height;
         output_polygon->polygon.points.data[i].z = 0;
     }
 

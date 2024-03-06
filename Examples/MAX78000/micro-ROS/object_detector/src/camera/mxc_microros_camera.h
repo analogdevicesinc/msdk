@@ -26,4 +26,4 @@
 
 int mxc_microros_camera_init(unsigned int width, unsigned int height, const char* encoding);
 int mxc_microros_camera_capture(sensor_msgs__msg__Image *out_img);
-int mxc_microros_camera_run_cnn(sensor_msgs__msg__RegionOfInterest *output_roi, geometry_msgs__msg__PolygonStamped *output_polygon);
+int mxc_microros_camera_run_cnn(sensor_msgs__msg__Image* input_image, sensor_msgs__msg__RegionOfInterest *output_roi, geometry_msgs__msg__PolygonStamped *output_polygon);

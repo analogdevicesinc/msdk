@@ -2,18 +2,23 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import RegionOfInterest
 from copy import deepcopy
+from pathlib import Path
 
 from vector import VectorObject2D as Vec2D
 
 from time import sleep
 
-from PIL import ImageDraw
-from PIL import Image
+from cv_bridge import CvBridge
+import cv2
+
+from PIL import ImageDraw as PILImageDraw
+from PIL import Image as PILImage
 
 from open_manipulator_msgs.msg import KinematicsPose, OpenManipulatorState
 from open_manipulator_msgs.srv import SetJointPosition, SetKinematicsPose
 from rclpy.callback_groups import ReentrantCallbackGroup
 from sensor_msgs.msg import JointState
+from sensor_msgs.msg import Image
 from geometry_msgs.msg import PolygonStamped, Point32
 # from rclpy.executors import Executor, SingleThreadedExecutor
 from rclpy.node import Node
@@ -26,7 +31,7 @@ import math
 global g_stopped
 g_stopped = False
 
-home = [1.514991, -0.754719, 0.391165, 1.184233, -0.010]
+home = [1.514991, -0.754719, 0.391165, 1.184233, -0.01]
 
 present_joint_angle = deepcopy(home)
 goal_joint_angle = deepcopy(home)
@@ -43,6 +48,37 @@ joint_angle_delta = 0.2 / 2  # radian
 global path_time
 path_time = 0.2 # second
 dry_run = False
+
+g_img: Image = None
+valid_image = False
+
+def convert_sensorsmsgs_image_to_pil(image:Image) -> PILImage:
+    img = CvBridge().imgmsg_to_cv2(image)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = PILImage.fromarray(img)
+    return img
+
+class ImageSubscriber(Node):
+    def __init__(self):
+        super().__init__('image_subscriber')
+
+        qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            depth=1)
+      
+        self.subscription = self.create_subscription(
+            Image,
+            '/microROS/image',
+            self.listener_callback, 
+            qos_profile = qos_profile)
+   
+    def listener_callback(self, data: Image):
+        self.get_logger().info(f'Received image {data.header.frame_id}')        
+
+        # Convert to PIL image so we can draw to it.
+        global g_img
+        g_img = data
 
 class BoxSubscriber(Node):
   x: int
@@ -236,10 +272,10 @@ class PolygonSubscriber(Node):
             
             elif self.state == 2: # Height
                 self.correct_height()
-                if self.area < 6700 and math.fabs(self.skew - 1.0) > 0.1:
-                    self.state = 0
-                else:
+                if self.area >= 5100 and math.fabs(self.skew - 1.0) < 0.1 and math.fabs(self.x - 80) < 5:
                     self.state = 4
+                else:
+                    self.state = 0
 
             elif self.state == 4: # Grab Pos
                 temp_path_time = path_time
@@ -310,31 +346,36 @@ class PolygonSubscriber(Node):
             Vec2D(x = data.polygon.points[3].x, y = data.polygon.points[3].y)
         ]
 
-        for i in range(len(points) - 1):
-            j = i
-            while((points[j].x > points[j + 1].x or points[j].y > points[j + 1].y) and j < len(points) - 2):
-                tmp = points[j + 1]
-                points[j + 1] = points[j]
-                points[j] = tmp
-                j += 1
+        # Sort points.  Tuple comparison works directly
+        # i.e. (1,0) > (0,0) returns True
+        points = sorted(points, key=lambda p: (p.x + p.y, p.x - p.y))
 
         bottom_left = points[1]
         top_left = points[0]
         top_right = points[2]
         bottom_right = points[3]
+
+        # for i in range(len(points) - 1):
+        #     j = i
+        #     while((points[j].x > points[j + 1].x or points[j].y > points[j + 1].y) and j < len(points) - 2):
+        #         tmp = points[j + 1]
+        #         points[j + 1] = points[j]
+        #         points[j] = tmp
+        #         j += 1
+
         # print(f"BL: ({bottom_left.x},{bottom_left.y})")
         # print(f"TL: ({top_left.x},{top_left.y})")
         # print(f"TR: ({top_right.x},{top_right.y})")
         # print(f"BR: ({bottom_right.x},{bottom_right.y})")
 
         left : Vec2D = bottom_left - top_left
-        if self.last_left is not None: left = (left + self.last_left) / 2
+        # if self.last_left is not None: left = (left + self.last_left) / 2
         top : Vec2D = top_right - top_left
-        if self.last_top is not None: top = (top + self.last_top) / 2
+        # if self.last_top is not None: top = (top + self.last_top) / 2
         right : Vec2D = bottom_right - top_right
-        if self.last_right is not None: right = (right + self.last_right) / 2
+        # if self.last_right is not None: right = (right + self.last_right) / 2
         bottom : Vec2D = bottom_right - bottom_left
-        if self.last_bottom is not None: bottom = (bottom + self.last_bottom) / 2
+        # if self.last_bottom is not None: bottom = (bottom + self.last_bottom) / 2
 
         self.area = ((left.rho * top.rho) / 2) + ((right.rho * bottom.rho) / 2)
         print(f"*** AREA: {self.area}")
@@ -353,18 +394,35 @@ class PolygonSubscriber(Node):
         y = left_middle + ((right_middle - left_middle) / 2)
         self.y = y
 
-        self.img = Image.new("RGB", (160,120))
-        drawer = ImageDraw.Draw(self.img)
-        drawer.point((top_left.x, top_left.y), fill="red")
-        drawer.point((top_right.x, top_right.y), fill="blue")
-        drawer.point((bottom_left.x, bottom_left.y), fill="green")
-        drawer.point((bottom_right.x, bottom_right.y), fill="yellow")
-        self.img.save("test.png")
+        # self.img = PILImage.new("RGB", (160,120))
+        global g_img        
+        matching_image: Image = None
+        if g_img is not None:
+            if g_img.header.frame_id == data.header.frame_id:
+                matching_image = g_img
+            else:
+                convert_sensorsmsgs_image_to_pil(g_img).save(f"{g_img.header.frame_id}.png")
+        
+        img: PILImage = None
+        if matching_image is not None:
+            # Convert ROS Image message to OpenCV image
+            img = convert_sensorsmsgs_image_to_pil(matching_image)
 
-        self.last_left = left
-        self.last_top = top
-        self.last_right = right
-        self.last_bottom = bottom
+            drawer = PILImageDraw.Draw(img)
+            drawer.line(((top_left.x, top_left.y),(top_right.x, top_right.y)), fill="red", width=2)
+            drawer.line(((top_right.x, top_right.y),(bottom_right.x, bottom_right.y)), fill="blue", width=2)
+            drawer.line(((bottom_right.x, bottom_right.y),(bottom_left.x, bottom_left.y)), fill="green", width=2)
+            drawer.line(((bottom_left.x, bottom_left.y),(top_left.x, top_left.y)), fill="yellow", width=2)
+            drawer.point((top_left.x, top_left.y), fill="red")
+            drawer.point((top_right.x, top_right.y), fill="blue")
+            drawer.point((bottom_left.x, bottom_left.y), fill="green")
+            drawer.point((bottom_right.x, bottom_right.y), fill="yellow")
+            img.save(f"{data.header.frame_id}.png")
+
+        # self.last_left = left
+        # self.last_top = top
+        # self.last_right = right
+        # self.last_bottom = bottom
 
 class TeleopKeyboard(Node):
 
@@ -507,11 +565,13 @@ def main(args=None):
 
     polygon_subscriber = PolygonSubscriber()
     box_subscriber = BoxSubscriber()
+    image_subscriber = ImageSubscriber()
 
     # Spin the node so the callback function is called.
     while(rclpy.ok()):        
         # rclpy.spin_once(box_subscriber)
         rclpy.spin_once(teleop_keyboard, timeout_sec=0.01)
+        rclpy.spin_once(image_subscriber, timeout_sec=0.01)
         rclpy.spin_once(polygon_subscriber, timeout_sec=0.01)
         polygon_subscriber.process_state()
     
