@@ -41,11 +41,13 @@ const float ars[NUM_ARS]       = {2.0f, 1.2f, 0.8f, 0.5f};
 void nms_memory_init(void)
 {
     memset(prior_locs, 0, sizeof(prior_locs));
-    memset(prior_cls_softmax, 0, sizeof(prior_cls_softmax));
-    memset(num_nms_priors, 0, sizeof(num_nms_priors));
+    memset(prior_kpts, 0, sizeof(prior_kpts));
+    memset(prior_cls, 0, sizeof(prior_cls));
+    memset(prior_cls_softmax, 0, sizeof(prior_cls_softmax));    
     memset(nms_scores, 0, sizeof(nms_scores));
     memset(nms_indices, 0, sizeof(nms_indices));
     memset(nms_removed, 0, sizeof(nms_removed));
+    memset(num_nms_priors, 0, sizeof(num_nms_priors));
 }
 
 void check_for_all_zero_output(void){
