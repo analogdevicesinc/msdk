@@ -158,7 +158,7 @@ typedef enum {
     MXC_SMON_LP_DFD_ENABLE, ///< DFD enabled during LowPower mode
     MXC_SMON_LP_DFD_DISABLE, ///< DFD disabled during LowPower mode
 
-    // Deprecated    
+    // Deprecated
     SMON_DFD_LOWPOWER_ENABLE = MXC_SMON_LP_DFD_ENABLE, ///< DFD enabled during LowPower mode
     SMON_DFD_LOWPOWER_DISABLE = MXC_SMON_LP_DFD_DISABLE, ///< DFD disabled during LowPower mode
 } mxc_smon_lowpower_mode_t;
@@ -172,7 +172,8 @@ typedef enum {
     MXC_SMON_BUSY_INTSENSOR = MXC_F_SMON_SECST_INTSCTRL,
     MXC_SMON_BUSY_SECALARM = MXC_F_SMON_SECST_SECALM,
     MXC_SMON_BUSY_MEUCTRL = MXC_F_SMON_SECST_MEUCTRL,
-    MXC_SMON_BUSY_ALL = (MXC_F_SMON_SECST_EXTSCTRL | MXC_F_SMON_SECST_INTSCTRL | MXC_F_SMON_SECST_SECALM | MXC_F_SMON_SECST_MEUCTRL),
+    MXC_SMON_BUSY_ALL = (MXC_F_SMON_SECST_EXTSCTRL | MXC_F_SMON_SECST_INTSCTRL |
+                         MXC_F_SMON_SECST_SECALM | MXC_F_SMON_SECST_MEUCTRL),
 
     // Deprecated names
     SMON_EXTSENSOR = MXC_SMON_BUSY_EXTSENSOR,

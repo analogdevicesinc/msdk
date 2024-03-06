@@ -100,7 +100,8 @@ int MXC_SMON_RevA_SetErrorCount(mxc_smon_reva_regs_t *smon, uint8_t errorCount)
     return err;
 }
 
-int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_temp_t threshold, uint32_t delay)
+int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_temp_t threshold,
+                                   uint32_t delay)
 {
     int err;
 
@@ -175,12 +176,14 @@ int MXC_SMON_RevA_SetVTMThreshold(mxc_smon_reva_regs_t *smon, mxc_smon_vtm_t thr
     }
 
     if (threshold == MXC_SMON_VTM_THD_1_6) {
-        smon->intsctrl &= ~(MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN | MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN);
+        smon->intsctrl &=
+            ~(MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN | MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN);
     } else if (threshold == MXC_SMON_VTM_THD_2_2) {
         smon->intsctrl &= ~MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN;
         smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN;
     } else if (threshold == MXC_SMON_VTM_THD_2_8) {
-        smon->intsctrl |= (MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN | MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN);
+        smon->intsctrl |=
+            (MXC_F_SMON_REVA_INTSCTRL_VCORELO_EN | MXC_F_SMON_REVA_INTSCTRL_VCOREHI_EN);
     } else {
         return E_BAD_PARAM;
     }
@@ -259,8 +262,7 @@ void MXC_SMON_RevA_DisablePUFTrimErase(mxc_smon_reva_regs_t *smon)
 
 int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t *smon,
                                              mxc_smon_interrupt_mode_t interruptMode,
-                                             mxc_smon_lowpower_mode_t lowPowerMode,
-                                             uint32_t delay)
+                                             mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay)
 {
     int err;
 
@@ -303,7 +305,7 @@ void MXC_SMON_RevA_ClearTamper(mxc_smon_reva_regs_t *smon)
     // Must check and clear all flags to clear tamper alarm or
     //  else the device misses the NMI-DRS event.
     while (smon->secalm != 0) {
-        // Must ensure no SMON register is busy before clearing flags. 
+        // Must ensure no SMON register is busy before clearing flags.
         MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0);
 
         // Design implentation calls for clearing all flags.
@@ -313,11 +315,11 @@ void MXC_SMON_RevA_ClearTamper(mxc_smon_reva_regs_t *smon)
     }
 }
 
-// Deprecated implementation - Must clear all flags to clear alarm. Please use 
+// Deprecated implementation - Must clear all flags to clear alarm. Please use
 //  MXC_SMON_Reva_ClearTamper instead.
 void MXC_SMON_RevA_ClearFlags(mxc_smon_reva_regs_t *smon, uint32_t flags)
 {
-    // Must ensure no SMON register is busy before clearing flags. 
+    // Must ensure no SMON register is busy before clearing flags.
     MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0);
 
     // Design implentation calls for clearing all flags.
@@ -345,8 +347,8 @@ void MXC_SMON_RevA_IntSensorLock(mxc_smon_reva_regs_t *smon)
 }
 
 // Ensure Proper Writes by calling this function before and after each SMON register write.
-//  An application may directly write to an SMON register before calling any of these SMON 
-//  functions - which could result in an improper register write. 
+//  An application may directly write to an SMON register before calling any of these SMON
+//  functions - which could result in an improper register write.
 int MXC_SMON_RevA_isBusy(mxc_smon_reva_regs_t *smon, mxc_smon_busy_t reg, uint32_t delay)
 {
     if (delay == 0) {

@@ -39,14 +39,12 @@ void MXC_SMON_Shutdown()
 
 int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)
 {
-    return MXC_SMON_RevA_ExtSensorEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                         cfg, delay);
+    return MXC_SMON_RevA_ExtSensorEnable((mxc_smon_reva_regs_t *)MXC_SMON, cfg, delay);
 }
 
 int MXC_SMON_SetSensorFrequency(mxc_smon_ext_cfg_t *cfg)
 {
-    return MXC_SMON_RevA_SetSensorFrequency((mxc_smon_reva_regs_t *)MXC_SMON,
-                                            cfg);
+    return MXC_SMON_RevA_SetSensorFrequency((mxc_smon_reva_regs_t *)MXC_SMON, cfg);
 }
 
 int MXC_SMON_SetErrorCount(uint8_t errorCount)
@@ -71,8 +69,7 @@ int MXC_SMON_VoltageMonitorEnable(mxc_smon_vtm_t threshold, uint32_t delay)
 
 int MXC_SMON_SetVTMThreshold(mxc_smon_vtm_t threshold)
 {
-    return MXC_SMON_RevA_SetVTMThreshold((mxc_smon_reva_regs_t *)MXC_SMON,
-                                         threshold);
+    return MXC_SMON_RevA_SetVTMThreshold((mxc_smon_reva_regs_t *)MXC_SMON, threshold);
 }
 
 int MXC_SMON_ActiveDieShieldEnable(uint32_t delay)
@@ -82,8 +79,7 @@ int MXC_SMON_ActiveDieShieldEnable(uint32_t delay)
 
 int MXC_SMON_SelfDestructByteEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)
 {
-    return MXC_SMON_RevA_SelfDestructByteEnable((mxc_smon_reva_regs_t *)MXC_SMON,
-                                                cfg, delay);
+    return MXC_SMON_RevA_SelfDestructByteEnable((mxc_smon_reva_regs_t *)MXC_SMON, cfg, delay);
 }
 
 void MXC_SMON_EnablePUFTrimErase()
@@ -99,7 +95,8 @@ void MXC_SMON_DisablePUFTrimErase()
 int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
                                         mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay)
 {
-    return MXC_SMON_RevA_DigitalFaultDetectorEnable((mxc_smon_reva_regs_t *)MXC_SMON, interruptMode, lowPowerMode, delay);
+    return MXC_SMON_RevA_DigitalFaultDetectorEnable((mxc_smon_reva_regs_t *)MXC_SMON, interruptMode,
+                                                    lowPowerMode, delay);
 }
 
 uint32_t MXC_SMON_GetFlags()

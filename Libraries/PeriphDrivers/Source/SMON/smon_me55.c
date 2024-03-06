@@ -94,7 +94,8 @@ int MXC_SMON_DisablePUFTrimErase()
 int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
                                         mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay)
 {
-    return MXC_SMON_RevA_DigitalFaultDetectorEnable((mxc_smon_reva_regs_t *)MXC_SMON, interruptMode, lowPowerMode, delay);
+    return MXC_SMON_RevA_DigitalFaultDetectorEnable((mxc_smon_reva_regs_t *)MXC_SMON, interruptMode,
+                                                    lowPowerMode, delay);
 }
 
 uint32_t MXC_SMON_GetFlags()
@@ -107,7 +108,7 @@ void MXC_SMON_ClearTamper(void)
     MXC_SMON_RevA_ClearTamper((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
-// Deprecated implementation - Must check and clear all flags to clear 
+// Deprecated implementation - Must check and clear all flags to clear
 //  tamper alarm. Please use MXC_SMON_ClearTamper instead.
 void MXC_SMON_ClearFlags(uint32_t flags)
 {

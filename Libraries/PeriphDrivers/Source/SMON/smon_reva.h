@@ -58,8 +58,7 @@ void MXC_SMON_RevA_DisablePUFTrimErase(mxc_smon_reva_regs_t *smon);
 
 int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t *smon,
                                              mxc_smon_interrupt_mode_t interruptMode,
-                                             mxc_smon_lowpower_mode_t lowPowerMode,
-                                             uint32_t delay);
+                                             mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay);
 
 uint32_t MXC_SMON_RevA_GetFlags(mxc_smon_reva_regs_t *smon);
 
