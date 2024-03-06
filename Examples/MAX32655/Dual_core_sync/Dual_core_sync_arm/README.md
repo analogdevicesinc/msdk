@@ -17,8 +17,6 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* The `Dual_core_sync_riscv` example must also be in the same workspace as this example. Verify `RISCV_APP` in this project's `project.mk` file.
-
 * This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
 
 ## Required Connections
@@ -32,7 +30,7 @@ If using the MAX32655EVKIT (EvKit\_V1):
 If using the MAX32655FTHR (FTHR\_Apps\_P1):
 -   Connect a USB cable between the PC and the J4 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the board's console UART at 115200, 8-N-1.
-
+-   
 ## Expected Output
 
 The Console UART of the device will output these messages:
