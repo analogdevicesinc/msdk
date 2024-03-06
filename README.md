@@ -39,13 +39,13 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
     * **SSH clone (recommended)**
 
       ```bash
-      git clone git@github.com:Analog-Devices-MSDK/msdk.git
+      git clone git@github.com:analogdevicesinc/msdk.git
       ```
 
     * **HTTPS Clone**
 
       ```bash
-      git clone https://github.com/Analog-Devices-MSDK/msdk.git
+      git clone https://github.com/analogdevicesinc/msdk.git
       ```
 
 ### Toolchain Setup

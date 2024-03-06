@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -779,7 +778,7 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
     if (states[spi_num].hw_ss_control && !req->ssDeassert) {
         spi->ctrl0 = (spi->ctrl0 & ~MXC_F_SPI_REVA_CTRL0_START) | MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         // Note: Setting 0 to START bit to avoid race condition and duplicated starts.
-        // See https://github.com/Analog-Devices-MSDK/msdk/issues/713
+        // See https://github.com/analogdevicesinc/msdk/issues/713
     }
 
     retval = MXC_SPI_RevA1_TransHandler(spi, req);

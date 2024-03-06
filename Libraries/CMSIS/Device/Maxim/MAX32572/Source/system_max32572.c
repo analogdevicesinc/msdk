@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,6 +120,9 @@ __weak void SystemInit(void)
 
     /* Make sure interrupts are enabled. */
     __enable_irq();
+
+    /* Enable SPIXF cache */
+    MXC_SFCC_Enable();
 
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11 */
     /* Grant full access, per "Table B3-24 CPACR bit assignments". */

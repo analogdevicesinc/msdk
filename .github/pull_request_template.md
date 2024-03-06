@@ -69,4 +69,4 @@ NOTE: The scope is case-sensitive and must match one of the listed scopes.
 
 #### More Info
 
-Please refer to the [CONTRIBUTING.md](https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/CONTRIBUTING.md) for more information regarding the PR Title.
+Please refer to the [CONTRIBUTING.md](https://github.com/analogdevicesinc/msdk/blob/main/Documentation/CONTRIBUTING.md) for more information regarding the PR Title.

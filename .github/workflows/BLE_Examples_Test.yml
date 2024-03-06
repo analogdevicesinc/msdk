@@ -37,7 +37,7 @@ env:
 jobs:
   BLE_Tests:
     # The type of runner that the job will run on
-    runs-on: [self-hosted, btm-ci]
+    runs-on: [self-hosted]
     if: github.event.pull_request.draft == false
 
     #----------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ jobs:
           chmod +x mass_erase_board.sh
       #----------------------------------------------------------------------------------------------
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
           fetch-depth: 0
@@ -91,8 +91,8 @@ jobs:
           # BLE examples to watch
           declare -a watched_examples=(
               # underscore in filter to ignore the BLE5_ctr examples
-              Examples/MAX32655/BLE_*
-              Examples/MAX32655/Bootloader
+              Examples/MAX32655/Bluetooth/BLE_*
+              Examples/MAX32655/Bluetooth/Bootloader
           )
 
           # Other directories to watch
@@ -271,8 +271,8 @@ jobs:
           # BLE examples to watch
           declare -a watched_examples=(
               # underscore in filter to ignore the BLE5_ctr examples
-              Examples/MAX32665/BLE_*
-              Examples/MAX32665/Bootloader
+              Examples/MAX32665/Bluetooth/BLE_*
+              Examples/MAX32665/Bluetooth/Bootloader
           )
 
           # Other directories to watch
@@ -450,8 +450,8 @@ jobs:
           # BLE examples to watch
           declare -a watched_examples=(
               # underscore in filter to ignore the BLE5_ctr examples
-              Examples/MAX32690/BLE_*
-              Examples/MAX32690/Bootloader
+              Examples/MAX32690/Bluetooth/BLE_*
+              Examples/MAX32690/Bluetooth/Bootloader
           )
 
           # Other directories to watch
