@@ -81,11 +81,13 @@ class ImageSubscriber(Node):
             qos_profile = qos_profile)
    
     def listener_callback(self, data: Image):
-        self.get_logger().info(f'Received image {data.header.frame_id}')        
+        self.get_logger().info(f'Received image {data.header.frame_id}')
 
         # Convert to PIL image so we can draw to it.
         global g_img
         g_img = data
+
+        convert_sensorsmsgs_image_to_pil(data).save(f"{data.header.frame_id}.png")
 
 class BoxSubscriber(Node):
   x: int
@@ -251,7 +253,7 @@ class PolygonSubscriber(Node):
 
     def grab(self):
         print("--- GRAB")
-        goal_joint_angle[4] = -0.005729
+        goal_joint_angle[4] = 0.005
         teleop_keyboard.send_goal_tool_control()
 
     def process_state(self):
@@ -268,7 +270,7 @@ class PolygonSubscriber(Node):
                 # print(f"*** AREA GOOD: {area_good}")
                 skew_good = math.fabs(self.skew - 1.0) < 0.1
                 # print(f"*** SKEW_GOOD: {skew_good}")
-                center_good = math.fabs(self.x - 80) < 3 and math.fabs(self.y - 60) < 10
+                center_good = math.fabs(self.x - 80) < 4 and math.fabs(self.y - 60) < 10
                 # print(f"*** CENTER_GOOD: {center_good}")
                 if area_good and center_good:
                     self.state = 4
@@ -418,8 +420,9 @@ class PolygonSubscriber(Node):
         if g_img is not None:
             if g_img.header.frame_id == data.header.frame_id:
                 matching_image = g_img
-            else:
-                convert_sensorsmsgs_image_to_pil(g_img).save(f"{g_img.header.frame_id}.png")
+            elif Path(f"{data.header.frame_id}.png").exists():
+                matching_image = PILImage.open(f"{data.header.frame_id}.png")
+                # convert_sensorsmsgs_image_to_pil(g_img).save(f"{g_img.header.frame_id}.png")
         
         img: PILImage = None
         if matching_image is not None:
