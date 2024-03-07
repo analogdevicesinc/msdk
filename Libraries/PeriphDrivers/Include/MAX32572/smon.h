@@ -27,6 +27,10 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SMON_H_
 
 /* **** Includes **** */
+
+#include <stdint.h>
+#include <stdbool.h>
+
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "smon_regs.h"
@@ -195,6 +199,29 @@ typedef struct {
 } mxc_smon_ext_cfg_t;
 
 /**
+ * @brief   A selection of external tampers to enable.
+ *
+ */
+typedef struct {
+    bool exts0;     ///< External Sensor 0 enable
+    bool exts1;     ///< External Sensor 1 enable
+    bool exts2;     ///< External Sensor 2 enable
+    bool exts3;     ///< External Sensor 3 enable
+    bool exts4;     ///< External Sensor 4 enable
+    bool exts5;     ///< External Sensor 5 enable
+} mxc_smon_ext_tampen_t;
+
+/**
+ * @brief   A selection of internal tampers to enable.
+ *
+ */
+typedef struct {
+    bool vbat;      ///< Vbat Monitor enable
+    bool temp;      ///< Temperature Sensor enable
+    bool shield;    ///< Die Shield enable
+} mxc_smon_int_tampen_t;
+
+/**
  * @brief   Initialize Security Monitor
  *
  */
@@ -205,6 +232,36 @@ void MXC_SMON_Init(void);
  *
  */
 void MXC_SMON_Shutdown(void);
+
+/**
+ * @brief   Enables desired External Sensors. This function does not
+ *          configures the tampers - only enables them.
+ * 
+ * @warning Only a Battery-on-Reset (BOR) can unlock the EXTSCTRL register
+ *          after initially locking.
+ *
+ * @param   extTamp     struct containing list of tampers to enable
+ * @param   lock        True/False condition - locks the EXTSCTRL register 
+ *                      after enabling.
+ *
+ * @return  int         see \ref MXC_Error_Codes for a list of return codes
+ */
+int MXC_SMON_EnableExtTampers(mxc_smon_ext_tampen_t *extTamp, bool lock);
+
+/**
+ * @brief   Enables desired internal tampers. This function does not
+ *          configures the tampers - only enables them
+ * 
+ * @warning Only a Battery-on-Reset (BOR) can unlock the INTSCTRL register
+ *          after initially locking.
+ *
+ * @param   intTamp     struct containing list of tampers to enable
+ * @param   lock        True/False condition - locks the INTSCTRL register 
+ *                      after enabling.
+ *
+ * @return  int         see \ref MXC_Error_Codes for a list of return codes
+ */
+int MXC_SMON_EnableIntTampers(mxc_smon_int_tampen_t *intTamp, bool lock);
 
 /**
  * @brief   Enables desired External Sensor

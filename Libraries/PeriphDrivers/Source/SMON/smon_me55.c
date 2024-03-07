@@ -25,15 +25,25 @@
 #include "mxc_pins.h"
 #include "mxc_lock.h"
 
-void MXC_SMON_Init()
+void MXC_SMON_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 }
 
-void MXC_SMON_Shutdown()
+void MXC_SMON_Shutdown(void)
 {
     // Not disabling TRNG clock as it may be used by other peripherals
     return;
+}
+
+int MXC_SMON_EnableExtTampers(mxc_smon_ext_tampen_t *extTamp, bool lock)
+{
+    return MXC_SMON_RevA_EnableExtTampers((mxc_smon_reva_regs_t *)MXC_SMON, extTamp, lock);
+}
+
+int MXC_SMON_EnableIntTampers(mxc_smon_int_tampen_t *intTamp, bool lock)
+{
+    return MXC_SMON_RevA_EnableIntTampers((mxc_smon_reva_regs_t *)MXC_SMON, intTamp, lock);
 }
 
 int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)

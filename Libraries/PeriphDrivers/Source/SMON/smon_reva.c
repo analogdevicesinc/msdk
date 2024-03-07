@@ -26,6 +26,172 @@
 #include "mxc_device.h"
 #include "smon_reva.h"
 
+
+
+#if TARGET_NUM == 32572
+// Only supported for ME55.
+int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tampen_t *extTamp, bool lock)
+{
+    int err;
+
+    // Enable External Sensor 0
+    if (extTamp->exts0) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN0;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable External Sensor 1
+    if (extTamp->exts1) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN1;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable External Sensor 2
+    if (extTamp->exts2) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN2;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable External Sensor 3
+    if (extTamp->exts3) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN3;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable External Sensor 4
+    if (extTamp->exts4) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN4;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable External Sensor 5
+    if (extTamp->exts5) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_EXTS_EN5;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // If rquested, Lock EXTSCTRL register after enabling tampers.
+    // NOTE: Only a BOR (battery-on reset) can unlock the EXTSCTRL register after
+    //          initially locking.
+    if (lock) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->extsctrl |= MXC_F_SMON_REVA_EXTSCTRL_LOCK;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_EXTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    return E_NO_ERROR;
+}
+
+int MXC_SMON_RevA_EnableIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_tampen_t *intTamp, bool lock)
+{
+    int err;
+
+    // Enable Vbat Monitor
+    if (intTamp->vbat) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_VBAT_EN ;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable Temperature Sensor
+    if (intTamp->temp) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_TEMP_EN;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // Enable Die Shield
+    if (intTamp->shield) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_SHIELD_EN;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    // If rquested, Lock INTSCTRL register after enabling tampers.
+    // NOTE: Only a BOR (battery-on reset) can unlock the INTSCTRL register after
+    //          initially locking.
+    if (lock) {
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+
+        smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_LOCK;
+
+        if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    return E_NO_ERROR;
+}
+#endif
+
 int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_ext_cfg_t *cfg,
                                   uint32_t delay)
 {
