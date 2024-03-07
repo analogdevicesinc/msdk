@@ -66,7 +66,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
         break;
 
-    case MXC_TMR_8K_CLK:
+    case MXC_TMR_80K_CLK:
         if (tmr_id < 3) { // Timers 0-2 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -242,7 +242,7 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = ERTCO_FREQ;
             break;
 
-        case MXC_TMR_8K_CLK:
+        case MXC_TMR_80K_CLK:
             clockFrequency = INRO_FREQ;
             break;
 
