@@ -322,7 +322,10 @@ int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
  *
  * @return  uint32_t        SECALM register
  */
-uint32_t MXC_SMON_GetFlags();
+#ifdef __GNUC__
+__attribute__((deprecated("Please use MXC_SMON_GetAlarms instead.")))
+#endif
+uint32_t MXC_SMON_GetFlags(void);
 
 /**
  * @brief   Clear Tamper Alarm by clearing all flags in Security Alarm Register.
@@ -340,6 +343,13 @@ void MXC_SMON_ClearTamper(void);
 __attribute__((deprecated("Must clear all flags. Use MXC_SMON_ClearTamper instead.")))
 #endif
 void MXC_SMON_ClearFlags(uint32_t flags);
+
+/**
+ * @brief   Get Flags set in Security Alarm Register
+ *
+ * @return  uint32_t        SECALM register
+ */
+uint32_t MXC_SMON_GetAlarms();
 
 /**
  * @brief   Get Flags set in Security Diagnostics Register

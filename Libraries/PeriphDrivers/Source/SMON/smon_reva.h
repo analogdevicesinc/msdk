@@ -68,6 +68,8 @@ void MXC_SMON_RevA_ClearTamper(mxc_smon_reva_regs_t *smon);
 //  use MXC_SMON_RevA_ClearTamper instead.
 void MXC_SMON_RevA_ClearFlags(mxc_smon_reva_regs_t *smon, uint32_t flags);
 
+uint32_t MXC_SMON_RevA_GetAlarms(mxc_smon_reva_regs_t *smon);
+
 uint32_t MXC_SMON_RevA_GetDiagnostics(mxc_smon_reva_regs_t *smon);
 
 void MXC_SMON_RevA_ExtSensorLock(mxc_smon_reva_regs_t *smon);

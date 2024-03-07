@@ -328,6 +328,11 @@ void MXC_SMON_RevA_ClearFlags(mxc_smon_reva_regs_t *smon, uint32_t flags)
     MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0);
 }
 
+uint32_t MXC_SMON_RevA_GetAlarms(mxc_smon_reva_regs_t *smon)
+{
+    return smon->secalm;
+}
+
 uint32_t MXC_SMON_RevA_GetDiagnostics(mxc_smon_reva_regs_t *smon)
 {
     return smon->secdiag;

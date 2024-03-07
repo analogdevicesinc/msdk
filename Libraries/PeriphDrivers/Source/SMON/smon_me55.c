@@ -115,6 +115,11 @@ void MXC_SMON_ClearFlags(uint32_t flags)
     MXC_SMON_RevA_ClearTamper((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
+uint32_t MXC_SMON_GetAlarms()
+{
+    return MXC_SMON_RevA_GetAlarms((mxc_smon_reva_regs_t *)MXC_SMON);
+}
+
 uint32_t MXC_SMON_GetDiagnostics()
 {
     return MXC_SMON_RevA_GetDiagnostics((mxc_smon_reva_regs_t *)MXC_SMON);
