@@ -342,6 +342,13 @@ __attribute__((deprecated("Must clear all flags. Use MXC_SMON_ClearTamper instea
 void MXC_SMON_ClearFlags(uint32_t flags);
 
 /**
+ * @brief   Get Flags set in Security Diagnostics Register
+ *
+ * @return  uint32_t        SECDIAG register
+ */
+uint32_t MXC_SMON_GetDiagnostics();
+
+/**
  * @brief   Lock the EXTSCTRL register to generate DRS/NMI
  *
  */
