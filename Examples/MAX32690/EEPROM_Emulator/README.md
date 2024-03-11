@@ -71,6 +71,13 @@ If using the MAX32690FTHR:
 -   Connect pins SCL - P2.8 and SDA - P2.7 to the I2C Bus.
 -   Connect Ready Signal (P1.11) to the pin used for ready signal on your micro.
 
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Connect pins SCL - P0.31 and SDL - P0.30 to the I2C Bus.
+-   Connect Ready Signal (P0.24) to the pin used for ready signal on your micro.
+
 ## Expected Output
 
 The Console UART of the device will output these messages:

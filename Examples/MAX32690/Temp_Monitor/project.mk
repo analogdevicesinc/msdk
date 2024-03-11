@@ -1,5 +1,5 @@
 # This file can be used to set build configuration
-# variables.  These variables are defined in a file called 
+# variables.  These variables are defined in a file called
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
@@ -17,3 +17,8 @@ SRCS+=max31889_driver.c
 
 VPATH+=$(LIBS_DIR)/MiscDrivers/TempSensor
 IPATH+=$(LIBS_DIR)/MiscDrivers/TempSensor
+
+# The APARD does not provision for a 1.8V I2C bus as required by this example
+ifeq ($(BOARD),APARD)
+$(error ERR_NOTSUPPORTED: This project is not supported for the AD-APARD32690 board)
+endif

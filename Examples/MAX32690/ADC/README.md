@@ -29,6 +29,12 @@ If using the MAX32690FTHR:
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Apply an input voltage between 0 and 1.25V to pin labeled AIN0 of the J2 header.
 
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Apply an input voltage between 0 and 1.25V to AIN0, P3 Pin 1.
+
 ## Expected Output
 
 The Console UART of the device will output these messages:

@@ -17,6 +17,11 @@ On feather board:
 -   LED 1: P0.14/LED_RED
 -   LED 2: P2.24/LED_GREEN
 
+On AD-APARD32690 board:
+-   PB1  : P1.27/S2
+-   LED 1: P2.1/LED_BLUE
+-   LED 2: P0.11/LED_GREEN
+
 ## Software
 
 ### Project Usage
@@ -37,6 +42,11 @@ If using the MAX32690EVKIT:
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

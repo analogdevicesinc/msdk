@@ -29,6 +29,13 @@ If using the MAX32690FTHR:
 -   Select the proper pullup voltage for I2C0 using jumper J6.
 -   Connect I2C0 (SDA - P2.7, SCL - P2.8) to I2C bus.
 
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Connect I2C0 (SDA - P0.30, SCL - P0.31) to I2C bus.
+
+
 ## Expected Output
 
 The Console UART of the device will output these messages:
