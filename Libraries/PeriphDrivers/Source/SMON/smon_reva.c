@@ -26,11 +26,10 @@
 #include "mxc_device.h"
 #include "smon_reva.h"
 
-
-
 #if TARGET_NUM == 32572
 // Only supported for ME55.
-int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tampen_t *extTamp, bool lock)
+int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tampen_t *extTamp,
+                                   bool lock)
 {
     int err;
 
@@ -130,7 +129,8 @@ int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tamp
     return E_NO_ERROR;
 }
 
-int MXC_SMON_RevA_EnableIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_tampen_t *intTamp, bool lock)
+int MXC_SMON_RevA_EnableIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_tampen_t *intTamp,
+                                   bool lock)
 {
     int err;
 
@@ -140,7 +140,7 @@ int MXC_SMON_RevA_EnableIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_tamp
             return err;
         }
 
-        smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_VBAT_EN ;
+        smon->intsctrl |= MXC_F_SMON_REVA_INTSCTRL_VBAT_EN;
 
         if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_INTSENSOR, 0)) != E_NO_ERROR) {
             return err;

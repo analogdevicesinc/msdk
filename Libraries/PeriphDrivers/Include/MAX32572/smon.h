@@ -203,12 +203,12 @@ typedef struct {
  *
  */
 typedef struct {
-    bool exts0;     ///< External Sensor 0 enable
-    bool exts1;     ///< External Sensor 1 enable
-    bool exts2;     ///< External Sensor 2 enable
-    bool exts3;     ///< External Sensor 3 enable
-    bool exts4;     ///< External Sensor 4 enable
-    bool exts5;     ///< External Sensor 5 enable
+    bool exts0; ///< External Sensor 0 enable
+    bool exts1; ///< External Sensor 1 enable
+    bool exts2; ///< External Sensor 2 enable
+    bool exts3; ///< External Sensor 3 enable
+    bool exts4; ///< External Sensor 4 enable
+    bool exts5; ///< External Sensor 5 enable
 } mxc_smon_ext_tampen_t;
 
 /**
@@ -216,9 +216,9 @@ typedef struct {
  *
  */
 typedef struct {
-    bool vbat;      ///< Vbat Monitor enable
-    bool temp;      ///< Temperature Sensor enable
-    bool shield;    ///< Die Shield enable
+    bool vbat; ///< Vbat Monitor enable
+    bool temp; ///< Temperature Sensor enable
+    bool shield; ///< Die Shield enable
 } mxc_smon_int_tampen_t;
 
 /**
@@ -382,7 +382,8 @@ int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
 #ifdef __GNUC__
 __attribute__((deprecated("Please use MXC_SMON_GetAlarms instead.")))
 #endif
-uint32_t MXC_SMON_GetFlags(void);
+uint32_t
+MXC_SMON_GetFlags(void);
 
 /**
  * @brief   Clear Tamper Alarm by clearing all flags in Security Alarm Register.
