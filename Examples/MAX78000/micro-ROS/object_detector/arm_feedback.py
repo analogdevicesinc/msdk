@@ -30,6 +30,14 @@ import select
 import sys
 import math
 
+from serial.tools import list_ports
+from threading import Thread
+import subprocess
+import traceback
+
+from console_ui import *
+import signal
+
 global g_stopped
 g_stopped = False
 
@@ -37,6 +45,7 @@ g_stopped = False
 # home = [1.495631, -1.156622, 0.302194, 1.572330, -0.01]
 # home = [1.552389, -0.986350, 0.076699, 1.711923, -0.01]
 home = [1.512505, -0.512350, -0.058291, 1.644427, -0.01]
+shutdown_pos = [1.613748, 0.090505, 0.391165, 1.092194, -0.01]
 
 present_joint_angle = deepcopy(home)
 goal_joint_angle = deepcopy(home)
@@ -59,6 +68,103 @@ dry_run = False
 g_img: Image = None
 valid_image = False
 
+class OMX_Controller_Manager():
+    port: str = None
+    serial_thread : Thread = None
+    stop = False
+    console: ConsolePanel
+    status: Status
+
+    def __init__(self, port, console: ConsolePanel, status: Status):
+        self.serial_thread = Thread(target=self._run, name="OMX_Controller")
+        self.port = port
+        self.console = console
+        self.status = status
+        self._status("[b][red]Uninitialized[/b][/red]")
+
+    def start(self):
+        self.serial_thread.start()
+
+    def _print(self, *args, **kwargs):
+        self.console.print(*args, **kwargs)
+
+    def _status(self, status: str):
+        self.status.update(f"OpenManipulator-X Controller (OpenCR1.0) [i]({self.port})[/i]: {status}")
+
+    def _run(self):
+        self._status("[yellow]Starting OMX controller[/yellow]")
+        cmd = f"ros2 launch open_manipulator_x_controller open_manipulator_x_controller.launch.py usb_port:={self.port}"
+        with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", bufsize=0, shell=True) as process:
+            self._status(f"[b][green]Connected[/b][/green]")
+            for line in process.stdout:
+                self._print(line, end="")
+
+        if process.returncode != 0:
+            self._print(f"OMX controller quit with error code {process.returncode}")
+
+        self._status("[b][red]Disconnected[/b][/red]")
+
+class microROS_Agent_Manager():
+    port: str = None
+    serial_thread : Thread = None
+    stop: bool = False
+    baud: int
+    console: ConsolePanel
+    status: Status
+
+    def __init__(self, port, console: ConsolePanel, status: Status, baud=115200):
+        self.serial_thread = Thread(target=self._run, name="CAM02_microROS_Agent")
+        self.port = port
+        self.baud = baud
+        self.console = console
+        self.status = status
+        self._status("[b][red]Uninitialized[/b][/red]")
+
+    def start(self):
+        self.serial_thread.start()
+
+    def _print(self, *args, **kwargs):
+        self.console.print(*args, **kwargs)
+
+    def _status(self, status: str):
+        self.status.update(f"microROS Agent[i] ({self.port})[/i]: {status}")
+
+    def _reset_cam02(self):
+        self._status("[yellow]Resetting MAX78000CAM02...[/yellow]")
+        cmd = "openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c \"init;reset;exit\""
+        with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", bufsize=0, shell=True) as process:
+            for line in process.stdout:
+                self._print(line, end="")
+
+        if process.returncode != 0:
+            self._status(f"[b][red]Failed to reset CAM02 (err {process.returncode})[/red][/b]")
+            self._print("Check power to MAX78000CAM02")
+            self._print("Check PICO connection")
+            return False
+        
+        return True
+
+    def _run(self):
+        if not self._reset_cam02():
+            return
+        self._status("[yellow]Starting microROS Agent...[/yellow]")
+        cmd = f"ros2 run micro_ros_agent micro_ros_agent serial --dev {self.port} -b {self.baud}"
+        with subprocess.Popen(f"exec {cmd}", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", bufsize=0, shell=True) as process:
+            self._status(f"[b][green]Establishing session...[/b][/green]")
+            for line in process.stdout:
+                self._print(line, end="")
+                if "error" in line:
+                    self._status("[b][red]Disconnected[/b][/red]")
+                    return
+                elif "session established" in line:
+                    self._status("[b][green]Connected[/b][/green]")
+
+        if process.returncode != 0:
+            self._print(f"microROS agent quit with error code {process.returncode}")
+
+        self._status("[b][red]Disconnected[/b][/red]")
+    
+
 def convert_sensorsmsgs_image_to_pil(image:Image) -> PILImage:
     img = CvBridge().imgmsg_to_cv2(image)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -71,7 +177,7 @@ class ImageSubscriber(Node):
 
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.RELIABLE,
-            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            history=QoSHistoryPolicy.KEEP_LAST,
             depth=1)
       
         self.subscription = self.create_subscription(
@@ -99,7 +205,7 @@ class BoxSubscriber(Node):
       
     qos_profile = QoSProfile(
         reliability=QoSReliabilityPolicy.BEST_EFFORT,
-        history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+        history=QoSHistoryPolicy.KEEP_LAST,
         depth=1)
 
     self.subscription = self.create_subscription(
@@ -159,12 +265,15 @@ class PolygonSubscriber(Node):
     last_right : Vec2D = None
     last_bottom : Vec2D = None
 
-    def __init__(self):
+    def __init__(self, console: ConsolePanel, status: Status):
         super().__init__('polygon_subscriber')
+
+        self.console = console
+        self.status = status
 
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
-            history=QoSHistoryPolicy.RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+            history=QoSHistoryPolicy.KEEP_LAST,
             depth=1)
 
         self.subscription = self.create_subscription(
@@ -176,8 +285,11 @@ class PolygonSubscriber(Node):
         self.x = 0
         self.y = 0
 
+    def _print(self, *args, **kwargs):
+        self.console.print(*args, **kwargs)
+
     def correct_height(self):
-        print("---HEIGHT")
+        self.status.update("Correcting height")
         global goal_kinematics_pose
         global present_kinematics_pose
         goal_kinematics_pose = deepcopy(present_kinematics_pose)
@@ -187,12 +299,12 @@ class PolygonSubscriber(Node):
             j=goal_kinematics_pose[5], # y
             k=goal_kinematics_pose[6]  # z
         ).unit()
-        print(current_orientation)
+        self._print(current_orientation)
         goal_kinematics_pose[0] += current_orientation.x * task_position_delta
         goal_kinematics_pose[1] += current_orientation.y * task_position_delta
         goal_kinematics_pose[2] += current_orientation.z * task_position_delta
         
-        print(f"--- AREA: {self.area}")
+        self._print(f"--- AREA: {self.area}")
 
         teleop_keyboard.send_goal_task_space()
     
@@ -216,7 +328,7 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_task_space()
        
     def correct_pos(self):
-        print("---POS")
+        self.status.update("Correcting position")
         global goal_joint_angle
         global present_joint_angle
         goal_joint_angle = deepcopy(present_joint_angle)
@@ -239,7 +351,7 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_joint_space()
 
     def grab_reposition(self):
-        print("--- GRAB REPOS")
+        self.status.update("Repositioning grabber")
         global goal_kinematics_pose
         global present_kinematics_pose
         goal_kinematics_pose = deepcopy(present_kinematics_pose)     
@@ -252,7 +364,7 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_task_space()
 
     def grab(self):
-        print("--- GRAB")
+        self.status.update("Grabbing object")
         goal_joint_angle[4] = 0.005
         teleop_keyboard.send_goal_tool_control()
 
@@ -312,7 +424,7 @@ class PolygonSubscriber(Node):
                 path_time = 3.0
                 self.grab()
                 next_drop_off_point = deepcopy(present_kinematics_pose[0:2])
-                print(f"Next drop off: {next_drop_off_point}")
+                self._print(f"Next drop off: {next_drop_off_point}")
                 self.state = 6
                 path_time = temp_path_time
 
@@ -337,7 +449,7 @@ class PolygonSubscriber(Node):
                 goal_kinematics_pose[0:1] = drop_off_point
                 goal_kinematics_pose[2] = height_drop
                 goal_kinematics_pose[3:6] = drop_angle
-                print(f"DROP-OFF: {drop_off_point}")
+                self._print(f"DROP-OFF: {drop_off_point}")
                 drop_off_point = next_drop_off_point                
                 teleop_keyboard.send_goal_task_space()
                 self.state = 8
@@ -450,10 +562,14 @@ class TeleopKeyboard(Node):
     qos = QoSProfile(depth=10)
     state : str = ""
     locked = False
+    console: ConsolePanel
+    status: Status
 
-    def __init__(self):
+    def __init__(self, console: ConsolePanel, status: Status):
         super().__init__('teleop_keyboard')
         key_value = ''
+        self.console = console
+        self.status = status
 
         # Create joint_states subscriber
         self.joint_state_subscription = self.create_subscription(
@@ -487,12 +603,13 @@ class TeleopKeyboard(Node):
         self.goal_task_space_req = SetKinematicsPose.Request()
         self.goal_tool_control_req = SetJointPosition.Request()
 
+    def _print(self, *args, **kwargs):
+        self.console.print(*args, **kwargs)
+
     def lock(self, *args, **kwargs):
-        print("---> LOCK")
         self.locked = True
 
     def unlock(self, *args, **kwargs):
-        print("<--- UNLOCK")
         self.locked = False
 
     def send_goal_task_space(self):
@@ -507,14 +624,14 @@ class TeleopKeyboard(Node):
         self.goal_task_space_req.path_time = path_time
 
         if not dry_run and not self.locked:
-            print("  ---GOALTASK")
+            self._print("  ---GOALTASK")
             try:
                 self.lock()
                 self.wait_to_move = True
                 send_goal_task = self.goal_task_space.call_async(self.goal_task_space_req)
                 send_goal_task.add_done_callback(self.unlock)
             except Exception as e:
-                self.get_logger().info('Sending Goal Kinematic Pose failed %r' % (e,))
+                self._print('Sending Goal Kinematic Pose failed %r' % (e,))
 
     def send_goal_joint_space(self):
         self.state = ""
@@ -523,14 +640,14 @@ class TeleopKeyboard(Node):
         self.goal_joint_space_req.path_time = path_time
 
         if not dry_run and not self.locked:
-            print("  ---GOALJOINT")
+            self._print("  ---GOALJOINT")
             try:
                 self.lock()
                 self.wait_to_move = True
                 send_goal_joint = self.goal_joint_space.call_async(self.goal_joint_space_req)
                 send_goal_joint.add_done_callback(self.unlock)
             except Exception as e:
-                self.get_logger().info('Sending Goal Joint failed %r' % (e,))
+                self._print('Sending Goal Joint failed %r' % (e,))
 
     def send_goal_tool_control(self):
         self.goal_tool_control_req.joint_position.joint_name = ["gripper"]
@@ -539,7 +656,7 @@ class TeleopKeyboard(Node):
         try:
             send_goal_tool_control = self.goal_tool_control.call_async(self.goal_tool_control_req)
         except Exception as e:
-            self.get_logger().info('Sending Goal Joint failed %r' % (e,))
+            self._print('Sending Goal Joint failed %r' % (e,))
 
     def kinematics_pose_callback(self, msg):
         present_kinematics_pose[0] = msg.pose.position.x
@@ -568,52 +685,101 @@ class TeleopKeyboard(Node):
             #     goal_joint_angle[index] = present_joint_angle[index]
 
 def main(args=None):
-    # Initialize the rclpy library
-    rclpy.init(args=args)
-    
-    # Create the node    
-    global teleop_keyboard
-    teleop_keyboard = TeleopKeyboard()
-    
-    global path_time
-    temp_path_time = path_time
-    path_time = 5.0
-    teleop_keyboard.send_goal_tool_control()
-    teleop_keyboard.send_goal_joint_space()
-    while(teleop_keyboard.state != "IS_MOVING"):
-        rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
-    while(teleop_keyboard.state != "STOPPED"):
-        rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
 
-    path_time = temp_path_time
+    ui = ConsoleUI()
 
-    polygon_subscriber = PolygonSubscriber()
-    box_subscriber = BoxSubscriber()
-    image_subscriber = ImageSubscriber()
+    def main_status(status: str):
+        ui.main_console_status.update(f"Primary status: [b]{status}[/b]")
 
-    executor = SingleThreadedExecutor()
-    executor.add_node(teleop_keyboard)
-    executor.add_node(image_subscriber)
-    executor.add_node(polygon_subscriber)
-    while(rclpy.ok()):
-        executor.spin_once()
-        polygon_subscriber.process_state()
+    with Live(ui.layout, refresh_per_second=8) as live:
 
-    # Spin the node so the callback function is called.
-    # while(rclpy.ok()):        
-    #     # rclpy.spin_once(box_subscriber)
-    #     rclpy.spin_once(teleop_keyboard, timeout_sec=0.01)
-    #     rclpy.spin_once(image_subscriber, timeout_sec=0.01)
-    #     rclpy.spin_once(polygon_subscriber, timeout_sec=0.01)
-    #     polygon_subscriber.process_state()
-    
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    box_subscriber.destroy_node()
-    
-    # Shutdown the ROS client library for Python
-    rclpy.shutdown()
+        # Auto-locate serial ports
+        # - Expected OpenCR1.0 VID:PID is 0x0483:0x5740
+        # - Expected PICO VID:PID is 0x0D28:0x0204
+        main_status("Searching serial ports...")
+        omx_controller_port = None
+        cam02_serial_port = None
+        for port in list_ports.comports():
+            ui.main_console.print(f"Checking {port}")
+            if omx_controller_port is None and port.vid == 0x0483 and port.pid == 0x5740:
+                omx_controller_port = port.device
+                ui.main_console.print(f"Located OpenCR1.0 controller on {omx_controller_port}")
+
+            if cam02_serial_port is None and port.vid == 0x0D28 and port.pid == 0x0204:
+                cam02_serial_port = port.device
+                ui.main_console.print(f"Located CAM02 serial port on {cam02_serial_port}")
+
+        if omx_controller_port is None:
+            main_status("[red]Failed to locate OpenCR1.0[/red]")
+
+        if cam02_serial_port is None:
+            main_status("[red]Failed to locate MAX78000CAM02[/red]")
+
+        if omx_controller_port is None or cam02_serial_port is None:
+            exit(1)
+
+        main_status("Serial ports located!")
+        omx_controller = OMX_Controller_Manager(omx_controller_port, ui.omx_console, ui.omx_status)
+        omx_controller.start()
+
+        microROS_Agent = microROS_Agent_Manager(cam02_serial_port, ui.microros_console, ui.microros_status)
+        microROS_Agent.start()
+
+        for i in range(1, 6):
+            main_status(f"[yellow]Initializing ({i}/5s)[/yellow]")
+            sleep(1)
+
+        main_status(f"[yellow]Creating primary node[/yellow]")
+        rclpy.init(args=args)
+        
+        # Create the node    
+        global teleop_keyboard
+        teleop_keyboard = TeleopKeyboard(ui.main_console, ui.main_console_status)
+        
+        main_status("Moving to home")
+        global path_time
+        temp_path_time = path_time
+        path_time = 5.0
+        teleop_keyboard.send_goal_tool_control()
+        teleop_keyboard.send_goal_joint_space()
+        while(teleop_keyboard.state != "IS_MOVING"):
+            rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
+        while(teleop_keyboard.state != "STOPPED"):
+            rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
+
+        main_status("Arrived home")
+        path_time = temp_path_time
+
+        main_status("Initializing nodes")
+        polygon_subscriber = PolygonSubscriber(ui.main_console, ui.main_console_status)
+        box_subscriber = BoxSubscriber()
+        image_subscriber = ImageSubscriber()
+
+        executor = SingleThreadedExecutor()
+        executor.add_node(teleop_keyboard)
+        executor.add_node(image_subscriber)
+        executor.add_node(polygon_subscriber)
+
+        main_status("[green]Ready[/green]")
+        while(rclpy.ok()):
+            executor.spin_once()
+            polygon_subscriber.process_state()
+
+        # Spin the node so the callback function is called.
+        # while(rclpy.ok()):        
+        #     # rclpy.spin_once(box_subscriber)
+        #     rclpy.spin_once(teleop_keyboard, timeout_sec=0.01)
+        #     rclpy.spin_once(image_subscriber, timeout_sec=0.01)
+        #     rclpy.spin_once(polygon_subscriber, timeout_sec=0.01)
+        #     polygon_subscriber.process_state()
+        
+        # Destroy the node explicitly
+        # (optional - otherwise it will be done automatically
+        # when the garbage collector destroys the node object)
+        box_subscriber.destroy_node()
+        
+        # Shutdown the ROS client library for Python
+        rclpy.shutdown()
 
 if __name__ == "__main__":
-  main()
+    main()
