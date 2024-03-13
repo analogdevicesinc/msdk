@@ -112,6 +112,7 @@ class microROS_Agent_Manager():
     baud: int
     console: ConsolePanel
     status: Status
+    connected = False
 
     def __init__(self, port, console: ConsolePanel, status: Status, baud=115200):
         self.serial_thread = Thread(target=self._run, name="CAM02_microROS_Agent")
@@ -161,6 +162,7 @@ class microROS_Agent_Manager():
                     return
                 elif "session established" in line:
                     self._status("[b][green]Connected[/b][/green]")
+                    self.connected = True
 
         if process.returncode != 0:
             self._print(f"microROS agent quit with error code {process.returncode}")
@@ -439,7 +441,6 @@ class PolygonSubscriber(Node):
         elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 1 and not self.state == 10:
             self.state = 10
             goal_kinematics_pose = deepcopy(present_kinematics_pose) # Copy current pose so that the current orientation is preserved for the search
-            goal_kinematics_pose = deepycopy(present_kinematics_pose)
             self._status("[yellow]Searching...[/yellow]")
 
         elif self.x > 0 and self.y > 0 and ((teleop_keyboard.state != "IS_MOVING" and not teleop_keyboard.locked and not teleop_keyboard.wait_to_move) or teleop_keyboard.interruptable):
@@ -809,7 +810,7 @@ def main(args=None):
         microROS_Agent = microROS_Agent_Manager(cam02_serial_port, ui.microros_console, ui.microros_status)
         microROS_Agent.start()
 
-        time.sleep(5)
+        while not microROS_Agent.connected: pass
 
         omx_controller = OMX_Controller_Manager(omx_controller_port, ui.omx_console, ui.omx_status)
         omx_controller.start()
