@@ -39,3 +39,5 @@ package-lock.json
 package.json
 .python-version
 .github/workflows/scripts/SVD/Devices/*/chip_test/
+.github/workflows/scripts/SVD/Devices/*/*_register_name.txt
+.github/workflows/scripts/SVD/Devices/*/svdconv_error_log.txt
