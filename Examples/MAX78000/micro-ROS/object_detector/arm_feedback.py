@@ -269,6 +269,7 @@ class PolygonSubscriber(Node):
     box_to_process: bool = False
     last_timestamp: datetime.datetime = None
     search_direction = 0
+    grabbability:float = 0.0
 
     def __init__(self, console: ConsolePanel, status: Status):
         super().__init__('polygon_subscriber')
@@ -374,7 +375,7 @@ class PolygonSubscriber(Node):
 
     def grab(self):
         self._status("Grabbing object")
-        goal_joint_angle[4] = 0.005
+        goal_joint_angle[4] = -0.001
         teleop_keyboard.send_goal_tool_control()
 
     def search_forward(self):
@@ -429,7 +430,7 @@ class PolygonSubscriber(Node):
                     self.search_backward()
                     self.search_direction = 0
 
-        elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 3 and not self.state == 10:
+        elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 1 and not self.state == 10:
             self.state = 10
             goal_kinematics_pose = deepcopy(present_kinematics_pose) # Copy current pose so that the current orientation is preserved for the search
             self._status("[yellow]Searching...[/yellow]")
@@ -540,27 +541,27 @@ class PolygonSubscriber(Node):
             Vec2D(x = data.polygon.points[3].x, y = data.polygon.points[3].y)
         ]
 
-        # Sort points.  Tuple comparison works directly
+        # Sort points to match perceived box orientation
+        # + -----------------------> x
+        # |
+        # |     TL               TR
+        # |        + --------- +
+        # |        |           |
+        # |        |           |
+        # |        |           |
+        # |        + --------- +
+        # |      BL              BR
+        # \/
+        # y
+
+        # Tuple comparison works directly
         # i.e. (1,0) > (0,0) returns True
-        points = sorted(points, key=lambda p: (p.x + p.y, p.x - p.y))
+        points = sorted(points, key=lambda p: (p.x + p.y, p.x - p.y)) # Sort from top-left -> bottom right with lower y values placed first
 
         bottom_left = points[1]
         top_left = points[0]
         top_right = points[2]
         bottom_right = points[3]
-
-        # for i in range(len(points) - 1):
-        #     j = i
-        #     while((points[j].x > points[j + 1].x or points[j].y > points[j + 1].y) and j < len(points) - 2):
-        #         tmp = points[j + 1]
-        #         points[j + 1] = points[j]
-        #         points[j] = tmp
-        #         j += 1
-
-        # print(f"BL: ({bottom_left.x},{bottom_left.y})")
-        # print(f"TL: ({top_left.x},{top_left.y})")
-        # print(f"TR: ({top_right.x},{top_right.y})")
-        # print(f"BR: ({bottom_right.x},{bottom_right.y})")
 
         left : Vec2D = bottom_left - top_left
         # if self.last_left is not None: left = (left + self.last_left) / 2
@@ -587,7 +588,6 @@ class PolygonSubscriber(Node):
         y = left_middle + ((right_middle - left_middle) / 2)
         self.y = y
 
-        # self.img = PILImage.new("RGB", (160,120))
         global g_img        
         matching_image: Image = None
         if g_img is not None:
@@ -614,12 +614,16 @@ class PolygonSubscriber(Node):
             img.save(f"{data.header.frame_id}.png")
 
         self.console.log(f"Received box ({round(self.x,2)}, {round(self.y,2)})")
+
+        xy = Vec2D(x = present_kinematics_pose[0], y = present_kinematics_pose[1])
+        self.grabbability = 1.0 - xy.unit().dot(top.unit())
+        self._print(self.grabbability)
         # self.last_left = left
         # self.last_top = top
         # self.last_right = right
         # self.last_bottom = bottom
 
-class TeleopKeyboard(Node):
+class TeleopKeyboard(Node):#
 
     qos = QoSProfile(depth=10)
     state : str = ""
@@ -695,7 +699,7 @@ class TeleopKeyboard(Node):
         self.interruptable = interruptable
 
         if not dry_run and not self.locked:
-            self._print("  ---GOALTASK")
+            # self._print("  ---GOALTASK")
             try:
                 self.lock()
                 self.wait_to_move = True
@@ -714,7 +718,7 @@ class TeleopKeyboard(Node):
         self.interruptable = interruptable
 
         if not dry_run and (not self.locked or self.interruptable):
-            self._print("  ---GOALJOINT")
+            # self._print("  ---GOALJOINT")
             try:
                 self.lock()
                 self.wait_to_move = True
