@@ -1,17 +1,9 @@
 #!/bin/bash
 # Generate {part_name}.svd and register files.
-
+# This won't be used by the workflow. For manual use only.
 
 if [[ -d "private_rev_reg_files" ]]; then
 	rm -rf private_rev_reg_files
-fi
-
-if [[ -f "private_register_name.txt" ]]; then
-	rm private_register_name.txt
-fi
-
-if [[ -f "svdconv_error_log.txt" ]]; then
-	rm svdconv_error_log.txt
 fi
 
 mkdir private_rev_reg_files
@@ -41,9 +33,4 @@ if [[ $error -ne 0 ]]; then
 	exit 1
 fi
 
-python3 ../../svd_removal.py private_rev_reg_files/private.svd -f
-error=$?
-if [[ $error -ne 0 ]]; then
-	echo "[ERROR] svd_removal.py"
-	exit 1
-fi
+rm private_register_name.txt

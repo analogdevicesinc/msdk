@@ -129,6 +129,32 @@ if [[ $error -ne 0 ]]; then
 	exit 1
 fi
 
+# Remove any AFE registers from SVD file and the register struct from AFE register files.
+# 	AFE registers not directly accessible and there's no defined MXC_AFE_*, 
+# 	instance in max32675.h, so register struct is pointless.
+AFE_FILES=$(find ./chip_test/ -iname "afe_*_regs.h")
+if [[ $AFE_FILES ]]; then
+	for afe_file in ${AFE_FILES}
+	do
+		echo "Slicing: "${afe_file}
+		python3 ${SVD_SCRIPTS_PATH}/svd_removal.py ${SVD_DEVICE_PATH}/chip_test/${CHIP_NAME,,}.svd -sp ${afe_file}
+		error=$?
+		if [[ $error -ne 0 ]]; then
+			echo "[ERROR] svd_removal.py."
+			exit 1
+		fi
+	done
+fi
+
+# Remove any deprecated fields.
+#	This mainly pertains to the ME17 with the GCR_BTLELDO* registers.
+python3 ../../svd_removal.py chip_test/max32655.svd -f
+error=$?
+if [[ $error -ne 0 ]]; then
+	echo "[ERROR] svd_removal.py"
+	exit 1
+fi
+
 cp -rf ${SVD_DEVICE_PATH}/chip_test/. ${MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${CHIP_NAME^^}/Include/
 
 # Check for errors and warnings in {part_name}.svd for IAR/Keil.

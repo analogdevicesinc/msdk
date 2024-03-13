@@ -6,7 +6,7 @@
   <series>ARMCM4</series>
   <!-- device series the device belongs to -->
   <version>1.0</version>
-  <description>MAX32572 32-bit ARM Cortex-M4 microcontroller, 1024KB of flash, 760KB of system RAM, 128KB of Boot ROM.</description>
+  <description>Private Register File</description>
   <cpu>
     <!-- details about the cpu embedded in the device -->
     <name>CM4</name>
