@@ -148,6 +148,8 @@ class microROS_Agent_Manager():
     def _run(self):
         if not self._reset_cam02():
             return
+        else:
+            time.sleep(0.5)
         self._status("[yellow]Starting microROS Agent...[/yellow]")
         cmd = f"ros2 run micro_ros_agent micro_ros_agent serial --dev {self.port} -b {self.baud}"
         with subprocess.Popen(f"exec {cmd}", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8", bufsize=0, shell=True) as process:
@@ -258,7 +260,7 @@ class PolygonSubscriber(Node):
     x: int
     y: int
 
-    state = 0
+    state = -1
     img = None
 
     last_left : Vec2D = None
@@ -430,9 +432,14 @@ class PolygonSubscriber(Node):
                     self.search_backward()
                     self.search_direction = 0
 
+        elif self.state == -1: # Init
+            if self.x > 0 and self.y > 0:
+                self.state = 0
+
         elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 1 and not self.state == 10:
             self.state = 10
             goal_kinematics_pose = deepcopy(present_kinematics_pose) # Copy current pose so that the current orientation is preserved for the search
+            goal_kinematics_pose = deepycopy(present_kinematics_pose)
             self._status("[yellow]Searching...[/yellow]")
 
         elif self.x > 0 and self.y > 0 and ((teleop_keyboard.state != "IS_MOVING" and not teleop_keyboard.locked and not teleop_keyboard.wait_to_move) or teleop_keyboard.interruptable):
@@ -529,7 +536,7 @@ class PolygonSubscriber(Node):
                 self.x = 0
                 self.y = 0
                 self.area = 0
-                self.state = 0        
+                self.state = -1
 
     def listener_callback(self, data:PolygonStamped):        
         self.last_timestamp = datetime.datetime.now()
@@ -631,6 +638,7 @@ class TeleopKeyboard(Node):#
     console: ConsolePanel
     status: Status
     interruptable = False
+    wait_to_move = True
 
     def __init__(self, console: ConsolePanel, status: Status):
         super().__init__('teleop_keyboard')
@@ -769,7 +777,7 @@ def main(args=None):
     def main_status(status: str):
         ui.main_console_status.update(f"Primary status: [b]{status}[/b]")
 
-    with Live(ui.layout, refresh_per_second=8) as live:
+    with Live(ui.layout, refresh_per_second=2) as live:
 
         # Auto-locate serial ports
         # - Expected OpenCR1.0 VID:PID is 0x0483:0x5740
@@ -797,15 +805,16 @@ def main(args=None):
             exit(1)
 
         main_status("Serial ports located!")
-        omx_controller = OMX_Controller_Manager(omx_controller_port, ui.omx_console, ui.omx_status)
-        omx_controller.start()
 
         microROS_Agent = microROS_Agent_Manager(cam02_serial_port, ui.microros_console, ui.microros_status)
         microROS_Agent.start()
 
-        for i in range(1, 6):
-            main_status(f"[yellow]Initializing ({i}/5s)[/yellow]")
-            sleep(1)
+        time.sleep(5)
+
+        omx_controller = OMX_Controller_Manager(omx_controller_port, ui.omx_console, ui.omx_status)
+        omx_controller.start()
+
+        
 
         main_status(f"[yellow]Creating primary node[/yellow]")
         rclpy.init(args=args)
@@ -814,6 +823,13 @@ def main(args=None):
         global teleop_keyboard
         teleop_keyboard = TeleopKeyboard(ui.main_console, ui.main_console_status)
         
+        init_delay = 5
+        for i in range(1, init_delay + 1):
+            main_status(f"[yellow]Initializing ({i}/{init_delay}s)[/yellow]")
+            rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
+            sleep(1)
+
+
         main_status("Moving to home")
         global path_time
         temp_path_time = path_time
