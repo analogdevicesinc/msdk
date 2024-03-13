@@ -143,12 +143,17 @@ typedef enum {
  *              32K and 80K clocks can only be used for Timers 4 and 5
  */
 typedef enum {
-    MXC_TMR_APB_CLK, ///< PCLK CLock
-    MXC_TMR_EXT_CLK, ///< External Clock
-    MXC_TMR_8M_CLK, ///< 8MHz Clock
-    MXC_TMR_32M_CLK, ///< 32MHz Clock
-    MXC_TMR_32K_CLK, ///< 32KHz Clock
-    MXC_TMR_80K_CLK, ///< 80KHz Clock
+    MXC_TMR_APB_CLK = 0, ///< PCLK CLock
+    MXC_TMR_EXT_CLK = 1, ///< External Clock
+    MXC_TMR_IBRO_CLK = 2, ///< 7.3728MHz Clock
+    MXC_TMR_ERFO_CLK = 3, ///< 32MHz Clock
+    MXC_TMR_INRO_CLK = 4, ///< 80Khz Clock
+
+    // Legacy names
+    MXC_TMR_8M_CLK = MXC_TMR_IBRO_CLK, ///< 8MHz Clock
+    MXC_TMR_32M_CLK = MXC_TMR_ERFO_CLK, ///< 32MHz Clock
+    MXC_TMR_32K_CLK, ///< 32KHz Clock (NOT SUPPORTED as TMR clock source)
+    MXC_TMR_80K_CLK = MXC_TMR_INRO_CLK, ///< 80KHz Clock
 } mxc_tmr_clock_t;
 
 /**
