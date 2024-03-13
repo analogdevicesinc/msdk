@@ -36,7 +36,7 @@ import subprocess
 import traceback
 
 from console_ui import *
-import signal
+import datetime
 
 global g_stopped
 g_stopped = False
@@ -45,6 +45,7 @@ g_stopped = False
 # home = [1.495631, -1.156622, 0.302194, 1.572330, -0.01]
 # home = [1.552389, -0.986350, 0.076699, 1.711923, -0.01]
 home = [1.512505, -0.512350, -0.058291, 1.644427, -0.01]
+home_xyz = Vec3D(x=0.02, y=0.124, z=0.152)
 shutdown_pos = [1.613748, 0.090505, 0.391165, 1.092194, -0.01]
 
 present_joint_angle = deepcopy(home)
@@ -265,11 +266,16 @@ class PolygonSubscriber(Node):
     last_right : Vec2D = None
     last_bottom : Vec2D = None
 
+    box_to_process: bool = False
+    last_timestamp: datetime.datetime = None
+    search_direction = 0
+
     def __init__(self, console: ConsolePanel, status: Status):
         super().__init__('polygon_subscriber')
 
         self.console = console
         self.status = status
+        self.last_timestamp = datetime.datetime.now()
 
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
@@ -288,8 +294,11 @@ class PolygonSubscriber(Node):
     def _print(self, *args, **kwargs):
         self.console.print(*args, **kwargs)
 
+    def _status(self, status:str):
+        self.status.update(f"[b]{status}[/b]\t(x={round(present_kinematics_pose[0],3)}, y={round(present_kinematics_pose[1],3)}, z={round(present_kinematics_pose[2],3)})")
+
     def correct_height(self):
-        self.status.update("Correcting height")
+        self._status("Correcting height")
         global goal_kinematics_pose
         global present_kinematics_pose
         goal_kinematics_pose = deepcopy(present_kinematics_pose)
@@ -328,7 +337,7 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_task_space()
        
     def correct_pos(self):
-        self.status.update("Correcting position")
+        self._status("Correcting position")
         global goal_joint_angle
         global present_joint_angle
         goal_joint_angle = deepcopy(present_joint_angle)
@@ -351,7 +360,7 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_joint_space()
 
     def grab_reposition(self):
-        self.status.update("Repositioning grabber")
+        self._status("Repositioning grabber")
         global goal_kinematics_pose
         global present_kinematics_pose
         goal_kinematics_pose = deepcopy(present_kinematics_pose)     
@@ -364,9 +373,38 @@ class PolygonSubscriber(Node):
         teleop_keyboard.send_goal_task_space()
 
     def grab(self):
-        self.status.update("Grabbing object")
+        self._status("Grabbing object")
         goal_joint_angle[4] = 0.005
         teleop_keyboard.send_goal_tool_control()
+
+    def search_forward(self):
+        global goal_kinematics_pose
+        global present_kinematics_pose
+        xy = Vec2D(x = present_kinematics_pose[0], y = present_kinematics_pose[1])
+        movement_vector = xy.unit() * (task_position_delta * 20)
+        goal_kinematics_pose[0] += movement_vector.x
+        goal_kinematics_pose[1] += movement_vector.y
+
+        global path_time
+        teleop_keyboard.send_goal_task_space(interruptable=True, time=5.0)
+
+    def search_backward(self):
+        global goal_kinematics_pose
+        global present_kinematics_pose
+        xy = Vec2D(x = present_kinematics_pose[0], y = present_kinematics_pose[1])
+        movement_vector = xy.unit() * (task_position_delta * 20)
+        goal_kinematics_pose[0] -= movement_vector.x
+        goal_kinematics_pose[1] -= movement_vector.y
+
+        global home_xyz
+        home_drift = home_xyz - Vec3D(x = present_kinematics_pose[0], y = present_kinematics_pose[1], z = present_kinematics_pose[2])
+        home_drift *= 0.2
+        goal_kinematics_pose[0] += home_drift.x
+        goal_kinematics_pose[1] += home_drift.y
+        goal_kinematics_pose[2] += home_drift.z
+
+        global path_time
+        teleop_keyboard.send_goal_task_space(interruptable=True, time=5.0)
 
     def process_state(self):
         global path_time
@@ -375,8 +413,29 @@ class PolygonSubscriber(Node):
         global goal_kinematics_pose
         global drop_off_point
         global next_drop_off_point
-        if self.x > 0 and self.y > 0 and teleop_keyboard.state != "IS_MOVING" and not teleop_keyboard.locked and not teleop_keyboard.wait_to_move:
-            
+
+        if self.state == 10: # Search
+            self._status(f"[yellow]Searching[/yellow]... ({(datetime.datetime.now() - self.last_timestamp).seconds}s)")
+            if self.x > 0 and self.y > 0:
+                self._print("Found!")
+                self.state = 0
+                self.search_direction = 0 if self.search_direction == 1 else 0
+                # ^ If we have a match, we generally want to keep moving in the same search direction
+            elif teleop_keyboard.state != "IS_MOVING" and not teleop_keyboard.locked and not teleop_keyboard.wait_to_move:
+                if self.search_direction == 0:
+                    self.search_forward()
+                    self.search_direction = 1
+                elif self.search_direction == 1:
+                    self.search_backward()
+                    self.search_direction = 0
+
+        elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 3 and not self.state == 10:
+            self.state = 10
+            goal_kinematics_pose = deepcopy(present_kinematics_pose) # Copy current pose so that the current orientation is preserved for the search
+            self._status("[yellow]Searching...[/yellow]")
+
+        elif self.x > 0 and self.y > 0 and ((teleop_keyboard.state != "IS_MOVING" and not teleop_keyboard.locked and not teleop_keyboard.wait_to_move) or teleop_keyboard.interruptable):
+
             if self.state < 4:
                 area_good = self.area >= 4400
                 # print(f"*** AREA GOOD: {area_good}")
@@ -388,6 +447,7 @@ class PolygonSubscriber(Node):
                     self.state = 4
 
             if self.state == 0: # Position
+                self._print("Checking position")
                 if not center_good: 
                     self.correct_pos()
                     self.x = 0
@@ -405,6 +465,7 @@ class PolygonSubscriber(Node):
             #         self.state = 2
 
             elif self.state == 2: # Height
+                self._print("Checking height")
                 if not area_good:
                     self.correct_height()
                     self.area = 0
@@ -450,7 +511,7 @@ class PolygonSubscriber(Node):
                 goal_kinematics_pose[2] = height_drop
                 goal_kinematics_pose[3:6] = drop_angle
                 self._print(f"DROP-OFF: {drop_off_point}")
-                drop_off_point = next_drop_off_point                
+                drop_off_point = next_drop_off_point
                 teleop_keyboard.send_goal_task_space()
                 self.state = 8
             
@@ -467,10 +528,10 @@ class PolygonSubscriber(Node):
                 self.x = 0
                 self.y = 0
                 self.area = 0
-                self.state = 0
+                self.state = 0        
 
-    def listener_callback(self, data:PolygonStamped):
-        # self.get_logger().info(f'Received polygon box:')
+    def listener_callback(self, data:PolygonStamped):        
+        self.last_timestamp = datetime.datetime.now()
 
         points = [
             Vec2D(x = data.polygon.points[0].x, y = data.polygon.points[0].y),
@@ -552,6 +613,7 @@ class PolygonSubscriber(Node):
             drawer.point((bottom_right.x, bottom_right.y), fill="yellow")
             img.save(f"{data.header.frame_id}.png")
 
+        self.console.log(f"Received box ({round(self.x,2)}, {round(self.y,2)})")
         # self.last_left = left
         # self.last_top = top
         # self.last_right = right
@@ -564,12 +626,18 @@ class TeleopKeyboard(Node):
     locked = False
     console: ConsolePanel
     status: Status
+    interruptable = False
 
     def __init__(self, console: ConsolePanel, status: Status):
         super().__init__('teleop_keyboard')
         key_value = ''
         self.console = console
         self.status = status
+
+        self.max_x = 0.168
+        self.min_x = -0.127
+        self.max_y = 0.26
+        self.min_y = 0.1
 
         # Create joint_states subscriber
         self.joint_state_subscription = self.create_subscription(
@@ -612,16 +680,19 @@ class TeleopKeyboard(Node):
     def unlock(self, *args, **kwargs):
         self.locked = False
 
-    def send_goal_task_space(self):
+    def send_goal_task_space(self, interruptable=False, time=None):
+        global path_time
         self.goal_task_space_req.end_effector_name = 'gripper'
-        self.goal_task_space_req.kinematics_pose.pose.position.x = goal_kinematics_pose[0]
-        self.goal_task_space_req.kinematics_pose.pose.position.y = goal_kinematics_pose[1]
+        self.goal_task_space_req.kinematics_pose.pose.position.x = min(max(goal_kinematics_pose[0], self.min_x), self.max_x)
+        self.goal_task_space_req.kinematics_pose.pose.position.y = min(max(goal_kinematics_pose[1], self.min_y), self.max_y)
         self.goal_task_space_req.kinematics_pose.pose.position.z = goal_kinematics_pose[2]
         self.goal_task_space_req.kinematics_pose.pose.orientation.w = goal_kinematics_pose[3]
         self.goal_task_space_req.kinematics_pose.pose.orientation.x = goal_kinematics_pose[4]
         self.goal_task_space_req.kinematics_pose.pose.orientation.y = goal_kinematics_pose[5]
         self.goal_task_space_req.kinematics_pose.pose.orientation.z = goal_kinematics_pose[6]
-        self.goal_task_space_req.path_time = path_time
+        self.goal_task_space_req.path_time = path_time if time is None else time
+
+        self.interruptable = interruptable
 
         if not dry_run and not self.locked:
             self._print("  ---GOALTASK")
@@ -633,13 +704,16 @@ class TeleopKeyboard(Node):
             except Exception as e:
                 self._print('Sending Goal Kinematic Pose failed %r' % (e,))
 
-    def send_goal_joint_space(self):
+    def send_goal_joint_space(self, interruptable=False, time=None):
         self.state = ""
         self.goal_joint_space_req.joint_position.joint_name = ['joint1', 'joint2', 'joint3', 'joint4']
         self.goal_joint_space_req.joint_position.position = [goal_joint_angle[0], goal_joint_angle[1], goal_joint_angle[2], goal_joint_angle[3]]
-        self.goal_joint_space_req.path_time = path_time
+        global path_time
+        self.goal_joint_space_req.path_time = path_time if time is None else time
 
-        if not dry_run and not self.locked:
+        self.interruptable = interruptable
+
+        if not dry_run and (not self.locked or self.interruptable):
             self._print("  ---GOALJOINT")
             try:
                 self.lock()
@@ -742,9 +816,9 @@ def main(args=None):
         path_time = 5.0
         teleop_keyboard.send_goal_tool_control()
         teleop_keyboard.send_goal_joint_space()
-        while(teleop_keyboard.state != "IS_MOVING"):
+        while(teleop_keyboard.state != "IS_MOVING" and omx_controller.serial_thread.is_alive()):
             rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
-        while(teleop_keyboard.state != "STOPPED"):
+        while(teleop_keyboard.state != "STOPPED" and omx_controller.serial_thread.is_alive()):
             rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
 
         main_status("Arrived home")
@@ -762,6 +836,9 @@ def main(args=None):
 
         main_status("[green]Ready[/green]")
         while(rclpy.ok()):
+            if not omx_controller.serial_thread.is_alive():
+                main_status("[red]Controller connection dropped[/red]")
+                break
             executor.spin_once()
             polygon_subscriber.process_state()
 
@@ -780,6 +857,8 @@ def main(args=None):
         
         # Shutdown the ROS client library for Python
         rclpy.shutdown()
+
+        main_status("[red]Shutdown[/red]")
 
 if __name__ == "__main__":
     main()
