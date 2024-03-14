@@ -42,8 +42,8 @@ int MXC_OTP_RevA_PowerDown(mxc_otp_reva_regs_t *otp)
 {
     otp->clkdiv |= MXC_F_OTP_REVA_CLKDIV_PD;
 
-    // Must wait 20HCLK cycles after powering down OTP before
-    //  disabling the OTP clock and OTP_STATUS.pwr_rdy
+    // Must wait 20HCLK cycles after powering down OTP and before
+    //  disabling the OTP clock, so the OTP_STATUS.pwr_rdy
     //  is properly updated.
     MXC_Delay(10);
 
