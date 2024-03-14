@@ -20,6 +20,7 @@
 
 /* **** Includes **** */
 #include <stddef.h>
+#include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_errors.h"
@@ -33,6 +34,23 @@ int MXC_OTP_RevA_Init(mxc_otp_reva_regs_t *otp, mxc_otp_clkdiv_t pclkdiv)
 {
     MXC_SETFIELD(otp->clkdiv, MXC_F_OTP_REVA_CLKDIV_PCLKDIV,
                  (pclkdiv << MXC_F_OTP_CLKDIV_PCLKDIV_POS));
+
+    return E_NO_ERROR;
+}
+
+int MXC_OTP_RevA_PowerDown(mxc_otp_reva_regs_t *otp)
+{
+    otp->clkdiv |= MXC_F_OTP_REVA_CLKDIV_PD;
+
+    // Must wait 20HCLK cycles after powering down OTP before 
+    //  disabling the OTP clock and OTP_STATUS.pwr_rdy
+    //  is properly updated.
+    MXC_Delay(10);
+
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_OTP);
+
+    // Poll status bit until OTP is powered off.
+    while(otp->status & MXC_F_OTP_REVA_STATUS_PWR_RDY) {}
 
     return E_NO_ERROR;
 }
