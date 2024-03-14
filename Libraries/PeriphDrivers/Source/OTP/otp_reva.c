@@ -42,7 +42,7 @@ int MXC_OTP_RevA_PowerDown(mxc_otp_reva_regs_t *otp)
 {
     otp->clkdiv |= MXC_F_OTP_REVA_CLKDIV_PD;
 
-    // Must wait 20HCLK cycles after powering down OTP before
+    // Must wait 20HCLK cycles after powering down OTP before 
     //  disabling the OTP clock and OTP_STATUS.pwr_rdy
     //  is properly updated.
     MXC_Delay(10);
@@ -50,7 +50,7 @@ int MXC_OTP_RevA_PowerDown(mxc_otp_reva_regs_t *otp)
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_OTP);
 
     // Poll status bit until OTP is powered off.
-    while (otp->status & MXC_F_OTP_REVA_STATUS_PWR_RDY) {}
+    while(otp->status & MXC_F_OTP_REVA_STATUS_PWR_RDY) {}
 
     return E_NO_ERROR;
 }
