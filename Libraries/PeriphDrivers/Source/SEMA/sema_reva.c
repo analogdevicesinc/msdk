@@ -140,7 +140,6 @@ int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t *sema_regs)
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     } else {
-
         /* Reset the async state */
         mxcSemaCb.readBuf = NULL;
         mxcSemaCb.readLen = 0;
@@ -163,7 +162,6 @@ int MXC_SEMA_RevA_InitBoxes(mxc_sema_reva_regs_t *sema_regs)
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     } else {
-
         /* Reset the boxes */
         memset((void *)mxcSemaBox0, 0, MAILBOX_SIZE);
         memset((void *)mxcSemaBox1, 0, MAILBOX_SIZE);
@@ -213,7 +211,6 @@ int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t *sema_regs, uint8_t *data, unsign
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     } else {
-
         /* Lock the semaphore */
         err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_READ_SEMA);
         if (err != E_NO_ERROR) {
@@ -345,7 +342,6 @@ int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t *sema_regs, const uint8_t *data,
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     } else {
-
         err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_WRITE_SEMA);
         if (err != E_NO_ERROR) {
             return E_BUSY;
@@ -400,7 +396,6 @@ int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_comple
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     } else {
-
         /* Read currently in progress */
         if (mxcSemaCb.writeBuf != NULL) {
             return E_BUSY;

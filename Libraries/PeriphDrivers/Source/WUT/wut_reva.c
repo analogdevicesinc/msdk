@@ -134,7 +134,7 @@ int MXC_WUT_RevA_GetTicks(mxc_wut_reva_regs_t *wut, uint32_t timerClock, uint32_
     uint32_t unit_div0, unit_div1;
     uint32_t prescale;
     uint64_t temp_ticks;
-    
+
     uint32_t wut_ctrl = wut->ctrl;
 
     prescale = ((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |

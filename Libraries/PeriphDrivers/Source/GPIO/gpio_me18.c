@@ -256,8 +256,10 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >> MXC_F_MCR_GPIO4_CTRL_P40_IN_POS;
-        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >> (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_IN_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1);
         return ((gpio40 | gpio41) & mask);
     }
 
@@ -290,8 +292,10 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >> MXC_F_MCR_GPIO4_CTRL_P40_DO_POS;
-        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >> (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_DO_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1);
         return ((gpio40 | gpio41) & mask);
     }
 
