@@ -406,7 +406,7 @@ mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
  * @details    Call this function as the ISR for each DMA channel under driver control.
  *             Interrupt flags for channel ch will be automatically cleared before return.
  */
-void MXC_DMA_Handler();
+void MXC_DMA_Handler(void);
 
 /*************************/
 /* High Level Functions  */

@@ -279,7 +279,7 @@ int MXC_AES_SetPORKey(const void *key, mxc_aes_keys_t len);
  *          will be loaded with all zeroes.
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_ClearPORKey();
+int MXC_AES_ClearPORKey(void);
 
 /**
  * @brief   Transfers the POR key from the storage memory to the AES key registers.
@@ -294,7 +294,7 @@ void MXC_AES_CopyPORKeyToKeyRegisters(mxc_aes_keys_t len);
  * @brief   Checks to see if a POR key has been programmed.
  * @return  1 if a key has been installed, 0 if not.
  */
-int MXC_AES_HasPORKey();
+int MXC_AES_HasPORKey(void);
 
 #ifdef __cplusplus
 }

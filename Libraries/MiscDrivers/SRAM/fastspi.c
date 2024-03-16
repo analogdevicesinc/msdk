@@ -44,7 +44,7 @@ static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
 static volatile bool g_master_done = 0;
 
-void DMA_TX_IRQHandler()
+void DMA_TX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_tx_channel]; // Cast the pointer for readability in this ISR
@@ -60,7 +60,7 @@ void DMA_TX_IRQHandler()
     }
 }
 
-void DMA_RX_IRQHandler()
+void DMA_RX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_rx_channel]; // Cast the pointer for readability in this ISR
@@ -76,7 +76,7 @@ void DMA_RX_IRQHandler()
     }
 }
 
-void processSPI()
+void processSPI(void)
 {
     // Unload any SPI data that has come in
     while (g_rx_buffer && (FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
@@ -102,7 +102,7 @@ void processSPI()
     }
 }
 
-void FastSPI_IRQHandler()
+void FastSPI_IRQHandler(void)
 {
     uint32_t status = FASTSPI_INSTANCE->intfl;
 
@@ -120,7 +120,7 @@ void FastSPI_IRQHandler()
     }
 }
 
-int _dma_init()
+int _dma_init(void)
 {
     if (g_dma_initialized)
         return E_NO_ERROR;
@@ -171,7 +171,7 @@ int _dma_init()
     return E_NO_ERROR;
 }
 
-int spi_init()
+int spi_init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
@@ -326,12 +326,12 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     return E_SUCCESS;
 }
 
-int spi_exit_quadmode()
+int spi_exit_quadmode(void)
 {
     return MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD);
 }
 
-int spi_enter_quadmode()
+int spi_enter_quadmode(void)
 {
     return MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD);
 }

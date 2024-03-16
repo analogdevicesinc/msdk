@@ -42,12 +42,12 @@ int MXC_TRNG_Init(void)
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_EnableInt()
+void MXC_TRNG_EnableInt(void)
 {
     MXC_TRNG_RevB_EnableInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
-void MXC_TRNG_DisableInt()
+void MXC_TRNG_DisableInt(void)
 {
     MXC_TRNG_RevB_DisableInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }

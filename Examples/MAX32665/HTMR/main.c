@@ -65,12 +65,12 @@ void HTMR0_IRQHandler(void)
     return;
 }
 
-void buttonHandler()
+void buttonHandler(void)
 {
     buttonPressed = 1;
 }
 
-void alarmSetHandler()
+void alarmSetHandler(void)
 {
     MXC_HTMR_Stop(MXC_HTMR0);
 

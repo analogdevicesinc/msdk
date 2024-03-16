@@ -1373,7 +1373,7 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcInitSvcHdlList()
+static void datcInitSvcHdlList(void)
 {
     uint8_t i;
 

@@ -145,7 +145,7 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit();
+void I2SInit(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 
@@ -463,7 +463,7 @@ int main(void)
 /* **************************************************************************** */
 
 #ifdef ENABLE_MIC_PROCESSING
-void I2SInit()
+void I2SInit(void)
 {
     mxc_i2s_req_t req;
     int32_t err;

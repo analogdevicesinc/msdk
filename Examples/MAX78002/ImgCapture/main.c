@@ -428,7 +428,7 @@ void save_stream_sd(cnn_img_data_t img_data, char *file)
 /**
 * @brief Receive and service any received console commands.
 ****************************************************************************/
-void service_console()
+void service_console(void)
 {
     // Check for any incoming serial commands
     cmd_t cmd = CMD_UNKNOWN;

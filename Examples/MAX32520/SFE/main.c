@@ -97,7 +97,7 @@ int Flash_CheckErased(uint32_t startaddr)
 }
 
 //******************************************************************************
-void Flash_Write()
+void Flash_Write(void)
 {
     int fail = 0;
     int i = 0;
@@ -166,7 +166,7 @@ void Flash_InterruptEN(mxc_flc_regs_t *regs)
 }
 
 //******************************************************************************
-void Flash_CommandCheck()
+void Flash_CommandCheck(void)
 {
     static uint8_t isErased = 0;
 

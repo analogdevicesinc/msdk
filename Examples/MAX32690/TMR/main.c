@@ -76,7 +76,7 @@
 #endif
 
 /***** Functions *****/
-void PWMTimer()
+void PWMTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer

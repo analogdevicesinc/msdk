@@ -45,7 +45,7 @@ extern secCb_t secCb;
  *  \return Token value.
  */
 /*************************************************************************************************/
-static uint8_t getNextToken()
+static uint8_t getNextToken(void)
 {
   uint8_t token = secCb.token++;
 

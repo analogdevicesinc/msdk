@@ -134,7 +134,7 @@ int camera_init(uint32_t freq);
  *
  * @return Sensor I2C slave address.
  */
-int camera_get_slave_address();
+int camera_get_slave_address(void);
 
 /**
  * @brief Read the camera sensor's Product ID.
@@ -157,14 +157,14 @@ int camera_get_manufacture_id(int *id);
  *
  * @return 0 on success, otherwise an error code.
  */
-int camera_dump_registers();
+int camera_dump_registers(void);
 
 /**
  * @brief Reset the sensor to its default state.
  *
  * @return 0 on success, otherwise an error code.
  */
-int camera_reset();
+int camera_reset(void);
 
 /**
  * @brief Set the sensor to sleep mode or wake it up.

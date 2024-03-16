@@ -38,7 +38,7 @@ typedef struct {
 static i2c_txn_mngr_t s_mngr;
 
 /******************************************************************************/
-int I2C_MNGR_Init()
+int I2C_MNGR_Init(void)
 {
     s_mngr.inst0 = MXC_I2C0;
 

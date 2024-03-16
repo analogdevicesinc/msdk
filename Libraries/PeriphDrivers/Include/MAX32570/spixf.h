@@ -900,12 +900,12 @@ int MXC_SPIXF_IsEnabled(void);
 /**
  * @brief      Set IOCTRL SDIO Drive to High
  */
-void MXC_SPIXF_SetIoctrlSDIODriveHigh();
+void MXC_SPIXF_SetIoctrlSDIODriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SDIO Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSDIODriveLow();
+void MXC_SPIXF_SetIoctrlSDIODriveLow(void);
 
 /**
  * @brief      Get IOCTRL SDIO Drive
@@ -917,12 +917,12 @@ uint8_t MXC_SPIXF_GetIoctrlSDIODrive(void);
 /**
  * @brief      Set IOCTRL SCLK Drive to High
  */
-void MXC_SPIXF_SetIoctrlSCLKDriveHigh();
+void MXC_SPIXF_SetIoctrlSCLKDriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SCLK Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSCLKDriveLow();
+void MXC_SPIXF_SetIoctrlSCLKDriveLow(void);
 
 /**
  * @brief      Get IOCTRL SCLK Drive
@@ -934,12 +934,12 @@ uint8_t MXC_SPIXF_GetIoctrlSCLKDrive(void);
 /**
  * @brief      Set IOCTRL SS Drive to High
  */
-void MXC_SPIXF_SetIoctrlSSDriveHigh();
+void MXC_SPIXF_SetIoctrlSSDriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SS Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSSDriveLow();
+void MXC_SPIXF_SetIoctrlSSDriveLow(void);
 
 /**
  * @brief      Get IOCTRL SS Drive

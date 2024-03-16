@@ -239,12 +239,12 @@ void MXC_TS_GetXY(unsigned int *x, unsigned int *y)
     *y = g_y;
 }
 
-int MXC_TS_GetTSEvent()
+int MXC_TS_GetTSEvent(void)
 {
     return ts_event;
 }
 
-void MXC_TS_ClearTSEvent()
+void MXC_TS_ClearTSEvent(void)
 {
     ts_event = false;
 }

@@ -57,6 +57,6 @@ typedef struct {
  *
  * @return I2C_SensorDriver instance
  */
-max31889_driver_t MAX31889_Open();
+max31889_driver_t MAX31889_Open(void);
 
 #endif // LIBRARIES_MISCDRIVERS_TEMPSENSOR_MAX31889_DRIVER_H_
