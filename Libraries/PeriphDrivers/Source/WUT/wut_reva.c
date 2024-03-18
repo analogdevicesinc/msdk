@@ -76,7 +76,8 @@ void MXC_WUT_RevA_Disable(mxc_wut_reva_regs_t *wut)
 void MXC_WUT_RevA_Config(mxc_wut_reva_regs_t *wut, const mxc_wut_reva_cfg_t *cfg)
 {
     // Configure the timer
-    wut->ctrl |= (wut->ctrl & ~(MXC_F_WUT_REVA_CTRL_TMODE | MXC_F_WUT_REVA_CTRL_TPOL)) |
+    uint32_t wut_ctrl = wut->ctrl;
+    wut->ctrl |= (wut_ctrl & ~(MXC_F_WUT_REVA_CTRL_TMODE | MXC_F_WUT_REVA_CTRL_TPOL)) |
                  ((cfg->mode << MXC_F_WUT_REVA_CTRL_TMODE_POS) & MXC_F_WUT_REVA_CTRL_TMODE);
 
     wut->cnt = 0x1;
@@ -134,8 +135,10 @@ int MXC_WUT_RevA_GetTicks(mxc_wut_reva_regs_t *wut, uint32_t timerClock, uint32_
     uint32_t prescale;
     uint64_t temp_ticks;
 
-    prescale = ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
-               (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
+    uint32_t wut_ctrl = wut->ctrl;
+
+    prescale = ((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
+               (((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
 
     switch (units) {
     case MXC_WUT_REVA_UNIT_NANOSEC:
@@ -178,9 +181,10 @@ int MXC_WUT_RevA_GetTime(mxc_wut_reva_regs_t *wut, uint32_t timerClock, uint32_t
                          uint32_t *time, mxc_wut_reva_unit_t *units)
 {
     uint64_t temp_time = 0;
+    uint32_t wut_ctrl = wut->ctrl;
     uint32_t prescale =
-        ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
-        (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
+        ((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
+        (((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
 
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
 
