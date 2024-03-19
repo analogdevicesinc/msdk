@@ -197,7 +197,7 @@ int formatSDHC(void)
 }
 
 // ******************************************************************************
- int getSize(void)
+int getSize(void)
 {
     if (!mounted) {
         mount();

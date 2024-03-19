@@ -44,7 +44,7 @@ int umount(void);
 
 int formatSDHC(void);
 
- int getSize(void);
+int getSize(void);
 
 int ls(void);
 

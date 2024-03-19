@@ -146,7 +146,7 @@ int formatSDHC(void)
     return err;
 }
 
- int getSize(void)
+int getSize(void)
 {
     QWORD disksize = 0;
     QWORD available_bytes = 0;
