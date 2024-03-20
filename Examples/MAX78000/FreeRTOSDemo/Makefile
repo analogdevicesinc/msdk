@@ -1,173 +1,166 @@
-###############################################################################
- #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
- # Analog Devices, Inc.),
- # Copyright (C) 2023-2024 Analog Devices, Inc.
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #
- ##############################################################################
+############################################################################## #
+#
+#Copyright(C) 2022 - 2023 Maxim Integrated Products, Inc.(now owned by
+#Analog Devices, Inc.),
+#Copyright(C) 2023 - 2024 Analog Devices, Inc.
+#
+#Licensed under the Apache License, Version 2.0(the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#http: //www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+#
+    ##############################################################################
 
-# ** Readme! **
-# Don't edit this file! This is the core Makefile for a MaximSDK 
-# project. The available configuration options can be overridden 
-# in "project.mk", on the command-line, or with system environment 
-# variables.
+#** Readme !**
+#Don't edit this file! This is the core Makefile for a MaximSDK 
+#project.The available configuration options can be overridden
+#in "project.mk", on the command - line, or with system environment
+#variables.
 
-# See https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
-# for more detailed instructions on how to use this system.
+#See https: //analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
+#for more detailed instructions on how to use this system.
 
-# The detailed instructions mentioned above are easier to read than 
-# this file, but the comments found in this file also outline the 
-# available configuration variables. This file is organized into 
-# sub-sections, some of which expose config variables.
+#The detailed instructions mentioned above are easier to read than
+#this file, but the comments found in this file also outline the
+#available configuration variables.This file is organized into
+#sub - sections, some of which expose config variables.
 
+#*******************************************************************************
+#Set the target microcontroller and board to compile for.
 
-# *******************************************************************************
-# Set the target microcontroller and board to compile for.  
+#Every TARGET microcontroller has some Board Support Packages(BSPs) that are
+#available for it under the MaximSDK / Libraries / Boards / TARGET folder.The BSP
+#that gets selected is MaximSDK / Libraries / Boards / TARGET / BOARD.
 
-# Every TARGET microcontroller has some Board Support Packages (BSPs) that are 
-# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP 
-# that gets selected is MaximSDK/Libraries/Boards/TARGET/BOARD.
+#Configuration Variables:
+#- TARGET : Override the default target microcontroller.Ex : TARGET = MAX78000
+#- BOARD : Override the default BSP(case sensitive).Ex : BOARD = EvKit_V1, BOARD = FTHR_RevA
 
-# Configuration Variables:
-# - TARGET : Override the default target microcontroller.  Ex: TARGET=MAX78000
-# - BOARD : Override the default BSP (case sensitive).  Ex: BOARD=EvKit_V1, BOARD=FTHR_RevA
+    ifeq "$(TARGET)"
+         ""
+#Default target microcontroller
+    TARGET : = MAX78000 TARGET_UC : = MAX78000 TARGET_LC : = max78000 else
+#"TARGET" has been overridden in the environment or on the command - line.
+#We need to calculate an upper and lowercase version of the part number,
+#because paths on Linux and MacOS are case -sensitive.
+                                                           TARGET_UC
+    : = $(subst m, M, $(subst a, A, $(subst x, X, $(TARGET)))) TARGET_LC
+    : = $(subst M, m, $(subst A, a, $(subst X, x, $(TARGET)))) endif
 
+#Default board.
+                BOARD ?
+            = EvKit_V1
 
-ifeq "$(TARGET)" ""
-# Default target microcontroller
-TARGET := MAX78000
-TARGET_UC := MAX78000
-TARGET_LC := max78000
-else
-# "TARGET" has been overridden in the environment or on the command-line.
-# We need to calculate an upper and lowercase version of the part number,
-# because paths on Linux and MacOS are case-sensitive.
-TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
-TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
-endif
+#*******************************************************************************
+#Locate the MaximSDK
 
-# Default board.
-BOARD ?= EvKit_V1
+#This Makefile needs to know where to find the MaximSDK, and the MAXIM_PATH variable
+#should point to the root directory of the MaximSDK installation.Setting this manually
+#is usually only required if you're working on the command-line.
 
-# *******************************************************************************
-# Locate the MaximSDK
+#If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK
+#and move up from this project's original location.
 
-# This Makefile needs to know where to find the MaximSDK, and the MAXIM_PATH variable 
-# should point to the root directory of the MaximSDK installation.  Setting this manually
-# is usually only required if you're working on the command-line.
+#Configuration Variables:
+#- MAXIM_PATH : Tell this Makefile where to find the MaximSDK.Ex : MAXIM_PATH = C : / MaximSDK
 
-# If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK 
-# and move up from this project's original location.
+                ifneq "$(MAXIM_PATH)"
+                      ""
+#Sanitize MAXIM_PATH for backslashes
+            MAXIM_PATH :
+            = $(subst \, /, $(MAXIM_PATH))
+#Locate some other useful paths...
+                LIBS_DIR : = $(abspath $(MAXIM_PATH) / Libraries) CMSIS_ROOT
+    : = $(LIBS_DIR) / CMSIS endif
 
-# Configuration Variables:
-# - MAXIM_PATH : Tell this Makefile where to find the MaximSDK.  Ex:  MAXIM_PATH=C:/MaximSDK
+#*******************************************************************************
+#Include project Makefile.We do this after formulating TARGET, BOARD, and MAXIM_PATH
+#in case project.mk needs to reference those values.However, we also include
+#this as early as possible in the Makefile so that it can append to or override
+#the variables below.
 
+                          PROJECTMK ?
+            = $(abspath./ project.mk) include $(PROJECTMK) $(info Loaded project.mk)
+#PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
-ifneq "$(MAXIM_PATH)" ""
-# Sanitize MAXIM_PATH for backslashes
-MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
-# Locate some other useful paths...
-LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
-CMSIS_ROOT := $(LIBS_DIR)/CMSIS
-endif
+#*******************************************************************************
+#Final path sanitization and re - calculation.No options here.
 
-# *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
-# in case project.mk needs to reference those values.  However, we also include
-# this as early as possible in the Makefile so that it can append to or override
-# the variables below.
+                ifeq "$(MAXIM_PATH)"
+                     ""
+#MAXIM_PATH is still not defined...
+            DEPTH :
+            =../../../
+             MAXIM_PATH
+    : = $(abspath $(DEPTH)) $(warning Warning
+                              : MAXIM_PATH is not set !Set MAXIM_PATH in your environment or
+                                    in project.mk to clear this warning.)
+          $(warning Warning
+            : Attempting to use $(MAXIM_PATH) calculated from relative path) else
+#Sanitize MAXIM_PATH for backslashes
+      MAXIM_PATH : = $(subst \, /, $(MAXIM_PATH)) endif
 
+#Final recalculation of LIBS_DIR / CMSIS_ROOT
+                       LIBS_DIR : = $(abspath $(MAXIM_PATH) / Libraries) CMSIS_ROOT
+    : = $(LIBS_DIR) / CMSIS
 
-PROJECTMK ?= $(abspath ./project.mk)
-include $(PROJECTMK)
-$(info Loaded project.mk)
-# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
+#One final UC / LC check in case user set TARGET in project.mk
+                          TARGET_UC : = $(subst m, M, $(subst a, A, $(subst x, X, $(TARGET))))
+                                          TARGET_LC
+    : = $(subst M, m, $(subst A, a, $(subst X, x, $(TARGET))))
 
-# *******************************************************************************
-# Final path sanitization and re-calculation.  No options here.
+          export TARGET export TARGET_UC export TARGET_LC export CMSIS_ROOT
+#TODO : Remove dependency on exports for these variables.
 
-ifeq "$(MAXIM_PATH)" ""
-# MAXIM_PATH is still not defined...
-DEPTH := ../../../
-MAXIM_PATH := $(abspath $(DEPTH))
-$(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
-$(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
-else
-# Sanitize MAXIM_PATH for backslashes
-MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
-endif
+#*******************************************************************************
+#Set up search paths, and auto - detect all source code on those paths.
 
-# Final recalculation of LIBS_DIR/CMSIS_ROOT
-LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
-CMSIS_ROOT := $(LIBS_DIR)/CMSIS
+#The following paths are searched by default, where "./" is the project directory.
+#./
+#| - *.h
+#| - *.c
+#| - include(optional)
+#| - *.h
+#| - src(optional)
+#| - *.c
 
-# One final UC/LC check in case user set TARGET in project.mk
-TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
-TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
+#Configuration Variables:
+#- VPATH : Tell this Makefile to search additional locations for source(.c) files.
+#You should use the "+=" operator with this option.
+#Ex : VPATH += your / new / path
+#- IPATH : Tell this Makefile to search additional locations for header(.h) files.
+#You should use the "+=" operator with this option.
+#Ex : VPATH += your / new / path
+#- SRCS : Tell this Makefile to explicitly add a source(.c) file to the build.
+#This is really only useful if you want to add a source file that isn't
+#on any VPATH, in which case you can add the full path to the file here.
+#You should use the "+=" operator with this option.
+#Ex : SRCS += your / specific / source / file.c
+#- AUTOSEARCH : Set whether this Makefile should automatically detect.c files on
+#VPATH and add them to the build.This is enabled by default.Set
+#to 0 to disable.If autosearch is disabled, source files must be
+#manually added to SRCS.
+#Ex : AUTOSEARCH = 0
 
-export TARGET
-export TARGET_UC
-export TARGET_LC
-export CMSIS_ROOT
-# TODO: Remove dependency on exports for these variables.
+#Where to find source files for this project.
+              VPATH +=.VPATH += src VPATH : = $(VPATH)
 
-# *******************************************************************************
-# Set up search paths, and auto-detect all source code on those paths.
+#Where to find header files for this project
+                                                IPATH +=.IPATH += include IPATH : = $(IPATH)
 
-# The following paths are searched by default, where "./" is the project directory.
-# ./
-# |- *.h
-# |- *.c
-# |-include (optional)
-#   |- *.h
-# |-src (optional)
-#   |- *.c
-
-# Configuration Variables:
-# - VPATH : Tell this Makefile to search additional locations for source (.c) files.
-# 			You should use the "+=" operator with this option.  
-#			Ex:  VPATH += your/new/path
-# - IPATH : Tell this Makefile to search additional locations for header (.h) files.
-# 			You should use the "+=" operator with this option.  
-#			Ex:  VPATH += your/new/path
-# - SRCS : Tell this Makefile to explicitly add a source (.c) file to the build.
-# 			This is really only useful if you want to add a source file that isn't
-#			on any VPATH, in which case you can add the full path to the file here.
-#			You should use the "+=" operator with this option.
-#			Ex:  SRCS += your/specific/source/file.c
-# - AUTOSEARCH : Set whether this Makefile should automatically detect .c files on
-#				VPATH and add them to the build.  This is enabled by default.  Set
-#				to 0 to disable.  If autosearch is disabled, source files must be
-#				manually added to SRCS.
-#				Ex:  AUTOSEARCH = 0
-
-
-# Where to find source files for this project.
-VPATH += .
-VPATH += src
-VPATH := $(VPATH)
-
-# Where to find header files for this project
-IPATH += .
-IPATH += include
-IPATH := $(IPATH)
-
-AUTOSEARCH ?= 1
-ifeq ($(AUTOSEARCH), 1)
-# Auto-detect all C/C++ source files on VPATH
-SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+                                                                                      AUTOSEARCH ?
+            = 1 ifeq($(AUTOSEARCH), 1)
+#Auto - detect all C / C++ source files on VPATH
+                                                                                      SRCS +=
+                                                                                  $(wildcard $(
+                                                                                      addsuffix /*.c, $(VPATH)))
 SRCS += $(wildcard $(addsuffix /*.cpp, $(VPATH)))
 endif
 
