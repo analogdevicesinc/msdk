@@ -151,8 +151,12 @@ typedef struct _stream_stat {
 // Initialize the sensor hardware and probe the image sensor.
 int camera_init(uint32_t freq);
 
-// Return sensor i2c slave address.
-int camera_get_slave_address();
+/**
+ * @brief Return sensor I2C slave address.
+ *
+ * @return Sensor I2C slave address.
+ */
+int camera_get_slave_address(void);
 
 // Return sensor Product ID.
 int camera_get_product_id(int *id);
@@ -160,11 +164,27 @@ int camera_get_product_id(int *id);
 // Return sensor Manufacturer ID.
 int camera_get_manufacture_id(int *id);
 
+<<<<<<< HEAD
 // dump all registers of camera
 int camera_dump_registers();
 
 // Reset the sensor to its default state.
 int camera_reset();
+=======
+/**
+ * @brief Dump all registers of the camera to 'printf'.
+ *
+ * @return 0 on success, otherwise an error code.
+ */
+int camera_dump_registers(void);
+
+/**
+ * @brief Reset the sensor to its default state.
+ *
+ * @return 0 on success, otherwise an error code.
+ */
+int camera_reset(void);
+>>>>>>> bd92beaab1 (fix(Build): Fix `-Wstrict-prototypes` warnings (#954))
 
 // Sleep mode.
 int camera_sleep(int enable);

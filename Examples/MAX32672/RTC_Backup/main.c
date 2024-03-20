@@ -88,7 +88,7 @@
 void RTC_IRQHandler(void) {}
 
 // *****************************************************************************
-void rescheduleAlarm()
+void rescheduleAlarm(void)
 {
     uint32_t time;
     int flags = MXC_RTC_GetFlags();
@@ -116,7 +116,7 @@ void rescheduleAlarm()
 }
 
 // *****************************************************************************
-void printTime()
+void printTime(void)
 {
     uint32_t day, hr, min, sec;
 
@@ -136,7 +136,7 @@ void printTime()
 }
 
 // *****************************************************************************
-int configureRTC()
+int configureRTC(void)
 {
     int rtcTrim;
 

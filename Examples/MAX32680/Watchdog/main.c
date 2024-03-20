@@ -87,7 +87,7 @@ static mxc_wdt_cfg_t cfg;
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdogHandler()
+void watchdogHandler(void)
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nTIMEOUT! \n");

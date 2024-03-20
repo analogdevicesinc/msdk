@@ -138,7 +138,7 @@ void RTC_IRQHandler(void)
     return;
 }
 
-void printTime()
+void printTime(void)
 {
     int day, hr, min, err;
     uint32_t sec, rtc_readout;

@@ -263,7 +263,8 @@ uint8_t MicReadChunk(uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit();
+void I2SInit(void);
+static void codec_init(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 #ifdef TFT_ENABLE
@@ -284,7 +285,7 @@ int font_2 = (int)&Liberation_Sans16x16[0];
 
 int32_t tot_usec = -100000;
 #ifdef WUT_ENABLE
-void WUT_IRQHandler()
+void WUT_IRQHandler(void)
 {
     i2s_flag = 1;
     MXC_WUT_IntClear();
@@ -928,7 +929,25 @@ int main(void)
 /* **************************************************************************** */
 
 #ifdef ENABLE_MIC_PROCESSING
-void I2SInit()
+#ifdef ENABLE_CODEC_MIC
+static void codec_init(void)
+{
+    int err;
+    if (MXC_I2C_Init(PMIC_AUDIO_I2C, 1, 0) != E_NO_ERROR)
+        printf("Error initializing I2C controller");
+    else
+        printf("I2C initialized successfully \n");
+
+    MXC_I2C_SetFrequency(PMIC_AUDIO_I2C, CODEC_I2C_FREQ);
+    if ((err = max9867_init(PMIC_AUDIO_I2C, EXT_I2S_FREQ, 1)) != E_NO_ERROR) {
+        PR_DEBUG("\nError in max9867_init: %d\n", err);
+    }
+
+    if (max9867_enable_record(1) != E_NO_ERROR)
+        printf("Error enabling record path");
+}
+#endif
+void I2SInit(void)
 {
     mxc_i2s_req_t req;
     int32_t err;

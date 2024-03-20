@@ -218,7 +218,7 @@ int verifyData(void)
 }
 
 // *****************************************************************************
-int main()
+int main(void)
 {
     printf("\n******** I2C Master-Slave Transaction Demo *********\n");
     printf("\nThis example uses one I2C peripheral as a master to\n");

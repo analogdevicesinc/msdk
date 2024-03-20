@@ -128,7 +128,15 @@ int Console_Shutdown(void)
     return E_NO_ERROR;
 }
 /******************************************************************************/
-__weak void NMI_Handler(void)
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
+/**
+ * @brief      Configurations for SPIXFM (XiP)
+ */
+void SPIXFM_Config(void)
 {
     __NOP();
 }

@@ -98,7 +98,7 @@ volatile int pb_int;
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdogHandler()
+void watchdogHandler(void)
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nWATCHDOG INTERRUPT TRIGGERED! \n");
@@ -111,7 +111,7 @@ void WDT_IRQHandler(void)
 }
 // *****************************************************************************
 
-void SW1_Callback()
+void SW1_Callback(void)
 {
     pb_int = 1; // Signal to main loop
 }

@@ -253,7 +253,7 @@ int MXC_AES_SetPORKey(const void *key, mxc_aes_keys_t len)
     return err;
 }
 
-int MXC_AES_ClearPORKey()
+int MXC_AES_ClearPORKey(void)
 {
     int err;
 
@@ -306,7 +306,7 @@ void MXC_AES_CopyPORKeyToKeyRegisters(mxc_aes_keys_t len)
     MXC_FLC_LockInfoBlock(KEY_ADDR);
 }
 
-int MXC_AES_HasPORKey()
+int MXC_AES_HasPORKey(void)
 {
     int res;
 

@@ -88,6 +88,17 @@ extern int reload_faceid;
 extern int reload_facedet;
 extern int8_t prev_decision;
 mxc_uart_regs_t *CommUart;
+
+void init_names(void)
+{
+    char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+    for (int i = 0; i < DEFAULT_EMBS_NUM; i++) {
+        strncpy((char *)names[i], default_names[i], 7);
+    }
+#pragma GCC diagnostic pop
+}
 #ifdef TFT_ENABLE
 area_t area = { 50, 290, 180, 30 };
 #endif

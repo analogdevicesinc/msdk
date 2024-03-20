@@ -93,7 +93,7 @@ volatile uint32_t isr_flags;
 
 //******************************************************************************
 int button_pressed = 0;
-void button_handler()
+void button_handler(void)
 {
     button_pressed = 1;
 }
@@ -161,7 +161,7 @@ void setup_irqs(void)
     isr_cnt = 0;
 }
 
-int write_test_pattern()
+int write_test_pattern(void)
 {
     int err;
     // A flash address must be in the erased state before writing to it, because the
@@ -203,7 +203,7 @@ int write_test_pattern()
     return err;
 }
 
-int validate_test_pattern()
+int validate_test_pattern(void)
 {
     int err = 0;
 
@@ -223,7 +223,7 @@ int validate_test_pattern()
     return err;
 }
 
-int validate_test_pattern_erase()
+int validate_test_pattern_erase(void)
 {
     int err = 0;
 
@@ -241,7 +241,7 @@ int validate_test_pattern_erase()
     return err;
 }
 
-int erase_magic()
+int erase_magic(void)
 {
     /*
         To modify a location in flash that has already been written to,

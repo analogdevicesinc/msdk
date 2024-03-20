@@ -110,8 +110,8 @@ static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static void buttonCallback(void *pb);
-int usbStartupCallback();
-int usbShutdownCallback();
+int usbStartupCallback(void);
+int usbShutdownCallback(void);
 
 const mxc_gpio_cfg_t hid_sw[] = {
     // Even though SW2 in EVK defined at Port 4.0 but this goes not have GPIO interrupt
@@ -305,7 +305,7 @@ int main(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback()
+int usbStartupCallback(void)
 {
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
     MXC_MCR->ldoctrl |= MXC_F_MCR_LDOCTRL_0P9EN;
@@ -316,7 +316,7 @@ int usbStartupCallback()
 }
 
 /******************************************************************************/
-int usbShutdownCallback()
+int usbShutdownCallback(void)
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

@@ -44,15 +44,15 @@
 
 void generateMessage(unsigned length);
 
-int mount();
+int mount(void);
 
-int umount();
+int umount(void);
 
-int formatSDHC();
+int formatSDHC(void);
 
-int getSize();
+int getSize(void);
 
-int ls();
+int ls(void);
 
 int createFile(char *file_name, unsigned int length);
 
@@ -64,8 +64,8 @@ int cd(char *dir_name);
 
 int deleteFile(char *file_name);
 
-int example();
+int example(void);
 
-void waitCardInserted();
+void waitCardInserted(void);
 
 #endif // EXAMPLES_MAX32655_SDHC_FTHR_INCLUDE_SDHC_H_

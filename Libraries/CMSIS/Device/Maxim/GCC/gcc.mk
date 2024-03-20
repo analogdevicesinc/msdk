@@ -310,6 +310,11 @@ endif
 CFLAGS+=$(PROJ_CFLAGS)
 CXXFLAGS+=$(CFLAGS)
 
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
+CFLAGS += -Wstrict-prototypes
+# ^ Add strict-prototypes after CXX_FLAGS so it's only added for C builds
+
 # The command for calling the library archiver.
 AR=${PREFIX}-ar
 

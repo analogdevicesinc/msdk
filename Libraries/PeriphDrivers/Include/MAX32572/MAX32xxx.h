@@ -51,29 +51,28 @@
 #include "mxc_sys.h"
 #include "nvic_table.h"
 
-#ifdef LIB_BOARD
-#include "board.h"
-#endif
+int mount(void);
 
-/*
- *  Peripheral Driver Includes
- */
-#include "adc.h"
-#include "ctb.h"
-#include "dma.h"
-#include "gpio.h"
-#include "htmr.h"
-#include "i2c.h"
-#include "lp.h"
-#include "pt.h"
-#include "rtc.h"
-// #include "sc.h"
-#include "skbd.h"
-#include "smon.h"
-#include "spi.h"
-#include "spixf.h"
-#include "tmr.h"
-#include "uart.h"
-#include "wdt.h"
+int umount(void);
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
+int formatSDHC(void);
+
+int getSize(void);
+
+int ls(void);
+
+int createFile(char *file_name, unsigned int length);
+
+int appendFile(char *file_name, unsigned int length);
+
+int mkdir(char *dir_name);
+
+int cd(char *dir_name);
+
+int deleteFile(char *file_name);
+
+int example(void);
+
+void waitCardInserted(void);
+
+#endif // EXAMPLES_MAX32650_SDHC_FAT_INCLUDE_SDHC_EXAMPLE_H_

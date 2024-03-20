@@ -85,7 +85,7 @@
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdog_timeout_handler()
+void watchdog_timeout_handler(void)
 {
     //get and clear flag
     MXC_WDT_ClearIntFlag(MXC_WDT0);
@@ -99,7 +99,7 @@ void WDT0_IRQHandler(void)
     watchdog_timeout_handler();
 }
 // *****************************************************************************
-void MXC_WDT_Setup()
+void MXC_WDT_Setup(void)
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_Enable(MXC_WDT0);
