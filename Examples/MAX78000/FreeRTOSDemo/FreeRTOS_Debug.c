@@ -43,7 +43,6 @@
 // Scheduler tick is 1ms
 // RTOS Stats Clock should be 10-100x faster
 #define RTOS_STATS_TMR MXC_TMR0
-#define RTOS_STATS_IRQn TMR0_IRQn
 #define RTOS_STATS_TMR_SRC MXC_TMR_32K_CLK
 #define RTOS_STATS_TMR_CNT 0xFFFFFFFF
 
@@ -105,12 +104,10 @@ void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
 
     /* When the following line is hit, the variables contain the register values. */
     for (;;) {}
-    for (;;) {}
 }
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
 {
-    for (;;) {}
     for (;;) {}
 }
 
