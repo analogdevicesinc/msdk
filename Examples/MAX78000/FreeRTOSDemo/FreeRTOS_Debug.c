@@ -32,13 +32,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *******************************************************************************/
-#include "tmr.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "tmr.h"
 #include "nvic_table.h"
-
-#include <stdio.h>
 
 // Only include the contents of this file if DEBUG == 1
 #if defined(DEBUG) && (DEBUG == 1)
@@ -81,7 +78,7 @@ uint32_t GetTimerForStats()
     return MXC_TMR_GetCount(RTOS_STATS_TMR);
 }
 
-void prvGetRegistersFromStack( uint32_t *pulFaultStackAddress )
+void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
 {
     /* These are volatile to try and prevent the compiler/linker optimising them
     away as the variables never actually get used.  If the debugger won't show the
@@ -107,18 +104,18 @@ void prvGetRegistersFromStack( uint32_t *pulFaultStackAddress )
     psr = pulFaultStackAddress[ 7 ];
 
     /* When the following line is hit, the variables contain the register values. */
-    for( ;; );
+    for (;;) {}
 }
 
-void vApplicationStackOverflowHook( TaskHandle_t xTask, signed char *pcTaskName )
+void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
 {
-    for( ;; );
+    for (;;) {}
 }
 
 
 /* The prototype shows it is a naked function - in effect this is just an
 assembly function. */
-void HardFault_Handler( void ) __attribute__( ( naked, aligned(8) ) );
+void HardFault_Handler(void) __attribute__((naked, aligned(8)));
 
 /* The fault handler implementation calls a function called
 prvGetRegistersFromStack(). */
@@ -133,7 +130,6 @@ void HardFault_Handler(void)
         " ldr r1, [r0, #24]                                         \n"
         " ldr r2, handler2_address_const                            \n"
         " bx r2                                                     \n"
-        " handler2_address_const: .word prvGetRegistersFromStack    \n"
-    );
+        " handler2_address_const: .word prvGetRegistersFromStack    \n");
 }
 #endif
