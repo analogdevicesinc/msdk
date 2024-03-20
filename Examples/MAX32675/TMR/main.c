@@ -39,7 +39,7 @@
 /***** Definitions *****/
 
 // Parameters for PWM output
-#define CLOCK_SOURCE MXC_TMR_8M_CLK // must be mxc_tmr_clock_t
+#define CLOCK_SOURCE MXC_TMR_IBRO_CLK // must be mxc_tmr_clock_t
 
 // Parameters for Continuous timer
 #define OST_FREQ 1 // (Hz)
