@@ -37,7 +37,7 @@ const mxc_gpio_cfg_t gpio_cfg_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_23), MXC_GPIO_
 /* Note: The ME18 has assigned the same alternate function to multiple pins.  Therefore, when I2C is
  * enabled it will be enabled on both sets of pins simultaneously.  The ME18 driver layer also does
  * this intentionally so that either set of pins can be used.  Users should ensure the unused pin set
- * is left unconncted.
+ * is left unconnected.
  *
  * See MAX32690 Rev A2 Errata #16
  * https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf 
