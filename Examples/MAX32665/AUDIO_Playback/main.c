@@ -73,7 +73,7 @@ void AUDIO_IRQHandler(void)
     AUDIO->int_pcm_rx_clr |= 0xFFFFFFFF;
 }
 
-int main()
+int main(void)
 {
     int err;
     SystemCoreClockUpdate();

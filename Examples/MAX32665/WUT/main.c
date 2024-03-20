@@ -44,7 +44,7 @@
 /***** Globals *****/
 
 /***** Functions *****/
-void WUT_IRQHandler()
+void WUT_IRQHandler(void)
 {
     MXC_WUT_IntClear();
 }

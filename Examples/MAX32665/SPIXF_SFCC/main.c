@@ -80,7 +80,7 @@ __attribute__((section(".xip_section"))) void icc_test_func(void)
 }
 
 /******************************************************************************/
-void spixf_cfg_setup()
+void spixf_cfg_setup(void)
 {
     MXC_SPIXF_Disable(); // Disable the SPIXFC before setting the SPIXF
 

@@ -57,7 +57,7 @@ void memCpyComplete(void *dest)
     flag++;
 }
 
-void DMA0_IRQHandler()
+void DMA0_IRQHandler(void)
 {
     MXC_DMA_Handler();
 }

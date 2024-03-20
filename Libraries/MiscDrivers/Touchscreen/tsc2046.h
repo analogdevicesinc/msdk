@@ -130,12 +130,12 @@ void MXC_TS_GetXY(unsigned int *x, unsigned int *y);
  * @brief       Returns true if there is a touchscreen event pending,
  *              otherwise returns false.
  */
-int MXC_TS_GetTSEvent();
+int MXC_TS_GetTSEvent(void);
 
 /**
  * @brief      Clears the pending touchscreen event flag.
  */
-void MXC_TS_ClearTSEvent();
+void MXC_TS_ClearTSEvent(void);
 
 /**
  * @brief      Register a button

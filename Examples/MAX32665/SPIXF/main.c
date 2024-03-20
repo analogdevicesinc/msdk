@@ -61,7 +61,7 @@ uint8_t *__xip_addr;
 #endif
 
 /******************************************************************************/
-void spixf_cfg_setup()
+void spixf_cfg_setup(void)
 {
     // Disable the SPIXFC before setting the SPIXF
     MXC_SPIXF_Disable();

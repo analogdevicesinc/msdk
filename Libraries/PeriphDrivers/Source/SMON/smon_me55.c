@@ -25,12 +25,12 @@
 #include "mxc_pins.h"
 #include "mxc_lock.h"
 
-void MXC_SMON_Init()
+void MXC_SMON_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 }
 
-void MXC_SMON_Shutdown()
+void MXC_SMON_Shutdown(void)
 {
     // Not disabling TRNG clock as it may be used by other peripherals
     return;
@@ -88,12 +88,12 @@ int MXC_SMON_SelfDestructByteEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)
                                                 (mxc_smon_reva_ext_cfg_t *)cfg, delay);
 }
 
-void MXC_SMON_EnablePUFTrimErase()
+void MXC_SMON_EnablePUFTrimErase(void)
 {
     MXC_SMON_RevA_EnablePUFTrimErase((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
-void MXC_SMON_DisablePUFTrimErase()
+void MXC_SMON_DisablePUFTrimErase(void)
 {
     MXC_SMON_RevA_DisablePUFTrimErase((mxc_smon_reva_regs_t *)MXC_SMON);
 }
@@ -106,7 +106,7 @@ int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
                                                     (mxc_smon_lowpower_mode_t)lowPowerMode, delay);
 }
 
-uint32_t MXC_SMON_GetFlags()
+uint32_t MXC_SMON_GetFlags(void)
 {
     return MXC_SMON_RevA_GetFlags((mxc_smon_reva_regs_t *)MXC_SMON);
 }
@@ -116,12 +116,12 @@ void MXC_SMON_ClearFlags(uint32_t flags)
     MXC_SMON_RevA_ClearFlags((mxc_smon_reva_regs_t *)MXC_SMON, flags);
 }
 
-void MXC_SMON_ExtSensorLock()
+void MXC_SMON_ExtSensorLock(void)
 {
     MXC_SMON_RevA_ExtSensorLock((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
-void MXC_SMON_IntSensorLock()
+void MXC_SMON_IntSensorLock(void)
 {
     MXC_SMON_RevA_IntSensorLock((mxc_smon_reva_regs_t *)MXC_SMON);
 }

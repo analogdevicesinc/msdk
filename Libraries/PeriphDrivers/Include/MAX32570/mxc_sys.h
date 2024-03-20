@@ -246,7 +246,7 @@ typedef struct {
 
 static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
-static inline void _mxc_crit_get_state()
+static inline void _mxc_crit_get_state(void)
 {
 #ifndef __riscv
     /*
@@ -369,7 +369,7 @@ void MXC_SYS_RTCClockEnable(void);
  * @brief Disables the 32kHz oscillator
  * @returns         E_NO_ERROR if everything is successful
  */
-int MXC_SYS_RTCClockDisable();
+int MXC_SYS_RTCClockDisable(void);
 
 /**
  * @brief Enable System Clock Source without switching to it

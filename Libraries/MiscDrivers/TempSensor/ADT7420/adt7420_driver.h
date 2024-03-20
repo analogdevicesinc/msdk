@@ -56,6 +56,6 @@ typedef struct {
  *
  * @return I2C_SensorDriver instance
  */
-adt7420_driver_t ADT7420_Open();
+adt7420_driver_t ADT7420_Open(void);
 
 #endif // LIBRARIES_MISCDRIVERS_TEMPSENSOR_ADT7420_ADT7420_DRIVER_H_

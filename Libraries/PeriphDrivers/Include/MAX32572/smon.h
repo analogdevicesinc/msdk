@@ -146,13 +146,13 @@ typedef struct {
  * @brief   Initialize Security Monitor
  *
  */
-void MXC_SMON_Init();
+void MXC_SMON_Init(void);
 
 /**
  * @brief   Shutdown Security Monitor
  *
  */
-void MXC_SMON_Shutdown();
+void MXC_SMON_Shutdown(void);
 
 /**
  * @brief   Enables desired External Sensor
@@ -243,13 +243,13 @@ int MXC_SMON_SelfDestructByteEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay);
  * @brief   Enables PUF Trim Erase on DRS
  *
  */
-void MXC_SMON_EnablePUFTrimErase();
+void MXC_SMON_EnablePUFTrimErase(void);
 
 /**
  * @brief   Disables PUF Trim Erase on DRS
  *
  */
-void MXC_SMON_DisablePUFTrimErase();
+void MXC_SMON_DisablePUFTrimErase(void);
 
 /**
  * @brief   Enbale Digital Fault Detector
@@ -268,7 +268,7 @@ int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
  *
  * @return  uint32_t        SECALM register
  */
-uint32_t MXC_SMON_GetFlags();
+uint32_t MXC_SMON_GetFlags(void);
 
 /**
  * @brief   Clear flags set in Security Alarm Register
@@ -281,13 +281,13 @@ void MXC_SMON_ClearFlags(uint32_t flags);
  * @brief   Lock the EXTSCTRL register to generate DRS/NMI
  *
  */
-void MXC_SMON_ExtSensorLock();
+void MXC_SMON_ExtSensorLock(void);
 
 /**
  * @brief   Lock the INTSCTRL register to generate DRS/NMI
  *
  */
-void MXC_SMON_IntSensorLock();
+void MXC_SMON_IntSensorLock(void);
 
 /**
  * @brief   Checks if the registers are busy before wirting to it

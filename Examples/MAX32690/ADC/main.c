@@ -181,7 +181,7 @@ void StartHWTriggerTimer(void)
 /* Performs the 1.25V Internal Reference Trim
  * Derived from UG7618 Section 11.6.3 - 1.25V Internal Reference Trim
  */
-void adc_internal_1v25_ref_trim()
+void adc_internal_1v25_ref_trim(void)
 {
     uint32_t tempData;
 
@@ -248,7 +248,7 @@ void adc_internal_1v25_ref_trim()
 /* Performs the 2.048V Internal Reference Trim
  * Derived from UG7618 Section 11.6.4 - 2.048V Internal Reference Trim
  */
-void adc_internal_2v048_ref_trim()
+void adc_internal_2v048_ref_trim(void)
 {
     uint32_t tempData;
 
@@ -315,7 +315,7 @@ void adc_internal_2v048_ref_trim()
 /* Performs the External Reference Trim
  * Derived from UG7618 Section 11.6.5 - External Reference Trim
  */
-void adc_external_ref_trim()
+void adc_external_ref_trim(void)
 {
     uint32_t tempData;
 

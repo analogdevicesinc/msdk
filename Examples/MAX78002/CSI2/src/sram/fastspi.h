@@ -39,7 +39,7 @@ static const mxc_gpio_cfg_t spi_pins = { .port = SPI_PINS_PORT,
                                          .vssel = MXC_GPIO_VSSEL_VDDIOH };
 
 // TODO(Jake):  Generalize to multiple SPI instances
-int spi_init();
+int spi_init(void);
 int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert,
                  bool use_dma, bool block);
 

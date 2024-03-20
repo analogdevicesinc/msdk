@@ -39,7 +39,7 @@
 #define I2C_MASTER MXC_I2C0 // SCL P0_8; SDA P0_9
 #define I2C_FREQ 100000 // 100kHZ
 
-int main()
+int main(void)
 {
     uint8_t counter = 0;
 

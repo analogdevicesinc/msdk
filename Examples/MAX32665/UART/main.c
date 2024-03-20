@@ -81,7 +81,7 @@ void readCallback(mxc_uart_req_t *req, int error)
     READ_FLAG = error;
 }
 
-void buttonHandler()
+void buttonHandler(void)
 {
     buttonPressed = 1;
 }

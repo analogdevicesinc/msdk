@@ -56,7 +56,7 @@ extern "C" {
  * @brief      Initializes the Flash Controller for erase/write operations
  * @return     #E_NO_ERROR if successful.
  */
-int MXC_FLC_Init();
+int MXC_FLC_Init(void);
 
 /**
  * @brief      Checks if Flash Controller is busy.

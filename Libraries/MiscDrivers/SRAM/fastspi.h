@@ -49,7 +49,7 @@ extern const mxc_gpio_cfg_t fastspi_spi_pins;
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during initialization.
  */
-int spi_init();
+int spi_init(void);
 
 /**
  * @brief Transmits and receives data using the SPI module.
@@ -81,7 +81,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode exit process.
  */
-int spi_exit_quadmode();
+int spi_exit_quadmode(void);
 
 /**
  * @brief Enters the quad mode for SPI (Serial Peripheral Interface) communication.
@@ -93,6 +93,6 @@ int spi_exit_quadmode();
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode entry process.
  */
-int spi_enter_quadmode();
+int spi_enter_quadmode(void);
 
 #endif // LIBRARIES_MISCDRIVERS_SRAM_FASTSPI_H_

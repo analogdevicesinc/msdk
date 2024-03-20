@@ -71,7 +71,7 @@ void i2s_dma_cb(int ch, int err)
 #endif
 
 /*****************************************************************/
-int main()
+int main(void)
 {
     int err;
     mxc_i2s_req_t req;

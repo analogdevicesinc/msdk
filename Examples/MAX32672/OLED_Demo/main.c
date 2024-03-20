@@ -78,7 +78,7 @@ static void rounder_cb(struct _lv_disp_drv_t *disp_drv, lv_area_t *area)
     area->y2 = (area->y2 & (~0x7)) + 7;
 }
 //============================================================================
-void lvgl_setup()
+void lvgl_setup(void)
 {
     /* LittlevGL setup */
     lv_init();

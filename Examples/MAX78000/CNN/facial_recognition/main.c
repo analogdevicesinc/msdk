@@ -55,7 +55,7 @@ extern volatile uint8_t face_detected;
 volatile char names[1024][7];
 mxc_uart_regs_t *CommUart;
 
-void init_names()
+void init_names(void)
 {
     char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
 #pragma GCC diagnostic push

@@ -272,7 +272,7 @@ __attribute__((section(".spix_config")))
 /**
  * @brief      Configurations for SPIXFM (XiP)
  */
-void SPIXFM_Config()
+void SPIXFM_Config(void)
 {
     MXC_SPIXF_SetSPIFrequency(EXT_FLASH_SPIXFM_BAUD);
     MXC_SPIXF_SetMode(MXC_SPIXF_MODE_0);
