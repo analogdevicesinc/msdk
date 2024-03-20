@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +60,7 @@ int MXC_LPCMP_Init(mxc_lpcmp_cmpsel_t cmp)
 
     initGPIOForComp(cmp);
 
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
@@ -76,7 +75,7 @@ int MXC_LPCMP_Init(mxc_lpcmp_cmpsel_t cmp)
 
 int MXC_LPCMP_Shutdown(mxc_lpcmp_cmpsel_t cmp)
 {
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
@@ -90,7 +89,7 @@ int MXC_LPCMP_Shutdown(mxc_lpcmp_cmpsel_t cmp)
 
 int MXC_LPCMP_EnableInt(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol)
 {
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
@@ -102,7 +101,7 @@ int MXC_LPCMP_EnableInt(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol)
 
 int MXC_LPCMP_DisableInt(mxc_lpcmp_cmpsel_t cmp)
 {
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
@@ -111,7 +110,7 @@ int MXC_LPCMP_DisableInt(mxc_lpcmp_cmpsel_t cmp)
 
 int MXC_LPCMP_GetFlags(mxc_lpcmp_cmpsel_t cmp)
 {
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
@@ -120,7 +119,7 @@ int MXC_LPCMP_GetFlags(mxc_lpcmp_cmpsel_t cmp)
 
 int MXC_LPCMP_ClearFlags(mxc_lpcmp_cmpsel_t cmp)
 {
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
@@ -129,7 +128,7 @@ int MXC_LPCMP_ClearFlags(mxc_lpcmp_cmpsel_t cmp)
 
 int MXC_LPCMP_SelectPolarity(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol)
 {
-    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -261,22 +260,22 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
 
 int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 {
-    return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, spiWidth);
+    return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, (mxc_spi_reva_width_t)spiWidth);
 }
 
 mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA1_GetWidth((mxc_spi_reva_regs_t *)spi);
+    return (mxc_spi_width_t)MXC_SPI_RevA1_GetWidth((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)
 {
-    return MXC_SPI_RevA1_SetMode((mxc_spi_reva_regs_t *)spi, spiMode);
+    return MXC_SPI_RevA1_SetMode((mxc_spi_reva_regs_t *)spi, (mxc_spi_reva_mode_t)spiMode);
 }
 
 mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA1_GetMode((mxc_spi_reva_regs_t *)spi);
+    return (mxc_spi_mode_t)MXC_SPI_RevA1_GetMode((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi)
@@ -415,13 +414,13 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             reqselRx = MXC_DMA_REQUEST_SPI1RX;
             break;
         case 2:
-            reqselTx = MXC_DMA_REQUEST_SPI2RX;
+            reqselRx = MXC_DMA_REQUEST_SPI2RX;
             break;
         case 3:
-            reqselTx = MXC_DMA_REQUEST_SPI3RX;
+            reqselRx = MXC_DMA_REQUEST_SPI3RX;
             break;
         case 4:
-            reqselTx = MXC_DMA_REQUEST_SPI4RX;
+            reqselRx = MXC_DMA_REQUEST_SPI4RX;
             break;
         default:
             return E_BAD_PARAM;

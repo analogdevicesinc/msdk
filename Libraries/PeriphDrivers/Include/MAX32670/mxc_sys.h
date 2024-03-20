@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,7 +148,7 @@ typedef struct {
 
 static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
-static inline void _mxc_crit_get_state()
+static inline void _mxc_crit_get_state(void)
 {
 #ifndef __riscv
     /*
@@ -280,7 +279,7 @@ void MXC_SYS_RTCClockEnable(void);
  * @brief Disables the External RTC Clock Input
  * @returns         E_NO_ERROR if everything is successful
  */
-int MXC_SYS_RTCClockDisable();
+int MXC_SYS_RTCClockDisable(void);
 
 /**
  * @brief Enable System Clock Source without switching to it
@@ -322,11 +321,20 @@ mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
 int MXC_SYS_Clock_Timeout(uint32_t ready);
+
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param reset The peripheral to reset
  */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
+
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }

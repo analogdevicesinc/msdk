@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +47,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         return E_BAD_PARAM;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     // Configure GPIO for spi
     if (spi == MXC_SPI0) {
         MXC_GCR->rst0 |= MXC_F_GCR_RST0_SPI0;
@@ -57,6 +57,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     } else {
         return E_NO_DEVICE;
     }
+#endif
 
     return MXC_SPI_RevA1_Init((mxc_spi_reva_regs_t *)spi, masterMode, quadModeUsed, numSlaves,
                               ssPolarity, hz);
@@ -256,7 +257,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
             break;
 
         default:
@@ -271,7 +272,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1RX;
+            reqselTx = MXC_DMA_REQUEST_SPIMSSRX;
             break;
 
         default:
@@ -310,7 +311,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
             break;
 
         default:
@@ -325,7 +326,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
             break;
 
         case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
+            reqselRx = MXC_DMA_REQUEST_SPIMSSRX;
             break;
 
         default:

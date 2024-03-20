@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,8 +76,8 @@ static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static void buttonCallback(void *pb);
-int usbStartupCallback();
-int usbShutdownCallback();
+int usbStartupCallback(void);
+int usbShutdownCallback(void);
 
 /**
  * User-supplied function to delay usec micro-seconds
@@ -103,8 +102,7 @@ int main(void)
 {
     maxusb_cfg_options_t usb_opts;
 
-    printf("\n\n***** " TOSTRING(
-        TARGET) " USB Composite Device (Keyboard and Mass Storage) Example *****\n");
+    printf("\n\n***** USB Composite Device (Keyboard and Mass Storage) Example *****\n");
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */
@@ -216,7 +214,7 @@ int main(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback()
+int usbStartupCallback(void)
 {
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_HIRC96_EN)) {
@@ -233,7 +231,7 @@ int usbStartupCallback()
 }
 
 /******************************************************************************/
-int usbShutdownCallback()
+int usbShutdownCallback(void)
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1137,8 +1136,6 @@ int cnn_boost_enable(mxc_gpio_regs_t *port, uint32_t pin)
     gpio_out.mask = pin;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
-    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
-    gpio_out.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
 
@@ -1152,8 +1149,6 @@ int cnn_boost_disable(mxc_gpio_regs_t *port, uint32_t pin)
     gpio_out.mask = pin;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
-    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
-    gpio_out.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
 

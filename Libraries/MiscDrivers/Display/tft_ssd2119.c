@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -196,15 +196,8 @@ static void spi_transmit(void *datain, unsigned int count)
     volatile uint16_t *u16ptrin = (volatile uint16_t *)datain;
     unsigned int start = 0;
 
-    MXC_SPI_SetFrequency((mxc_spi_regs_t *)spi, tft_spi_freq);
-    MXC_SPI_SetDataSize((mxc_spi_regs_t *)spi, 9);
-
     // HW requires disabling/renabling SPI block at end of each transaction (when SS is inactive).
     spi->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
-
-    // Setup the slave select
-    MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE,
-                 ((1 << ssel) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
 
     // number of RX Char is 0xffff
     spi->ctrl1 &= ~(MXC_F_SPI_CTRL1_RX_NUM_CHAR);
@@ -526,6 +519,10 @@ static void tft_spi_init(void)
     MXC_GPIO_SetVSSEL(g_spi_gpio.port, g_spi_gpio.vssel, g_spi_gpio.mask);
     MXC_SPI_SetDataSize((mxc_spi_regs_t *)spi, 9);
     MXC_SPI_SetWidth((mxc_spi_regs_t *)spi, SPI_WIDTH_STANDARD);
+    MXC_SPI_SetFrequency((mxc_spi_regs_t *)spi, tft_spi_freq);
+    // Setup the slave select
+    MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE,
+                 ((1 << ssel) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
 }
 
 static void displayInit(void)

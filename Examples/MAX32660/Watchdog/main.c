@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +44,11 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define OVERFLOW //Test Windowed timer \
-                 //OVERFLOW            \
-                 //UNDERFLOW
+
+// Test Windowed timer:
+//  OVERFLOW
+//  UNDERFLOW
+#define OVERFLOW
 
 #define RESET_PERIOD MXC_WDT_PERIOD_2_28
 #define INT_PERIOD MXC_WDT_PERIOD_2_27
@@ -60,7 +61,7 @@
 volatile uint32_t intCnt = 0;
 
 /***** Functions *****/
-void watchdogHandler()
+void watchdogHandler(void)
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nTIMEOUT!\n");
@@ -75,7 +76,7 @@ void WDT0_IRQHandler(void)
     watchdogHandler();
 }
 
-void WDT_Setup()
+void WDT_Setup(void)
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_SetResetPeriod(MXC_WDT0, RESET_PERIOD);

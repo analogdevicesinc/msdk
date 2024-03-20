@@ -4774,6 +4774,14 @@ transaction.</description>
      <description>RTC Second Counter. This register contains the 32-bit second counter.</description>
      <addressOffset>0x00</addressOffset>
      <resetMask>0x00000000</resetMask>
+     <fields>
+      <field>
+       <name>SEC</name>
+       <description>Seconds Counter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>SSEC</name>

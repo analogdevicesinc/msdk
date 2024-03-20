@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -414,7 +413,7 @@ void MXC_CAN_SignalUnitEvent(uint32_t can_idx, mxc_can_unit_evt_t event)
 {
     if (can_idx >= MXC_CAN_INSTANCES) {
         return;
-    } else if (event < MXC_CAN_UNIT_EVT_INACTIVE || event > MXC_CAN_UNIT_EVT_BUS_OFF) {
+    } else if (event > MXC_CAN_UNIT_EVT_BUS_OFF) {
         return;
     }
 
@@ -426,7 +425,7 @@ void MXC_CAN_SignalObjectEvent(uint32_t can_idx, mxc_can_obj_evt_t event)
 {
     if (can_idx >= MXC_CAN_INSTANCES) {
         return;
-    } else if (event < MXC_CAN_OBJ_EVT_TX_COMPLETE || event > MXC_CAN_OBJ_EVT_RX_OVERRUN) {
+    } else if (event > MXC_CAN_OBJ_EVT_RX_OVERRUN) {
         return;
     }
 

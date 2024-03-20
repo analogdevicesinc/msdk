@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +63,7 @@ typedef enum {
  * @note        modes 1 and 2 are not supported
  */
 typedef enum {
-    MXC_SPIXR_MODE_0,
+    MXC_SPIXR_MODE_0 = 0,
     MXC_SPIXR_MODE_1,
     MXC_SPIXR_MODE_2,
     MXC_SPIXR_MODE_3,

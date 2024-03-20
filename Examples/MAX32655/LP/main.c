@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +61,7 @@
 #define DO_UPM 0
 #define DO_BACKUP 0
 #define DO_STANDBY 0
+#define DO_POWERDOWN 0 // will reset after wakeup
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -72,6 +72,10 @@
 
 #if (DO_BACKUP && DO_STANDBY)
 #error "You must select either DO_BACKUP or DO_STANDBY or neither, not both."
+#endif
+
+#if (DO_BACKUP && DO_POWERDOWN)
+#error "You must select either DO_BACKUP or DO_POWERDOWN or neither, not both."
 #endif
 
 #if USE_CONSOLE
@@ -222,5 +226,12 @@ int main(void)
         setTrigger(0);
         MXC_LP_EnterStandbyMode();
 #endif // DO_STANDBY
+
+#if DO_POWERDOWN
+        PRINT("Entering Power Down mode, press reset or P3.0 = 0 to restart.\n");
+        setTrigger(0);
+
+        MXC_LP_EnterPowerDownMode();
+#endif // DO_POWERDOWN
     }
 }

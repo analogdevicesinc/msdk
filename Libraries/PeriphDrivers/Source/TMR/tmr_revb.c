@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,12 +64,16 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
     //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
     if (cfg->bitMode == TMR_BIT_MODE_16A || cfg->bitMode == TMR_BIT_MODE_32) {
-        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A, clk_src);
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
         MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, cfg->pres);
     }
     if (cfg->bitMode == TMR_BIT_MODE_16B || cfg->bitMode == TMR_BIT_MODE_32) {
-        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B, clk_src);
-        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, cfg->pres);
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
+        // mxc_tmr_pres_t is for for CLKDIV_A register settings [4:7]
+        // Field positions for CLKDIV_B are Located at [16:19]. Shift 12 more bits.
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres) << 12);
     }
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
@@ -424,7 +427,7 @@ void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, uint32_t us)
         ++clk_shift;
     }
 
-    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)clk_shift << MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
+    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)(clk_shift << MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS);
     mxc_tmr_cfg_t cfg;
 
     // Initialize the timer in one-shot mode

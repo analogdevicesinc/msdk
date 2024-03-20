@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration
 
 # **********************************************************
 
@@ -12,5 +12,5 @@
 BOARD = CAM02_RevA
 
 ifneq ($(BOARD),CAM02_RevA)
-$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000CAM02 board.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
+$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000CAM02 board.  (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages))
 endif

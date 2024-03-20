@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,31 +59,59 @@ typedef enum { MXC_I2S_MSB_FIRST, MXC_I2S_LSB_FIRST } mxc_i2s_bitorder_t;
 /** @brief I2S transaction justify order */
 typedef enum { MXC_I2S_MSB_JUSTIFY, MXC_I2S_LSB_JUSTIFY } mxc_i2s_justify_t;
 
-/** @brief  I2S transaction word size */
+/** @brief I2S transaction word size.
+ *
+ * Set this field to the desired width for data writes and reads from the FIFO. */
 typedef enum {
-    MXC_I2S_DATASIZE_BYTE,
-    MXC_I2S_DATASIZE_HALFWORD,
-    MXC_I2S_DATASIZE_WORD
+    MXC_I2S_WSIZE_BYTE = 0, ///< Set 8-bit FIFO transactions
+    MXC_I2S_WSIZE_HALFWORD, ///< Set 16-bit FIFO transactions
+    MXC_I2S_WSIZE_WORD, ///< Set 32-bit FIFO transactions
+
+    MXC_I2S_DATASIZE_BYTE = MXC_I2S_WSIZE_BYTE, ///< Legacy name.  Use MXC_I2S_WSIZE_BYTE instead.
+    MXC_I2S_DATASIZE_HALFWORD =
+        MXC_I2S_WSIZE_HALFWORD, ///< Legacy name.  Use MXC_I2S_WSIZE_HALFWORD instead.
+    MXC_I2S_DATASIZE_WORD = MXC_I2S_WSIZE_WORD, ///< Legacy name.  Use MXC_I2S_WSIZE_WORD instead.
 } mxc_i2s_wsize_t;
 
-/** @brief  I2S transaction sample size */
+/** @brief  I2S transaction adjust position.
+ * 
+ * This field is used to determine which bits are used if the sample size is less than the bits per word.*/
 typedef enum {
-    MXC_I2S_SAMPLESIZE_EIGHT,
-    MXC_I2S_SAMPLESIZE_SIXTEEN,
-    MXC_I2S_SAMPLESIZE_TWENTY,
-    MXC_I2S_SAMPLESIZE_TWENTYFOUR,
-    MXC_I2S_SAMPLESIZE_THIRTYTWO,
-} mxc_i2s_samplesize_t;
+    MXC_I2S_ADJUST_LEFT = 0,
+    MXC_I2S_ADJUST_RIGHT,
+} mxc_i2s_adjust_t;
 
 /** @brief  I2S channel mode */
 typedef enum {
-    MXC_I2S_INTERNAL_SCK_WS_0,
+    MXC_I2S_INTERNAL_SCK_WS_0 = 0,
     MXC_I2S_INTERNAL_SCK_WS_1,
     MXC_I2S_EXTERNAL_SCK_INTERNAL_WS,
     MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS,
 } mxc_i2s_ch_mode_t;
 
-/** @brief I2S Configuration Struct */
+#define MXC_I2S_SAMPLESIZE_EIGHT (8)
+#define MXC_I2S_SAMPLESIZE_SIXTEEN (16)
+#define MXC_I2S_SAMPLESIZE_TWENTY (20)
+#define MXC_I2S_SAMPLESIZE_TWENTYFOUR (24)
+#define MXC_I2S_SAMPLESIZE_THIRTYTWO (32)
+
+typedef uint8_t mxc_i2s_samplesize_t;
+
+/** @brief I2S Configuration Struct 
+ * 
+ * Most common audio configurations.
+ *  __________________________________________________________________
+ * |   Audio Sample  | bitsWord | sampleSize |        wordSize        |
+ * | Width / Samples |          |            |  \ref mxc_i2s_wsize_t  |
+ * |------------------------------------------------------------------|
+ * |     8 bits / 16 |    8     |      8     |     MXC_I2S_WSIZE_BYTE |
+ * |    16 bits / 32 |   16     |     16     | MXC_I2S_WSIZE_HALFWORD |
+ * |    20 bits / 40 |   20     |     20     |     MXC_I2S_WSIZE_WORD |
+ * |    24 bits / 48 |   24     |     24     |     MXC_I2S_WSIZE_WORD |
+ * |    24 bits / 64 |   32     |     24     |     MXC_I2S_WSIZE_WORD |
+ * |    32 bits / 64 |   32     |     32     |     MXC_I2S_WSIZE_WORD |
+ * |_________________|__________|____________|________________________|
+*/
 typedef struct {
     mxc_i2s_ch_mode_t channelMode;
     mxc_i2s_stereo_t stereoMode;
@@ -92,8 +119,11 @@ typedef struct {
     mxc_i2s_justify_t justify;
     mxc_i2s_bitorder_t bitOrder;
     mxc_i2s_polarity_t wsPolarity;
-    mxc_i2s_samplesize_t sampleSize;
+    mxc_i2s_samplesize_t
+        sampleSize; ///< Optional - Between zero and bitsWord. Consider setting 'adjust' field with this.
     uint16_t clkdiv;
+    mxc_i2s_adjust_t adjust;
+    uint8_t bitsWord; ///< MAX=0x1F.
     void *rawData;
     void *txData;
     void *rxData;

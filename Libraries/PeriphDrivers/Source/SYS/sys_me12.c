@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +45,10 @@
 
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(1)
+
+// DAP Lock macros
+#define INFOBLOCK_DAP_LOCK_OFFSET 0x30
+#define DAP_LOCK_SEQUENCE 0x5A5AA5A5
 
 /* **** Globals **** */
 
@@ -150,12 +153,12 @@ int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 {
-    if (clock > 31) {
-        clock -= 32;
-        MXC_GCR->pclkdis1 |= (0x1 << clock);
-    } else if (clock > 63) {
+    if (clock > 63) {
         clock -= 64;
         MXC_MCR->pclkdis |= (0x1 << clock);
+    } else if (clock > 31) {
+        clock -= 32;
+        MXC_GCR->pclkdis1 |= (0x1 << clock);
     } else {
         MXC_GCR->pclkdis0 |= (0x1 << clock);
     }
@@ -164,12 +167,12 @@ void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 {
-    if (clock > 31) {
-        clock -= 32;
-        MXC_GCR->pclkdis1 &= ~(0x1 << clock);
-    } else if (clock > 63) {
+    if (clock > 63) {
         clock -= 64;
         MXC_MCR->pclkdis &= ~(0x1 << clock);
+    } else if (clock > 31) {
+        clock -= 32;
+        MXC_GCR->pclkdis1 &= ~(0x1 << clock);
     } else {
         MXC_GCR->pclkdis0 &= ~(0x1 << clock);
     }
@@ -427,6 +430,25 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 }
 
 /* ************************************************************************** */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
+{
+    /* Return if this setting is already current */
+    if (div == MXC_SYS_GetClockDiv()) {
+        return;
+    }
+
+    MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_DIV, div);
+
+    SystemCoreClockUpdate();
+}
+
+/* ************************************************************************** */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
+{
+    return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
+}
+
+/* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
     if (reset > 31) {
@@ -438,6 +460,45 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     } else {
         MXC_GCR->rst0 = (0x1 << reset);
     }
+}
+
+/* ************************************************************************** */
+int MXC_SYS_LockDAP_Permanent(void)
+{
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
+    int err;
+    uint32_t info_blk_addr;
+    uint32_t lock_sequence[4];
+
+    // Infoblock address to write lock sequence to
+    info_blk_addr = MXC_INFO_MEM_BASE + INFOBLOCK_DAP_LOCK_OFFSET;
+
+    // Set lock sequence
+    lock_sequence[0] = DAP_LOCK_SEQUENCE;
+    lock_sequence[1] = DAP_LOCK_SEQUENCE;
+    lock_sequence[2] = DAP_LOCK_SEQUENCE;
+    lock_sequence[3] = DAP_LOCK_SEQUENCE;
+
+    // Initialize FLC
+    MXC_FLC_Init();
+
+    // Unlock infoblock
+    MXC_FLC_UnlockInfoBlock(info_blk_addr);
+
+    // Write DAP lock sequence to infoblock
+    err = MXC_FLC_Write128(info_blk_addr, lock_sequence);
+
+    // Re-lock infoblock
+    MXC_FLC_LockInfoBlock(info_blk_addr);
+
+    return err;
+#endif
 }
 
 /**@} end of mxc_sys */

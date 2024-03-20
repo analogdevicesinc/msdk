@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -285,6 +284,17 @@ void MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask);
  * @return     The requested interrupt status.
  */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port);
+
+/**
+ * @brief      Set Voltage select for pins to VDDIO or VDDIOH
+ *
+ * @param      port   The GPIO port
+ * @param[in]  vssel  VDDIO or VDDIOH to set the voltatge to
+ * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
+ * 
+ * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
+ */
+int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask);
 
 /**
  * @brief      Gets the interrupt(s) status on a GPIO port

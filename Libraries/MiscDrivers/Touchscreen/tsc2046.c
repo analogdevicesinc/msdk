@@ -1,8 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@
  ******************************************************************************/
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
@@ -237,12 +238,12 @@ void MXC_TS_GetXY(unsigned int *x, unsigned int *y)
     *y = g_y;
 }
 
-int MXC_TS_GetTSEvent()
+int MXC_TS_GetTSEvent(void)
 {
     return ts_event;
 }
 
-void MXC_TS_ClearTSEvent()
+void MXC_TS_ClearTSEvent(void)
 {
     ts_event = false;
 }
