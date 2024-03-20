@@ -27,6 +27,8 @@
 // MSDK Debug flags
 #if defined(DEBUG) && DEBUG == 1
 // RTOS Stats Timer Functions
+#if defined(DEBUG) && DEBUG == 1
+// RTOS Stats Timer Functions
 extern void ConfigTimerForStats(void);
 extern uint32_t GetTimerForStats(void);
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()    (ConfigTimerForStats())
@@ -40,7 +42,6 @@ extern uint32_t GetTimerForStats(void);
 #define configRECORD_STACK_HIGH_ADDRESS                     1
 
 #endif
-
 
 /*-----------------------------------------------------------
  * Application specific definitions.
