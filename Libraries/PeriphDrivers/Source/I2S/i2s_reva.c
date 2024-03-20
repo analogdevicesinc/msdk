@@ -59,21 +59,21 @@ static void configure_data_sizes(mxc_i2s_reva_regs_t *i2s, uint8_t bits_word, ui
                                  uint8_t wsize)
 {
     if (bits_word > 0) {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS,
+        MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD,
                      (bits_word - 1) << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS); // Subtract 1
     } else {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS,
+        MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD,
                      0); // Clear to 0
     }
 
     //Set sample length if defined:
     //The SMP_SIZE is equal to bitsWord when sampleSize == 0 or sampleSize > bitsWord
     if (smp_sz > 0) {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS,
+        MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE,
                      (smp_sz - 1) << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS); // Subtract 1
     } else {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS,
-                     smp_sz); // Clear to 0
+        MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE,
+                     0); // Clear to 0
     }
 
     //Set datasize to load in FIFO
