@@ -224,7 +224,7 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = (PeripheralClock / 4);
             break;
 
-        // MAX32675 does not support the ERTCO.
+            // MAX32675 does not support the ERTCO.
 
         case MXC_TMR_INRO_CLK:
             clockFrequency = INRO_FREQ;

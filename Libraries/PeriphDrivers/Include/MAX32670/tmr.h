@@ -146,7 +146,7 @@ typedef enum {
     MXC_TMR_APB_CLK = 0, ///< PCLK
     MXC_TMR_EXT_CLK = 1, ///< External Clock
     MXC_TMR_IBRO_CLK = 2, ///< 7.3728MHz Clock
-    MXC_TMR_ERFO_CLK = 3, ///< 32MHz 
+    MXC_TMR_ERFO_CLK = 3, ///< 32MHz
     MXC_TMR_ERTCO_CLK = 4, ///< 32.768KHz Clock
     MXC_TMR_INRO_CLK = 5, ///< 80KHz Clock
 
