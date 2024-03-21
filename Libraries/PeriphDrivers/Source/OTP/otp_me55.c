@@ -66,6 +66,11 @@ int MXC_OTP_Init(mxc_otp_clkdiv_t pclkdiv)
     return MXC_OTP_RevA_Init((mxc_otp_reva_regs_t *)MXC_OTP, pclkdiv);
 }
 
+int MXC_OTP_PowerDown(void)
+{
+    return MXC_OTP_RevA_PowerDown((mxc_otp_reva_regs_t *)MXC_OTP);
+}
+
 int MXC_OTP_IsLocked(void)
 {
     return MXC_OTP_RevA_IsLocked((mxc_otp_reva_regs_t *)MXC_OTP);
