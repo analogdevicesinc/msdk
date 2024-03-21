@@ -52,7 +52,7 @@ mxc_aes_req_t req;
 
 volatile int dma_flag = 0;
 /***** Functions *****/
-void DMA0_IRQHandler()
+void DMA0_IRQHandler(void)
 {
     MXC_DMA_Handler();
     dma_flag++;

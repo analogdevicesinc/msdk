@@ -65,7 +65,7 @@ void i2s_dma_cb(int channel, int error)
 #endif
 
 /*****************************************************************/
-int main()
+int main(void)
 {
     int32_t err;
     mxc_i2s_req_t req;

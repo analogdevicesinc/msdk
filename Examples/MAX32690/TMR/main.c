@@ -47,8 +47,8 @@
 #define SLEEP_MODE // Select between SLEEP_MODE and LP_MODE for LPTIMER
 
 // Parameters for PWM output
-#define OST_CLOCK_SOURCE MXC_TMR_8M_CLK // \ref mxc_tmr_clock_t
-#define PWM_CLOCK_SOURCE MXC_TMR_60M_CLK // \ref mxc_tmr_clock_t
+#define OST_CLOCK_SOURCE MXC_TMR_IBRO_CLK // \ref mxc_tmr_clock_t
+#define PWM_CLOCK_SOURCE MXC_TMR_ISO_CLK // \ref mxc_tmr_clock_t
 #define CONT_CLOCK_SOURCE MXC_TMR_APB_CLK // \ref mxc_tmr_clock_t
 
 // Parameters for Continuous timer
@@ -76,7 +76,7 @@
 #endif
 
 /***** Functions *****/
-void PWMTimer()
+void PWMTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer

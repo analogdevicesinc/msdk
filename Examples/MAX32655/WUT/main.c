@@ -36,7 +36,7 @@
 /***** Definitions *****/
 #define MILLISECONDS_WUT 5000
 
-void WUT_IRQHandler()
+void WUT_IRQHandler(void)
 {
     MXC_WUT_IntClear(MXC_WUT0);
 }

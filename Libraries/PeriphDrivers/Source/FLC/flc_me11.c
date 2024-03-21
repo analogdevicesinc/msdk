@@ -93,7 +93,7 @@ int MXC_FLC_ME11_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 }
 
 //******************************************************************************
-int MXC_FLC_Init()
+int MXC_FLC_Init(void)
 {
     return E_NO_ERROR;
 }

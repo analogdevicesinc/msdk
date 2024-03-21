@@ -519,7 +519,7 @@ void EattsContinueWriteReq(dmConnId_t connId, uint8_t slot, uint16_t handle, uin
  *  \return None
  */
  /*************************************************************************************************/
-void EattsInit()
+void EattsInit(void)
 {
   /* set up callback interface */
   attCb.pEnServer = &attsFcnIf;

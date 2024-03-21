@@ -180,7 +180,7 @@ void service_console(cmd_t cmd)
 }
 
 volatile int buttonPressed = 0;
-void buttonHandler()
+void buttonHandler(void)
 {
     buttonPressed = 1;
 }

@@ -56,7 +56,6 @@ jobs:
         repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
         ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
         fetch-depth: 0
-        token: ${{ secrets.ADI_MSDK_Workflow }}
 
     - name: clang-format-run
       run: |
