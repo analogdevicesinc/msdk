@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -448,7 +447,7 @@ mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
  * @details    Call this function as the ISR for each DMA channel under driver control.
  *             Interrupt flags for channel ch will be automatically cleared before return.
  */
-void MXC_DMA_Handler();
+void MXC_DMA_Handler(void);
 
 /*************************/
 /* High Level Functions  */

@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,14 +84,15 @@ typedef enum {
  * @brief Timer modes
  */
 typedef enum {
-    MXC_TMR_MODE_ONESHOT = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT, /**< Timer Mode ONESHOT */
-    MXC_TMR_MODE_CONTINUOUS = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS, /**< Timer Mode CONTINUOUS */
-    MXC_TMR_MODE_COUNTER = MXC_V_TMR_CTRL0_MODE_A_COUNTER, /**< Timer Mode COUNTER */
-    MXC_TMR_MODE_PWM = MXC_V_TMR_CTRL0_MODE_A_PWM, /**< Timer Mode PWM */
-    MXC_TMR_MODE_CAPTURE = MXC_V_TMR_CTRL0_MODE_A_CAPTURE, /**< Timer Mode CAPTURE */
-    MXC_TMR_MODE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_COMPARE, /**< Timer Mode COMPARE */
-    MXC_TMR_MODE_GATED = MXC_V_TMR_CTRL0_MODE_A_GATED, /**< Timer Mode GATED */
-    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP, /**< Timer Mode CAPTURECOMPARE */
+    MXC_TMR_MODE_ONESHOT = MXC_V_TMR_CTRL0_MODE_A_ONE_SHOT, ///< Timer Mode ONESHOT
+    MXC_TMR_MODE_CONTINUOUS = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS, ///< Timer Mode CONTINUOUS
+    MXC_TMR_MODE_COUNTER = MXC_V_TMR_CTRL0_MODE_A_COUNTER, ///< Timer Mode COUNTER
+    MXC_TMR_MODE_PWM = MXC_V_TMR_CTRL0_MODE_A_PWM, ///< Timer Mode PWM
+    MXC_TMR_MODE_CAPTURE = MXC_V_TMR_CTRL0_MODE_A_CAPTURE, ///< Timer Mode CAPTURE
+    MXC_TMR_MODE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_COMPARE, ///< Timer Mode COMPARE
+    MXC_TMR_MODE_GATED = MXC_V_TMR_CTRL0_MODE_A_GATED, ///< Timer Mode GATED
+    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_CAPCOMP, ///< Timer Mode CAPTURECOMPARE
+    MXC_TMR_MODE_DUAL_EDGE = MXC_V_TMR_CTRL0_MODE_A_DUAL_EDGE, ///< Timer Mode DUALEDGE
 
     // Legacy names
     TMR_MODE_ONESHOT = MXC_TMR_MODE_ONESHOT,
@@ -102,7 +102,8 @@ typedef enum {
     TMR_MODE_CAPTURE = MXC_TMR_MODE_CAPTURE,
     TMR_MODE_COMPARE = MXC_TMR_MODE_COMPARE,
     TMR_MODE_GATED = MXC_TMR_MODE_GATED,
-    TMR_MODE_CAPTURE_COMPARE = MXC_TMR_MODE_CAPTURE_COMPARE
+    TMR_MODE_CAPTURE_COMPARE = MXC_TMR_MODE_CAPTURE_COMPARE,
+    TMR_MODE_DUAL_EDGE = MXC_TMR_MODE_DUAL_EDGE
 } mxc_tmr_mode_t;
 
 /**
@@ -140,16 +141,22 @@ typedef enum {
  * @brief      Peripheral Clock settings 
  */
 typedef enum {
-    MXC_TMR_APB_CLK = 0,
-    MXC_TMR_EXT_CLK,
+    MXC_TMR_APB_CLK = 0, /**< PCLK */
+    MXC_TMR_EXT_CLK = 1, /**< External Clock */
+    MXC_TMR_IBRO_CLK = 2, /**< 7.3728MHz Clock */
+    MXC_TMR_ERFO_CLK = 3, /**< 32MHz Clock */
+    MXC_TMR_ERTCO_CLK = 4, /**< 32.768KHz Clock */
+    MXC_TMR_INRO_CLK = 5, /**< 80KHz Clock */
+
+    // Legacy names
     /*8M and 60M clocks can be used for Timers 0,1,2 and 3*/
-    MXC_TMR_60M_CLK,
-    MXC_TMR_32M_CLK,
-    MXC_TMR_8M_CLK,
+    MXC_TMR_60M_CLK, // Not supported as TMR clock source
+    MXC_TMR_32M_CLK = MXC_TMR_ERFO_CLK,
+    MXC_TMR_8M_CLK = MXC_TMR_IBRO_CLK,
     /*32K clock can be used for Timers 0,1,2,3 and 4*/
-    MXC_TMR_32K_CLK,
-    /*8K and EXT clocks can only be used for Timers 4 and 5*/
-    MXC_TMR_8K_CLK,
+    MXC_TMR_32K_CLK = MXC_TMR_ERTCO_CLK,
+    /*80K and EXT clocks can only be used for Timers 4 and 5*/
+    MXC_TMR_80K_CLK = MXC_TMR_INRO_CLK,
 } mxc_tmr_clock_t;
 
 /**

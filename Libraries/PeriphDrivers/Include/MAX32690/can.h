@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,7 +145,7 @@ typedef struct {
  * @brief  Selects power state of the CAN peripherals
  */
 typedef enum {
-    MXC_CAN_PWR_CTRL_OFF, ///< Shut off power to peripherals
+    MXC_CAN_PWR_CTRL_OFF = 0, ///< Shut off power to peripherals
     MXC_CAN_PWR_CTRL_SLEEP, ///< Put peripherals to sleep
     MXC_CAN_PWR_CTRL_FULL, ///< Peripherals fully awake
 } mxc_can_pwr_ctrl_t;
@@ -155,7 +154,7 @@ typedef enum {
  * @brief  Selects which bitrate to perform operation on
  */
 typedef enum {
-    MXC_CAN_BITRATE_SEL_NOMINAL, ///< Set bitrate for classic CAN frames
+    MXC_CAN_BITRATE_SEL_NOMINAL = 0, ///< Set bitrate for classic CAN frames
     MXC_CAN_BITRATE_SEL_FD_DATA, ///< Reserved for future use. Not supported on MAX32690, included to prevent build errors.
 } mxc_can_bitrate_sel_t;
 
@@ -163,7 +162,7 @@ typedef enum {
  * @brief  Selects the CAN driver's mode of operation
  */
 typedef enum {
-    MXC_CAN_MODE_INITIALIZATION, ///< Reset mode
+    MXC_CAN_MODE_INITIALIZATION = 0, ///< Reset mode
     MXC_CAN_MODE_NORMAL, ///< Normal operating mode
     MXC_CAN_MODE_RESTRICTED, ///< Restricted mode
     MXC_CAN_MODE_MONITOR, ///< Listen-only mode
@@ -253,7 +252,7 @@ typedef struct {
  * @brief  Used to set the features available to a CAN object
  */
 typedef enum {
-    MXC_CAN_OBJ_CFG_INACTIVE, ///< Object disabled
+    MXC_CAN_OBJ_CFG_INACTIVE = 0, ///< Object disabled
     MXC_CAN_OBJ_CFG_TXRX, ///< Object can transmit and/or receive messages
     MXC_CAN_OBJ_CFG_RSV, ///< Reserved for future use
     MXC_CAN_OBJ_CFG_RX_RTR_TX_DATA, ///< NOT SUPPORTED ON MAX32690
@@ -264,7 +263,8 @@ typedef enum {
  * @brief  Selects the control operation for the CAN driver to perform
  */
 typedef enum {
-    MXC_CAN_CTRL_SET_FD_MODE, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
+    MXC_CAN_CTRL_SET_FD_MODE =
+        0, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
     MXC_CAN_CTRL_ABORT_TX, ///< Abort transmission
     MXC_CAN_CTRL_RETRANSMISSION, ///< Enable/disable auto retransmission on error
     MXC_CAN_CTRL_TRANSCEIVER_DLY, ///< Set transceiver delay
@@ -274,7 +274,7 @@ typedef enum {
  * @brief  State which bus has entered to trigger unit event
  */
 typedef enum {
-    MXC_CAN_UNIT_EVT_INACTIVE, ///< Peripherals entered inactive state (sleep, shutdown)
+    MXC_CAN_UNIT_EVT_INACTIVE = 0, ///< Peripherals entered inactive state (sleep, shutdown)
     MXC_CAN_UNIT_EVT_ACTIVE, ///< Peripherals entered active state
     MXC_CAN_UNIT_EVT_WARNING, ///< Peripheral received error warning
     MXC_CAN_UNIT_EVT_PASSIVE, ///< Peripheral entered passive state
@@ -285,7 +285,7 @@ typedef enum {
  * @brief  Selects which object to notify/handle
  */
 typedef enum {
-    MXC_CAN_OBJ_EVT_TX_COMPLETE, ///< Transmission complete
+    MXC_CAN_OBJ_EVT_TX_COMPLETE = 0, ///< Transmission complete
     MXC_CAN_OBJ_EVT_RX, ///< Message received
     MXC_CAN_OBJ_EVT_RX_OVERRUN, ///< RXFIFO overflow
 } mxc_can_obj_evt_t;
@@ -324,6 +324,10 @@ mxc_can_capabilities_t MXC_CAN_GetCapabilities(void);
 
 /**
  * @brief   Initializes CAN event callbacks
+ * @note    On default this function enables CAN peripheral clock and CAN gpio pins.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove clock and gpio related codes from file.
  * 
  * @param can_idx   Index of the CAN peripheral to initialize
  * @param cfg       Specifies how to configure CAN peripheral (see MXC_CAN_ObjectConfigure)
@@ -337,6 +341,10 @@ int MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg, mxc_can_unit_event_cb_
 
 /**
  * @brief   Free CAN resources (does not reset or disable CAN peripherals)
+ * @note    On default this function enables CAN peripheral clock.
+ *          if you wish to manage clock related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove clock related codes from file.
  *
  * @param can_idx   Index of CAN peripheral to un-initialize (shutdown)
  * 
@@ -346,6 +354,10 @@ int MXC_CAN_UnInit(uint32_t can_idx);
 
 /**
  * @brief   Change Power state of the CAN peripherals
+ * @note    On default this function enables CAN peripheral clock.
+ *          if you wish to manage clock related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove clock related codes from file.
  * 
  * @param can_idx   Index of CAN peripheral to alter power settings for
  * @param pwr       Desired power state of the CAN peripherals
@@ -467,6 +479,10 @@ int MXC_CAN_ObjectSetFilter(uint32_t can_idx, mxc_can_filt_cfg_t cfg, uint32_t i
 
 /**
  * @brief   Configure CAN object
+ * @note    On default this function enables CAN gpio pins.
+ *          if you wish to manage gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove gpio related codes from file.
  * 
  * @param can_idx   Pointer to CAN instance
  * @param cfg       Specifies how the filter should be configured

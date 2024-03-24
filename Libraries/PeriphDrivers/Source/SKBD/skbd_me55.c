@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +38,8 @@ int MXC_SKBD_Init(mxc_skbd_config_t config)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CTB);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SKBD);
 
-    // MXC_GPIO_Config(&gpio_cfg_kbd_P0);
-    // MXC_GPIO_Config(&gpio_cfg_kbd_P1);
-    MXC_GPIO_Config(&gpio_cfg_kbd_P2);
+    /* Set the SKBD GPIO configs */
+    MXC_GPIO_Config(&gpio_cfg_skbd_P2);
 
     return MXC_SKBD_RevA_Init((mxc_skbd_reva_regs_t *)MXC_SKBD, config);
 }

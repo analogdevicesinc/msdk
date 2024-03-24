@@ -1,14 +1,13 @@
 /**
- * @file mxc_pins.c
- * @brief      This file contains constant pin configurations for the peripherals.
+ * @file    mxc_pins.c
+ * @brief   This file contains constant pin configurations for the peripherals.
  */
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,3 +180,9 @@ const mxc_gpio_cfg_t gpio_cfg_sc1 = { MXC_GPIO0, (MXC_GPIO_PIN_21 | MXC_GPIO_PIN
 const mxc_gpio_cfg_t gpio_cfg_spixf = { MXC_GPIO1, (MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 |
                                         MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27), MXC_GPIO_FUNC_ALT1,
                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+
+// SKBD Pin Definitions
+const mxc_gpio_cfg_t gpio_cfg_skbd_P2 = { MXC_GPIO1, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16 |
+                                          MXC_GPIO_PIN_17 | MXC_GPIO_PIN_18| MXC_GPIO_PIN_19 | MXC_GPIO_PIN_20 |
+                                          MXC_GPIO_PIN_21), MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_PULL_UP,
+                                          MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };

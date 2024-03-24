@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,8 +92,45 @@ int MXC_SPIMSS_SlaveTransAsync(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 {
     return MXC_SPIMSS_RevA_SlaveTransAsync((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t *)req);
 }
+
 /* ************************************************************************* */
 int MXC_SPIMSS_AbortAsync(mxc_spimss_req_t *req)
 {
     return MXC_SPIMSS_RevA_AbortAsync((spimss_reva_req_t *)req);
+}
+
+/* ************************************************************************** */
+int MXC_SPIMSS_MasterTransDMA(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
+{
+    return MXC_SPIMSS_RevA_MasterTransDMA((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t *)req);
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_SetAutoDMAHandlers(mxc_spimss_regs_t *spi, bool enable)
+{
+    return MXC_SPIMSS_RevA_SetAutoDMAHandlers((mxc_spimss_reva_regs_t *)spi, enable);
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_SetTXDMAChannel(mxc_spimss_regs_t *spi, unsigned int channel)
+{
+    return MXC_SPIMSS_RevA_SetTXDMAChannel((mxc_spimss_reva_regs_t *)spi, channel);
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_GetTXDMAChannel(mxc_spimss_regs_t *spi)
+{
+    return MXC_SPIMSS_RevA_GetTXDMAChannel((mxc_spimss_reva_regs_t *)spi);
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_SetRXDMAChannel(mxc_spimss_regs_t *spi, unsigned int channel)
+{
+    return MXC_SPIMSS_RevA_SetRXDMAChannel((mxc_spimss_reva_regs_t *)spi, channel);
+}
+
+/* ************************************************************************* */
+int MXC_SPIMSS_GetRXDMAChannel(mxc_spimss_regs_t *spi)
+{
+    return MXC_SPIMSS_RevA_GetRXDMAChannel((mxc_spimss_reva_regs_t *)spi);
 }

@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,7 +128,7 @@ struct _i2c_req_t {
  * application to handle these events.
  */
 typedef enum {
-    MXC_I2C_EVT_MASTER_WR, ///< A slave address match occurred with the master
+    MXC_I2C_EVT_MASTER_WR = 0, ///< A slave address match occurred with the master
     ///< requesting a write to the slave.
     MXC_I2C_EVT_MASTER_RD, ///< A slave address match occurred with the master
     ///< requesting a read from the slave.
@@ -171,11 +170,17 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
 
 /**
  * @brief   Initialize and enable I2C peripheral.
+ *          Note the ME18 assigns the same alternate function to multiple sets
+ *          of pins.  The drivers will enable both sets so that either can be used.
+ *          Users should ensure the unused set is left unconnected.
+ *
+ *          See MAX32690 Rev A2 Errata #16:
+ *          https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf
  *
  * @note    On default this function enables I2C peripheral clock and i2c gpio pins.
  *          if you wish to manage clock and gpio related things in upper level instead of here.
  *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
- *          By this flag this function will remove clock and gpio related codes from file
+ *          By this flag this function will remove clock and gpio related codes from file.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   masterMode  Whether to put the device in master or slave mode. Use

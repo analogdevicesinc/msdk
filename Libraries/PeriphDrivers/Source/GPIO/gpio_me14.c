@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +78,12 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     int error;
     mxc_gpio_regs_t *gpio = cfg->port;
 
+    // Configure the vssel
+    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
 
@@ -121,8 +126,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return E_BAD_PARAM;
     }
 
-    // Configure the vssel
-    return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    return E_NO_ERROR;
 }
 
 /* ************************************************************************** */

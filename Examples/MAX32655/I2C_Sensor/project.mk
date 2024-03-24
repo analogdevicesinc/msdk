@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -11,7 +11,7 @@
 
 # This example is only compatible with the MAX32655EVKIT
 ifneq ($(BOARD),EvKit_V1)
-$(error ERR_NOTSUPPORTED: This project is only supported on the MAX32655EVKIT.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
+$(error ERR_NOTSUPPORTED: This project is only supported on the MAX32655EVKIT.  (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages))
 endif
 
 # Include temperature sensor driver

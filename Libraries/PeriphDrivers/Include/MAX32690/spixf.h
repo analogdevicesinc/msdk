@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +63,7 @@ typedef enum {
  * @brief      Header direction.
  */
 typedef enum {
-    MXC_SPIXF_HEADER_DIR_NONE,
+    MXC_SPIXF_HEADER_DIR_NONE = 0,
     MXC_SPIXF_HEADER_DIR_TX,
     MXC_SPIXF_HEADER_DIR_RX,
     MXC_SPIXF_HEADER_DIR_BOTH,
@@ -74,7 +73,7 @@ typedef enum {
  * @brief      SPIXF Pin mode.
  */
 typedef enum {
-    MXC_SPIXF_ACTIVE_LOW,
+    MXC_SPIXF_ACTIVE_LOW = 0,
     MXC_SPIXF_ACTIVE_HIGH,
 } mxc_spixf_sspol_t;
 
@@ -82,7 +81,7 @@ typedef enum {
  * @brief      SPIXF set command.
  */
 typedef enum {
-    MXC_SPIXF_CMD_EVERY_TRANS,
+    MXC_SPIXF_CMD_EVERY_TRANS = 0,
     MXC_SPIXF_CMD_FIRST_TRANS,
 } mxc_spixf_cmd_t;
 
@@ -99,7 +98,7 @@ typedef enum {
  * @brief      Select page size.
  */
 typedef enum {
-    MXC_SPIXF_4B,
+    MXC_SPIXF_4B = 0,
     MXC_SPIXF_8B,
     MXC_SPIXF_16B,
     MXC_SPIXF_32B,
@@ -109,7 +108,7 @@ typedef enum {
  * @brief      Header units.
  */
 typedef enum {
-    MXC_SPIXF_HEADER_UNITS_BITS,
+    MXC_SPIXF_HEADER_UNITS_BITS = 0,
     MXC_SPIXF_HEADER_UNITS_BYTES,
     MXC_SPIXF_HEADER_UNITS_PAGES,
 } mxc_spixf_hdr_units_t;
@@ -118,7 +117,7 @@ typedef enum {
  * @brief      Number of data lines to use.
  */
 typedef enum {
-    MXC_SPIXF_WIDTH_1, ///< 1 Data Line.
+    MXC_SPIXF_WIDTH_1 = 0, ///< 1 Data Line.
     MXC_SPIXF_WIDTH_2, ///< 2 Data Lines (x2).
     MXC_SPIXF_WIDTH_4, ///< 4 Data Lines (x4).
 } mxc_spixf_width_t;
@@ -137,7 +136,7 @@ typedef struct {
  * @brief      Slave select active timing
  */
 typedef enum {
-    MXC_SPIXF_SYS_CLOCKS_0,
+    MXC_SPIXF_SYS_CLOCKS_0 = 0,
     MXC_SPIXF_SYS_CLOCKS_2,
     MXC_SPIXF_SYS_CLOCKS_4,
     MXC_SPIXF_SYS_CLOCKS_8,
@@ -147,7 +146,7 @@ typedef enum {
  * @brief      Slave select Inactive timing
  */
 typedef enum {
-    MXC_SPIXF_SYS_CLOCKS_1, ///< 1 system clocks
+    MXC_SPIXF_SYS_CLOCKS_1 = 0, ///< 1 system clocks
     MXC_SPIXF_SYS_CLOCKS_3, ///< 3 system clocks
     MXC_SPIXF_SYS_CLOCKS_5, ///< 5 system clocks
     MXC_SPIXF_SYS_CLOCKS_9, ///< 9 system clocks
@@ -157,7 +156,7 @@ typedef enum {
  * @brief      Data Width, # of data I/O used to rcv data
  */
 typedef enum {
-    MXC_SPIXF_SINGLE_SDIO,
+    MXC_SPIXF_SINGLE_SDIO = 0,
     MXC_SPIXF_DUAL_SDIO,
     MXC_SPIXF_QUAD_SDIO,
     MXC_SPIXF_INVALID,
@@ -901,12 +900,12 @@ int MXC_SPIXF_IsEnabled(void);
 /**
  * @brief      Set IOCTRL SDIO Drive to High
  */
-void MXC_SPIXF_SetIoctrlSDIODriveHigh();
+void MXC_SPIXF_SetIoctrlSDIODriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SDIO Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSDIODriveLow();
+void MXC_SPIXF_SetIoctrlSDIODriveLow(void);
 
 /**
  * @brief      Get IOCTRL SDIO Drive
@@ -918,12 +917,12 @@ uint8_t MXC_SPIXF_GetIoctrlSDIODrive(void);
 /**
  * @brief      Set IOCTRL SCLK Drive to High
  */
-void MXC_SPIXF_SetIoctrlSCLKDriveHigh();
+void MXC_SPIXF_SetIoctrlSCLKDriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SCLK Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSCLKDriveLow();
+void MXC_SPIXF_SetIoctrlSCLKDriveLow(void);
 
 /**
  * @brief      Get IOCTRL SCLK Drive
@@ -935,12 +934,12 @@ uint8_t MXC_SPIXF_GetIoctrlSCLKDrive(void);
 /**
  * @brief      Set IOCTRL SS Drive to High
  */
-void MXC_SPIXF_SetIoctrlSSDriveHigh();
+void MXC_SPIXF_SetIoctrlSSDriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SS Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSSDriveLow();
+void MXC_SPIXF_SetIoctrlSSDriveLow(void);
 
 /**
  * @brief      Get IOCTRL SS Drive

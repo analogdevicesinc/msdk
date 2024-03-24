@@ -10,8 +10,7 @@
         "PMIC",
         "PushButton",
         "Touchscreen",
-        "CODEC",
-        "SRAM"
+        "CODEC"
     ],
     "vpaths":[
         "ADC",
@@ -24,7 +23,23 @@
         "PushButton",
         "Touchscreen",
         "CODEC",
-        "SRAM",
         "./"],
-    "whitelist":"False"
+    "whitelist":"True",
+    "targets":[
+        {
+            "name":"MAX32655"
+        },
+        {
+            "name":"MAX32665"
+        },
+        {
+            "name":"MAX32672"
+        },
+        {
+            "name":"MAX78000"
+        },
+        {
+            "name":"MAX78002"
+        }
+    ]
 }

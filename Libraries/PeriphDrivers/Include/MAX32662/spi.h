@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,6 +162,11 @@ struct _mxc_spi_req_t {
  * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
  *
  * These parameters can be modified after initialization using low level functions
+ *
+ * @note    On default this function enables SPI peripheral clock and spi gpio pins.
+ * if you wish to manage clock and gpio related things in upper level instead of here.
+ * Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ * By this flag this function will remove clock and gpio related codes from file.
  *
  * @param   spi             Pointer to SPI registers (selects the SPI block used.)
  * @param   masterMode      Whether to put the device in master or slave mode. Use

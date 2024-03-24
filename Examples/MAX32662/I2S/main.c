@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +62,7 @@ void tx_complete_cb(int ch, int err)
 }
 
 /*****************************************************************/
-int main()
+int main(void)
 {
     int err;
     printf("\n\n****************** I2S Transmission Example ******************\n");
@@ -74,11 +73,13 @@ int main()
 
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0; // Set I2S configurations
     req.stereoMode = MXC_I2S_STEREO;
-    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
+    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.bitOrder = MXC_I2S_MSB_FIRST;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
+    req.bitsWord = 16;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.clkdiv =
         ERFO_FREQ / (2 * 16 * 16000); // SRC_CLK / (2 * BITS_PER_SAMPLE * DESIRED_WSCLK_FREQ)
     req.rawData = tone;

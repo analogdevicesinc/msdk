@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,12 +108,12 @@ void RTC_IRQHandler(void)
 }
 
 volatile int buttonPressed = 0;
-void buttonHandler()
+void buttonHandler(void)
 {
     buttonPressed = 1;
 }
 
-void printTime()
+void printTime(void)
 {
     int day, hr, min, err;
     uint32_t sec, rtc_readout;
@@ -156,7 +155,7 @@ int main(void)
     printf("triggers, the rate of the sub-second alarm is switched to %d ms.\n\n",
            SUBSECOND_MSEC_1);
     printf("(LED1) is toggled each time the time-of-day alarm triggers.\n\n");
-    printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing SW1\n",
+    printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing SW3\n",
            TIME_OF_DAY_SEC);
     printf("will output the current value of the RTC to the console UART.\n\n");
 

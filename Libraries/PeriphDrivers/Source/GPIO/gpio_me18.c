@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,6 +138,14 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     // Initialize callback function pointers
     MXC_GPIO_Init(1 << port);
 
+    // Configure the vssel
+    if (port < 4) {
+        error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
+
     // Configure alternate function
     if (port < 4) {
         error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
@@ -237,29 +244,23 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         }
     }
 
-    // Configure the vssel
-    if (port < 4) {
-        error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-    }
-
     // Configure the drive strength
     if (cfg->func == MXC_GPIO_FUNC_IN) {
         return E_NO_ERROR;
     } else {
         return MXC_GPIO_SetDriveStrength(gpio, cfg->drvstr, cfg->mask);
     }
-
-    return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        return GPIO4_DATAIN_MASK(mask);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_IN_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1);
+        return ((gpio40 | gpio41) & mask);
     }
 
     return MXC_GPIO_RevA_InGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -291,7 +292,11 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        return GPIO4_DATAOUT_GET_MASK(mask);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_DO_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1);
+        return ((gpio40 | gpio41) & mask);
     }
 
     return MXC_GPIO_RevA_OutGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -424,8 +429,10 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 {
+    // GPIO Port 4 not a wakeup source. Return 0.
+    //  Can't return error code (negative values) due to return type.
     if (port == MXC_GPIO4) {
-        return E_NOT_SUPPORTED;
+        return 0;
     }
 
     return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);

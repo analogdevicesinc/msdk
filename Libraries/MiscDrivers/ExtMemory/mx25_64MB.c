@@ -5,9 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,7 +71,7 @@ static uint8_t g_is_configured = 0;
 /* **** Static Functions **** */
 
 /* ************************************************************************* */
-static int flash_busy()
+static int flash_busy(void)
 {
     uint8_t buf;
 
@@ -85,7 +85,7 @@ static int flash_busy()
 }
 
 /* ************************************************************************* */
-static int write_enable()
+static int write_enable(void)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd = MX25_CMD_WRITE_EN;
@@ -291,7 +291,7 @@ int Ext_Flash_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, Ext_Flash
     // Select approriate command for the desired read mode
     if (d_line == Ext_Flash_DataLine_Single) {
         cmd[0] = EXT_FLASH_CMD_READ;
-        dummy_bits = EXT_FLASH_Read_DUMMY;
+        dummy_bits = EXT_FLASH_READ_DUMMY;
     } else if (d_line == Ext_Flash_DataLine_Dual) {
         cmd[0] = EXT_FLASH_CMD_DREAD;
         dummy_bits = EXT_FLASH_DREAD_DUMMY;

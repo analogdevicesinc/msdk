@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,9 +133,16 @@ int main(void)
 
     printf("TFT Demo Example\n");
 #ifdef TFT_ADAFRUIT
-    /* Initialize touch screen */
+    /* Initialize ADAFRUIT TFT display */
+    MXC_TFT_Init(MXC_SPI0, -1, NULL, NULL);
+    MXC_TFT_SetRotation(ROTATE_270);
+    TFT_test();
+    /* Initialize ADAFRUIT touch screen */
     if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL))
         printf("Touch screen initialization failed\n");
+    MXC_TS_Start();
+    TFT_Print("Touch the screen!", 0, 120, font_5, 17);
+    TFT_Print("And check serial terminal!", 0, 140, font_5, 27);
 #else
     /* Initialize TFT display */
     MXC_TFT_Init(NULL, NULL);

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +22,7 @@
 #define _FACEDETECTION_H_
 
 // Feather board default orientation: horizontal, camera at the top
-//#define ROTATE_FEATHER_BOARD	// rotate 180 degree, camera at the bottom
+#define ROTATE_FEATHER_BOARD // rotate 180 degree, camera at the bottom
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
@@ -42,12 +41,10 @@
 #define IMAGE_W 224
 
 #define X_START (TFT_HEIGHT - IMAGE_YRES) / 2
-#define Y_START 30
+#define Y_START (TFT_HEIGHT - IMAGE_YRES) / 2
 
 #define FRAME_ORANGE 0xFD20
 #define FRAME_BLUE 0x001F
-#define FRAME_WHITE 0xFFFF
-#define FRAME_GREEN 0x07E0
 
 #define BYTE_PER_PIXEL 2
 

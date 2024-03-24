@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +68,7 @@ extern "C" {
  *
  */
 typedef enum {
-    SPI_WIDTH_3WIRE, ///< 1 Data line, half duplex
+    SPI_WIDTH_3WIRE = 0, ///< 1 Data line, half duplex
     SPI_WIDTH_STANDARD, ///< MISO/MOSI, full duplex
     SPI_WIDTH_DUAL, ///< 2 Data lines, half duplex
     SPI_WIDTH_QUAD, ///< 4 Data lines, half duplex
@@ -87,7 +86,7 @@ typedef enum {
  *  
  */
 typedef enum {
-    SPI_MODE_0, ///< clock phase = 0, clock polarity = 0
+    SPI_MODE_0 = 0, ///< clock phase = 0, clock polarity = 0
     SPI_MODE_1, ///< clock phase = 0, clock polarity = 1
     SPI_MODE_2, ///< clock phase = 1, clock polarity = 0
     SPI_MODE_3, ///< clock phase = 1, clock polarity = 1

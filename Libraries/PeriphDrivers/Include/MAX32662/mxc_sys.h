@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,6 +130,17 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
 
+typedef enum {
+    MXC_SYS_CLOCK_DIV_1 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1,
+    MXC_SYS_CLOCK_DIV_2 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV2,
+    MXC_SYS_CLOCK_DIV_4 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV4,
+    MXC_SYS_CLOCK_DIV_8 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV8,
+    MXC_SYS_CLOCK_DIV_16 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV16,
+    MXC_SYS_CLOCK_DIV_32 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV32,
+    MXC_SYS_CLOCK_DIV_64 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64,
+    MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
+} mxc_sys_system_clock_div_t;
+
 #define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
 #define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
 #define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
@@ -144,7 +154,7 @@ typedef struct {
 
 static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
-static inline void _mxc_crit_get_state()
+static inline void _mxc_crit_get_state(void)
 {
 #ifndef __riscv
     /*
@@ -275,7 +285,7 @@ void MXC_SYS_RTCClockEnable(void);
  * @brief Disables the 32kHz oscillator
  * @returns         E_NO_ERROR if everything is successful
  */
-int MXC_SYS_RTCClockDisable();
+int MXC_SYS_RTCClockDisable(void);
 
 /**
  * @brief Enable System Clock Source without switching to it
@@ -300,16 +310,37 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
 
 /**
+ * @brief Set the system clock divider.
+ * @param div       Enumeration for desired clock divider.
+ */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
+
+/**
+ * @brief Get the system clock divider.
+ * @returns         System clock divider.
+ */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
+
+/**
  * @brief Wait for a clock to enable with timeout
  * @param      ready The clock to wait for
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
 int MXC_SYS_Clock_Timeout(uint32_t ready);
+
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param           Enumeration for what to reset. Can reset multiple items at once.
  */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
+
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }

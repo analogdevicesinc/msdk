@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,15 +28,15 @@
 #define CAPTURE_X 50
 #define CAPTURE_Y 290
 
-#define HEIGHT_ID 160
-#define WIDTH_ID 120
+#define HEIGHT_ID 112
+#define WIDTH_ID 112
 #define THICKNESS 1 //4
 
 #define MAX_X_OFFSET 23 //(IMAGE_H - WIDTH)/2 // 24 pixels
 #define MAX_Y_OFFSET 31 //(IMAGE_W - HEIGHT)/2 // 32 pixels
 
 // Data input: HWC (little data): 160x120x3
-#define DATA_SIZE_IN_ID (160 * 120 * 3)
+#define DATA_SIZE_IN_ID (112 * 112 * 3)
 
 int face_id(void);
 

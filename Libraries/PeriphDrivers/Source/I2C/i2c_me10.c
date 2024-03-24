@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +50,9 @@
 int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 {
     int err;
-    int idx = MXC_I2C_GET_IDX(i2c);
 
-    switch (idx) {
+#ifndef MSDK_NO_GPIO_CLK_INIT
+    switch (MXC_I2C_GET_IDX(i2c)) {
     case 0:
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
         MXC_GPIO_Config(&gpio_cfg_i2c0);
@@ -65,6 +64,7 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
     default:
         return E_BAD_PARAM;
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     if ((err = MXC_I2C_RevA_Init((mxc_i2c_reva_regs_t *)i2c, masterMode, slaveAddr)) !=
         E_NO_ERROR) {

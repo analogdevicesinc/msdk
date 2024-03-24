@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,17 +27,17 @@
 
 #ifndef IMAGE_TO_UART
 #define PR_DEBUG(fmt, args...) \
-    if (1)                     \
-    printf("D[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    if (0)                     \
+    printf("D[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #define PR_INFO(fmt, args...) \
-    if (0)                    \
-    printf("I[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    if (1)                    \
+    printf("I[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #define PR_WARN(fmt, args...) \
     if (1)                    \
-    printf("W[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    printf("W[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #define PR_ERR(fmt, args...) \
     if (1)                   \
-    printf("E[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
+    printf("E[%-10s:%4d] \t" fmt "\r\n", S_MODULE_NAME, __LINE__, ##args) ///< TODO
 #else
 #define PR_DEBUG(fmt, args...)
 #define PR_INFO(fmt, args...)
