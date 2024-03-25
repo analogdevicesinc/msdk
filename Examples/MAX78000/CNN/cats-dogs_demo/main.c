@@ -400,8 +400,10 @@ int main(void)
     Camera_Power(POWER_ON);
     //MXC_Delay(300000);
     printf("\n\nCats-vs-Dogs Feather Demo\n");
-#else
+#elif defined(BOARD_EVKIT_V1)
     printf("\n\nCats-vs-Dogs Evkit Demo\n");
+#else
+    printf("\n\nCats-vs-Dogs CAM02 Demo\n");
 #endif
 
     /* Enable cache */
@@ -463,7 +465,8 @@ int main(void)
 
 #ifdef BOARD_EVKIT_V1
     camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow
-#else
+#endif
+#ifdef BOARD_FTHR_REVA
     camera_write_reg(0x11, 0x0); // set camera clock prescaller to prevent streaming overflow
 #endif
 
@@ -477,8 +480,11 @@ int main(void)
     TFT_Print(buff, 20, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
+
+#if defined(BOARD_EVKIT_V1) || defined(BOARD_FTHR_REVA)
     printf("********** Press PB1(SW1) to capture an image **********\r\n");
     while (!PB_Get(0)) {}
+#endif
 
 #ifdef TFT_ENABLE
     MXC_TFT_ClearScreen();
@@ -566,9 +572,13 @@ int main(void)
 
 #ifdef ASCII_ART
         asciiart((uint8_t *)input_0);
-        printf("********** Press PB1(SW1) to capture an image **********\r\n");
 #endif
+
+#if defined(BOARD_EVKIT_V1) || defined(BOARD_FTHR_REVA)
+        printf("********** Press PB1(SW1) to capture an image **********\r\n");
         while (!PB_Get(0)) {}
+#endif
+
     }
 
     return 0;

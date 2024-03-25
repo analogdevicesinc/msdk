@@ -14,9 +14,20 @@
 # Add your config here!
 # Uncomment the line below to build for the MAX78000FTHR
 #BOARD=FTHR_RevA
+# Uncomment the line below to build for the MAX78000CAM02
+#BOARD = CAM02_RevA
 
-$(info Note: This project is designed and tested for the OV7692 only.)
-override CAMERA=OV7692
+ifeq ($(BOARD),EvKit_V1)
+CAMERA = OV7692
+endif
+
+ifeq ($(BOARD),FTHR_RevA)
+CAMERA = OV7692
+endif
+
+ifeq ($(BOARD),CAM02_RevA)
+CAMERA = GC0308
+endif
 
 # Set a higher optimization level.  The increased performance
 # is required for the CameraIF DMA code to work within the
@@ -46,9 +57,3 @@ endif
 ifeq ($(BOARD),CAM01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
 endif
-
-ifeq ($(BOARD),CAM02_RevA)
-$(error ERR_NOTSUPPORTED: This project is not supported for the CAM02 board)
-endif
-
-
