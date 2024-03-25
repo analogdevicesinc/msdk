@@ -151,9 +151,7 @@ static uint8_t *rx_data = NULL;
 void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
 {
     // TFT DMA
-    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
-    }
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {}
 
     MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
     MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
@@ -186,9 +184,7 @@ void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
 /* **************************************************************************** */
 void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
 {
-    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
-    }
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {}
 
     if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
         MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
@@ -480,7 +476,6 @@ int main(void)
     TFT_Print(buff, 20, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
-
 #if defined(BOARD_EVKIT_V1) || defined(BOARD_FTHR_REVA)
     printf("********** Press PB1(SW1) to capture an image **********\r\n");
     while (!PB_Get(0)) {}
@@ -578,7 +573,6 @@ int main(void)
         printf("********** Press PB1(SW1) to capture an image **********\r\n");
         while (!PB_Get(0)) {}
 #endif
-
     }
 
     return 0;
