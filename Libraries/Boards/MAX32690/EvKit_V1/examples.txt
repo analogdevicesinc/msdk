@@ -57,6 +57,7 @@ RTC_Backup
 RV_ARM_Loader
 SCPA_OTP_Dump
 SPI
+SPI_v2
 Temp_Monitor
 TFT_Demo
 TMR
