@@ -87,7 +87,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
     if (spi == MXC_SPI0) { // <--------------------------------------- SPI0
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI0);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-        
+
         switch (if_mode) {
         case MXC_SPI_INTERFACE_STANDARD:
             error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
@@ -141,10 +141,10 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
             }
         }
 
-    } else if (spi == MXC_SPI1) {  // <--------------------------------------- SPI1
+    } else if (spi == MXC_SPI1) { // <--------------------------------------- SPI1
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
-        
+
         switch (if_mode) {
         case MXC_SPI_INTERFACE_STANDARD:
             error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
@@ -218,7 +218,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
     } else if (spi == MXC_SPI2) { // <--------------------------------------- SPI2
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI2);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
-        
+
         switch (if_mode) {
         case MXC_SPI_INTERFACE_STANDARD:
             error = MXC_GPIO_Config(&gpio_cfg_spi2_standard);
@@ -293,7 +293,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
     } else if (spi == MXC_SPI3) { // <--------------------------------------- SPI3
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI3);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
-        
+
         switch (if_mode) {
         case MXC_SPI_INTERFACE_STANDARD:
             error = MXC_GPIO_Config(&gpio_cfg_spi3_standard);
@@ -362,7 +362,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
     } else if (spi == MXC_SPI4) { // <--------------------------------------- SPI4
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI4);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI4);
-        
+
         switch (if_mode) {
         case MXC_SPI_INTERFACE_STANDARD:
             error = MXC_GPIO_Config(&gpio_cfg_spi4_standard);
@@ -720,7 +720,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
         case 1:
             tx_reqsel = MXC_DMA_REQUEST_SPI1TX;
             break;
-        
+
         case 2:
             tx_reqsel = MXC_DMA_REQUEST_SPI2TX;
             break;
@@ -1069,6 +1069,7 @@ int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)
     return MXC_SPI_RevA2_SetDummyTX((mxc_spi_reva_regs_t *)spi, defaultTXData);
 }
 
-void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state) {
+void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state)
+{
     MXC_ASSERT(0);
 }
