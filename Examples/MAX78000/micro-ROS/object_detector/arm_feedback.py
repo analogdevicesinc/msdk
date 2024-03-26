@@ -44,9 +44,9 @@ g_stopped = False
 # home = [1.514991, -0.754719, 0.391165, 1.184233, -0.01]
 # home = [1.495631, -1.156622, 0.302194, 1.572330, -0.01]
 # home = [1.552389, -0.986350, 0.076699, 1.711923, -0.01]
-home = [1.512505, -0.512350, -0.058291, 1.644427, -0.01]
+home = [1.512505, -0.512350, -0.058291, 1.644427, 0.01]
 home_xyz = Vec3D(x=0.02, y=0.124, z=0.152)
-shutdown_pos = [1.613748, 0.090505, 0.391165, 1.092194, -0.01]
+shutdown_pos = [1.613748, 0.090505, 0.391165, 1.092194, 0.01]
 
 present_joint_angle = deepcopy(home)
 goal_joint_angle = deepcopy(home)
@@ -379,7 +379,7 @@ class PolygonSubscriber(Node):
 
     def grab(self):
         self._status("Grabbing object")
-        goal_joint_angle[4] = -0.001
+        goal_joint_angle[4] = 0.001
         teleop_keyboard.send_goal_tool_control()
 
     def search_forward(self):
@@ -525,7 +525,7 @@ class PolygonSubscriber(Node):
                 self.state = 8
             
             elif self.state == 8:
-                goal_joint_angle[4] = -0.010
+                goal_joint_angle[4] = 0.010
                 teleop_keyboard.send_goal_tool_control()
                 goal_joint_angle = deepcopy(home)
                 teleop_keyboard.send_goal_joint_space()
