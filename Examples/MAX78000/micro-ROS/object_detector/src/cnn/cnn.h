@@ -6,7 +6,7 @@
 **************************************************************************************************/
 
 /*
- * This header file was automatically @generated for the qrcode_tinierssd_ds_lowres_lpriors_1d8pts network from a template.
+ * This header file was automatically @generated for the qrcode_tinierssd_ds_lowres_lpriors_1d8pts_samp33_224_0 network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
