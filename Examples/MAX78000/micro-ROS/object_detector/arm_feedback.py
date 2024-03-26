@@ -501,7 +501,7 @@ class PolygonSubscriber(Node):
             elif self.state == 6: # Move back to home
                 global height_drop
                 global drop_angle
-                height_drop = (deepcopy(present_kinematics_pose[2]) * 1.3)
+                height_drop = (deepcopy(present_kinematics_pose[2]) * 1.1)
                 drop_angle = deepcopy(present_kinematics_pose[3:6])
                 goal_joint_angle = home
 
