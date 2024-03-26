@@ -216,7 +216,7 @@ int main(void)
         // Printf needs the Uart turned on since they share the same pins
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
-            LED_On(1);
+            LED_On(0);
             return E_COMM_ERR;
         } else {
             printf("-->%2d Bits Transaction Successful\n", i);
@@ -231,6 +231,6 @@ int main(void)
     }
 
     printf("\nExample Complete.\n");
-    LED_On(0);
+    LED_On(1); // GREEN_LED
     return E_NO_ERROR;
 }
