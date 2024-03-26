@@ -18,10 +18,34 @@
  *
  ******************************************************************************/
 
+
+/**
+    Symbols for RISCV memory segments if the RISCV core is used.
+        The RISCV memory sections are based on the remaining
+        available memory between the ARM and RISCV cores.
+
+    ARM memory segment symbols are defined in startup file.
+ */
+_MAILBOX_ORIGIN = _ARM_SRAM_ORIGIN + _ARM_SRAM_SIZE;
+
+_RISCV_FLASH_ORIGIN = _ARM_FLASH_ORIGIN + _ARM_FLASH_SIZE;
+_RISCV_FLASH_SIZE = _FLASH_SIZE - _ARM_FLASH_SIZE;
+
+_RISCV_SRAM_ORIGIN = _MAILBOX_ORIGIN + 2*_MAILBOX_SIZE;
+_RISCV_SRAM_SIZE = _SRAM_SIZE - _ARM_SRAM_SIZE - 2*_MAILBOX_SIZE;
+
 MEMORY {
     ROM        (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB ROM */
-    FLASH      (rx) : ORIGIN = 0x10000000, LENGTH = 0x00080000 /* 512KB Flash */
-    SRAM      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00020000 /* 128kB SRAM */
+    FLASH      (rx) : ORIGIN = _ARM_FLASH_ORIGIN, LENGTH = _ARM_FLASH_SIZE /* 512KB Flash if only ARM core is used */
+    SRAM      (rwx) : ORIGIN = _ARM_SRAM_ORIGIN, LENGTH = _ARM_SRAM_SIZE /* 128kB SRAM if only ARM core is used */
+
+    /* Allocate RISCV memory sections, if RISCV core is used. */
+    FLASH_RV   (rx) : ORIGIN = _RISCV_FLASH_ORIGIN, LENGTH = _RISCV_FLASH_SIZE
+    SRAM_RV   (rwx) : ORIGIN = _RISCV_SRAM_ORIGIN, LENGTH = _RISCV_SRAM_SIZE
+
+    /* If RISCV core is used, Each core has a mailbox in the RISCV core SRAM memory space (SRAM2). */
+    MAILBOX_0  (rw) : ORIGIN = _MAILBOX_ORIGIN, LENGTH = _MAILBOX_SIZE
+    MAILBOX_1  (rw) : ORIGIN = _MAILBOX_ORIGIN + _MAILBOX_SIZE, LENGTH = MAILBOX_SIZE
 }
 
 SECTIONS {
@@ -179,6 +203,22 @@ SECTIONS {
         *(.heap*)
         __HeapLimit = ABSOLUTE(__StackLimit);
     } > SRAM
+
+    .mailbox_0 (NOLOAD):
+    {
+        _mailbox_0 = ALIGN(., 4); 
+        *(.mailbox_0*)           /*Shared memory section*/
+        . = . + _MAILBOX_SIZE;
+        _emailbox_0 = ALIGN(., 4);
+    } > MAILBOX_0
+
+    .mailbox_1 (NOLOAD):
+    {
+        _mailbox_1 = ALIGN(., 4);
+        *(.mailbox_1*)           /*Shared memory section*/
+        . = . + _MAILBOX_SIZE;
+        _emailbox_1 = ALIGN(., 4);
+    } > MAILBOX_1
 
     PROVIDE(__stack = __StackTop);
 

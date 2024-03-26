@@ -123,6 +123,10 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SDHC/sdhc_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SDHC/sdhc_reva.c
 USE_NATIVE_SDHC = yes
 
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SEMA
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SEMA/sema_ai87.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SEMA/sema_reva.c
+
 MXC_SPI_VERSION ?= v1
 # Selects the SPI drivers to build with.  Acceptable values are:
 # - v1

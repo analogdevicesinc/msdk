@@ -21,6 +21,69 @@
     .syntax unified
     .arch armv7-m
 
+    /**
+        Global symbols for full available memory.
+
+        Symbols defined in linker and startup file starts with an underscore
+            ('_') to differentiate between their counterparts defined in
+            max78000_memory.mk file.
+     */
+    .equ      _FLASH_SIZE, FLASH_SIZE
+    .globl    _FLASH_SIZE
+    .equ      _FLASH_ORIGIN, FLASH_ORIGIN
+    .globl    _FLASH_ORIGIN
+    .equ      _SRAM_SIZE, SRAM_SIZE
+    .globl    _SRAM_SIZE
+    .equ      _SRAM_ORIGIN, SRAM_ORIGIN
+    .globl    _SRAM_ORIGIN
+
+    /**
+        Symbols for the ARM memory segments which are used in the linker files.
+            The pre-defined ARM settings (non-under-scored symbols such as
+            ARM_SRAM_ORIGIN and SRAM_ORIGIN) are located in max78000_memory.mk.
+            
+        When RISCV core is selected and enabled for a project, the symbols for
+            the RISCV memory segments (e.g. _RISCV_SRAM_ORIGIN, _RISCV_SRAM_SIZE)
+            are defined in the linker file (max78000.ld).
+        
+        This allows for appropriate allocation of memory for ARM and RISCV cores
+            during compile-time.
+     */
+#ifdef ARM_SRAM_ORIGIN
+    .equ    _ARM_SRAM_ORIGIN, ARM_SRAM_ORIGIN
+#else
+    .equ    _ARM_SRAM_ORIGIN, SRAM_ORIGIN
+#endif
+    .globl    _ARM_SRAM_ORIGIN
+
+#ifdef ARM_SRAM_SIZE
+    .equ    _ARM_SRAM_SIZE, ARM_SRAM_SIZE
+#else
+    .equ    _ARM_SRAM_SIZE, SRAM_SIZE
+#endif
+    .globl    _ARM_SRAM_SIZE
+
+#ifdef ARM_FLASH_ORIGIN
+    .equ    _ARM_FLASH_ORIGIN, ARM_FLASH_ORIGIN
+#else
+    .equ    _ARM_FLASH_ORIGIN, FLASH_ORIGIN
+#endif
+    .globl    _ARM_FLASH_ORIGIN
+
+#ifdef ARM_FLASH_SIZE
+    .equ    _ARM_FLASH_SIZE, ARM_FLASH_SIZE
+#else
+    .equ    _ARM_FLASH_SIZE, FLASH_SIZE
+#endif
+    .globl    _ARM_FLASH_SIZE
+
+#ifdef MAILBOX_SIZE
+    .equ    _MAILBOX_SIZE, MAILBOX_SIZE
+#else
+    .equ    _MAILBOX_SIZE, 0x0
+#endif
+    .globl    _MAILBOX_SIZE
+
     .section .stack
     .align 3
 #ifdef __STACK_SIZE
