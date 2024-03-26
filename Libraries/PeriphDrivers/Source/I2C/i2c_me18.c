@@ -48,15 +48,25 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 #ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_I2C_Shutdown(i2c); // Clear everything out
 
+    /* Note: The ME18 assigns the same alternate function to multiple sets
+     * of pins.  The drivers will enable both sets so that either can be used.
+     * Users should ensure the unused set is left unconnected.
+     *
+     * See MAX32690 Rev A2 Errata #16:
+     * https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf
+     */
     if (i2c == MXC_I2C0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
         MXC_GPIO_Config(&gpio_cfg_i2c0);
+        MXC_GPIO_Config(&gpio_cfg_i2c0a);
     } else if (i2c == MXC_I2C1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C1);
         MXC_GPIO_Config(&gpio_cfg_i2c1);
+        MXC_GPIO_Config(&gpio_cfg_i2c1a);
     } else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C2);
         MXC_GPIO_Config(&gpio_cfg_i2c2);
+        MXC_GPIO_Config(&gpio_cfg_i2c2c);
     } else {
         return E_NO_DEVICE;
     }

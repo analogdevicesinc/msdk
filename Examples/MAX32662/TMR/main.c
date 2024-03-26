@@ -40,8 +40,8 @@
 //#define SLEEP_MODE          // Uncomment to enable sleep mode
 
 // Parameters for PWM output
-#define OST_CLOCK_SOURCE MXC_TMR_32M_CLK // \ref mxc_tmr_clock_t
-#define PWM_CLOCK_SOURCE MXC_TMR_8M_CLK // \ref mxc_tmr_clock_t
+#define OST_CLOCK_SOURCE MXC_TMR_ERFO_CLK // \ref mxc_tmr_clock_t
+#define PWM_CLOCK_SOURCE MXC_TMR_IBRO_CLK // \ref mxc_tmr_clock_t
 #define CONT_CLOCK_SOURCE MXC_TMR_APB_CLK // \ref mxc_tmr_clock_t
 
 // Parameters for Continuous timer
