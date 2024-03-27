@@ -1,6 +1,6 @@
 ## Description
 
-Projects Dual_core_sync_arm and Dual_core_sync_riscv demonstrate loading the RISC-V core program from the ARM core and synchronizing these two cores by hardware semaphores. 
+Projects Dual_core_sync_arm and Dual_core_sync_riscv demonstrate loading the RISC-V core program from the ARM core and synchronizing these two cores by hardware semaphores.
 
 Dual_core_sync_arm runs on the ARM core (CM4) to load the RISC-V core (RV32) code space, setup the RISC-V debugger pins, and start the RISC-V core.
 
@@ -33,7 +33,12 @@ If using the MAX32690EVKIT:
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+
 ## Expected Output
 
 The Console UART of the device will output these messages:

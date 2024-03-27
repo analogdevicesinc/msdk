@@ -1,9 +1,9 @@
 ## Description
 
-The applet is a small program that loaded into the internal RAM to extend secure ROM capability. 
+The applet is a small program that loaded into the internal RAM to extend secure ROM capability.
 By the applet user can implement several kinds of needs. In this example OTP content will be dump
-by applet mechanism. 
-This example will generate .srec file. Then generate SCP (Secure Communication Protocol) package. 
+by applet mechanism.
+This example will generate .srec file. Then generate SCP (Secure Communication Protocol) package.
 
 Before build example please set correct silicon (A1, A2...) version you have in [project.mk](project.mk) as below <br />
 PROJ_CFLAGS+=-DMAX32690_A1
@@ -34,6 +34,12 @@ If using the MAX32690EVKIT:
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Open a console (Powershell or bash) then send scp packages to device.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
 -   Open a console (Powershell or bash) then send scp packages to device.
 
 ## Expected Output
