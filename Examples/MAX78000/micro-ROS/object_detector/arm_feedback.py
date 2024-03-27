@@ -368,18 +368,42 @@ class PolygonSubscriber(Node):
         self._status("Repositioning grabber")
         global goal_kinematics_pose
         global present_kinematics_pose
-        goal_kinematics_pose = deepcopy(present_kinematics_pose)     
+        goal_kinematics_pose = deepcopy(present_kinematics_pose)
         xy = Vec2D(x = present_kinematics_pose[0], y = present_kinematics_pose[1])
-        correction = xy.unit() * (task_position_delta * -10)
+
+        # The OMX gives us a quaternion vector representing the current rotation.  If we rotate the initial position (1,0,0) by
+        # the quaternion we get an 3D carteisan orientation vector relative to the current position.
+        # We will use this vector to move "towards" the cube.
+        current_orientation = Vec3D(x=1.0, y=0.0, z=0.0).rotate_quaternion(
+            u=goal_kinematics_pose[3], # w
+            i=goal_kinematics_pose[4], # x
+            j=goal_kinematics_pose[5], # y
+            k=goal_kinematics_pose[6]  # z
+        ).unit()
+
+        # Now, we need to correct for the offset between the camera's position and the center point of the gripper.
+        # Essentially we want to move "down", but the vector representing "down" will change relative to the current orientation.
+ 
+        # Calculate a plane along the "center line" of the arm.  We do this by taking the (x,y) component of the current
+        # orientation and crossing it with the Z axis.  This gives us a normal vector that defines the plane.
+        center_plane_normal = Vec3D(x=current_orientation.x, y=current_orientation.y, z=0).cross(Vec3D(x=0, y=0, z=1)).unit()
+
+        # Now we want to calculate a vector that is perpendicular to the current orientation vector *along* the axis of
+        # the center-line plane.  The resulting vector will be perpendicular to *both* the center-line plane's normal
+        # vector *and* the current orientation vector.  Therefore a cross-product between the two gives us the desired result.
+        # The direction of the vector is desired as well (based on the right-hand rule)
+        cube_offset_vector = current_orientation.cross(center_plane_normal).unit()
+
+        correction = (current_orientation * 0.03) + (cube_offset_vector * 0.0325) # Note the ratio between the correction factors is 50/50.  If the camera pos were different, the ratio here can be tuned.
         goal_kinematics_pose[0] += correction.x
         goal_kinematics_pose[1] += correction.y
-        goal_kinematics_pose[2] -= task_position_delta * 15
+        goal_kinematics_pose[2] += correction.z
 
         teleop_keyboard.send_goal_task_space()
 
     def grab(self):
         self._status("Grabbing object")
-        goal_joint_angle[4] = 0.001
+        goal_joint_angle[4] = 0.002
         teleop_keyboard.send_goal_tool_control()
 
     def search_forward(self):
@@ -464,14 +488,6 @@ class PolygonSubscriber(Node):
                     self.state = 0
                 else:
                     self.state = 2
-
-            # elif self.state == 1: # Skew
-            #     print(f"---SKEW : {self.skew}")
-            #     if not skew_good:
-            #         self.correct_skew()
-            #         self.state = 0
-            #     else:
-            #         self.state = 2
 
             elif self.state == 2: # Height
                 self._print("Checking height")
@@ -824,7 +840,7 @@ def main(args=None):
         global teleop_keyboard
         teleop_keyboard = TeleopKeyboard(ui.main_console, ui.main_console_status)
         
-        init_delay = 5
+        init_delay = 3
         for i in range(1, init_delay + 1):
             main_status(f"[yellow]Initializing ({i}/{init_delay}s)[/yellow]")
             rclpy.spin_once(teleop_keyboard, timeout_sec=0.1)
