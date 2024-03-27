@@ -59,8 +59,8 @@ drop_angle = []
 drop_off_point = [-0.11, 0.2]
 
 debug = True
-task_position_delta = 0.01 / 3  # meter
-joint_angle_delta = 0.15  # radian
+task_position_delta = (0.01 / 3) * 1.3  # meter
+joint_angle_delta = (0.15 * 1.3)  # radian
 global path_time
 path_time = 0.2 # second
 skew_tolerance = 0.3
