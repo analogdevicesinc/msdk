@@ -71,9 +71,21 @@ endif
 JLINKEXE     += -if SWD -device ${TARGET_UC} -speed 10000
 COMMAND_FILE := flash.jlinkexe
 
+
+# Some devices require a breakpoint to trap the bootloader before the SWD is
+# disabled on a reset from loadfile.This is handled in the OpenOCD target files,
+# but needs to be done here for JLink
+ifeq ($(TARGET_UC), MAX32670)
+JLINK_RST := setbp 0x2174\n
+else ifeq ($(TARGET_UC), MAX32675)
+JLINK_RST := setbp 0x2174\n
+else
+JLINK_RST := r\nhalt\n
+endif
+
 PHONY: flash.jlink
 flash.jlink: mkbuildir ${HEX_FILE}
-	@$(ECHO) "$(if $(ADAPTER_SN), "SelectEmuBySN $(ADAPTER_SN)",)\nr\nhalt\nLoadFile \
+	@$(ECHO) "$(if $(ADAPTER_SN), "SelectEmuBySN $(ADAPTER_SN)",)\n${JLINK_RST}LoadFile \
 		${HEX_FILE_PATH},0\nr\ng\nexit\n" > ${COMMAND_FILE}
 	@$(JLINKEXE) -NoGui 1 -CommandFile ${COMMAND_FILE}
 
