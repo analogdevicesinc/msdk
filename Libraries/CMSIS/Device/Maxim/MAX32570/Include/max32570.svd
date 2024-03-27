@@ -25850,19 +25850,19 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RTSDC</name>
-       <description>Hardware Flow Control RTS Mode</description>
+       <name>RTS_NEG</name>
+       <description>The condition to negate RTS in HFC mode.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>BCLKEN</name>
+       <name>CLK_EN</name>
        <description>Baud clock enable</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>BCLKSRC</name>
+       <name>CLK_SEL</name>
        <description>To select the UART clock source for the UART engine (except APB registers). Secondary clock (used for baud rate generator) can be asynchronous from APB clock.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>2</bitWidth>
@@ -25890,33 +25890,15 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DPFE_EN</name>
-       <description>Data/Parity bit frame error detection enable</description>
-       <bitOffset>18</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>BCLKRDY</name>
+       <name>CLK_RDY</name>
        <description>Baud clock Ready read only bit</description>
        <bitOffset>19</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>UCAGM</name>
+       <name>CLK_GATE</name>
        <description>UART Clock Auto Gating mode</description>
        <bitOffset>20</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>FDM</name>
-       <description>Fractional Division Mode</description>
-       <bitOffset>21</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DESM</name>
-       <description>RX Dual Edge Sampling Mode</description>
-       <bitOffset>22</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -26024,6 +26006,12 @@
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field>
+       <name>RX_FULL</name>
+       <description>Enable for RX FIFO Full interrupt.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
@@ -26073,6 +26061,12 @@
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field>
+       <name>RX_FULL</name>
+       <description>Flag for full RX FIFO.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
@@ -26115,7 +26109,7 @@
      </fields>
     </register>
     <register>
-     <name>PNR</name>
+     <name>PIN</name>
      <description> Pin register</description>
      <addressOffset>0x001C</addressOffset>
      <fields>
