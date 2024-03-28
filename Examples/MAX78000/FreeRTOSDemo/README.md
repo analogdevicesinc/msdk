@@ -40,3 +40,17 @@ Uptime is 0x00000000 (0 seconds), tickless-idle is disabled
 Enter 'help' to view a list of available commands.
 cmd>
 ```
+
+## Debugging
+
+Some extra debug features are provided as recommended practice in FreeRTOS_Debug.c. These are based on recommendations from the FreeRTOS documentation. They include:
+- A timer setup using TMR0 as an RTOS Statistics timer to profile task runtime. 
+- A custom HardFaultHandler which copies CPU register state to C variables for viewing inside a debugger program. 
+  - This is useful to diagnose the system state at the moment the HardFault occured. 
+
+The statistics timer can be used by numerous RTOS Debug utilities which detect a kernel and use the kernel's profiling routines to output useful information to the user. A similar timer configuration could also be used for RTOS kernels other than FreeRTOS. 
+
+An example of using the HardFaultHandler can be observed by placing a privileged memory access (e.g. ```int y = *(uint32_t *)0xFFFFFFFF```) inside an RTOS task. The program counter will show as a C variable, which can be used with a Disassembly View to find the location of the HardFault. An image is provided below as an example:
+
+![Disassembly View in VSCode](img/HardFault.png)
+
