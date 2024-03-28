@@ -24,6 +24,27 @@
 #include <stdint.h>
 #include "max78000.h"
 
+// MSDK Debug flags
+#if defined(DEBUG) && DEBUG == 1
+// RTOS Stats Timer Functions
+extern void ConfigTimerForStats(void);
+extern uint32_t GetTimerForStats(void);
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() (ConfigTimerForStats())
+#define portGET_RUN_TIME_COUNTER_VALUE() (GetTimerForStats())
+#define configGENERATE_RUN_TIME_STATS 1
+
+// RTOS Assert & other debug configuration
+#define configASSERT(x)           \
+    if ((x) == 0) {               \
+        taskDISABLE_INTERRUPTS(); \
+        for (;;) {}               \
+    }
+#define configENABLE_BACKWARD_COMPATIBILITY 1
+#define configQUEUE_REGISTRY_SIZE 10
+#define configRECORD_STACK_HIGH_ADDRESS 1
+
+#endif
+
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
