@@ -1283,6 +1283,11 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error)
         if (states[i].req != NULL) {
             if (states[i].channelTx == ch) {
                 states[i].req_done++;
+
+                if (states[i].mtMode == 0 && states[i].channelTx >= 0) {
+                    MXC_DMA_RevA_ReleaseChannel(states[i].channelTx);
+                    states[i].channelTx = E_NO_DEVICE;
+                }
             } else if (states[i].channelRx == ch) {
                 states[i].req_done++;
                 //save the request
@@ -1290,6 +1295,11 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error)
 
                 if (MXC_SPI_GetDataSize((mxc_spi_regs_t *)temp_req->spi) > 8) {
                     MXC_SPI_RevA1_SwapByte(temp_req->rxData, temp_req->rxLen);
+                }
+
+                if (states[i].mtMode == 0 && states[i].channelRx >= 0) {
+                    MXC_DMA_RevA_ReleaseChannel(states[i].channelRx);
+                    states[i].channelRx = E_NO_DEVICE;
                 }
             }
 
@@ -1300,17 +1310,6 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error)
                 // Callback if not NULL
                 if (temp_req->completeCB != NULL) {
                     temp_req->completeCB(temp_req, E_NO_ERROR);
-                }
-                if (states[i].mtMode == 0) {
-                    // release any acquired DMA channels
-                    if (states[i].channelTx >= 0) {
-                        MXC_DMA_RevA_ReleaseChannel(states[i].channelTx);
-                        states[i].channelTx = E_NO_DEVICE;
-                    }
-                    if (states[i].channelRx >= 0) {
-                        MXC_DMA_RevA_ReleaseChannel(states[i].channelRx);
-                        states[i].channelRx = E_NO_DEVICE;
-                    }
                 }
                 break;
             }
