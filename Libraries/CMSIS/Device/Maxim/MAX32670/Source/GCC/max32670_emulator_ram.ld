@@ -20,7 +20,7 @@
 
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB "ROM" */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 384K /* 256kB "FLASH" */
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 376K /* 384kB "FLASH" - reserved last page used by bootloader */
     SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 160K /* 608kB SRAM */
 }
 
