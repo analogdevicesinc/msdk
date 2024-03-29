@@ -394,7 +394,7 @@ class PolygonSubscriber(Node):
         # The direction of the vector is desired as well (based on the right-hand rule)
         cube_offset_vector = current_orientation.cross(center_plane_normal).unit()
 
-        correction = (current_orientation * 0.03) + (cube_offset_vector * 0.0325) # Note the ratio between the correction factors is 50/50.  If the camera pos were different, the ratio here can be tuned.
+        correction = (current_orientation * 0.03) + (cube_offset_vector * 0.04) # Note the ratio between the correction factors is 50/50.  If the camera pos were different, the ratio here can be tuned.
         goal_kinematics_pose[0] += correction.x
         goal_kinematics_pose[1] += correction.y
         goal_kinematics_pose[2] += correction.z
