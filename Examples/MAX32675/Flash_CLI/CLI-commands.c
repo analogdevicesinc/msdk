@@ -96,7 +96,7 @@ static char *getParamString(const char *commandString, size_t paramNo)
 }
 
 static BaseType_t prvECCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char *pcCommandString);
+                                const char *pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
@@ -182,7 +182,7 @@ void vRegisterCLICommands(void)
 /*-----------------------------------------------------------*/
 
 static BaseType_t prvECCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char *pcCommandString)
+                                const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
         write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -206,7 +206,8 @@ static BaseType_t prvECCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
     }
     portEXIT_CRITICAL();
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    snprintf(pcWriteBuffer, xWriteBufferLen, "ECC: %s\n", (setting) ? "Enabled (1)" : "Disabled (0)");
+    snprintf(pcWriteBuffer, xWriteBufferLen, "ECC: %s\n",
+             (setting) ? "Enabled (1)" : "Disabled (0)");
     return pdFALSE;
 }
 

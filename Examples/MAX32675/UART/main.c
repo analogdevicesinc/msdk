@@ -115,20 +115,20 @@ int main(void)
 
     // Initialize the UART
     if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
-        // printf("-->Error initializing UART: %d\n", error);
-        // printf("-->Example Failed\n");
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
         return error;
     }
 
     if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
-        // printf("-->Error initializing UART: %d\n", error);
-        // printf("-->Example Failed\n");
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
         return error;
     }
 
     // Max baud rate for most serial ports is 115200
     if (UART_BAUD <= CONSOLE_BAUD) {
-        // printf("-->UARTs Initialized\n\n");
+        printf("-->UARTs Initialized\n\n");
     }
 
     mxc_uart_req_t read_req;
@@ -155,16 +155,16 @@ int main(void)
 #endif
 
     if (error != E_NO_ERROR) {
-        // printf("-->Error starting async read: %d\n", error);
-        // printf("-->Example Failed\n");
+        printf("-->Error starting async read: %d\n", error);
+        printf("-->Example Failed\n");
         return error;
     }
 
     error = MXC_UART_Transaction(&write_req);
 
     if (error != E_NO_ERROR) {
-        // printf("-->Error starting sync write: %d\n", error);
-        // printf("-->Example Failed\n");
+        printf("-->Error starting sync write: %d\n", error);
+        printf("-->Example Failed\n");
         return error;
     }
 
@@ -177,26 +177,26 @@ int main(void)
     while (READ_FLAG) {}
 
     if (READ_FLAG != E_NO_ERROR) {
-        // printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
+        printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
         fail++;
     }
 
 #endif
 
     if ((error = memcmp(RxData, TxData, BUFF_SIZE)) != 0) {
-        // printf("-->Error verifying Data: %d\n", error);
+        printf("-->Error verifying Data: %d\n", error);
         fail++;
     } else {
-        // printf("-->Data verified\n");
+        printf("-->Data verified\n");
     }
 
     if (fail != 0) {
         LED_On(0); // indicates FAIL
-        // printf("\n-->Example Failed\n");
+        printf("\n-->Example Failed\n");
         return E_FAIL;
     }
 
     LED_On(1); // indicates SUCCESS
-    // printf("\n-->Example Succeeded\n");
+    printf("\n-->Example Succeeded\n");
     return E_NO_ERROR;
 }
