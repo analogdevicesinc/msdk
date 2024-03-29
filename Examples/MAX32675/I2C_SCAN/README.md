@@ -20,6 +20,9 @@ Universal instructions on building, flashing, and debugging this project can be 
      -   Connect jumpers JP3 and JP4 (I2C0 pullup resistor enables).
 -   Connect I2C0 (SCL - P0.6, SDA - P0.7) to I2C bus.
 
+If using the MAX32675 RevB:
+-	Close I2C pull-up jumpers JP25 and JP26
+
 ## Expected Output
 
 The Console UART of the device will output these messages:

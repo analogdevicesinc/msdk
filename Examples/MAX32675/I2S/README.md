@@ -11,7 +11,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+The MAX32675 Revision B does not support I2S.
 
 ## Required Connections
 
@@ -23,7 +23,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ```
 I2S Transmission Example
+I2S Signals may be viewed on pins P0.8-P0.11.
+You may need to disconnect RX_SEL (JP5) and TX_SEL
+(JP6) in case no data is moving in and out of SDO/SDI.
 
-I2S Transaction Complete. Ignore any random characters previously
-displayed. The I2S and UART are sharing the same pins.
 ```
