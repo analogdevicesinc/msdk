@@ -83,22 +83,22 @@ void MXC_TMR_RevA_Init(mxc_tmr_reva_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 
     case MXC_TMR_PRES_512:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV4);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV2);
         break;
 
     case MXC_TMR_PRES_1024:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV8);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV4);
         break;
 
     case MXC_TMR_PRES_2048:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV16);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV8);
         break;
 
     case MXC_TMR_PRES_4096:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV32);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV16);
         break;
 
     default:
