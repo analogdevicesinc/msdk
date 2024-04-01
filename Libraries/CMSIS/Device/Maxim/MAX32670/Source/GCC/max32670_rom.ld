@@ -19,7 +19,7 @@
  ******************************************************************************/
 
 MEMORY {
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 384K /* 256kB "FLASH" */
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 376K /* 384kB "FLASH" - reserved last page used by bootloader */
     /* 152Kx32 total size of RAMS 0-10 (608Kbytes). */
     /* 38Kx32 total size of RAMs 11-21 for optional ECC (152Kbytes) */
     /* NOTE 1: The MAX32570 has Error correcting RAM which removes 152KByte of usable RAM from the memory map. */
