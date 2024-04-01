@@ -33,12 +33,12 @@ TARGET_LC ?= $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 # Specify the library variant.
 ifeq "$(MFLOAT_ABI)" "hardfp"
-LIBRARY_VARIANT=hardfp
+PD_LIBRARY_VARIANT=hardfp
 else
 ifeq "$(MFLOAT_ABI)" "hard"
-LIBRARY_VARIANT=hardfp
+PD_LIBRARY_VARIANT=hardfp
 else
-LIBRARY_VARIANT=softfp
+PD_LIBRARY_VARIANT=softfp
 endif
 endif
 
@@ -47,7 +47,7 @@ MXC_SPI_VERSION ?= v1
 # - v1
 # - v2
 ifneq "$(MXC_SPI_VERSION)" ""
-LIBRARY_VARIANT := spi-$(MXC_SPI_VERSION)_$(LIBRARY_VARIANT)
+PD_LIBRARY_VARIANT := spi-$(MXC_SPI_VERSION)_$(PD_LIBRARY_VARIANT)
 endif
 ifeq "$(MXC_SPI_VERSION)" "v1"
 PROJ_CFLAGS+=-DMXC_SPI_V1
@@ -63,9 +63,9 @@ endif
 # Specify the build directory if not defined by the project
 ifeq "$(BUILD_DIR)" ""
 ifeq "$(RISCV_CORE)" ""
-PERIPH_DRIVER_BUILD_DIR=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(LIBRARY_VARIANT)
+PERIPH_DRIVER_BUILD_DIR=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(PD_LIBRARY_VARIANT)
 else
-PERIPH_DRIVER_BUILD_DIR=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(LIBRARY_VARIANT)_riscv
+PERIPH_DRIVER_BUILD_DIR=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(PD_LIBRARY_VARIANT)_riscv
 endif
 else
 PERIPH_DRIVER_BUILD_DIR=$(BUILD_DIR)/PeriphDriver
@@ -85,10 +85,10 @@ export COMPILER
 
 include ${PERIPH_DRIVER_DIR}/$(TARGET_LC)_files.mk
 IPATH += ${PERIPH_DRIVER_INCLUDE_DIR}
-ifeq "$(LIBRARY_VARIANT)" ""
+ifeq "$(PD_LIBRARY_VARIANT)" ""
 PERIPH_DRIVER_LIB_FILENAME := libPeriphDriver
 else
-PERIPH_DRIVER_LIB_FILENAME := libPeriphDriver_$(LIBRARY_VARIANT)
+PERIPH_DRIVER_LIB_FILENAME := libPeriphDriver_$(PD_LIBRARY_VARIANT)
 endif
 PERIPH_DRIVER_LIB := $(PERIPH_DRIVER_LIB_FILENAME).a
 # export PERIPH_DRIVER_DIR
