@@ -981,6 +981,12 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         datsProcMsg((dmEvt_t *)pMsg);
     }
 }
+static bool_t write_done = FALSE;
+void nvm_write_complete(bool_t status){
+
+  write_done = TRUE;
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -1020,6 +1026,25 @@ void DatsStart(void)
 #endif /* BT_VER */
 
     WsfNvmInit();
+
+
+    uint8_t data[1000] = {0};
+    uint32_t id = 1;
+    bool_t write_ok = TRUE;
+
+    while(write_ok){
+        write_ok = WsfNvmWriteData(id, data, sizeof(data), NULL);
+
+        if(!write_ok){
+            APP_TRACE_INFO0("Failed to write NVM");
+        }else{
+            APP_TRACE_INFO0("Write ok");
+        }
+        
+        
+        id++;
+    }
+
 
     WsfBufDiagRegister(datsWsfBufDiagnostics);
 
