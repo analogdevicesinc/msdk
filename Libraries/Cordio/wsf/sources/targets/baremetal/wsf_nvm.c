@@ -56,6 +56,8 @@
 **************************************************************************************************/
 
 /*! \brief      Header. */
+
+
 typedef struct
 {
   uint64_t          id;         /*!< Stored data ID. */
@@ -80,7 +82,7 @@ static struct
  */
 /*************************************************************************************************/
 static inline bool_t wsfNvmIsFull(void){
-  return (wsfNvmCb.availAddr - WSF_NVM_START_ADDR) <= wsfNvmCb.totalSize;
+  return !((wsfNvmCb.availAddr - WSF_NVM_START_ADDR) <= wsfNvmCb.totalSize);
 }
 /*************************************************************************************************/
 /*!
@@ -135,8 +137,13 @@ void WsfNvmInit(void)
 
     /* Move to next stored data block and read header. */
     storageAddr += WSF_NVM_WORD_ALIGN(header.len) + sizeof(header);
-    WSF_ASSERT((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize);
 
+
+    if(!((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize)){
+      WSF_TRACE_INFO0("WSF -> NVM IS FULL!");
+      break;
+    }
+  
   } while ((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize);
 
   wsfNvmCb.availAddr = storageAddr;
