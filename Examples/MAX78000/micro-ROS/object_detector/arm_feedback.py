@@ -44,7 +44,7 @@ g_stopped = False
 # home = [1.514991, -0.754719, 0.391165, 1.184233, -0.01]
 # home = [1.495631, -1.156622, 0.302194, 1.572330, -0.01]
 # home = [1.552389, -0.986350, 0.076699, 1.711923, -0.01]
-home = [1.512505, -0.512350, -0.058291, 1.644427, 0.01]
+home = [1.512505, -0.512350, -0.058291, 1.644427, 0.014]
 home_xyz = Vec3D(x=0.02, y=0.124, z=0.152)
 shutdown_pos = [1.613748, 0.090505, 0.391165, 1.092194, 0.01]
 
@@ -194,6 +194,9 @@ class ImageSubscriber(Node):
     def listener_callback(self, data: Image):
         self.get_logger().info(f'Received image {data.header.frame_id}')
 
+        global valid_image
+        valid_image = True
+
         # Convert to PIL image so we can draw to it.
         global g_img
         g_img = data
@@ -320,6 +323,10 @@ class PolygonSubscriber(Node):
         
         self._print(f"--- AREA: {self.area}")
 
+        if goal_kinematics_pose[2] <= 0.08:
+            goal_kinematics_pose[2] += 0.01
+            self.console.print("*** Floor!")
+
         teleop_keyboard.send_goal_task_space()
     
     def correct_skew(self):
@@ -328,6 +335,7 @@ class PolygonSubscriber(Node):
         goal_kinematics_pose = deepcopy(present_kinematics_pose)
         current_xy = Vec2D(x = goal_kinematics_pose[0], y = goal_kinematics_pose[1])
         delta_xy : Vec2D = current_xy.unit()
+        
         if (self.skew < 0.9):
             step_size = task_position_delta * (1 * ((0.9 - self.skew)/0.9))
             goal_kinematics_pose[0] += (delta_xy.x * step_size)
@@ -442,6 +450,7 @@ class PolygonSubscriber(Node):
         global goal_kinematics_pose
         global drop_off_point
         global next_drop_off_point
+        global valid_image
 
         if self.state == 10: # Search
             self._status(f"[yellow]Searching[/yellow]... ({(datetime.datetime.now() - self.last_timestamp).seconds}s)")
@@ -462,7 +471,7 @@ class PolygonSubscriber(Node):
             if self.x > 0 and self.y > 0:
                 self.state = 0
 
-        elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 1 and not self.state == 10:
+        elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 1 and not self.state == 10 and not valid_image:
             self.state = 10
             goal_kinematics_pose = deepcopy(present_kinematics_pose) # Copy current pose so that the current orientation is preserved for the search
             self._status("[yellow]Searching...[/yellow]")
@@ -499,11 +508,12 @@ class PolygonSubscriber(Node):
                 self.state = 0
 
             elif self.state == 4: # Grab Pos
-                temp_path_time = path_time
-                path_time = 3.0
-                self.grab_reposition()
-                self.state = 5
-                path_time = temp_path_time
+                if self.grabbability > 0.65:
+                    temp_path_time = path_time
+                    path_time = 3.0
+                    self.grab_reposition()
+                    self.state = 5
+                    path_time = temp_path_time
 
             elif self.state == 5:  # Close grabber
                 temp_path_time = path_time
@@ -541,7 +551,7 @@ class PolygonSubscriber(Node):
                 self.state = 8
             
             elif self.state == 8:
-                goal_joint_angle[4] = 0.010
+                goal_joint_angle[4] = 0.014
                 teleop_keyboard.send_goal_tool_control()
                 goal_joint_angle = deepcopy(home)
                 teleop_keyboard.send_goal_joint_space()
@@ -637,11 +647,16 @@ class PolygonSubscriber(Node):
             drawer.point((bottom_right.x, bottom_right.y), fill="yellow")
             img.save(f"{data.header.frame_id}.png")
 
-        self.console.log(f"Received box ({round(self.x,2)}, {round(self.y,2)})")
+        # self.console.log(f"Received box ({round(self.x,2)}, {round(self.y,2)})")
+        current_orientation = Vec3D(x=1.0, y=0.0, z=0.0).rotate_quaternion(
+            u=goal_kinematics_pose[3], # w
+            i=goal_kinematics_pose[4], # x
+            j=goal_kinematics_pose[5], # y
+            k=goal_kinematics_pose[6]  # z
+        ).unit()
+        self.grabbability = 1.0 - current_orientation.to_xy().dot(bottom.unit())
+        self._print(f"Grabbability: {self.grabbability}")
 
-        xy = Vec2D(x = present_kinematics_pose[0], y = present_kinematics_pose[1])
-        self.grabbability = 1.0 - xy.unit().dot(top.unit())
-        self._print(self.grabbability)
         # self.last_left = left
         # self.last_top = top
         # self.last_right = right
