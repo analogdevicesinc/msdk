@@ -2387,6 +2387,12 @@ The SPI v2 Library is the latest version of the MSDK SPI drivers which highlight
 - Still supports SPI v1 function prototypes for backwards-compatibility.
 - Bug fixes from the SPI v1 API.
 
+#### SPI v2 Supported Parts
+
+- MAX32572
+- MAX32690
+- MAX78002
+
 #### Porting Projects to use SPI v2
 
 The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set the `MXC_SPI_VERSION` [build configuration variable](#build-configuration-variables) to `v2` (case sensitive) use the SPI v2 API.
