@@ -981,12 +981,7 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         datsProcMsg((dmEvt_t *)pMsg);
     }
 }
-static bool_t write_done = FALSE;
-void nvm_write_complete(bool_t status){
 
-  write_done = TRUE;
-
-}
 
 /*************************************************************************************************/
 /*!
