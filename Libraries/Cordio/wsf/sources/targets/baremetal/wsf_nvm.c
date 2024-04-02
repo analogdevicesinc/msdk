@@ -27,7 +27,7 @@
 #include "wsf_assert.h"
 #include "pal_flash.h"
 #include "util/crc32.h"
-
+#include "mxc_device.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -74,7 +74,14 @@ static struct
 /**************************************************************************************************
   Global Functions
 **************************************************************************************************/
-
+/*************************************************************************************************/
+/*!
+ *  \brief  Check if NVM space is full.
+ */
+/*************************************************************************************************/
+static inline bool_t wsfNvmIsFull(void){
+  return (wsfNvmCb.availAddr - WSF_NVM_START_ADDR) <= wsfNvmCb.totalSize;
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Initialize the WSF NVM.
@@ -252,7 +259,14 @@ bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCo
   }
 
   WSF_ASSERT(!((id == WSF_NVM_RESERVED_FILECODE) || (id == WSF_NVM_UNUSED_FILECODE)));
-  WSF_ASSERT((wsfNvmCb.availAddr - WSF_NVM_START_ADDR) <= wsfNvmCb.totalSize);
+  
+  if(wsfNvmIsFull()){
+    
+    WSF_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
+    return FALSE;
+  }
+  
+
 
   /* Read first header. */
   PalFlashRead(&header, sizeof(header), storageAddr);
