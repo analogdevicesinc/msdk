@@ -30,6 +30,7 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "trng.h"
+#include "gcr_regs.h"
 
 volatile int wait;
 volatile int callback_result;
@@ -90,6 +91,12 @@ void Test_TRNG(int asynchronous)
 
 int main(void)
 {
+    // TRNG is disabled for MAX32675 Revision B.
+    if ((MXC_GCR->revision & 0x00F0) == 0xB0) {
+        printf("The TRNG is disabled for the MAX32675 Rev B.\n");
+        return E_NOT_SUPPORTED;
+    }
+
     printf("\n\n********** TRNG Example **********\n");
 
     Test_TRNG(0);
