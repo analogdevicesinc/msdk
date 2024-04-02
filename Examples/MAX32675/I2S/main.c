@@ -83,8 +83,8 @@ int main(void)
     printf("(JP6) in case no data is moving in and out of SDO/SDI.\n");
     printf("\nCurrent revision of board: %x\n", MXC_GCR->revision);
     if ((MXC_GCR->revision & 0x00F0) == 0x00B0) {
-        printf("I2S is not support on this MAX32675 revision.\n");
-        printf("End program now.");
+        printf("I2S is not supported on this MAX32675 revision.\n");
+        printf("Ending Program.");
     }
     printf("\n\n\n\n");
 
