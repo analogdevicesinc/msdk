@@ -511,6 +511,7 @@ static void tft_spi_init(void)
     tft_pins.mosi = true; ///< mosi pin
     tft_pins.sdio2 = false; ///< SDIO2 pin
     tft_pins.sdio3 = false; ///< SDIO3 pin
+    tft_pins.vddioh = true;
 
     MXC_SPI_Init((mxc_spi_regs_t *)spi, master, quadMode, numSlaves, ssPol, tft_spi_freq, tft_pins);
 #endif
