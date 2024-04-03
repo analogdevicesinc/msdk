@@ -36,6 +36,7 @@
 #include "lfs.h"
 #include "main.h"
 #include "mxc_device.h"
+#include "ecc_regs.h"
 
 /***** Globals *****/
 uint32_t start_block = LFS_START_PAGE;
@@ -70,6 +71,9 @@ int main(void)
     int cmd_len, err;
 
     printf("\n\n********** Wear Leveling Example **********\n");
+
+    printf("Disable ECC.\n");
+    MXC_ECC->en &= ~(MXC_F_ECC_EN_FLASH);
 
     // mount the filesystem
     printf("Mounting the filesystem...\n");

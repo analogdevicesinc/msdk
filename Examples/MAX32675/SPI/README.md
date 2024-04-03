@@ -19,9 +19,18 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
+If using the MAX32675 RevA:
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pins labeled P0.14 (MISO) and P0.15 (MOSI) together.
+-   Close jumper JP2 (LED1 EN).
+
+If using the MAX32675 RevB:
+-   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
+-   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect pins labeled P0.14 (MISO) and P0.15 (MOSI) together.
+-   Open jumper JP11_IN, JP11_OUT, and JP11_RTS.
+-   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED1 EN).
 
 ## Expected Output

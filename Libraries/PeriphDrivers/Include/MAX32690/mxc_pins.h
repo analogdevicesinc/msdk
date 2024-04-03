@@ -154,7 +154,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi0_dual;
 extern const mxc_gpio_cfg_t gpio_cfg_spi0_quad;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
-extern const mxc_gpio_cfg_t gpio_cfg_spi1_dua;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_dual;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_quad_0;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_quad_1;
 extern const mxc_gpio_cfg_t gpio_cfg_spi2_standard;

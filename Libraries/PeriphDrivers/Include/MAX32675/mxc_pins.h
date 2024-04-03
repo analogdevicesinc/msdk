@@ -38,14 +38,12 @@ extern const mxc_gpio_cfg_t gpio_cfg_hfextclk;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
 
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
-//extern const mxc_gpio_cfg_t gpio_cfg_uart1;
-//extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
+extern const mxc_gpio_cfg_t gpio_cfg_uart1;
+extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
@@ -53,14 +51,10 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart3;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;
 
-// extern const mxc_gpio_cfg_t gpio_cfg_spi0;
-// NOTE: SPI1 definied here with SS1 only, SS0 is on port0 by itself.
+// NOTE: SPI1 definied here with SS1 only.
 extern const mxc_gpio_cfg_t gpio_cfg_spi1;
-// NOTE: SPI2 defined here with SS0 only, and NOT SS1 and SS2
+// NOTE: SPI2 defined here with SS0 only.
 extern const mxc_gpio_cfg_t gpio_cfg_spi2;
-// extern const mxc_gpio_cfg_t gpio_cfg_spi2b;
-// NOTE: SPI3 defined here with SS0 only, and NOT SS1, SS2, or SS3
-// extern const mxc_gpio_cfg_t gpio_cfg_spi3;
 
 // Timers are only defined once, depending on package, each timer could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;
@@ -88,8 +82,12 @@ extern const mxc_gpio_cfg_t gpio_cfg_chrg_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
 // MXC_SPI1 does not support Dual or Quad modes.
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_3wire;
+// MXC_SPI2 does not support Dual or Quad modes.
 
 // SPI v2 Target Selects Pin Definitions
 extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts0;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_MXC_PINS_H_

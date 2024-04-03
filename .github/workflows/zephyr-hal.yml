@@ -52,7 +52,7 @@ jobs:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
           ref: ''
           # Name of different repository ('organization_name/repo_name')
-          # Using a 
+          # Update the following line to point to the zephyr-hal repo once that repo is created.
           repository: 'analogdevicesinc/IAR_Support_For_MAX32xxx'
           fetch-depth: 0
           # Name the path/directory of this repo for the runner's workspacee
