@@ -581,8 +581,6 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size){
 
 
 
-  bool_t moveOccured = FALSE;
-  uint32_t currentOffset = 0;
   WsfNvmHeader_t *header = (WsfNvmHeader_t*) &nvmAll[0];
   
   /*NVM is empty just return*/
@@ -590,19 +588,29 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size){
     return FALSE;
   }
   
+  bool_t moveOccured = FALSE;
+  uint32_t currentOffset = 0;
+
   do
   {
     /*If the header is marked as reserved, shift all memory after to take its place. */
     if(header->id == WSF_NVM_RESERVED_FILECODE){
         uint32_t nextOffset = currentOffset;
         WsfNvmHeader_t *nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
+        
         /*Move forwared until we find a new valid header*/
-        while(nextHeader->id == WSF_NVM_RESERVED_FILECODE && nextHeader->id != WSF_NVM_UNUSED_FILECODE && nextOffset < wsfNvmCb.totalSize){
+        while(nextOffset < wsfNvmCb.totalSize){
           nextOffset += WSF_NVM_WORD_ALIGN(header->len) + sizeof(WsfNvmHeader_t); 
-          nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
+          
+          WsfNvmHeader_t *tempHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
+          if(tempHeader->id == WSF_NVM_UNUSED_FILECODE || tempHeader->id == WSF_NVM_RESERVED_FILECODE){
+            break;
+          }
+          nextHeader = tempHeader;
         }
 
-        if(nextHeader->id == WSF_NVM_UNUSED_FILECODE || nextOffset > wsfNvmCb.totalSize){
+
+        if(nextOffset > wsfNvmCb.totalSize){
           break;
         }
 
