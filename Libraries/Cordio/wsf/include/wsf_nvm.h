@@ -116,6 +116,16 @@ bool_t WsfNvmEraseData(uint64_t id, WsfNvmCompEvent_t compCback);
 /*************************************************************************************************/
 void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback);
 
+/*************************************************************************************************/
+/*!
+ *  \brief  Erase all data located in NVM storage.
+ *
+ *  \param  compCback          Erase callback.
+ *
+ *  \note   Security Risk Warning. NVM storage could be shared by multiple Apps.
+ */
+/*************************************************************************************************/
+bool_t WsfNvmDefragment(void);
 /*! \} */    /* WSF_NVM_API */
 
 #ifdef __cplusplus

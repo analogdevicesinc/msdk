@@ -21,12 +21,16 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
+#include <string.h>
+#include <stdint.h>
 
+#include "wsf_cs.h"
 #include "wsf_types.h"
 #include "wsf_nvm.h"
 #include "wsf_assert.h"
 #include "pal_flash.h"
 #include "util/crc32.h"
+#include "wsf_buf.h"
 #include "mxc_device.h"
 /**************************************************************************************************
   Macros
@@ -81,8 +85,18 @@ static struct
  *  \brief  Check if NVM space is full.
  */
 /*************************************************************************************************/
+static inline uint32_t wsfNvmGetRemainingSpace(void){
+  return wsfNvmCb.totalSize - (wsfNvmCb.availAddr - WSF_NVM_START_ADDR);
+}
 static inline bool_t wsfNvmIsFull(void){
-  return !((wsfNvmCb.availAddr - WSF_NVM_START_ADDR) <= wsfNvmCb.totalSize);
+  return wsfNvmGetRemainingSpace() > 0;
+}
+static inline bool_t wsfNvmHaveEnoughSpace(uint32_t lenNeeded){
+  if(lenNeeded > wsfNvmGetRemainingSpace()){
+    return FALSE;
+  }else{
+    return TRUE;
+  }
 }
 /*************************************************************************************************/
 /*!
@@ -267,8 +281,7 @@ bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCo
 
   WSF_ASSERT(!((id == WSF_NVM_RESERVED_FILECODE) || (id == WSF_NVM_UNUSED_FILECODE)));
   
-  if(wsfNvmIsFull()){
-    
+  if(!wsfNvmHaveEnoughSpace(len)){
     WSF_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
     return FALSE;
   }
@@ -397,6 +410,7 @@ bool_t WsfNvmEraseData(uint64_t id, WsfNvmCompEvent_t compCback)
         header.dataCrc = 0;
         PalFlashWrite(&header, sizeof(header), storageAddr);
         erased = TRUE;
+        break;
       }
     }
 
@@ -433,4 +447,55 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
   {
     compCback(TRUE);
   }
+}
+
+
+
+bool_t WsfNvmDefragment(void){
+
+  WsfCsEnter();
+  
+   //Probably needs a mod to not take so much ram
+  static uint8_t nvmAll[4096] = {0};
+  PalFlashRead(nvmAll, WSF_NVM_WORD_ALIGN(4096), WSF_NVM_START_ADDR);
+
+  WsfNvmHeader_t *header;
+  uint32_t idx = 0;
+  while(idx < sizeof(nvmAll)){
+    header = (WsfNvmHeader_t*) &nvmAll[idx];
+    uint32_t nextOffset = idx;
+    uint32_t nextLen = header->len;
+
+    if(header->id == WSF_NVM_RESERVED_FILECODE){
+    
+        WsfNvmHeader_t *nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
+        while(nextHeader->id == WSF_NVM_RESERVED_FILECODE && nextHeader->id != WSF_NVM_UNUSED_FILECODE && nextOffset < wsfNvmCb.totalSize){
+          nextOffset += WSF_NVM_WORD_ALIGN(header->len) + sizeof(WsfNvmHeader_t); 
+          nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
+        }
+
+        if(nextHeader->id == WSF_NVM_UNUSED_FILECODE || nextOffset > wsfNvmCb.totalSize){
+          //At the end nothing to shift
+          break;
+        }
+
+        nextLen = nextHeader->len;
+        memmove(nvmAll + idx, nvmAll + nextOffset, nextHeader->len + sizeof(WsfNvmHeader_t));
+    }
+
+    idx = nextOffset + nextLen + sizeof(WsfNvmHeader_t);
+  }
+
+  /*
+    Clear the sector and rewrite flash with defragmented data
+  */
+  WsfNvmEraseDataAll(NULL);
+  PalFlashWrite(nvmAll, idx, wsfNvmCb.availAddr);
+  wsfNvmCb.availAddr += idx;
+
+    
+
+  WsfCsExit();
+
+  return TRUE;
 }
