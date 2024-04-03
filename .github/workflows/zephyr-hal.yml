@@ -52,6 +52,7 @@ jobs:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
           ref: ''
           # Name of different repository ('organization_name/repo_name')
+          # Using a 
           repository: 'analogdevicesinc/IAR_Support_For_MAX32xxx'
           fetch-depth: 0
           # Name the path/directory of this repo for the runner's workspacee
@@ -60,7 +61,10 @@ jobs:
       - name: Copy necessary files from msdk to zephyr-hal
         run: |
           # Call or run any tasks here
-          bash scripts/zephyr-hal.sh
+          # The working directory for scripts will be the root of the runner workspace.
+          # Using the checkout commands above, the script will start out in the same 
+          # directory that contains the 'msdk' and 'zephyr-hal' folders.
+          bash ./msdk/.github/workflows/scripts/zephyr-hal.sh
 
       - name: Push zephyr-hal directory to zephyr hal repository
         uses: EndBug/add-and-commit@v9.0.1
