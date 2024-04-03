@@ -57,6 +57,21 @@ static inline uint64_t WsfNvmConvertChar8to64Bit(char *charId)
   }
   return retValue;
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Get remaining space in WSF Allcoated NVM.
+ *  \return Bytes left.
+ */
+/*************************************************************************************************/
+int32_t WsfNvmGetRemainingSpace(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Check if NVM space is full.
+ *  \return TRUE if all NVM space is taken, FALSE otherwise.
+ */
+/*************************************************************************************************/
+bool_t WsfNvmIsFull(void);
 
 /*************************************************************************************************/
 /*!
@@ -118,14 +133,16 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback);
 
 /*************************************************************************************************/
 /*!
- *  \brief  Erase all data located in NVM storage.
- *
- *  \param  compCback          Erase callback.
- *
- *  \note   Security Risk Warning. NVM storage could be shared by multiple Apps.
+ *  \brief  Defragment NVM
+ *  \param  copyBuf       Scratch buffer to temporarily copy NVM stored data.
+ *  \param  size          Size of copyBuf.
+ *  \return  TRUE if defragment successful. FALSE otherwise
+ * 
+ *  \note   Defragment should only be called when the storage is full and a record has been invalidated.
+ *          Furthermore, copyBuf must be at least the size of WSF NVM allocated flash.
  */
 /*************************************************************************************************/
-bool_t WsfNvmDefragment(void);
+bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size);
 /*! \} */    /* WSF_NVM_API */
 
 #ifdef __cplusplus
