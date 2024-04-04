@@ -982,7 +982,6 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     }
 }
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  Start the application.
@@ -1021,7 +1020,6 @@ void DatsStart(void)
 #endif /* BT_VER */
 
     WsfNvmInit();
-
 
     WsfBufDiagRegister(datsWsfBufDiagnostics);
 
