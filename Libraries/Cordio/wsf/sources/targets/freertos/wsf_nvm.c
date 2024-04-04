@@ -428,7 +428,7 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
 /*!
  *  \brief  Defragment NVM
  *  \param  copyBuf       Scratch buffer to temporarily copy NVM stored data.
- *  \param  size          Size of copyBuf.
+ *  \param  size          Size of copyBuf in bytes.
  *  \return  TRUE if defragment successful. FALSE otherwise
  * 
  *  \note   Defragment should only be called when the storage is full and a record has been invalidated.
