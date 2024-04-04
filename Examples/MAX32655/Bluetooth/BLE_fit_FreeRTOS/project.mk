@@ -23,9 +23,3 @@ INIT_CENTRAL = 0
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
 TRACE = 1
-
-USE_DUAL_CORE ?= 0
-ifeq "$(USE_DUAL_CORE)" "1"
-BLE_HOST = 1
-BLE_CONTROLLER = 0
-endif
