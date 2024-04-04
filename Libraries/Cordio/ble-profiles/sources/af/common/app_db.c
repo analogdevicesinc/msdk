@@ -1209,69 +1209,69 @@ void AppDbNvmStoreBond(appDbHdl_t hdl)
 
       /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
       /*  - First ensure valid FALSE before writing parameters. */
-      bool_t write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+      bool_t writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
 
-      if(!write_ok){
+      if(!writeOk){
         return FALSE;
       }
 
 
       /* Write record parameters. */
-      write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
-      if(!write_ok){
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+      if(!writeOk){
         return FALSE;
       }
 
       if (pRec->keyValidMask & DM_KEY_LOCAL_LTK)
       {
-        write_ok =  WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
-        if(!write_ok){
+        writeOk =  WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
+        if(!writeOk){
         return FALSE;
         }
-        write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
-        if(!write_ok){
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
+        if(!writeOk){
           return FALSE;
         }
       }
 
       if (pRec->keyValidMask & DM_KEY_PEER_LTK)
       {
-        write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
-        if(!write_ok){
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
+        if(!writeOk){
         return FALSE;
         }
-        write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
-        if(!write_ok){
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
+        if(!writeOk){
         return FALSE;
         }
       }
 
       if (pRec->keyValidMask & DM_KEY_IRK)
       {
-        write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t*) &pRec->peerIrk, sizeof(dmSecIrk_t), NULL);
-        if(!write_ok){
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t*) &pRec->peerIrk, sizeof(dmSecIrk_t), NULL);
+        if(!writeOk){
         return FALSE;
         }
       }
 
       if (pRec->keyValidMask & DM_KEY_CSRK)
       {
-        write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t*) &pRec->peerCsrk, sizeof(dmSecCsrk_t), NULL);
-        if(!write_ok){
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t*) &pRec->peerCsrk, sizeof(dmSecCsrk_t), NULL);
+        if(!writeOk){
           return FALSE;
         }
       }
 
-      write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
-      if(!write_ok){
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
+      if(!writeOk){
         return FALSE;
       }
-      write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
-      if(!write_ok){
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
+      if(!writeOk){
         return FALSE;
       }
-      write_ok = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
-      if(!write_ok){
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
+      if(!writeOk){
         return FALSE;
       }
       /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
