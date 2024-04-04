@@ -953,7 +953,7 @@ void AppDbSetPeerRpao(appDbHdl_t hdl, bool_t peerRpao)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
+bool_t AppDbNvmStorePeerRpao(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -962,7 +962,11 @@ void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
+    return WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
+  }else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1141,7 +1145,7 @@ bool_t AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
+bool_t AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1150,7 +1154,7 @@ void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
   }
   else
   {
@@ -1168,7 +1172,7 @@ void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreDbHash(appDbHdl_t hdl)
+bool_t AppDbNvmStoreDbHash(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1195,7 +1199,7 @@ void AppDbNvmStoreDbHash(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreBond(appDbHdl_t hdl)
+bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
 {
   uint8_t i = appDbFindIndx(hdl);
 
@@ -1278,6 +1282,8 @@ void AppDbNvmStoreBond(appDbHdl_t hdl)
       /*  - Second set valid TRUE after writing parameters. */
       return WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &pRec->valid, sizeof(bool_t), NULL);
     }
+
+    return TRUE;
   }
   else
   {
