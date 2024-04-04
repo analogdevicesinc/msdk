@@ -50,27 +50,27 @@ jobs:
         uses: actions/checkout@v4
         with:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
-          ref: ''
+          ref: 'develop'
           # Name of different repository ('organization_name/repo_name')
-          # Update the following line to point to the zephyr-hal repo once that repo is created.
-          repository: 'analogdevicesinc/IAR_Support_For_MAX32xxx'
+          # Update the following line to point to the hal_adi repo once that repo is created.
+          repository: 'analogdevicesinc/hal_adi'
           fetch-depth: 0
           # Name the path/directory of this repo for the runner's workspacee
-          path: zephyr-hal
+          path: hal_adi
       
-      - name: Copy necessary files from msdk to zephyr-hal
+      - name: Copy necessary files from msdk to hal_adi
         run: |
           # Call or run any tasks here
           # The working directory for scripts will be the root of the runner workspace.
           # Using the checkout commands above, the script will start out in the same 
-          # directory that contains the 'msdk' and 'zephyr-hal' folders.
+          # directory that contains the 'msdk' and 'hal_adi' folders.
           bash ./msdk/.github/workflows/scripts/zephyr-hal.sh
 
-      - name: Push zephyr-hal directory to zephyr hal repository
+      - name: Push hal_adi repository
         uses: EndBug/add-and-commit@v9.0.1
         with:
           add: '*'
           message: 'Updating Zephyr MSDK Hal based on msdk PR# $PR_NUM'
           push: true
           # Specify path in workspace to the repo you want to push to
-          cwd: './zephyr-hal'
+          cwd: './hal_adi'
