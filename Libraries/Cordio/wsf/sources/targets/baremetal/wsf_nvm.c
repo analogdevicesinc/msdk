@@ -455,7 +455,7 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
 #endif
 
     WsfCsEnter();
-    memset(copyBuf, 0xff, size);
+
 
     bool_t defragPossible = FALSE;
     uint32_t currentOffset = WSF_NVM_START_ADDR;
