@@ -56,6 +56,8 @@
 
 #define WSF_NVM_CRC_INIT_VALUE                    0xFEDCBA98
 
+
+
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
@@ -71,6 +73,8 @@ typedef struct
   uint32_t          dataCrc;    /*!< CRC of subsequent data. */
 } WsfNvmHeader_t;
 
+#define WSF_NVM_HEADER_SIZE sizeof(WsfNvmHeader_t)
+#define WSF_NVM_FILE_SIZE(header_len) (WSF_NVM_HEADER_SIZE + (header_len))
 static struct
 {
   uint32_t          availAddr;  /*!< Next available address for NVM write. */
@@ -482,7 +486,6 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
  *          Furthermore, copyBuf must be at least the size of WSF NVM allocated flash.
  */
 /*************************************************************************************************/
-#if 0
 bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size){
 
   #if WSF_ASSERT_ENABLED == 1
@@ -496,56 +499,38 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size){
 
 
   WsfCsEnter();
+  memset(copyBuf, 0xff, size);
+  
+  bool_t defragPossible = FALSE;
+  uint32_t currentOffset = WSF_NVM_START_ADDR;
+  uint32_t copyOffset = 0;
+  WsfNvmHeader_t header = {0};
+  /* Get the first header*/
+  PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+  while(currentOffset < wsfNvmCb.availAddr && header.id != WSF_NVM_UNUSED_FILECODE)
+  {
+      const uint32_t fileSize = WSF_NVM_FILE_SIZE(header.len);
 
-  /*Copy NVM into RAM*/
-  uint8_t *nvmAll = copyBuf;
-  PalFlashRead(nvmAll, wsfNvmCb.totalSize, WSF_NVM_START_ADDR);
+      /*If the entry is valid copy it into the defragmentation buffer, if its reserved we can defrag it*/
+      if(header.id != WSF_NVM_RESERVED_FILECODE){
+        PalFlashRead(&copyBuf[copyOffset], fileSize, currentOffset);
+        copyOffset += WSF_NVM_FILE_SIZE(header.len);
+      }
+      else{  
+        defragPossible = TRUE;
+      }
 
-  uint32_t idx = 0;
-
-  bool_t moveOccured = FALSE;
-
-  while(idx < wsfNvmCb.totalSize){
-    WsfNvmHeader_t *header = (WsfNvmHeader_t*) &nvmAll[idx];
-    
-    /*At the end cant go further*/
-    if(header->id == WSF_NVM_UNUSED_FILECODE){
-      break;
-    }
-
-    uint32_t nextOffset = idx;
-    uint32_t nextLen = header->len;
-
-    /*If the header is marked as reserved, shift the next valid file over to take its place*/
-    if(header->id == WSF_NVM_RESERVED_FILECODE){
-    
-        WsfNvmHeader_t *nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
-        /*Move forwared until we find a new valid header*/
-        while(nextHeader->id == WSF_NVM_RESERVED_FILECODE && nextHeader->id != WSF_NVM_UNUSED_FILECODE && nextOffset < wsfNvmCb.totalSize){
-          nextOffset += WSF_NVM_WORD_ALIGN(header->len) + sizeof(WsfNvmHeader_t); 
-          nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
-        }
-
-        if(nextHeader->id == WSF_NVM_UNUSED_FILECODE || nextOffset > wsfNvmCb.totalSize){
-          break;
-        }
-
-        /*Shift the data over*/
-        nextLen = nextHeader->len; 
-        memmove(nvmAll + idx, nvmAll + nextOffset, nextHeader->len + sizeof(WsfNvmHeader_t));
-        moveOccured = TRUE;
-    }
-
-    idx = nextOffset + nextLen + sizeof(WsfNvmHeader_t);
+      currentOffset += fileSize;
+      PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
   }
 
   /*
     If we defragged anything clear the sector and rewrite flash with defragmented data
   */
-  if(moveOccured){
+  if(defragPossible){
     WsfNvmEraseDataAll(NULL);
-    PalFlashWrite(nvmAll, idx, wsfNvmCb.availAddr);
-    wsfNvmCb.availAddr += idx;
+    PalFlashWrite(copyBuf, copyOffset, wsfNvmCb.availAddr);
+    wsfNvmCb.availAddr += copyOffset;
   }
   else
   {
@@ -556,99 +541,6 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size){
   WsfCsExit();
 
 
-  return moveOccured;
+  return defragPossible;
 
 }
-#else
-
-bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size){
-
-  #if WSF_ASSERT_ENABLED == 1
-  WSF_ASSERT(copyBuf && size >= wsfNvmCb.totalSize);
-  #else
-  if(!copyBuf || size < wsfNvmCb.totalSize){
-    WSF_TRACE_INFO0("Not enough memory given to defragment NVM");
-    return FALSE;
-  }
-  #endif
-
-
-  WsfCsEnter();
-
-  /*Copy NVM into RAM*/
-  uint8_t *nvmAll = copyBuf;
-  PalFlashRead(nvmAll, wsfNvmCb.totalSize, WSF_NVM_START_ADDR);
-
-
-
-  WsfNvmHeader_t *header = (WsfNvmHeader_t*) &nvmAll[0];
-  
-  /*NVM is empty just return*/
-  if(header->id == WSF_NVM_UNUSED_FILECODE){
-    return FALSE;
-  }
-  
-  bool_t moveOccured = FALSE;
-  uint32_t currentOffset = 0;
-
-  do
-  {
-    /*If the header is marked as reserved, shift all memory after to take its place. */
-    if(header->id == WSF_NVM_RESERVED_FILECODE){
-        uint32_t nextOffset = currentOffset;
-        WsfNvmHeader_t *nextHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
-        
-        /*Move forwared until we find a new valid header*/
-        while(nextOffset < wsfNvmCb.totalSize){
-          nextOffset += WSF_NVM_WORD_ALIGN(header->len) + sizeof(WsfNvmHeader_t); 
-          
-          WsfNvmHeader_t *tempHeader = (WsfNvmHeader_t*) &nvmAll[nextOffset];
-          if(tempHeader->id == WSF_NVM_UNUSED_FILECODE || tempHeader->id == WSF_NVM_RESERVED_FILECODE){
-            break;
-          }
-          nextHeader = tempHeader;
-        }
-
-
-        if(nextOffset > wsfNvmCb.totalSize){
-          break;
-        }
-
-        /*Shift the data over*/
-        const uint32_t moveSize = wsfNvmCb.totalSize - nextOffset;
-        memmove(nvmAll + currentOffset, nvmAll + nextOffset, moveSize);
-
-        const uint32_t endOfMove = currentOffset + moveSize;
-        memset(nvmAll + endOfMove, 0xFF, wsfNvmCb.totalSize - endOfMove);
-        moveOccured = TRUE;
-        currentOffset += WSF_NVM_WORD_ALIGN(nextHeader->len) + sizeof(WsfNvmHeader_t);
- 
-    }else{
-      currentOffset += WSF_NVM_WORD_ALIGN(header->len) + sizeof(WsfNvmHeader_t);
-    }  
-
-    header = (WsfNvmHeader_t*) &nvmAll[currentOffset];
-    
-  }while(currentOffset < wsfNvmCb.totalSize && header->id != WSF_NVM_UNUSED_FILECODE);
-
-  /*
-    If we defragged anything clear the sector and rewrite flash with defragmented data
-  */
-  if(moveOccured){
-    WsfNvmEraseDataAll(NULL);
-    PalFlashWrite(nvmAll, currentOffset, wsfNvmCb.availAddr);
-    wsfNvmCb.availAddr += currentOffset;
-  }
-  else
-  {
-    WSF_TRACE_INFO0("No unused memory for defragementation!");
-  }
-
-
-  WsfCsExit();
-
-
-  return moveOccured;
-
-}
-#endif
