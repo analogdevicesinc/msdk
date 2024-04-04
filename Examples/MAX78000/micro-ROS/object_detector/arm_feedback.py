@@ -323,7 +323,7 @@ class PolygonSubscriber(Node):
         
         self._print(f"--- AREA: {self.area}")
 
-        if goal_kinematics_pose[2] <= 0.08:
+        if goal_kinematics_pose[2] <= 0.089:
             goal_kinematics_pose[2] += 0.01
             self.console.print("*** Floor!")
 
@@ -382,6 +382,7 @@ class PolygonSubscriber(Node):
         # The OMX gives us a quaternion vector representing the current rotation.  If we rotate the initial position (1,0,0) by
         # the quaternion we get an 3D carteisan orientation vector relative to the current position.
         # We will use this vector to move "towards" the cube.
+        current_pos = Vec3D(x = goal_kinematics_pose[0], y = goal_kinematics_pose[1], z = goal_kinematics_pose[2])
         current_orientation = Vec3D(x=1.0, y=0.0, z=0.0).rotate_quaternion(
             u=goal_kinematics_pose[3], # w
             i=goal_kinematics_pose[4], # x
@@ -400,14 +401,22 @@ class PolygonSubscriber(Node):
         # the center-line plane.  The resulting vector will be perpendicular to *both* the center-line plane's normal
         # vector *and* the current orientation vector.  Therefore a cross-product between the two gives us the desired result.
         # The direction of the vector is desired as well (based on the right-hand rule)
-        cube_offset_vector = current_orientation.cross(center_plane_normal).unit()
+        down_vector = current_orientation.cross(center_plane_normal).unit()
 
-        correction = (current_orientation * 0.03) + (cube_offset_vector * 0.04) # Note the ratio between the correction factors is 50/50.  If the camera pos were different, the ratio here can be tuned.
-        goal_kinematics_pose[0] += correction.x
-        goal_kinematics_pose[1] += correction.y
-        goal_kinematics_pose[2] += correction.z
+        correction_vector = (current_orientation * 0.03) + (down_vector * 0.04) # Note the ratio between the correction factors is 50/50.  If the camera pos were different, the ratio here can be tuned.
 
-        teleop_keyboard.send_goal_task_space()
+        new_position = current_pos + correction_vector
+
+        if new_position.z <= 0.04:
+            goal_kinematics_pose[2] += 0.01
+            teleop_keyboard.send_goal_task_space()
+            return False
+        else:
+            goal_kinematics_pose[0] = new_position.x
+            goal_kinematics_pose[1] = new_position.y
+            goal_kinematics_pose[2] = new_position.z
+            teleop_keyboard.send_goal_task_space()
+            return True
 
     def grab(self):
         self._status("Grabbing object")
@@ -452,6 +461,9 @@ class PolygonSubscriber(Node):
         global next_drop_off_point
         global valid_image
 
+        now = datetime.datetime.now()
+        elapsed_ms = (((now - self.last_timestamp).seconds * (10 ** 6)) + (now - self.last_timestamp).microseconds) / (10 ** 3)
+
         if self.state == 10: # Search
             self._status(f"[yellow]Searching[/yellow]... ({(datetime.datetime.now() - self.last_timestamp).seconds}s)")
             if self.x > 0 and self.y > 0:
@@ -471,7 +483,7 @@ class PolygonSubscriber(Node):
             if self.x > 0 and self.y > 0:
                 self.state = 0
 
-        elif (self.x == 0 and self.y == 0) and (datetime.datetime.now() - self.last_timestamp).seconds >= 1 and not self.state == 10 and not valid_image:
+        elif (self.x == 0 and self.y == 0) and elapsed_ms >= 500 and not self.state == 10 and not valid_image:
             self.state = 10
             goal_kinematics_pose = deepcopy(present_kinematics_pose) # Copy current pose so that the current orientation is preserved for the search
             self._status("[yellow]Searching...[/yellow]")
@@ -511,9 +523,9 @@ class PolygonSubscriber(Node):
                 if self.grabbability > 0.65:
                     temp_path_time = path_time
                     path_time = 3.0
-                    self.grab_reposition()
-                    self.state = 5
-                    path_time = temp_path_time
+                    if self.grab_reposition():
+                        self.state = 5
+                        path_time = temp_path_time
 
             elif self.state == 5:  # Close grabber
                 temp_path_time = path_time
@@ -655,7 +667,7 @@ class PolygonSubscriber(Node):
             k=goal_kinematics_pose[6]  # z
         ).unit()
         self.grabbability = 1.0 - current_orientation.to_xy().dot(bottom.unit())
-        self._print(f"Grabbability: {self.grabbability}")
+        # self._print(f"Grabbability: {self.grabbability}")
 
         # self.last_left = left
         # self.last_top = top
