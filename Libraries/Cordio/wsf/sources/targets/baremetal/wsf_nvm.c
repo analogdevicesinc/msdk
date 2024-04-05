@@ -297,7 +297,7 @@ bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCo
     WSF_ASSERT(!((id == WSF_NVM_RESERVED_FILECODE) || (id == WSF_NVM_UNUSED_FILECODE)));
 
     if (!wsfNvmHaveEnoughSpace(len)) {
-        APP_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
+        WSF_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
         return FALSE;
     }
 
