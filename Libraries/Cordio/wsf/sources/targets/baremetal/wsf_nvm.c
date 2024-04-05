@@ -87,11 +87,20 @@ extern uint32_t __pal_nvm_db_start__, __pal_nvm_db_end__;
  *  \return Bytes left.
  */
 /*************************************************************************************************/
-int32_t WsfNvmGetRemainingSpace(void)
+uint32_t WsfNvmGetRemainingSpace(void)
 {
     const int32_t bytesLeft = wsfNvmCb.totalSize - (wsfNvmCb.availAddr - WSF_NVM_START_ADDR);
+
+    #if WSF_ASSERT_ENABLED == 1
     WSF_ASSERT(bytesLeft >= 0);
-    return bytesLeft;
+    #else
+    if(bytesLeft < 0)
+    {
+        return 0;
+    }
+    #endif
+    
+    return (uint32_t)bytesLeft;
 }
 /*************************************************************************************************/
 /*!

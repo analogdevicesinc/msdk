@@ -63,7 +63,7 @@ static inline uint64_t WsfNvmConvertChar8to64Bit(char *charId)
  *  \return Bytes left.
  */
 /*************************************************************************************************/
-int32_t WsfNvmGetRemainingSpace(void);
+uint32_t WsfNvmGetRemainingSpace(void);
 
 /*************************************************************************************************/
 /*!
