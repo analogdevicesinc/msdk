@@ -476,7 +476,11 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
         }
 
         currentOffset += fileSize;
-        PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+        
+        if(currentOffset + WSF_NVM_HEADER_SIZE <= WSF_NVM_START_ADDR + wsfNvmCb.totalSize)
+        {
+            PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+        }
     }
 
     /*

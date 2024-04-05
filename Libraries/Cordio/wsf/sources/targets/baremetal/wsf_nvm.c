@@ -32,6 +32,7 @@
 #include "util/crc32.h"
 #include "wsf_buf.h"
 #include "wsf_queue.h"
+#include "mxc_device.h"
 
 /**************************************************************************************************
   Macros
@@ -296,7 +297,7 @@ bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCo
     WSF_ASSERT(!((id == WSF_NVM_RESERVED_FILECODE) || (id == WSF_NVM_UNUSED_FILECODE)));
 
     if (!wsfNvmHaveEnoughSpace(len)) {
-        WSF_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
+        APP_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
         return FALSE;
     }
 
@@ -488,7 +489,11 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
         }
 
         currentOffset += fileSize;
-        PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+
+        if(currentOffset + WSF_NVM_HEADER_SIZE <= WSF_NVM_START_ADDR + wsfNvmCb.totalSize)
+        {
+            PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+        }
     }
 
     /*
