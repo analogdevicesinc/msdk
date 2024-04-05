@@ -69,7 +69,7 @@ typedef struct {
 } WsfNvmHeader_t;
 
 #define WSF_NVM_HEADER_SIZE sizeof(WsfNvmHeader_t)
-#define WSF_NVM_FILE_SIZE(header_len) (WSF_NVM_HEADER_SIZE + (header_len))
+#define WSF_NVM_FILE_SIZE(header_len) (WSF_NVM_HEADER_SIZE + WSF_NVM_WORD_ALIGN(header_len))
 static struct {
     uint32_t availAddr; /*!< Next available address for NVM write. */
     uint32_t sectorSize; /*!< Size of erase sector. */
@@ -265,7 +265,7 @@ bool_t WsfNvmReadData(uint64_t id, uint8_t *pData, uint16_t len, WsfNvmCompEvent
 /*************************************************************************************************/
 static inline bool_t wsfNvmHaveEnoughSpace(uint32_t lenNeeded)
 {
-    if (lenNeeded > WsfNvmGetRemainingSpace()) {
+    if (WSF_NVM_FILE_SIZE(lenNeeded) > WsfNvmGetRemainingSpace()) {
         return FALSE;
     } else {
         return TRUE;
