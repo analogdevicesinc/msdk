@@ -434,7 +434,7 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
 {
     for (uint32_t eraseAddr = WSF_NVM_START_ADDR; eraseAddr < wsfNvmCb.availAddr;
          eraseAddr += wsfNvmCb.sectorSize) {
-        PalFlashEraseSector(wsfNvmCb.availAddr, eraseAddr);
+        PalFlashEraseSector(1, eraseAddr);
     }
     wsfNvmCb.availAddr = WSF_NVM_START_ADDR;
 
