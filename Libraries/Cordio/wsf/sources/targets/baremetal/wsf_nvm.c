@@ -162,6 +162,7 @@ void WsfNvmInit(void)
 
         if (!((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize)) {
             WSF_TRACE_INFO0("WSF -> NVM IS FULL!");
+            storageAddr =  WSF_NVM_START_ADDR + wsfNvmCb.totalSize;
             break;
         }
 
@@ -463,6 +464,7 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
     }
 #endif
 
+    
     WsfCsEnter();
 
 
@@ -473,6 +475,7 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
 
     /* Get the first header*/
     PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+    
     while (currentOffset < wsfNvmCb.availAddr && header.id != WSF_NVM_UNUSED_FILECODE) {
         const uint32_t fileSize = WSF_NVM_FILE_SIZE(header.len);
 

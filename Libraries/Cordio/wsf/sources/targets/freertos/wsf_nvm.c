@@ -156,6 +156,7 @@ void WsfNvmInit(void)
     storageAddr += WSF_NVM_WORD_ALIGN(header.len) + sizeof(header);
     if (!((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize)) {
         WSF_TRACE_INFO0("WSF -> NVM IS FULL!");
+        storageAddr =  WSF_NVM_START_ADDR + wsfNvmCb.totalSize;
         break;
     }
 
