@@ -1242,11 +1242,11 @@ bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
       {
         writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
         if(!writeOk){
-        return FALSE;
+          return FALSE;
         }
         writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
         if(!writeOk){
-        return FALSE;
+          return FALSE;
         }
       }
 
