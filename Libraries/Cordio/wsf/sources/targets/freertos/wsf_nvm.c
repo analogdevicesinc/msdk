@@ -86,14 +86,14 @@ static struct {
 uint32_t WsfNvmGetRemainingSpace(void)
 {
     const int32_t bytesLeft = wsfNvmCb.totalSize - (wsfNvmCb.availAddr - WSF_NVM_START_ADDR);
-    #if WSF_ASSERT_ENABLED == 1
+    
     WSF_ASSERT(bytesLeft >= 0);
-    #else
+    
     if(bytesLeft < 0)
     {
         return 0;
     }
-    #endif
+    
     
     return (uint32_t)bytesLeft;
 }
@@ -446,14 +446,14 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
 /*************************************************************************************************/
 bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
 {
-#if WSF_ASSERT_ENABLED == 1
+
     WSF_ASSERT(copyBuf && size >= wsfNvmCb.totalSize);
-#else
+
     if (!copyBuf || size < wsfNvmCb.totalSize) {
         WSF_TRACE_INFO0("Not enough memory given to defragment NVM");
         return FALSE;
     }
-#endif
+
 
     WsfCsEnter();
 
