@@ -225,6 +225,14 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     if (!schTimerActive) {
+
+        #if configUSE_TICKLESS_IDLE == 1
+            /* Re-enable interrupts - see comments above the cpsid instruction()
+               above. */
+            __asm volatile("cpsie i");
+
+            return;
+        #else
         uint32_t ts;
         if (PalBbGetTimestamp(&ts)) {
             /*Determine if PalBb is active, return if we get a valid time stamp indicating 
@@ -236,9 +244,11 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
             return;
         }
+        #endif
     }
 
     /* Disable SysTick */
+
     SysTick->CTRL &= ~(SysTick_CTRL_ENABLE_Msk);
 
     /* Enable wakeup from WUT */
