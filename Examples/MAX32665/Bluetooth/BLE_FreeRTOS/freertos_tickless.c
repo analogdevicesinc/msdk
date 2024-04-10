@@ -228,7 +228,6 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     if (!schTimerActive) {
         uint32_t ts;
         if (PalBbGetTimestamp(&ts)) {
-            
             /*Determine if PalBb is active, return if we get a valid time stamp indicating 
              * that the scheduler is waiting for a PalBb event */
 
@@ -238,7 +237,6 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
             return;
         }
-        
     }
 
     /* Disable SysTick */
@@ -295,7 +293,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
             /* Stop the BLE scheduler timer */
             PalTimerStop();
         }
-        
+
         /* Shutdown BB hardware */
         PalBbDisable();
 
@@ -312,8 +310,6 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         PalBbRestore();
 
         if (schTimerActive) {
-
-
             /* Restore the BB counter */
             MXC_WUT_RestoreBBClock(BB_CLK_RATE_HZ);
 
@@ -327,7 +323,6 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
                 palTimerStartTicks = 1;
             }
             PalTimerStart(palTimerStartTicks);
-            
         }
     }
 
