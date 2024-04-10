@@ -204,7 +204,6 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
-
         }
 
         /* 
