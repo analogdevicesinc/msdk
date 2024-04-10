@@ -307,11 +307,11 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 
+        /* Enable and restore the BB hardware */
         PalBbEnable();
         PalBbRestore();
 
         if (schTimerActive) {
-            /* Enable and restore the BB hardware */
 
 
             /* Restore the BB counter */
