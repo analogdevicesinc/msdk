@@ -207,8 +207,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
         }
 
-        /* Shutdown BB hardware 
-           The call looks redundant, but it 
+        /* 
+            Shutdown BB hardware 
         */
 
         PalBbForceDisable();
