@@ -483,7 +483,7 @@ bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
         }
     }
 
-    /*
+  /*
     If we defragged anything clear the sector and rewrite flash with defragmented data
   */
     if (defragPossible) {
