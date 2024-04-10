@@ -526,7 +526,7 @@ void AppDbSetPeerRpao(appDbHdl_t hdl, bool_t peerRpao);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerRpao(appDbHdl_t hdl);
+bool_t AppDbNvmStorePeerRpao(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -537,7 +537,7 @@ void AppDbNvmStorePeerRpao(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCccTbl(appDbHdl_t hdl);
+bool_t AppDbNvmStoreCccTbl(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -548,7 +548,7 @@ void AppDbNvmStoreCccTbl(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreHdlList(appDbHdl_t hdl);
+bool_t AppDbNvmStoreHdlList(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -559,7 +559,7 @@ void AppDbNvmStoreHdlList(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl);
+bool_t AppDbNvmStorePeerSignCounter(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -570,7 +570,7 @@ void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl);
+bool_t AppDbNvmStorePeerAddrRes(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -581,7 +581,7 @@ void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl);
+bool_t AppDbNvmStoreChangeAwareState(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -592,7 +592,7 @@ void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCsfRecord(appDbHdl_t hdl);
+bool_t AppDbNvmStoreCsfRecord(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -603,7 +603,7 @@ void AppDbNvmStoreCsfRecord(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCacheByHash(appDbHdl_t hdl);
+bool_t AppDbNvmStoreCacheByHash(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -614,7 +614,7 @@ void AppDbNvmStoreCacheByHash(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreDbHash(appDbHdl_t hdl);
+bool_t AppDbNvmStoreDbHash(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
@@ -625,7 +625,7 @@ void AppDbNvmStoreDbHash(appDbHdl_t hdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreBond(appDbHdl_t hdl);
+bool_t AppDbNvmStoreBond(appDbHdl_t hdl);
 
 /*************************************************************************************************/
 /*!
