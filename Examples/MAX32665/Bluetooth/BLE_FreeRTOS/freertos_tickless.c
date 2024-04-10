@@ -41,6 +41,7 @@
 #include "pal_timer.h"
 #include "pal_uart.h"
 #include "pal_bb.h"
+#include "wsf_trace.h"
 
 #define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
 #define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
@@ -225,16 +226,9 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     if (!schTimerActive) {
-
-        #if configUSE_TICKLESS_IDLE == 1
-            /* Re-enable interrupts - see comments above the cpsid instruction()
-               above. */
-            __asm volatile("cpsie i");
-
-            return;
-        #else
         uint32_t ts;
         if (PalBbGetTimestamp(&ts)) {
+            
             /*Determine if PalBb is active, return if we get a valid time stamp indicating 
              * that the scheduler is waiting for a PalBb event */
 
@@ -244,7 +238,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
             return;
         }
-        #endif
+        
     }
 
     /* Disable SysTick */
@@ -300,10 +294,10 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
-
-            /* Shutdown BB hardware */
-            PalBbDisable();
         }
+        
+        /* Shutdown BB hardware */
+        PalBbDisable();
 
         LED_Off(SLEEP_LED);
         LED_Off(DEEPSLEEP_LED);
@@ -313,11 +307,12 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 
+        PalBbEnable();
+        PalBbRestore();
+
         if (schTimerActive) {
             /* Enable and restore the BB hardware */
-            PalBbEnable();
 
-            PalBbRestore();
 
             /* Restore the BB counter */
             MXC_WUT_RestoreBBClock(BB_CLK_RATE_HZ);
@@ -332,6 +327,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
                 palTimerStartTicks = 1;
             }
             PalTimerStart(palTimerStartTicks);
+            
         }
     }
 
