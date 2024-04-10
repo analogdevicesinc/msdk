@@ -40,6 +40,8 @@
 #include "pal_timer.h"
 #include "pal_uart.h"
 #include "pal_bb.h"
+#include "wsf_trace.h"
+#include "mxc_delay.h"
 
 #define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
 #define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
@@ -202,16 +204,19 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
+
         }
 
-        /* Shutdown BB hardware */
-        PalBbDisable();
+        /* Shutdown BB hardware 
+           The call looks redundant, but it 
+        */
+
+        PalBbForceDisable();
 
         LED_Off(SLEEP_LED);
         LED_Off(DEEPSLEEP_LED);
 
         MXC_LP_EnterStandbyMode();
-
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 

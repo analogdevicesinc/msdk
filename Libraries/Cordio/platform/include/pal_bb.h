@@ -204,6 +204,16 @@ void PalBbDisable(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Force disable the BB hardware irrespective of reference count state.
+ *
+ *  This routine signals the BB hardware to go into low power (disable power and clocks) after all
+ *  BB operations have been disabled.
+ */
+/*************************************************************************************************/
+void PalBbForceDisable(void);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Load BB timing configuration.
  *
  *  \param      pCfg                Return configuration values.
