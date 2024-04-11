@@ -40,8 +40,7 @@
 #include "pal_timer.h"
 #include "pal_uart.h"
 #include "pal_bb.h"
-#include "wsf_trace.h"
-#include "mxc_delay.h"
+
 
 #define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
 #define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
