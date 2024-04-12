@@ -307,9 +307,9 @@ function change_advertising_names() {
         cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
         perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
         # change advertising name to scan for on the main device client apps
-        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc
         perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
-        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac
         perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
         # build BLE examples
         cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
@@ -328,9 +328,9 @@ function change_advertising_names() {
         cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
         perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
         # change advertising name to scan for on the main device client apps
-        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc
         perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
-        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac
         perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
     fi
 }
@@ -419,13 +419,13 @@ function run_datcs_conencted_tests() {
     erase_all_devices
 
     # Flash MAIN_DEVICE with BLE_datc
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc
     make clean
     make libclean
     make -j
 
     # flash client first because it takes longer
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc/build
     printf "\r\n> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n"
     #flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
@@ -462,7 +462,7 @@ function run_datcs_conencted_tests() {
         let "numOfFailedTests+=$testResult"
         failedTestList+="| BLE_dat_cs ($DUT_NAME_UPPER) "
         # test failed, save elfs datc/s
-        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc/build
         cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_BLE_datcs_client.elf"
         cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
         cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_datcs_server.elf"
@@ -497,7 +497,7 @@ function run_ota_test() {
     change_advertising_names
 
     # change the target the OTAC embedded firmware in the client is built for
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac
     #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
@@ -526,18 +526,18 @@ function run_ota_test() {
     make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST BUILD_BOOTLOADER=0 -j
     echo "BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j"
     # make OTAC
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
     make BOARD=$DUT_BOARD_TYPE FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST BUILD_BOOTLOADER=0 -j
 
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac/build
     printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     printf ">>>>>>> Flashing done"
 
     #revert files back
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac
     git restore .
 
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
@@ -559,14 +559,14 @@ function run_ota_test() {
         if [[ "$INTERNAL_FLASH_TEST" -ne "0" ]]; then
             failedTestList+="| BLE_ota_cs_int ($DUT_NAME_UPPER) "
             # test failed, save elfs datc/s
-            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac/build
             cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_int.elf"
             cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
             cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_int.elf"
         else
             failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
             # test failed, save elfs datc/s
-            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_otac/build
             cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
             cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
             cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"
