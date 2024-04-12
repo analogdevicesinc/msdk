@@ -895,7 +895,19 @@ static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
                         pInfo->param.alloc.taskId, pInfo->param.alloc.len);
     }
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief     Check to see if btn timer is enabled.
+ *
+ *  \param[in] tmr  btn timer.
+ *
+ *  \return    TRUE if enabled, FALSE otherwise.
+ */
+/*************************************************************************************************/
+static bool_t btnTmrIsEnabled(mxc_tmr_regs_t *tmr)
+{
+    return (bool_t)(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B));
+}
 /*************************************************************************************************/
 /*!
  *  \brief     Platform button press handler.
@@ -909,8 +921,14 @@ static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
 static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 {
     if (btnId == 1) {
+
+        if (!btnTmrIsEnabled(BTN_1_TMR)) {
+                APP_TRACE_INFO0("Software timer is not enabled!");
+                return;
+        }
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
+            
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
@@ -927,6 +945,12 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
             MXC_TMR_SW_Start(BTN_1_TMR);
         }
     } else if (btnId == 2) {
+
+        if (!btnTmrIsEnabled(BTN_2_TMR)) {
+            APP_TRACE_INFO0("Software timer is not enabled!");
+            return;
+        }
+        
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
