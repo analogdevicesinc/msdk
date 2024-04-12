@@ -130,7 +130,7 @@ __isr_vector:
     .long RSV51_IRQHandler          /* 0x43  0x010C  67: Reserved */
     .long RSV52_IRQHandler          /* 0x44  0x0110  68: Reserved */
     .long RSV53_IRQHandler          /* 0x45  0x0114  69: Reserved */
-    .long RSV54_IRQHandler          /* 0x46  0x0118  70: Reserved */
+    .long GPIOWAKE_IRQHandler       /* 0x46  0x0118  70: GPIOWAKE */
     .long RSV55_IRQHandler          /* 0x47  0x011C  71: Reserved */
     .long RSV56_IRQHandler          /* 0x48  0x0120  72: Reserved */
     .long WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
@@ -338,7 +338,7 @@ Reset_Handler:
     def_irq_handler     RSV51_IRQHandler          /* 0x43  0x010C  67: Reserved */
     def_irq_handler     RSV52_IRQHandler          /* 0x44  0x0110  68: Reserved */
     def_irq_handler     RSV53_IRQHandler          /* 0x45  0x0114  69: Reserved */
-    def_irq_handler     RSV54_IRQHandler          /* 0x46  0x0118  70: Reserved */
+    def_irq_handler     GPIOWAKE_IRQHandler       /* 0x46  0x0118  70: GPIOWAKE */
     def_irq_handler     RSV55_IRQHandler          /* 0x47  0x011C  71: Reserved */
     def_irq_handler     RSV56_IRQHandler          /* 0x48  0x0120  72: Reserved */
     def_irq_handler     WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
