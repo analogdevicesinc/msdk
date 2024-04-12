@@ -237,8 +237,6 @@ int main(void)
     AppTerminalInit();
     MXC_ICC_Enable(MXC_ICC0);
 
-    
-
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
