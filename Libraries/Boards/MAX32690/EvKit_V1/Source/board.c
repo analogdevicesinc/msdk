@@ -103,7 +103,6 @@ __weak void GPIO2_IRQHandler(void)
 /******************************************************************************/
 int Board_Init(void)
 {
-    
     //Disable to prevent cache bug
     MXC_ICC_Disable(MXC_ICC0);
 
