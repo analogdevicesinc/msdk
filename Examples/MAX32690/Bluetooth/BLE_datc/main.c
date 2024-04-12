@@ -226,7 +226,7 @@ int main(void)
     /* Set the default connection power level */
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 #endif
-    MXC_ICC_Disable(MXC_ICC0);
+    
     uint32_t memUsed;
     WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
@@ -235,7 +235,7 @@ int main(void)
 
     mainWsfInit();
     AppTerminalInit();
-    MXC_ICC_Enable(MXC_ICC0);
+    
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();
