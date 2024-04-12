@@ -1277,10 +1277,9 @@ static bool_t btnTmrIsEnabled(mxc_tmr_regs_t *tmr)
 static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 {
     if (btnId == 1) {
-        
         if (!btnTmrIsEnabled(BTN_1_TMR)) {
-                APP_TRACE_INFO0("Software timer is not enabled!");
-                return;
+            APP_TRACE_INFO0("Software timer is not enabled!");
+            return;
         }
 
         /* Start/stop button timer */
@@ -1301,12 +1300,11 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
             MXC_TMR_SW_Start(BTN_1_TMR);
         }
     } else if (btnId == 2) {
-
         if (!btnTmrIsEnabled(BTN_2_TMR)) {
             APP_TRACE_INFO0("Software timer is not enabled!");
             return;
         }
-        
+
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
