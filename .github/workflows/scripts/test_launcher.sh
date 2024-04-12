@@ -295,16 +295,16 @@ function change_advertising_names() {
     if [ $(hostname) == "wall-e" ]; then
         # change advertising name for projects under test to avoid
         # connections with office devices
-        printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+        printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth\r\n\r\n"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_dats
         perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_datc
         perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_otac
         perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_otas
         perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_FreeRTOS
         perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
         # change advertising name to scan for on the main device client apps
         cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc
@@ -317,15 +317,15 @@ function change_advertising_names() {
         # change advertising name for projects under test to avoid
         # connections with office devices
         printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_dats
         perl -i -pe "s/\'D\'/\'Z\'/g" dats_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_datc
         perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_otac
         perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_otas
         perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_FreeRTOS
         perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
         # change advertising name to scan for on the main device client apps
         cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/Bluetooth/BLE_datc
@@ -431,11 +431,11 @@ function run_datcs_conencted_tests() {
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
 
     # flash DUT with BLE_dats
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_dats
     make clean
     make libclean
     make -j
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bluetooth/BLE_dats/build
     printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
     #flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
     flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
