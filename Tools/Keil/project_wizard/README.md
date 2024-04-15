@@ -1,0 +1,53 @@
+## Keil Project Wizard Application
+
+This folder contains the Keil Project Wizard executable and supporting files for creating new Keil projects which points to a user-selectable MSDK location - allowing users to keep their projects up to date with the latest development in the MSDK Git repo.
+
+## Notice
+
+This app is in pre-release (v0.1.0) and only supported for Windows OS.
+
+Unlike creating examples through Keil's Menus and CMSIS Pack files, there are still setup steps that the user must follow to properly create a new project through this app.
+
+## Devices Currently Supported
+
+* MAX32675
+
+## Setup Steps
+
+To properly setup your project using the Project Wizard App, follow these steps:
+
+1. Install and setup [Keil MDK-Arm](https://www.keil.com/download/product/)
+2. Clone the [MSDK repository](https://github.com/analogdevicesinc/msdk)
+3. Open Keil uVision 5
+4. Open the "Pack Installer" and find the `Device` Tab (usually on the left half column).
+5. Find `Maxim` -> `MAX32675 Family` and select the `MAX32675`.
+6. Open the `Packs` Tab (usually on the right half column) and expand `Device Specific`.
+7. Install the `Maxim::MAX32675` v1.3.0 pack file.
+8. Close Keil.
+9. Run the Project Wizard App located in the cloned MSDK repository - located in `msdk/Tools/Keil/project_wizard`.
+10. Run `ADI_Keil_Project_Wizard.exe`.
+11. Fill in desired project settings in the opened GUI.
+    - Project name - Do not use spaces in project name.
+    - Project location - Default location: `C:\Keil_Projects`
+    - Keil Install Location - this is the directory where Keil is installed (default location: `C:\Keil_v5`).
+    - MSDK Repo Location - should be auto-filled if Wizard app was opened within the cloned MSDK repo.
+    - Device selection.
+    - Board selection.
+    - Example selection - reference an MSDK example for new project.
+    - Fill in all prompts before pressing `Finish`
+12. Press the `Finish` button once ready and wait for project to be generated.
+13. Locate where the project was generated and run `{INSERT_PROJECT_NAME}.uvprojx`
+14. Go to `Project` -> `Options for Target 'MAX32675:Cortex-M4'...`.
+    - Press `ALT+F7` for macro shortcut to `Options for Target...`. 
+15. In the `Target` Tab -> `Code Generation` section -> `ARM Compiler` options, select `Use default compiler version 6`.
+16. In the `Debug` Tab -> Top right corner, select the `CMSIS-DAP Debugger` or the board's supported debugger adapter. Press the `Run to main()` checkbox right underneath.
+    - (Optional) Press the `Run to main()` checkbox right underneath the debugger adapter selector.
+17. In the `Utilities` Tab, press the `Settings` button in the `Configure Flash Menu Command` section. A `Target Driver Setup` window should open.
+18. In the `Flash Download` Tab, click the `Erase Full Chip` option in the `Download Function` section.
+19. In the `Debug` Tab, within the sections `Debug` -> `Connect & Reset Options`, select the `Reset:` option to `VECTRESET`.
+20. Press `OK` to save everything.
+21. Build and load the project. Enjoy!
+
+### Support
+
+Contact ADI MSDK developers for more support.
