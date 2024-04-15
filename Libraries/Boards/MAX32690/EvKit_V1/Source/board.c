@@ -32,6 +32,7 @@
 #include "spixf.h"
 #include "tft_st7735.h"
 #include "uart.h"
+#include "icc.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -102,6 +103,9 @@ __weak void GPIO2_IRQHandler(void)
 /******************************************************************************/
 int Board_Init(void)
 {
+    //Disable to prevent cache bug
+    MXC_ICC_Disable(MXC_ICC0);
+
     int err;
 
     // Enable GPIO
