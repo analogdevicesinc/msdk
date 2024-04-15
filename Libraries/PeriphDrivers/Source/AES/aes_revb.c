@@ -47,8 +47,10 @@ static mxc_aes_revb_dma_req_t dma_state;
      (((x) << 24) & 0xFF000000))
 
 /* Prevent GCC from optimimzing this function to memcpy */
-static void __attribute__((optimize("no-tree-loop-distribute-patterns")))
-memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
+#if defined(__GNUCC__)
+ __attribute__((optimize("no-tree-loop-distribute-patterns")))
+#endif
+static void memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
 {
     uint32_t *dstr = dst + (len / 4) - 1;
     while (len) {
