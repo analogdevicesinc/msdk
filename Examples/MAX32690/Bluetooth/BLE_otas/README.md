@@ -5,7 +5,7 @@ Bluetooth data server that advertises as "OTAS" and accepts connection requests.
 The Wireless Data Exchange profile is used to transfer files from the client to the server.
 A CRC32 value is used to check the integrity of the transferred file.
 
-Refer to the [BLE_otac_otas](../../../Libraries/Cordio/docs/Applications/BLE_otac_otas.md) documentation in the Cordio Library.
+Refer to the [BLE_otac_otas](../../../../Libraries/Cordio/docs/Applications/BLE_otac_otas.md) documentation in the Cordio Library.
 
 ## Software
 

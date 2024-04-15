@@ -1,7 +1,7 @@
 # BLE_FreeRTOS
 
 A basic getting started application for BLE and FreeRTOS.
-Refer to the [BLE_FreeRTOS](../../../Libraries/Cordio/docs/Applications/BLE_FreeRTOS.md) documentation in the Cordio Library.
+Refer to the [BLE_FreeRTOS](../../../../Libraries/Cordio/docs/Applications/BLE_FreeRTOS.md) documentation in the Cordio Library.
 
 ## Software
 
