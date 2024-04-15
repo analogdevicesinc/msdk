@@ -41,7 +41,7 @@ To properly setup your project using the Project Wizard App, follow these steps:
 14. Go to `Project` -> `Options for Target 'MAX32675:Cortex-M4'...`.
     - Press `ALT+F7` for macro shortcut to `Options for Target...`. 
 15. In the `Target` Tab -> `Code Generation` section -> `ARM Compiler` options, select `Use default compiler version 6`.
-16. In the `Debug` Tab -> Top right corner, select the `CMSIS-DAP Debugger` or the board's supported debugger adapter. Press the `Run to main()` checkbox right underneath.
+16. In the `Debug` Tab -> Top right corner, select the `CMSIS-DAP Debugger` or the board's supported debugger adapter.
     - (Optional) Press the `Run to main()` checkbox right underneath the debugger adapter selector.
 17. In the `Utilities` Tab, press the `Settings` button in the `Configure Flash Menu Command` section. A `Target Driver Setup` window should open.
 18. In the `Flash Download` Tab, click the `Erase Full Chip` option in the `Download Function` section.
