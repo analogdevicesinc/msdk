@@ -19,7 +19,8 @@ To properly setup your project using the Project Wizard App, follow these steps:
 1. Install and setup [Keil MDK-Arm](https://www.keil.com/download/product/)
 2. Clone the [MSDK repository](https://github.com/analogdevicesinc/msdk)
 3. Open Keil uVision 5
-4. Open the "Pack Installer" and find the `Device` Tab (usually on the left half column).
+4. Open the `Pack Installer` and find the `Device` Tab (usually on the left half column).
+    - `Pack Installer` menu location: ![Pack Installer Location](https://github.com/analogdevicesinc/msdk/blob/feat/keil_project_wizard/Tools/Keil/project_wizard/docs/pack_installer_location.png)
 5. Find `Maxim` -> `MAX32675 Family` and select the `MAX32675`.
 6. Open the `Packs` Tab (usually on the right half column) and expand `Device Specific`.
 7. Install the `Maxim::MAX32675` v1.3.0 pack file.
