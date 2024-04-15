@@ -2,7 +2,7 @@
 
 Maxim custom Bluetooth profile and service that advertises as "MCS" and accepts
 connection requests.
-Refer to the [BLE_mcs](../../../Libraries/Cordio/docs/Applications/BLE_mcs.md) documentation in the Cordio Library.
+Refer to the [BLE_mcs](../../../../Libraries/Cordio/docs/Applications/BLE_mcs.md) documentation in the Cordio Library.
 
 ## Software
 

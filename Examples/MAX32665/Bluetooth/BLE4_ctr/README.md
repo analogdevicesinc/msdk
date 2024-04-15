@@ -2,7 +2,7 @@
 
 Bluetooth version 4.2 controller, accepts HCI commands via Serial Port.
 
-Refer to the [BLE4_ctr](../../../Libraries/Cordio/docs/Applications/BLE4_ctr.md) documentation in the Cordio Library.
+Refer to the [BLE4_ctr](../../../../Libraries/Cordio/docs/Applications/BLE4_ctr.md) documentation in the Cordio Library.
 
 ## Software
 
