@@ -1,6 +1,6 @@
 # BLE_fit
 Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
-Refer to [BLE_fit](../../../Libraries/Cordio/docs/Applications/BLE_fit.md) documentation in the Cordio Library.
+Refer to [BLE_fit](../../../../Libraries/Cordio/docs/Applications/BLE_fit.md) documentation in the Cordio Library.
 
 ## Software
 
