@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_SYS_H_
-#define _WRAP_MAX32_SYS_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_SYS_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_SYS_H_
 
 /***** Includes *****/
 #include <mxc_sys.h>
@@ -87,4 +87,4 @@ static inline void Wrap_MXC_SYS_SetClockDiv(int div)
 }
 #endif
 
-#endif // _WRAP_MAX32_SYS_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_SYS_H_

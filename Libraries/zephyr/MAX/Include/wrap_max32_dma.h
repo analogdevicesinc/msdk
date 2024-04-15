@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_DMA_H_
-#define _WRAP_MAX32_DMA_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_DMA_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_DMA_H_
 
 /***** Includes *****/
 #include <dma.h>
@@ -146,4 +146,4 @@ static inline int Wrap_MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t 
 }
 #endif
 
-#endif // _WRAP_MAX32_DMA_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_DMA_H_

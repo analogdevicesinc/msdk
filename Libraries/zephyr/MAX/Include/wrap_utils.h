@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_UTILS_H_
-#define _WRAP_UTILS_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_UTILS_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_UTILS_H_
 
 /***** Includes *****/
 
@@ -48,4 +48,4 @@ static inline int wrap_utils_find_lsb_set(uint32_t val)
 }
 #endif
 
-#endif // _WRAP_UTILS_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_UTILS_H_

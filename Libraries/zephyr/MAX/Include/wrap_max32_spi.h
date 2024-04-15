@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_SPI_H_
-#define _WRAP_MAX32_SPI_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_SPI_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_SPI_H_
 
 /***** Includes *****/
 #include <spi.h>
@@ -127,4 +127,4 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
 }
 #endif
 
-#endif // _WRAP_MAX32_SPI_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_SPI_H_

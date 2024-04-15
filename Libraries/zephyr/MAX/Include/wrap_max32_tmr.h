@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_TMR_H_
-#define _WRAP_MAX32_TMR_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_TMR_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_TMR_H_
 
 /***** Includes *****/
 #include <tmr.h>
@@ -208,4 +208,4 @@ int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 }
 #endif
 
-#endif // _WRAP_MAX32_TMR_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_TMR_H_

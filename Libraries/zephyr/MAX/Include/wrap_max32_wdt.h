@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_WDT_H_
-#define _WRAP_MAX32_WDT_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_WDT_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_WDT_H_
 
 /***** Includes *****/
 #include <wdt.h>
@@ -156,4 +156,4 @@ static inline int Wrap_MXC_WDT_SelectClockSource(mxc_wdt_regs_t *wdt, uint32_t c
 }
 #endif
 
-#endif // _WRAP_MAX32_WDT_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_WDT_H_

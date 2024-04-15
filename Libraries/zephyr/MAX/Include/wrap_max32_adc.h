@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_ADC_H_
-#define _WRAP_MAX32_ADC_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_ADC_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_ADC_H_
 
 /***** Includes *****/
 #include <adc.h>
@@ -221,7 +221,7 @@ static inline int Wrap_MXC_ADC_AverageConfig(uint8_t oversampling)
 static inline void Wrap_MXC_ADC_ChannelSelect(uint32_t *sample_channels)
 {
     const uint8_t num_of_channels = POPCOUNT(*sample_channels);
-    mxc_adc_slot_req_t slots[num_of_channels];
+    mxc_adc_slot_req_t slots[MAX_ADC_SLOT_NUM];
     mxc_adc_conversion_req_t req;
     uint8_t slot_index = 0;
     int channel_id;
@@ -302,4 +302,4 @@ static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 }
 #endif
 
-#endif // _WRAP_MAX32_ADC_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_ADC_H_

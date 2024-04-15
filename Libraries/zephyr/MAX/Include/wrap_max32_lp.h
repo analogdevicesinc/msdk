@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_LP_H_
-#define _WRAP_MAX32_LP_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_LP_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_LP_H_
 
 /***** Includes *****/
 #include <lp.h>
@@ -83,4 +83,4 @@ static inline void Wrap_MXC_LP_EnterPowerDownMode(void)
 }
 #endif
 
-#endif // _WRAP_MAX32_LP_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_LP_H_

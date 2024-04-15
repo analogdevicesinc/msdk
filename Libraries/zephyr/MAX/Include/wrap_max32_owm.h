@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_OWM_H_
-#define _WRAP_MAX32_OWM_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_OWM_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_OWM_H_
 
 /***** Includes *****/
 #include <owm.h>
@@ -53,4 +53,4 @@ static inline int Wrap_MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
 }
 #endif
 
-#endif // _WRAP_MAX32_OWM_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_OWM_H_

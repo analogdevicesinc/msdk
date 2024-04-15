@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_TRNG_H_
-#define _WRAP_MAX32_TRNG_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_TRNG_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_TRNG_H_
 
 /***** Includes *****/
 #include <trng.h>
@@ -63,4 +63,4 @@ static inline int Wrap_MXC_TRNG_RandomInt_NonBlocking(uint32_t *data)
 }
 #endif
 
-#endif // _WRAP_MAX32_TRNG_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_TRNG_H_

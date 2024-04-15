@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32XXX_H_
-#define _WRAP_MAX32XXX_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32XXX_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32XXX_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,4 +63,4 @@ extern "C" {
 }
 #endif
 
-#endif // _WRAP_MAX32XXX_H_
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32XXX_H_

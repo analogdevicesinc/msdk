@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef _WRAP_MAX32_I2C_H_
-#define _WRAP_MAX32_I2C_H_
+#ifndef LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_I2C_H_
+#define LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_I2C_H_
 
 /***** Includes *****/
 #include <i2c.h>
@@ -231,4 +231,4 @@ static inline void Wrap_MXC_I2C_Stop(mxc_i2c_regs_t *i2c)
 }
 #endif
 
-#endif /* _WRAP_MAX32_I2C_H_ */
+#endif // LIBRARIES_ZEPHYR_MAX_INCLUDE_WRAP_MAX32_I2C_H_
