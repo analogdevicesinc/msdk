@@ -50,7 +50,8 @@ static mxc_aes_revb_dma_req_t dma_state;
 #if !(defined(__CC_ARM) || defined(__ARMCC_VERSION))
 __attribute__((optimize("no-tree-loop-distribute-patterns")))
 #endif
-static void memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
+static void
+memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
 {
     uint32_t *dstr = dst + (len / 4) - 1;
     while (len) {
