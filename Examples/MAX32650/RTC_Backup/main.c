@@ -60,7 +60,7 @@
 void RTC_IRQHandler(void) {}
 
 // *****************************************************************************
-void rescheduleAlarm()
+void rescheduleAlarm(void)
 {
     uint32_t time;
     int flags = MXC_RTC_GetFlags();
@@ -86,7 +86,7 @@ void rescheduleAlarm()
 }
 
 // *****************************************************************************
-void printTime()
+void printTime(void)
 {
     int day, hr, min;
     uint32_t sec;
@@ -107,7 +107,7 @@ void printTime()
 }
 
 // *****************************************************************************
-int configureRTC()
+int configureRTC(void)
 {
     printf("\n\n***************** RTC Wake from Backup Example *****************\n\n");
     printf("The time-of-day alarm is set to wake the device every %d seconds.\n", TIME_OF_DAY_SEC);

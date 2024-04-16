@@ -7,10 +7,12 @@ A basic getting started application for FreeRTOS.
 ### Project Usage
 
 Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board. 
+* Setting the "DEBUG" flag to 1 in project.mk will configure TMR0 as an RTOS Stats Timer running at 32 kHz. Timer configuration is provided in FreeRTOS_Debug.c.
 
 ## Required Connections
 
@@ -38,3 +40,17 @@ Uptime is 0x00000000 (0 seconds), tickless-idle is disabled
 Enter 'help' to view a list of available commands.
 cmd>
 ```
+
+## Debugging
+
+Some extra debug features are provided as recommended practice in FreeRTOS_Debug.c. These are based on recommendations from the FreeRTOS documentation. They include:
+- A timer setup using TMR0 as an RTOS Statistics timer to profile task runtime. 
+- A custom HardFaultHandler which copies CPU register state to C variables for viewing inside a debugger program. 
+  - This is useful to diagnose the system state at the moment the HardFault occured. 
+
+The statistics timer can be used by numerous RTOS Debug utilities which detect a kernel and use the kernel's profiling routines to output useful information to the user. A similar timer configuration could also be used for RTOS kernels other than FreeRTOS. Be aware that TMR0 may not behave properly when using Low-Power features -- for these use-cases a Low-Power timer on the device should be used.  
+
+An example of using the HardFaultHandler can be observed by placing a privileged memory access (e.g. ```int y = *(uint32_t *)0xFFFFFFFF```) inside an RTOS task. The program counter will show as a C variable, which can be used with a Disassembly View to find the location of the HardFault. An image is provided below as an example:
+
+![Disassembly View in VSCode](img/HardFault.png)
+

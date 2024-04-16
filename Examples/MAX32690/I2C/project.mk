@@ -1,5 +1,5 @@
 # This file can be used to set build configuration
-# variables.  These variables are defined in a file called 
+# variables.  These variables are defined in a file called
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
@@ -13,3 +13,10 @@
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
+
+# Due to the board design and I2C errata, the APARD board does not currently
+# support the I2C loopback example.  See other I2C example projects for I2C
+# implementations
+ifeq ($(BOARD),APARD)
+$(error ERR_NOTSUPPORTED: This project is not supported for the AD-APARD32690 board)
+endif

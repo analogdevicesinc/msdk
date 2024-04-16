@@ -1,6 +1,6 @@
 ## Description
 
-This example demonstrates the use of the Analog Comparator to wake up the device from sleep mode. 
+This example demonstrates the use of the Analog Comparator to wake up the device from sleep mode.
 
 The example is configured to use analog channels 0 and 1 as the negative and positive comparator inputs respectively. A wakeup event is triggered when the comparator output transitions from low to high (analog 1 needs to transition from a voltage lower than analog 0 to voltage higher than analog 0).
 
@@ -28,6 +28,13 @@ If using the MAX32690FTHR:
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Apply the negative comparator input to the pin labeled AIN0 of the J2 header.
 -   Apply the positive comparator input to the pin labeled AIN1 of the J2 header.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Apply the negative comparator input to AIN0, pin 1 on P3.
+-   Apply the positive comparator input to AIN1, pin 2 on P3.
 
 ## Expected Output
 

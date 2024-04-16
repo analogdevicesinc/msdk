@@ -50,7 +50,7 @@
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdog_timeout_handler()
+void watchdog_timeout_handler(void)
 {
     //get and clear flag
     MXC_WDT_GetIntFlag(MXC_WDT0);

@@ -72,7 +72,7 @@ static uint8_t g_is_configured = 0;
 #elif defined(SPIXF_RAM)
 __attribute__((section(".spix_config")))
 #endif
-static int flash_busy()
+static int flash_busy(void)
 {
     uint8_t buf;
 
@@ -91,7 +91,7 @@ static int flash_busy()
 #elif defined(SPIXF_RAM)
 __attribute__((section(".spix_config")))
 #endif
-static int write_enable()
+static int write_enable(void)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd = IS25_CMD_WRITE_EN;

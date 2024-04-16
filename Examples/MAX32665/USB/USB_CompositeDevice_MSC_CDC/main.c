@@ -62,8 +62,8 @@ static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static int usbReadCallback(void);
-int usbStartupCallback();
-int usbShutdownCallback();
+int usbStartupCallback(void);
+int usbShutdownCallback(void);
 static void echoUSB(void);
 
 /* This EP assignment must match the Configuration Descriptor */
@@ -253,7 +253,7 @@ static void echoUSB(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback()
+int usbStartupCallback(void)
 {
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_HIRC96M_EN)) {
@@ -270,7 +270,7 @@ int usbStartupCallback()
 }
 
 /******************************************************************************/
-int usbShutdownCallback()
+int usbShutdownCallback(void)
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

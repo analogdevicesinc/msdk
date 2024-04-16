@@ -40,7 +40,7 @@
 /***** Definitions *****/
 
 // Parameters for PWM output
-#define CLOCK_SOURCE MXC_TMR_8M_CLK // must be mxc_tmr_clock_t
+#define CLOCK_SOURCE MXC_TMR_IBRO_CLK // must be mxc_tmr_clock_t
 
 // Parameters for Continuous timer
 #define OST_FREQ 1 // (Hz)
@@ -70,7 +70,7 @@
 
 /***** Functions *****/
 
-void PWMTimer()
+void PWMTimer(void)
 {
     mxc_tmr_cfg_t tmr;
     unsigned int periodTicks;
@@ -111,14 +111,14 @@ void PWMTimer()
 }
 
 // Toggles LED0 when continuous timer repeats
-void ContinuousTimerHandler()
+void ContinuousTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     LED_Toggle(0);
 }
 
-void ContinuousTimer()
+void ContinuousTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
@@ -154,13 +154,13 @@ void ContinuousTimer()
 }
 
 // Turns on LED0 when Oneshot expires
-void OneshotTimerHandler()
+void OneshotTimerHandler(void)
 {
     MXC_TMR_ClearFlags(OST_TIMER);
     LED_Toggle(1);
 }
 
-void OneshotTimer()
+void OneshotTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

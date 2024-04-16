@@ -324,6 +324,10 @@ mxc_can_capabilities_t MXC_CAN_GetCapabilities(void);
 
 /**
  * @brief   Initializes CAN event callbacks
+ * @note    On default this function enables CAN peripheral clock and CAN gpio pins.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove clock and gpio related codes from file.
  * 
  * @param can_idx   Index of the CAN peripheral to initialize
  * @param cfg       Specifies how to configure CAN peripheral (see MXC_CAN_ObjectConfigure)
@@ -337,6 +341,10 @@ int MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg, mxc_can_unit_event_cb_
 
 /**
  * @brief   Free CAN resources (does not reset or disable CAN peripherals)
+ * @note    On default this function enables CAN peripheral clock.
+ *          if you wish to manage clock related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove clock related codes from file.
  *
  * @param can_idx   Index of CAN peripheral to un-initialize (shutdown)
  * 
@@ -346,6 +354,10 @@ int MXC_CAN_UnInit(uint32_t can_idx);
 
 /**
  * @brief   Change Power state of the CAN peripherals
+ * @note    On default this function enables CAN peripheral clock.
+ *          if you wish to manage clock related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove clock related codes from file.
  * 
  * @param can_idx   Index of CAN peripheral to alter power settings for
  * @param pwr       Desired power state of the CAN peripherals
@@ -467,6 +479,10 @@ int MXC_CAN_ObjectSetFilter(uint32_t can_idx, mxc_can_filt_cfg_t cfg, uint32_t i
 
 /**
  * @brief   Configure CAN object
+ * @note    On default this function enables CAN gpio pins.
+ *          if you wish to manage gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file.
+ *          By this flag this function will remove gpio related codes from file.
  * 
  * @param can_idx   Pointer to CAN instance
  * @param cfg       Specifies how the filter should be configured

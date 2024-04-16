@@ -5,7 +5,7 @@ This example demonstrates the use of the HyperBus Memory Controller.
 A function to blink an LED (found in ramfunc.c) is copied to external memory and executed from there. The type of external memory can be selected using the "HYPERRAM" or "XCCELABUS" and the chip select can be selected with "HBMC_CS".
 
 *** Note ***: On the MAX32690 EV Kit, the external memory type is HyperRAM and the chip select used is 0.
-
+*** Note ***: On the AD-APARD32690-SL, the external memory type is HyperRAM. There are two devices, at chip select 0 and chip select 1.
 ## Software
 
 ### Project Usage
@@ -18,8 +18,14 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
+If using the MAX32690EVKIT
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

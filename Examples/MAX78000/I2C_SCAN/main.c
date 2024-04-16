@@ -53,7 +53,7 @@
 uint8_t counter = 0;
 
 // *****************************************************************************
-int main()
+int main(void)
 {
     printf("\n\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");

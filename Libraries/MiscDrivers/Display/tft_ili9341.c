@@ -186,7 +186,7 @@ static void pixel(int x, int y, int color)
     write_data(color & 0xff);
 }
 
-static int width()
+static int width(void)
 {
     if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180)
         return 240;
@@ -194,7 +194,7 @@ static int width()
         return 320;
 }
 
-static int height()
+static int height(void)
 {
     if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180)
         return 320;
@@ -270,12 +270,12 @@ void locate(int x, int y)
     char_y = y;
 }
 
-int columns()
+int columns(void)
 {
     return width() / g_font[1];
 }
 
-int rows()
+int rows(void)
 {
     return height() / g_font[2];
 }

@@ -126,12 +126,26 @@ typedef enum {
 
 /**
  * @brief   Enumeration type for drive strength on a given pin.
+ *          This represents what the two GPIO_DS[2] (Drive Strength) 
+ *          registers are set to for a given GPIO pin; NOT the
+ *          drive strength level.
+ *
+ *          For example:
+ *              MXC_GPIO_DRVSTR_0: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_1: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 1
+ *              MXC_GPIO_DRVSTR_2: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_3: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 1
+ *
+ *          Refer to the user guide and datasheet to select the
+ *          appropriate drive strength. Note: the drive strength values
+ *          are not linear, and can vary from pin-to-pin and the state
+ *          of the GPIO pin (alternate function and voltage level).
  */
 typedef enum {
-    MXC_GPIO_DRVSTR_0, /**< Drive Strength 0 */
-    MXC_GPIO_DRVSTR_1, /**< Drive Strength 1 */
-    MXC_GPIO_DRVSTR_2, /**< Drive Strength 2 */
-    MXC_GPIO_DRVSTR_3, /**< Drive Strength 3 */
+    MXC_GPIO_DRVSTR_0, ///< Drive Strength GPIO_DS[2][pin]=0b00
+    MXC_GPIO_DRVSTR_1, ///< Drive Strength GPIO_DS[2][pin]=0b01
+    MXC_GPIO_DRVSTR_2, ///< Drive Strength GPIO_DS[2][pin]=0b10
+    MXC_GPIO_DRVSTR_3, ///< Drive Strength GPIO_DS[2][pin]=0b11
 } mxc_gpio_drvstr_t;
 
 /**

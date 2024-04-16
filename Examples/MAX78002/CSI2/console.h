@@ -52,7 +52,7 @@ extern void service_console(cmd_t cmd);
 
 int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len);
 
-int console_init();
+int console_init(void);
 int send_msg(const char *msg);
 int recv_msg(char *buffer);
 int recv_cmd(cmd_t *out_cmd);

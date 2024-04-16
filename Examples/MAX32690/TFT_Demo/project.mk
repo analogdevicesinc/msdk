@@ -26,3 +26,7 @@ FONTS = LiberationSans12x12 LiberationSans24x24 LiberationSans28x28 LiberationSa
 ifeq ($(BOARD),FTHR)
 $(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
 endif
+
+ifeq ($(BOARD),APARD)
+$(error ERR_NOTSUPPORTED: This project is not supported for the AD-APARD32690 board)
+endif

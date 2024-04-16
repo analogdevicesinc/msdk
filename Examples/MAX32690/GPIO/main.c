@@ -6,7 +6,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -40,10 +40,16 @@
 #else
 #define MXC_GPIO_PORT_IN MXC_GPIO1
 #endif
-#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_11
 
+#if defined(BOARD_APARD)
+#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_27
+#define MXC_GPIO_PORT_OUT MXC_GPIO2
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_1
+#else
+#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_11
 #define MXC_GPIO_PORT_OUT MXC_GPIO0
 #define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_14
+#endif
 
 #if defined(EvKit_V1)
 #define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO2
@@ -73,8 +79,13 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt_status;
 
     printf("\n\n************************* GPIO Example ***********************\n\n");
+#if defined(BOARD_APARD)
+    printf("1. This example reads P%d.27 and outputs the same state onto P2.1.\n",
+           MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
+#else
     printf("1. This example reads P%d.11 and outputs the same state onto P0.14.\n",
            MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
+#endif
 #if defined(EvKit_V1)
     printf("2. A falling edge interrupt is set up on P2.11. P2.12 toggles when\n");
     printf("   that interrupt occurs.\n\n");

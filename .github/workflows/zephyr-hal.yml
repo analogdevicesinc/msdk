@@ -1,0 +1,76 @@
+name: Publish MSDK HAL for Zephyr
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Controls when the workflow will run
+on:
+  # Run only when a pull-request is closed.
+  # The 'if_merged' condition in the 'jobs' section below will make sure the PR was
+  #  approved before running the steps.
+  pull_request:
+    types:
+      - closed
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Add environment variables here
+  PR_NUM: ${{ github.event.number }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  if_merged:
+    # Run only when a PR is merged
+    if: github.event.pull_request.merged == true
+
+    # The type of OS that the job will run on
+    runs-on: [ ubuntu-latest ]
+
+    permissions:
+      # This will depend on permissions set by repo and org (separate levels of permissions)
+      contents: write
+
+    steps:
+      # Checkout msdk repository
+      - name: Checkout msdk repository
+        uses: actions/checkout@v4
+        with:
+          # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
+          ref: ''
+          # Repository name (Default will be the current repo the action is running from)
+          repository: ${{ github.repository }}
+          fetch-depth: 0
+          # Name the path/directory of this repo for the runner's workspacee
+          path: msdk
+
+      # Checkout another repository
+      - name: Checkout zephry hal repository
+        uses: actions/checkout@v4
+        with:
+          # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
+          ref: 'develop'
+          # Name of different repository ('organization_name/repo_name')
+          # Update the following line to point to the hal_adi repo once that repo is created.
+          repository: 'analogdevicesinc/hal_adi'
+          fetch-depth: 0
+          # Name the path/directory of this repo for the runner's workspacee
+          path: hal_adi
+      
+      - name: Copy necessary files from msdk to hal_adi
+        run: |
+          # Call or run any tasks here
+          # The working directory for scripts will be the root of the runner workspace.
+          # Using the checkout commands above, the script will start out in the same 
+          # directory that contains the 'msdk' and 'hal_adi' folders.
+          bash ./msdk/.github/workflows/scripts/zephyr-hal.sh
+
+      - name: Push hal_adi repository
+        uses: EndBug/add-and-commit@v9.0.1
+        with:
+          add: '*'
+          message: 'Updating Zephyr MSDK Hal based on msdk PR# $PR_NUM'
+          push: true
+          # Specify path in workspace to the repo you want to push to
+          cwd: './hal_adi'

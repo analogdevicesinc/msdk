@@ -67,8 +67,8 @@ static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static int usb_read_callback(void);
 static void echo_usb(void);
-int usbStartupCallback();
-int usbShutdownCallback();
+int usbStartupCallback(void);
+int usbShutdownCallback(void);
 
 /* **** File Scope Variables **** */
 
@@ -232,7 +232,7 @@ static void echo_usb(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback()
+int usbStartupCallback(void)
 {
     MXC_MCR->ldoctrl |= MXC_F_MCR_LDOCTRL_0P9EN;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_USB);
@@ -241,7 +241,7 @@ int usbStartupCallback()
 }
 
 /******************************************************************************/
-int usbShutdownCallback()
+int usbShutdownCallback(void)
 {
     //return MXC_SYS_USBHS_Shutdown();
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);

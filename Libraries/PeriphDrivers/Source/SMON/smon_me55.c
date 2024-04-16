@@ -108,7 +108,7 @@ int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
                                                     lowPowerMode, delay);
 }
 
-uint32_t MXC_SMON_GetFlags()
+uint32_t MXC_SMON_GetFlags(void)
 {
     return MXC_SMON_RevA_GetFlags((mxc_smon_reva_regs_t *)MXC_SMON);
 }
@@ -135,12 +135,12 @@ uint32_t MXC_SMON_GetDiagnostics()
     return MXC_SMON_RevA_GetDiagnostics((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
-void MXC_SMON_ExtSensorLock()
+void MXC_SMON_ExtSensorLock(void)
 {
     MXC_SMON_RevA_ExtSensorLock((mxc_smon_reva_regs_t *)MXC_SMON);
 }
 
-void MXC_SMON_IntSensorLock()
+void MXC_SMON_IntSensorLock(void)
 {
     MXC_SMON_RevA_IntSensorLock((mxc_smon_reva_regs_t *)MXC_SMON);
 }

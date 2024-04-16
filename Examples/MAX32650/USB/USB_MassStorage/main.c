@@ -62,8 +62,8 @@ static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata);
 static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
-int usbStartupCallback();
-int usbShutdownCallback();
+int usbStartupCallback(void);
+int usbShutdownCallback(void);
 
 /***** File Scope Variables *****/
 
@@ -232,7 +232,7 @@ static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 }
 
 /******************************************************************************/
-int usbStartupCallback()
+int usbStartupCallback(void)
 {
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_HIRC96_EN)) {
@@ -249,7 +249,7 @@ int usbStartupCallback()
 }
 
 /******************************************************************************/
-int usbShutdownCallback()
+int usbShutdownCallback(void)
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

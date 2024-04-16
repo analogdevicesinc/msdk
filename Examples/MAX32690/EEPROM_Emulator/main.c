@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -37,9 +37,13 @@
 
 /***** Definitions *****/
 #define EEPROM_I2C MXC_I2C0
+
 #if defined(EvKit_V1)
 #define SYNC_PIN_PORT MXC_GPIO2
 #define SYNC_PIN_MASK MXC_GPIO_PIN_11
+#elif defined(BOARD_APARD)
+#define SYNC_PIN_PORT MXC_GPIO0
+#define SYNC_PIN_MASK MXC_GPIO_PIN_24
 #else
 #define SYNC_PIN_PORT MXC_GPIO1
 #define SYNC_PIN_MASK MXC_GPIO_PIN_11

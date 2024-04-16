@@ -84,7 +84,7 @@ void SetLEDs(int state)
     }
 }
 
-int main()
+int main(void)
 {
     MXC_Delay(MXC_DELAY_MSEC(500)); //Wait for PMIC to power-up
     printf("\n******** Featherboard I2C Demo *********\n");

@@ -222,7 +222,7 @@ int mscmem_Stop()
 }
 
 /******************************************************************************/
-int mscmem_Ready()
+int mscmem_Ready(void)
 {
     return running;
 }
@@ -300,7 +300,7 @@ int mscmem_Stop()
 }
 
 /******************************************************************************/
-int mscmem_Ready()
+int mscmem_Ready(void)
 {
     return running;
 }

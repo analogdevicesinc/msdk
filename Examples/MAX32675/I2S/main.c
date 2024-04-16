@@ -36,6 +36,8 @@
 #include "i2s.h"
 #include "tmr.h"
 #include "dma.h"
+#include "gcr_regs.h"
+#include "uart.h"
 
 #define DMA_CALLBACK 0
 
@@ -70,15 +72,27 @@ void i2s_dma_cb(int ch, int err)
 #endif
 
 /*****************************************************************/
-int main()
+int main(void)
 {
     int err;
     mxc_i2s_req_t req;
+
     printf("\nI2S Transmission Example\n");
     printf("I2S Signals may be viewed on pins P0.8-P0.11.\n");
     printf("You may need to disconnect RX_SEL (JP5) and TX_SEL\n");
     printf("(JP6) in case no data is moving in and out of SDO/SDI.\n");
+    printf("\nCurrent revision of board: %x\n", MXC_GCR->revision);
+    if ((MXC_GCR->revision & 0x00F0) == 0x00B0) {
+        printf("I2S is not supported on this MAX32675 revision.\n");
+        printf("Ending Program.");
+    }
     printf("\n\n\n\n");
+
+    // End program if I2S is not supported.
+    if ((MXC_GCR->revision & 0x00F0) == 0x00B0) {
+        // I2S not supported on MAX32675 Revision B.
+        return E_NOT_SUPPORTED;
+    }
 
     req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;

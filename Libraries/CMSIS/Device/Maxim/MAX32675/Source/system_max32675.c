@@ -153,10 +153,6 @@ __weak void SystemInit(void)
     __DSB();
     __ISB();
 
-    /* Change system clock source to the main high-speed clock */
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-    SystemCoreClockUpdate();
-
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 

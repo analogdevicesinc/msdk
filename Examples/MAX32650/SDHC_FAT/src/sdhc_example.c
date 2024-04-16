@@ -133,7 +133,7 @@ void generateMessage(unsigned length)
 }
 
 // ******************************************************************************
-int mount()
+int mount(void)
 {
     fs = &fs_obj;
     if ((err = f_mount(fs, "", 1)) != FR_OK) { //Mount the default drive to fs now
@@ -150,7 +150,7 @@ int mount()
 }
 
 // ******************************************************************************
-int umount()
+int umount(void)
 {
     if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
@@ -163,7 +163,7 @@ int umount()
 }
 
 // ******************************************************************************
-int formatSDHC()
+int formatSDHC(void)
 {
     printf("\n\n*****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****\n");
     printf("**************PRESS ANY KEY TO ABORT**************\n\n");
@@ -197,7 +197,7 @@ int formatSDHC()
 }
 
 // ******************************************************************************
-int getSize()
+int getSize(void)
 {
     if (!mounted) {
         mount();
@@ -218,7 +218,7 @@ int getSize()
 }
 
 // ******************************************************************************
-int ls()
+int ls(void)
 {
     if (!mounted) {
         mount();
@@ -414,7 +414,7 @@ int deleteFile(char *file_name)
 }
 
 // ******************************************************************************
-int example()
+int example(void)
 {
     unsigned int length = 256;
 

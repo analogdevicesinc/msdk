@@ -1,6 +1,6 @@
 ## Description
 
-A basic getting started application for FreeRTOS. 
+A basic getting started application for FreeRTOS.
 
 ## Software
 
@@ -25,6 +25,11 @@ If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+
 ## Expected Output
 
 The Console UART of the device will output these messages:
@@ -36,5 +41,5 @@ Starting scheduler.
 Uptime is 0x00000000 (0 seconds), tickless-idle is disabled
 
 Enter 'help' to view a list of available commands.
-cmd> 
+cmd>
 ```

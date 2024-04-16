@@ -2,7 +2,7 @@
 
 Basic GPIO input, output, and interrupts are demonstrated in this example.
 
-P2.11 (P1.11 on MAX32690FTHR) is continuously scanned and whatever value is read on that pin is then output to LED 1.  An interrupt is set up on P2.11, LED 2 is toggled on each falling edge.
+P2.11 (P1.11 on MAX32690FTHR, P1.27 on APARD) is continuously scanned and whatever value is read on that pin is then output to LED 1.  An interrupt is set up on P2.11, LED 2 is toggled on each falling edge.
 
 ## Software
 
@@ -28,6 +28,11 @@ If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pin P1.11 (on header J1, 5th pin) and ground (on header J2, 4th pin).
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

@@ -45,8 +45,17 @@ extern "C" {
 /* **** Function Prototypes **** */
 
 /**
+ * @brief   The callback routine used by the MXC_SEMA_ReadBoxAsync() and 
+ *          MXC_SEMA_WriteBoxAsync functions to indicate the operation has completed.
+ *
+ * @param   result      The error code (if any) of the read/write operation.
+ *                      See \ref MXC_Error_Codes for the list of error codes.
+ */
+typedef void (*mxc_sema_complete_cb_t)(int result);
+
+/**
  * @brief     Initialize the semaphore peripheral
- * @return    #E_NO_ERROR if semaphore acquired.
+ * @return    #E_NO_ERROR if semaphore initialized.
  */
 int MXC_SEMA_Init(void);
 
@@ -83,6 +92,55 @@ void MXC_SEMA_FreeSema(unsigned sema);
  * @return    #E_NO_ERROR if semaphore released.
  */
 int MXC_SEMA_Shutdown(void);
+
+/**
+ * @brief     Initialize the mailboxes
+ * @return    #E_NO_ERROR if mailboxes initialized.
+ */
+int MXC_SEMA_InitBoxes(void);
+
+/**
+ * @brief     Read from the mailbox
+ * @details   Will only read data currently available.
+ * @param     data  Buffer to store the data from the mailbox.  
+ * @param     len   Number of bytes to read from the mailbox.
+ * @return    #E_NO_ERROR if data read properly.
+ */
+int MXC_SEMA_ReadBox(uint8_t *data, unsigned len);
+
+/**
+ * @brief     Write to the mailbox
+ * @details   Will only write in the space currently available.
+ * @param     data  Data to write to the mailbox.  
+ * @param     len   Number of bytes to write to the mailbox.
+ * @return    #E_NO_ERROR if data written properly.
+ */
+int MXC_SEMA_WriteBox(const uint8_t *data, unsigned len);
+
+/**
+ * @brief     Semaphore interrupt handler
+ * @return    #E_NO_ERROR if interrupt handled properly.
+ */
+int MXC_SEMA_Handler(void);
+
+/**
+ * @brief     Read asynchronously from the mailbox
+ * @details   Non-blocking read. Will only read data currently available.
+ * @param     cb    Callback function, called once the read is complete.
+ * @param     data  Buffer to store the data from the mailbox.  
+ * @param     len   Number of bytes to read from the mailbox.
+ * @return    #E_NO_ERROR if data read properly.
+ */
+int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t *data, unsigned len);
+
+/**
+ * @brief     Write asynchronously to the mailbox
+ * @param     cb    Callback function, called once the write is complete.
+ * @param     data  Data to write to the mailbox.  
+ * @param     len   Number of bytes to write to the mailbox.
+ * @return    #E_NO_ERROR if data written properly.
+ */
+int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t *data, unsigned len);
 
 /**@} end of group sema */
 

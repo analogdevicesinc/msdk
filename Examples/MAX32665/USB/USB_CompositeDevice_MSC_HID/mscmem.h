@@ -36,7 +36,7 @@
 int mscmem_Init(void);
 int mscmem_Start(void);
 int mscmem_Stop(void);
-int mscmem_Ready();
+int mscmem_Ready(void);
 uint32_t mscmem_Size(void);
 int mscmem_Read(uint32_t lba, uint8_t *buffer);
 int mscmem_Write(uint32_t lba, uint8_t *buffer);

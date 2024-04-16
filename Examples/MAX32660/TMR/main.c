@@ -72,7 +72,7 @@ int maxTicks = (int)MAX_TICKS;
 volatile int TMR_FLAG = 0;
 
 /***** Functions *****/
-void PWMTimer()
+void PWMTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
@@ -117,14 +117,14 @@ void PWMTimer()
 }
 
 // Toggles GPIO when continuous timer repeats
-void ContinuousTimerHandler()
+void ContinuousTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     LED_Toggle(0);
 }
 
-void ContinuousTimer()
+void ContinuousTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
@@ -152,14 +152,14 @@ void ContinuousTimer()
     printf("Continuous timer started.\n\n");
 }
 
-void OneshotTimerHandler()
+void OneshotTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(OST_TIMER);
     TMR_FLAG = 1;
 }
 
-void OneshotTimer()
+void OneshotTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

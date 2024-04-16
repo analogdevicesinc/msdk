@@ -202,25 +202,26 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
-
-            /* Shutdown BB hardware */
-            PalBbDisable();
         }
+
+        /* 
+            Shutdown BB hardware 
+        */
+
+        PalBbForceDisable();
 
         LED_Off(SLEEP_LED);
         LED_Off(DEEPSLEEP_LED);
 
         MXC_LP_EnterStandbyMode();
-
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 
+        /* Enable and restore the BB hardware */
+        PalBbEnable();
+        PalBbRestore();
+
         if (schTimerActive) {
-            /* Enable and restore the BB hardware */
-            PalBbEnable();
-
-            PalBbRestore();
-
             /* Restore the BB counter */
             MXC_WUT_RestoreBBClock(MXC_WUT0, BB_CLK_RATE_HZ);
 

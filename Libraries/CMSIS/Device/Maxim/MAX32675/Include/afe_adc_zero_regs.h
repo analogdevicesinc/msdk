@@ -563,7 +563,7 @@ extern "C" {
  * @{
  */
 #define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS          0 /**< PART_ID_REV_ID Position */
-#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID              ((uint32_t)(0x7UL << MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS)) /**< PART_ID_REV_ID Mask */
+#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID              ((uint32_t)(0x3FUL << MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS)) /**< PART_ID_REV_ID Mask */
 
 /**@} end of group AFE_ADC_ZERO_PART_ID_Register */
 

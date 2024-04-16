@@ -62,11 +62,15 @@ int MXC_CAN_UnInit(uint32_t can_idx)
     switch (can_idx) {
     case 0:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_CAN0);
+#ifndef MSDK_NO_GPIO_CLK_INIT
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CAN0);
+#endif // MSDK_NO_GPIO_CLK_INIT
         break;
     case 1:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_CAN1);
+#ifndef MSDK_NO_GPIO_CLK_INIT
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CAN1);
+#endif // MSDK_NO_GPIO_CLK_INIT
         break;
     default:
         return E_BAD_PARAM;
@@ -89,11 +93,15 @@ int MXC_CAN_PowerControl(uint32_t can_idx, mxc_can_pwr_ctrl_t pwr)
 
     switch (pwr) {
     case MXC_CAN_PWR_CTRL_OFF:
+#ifndef MSDK_NO_GPIO_CLK_INIT
         MXC_SYS_ClockDisable(periph_clk);
+#endif // MSDK_NO_GPIO_CLK_INIT
         return E_NO_ERROR;
     case MXC_CAN_PWR_CTRL_SLEEP: //Fall through
     case MXC_CAN_PWR_CTRL_FULL:
+#ifndef MSDK_NO_GPIO_CLK_INIT
         MXC_SYS_ClockEnable(periph_clk);
+#endif // MSDK_NO_GPIO_CLK_INIT
         break;
     default:
         return E_BAD_PARAM;
@@ -225,6 +233,7 @@ int MXC_CAN_ObjectConfigure(uint32_t can_idx, mxc_can_obj_cfg_t cfg)
         return E_BAD_PARAM;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (can_idx) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_can0);
@@ -233,6 +242,7 @@ int MXC_CAN_ObjectConfigure(uint32_t can_idx, mxc_can_obj_cfg_t cfg)
         MXC_GPIO_Config(&gpio_cfg_can1);
         break;
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_CAN_RevA_ObjectConfigure((mxc_can_reva_regs_t *)can, cfg);
 }

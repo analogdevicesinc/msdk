@@ -162,7 +162,7 @@ static void max11261_reset_set(int ctrl)
     MXC_GPIO_OutPut(MXC_GPIO0, MXC_GPIO_PIN_16, (ctrl ^ ADC_RST_ACTIVE_LOW) << 16);
 }
 
-static int max11261_ready()
+static int max11261_ready(void)
 {
     return !MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_17);
 }

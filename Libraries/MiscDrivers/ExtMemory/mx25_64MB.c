@@ -71,7 +71,7 @@ static uint8_t g_is_configured = 0;
 /* **** Static Functions **** */
 
 /* ************************************************************************* */
-static int flash_busy()
+static int flash_busy(void)
 {
     uint8_t buf;
 
@@ -85,7 +85,7 @@ static int flash_busy()
 }
 
 /* ************************************************************************* */
-static int write_enable()
+static int write_enable(void)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd = MX25_CMD_WRITE_EN;
