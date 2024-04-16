@@ -19,15 +19,14 @@ To properly setup your project using the Project Wizard App, follow these steps:
 1. Install and setup [Keil MDK-Arm](https://www.keil.com/download/product/)
 2. Clone the [MSDK repository](https://github.com/analogdevicesinc/msdk)
 3. Open Keil uVision 5
-4. Open the `Pack Installer` and find the `Device` Tab (usually on the left half column).
+4. Open the `Pack Installer` and find the `Devices` Tab (usually on the left half column).
     - `Pack Installer` menu location: ![Pack Installer Location](https://github.com/analogdevicesinc/msdk/blob/feat/keil_project_wizard/Tools/Keil/project_wizard/docs/pack_installer_location.png)
 5. Find `Maxim` -> `MAX32675 Family` and select the `MAX32675`.
 6. Open the `Packs` Tab (usually on the right half column) and expand `Device Specific`.
 7. Install the `Maxim::MAX32675` v1.3.0 pack file.
 8. Close Keil.
-9. Run the Project Wizard App located in the cloned MSDK repository - located in `msdk/Tools/Keil/project_wizard`.
-10. Run `ADI_Keil_Project_Wizard.exe`.
-11. Fill in desired project settings in the opened GUI.
+9. Run the Project Wizard App located in the cloned MSDK repository - located in `msdk/Tools/Keil/project_wizard/project_wizard.exe`.
+10. Fill in desired project settings in the opened GUI.
     - Project name - Do not use spaces in project name.
     - Project location - Default location: `C:\Keil_Projects`
     - Keil Install Location - this is the directory where Keil is installed (default location: `C:\Keil_v5`).
@@ -36,11 +35,12 @@ To properly setup your project using the Project Wizard App, follow these steps:
     - Board selection.
     - Example selection - reference an MSDK example for new project.
     - Fill in all prompts before pressing `Finish`
-12. Press the `Finish` button once ready and wait for project to be generated.
-13. Locate where the project was generated and run `{INSERT_PROJECT_NAME}.uvprojx`
-14. Go to `Project` -> `Options for Target 'MAX32675:Cortex-M4'...`.
+11. Press the `Finish` button once ready and wait for project to be generated.
+12. Locate where the project was generated and run `{INSERT_PROJECT_NAME}.uvprojx`
+13. Go to `Project` -> `Options for Target 'MAX32675:Cortex-M4'...`.
     - Press `ALT+F7` for macro shortcut to `Options for Target...`. 
-15. In the `Target` Tab -> `Code Generation` section -> `ARM Compiler` options, select `Use default compiler version 6`.
+14. In the `Target` Tab -> `Code Generation` section -> `ARM Compiler` options, select `Use default compiler version 6`.
+15. In the `C/C++ (AC6)` Tab -> `Language / COde Generation` section -> `Language C:` options, select `c99`.
 16. In the `Debug` Tab -> Top right corner, select the `CMSIS-DAP Debugger` or the board's supported debugger adapter.
     - (Optional) Press the `Run to main()` checkbox right underneath the debugger adapter selector.
 17. In the `Utilities` Tab, press the `Settings` button in the `Configure Flash Menu Command` section. A `Target Driver Setup` window should open.
