@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project>
+  <Device>MAX32675:Cortex-M4</Device>
+  <CDefines>TARGET=32675  TARGET_REV=0x4131</CDefines>
+  <useUlib>1</useUlib>
+  <IncludePath></IncludePath>
+  <SFDFile></SFDFile>
+  <CreateExecutable>1</CreateExecutable>
+  <CreateHexFile>1</CreateHexFile>
+  <!-- Add other configuration options here -->
+
+  <Groups>
+  </Groups>
+</Project>

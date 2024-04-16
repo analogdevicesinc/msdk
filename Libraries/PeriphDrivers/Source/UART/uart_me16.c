@@ -179,7 +179,8 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
         freq = MXC_UART_GetFrequency(uart);
     } else {
-        freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
+        freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud,
+                                          (mxc_uart_revb_clock_t)clock);
     }
 
     if (freq > 0) {
