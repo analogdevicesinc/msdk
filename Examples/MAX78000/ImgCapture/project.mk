@@ -7,11 +7,7 @@
 
 # **********************************************************
 
-# Add your config here!
-# Uncomment the line below to build for the MAX78000FTHR
-#BOARD=FTHR_RevA
-# Uncomment the line below to build for the MAX78000CAM02
-#BOARD = CAM02_RevA
+# Note: To change the target board, see https://analogdevicesinc.github.io/msdk//USERGUIDE/#board-support-packages
 
 # Project options:
 # Set to 1 to enable, 0 to disable
