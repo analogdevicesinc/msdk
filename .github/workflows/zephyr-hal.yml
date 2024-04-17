@@ -22,9 +22,6 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   if_merged:
-    # Run only when a PR is merged
-    if: github.event.pull_request.merged == true
-
     # The type of OS that the job will run on
     runs-on: [ ubuntu-latest ]
 
