@@ -18,6 +18,7 @@
  *
  ******************************************************************************/
 
+#include <stdbool.h>
 #include "smon_reva.h"
 #include "smon.h"
 #include "gpio.h"
@@ -35,6 +36,16 @@ void MXC_SMON_Shutdown(void)
 {
     // Not disabling TRNG clock as it may be used by other peripherals
     return;
+}
+
+int MXC_SMON_EnableExtTampers(mxc_smon_ext_tampen_t *extTamp, bool lock)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SMON_EnableIntTampers(mxc_smon_int_tampen_t *intTamp, bool lock)
+{
+    return E_NOT_SUPPORTED;
 }
 
 int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay)

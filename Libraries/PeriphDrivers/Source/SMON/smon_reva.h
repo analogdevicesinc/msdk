@@ -21,6 +21,8 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_H_
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_H_
 
+#include <stdbool.h>
+#include <stdint.h>
 #include <stddef.h>
 #include "mxc_assert.h"
 #include "mxc_pins.h"
@@ -30,14 +32,12 @@
 #include "smon.h"
 #include "smon_reva_regs.h"
 
-#if TARGET_NUM == 32572
-// Only supported for ME55.
+
 int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tampen_t *extTamp,
                                    bool lock);
 
 int MXC_SMON_RevA_EnableIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_tampen_t *intTamp,
                                    bool lock);
-#endif
 
 int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_ext_cfg_t *cfg,
                                   uint32_t delay);

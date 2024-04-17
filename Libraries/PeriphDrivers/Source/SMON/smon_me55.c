@@ -18,6 +18,7 @@
  *
  ******************************************************************************/
 
+#include <stdint.h>
 #include "smon_reva.h"
 #include "smon.h"
 #include "gpio.h"

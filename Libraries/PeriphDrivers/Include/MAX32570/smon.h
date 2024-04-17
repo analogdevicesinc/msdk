@@ -27,6 +27,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SMON_H_
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "smon_regs.h"
@@ -55,12 +56,12 @@ typedef enum {
     MXC_SMON_EXTSENSOR_5 = MXC_F_SMON_EXTSCN_EXTS_EN5,
 
     // Deprecated Names
-    SMON_EXTSENSOR_0 = MXC_SMON_EXTSENSOR_0,
-    SMON_EXTSENSOR_1 = MXC_SMON_EXTSENSOR_1,
-    SMON_EXTSENSOR_2 = MXC_SMON_EXTSENSOR_2,
-    SMON_EXTSENSOR_3 = MXC_SMON_EXTSENSOR_3,
-    SMON_EXTSENSOR_4 = MXC_SMON_EXTSENSOR_4,
-    SMON_EXTSENSOR_5 = MXC_SMON_EXTSENSOR_5,
+    SMON_EXTSENSOR_0 __attribute((deprecated ("replaced by MXC_SMON_EXTSENSOR_0"))) = MXC_SMON_EXTSENSOR_0,
+    SMON_EXTSENSOR_1 __attribute((deprecated ("replaced by MXC_SMON_EXTSENSOR_1"))) = MXC_SMON_EXTSENSOR_1,
+    SMON_EXTSENSOR_2 __attribute((deprecated ("replaced by MXC_SMON_EXTSENSOR_2"))) = MXC_SMON_EXTSENSOR_2,
+    SMON_EXTSENSOR_3 __attribute((deprecated ("replaced by MXC_SMON_EXTSENSOR_3"))) = MXC_SMON_EXTSENSOR_3,
+    SMON_EXTSENSOR_4 __attribute((deprecated ("replaced by MXC_SMON_EXTSENSOR_4"))) = MXC_SMON_EXTSENSOR_4,
+    SMON_EXTSENSOR_5 __attribute((deprecated ("replaced by MXC_SMON_EXTSENSOR_5"))) = MXC_SMON_EXTSENSOR_5,
 } mxc_smon_ext_sensor_t;
 
 /**
@@ -77,13 +78,13 @@ typedef enum {
     MXC_SMON_CLK_DIVIDE_64 = MXC_S_SMON_EXTSCN_DIVCLK_DIV64,
 
     // Deprecated names
-    SMON_CLK_DIVIDE_1 = MXC_SMON_CLK_DIVIDE_1,
-    SMON_CLK_DIVIDE_2 = MXC_SMON_CLK_DIVIDE_2,
-    SMON_CLK_DIVIDE_4 = MXC_SMON_CLK_DIVIDE_4,
-    SMON_CLK_DIVIDE_8 = MXC_SMON_CLK_DIVIDE_8,
-    SMON_CLK_DIVIDE_16 = MXC_SMON_CLK_DIVIDE_16,
-    SMON_CLK_DIVIDE_32 = MXC_SMON_CLK_DIVIDE_32,
-    SMON_CLK_DIVIDE_64 = MXC_SMON_CLK_DIVIDE_64,
+    SMON_CLK_DIVIDE_1 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_1"))) = MXC_SMON_CLK_DIVIDE_1,
+    SMON_CLK_DIVIDE_2 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_2"))) = MXC_SMON_CLK_DIVIDE_2,
+    SMON_CLK_DIVIDE_4 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_4"))) = MXC_SMON_CLK_DIVIDE_4,
+    SMON_CLK_DIVIDE_8 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_8"))) = MXC_SMON_CLK_DIVIDE_8,
+    SMON_CLK_DIVIDE_16 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_16"))) = MXC_SMON_CLK_DIVIDE_16,
+    SMON_CLK_DIVIDE_32 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_32"))) = MXC_SMON_CLK_DIVIDE_32,
+    SMON_CLK_DIVIDE_64 __attribute((deprecated ("replaced by MXC_SMON_CLK_DIVIDE_64"))) = MXC_SMON_CLK_DIVIDE_64,
 } mxc_smon_clk_divide_t;
 
 /**
@@ -100,13 +101,13 @@ typedef enum {
     MXC_SMON_FREQ_DIVIDE_256 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ31HZ,
 
     // Deprecated names
-    SMON_FREQ_DIVIDE_4 = MXC_SMON_FREQ_DIVIDE_4,
-    SMON_FREQ_DIVIDE_8 = MXC_SMON_FREQ_DIVIDE_8,
-    SMON_FREQ_DIVIDE_16 = MXC_SMON_FREQ_DIVIDE_16,
-    SMON_FREQ_DIVIDE_32 = MXC_SMON_FREQ_DIVIDE_32,
-    SMON_FREQ_DIVIDE_64 = MXC_SMON_FREQ_DIVIDE_64,
-    SMON_FREQ_DIVIDE_128 = MXC_SMON_FREQ_DIVIDE_128,
-    SMON_FREQ_DIVIDE_256 = MXC_SMON_FREQ_DIVIDE_256,
+    SMON_FREQ_DIVIDE_4 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_4"))) = MXC_SMON_FREQ_DIVIDE_4,
+    SMON_FREQ_DIVIDE_8 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_8"))) = MXC_SMON_FREQ_DIVIDE_8,
+    SMON_FREQ_DIVIDE_16 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_16"))) = MXC_SMON_FREQ_DIVIDE_16,
+    SMON_FREQ_DIVIDE_32 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_32"))) = MXC_SMON_FREQ_DIVIDE_32,
+    SMON_FREQ_DIVIDE_64 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_64"))) = MXC_SMON_FREQ_DIVIDE_64,
+    SMON_FREQ_DIVIDE_128 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_128"))) = MXC_SMON_FREQ_DIVIDE_128,
+    SMON_FREQ_DIVIDE_256 __attribute((deprecated ("replaced by MXC_SMON_FREQ_DIVIDE_256"))) = MXC_SMON_FREQ_DIVIDE_256,
 } mxc_smon_freq_divide_t;
 
 /**
@@ -119,9 +120,9 @@ typedef enum {
     MXC_SMON_VTM_THD_2_8, ///< 2.8 V
 
     // Deprecated names
-    SMON_VTM_THRESHOLD_1_6 = MXC_SMON_VTM_THD_1_6, ///< 1.6 V
-    SMON_VTM_THRESHOLD_2_2 = MXC_SMON_VTM_THD_2_2, ///< 2.2 V
-    SMON_VTM_THRESHOLD_2_8 = MXC_SMON_VTM_THD_2_8, ///< 2.8 V
+    SMON_VTM_THRESHOLD_1_6 __attribute((deprecated ("replaced by MXC_SMON_VTM_THD_1_6"))) = MXC_SMON_VTM_THD_1_6, ///< 1.6 V
+    SMON_VTM_THRESHOLD_2_2 __attribute((deprecated ("replaced by MXC_SMON_VTM_THD_2_2"))) = MXC_SMON_VTM_THD_2_2, ///< 2.2 V
+    SMON_VTM_THRESHOLD_2_8 __attribute((deprecated ("replaced by MXC_SMON_VTM_THD_2_8"))) = MXC_SMON_VTM_THD_2_8, ///< 2.8 V
 } mxc_smon_vtm_t;
 
 /**
@@ -133,8 +134,8 @@ typedef enum {
     MXC_SMON_TEMP_THD_NEG_30, ///< -30 *C
 
     // Deprecated names
-    SMON_TEMP_THRESHOLD_NEG_50 = MXC_SMON_TEMP_THD_NEG_50, ///< -50 *C
-    SMON_TEMP_THRESHOLD_NEG_30 = MXC_SMON_TEMP_THD_NEG_30, ///< -30 *C
+    SMON_TEMP_THRESHOLD_NEG_50 __attribute((deprecated ("replaced by MXC_SMON_TEMP_THD_NEG_50"))) = MXC_SMON_TEMP_THD_NEG_50, ///< -50 *C
+    SMON_TEMP_THRESHOLD_NEG_30 __attribute((deprecated ("replaced by MXC_SMON_TEMP_THD_NEG_30"))) = MXC_SMON_TEMP_THD_NEG_30, ///< -30 *C
 } mxc_smon_temp_t;
 
 /**
@@ -146,8 +147,8 @@ typedef enum {
     MXC_SMON_DFD_INTR_PFW, ///< PFW IRQ
 
     // Deprecated names
-    SMON_DFD_INTERRUPT_NMI = MXC_SMON_DFD_INTR_NMI, ///< DRS/NMI
-    SMON_DFD_INTERRUPT_PFW = MXC_SMON_DFD_INTR_PFW, ///< PFW IRQ
+    SMON_DFD_INTERRUPT_NMI __attribute((deprecated ("replaced by MXC_SMON_DFD_INTR_NMI"))) = MXC_SMON_DFD_INTR_NMI, ///< DRS/NMI
+    SMON_DFD_INTERRUPT_PFW __attribute((deprecated ("replaced by MXC_SMON_DFD_INTR_PFW"))) = MXC_SMON_DFD_INTR_PFW, ///< PFW IRQ
 } mxc_smon_interrupt_mode_t;
 
 /**
@@ -159,8 +160,8 @@ typedef enum {
     MXC_SMON_LP_DFD_DISABLE, ///< DFD disabled during LowPower mode
 
     // Deprecated
-    SMON_DFD_LOWPOWER_ENABLE = MXC_SMON_LP_DFD_ENABLE, ///< DFD enabled during LowPower mode
-    SMON_DFD_LOWPOWER_DISABLE = MXC_SMON_LP_DFD_DISABLE, ///< DFD disabled during LowPower mode
+    SMON_DFD_LOWPOWER_ENABLE __attribute((deprecated ("replaced by MXC_SMON_LP_DFD_ENABLE"))) = MXC_SMON_LP_DFD_ENABLE, ///< DFD enabled during LowPower mode
+    SMON_DFD_LOWPOWER_DISABLE __attribute((deprecated ("replaced by MXC_SMON_LP_DFD_DISABLE"))) = MXC_SMON_LP_DFD_DISABLE, ///< DFD disabled during LowPower mode
 } mxc_smon_lowpower_mode_t;
 
 /**
@@ -175,9 +176,9 @@ typedef enum {
         (MXC_F_SMON_SECST_EXTSRS | MXC_F_SMON_SECST_INTSRS | MXC_F_SMON_SECST_SECALRS),
 
     // Deprecated names
-    SMON_EXTSENSOR = MXC_SMON_BUSY_EXTSENSOR,
-    SMON_INTSENSOR = MXC_SMON_BUSY_INTSENSOR,
-    SMON_SECALARM = MXC_SMON_BUSY_SECALARM,
+    SMON_EXTSENSOR __attribute((deprecated ("replaced by MXC_SMON_BUSY_EXTSENSOR"))) = MXC_SMON_BUSY_EXTSENSOR,
+    SMON_INTSENSOR __attribute((deprecated ("replaced by MXC_SMON_BUSY_INTSENSOR"))) = MXC_SMON_BUSY_INTSENSOR,
+    SMON_SECALARM __attribute((deprecated ("replaced by MXC_SMON_BUSY_SECALM"))) = MXC_SMON_BUSY_SECALARM,
 } mxc_smon_busy_t;
 
 /**
@@ -191,6 +192,29 @@ typedef struct {
     uint8_t errorCount;
     uint8_t data;
 } mxc_smon_ext_cfg_t;
+
+/**
+ * @brief   A selection of external tampers to enable.
+ *
+ */
+typedef struct {
+    bool exts0; ///< External Sensor 0 enable
+    bool exts1; ///< External Sensor 1 enable
+    bool exts2; ///< External Sensor 2 enable
+    bool exts3; ///< External Sensor 3 enable
+    bool exts4; ///< External Sensor 4 enable
+    bool exts5; ///< External Sensor 5 enable
+} mxc_smon_ext_tampen_t;
+
+/**
+ * @brief   A selection of internal tampers to enable.
+ *
+ */
+typedef struct {
+    bool vbat; ///< Vbat Monitor enable
+    bool temp; ///< Temperature Sensor enable
+    bool shield; ///< Die Shield enable
+} mxc_smon_int_tampen_t;
 
 /**
  * @brief   Initialize Security Monitor
