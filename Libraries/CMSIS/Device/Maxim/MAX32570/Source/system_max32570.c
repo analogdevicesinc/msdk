@@ -97,6 +97,17 @@ __weak int PreInit(void)
     return 0;
 }
 
+/* This function is called before the Board_Init function.  This weak 
+ * implementation does nothing, but you may over-ride this function in your 
+ * program if you want to configure the state of all pins prior to the 
+ * application running.  This is useful when using external tools (like a
+ * Pin Mux configuration tool) that generate code to initialize the pins.
+ */
+__weak void PinInit(void)
+{
+    /* Do nothing */
+}
+
 /* This function can be implemented by the application to initialize the board */
 __weak int Board_Init(void)
 {
@@ -138,5 +149,6 @@ __weak void SystemInit(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 
+    PinInit();
     Board_Init();
 }
