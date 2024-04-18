@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>GCFR</name>
+    <description>Global Control Function Register.</description>
+    <baseAddress>0x40005800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>REG0</name>
+        <description>Register 0.</description>
+        <addressOffset>0x00</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ISO_WUP</name>
+            <description>ISO Warm Up Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+          <field>
+            <name>IPO_WUP</name>
+            <description>IPO Warm Up Value.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>11</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>REG1</name>
+        <description>Register 1.</description>
+        <addressOffset>0x04</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ERFO_WUP</name>
+            <description>ERFO Warm Up Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+          <field>
+            <name>IBRO_WUP</name>
+            <description>IBRO Warm Up Value.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

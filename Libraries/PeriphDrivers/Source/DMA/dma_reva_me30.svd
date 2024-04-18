@@ -1,0 +1,715 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>DMA</name>
+    <description>DMA Controller Fully programmable, chaining capable DMA channels.</description>
+    <baseAddress>0x40028000</baseAddress>
+    <size>32</size>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>DMA0</name>
+      <value>28</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1</name>
+      <value>29</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA2</name>
+      <value>30</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA3</name>
+      <value>31</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>INTEN</name>
+        <description>DMA Control Register.</description>
+        <addressOffset>0x000</addressOffset>
+        <fields>
+          <field>
+            <name>CH0</name>
+            <description>Channel 0 Interrupt Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH1</name>
+            <description>Channel 1 Interrupt Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH2</name>
+            <description>Channel 2 Interrupt Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH3</name>
+            <description>Channel 3 Interrupt Enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>DMA Interrupt Register.</description>
+        <addressOffset>0x004</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>CH0</name>
+            <description>Channel Interrupt. To clear an interrupt, all active interrupt bits of the DMA_ST must be cleared. The interrupt bits are set only if their corresponding interrupt enable bits are set in DMA_CN.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No interrupt is pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH1</name>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH2</name>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH3</name>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <cluster>
+        <dim>4</dim>
+        <dimIncrement>0x20</dimIncrement>
+        <name>CH[%s]</name>
+        <description>DMA Channel registers.</description>
+        <headerStructName>dma_ch</headerStructName>
+        <addressOffset>0x100</addressOffset>
+        <access>read-write</access>
+        <register>
+          <name>CTRL</name>
+          <description>DMA Channel Control Register.</description>
+          <addressOffset>0x000</addressOffset>
+          <fields>
+            <field>
+              <name>EN</name>
+              <description>Channel Enable.  This bit is automatically cleared when DMA_ST.CH_ST changes from 1 to 0.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RLDEN</name>
+              <description>Reload Enable. Setting this bit to 1 enables DMA_SRC, DMA_DST and DMA_CNT to be reloaded with their corresponding reload registers upon count-to-zero. This bit is also writeable in the Count Reload Register. Refer to the description on Buffer Chaining for use of this bit. If buffer chaining is not used this bit must be written with a 0. This bit should be set after the reload registers have been programmed.</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>PRI</name>
+              <description>DMA Priority.</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>2</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>high</name>
+                  <description>Highest Priority.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>medHigh</name>
+                  <description>Medium High Priority.</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>medLow</name>
+                  <description>Medium Low Priority.</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>low</name>
+                  <description>Lowest Priority.</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>REQUEST</name>
+              <description>Request Select. Select DMA request line for this channel. If memory-to-memory is selected, the channel operates as if the request is always active.</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>6</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>MEMTOMEM</name>
+                  <description>Memory To Memory</description>
+                  <value>0x00</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>SPI1RX</name>
+                  <description>SPI1 RX</description>
+                  <value>0x01</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART0RX</name>
+                  <description>UART0 RX</description>
+                  <value>0x04</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART1RX</name>
+                  <description>UART1 RX</description>
+                  <value>0x05</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2C0RX</name>
+                  <description>I2C0 RX</description>
+                  <value>0x07</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2C1RX</name>
+                  <description>I2C1 RX</description>
+                  <value>0x08</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>ADC</name>
+                  <description>ADC</description>
+                  <value>0x09</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2C2RX</name>
+                  <description>I2C2 RX</description>
+                  <value>0x0A</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART2RX</name>
+                  <description>UART2 RX</description>
+                  <value>0x0E</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>SPI0RX</name>
+                  <description>SPI0 RX</description>
+                  <value>0x0F</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>AESRX</name>
+                  <description>AES RX</description>
+                  <value>0x10</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART3RX</name>
+                  <description>UART3 RX</description>
+                  <value>0x1C</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2SRX</name>
+                  <description>I2S RX</description>
+                  <value>0x1E</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>SPI1TX</name>
+                  <description>SPI1 TX</description>
+                  <value>0x21</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART0TX</name>
+                  <description>UART0 TX</description>
+                  <value>0x24</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART1TX</name>
+                  <description>UART1 TX</description>
+                  <value>0x25</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2C0TX</name>
+                  <description>I2C0 TX</description>
+                  <value>0x27</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2C1TX</name>
+                  <description>I2C1 TX</description>
+                  <value>0x28</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2C2TX</name>
+                  <description>I2C2 TX</description>
+                  <value>0x2A</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>CRCTX</name>
+                  <description>CRC TX</description>
+                  <value>0x2C</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART2TX</name>
+                  <description>UART2 TX</description>
+                  <value>0x2E</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>SPI0TX</name>
+                  <description>SPI0 TX</description>
+                  <value>0x2F</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>AESTX</name>
+                  <description>AES TX</description>
+                  <value>0x30</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART3TX</name>
+                  <description>UART3 TX</description>
+                  <value>0x3C</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I2STX</name>
+                  <description>I2S TX</description>
+                  <value>0x3E</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TO_WAIT</name>
+              <description>Request Wait Enable.  When enabled, delay timer start until DMA request transitions from active to inactive.</description>
+              <bitOffset>10</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TO_PER</name>
+              <description>Timeout Period Select.</description>
+              <bitOffset>11</bitOffset>
+              <bitWidth>3</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>to4</name>
+                  <description>Timeout of 3 to 4 prescale clocks.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to8</name>
+                  <description>Timeout of 7 to 8 prescale clocks.</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to16</name>
+                  <description>Timeout of 15 to 16 prescale clocks.</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to32</name>
+                  <description>Timeout of 31 to 32 prescale clocks.</description>
+                  <value>3</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to64</name>
+                  <description>Timeout of 63 to 64 prescale clocks.</description>
+                  <value>4</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to128</name>
+                  <description>Timeout of 127 to 128 prescale clocks.</description>
+                  <value>5</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to256</name>
+                  <description>Timeout of 255 to 256 prescale clocks.</description>
+                  <value>6</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>to512</name>
+                  <description>Timeout of 511 to 512 prescale clocks.</description>
+                  <value>7</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TO_CLKDIV</name>
+              <description>Pre-Scale Select. Selects the Pre-Scale divider for timer clock input.</description>
+              <bitOffset>14</bitOffset>
+              <bitWidth>2</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable timer.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>div256</name>
+                  <description>hclk / 256.</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>div64k</name>
+                  <description>hclk / 64k.</description>
+                  <value>2</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>div16M</name>
+                  <description>hclk / 16M.</description>
+                  <value>3</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SRCWD</name>
+              <description>Source Width. In most cases, this will be the data width of each AHB transactions. However, the width will be reduced in the cases where DMA_CNT indicates a smaller value.</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>2</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>byte</name>
+                  <description>Byte.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>halfWord</name>
+                  <description>Halfword.</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>word</name>
+                  <description>Word.</description>
+                  <value>2</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SRCINC</name>
+              <description>Source Increment Enable. This bit enables DMA_SRC increment upon every AHB transaction. This bit is forced to 0 for DMA receive from peripherals.</description>
+              <bitOffset>18</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DSTWD</name>
+              <description>Destination Width. Indicates the width of the each AHB transactions to the destination peripheral or memory. (The actual width may be less than this if there are insufficient bytes in the DMA FIFO for the full width).</description>
+              <bitOffset>20</bitOffset>
+              <bitWidth>2</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>byte</name>
+                  <description>Byte.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>halfWord</name>
+                  <description>Halfword.</description>
+                  <value>1</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>word</name>
+                  <description>Word.</description>
+                  <value>2</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DSTINC</name>
+              <description>Destination Increment Enable. This bit enables DMA_DST increment upon every AHB transaction. This bit is forced to 0 for DMA transmit to peripherals.</description>
+              <bitOffset>22</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>BURST_SIZE</name>
+              <description>Burst Size. The number of bytes to be transferred into and out of the DMA FIFO in a single burst.  Burst size equals 1 + value stored in this field.</description>
+              <bitOffset>24</bitOffset>
+              <bitWidth>5</bitWidth>
+            </field>
+            <field>
+              <name>DIS_IE</name>
+              <description>Channel Disable Interrupt Enable. When enabled, the IPEND will be set to 1 whenever CH_ST changes from 1 to 0.</description>
+              <bitOffset>30</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CTZ_IE</name>
+              <description>Count-to-zero Interrupts Enable. When enabled, the IPEND will be set to 1 whenever a count-to-zero event occurs.</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>STATUS</name>
+          <description>DMA Channel Status Register.</description>
+          <addressOffset>0x004</addressOffset>
+          <fields>
+            <field>
+              <name>STATUS</name>
+              <description>Channel Status. This bit is used to indicate to the programmer when it is safe to change the configuration, address, and count registers for the channel. Whenever this bit is cleared by hardware,  the DMA_CFG.CHEN bit is also cleared (if not cleared already).</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>IPEND</name>
+              <description>Channel Interrupt.</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+              <access>read-only</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No interrupt is pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>CTZ_IF</name>
+              <description>Count-to-Zero (CTZ) Interrupt Flag</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
+            </field>
+            <field>
+              <name>RLD_IF</name>
+              <description>Reload Event Interrupt Flag.</description>
+              <bitOffset>3</bitOffset>
+              <bitWidth>1</bitWidth>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
+            </field>
+            <field>
+              <name>BUS_ERR</name>
+              <description>Bus Error. Indicates that an AHB abort was received and the channel has been disabled.</description>
+              <bitOffset>4</bitOffset>
+              <bitWidth>1</bitWidth>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
+            </field>
+            <field>
+              <name>TO_IF</name>
+              <description>Time-Out Event Interrupt Flag.</description>
+              <bitOffset>6</bitOffset>
+              <bitWidth>1</bitWidth>
+              <modifiedWriteValues>oneToClear</modifiedWriteValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SRC</name>
+          <description>Source Device Address. If SRCINC=1, the counter bits are incremented by 1,2, or 4, depending on the data width of each AHB cycle. For peripheral transfers, some or all of the actual address bits are fixed. If SRCINC=0, this register remains constant. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with the contents of DMA_SRC_RLD.</description>
+          <addressOffset>0x008</addressOffset>
+          <fields>
+            <field>
+              <name>ADDR</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DST</name>
+          <description>Destination Device Address. For peripheral transfers, some or all of the actual address bits are fixed. If DSTINC=1, this register is incremented on every AHB write out of the DMA FIFO. They are incremented by 1, 2, or 4, depending on the data width of each AHB cycle. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with DMA_DST_RLD.</description>
+          <addressOffset>0x00C</addressOffset>
+          <fields>
+            <field>
+              <name>ADDR</name>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CNT</name>
+          <description>DMA Counter. The user loads this register with the number of bytes to transfer. This counter decreases on every AHB cycle into the DMA FIFO. The decrement will be 1, 2, or 4 depending on the data width of each AHB cycle. When the counter reaches 0, a count-to-zero condition is triggered.</description>
+          <addressOffset>0x010</addressOffset>
+          <fields>
+            <field>
+              <name>CNT</name>
+              <description>DMA Counter.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>24</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SRCRLD</name>
+          <description>Source Address Reload Value. The value of this register is loaded into DMA0_SRC upon a count-to-zero condition.</description>
+          <addressOffset>0x014</addressOffset>
+          <fields>
+            <field>
+              <name>ADDR</name>
+              <description>Source Address Reload Value.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>31</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>DSTRLD</name>
+          <description>Destination Address Reload Value. The value of this register is loaded into DMA0_DST upon a count-to-zero condition.</description>
+          <addressOffset>0x018</addressOffset>
+          <fields>
+            <field>
+              <name>ADDR</name>
+              <description>Destination Address Reload Value.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>31</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CNTRLD</name>
+          <description>DMA Channel Count Reload Register.</description>
+          <addressOffset>0x01C</addressOffset>
+          <fields>
+            <field>
+              <name>CNT</name>
+              <description>Count Reload Value. The value of this register is loaded into DMA0_CNT upon a count-to-zero condition.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>24</bitWidth>
+            </field>
+            <field>
+              <name>EN</name>
+              <description>Reload Enable. This bit should be set after the address reload registers have been programmed. This bit is automatically cleared to 0 when reload occurs.</description>
+              <bitOffset>31</bitOffset>
+              <bitWidth>1</bitWidth>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </cluster>
+    </registers>
+  </peripheral>
+  <!-- DMA: Direct Memory Access Controller Fully Programable -->
+</device>
