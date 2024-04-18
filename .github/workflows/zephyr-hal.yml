@@ -78,5 +78,5 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add *
-          git commit -m "Update Zephyr MSDK Hal based on MSDK PR# ${PR_NUM}"
+          git commit -m "Update Zephyr MSDK Hal based on MSDK PR: https://github.com/analogdevicesinc/msdk/pull/${PR_NUM}"
           git push 
