@@ -7,7 +7,6 @@
 
 /******************************************************************************
  *
- * Analog Devices, Inc.),
  * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -98,14 +97,14 @@ typedef struct {
 #define MXC_F_LPCMP_CTRL_POL_POS                       5 /**< CTRL_POL Position */
 #define MXC_F_LPCMP_CTRL_POL                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_POL_POS)) /**< CTRL_POL Mask */
 
-#define MXC_F_LPCMP_CTRL_INT_EN_POS                    6 /**< CTRL_INT_EN Position */
-#define MXC_F_LPCMP_CTRL_INT_EN                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_EN_POS)) /**< CTRL_INT_EN Mask */
+#define MXC_F_LPCMP_CTRL_INTR_EN_POS                   6 /**< CTRL_INTR_EN Position */
+#define MXC_F_LPCMP_CTRL_INTR_EN                       ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INTR_EN_POS)) /**< CTRL_INTR_EN Mask */
 
 #define MXC_F_LPCMP_CTRL_OUT_POS                       14 /**< CTRL_OUT Position */
 #define MXC_F_LPCMP_CTRL_OUT                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_OUT_POS)) /**< CTRL_OUT Mask */
 
-#define MXC_F_LPCMP_CTRL_INT_FL_POS                    15 /**< CTRL_INT_FL Position */
-#define MXC_F_LPCMP_CTRL_INT_FL                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_FL_POS)) /**< CTRL_INT_FL Mask */
+#define MXC_F_LPCMP_CTRL_INTR_FL_POS                   15 /**< CTRL_INTR_FL Position */
+#define MXC_F_LPCMP_CTRL_INTR_FL                       ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INTR_FL_POS)) /**< CTRL_INTR_FL Mask */
 
 /**@} end of group LPCMP_CTRL_Register */
 
