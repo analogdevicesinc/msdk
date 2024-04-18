@@ -242,25 +242,18 @@ GCCVERSIONGTEQ4 := 1
 
 # endif
 
-# The flags passed to the assembler.
-AFLAGS=-mthumb         \
-       -mcpu=cortex-m4 \
-       -MD
-ifneq "$(HEAP_SIZE)" ""
-AFLAGS+=-D__HEAP_SIZE=$(HEAP_SIZE)
-endif
-ifneq "$(STACK_SIZE)" ""
-AFLAGS+=-D__STACK_SIZE=$(STACK_SIZE)
-endif
-ifneq "$(SRAM_SIZE)" ""
-AFLAGS+=-D__SRAM_SIZE=$(SRAM_SIZE)
-endif
-AFLAGS+=$(PROJ_AFLAGS)
-
 ifeq "$(MXC_OPTIMIZE_CFLAGS)" ""
 # Default is optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 endif
+
+# Select the target ARM processor.
+# Permissible options can be found under the "-mtune" documentation in the GCC manual
+# https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+# Our hardware currently supports
+# - cortex-m4 (default)
+# - cortex-m33
+MCPU ?= cortex-m4
 
 # Float ABI options:
 # See https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html (-mfloat-abi)
@@ -302,8 +295,23 @@ endif
 DEFAULT_OPTIMIZE_FLAGS ?= -ffunction-sections -fdata-sections -fsingle-precision-constant
 DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion
 
+# The flags passed to the assembler.
+AFLAGS=-mthumb         \
+       -mcpu=$(MCPU) \
+       -MD
+ifneq "$(HEAP_SIZE)" ""
+AFLAGS+=-D__HEAP_SIZE=$(HEAP_SIZE)
+endif
+ifneq "$(STACK_SIZE)" ""
+AFLAGS+=-D__STACK_SIZE=$(STACK_SIZE)
+endif
+ifneq "$(SRAM_SIZE)" ""
+AFLAGS+=-D__SRAM_SIZE=$(SRAM_SIZE)
+endif
+AFLAGS+=$(PROJ_AFLAGS)
+
 CFLAGS=-mthumb                                                                 \
-       -mcpu=cortex-m4                                                         \
+       -mcpu=$(MCPU)                                                         \
        -mfloat-abi=$(MFLOAT_ABI)                                               \
        -mfpu=$(MFPU)                                                           \
        -Wa,-mimplicit-it=thumb                                                 \
@@ -363,7 +371,7 @@ LD=${PREFIX}-gcc
 
 # The flags passed to the linker.
 LDFLAGS=-mthumb                                                                \
-        -mcpu=cortex-m4                                                        \
+        -mcpu=$(MCPU)                                                          \
         -mfloat-abi=$(MFLOAT_ABI)                                              \
         -mfpu=$(MFPU)                                                          \
         -Xlinker --gc-sections                                                 \
