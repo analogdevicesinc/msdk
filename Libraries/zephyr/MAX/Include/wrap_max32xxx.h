@@ -57,6 +57,8 @@ extern "C" {
 #include <max78000.h>
 #elif defined(CONFIG_SOC_MAX78002)
 #include <max78002.h>
+#elif defined(CONFIG_SOC_MAX32657)
+#include <max32657.h>
 #endif
 
 #ifdef __cplusplus
