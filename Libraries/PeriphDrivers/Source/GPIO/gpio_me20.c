@@ -81,6 +81,11 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     port = MXC_GPIO_GET_IDX(cfg->port);
 
     if (cfg->port == MXC_GPIO3) {
+        if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+            // Configuration is locked.  Ignore any attempts to change it.
+            return E_NO_ERROR;
+        }
+
         if (cfg->mask & MXC_GPIO_PIN_0) {
             switch (cfg->func) {
             case MXC_GPIO_FUNC_IN:
@@ -140,6 +145,11 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return E_NO_ERROR;
     } else {
         MXC_GPIO_Init(1 << port);
+    }
+
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
     }
 
     // Configure the vssel
@@ -367,4 +377,16 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t drvstr, uint32_t mask)
 {
     return MXC_GPIO_RevA_SetDriveStrength((mxc_gpio_reva_regs_t *)port, drvstr, mask);
+}
+
+/* ************************************************************************** */
+void MXC_GPIO_SetConfigLock(mxc_gpio_config_lock_t locked)
+{
+    MXC_GPIO_Common_SetConfigLock(locked);
+}
+
+/* ************************************************************************** */
+mxc_gpio_config_lock_t MXC_GPIO_GetConfigLock(void)
+{
+    return MXC_GPIO_Common_GetConfigLock();
 }
