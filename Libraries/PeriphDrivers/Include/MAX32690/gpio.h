@@ -199,7 +199,6 @@ typedef enum {
     MXC_GPIO_CONFIG_LOCKED, /**< Ignore changes to a pin's configuration. */
 } mxc_gpio_config_lock_t;
 
-
 /* **** Function Prototypes **** */
 
 /**

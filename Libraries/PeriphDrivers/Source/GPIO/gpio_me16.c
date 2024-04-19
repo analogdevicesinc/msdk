@@ -75,8 +75,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     int error;
     mxc_gpio_regs_t *gpio = cfg->port;
 
-    if(MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED)
-    {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
         // Configuration is locked.  Ignore any attempts to change it.
         return E_NO_ERROR;
     }
