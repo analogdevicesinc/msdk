@@ -59,10 +59,12 @@ jobs:
     # The type of runner that the job will run on
     runs-on: [self-hosted]
     if: github.event.pull_request.draft == false
+    
 
     #----------------------------------------------------------------------------------------------
     # De inits submodules and cleans repo
     steps:
+    
       # Clean and remove any local modifications
       - name: Clean
         continue-on-error: true
@@ -645,6 +647,7 @@ jobs:
       #------------------------------| Erase all required boards at once |-----------------------------
       #----------------------------------------------------------------------------------------------
       - name: Erase Boards
+        shell: bash
         if: steps.lock_boards.outcome == 'success'
         id: erase_boards
         run: |
