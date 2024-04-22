@@ -72,6 +72,7 @@ jobs:
       - name: Clean
         continue-on-error: true
         run: |
+          source ~/.bashrc
           # Remove local modifications
           set +e
 
@@ -649,7 +650,6 @@ jobs:
       #------------------------------| Erase all required boards at once |-----------------------------
       #----------------------------------------------------------------------------------------------
       - name: Erase Boards
-        shell: bash
         if: steps.lock_boards.outcome == 'success'
         id: erase_boards
         run: |
