@@ -52,6 +52,9 @@ env:
   LOCK_MAX32655_B2: false
   LOCK_MAX32655_B1: false
   LOCK_MAX32665_B1: false
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
 #----------------------------------------------------------------------------------------------
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -667,6 +670,20 @@ jobs:
         uses: Analog-Devices-MSDK/btm-ci-scripts/.github/actions/otas-test@main
         with: 
             board_client: 'max32655_board1'
+            board_server: 'max32655_board2'
+      
+      - name: Test OTAS MAX32665
+        # if: env.MAX32655_OTAS_CONNECTED_TEST = 'true'
+        uses: Analog-Devices-MSDK/btm-ci-scripts/.github/actions/otas-test@main
+        with: 
+            board_client: 'max32665_board1'
+            board_server: 'max32655_board2'
+      
+      - name: Test OTAS MAX32690
+        # if: env.MAX32655_OTAS_CONNECTED_TEST = 'true'
+        uses: Analog-Devices-MSDK/btm-ci-scripts/.github/actions/otas-test@main
+        with: 
+            board_client: 'max32690_board_w1'
             board_server: 'max32655_board2'
            
       - name: Test MAX32655 #name used for display purposes on github webpage
