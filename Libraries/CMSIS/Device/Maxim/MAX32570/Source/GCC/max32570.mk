@@ -87,15 +87,11 @@ IPATH+=$(CMSIS_ROOT)/$(CMSIS_VER)/Core/Include
 LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 
 # Include the rules and goals for building
-<<<<<<< HEAD
-include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
-
-# Include rules for flashing
-include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk
-=======
 ifeq "$(RISCV_CORE)" ""
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
 else
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc_riscv.mk
 endif
->>>>>>> dev/me13b
+
+# Include rules for flashing
+include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk

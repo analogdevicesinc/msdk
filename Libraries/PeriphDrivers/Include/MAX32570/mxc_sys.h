@@ -219,9 +219,6 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
 } mxc_sys_system_clock_t;
 
-<<<<<<< HEAD
-#define MXC_SYS_SRCC_CLK 1 // Enable SRCC CLK
-=======
 typedef enum {
     MXC_SYS_CLOCK_DIV_1 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1,
     MXC_SYS_CLOCK_DIV_2 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV2,
@@ -234,7 +231,6 @@ typedef enum {
 } mxc_sys_system_clock_div_t;
 
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
->>>>>>> main
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
 /***** Function Prototypes *****/
