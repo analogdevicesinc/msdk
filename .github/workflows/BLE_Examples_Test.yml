@@ -653,6 +653,7 @@ jobs:
         if: steps.lock_boards.outcome == 'success'
         id: erase_boards
         run: |
+            echo $OPENOCD_PATH
             ocderase max32655_board1
             ocderase max32655_board2
             ocderase max32665_board1
