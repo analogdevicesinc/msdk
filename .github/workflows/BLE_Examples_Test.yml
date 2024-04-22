@@ -904,7 +904,7 @@ jobs:
       - name: Clean up
         if: ${{ always() && steps.lock_boards.outcome == 'success'}}
         run: |
-            ls /usr/bin | grep resource
+            
 
             git clean -ffdx
             git reset --hard
@@ -917,7 +917,9 @@ jobs:
       - name: Unlock Boards
         if: ${{ always() && steps.lock_boards.outcome == 'success'}}
         run: |
-          resource_manager.py -u max32655_board1  max32655_board2  max32665_board1  max32690_board_w1
+            ls /usr/bin | grep resource
+            which resource_manager.py
+            resource_manager.py -u max32655_board1  max32655_board2  max32665_board1  max32690_board_w1
       #----------------------------------------------------------------------------------------------
       # Save test reports
       - uses: actions/upload-artifact@v3
