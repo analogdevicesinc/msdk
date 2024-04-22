@@ -636,7 +636,8 @@ jobs:
         if: env.LOCK_MAX32655_B1 == 'true' || env.LOCK_MAX32655_B2 == 'true' || env.LOCK_MAX32665_B1 == 'true' || env.LOCK_MAX32690_B1 == 'true'
         id: lock_boards
         run: |
-          resource_manager.py -l max32655_board1 max32655_board2 max32665_board1 max32690_board_w1 -t 3600
+            printm
+            resource_manager.py -l max32655_board1 max32655_board2 max32665_board1 max32690_board_w1 -t 3600
           
      
       #----------------------------------------------------------------------------------------------
@@ -658,7 +659,7 @@ jobs:
       #------------------------------| Test all required boards at once |-----------------------------
       #----------------------------------------------------------------------------------------------
       - name: Test OTAS MAX32655
-        # if: ${{env.MAX32655_OTAS_CONNECTED_TEST}}
+        # if: env.MAX32655_OTAS_CONNECTED_TEST = 'true'
         uses: Analog-Devices-MSDK/btm-ci-scripts/.github/actions/otas-test@main
         with: 
             board_client: 'max32655_board1'
