@@ -35,6 +35,8 @@ int MXC_GPIO_Common_Init(uint32_t portmask);
 void MXC_GPIO_Common_RegisterCallback(const mxc_gpio_cfg_t *cfg, mxc_gpio_callback_fn callback,
                                       void *cbdata);
 void MXC_GPIO_Common_Handler(unsigned int port);
+void MXC_GPIO_Common_SetConfigLock(mxc_gpio_config_lock_t locked);
+mxc_gpio_config_lock_t MXC_GPIO_Common_GetConfigLock(void);
 
 /**@} end of group gpio */
 

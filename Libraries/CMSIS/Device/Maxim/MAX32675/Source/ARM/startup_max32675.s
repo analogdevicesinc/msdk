@@ -100,14 +100,14 @@ __isr_vector    DCD     __initial_sp            ; Top of Stack
                 DCD     SPI1_IRQHandler               ; 0x21  0x0084  33: SPI1 
                 DCD     SPI2_IRQHandler               ; 0x22  0x0088  34: SPI2 
                 DCD     RSV19_IRQHandler              ; 0x23  0x008C  35: Reserved
-                DCD    RSV20_IRQHandler              ; 0x24  0x0090  36: Reserved 
+                DCD     RSV20_IRQHandler              ; 0x24  0x0090  36: Reserved 
                 DCD     RSV21_IRQHandler              ; 0x25  0x0094  37: Reserved
                 DCD     RSV22_IRQHandler              ; 0x26  0x0098  38: Reserved
                 DCD     FLC0_IRQHandler               ; 0x27  0x009C  39: Flash Controller 0
                 DCD     GPIO0_IRQHandler              ; 0x28  0x00A0  40: GPIO0
                 DCD     GPIO1_IRQHandler              ; 0x29  0x00A4  41: GPIO1
                 DCD     RSV26_IRQHandler              ; 0x2A  0x00A8  42: Reserved
-                DCD    RSV27_IRQHandler              ; 0x2B  0x00AC  43: Reserved
+                DCD     RSV27_IRQHandler              ; 0x2B  0x00AC  43: Reserved
                 DCD     DMA0_IRQHandler               ; 0x2C  0x00B0  44: DMA0
                 DCD     DMA1_IRQHandler               ; 0x2D  0x00B4  45: DMA1
                 DCD     DMA2_IRQHandler               ; 0x2E  0x00B8  46: DMA2
@@ -117,69 +117,69 @@ __isr_vector    DCD     __initial_sp            ; Top of Stack
                 DCD     UART2_IRQHandler              ; 0x32  0x00C8  50: UART 2
                 DCD     RSV35_IRQHandler              ; 0x33  0x00CC  51: Reserved
                 DCD     I2C1_IRQHandler               ; 0x34  0x00D0  52: I2C1
-                DCD    RSV37_IRQHandler              ; 0x35  0x00D4  53: Reserved 
-                DCD    RSV38_IRQHandler              ; 0x36  0x00D8  54: Reserved 
-                DCD    RSV39_IRQHandler              ; 0x37  0x00DC  55: Reserved 
-                DCD    RSV40_IRQHandler              ; 0x38  0x00E0  56: Reserved 
-                DCD    RSV41_IRQHandler              ; 0x39  0x00E4  57: Reserved 
-                DCD    RSV42_IRQHandler              ; 0x3A  0x00E8  58: Reserved 
-                DCD    RSV43_IRQHandler              ; 0x3B  0x00EC  59: Reserved
-                DCD    RSV44_IRQHandler              ; 0x3C  0x00F0  60: Reserved
-                DCD    RSV45_IRQHandler              ; 0x3D  0x00F4  61: Reserved 
-                DCD    RSV46_IRQHandler              ; 0x3E  0x00F8  62: Reserved 
-                DCD    RSV47_IRQHandler              ; 0x3F  0x00FC  63: Reserved 
-                DCD    RSV48_IRQHandler              ; 0x40  0x0100  64: Reserved 
-                DCD    RSV49_IRQHandler              ; 0x41  0x0104  65: Reserved 
-                DCD    RSV50_IRQHandler              ; 0x42  0x0108  66: Reserved 
-                DCD    RSV51_IRQHandler              ; 0x43  0x010C  67: Reserved
-                DCD    RSV52_IRQHandler              ; 0x44  0x0110  68: Reserved
-                DCD    RSV53_IRQHandler              ; 0x45  0x0114  69: Reserved 
-                DCD    RSV54_IRQHandler              ; 0x46  0x0118  70: Reserved
-                DCD    RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved 
-                DCD    RSV56_IRQHandler              ; 0x48  0x0120  72: Reserved 
-                DCD    WDT1_IRQHandler               ; 0x49  0x0124  73: Watchdog 1 
-                DCD    RSV57_IRQHandler              ; 0x4A  0x0128  74: Reserved 
-                DCD    RSV58_IRQHandler              ; 0x4B  0x012C  75: Reserved
-                DCD    RSV59_IRQHandler              ; 0x4C  0x0130  76: Reserved 
-                DCD    RSV61_IRQHandler              ; 0x4D  0x0134  77: Reserved 
-                DCD    I2C2_IRQHandler               ; 0x4E  0x0138  78: Reserved 
-                DCD    RSV63_IRQHandler              ; 0x4F  0x013C  79: Reserved
-                DCD    RSV64_IRQHandler              ; 0x50  0x0140  80: Reserved
-                DCD    RSV65_IRQHandler              ; 0x51  0x0144  81: Reserved 
-                DCD    RSV66_IRQHandler              ; 0x52  0x0148  82: Reserved 
-                DCD    RSV67_IRQHandler              ; 0x53  0x014C  83: Reserved
-                DCD    DMA4_IRQHandler               ; 0x54  0x0150  84: DMA4 
-                DCD    DMA5_IRQHandler               ; 0x55  0x0154  85: DMA5 
-                DCD    DMA6_IRQHandler               ; 0x56  0x0158  86: DMA6 
-                DCD    DMA7_IRQHandler               ; 0x57  0x015C  87: DMA7 
-                DCD    DMA8_IRQHandler               ; 0x58  0x0160  88: DMA8 
-                DCD    DMA9_IRQHandler               ; 0x59  0x0164  89: DMA9 
-                DCD    DMA10_IRQHandler              ; 0x5A  0x0168  90: DMA10 
-                DCD    DMA11_IRQHandler              ; 0x5B  0x016C  91: DMA11 
-                DCD    DMA12_IRQHandler              ; 0x5C  0x0170  92: DMA12 
-                DCD    DMA13_IRQHandler              ; 0x5D  0x0174  93: DMA13 
-                DCD    DMA14_IRQHandler              ; 0x5E  0x0178  94: DMA14 
-                DCD    DMA15_IRQHandler              ; 0x5F  0x017C  95: DMA15 
-                DCD    RSV80_IRQHandler              ; 0x60  0x0180  96: Reserved 
-                DCD    RSV81_IRQHandler              ; 0x61  0x0184  97: Reserved
-                DCD    ECC_IRQHandler                ; 0x62  0x0188  98: Error Correction 
-                DCD    RSV83_IRQHandler              ; 0x63  0x018C  99: Reserved 
-                DCD    RSV84_IRQHandler              ; 0x64 0x0190   100: Reserved 
-                DCD    RSV85_IRQHandler              ; 0x65  0x0194  101: Reserved
-                DCD    RSV86_IRQHandler              ; 0x66  0x0198  102: Reserved
-                DCD    RSV87_IRQHandler              ; 0x67  0x019C  103: Reserved
-                DCD    UART3_IRQHandler              ; 0x68  0x01A0  104: UART 3 
-                DCD    RSV89_IRQHandler              ; 0x69  0x01A4  105: Reserved 
-                DCD    RSV90_IRQHandler              ; 0x6A  0x01A8  106: UART 5 
-                DCD    RSV91_IRQHandler              ; 0x6B  0x01AC  107: Reserved 
-                DCD    RSV92_IRQHandler              ; 0x6C  0x01B0  108: Reserved  
-                DCD    RSV93_IRQHandler              ; 0x6D  0x01B1  109: Reserved 
-                DCD    RSV94_IRQHandler              ; 0x6E  0x01B2  109: Reserved
-                DCD    RSV95_IRQHandler              ; 0x6D  0x01B1  109: Reserved 
-                DCD    RSV96_IRQHandler              ; 0x6E  0x01B2  109: Reserved
-                DCD    AES_IRQHandler                ; 0x6D  0x01B1  109: AES  
-                DCD    CRC_IRQHandler                ; 0x6E  0x01B2  109: CRC
-                DCD    I2S_IRQHandler                ; 0x6E  0x01B2  109: I2S
+                DCD     RSV37_IRQHandler              ; 0x35  0x00D4  53: Reserved 
+                DCD     RSV38_IRQHandler              ; 0x36  0x00D8  54: Reserved 
+                DCD     RSV39_IRQHandler              ; 0x37  0x00DC  55: Reserved 
+                DCD     RSV40_IRQHandler              ; 0x38  0x00E0  56: Reserved 
+                DCD     RSV41_IRQHandler              ; 0x39  0x00E4  57: Reserved 
+                DCD     RSV42_IRQHandler              ; 0x3A  0x00E8  58: Reserved 
+                DCD     RSV43_IRQHandler              ; 0x3B  0x00EC  59: Reserved
+                DCD     RSV44_IRQHandler              ; 0x3C  0x00F0  60: Reserved
+                DCD     RSV45_IRQHandler              ; 0x3D  0x00F4  61: Reserved 
+                DCD     RSV46_IRQHandler              ; 0x3E  0x00F8  62: Reserved 
+                DCD     RSV47_IRQHandler              ; 0x3F  0x00FC  63: Reserved 
+                DCD     RSV48_IRQHandler              ; 0x40  0x0100  64: Reserved 
+                DCD     RSV49_IRQHandler              ; 0x41  0x0104  65: Reserved 
+                DCD     RSV50_IRQHandler              ; 0x42  0x0108  66: Reserved 
+                DCD     RSV51_IRQHandler              ; 0x43  0x010C  67: Reserved
+                DCD     RSV52_IRQHandler              ; 0x44  0x0110  68: Reserved
+                DCD     RSV53_IRQHandler              ; 0x45  0x0114  69: Reserved 
+                DCD     GPIOWAKE_IRQHandler           ; 0x46  0x0118  70: GPIOWAKE
+                DCD     RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved 
+                DCD     RSV56_IRQHandler              ; 0x48  0x0120  72: Reserved 
+                DCD     WDT1_IRQHandler               ; 0x49  0x0124  73: Watchdog 1 
+                DCD     RSV57_IRQHandler              ; 0x4A  0x0128  74: Reserved 
+                DCD     RSV58_IRQHandler              ; 0x4B  0x012C  75: Reserved
+                DCD     RSV59_IRQHandler              ; 0x4C  0x0130  76: Reserved 
+                DCD     RSV61_IRQHandler              ; 0x4D  0x0134  77: Reserved 
+                DCD     I2C2_IRQHandler               ; 0x4E  0x0138  78: Reserved 
+                DCD     RSV63_IRQHandler              ; 0x4F  0x013C  79: Reserved
+                DCD     RSV64_IRQHandler              ; 0x50  0x0140  80: Reserved
+                DCD     RSV65_IRQHandler              ; 0x51  0x0144  81: Reserved 
+                DCD     RSV66_IRQHandler              ; 0x52  0x0148  82: Reserved 
+                DCD     RSV67_IRQHandler              ; 0x53  0x014C  83: Reserved
+                DCD     DMA4_IRQHandler               ; 0x54  0x0150  84: DMA4 
+                DCD     DMA5_IRQHandler               ; 0x55  0x0154  85: DMA5 
+                DCD     DMA6_IRQHandler               ; 0x56  0x0158  86: DMA6 
+                DCD     DMA7_IRQHandler               ; 0x57  0x015C  87: DMA7 
+                DCD     DMA8_IRQHandler               ; 0x58  0x0160  88: DMA8 
+                DCD     DMA9_IRQHandler               ; 0x59  0x0164  89: DMA9 
+                DCD     DMA10_IRQHandler              ; 0x5A  0x0168  90: DMA10 
+                DCD     DMA11_IRQHandler              ; 0x5B  0x016C  91: DMA11 
+                DCD     DMA12_IRQHandler              ; 0x5C  0x0170  92: DMA12 
+                DCD     DMA13_IRQHandler              ; 0x5D  0x0174  93: DMA13 
+                DCD     DMA14_IRQHandler              ; 0x5E  0x0178  94: DMA14 
+                DCD     DMA15_IRQHandler              ; 0x5F  0x017C  95: DMA15 
+                DCD     RSV80_IRQHandler              ; 0x60  0x0180  96: Reserved 
+                DCD     RSV81_IRQHandler              ; 0x61  0x0184  97: Reserved
+                DCD     ECC_IRQHandler                ; 0x62  0x0188  98: Error Correction 
+                DCD     RSV83_IRQHandler              ; 0x63  0x018C  99: Reserved 
+                DCD     RSV84_IRQHandler              ; 0x64 0x0190   100: Reserved 
+                DCD     RSV85_IRQHandler              ; 0x65  0x0194  101: Reserved
+                DCD     RSV86_IRQHandler              ; 0x66  0x0198  102: Reserved
+                DCD     RSV87_IRQHandler              ; 0x67  0x019C  103: Reserved
+                DCD     UART3_IRQHandler              ; 0x68  0x01A0  104: UART 3 
+                DCD     RSV89_IRQHandler              ; 0x69  0x01A4  105: Reserved 
+                DCD     RSV90_IRQHandler              ; 0x6A  0x01A8  106: UART 5 
+                DCD     RSV91_IRQHandler              ; 0x6B  0x01AC  107: Reserved 
+                DCD     RSV92_IRQHandler              ; 0x6C  0x01B0  108: Reserved  
+                DCD     RSV93_IRQHandler              ; 0x6D  0x01B1  109: Reserved 
+                DCD     RSV94_IRQHandler              ; 0x6E  0x01B2  109: Reserved
+                DCD     RSV95_IRQHandler              ; 0x6D  0x01B1  109: Reserved 
+                DCD     RSV96_IRQHandler              ; 0x6E  0x01B2  109: Reserved
+                DCD     AES_IRQHandler                ; 0x6D  0x01B1  109: AES  
+                DCD     CRC_IRQHandler                ; 0x6E  0x01B2  109: CRC
+                DCD     I2S_IRQHandler                ; 0x6E  0x01B2  109: I2S
 __isr_vector_end
 
 __isr_vector_Size       EQU     __isr_vector_end - __isr_vector
@@ -316,7 +316,7 @@ Default_Handler\
                 EXPORT  RSV51_IRQHandler              [WEAK]  ; 0x43  0x010C  67: BReserved
                 EXPORT  RSV52_IRQHandler              [WEAK]  ; 0x44  0x0110  68: Reserved
                 EXPORT  RSV53_IRQHandler              [WEAK]  ; 0x45  0x0114  69: Reserved
-                EXPORT  RSV54_IRQHandler              [WEAK]  ; 0x46  0x0118  70: Reserved
+                EXPORT  GPIOWAKE_IRQHandler           [WEAK]  ; 0x46  0x0118  70: GPIOWAKE
                 EXPORT  RSV55_IRQHandler              [WEAK]  ; 0x47  0x011C  71: Reserved
                 EXPORT  RSV56_IRQHandler              [WEAK]  ; 0x48  0x0120  72: Reserved
                 EXPORT  WDT1_IRQHandler               [WEAK]  ; 0x49  0x0124  73: Watchdog 1
@@ -421,7 +421,7 @@ RSV50_IRQHandler                ; 0x42  0x0108  66: Reserved
 RSV51_IRQHandler                ; 0x43  0x010C  67: BReserved
 RSV52_IRQHandler                ; 0x44  0x0110  68: Reserved
 RSV53_IRQHandler                ; 0x45  0x0114  69: Reserved
-RSV54_IRQHandler                ; 0x46  0x0118  70: Reserved
+GPIOWAKE_IRQHandler             ; 0x46  0x0118  70: GPIOWAKE
 RSV55_IRQHandler                ; 0x47  0x011C  71: Reserved
 RSV56_IRQHandler                ; 0x48  0x0120  72: Reserved
 WDT1_IRQHandler                 ; 0x49  0x0124  73: Watchdog 1
@@ -447,14 +447,14 @@ DMA12_IRQHandler                ; 0x5C  0x0170  92: DMA12
 DMA13_IRQHandler                ; 0x5D  0x0174  93: DMA13
 DMA14_IRQHandler                ; 0x5E  0x0178  94: DMA14
 DMA15_IRQHandler                ; 0x5F  0x017C  95: DMA15
-RSV80_IRQHandler               ; 0x60  0x0180  96: Reserved
-RSV81_IRQHandler                 ; 0x61  0x0184  97: Reserved
+RSV80_IRQHandler                ; 0x60  0x0180  96: Reserved
+RSV81_IRQHandler                ; 0x61  0x0184  97: Reserved
 ECC_IRQHandler                  ; 0x62  0x0188  98: Error Correction 
-RSV83_IRQHandler                  ; 0x63  0x018C  99: Reserved 
-RSV84_IRQHandler                 ; 0x64 0x0190  100: Reserved 
-RSV85_IRQHandler                  ; 0x65  0x0194  101: Reserved 
-RSV86_IRQHandler                 ; 0x66  0x0198  102: Reserved
-RSV87_IRQHandler                 ; 0x67  0x019C  103: Reserved
+RSV83_IRQHandler                ; 0x63  0x018C  99: Reserved 
+RSV84_IRQHandler                ; 0x64 0x0190  100: Reserved 
+RSV85_IRQHandler                ; 0x65  0x0194  101: Reserved 
+RSV86_IRQHandler                ; 0x66  0x0198  102: Reserved
+RSV87_IRQHandler                ; 0x67  0x019C  103: Reserved
 UART3_IRQHandler                ; 0x68  0x01A0  104: UART 3 
 RSV89_IRQHandler                ; 0x69  0x01A4  105: Reserved 
 RSV90_IRQHandler                ; 0x6A  0x01A8  106: Reserved  
