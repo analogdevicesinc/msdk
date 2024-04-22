@@ -26,8 +26,72 @@
 #include "mxc_device.h"
 #include "smon_reva.h"
 
-#if TARGET_NUM == 32572
-// Only supported for ME55.
+int MXC_SMON_RevA_WriteExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_cfg_t *cfg)
+{
+    int err;
+    uint32_t config = 0;
+
+    if (cfg == NULL) {
+        return E_NULL_PTR;
+    }
+
+    if (smon->extsctrl & MXC_F_SMON_EXTSCTRL_LOCK) {
+        //if locked, return error (error type must be change)
+        return E_NULL_PTR;
+    }
+
+    config = cfg->sensorNumber;
+    config |= (uint32_t)((cfg->errorCount) << MXC_F_SMON_EXTSCTRL_EXTCNT_POS);
+    config |= cfg->clockDivide;
+    config |= cfg->freqDivide;
+    config |= cfg->lock;
+
+    if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0)) != E_NO_ERROR) {
+        return err;
+    }
+
+    smon->extsctrl = config;
+
+    if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0)) != E_NO_ERROR) {
+        return err;
+    }
+
+    return E_NO_ERROR;
+}
+
+int MXC_SMON_RevA_WriteIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_cfg_t *cfg)
+{
+    int err;
+    uint32_t config = 0;
+
+    if (cfg == NULL) {
+        return E_NULL_PTR;
+    }
+
+    if (smon->extsctrl & MXC_F_SMON_INTSCTRL_LOCK) {
+        //if locked, return error (error type must be change)
+        return E_NULL_PTR;
+    }
+
+    config = cfg->IntSensors;
+    config |= cfg->DFDInterrupt;
+    config |= cfg->TamperOutPin;
+    config |= cfg->LowTempSelect;
+    config |= cfg->lock;
+
+    if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0)) != E_NO_ERROR) {
+        return err;
+    }
+
+    smon->intsctrl = config;
+
+    if ((err = MXC_SMON_RevA_isBusy(smon, MXC_SMON_BUSY_ALL, 0)) != E_NO_ERROR) {
+        return err;
+    }
+
+    return E_NO_ERROR;
+}
+
 int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tampen_t *extTamp,
                                    bool lock)
 {
@@ -190,7 +254,6 @@ int MXC_SMON_RevA_EnableIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_tamp
 
     return E_NO_ERROR;
 }
-#endif
 
 int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_ext_cfg_t *cfg,
                                   uint32_t delay)

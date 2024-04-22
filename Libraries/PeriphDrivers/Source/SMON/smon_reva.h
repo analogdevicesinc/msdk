@@ -32,7 +32,6 @@
 #include "smon.h"
 #include "smon_reva_regs.h"
 
-
 int MXC_SMON_RevA_EnableExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_tampen_t *extTamp,
                                    bool lock);
 

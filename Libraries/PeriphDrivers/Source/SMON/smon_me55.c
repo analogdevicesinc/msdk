@@ -28,7 +28,7 @@
 
 void MXC_SMON_Init(void)
 {
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
+    // Do nothing.
 }
 
 void MXC_SMON_Shutdown(void)
@@ -121,7 +121,9 @@ void MXC_SMON_ClearTamper(void)
 
 // Deprecated implementation - Must check and clear all flags to clear
 //  tamper alarm. Please use MXC_SMON_ClearTamper instead.
-void MXC_SMON_ClearFlags(uint32_t flags)
+void __attribute((deprecated(
+    "Must check and clear all flags before clearing tamper alarm. Please use MXC_SMON_ClearTamper(...)")))
+MXC_SMON_ClearFlags(uint32_t flags)
 {
     MXC_SMON_RevA_ClearTamper((mxc_smon_reva_regs_t *)MXC_SMON);
 }
