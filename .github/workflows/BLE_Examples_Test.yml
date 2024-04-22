@@ -636,6 +636,7 @@ jobs:
         if: env.LOCK_MAX32655_B1 == 'true' || env.LOCK_MAX32655_B2 == 'true' || env.LOCK_MAX32665_B1 == 'true' || env.LOCK_MAX32690_B1 == 'true'
         id: lock_boards
         run: |
+            source ~/.bashrc
             printenv
             resource_manager.py -l max32655_board1 max32655_board2 max32665_board1 max32690_board_w1 -t 3600
           
