@@ -70,6 +70,13 @@ typedef enum {
     __attribute((deprecated("replaced by MXC_SMON_EXTSENSOR_5"))) = MXC_SMON_EXTSENSOR_5,
 } mxc_smon_ext_sensor_t;
 
+typedef enum {
+    MXC_SMON_SHIELD = MXC_F_SMON_INTSCN_SHIELD_EN,
+    MXC_SMON_TEMP = MXC_F_SMON_INTSCN_TEMP_EN,
+    MXC_SMON_VBAT = MXC_F_SMON_INTSCN_VBAT_EN,
+    MXC_SMON_DFD = MXC_F_SMON_INTSCN_DFD_EN,
+} mxc_smon_int_sensor_t;
+
 /**
  * @brief   Enum for Clock Divider
  *
@@ -129,6 +136,24 @@ typedef enum {
     SMON_FREQ_DIVIDE_256
     __attribute((deprecated("replaced by MXC_SMON_FREQ_DIVIDE_256"))) = MXC_SMON_FREQ_DIVIDE_256,
 } mxc_smon_freq_divide_t;
+
+/**
+ * @brief   Enum for Lock
+ *
+ */
+typedef enum {
+    MXC_SMON_UNLOCK,
+    MXC_SMON_LOCK = MXC_F_SMON_EXTSCN_LOCK,
+} mxc_smon_lock_t;
+
+/**
+ * @brief   Enum for TAMPEROUT
+ *
+ */
+typedef enum {
+    MXC_SMON_TAMPEROUT_DISABLE,
+    MXC_SMON_TAMPEROUT_ENABLE,
+} mxc_smon_tamperout_t;
 
 /**
  * @brief   Voltage Monitor Thresholds
@@ -223,7 +248,20 @@ typedef struct {
     mxc_smon_freq_divide_t freqDivide;
     uint8_t errorCount;
     uint8_t data;
+    mxc_smon_lock_t lock;
 } mxc_smon_ext_cfg_t;
+
+/**
+ * @brief   A selection of internal tampers to enable.
+ *
+ */
+typedef struct {
+    mxc_smon_int_sensor_t IntSensors;
+    mxc_smon_interrupt_mode_t DFDInterrupt;
+    mxc_smon_tamperout_t TamperOutPin;
+    mxc_smon_temp_t LowTempSelect;
+    mxc_smon_lock_t lock;
+} mxc_smon_int_cfg_t;
 
 /**
  * @brief   A selection of external tampers to enable.

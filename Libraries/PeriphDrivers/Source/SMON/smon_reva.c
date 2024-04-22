@@ -35,13 +35,13 @@ int MXC_SMON_RevA_WriteExtTampers(mxc_smon_reva_regs_t *smon, mxc_smon_ext_cfg_t
         return E_NULL_PTR;
     }
 
-    if (smon->extsctrl & MXC_F_SMON_EXTSCTRL_LOCK) {
+    if (smon->extsctrl & MXC_F_SMON_REVA_EXTSCTRL_LOCK) {
         //if locked, return error (error type must be change)
         return E_NULL_PTR;
     }
 
     config = cfg->sensorNumber;
-    config |= (uint32_t)((cfg->errorCount) << MXC_F_SMON_EXTSCTRL_EXTCNT_POS);
+    config |= (uint32_t)((cfg->errorCount) << MXC_F_SMON_REVA_EXTSCTRL_ERRCNT_POS);
     config |= cfg->clockDivide;
     config |= cfg->freqDivide;
     config |= cfg->lock;
@@ -68,7 +68,7 @@ int MXC_SMON_RevA_WriteIntTampers(mxc_smon_reva_regs_t *smon, mxc_smon_int_cfg_t
         return E_NULL_PTR;
     }
 
-    if (smon->extsctrl & MXC_F_SMON_INTSCTRL_LOCK) {
+    if (smon->extsctrl & MXC_F_SMON_REVA_INTSCTRL_LOCK) {
         //if locked, return error (error type must be change)
         return E_NULL_PTR;
     }

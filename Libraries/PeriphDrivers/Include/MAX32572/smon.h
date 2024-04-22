@@ -316,6 +316,36 @@ void MXC_SMON_Shutdown(void);
  *
  * @return  int         see \ref MXC_Error_Codes for a list of return codes
  */
+int MXC_SMON_WriteExtTampers(mxc_smon_ext_cfg_t *cfg);
+
+/**
+ * @brief   Enables desired External Sensors. This function does not
+ *          configures the tampers - only enables them.
+ *
+ * @warning Only a Battery-on-Reset (BOR) can unlock the EXTSCTRL register
+ *          after initially locking.
+ *
+ * @param   extTamp     struct containing list of tampers to enable
+ * @param   lock        True/False condition - locks the EXTSCTRL register
+ *                      after enabling.
+ *
+ * @return  int         see \ref MXC_Error_Codes for a list of return codes
+ */
+int MXC_SMON_WriteIntTampers(mxc_smon_int_cfg_t *cfg);
+
+/**
+ * @brief   Enables desired External Sensors. This function does not
+ *          configures the tampers - only enables them.
+ * 
+ * @warning Only a Battery-on-Reset (BOR) can unlock the EXTSCTRL register
+ *          after initially locking.
+ *
+ * @param   extTamp     struct containing list of tampers to enable
+ * @param   lock        True/False condition - locks the EXTSCTRL register 
+ *                      after enabling.
+ *
+ * @return  int         see \ref MXC_Error_Codes for a list of return codes
+ */
 int MXC_SMON_EnableExtTampers(mxc_smon_ext_tampen_t *extTamp, bool lock);
 
 /**
