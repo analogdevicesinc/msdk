@@ -658,7 +658,8 @@ jobs:
       #------------------------------| Test all required boards at once |-----------------------------
       #----------------------------------------------------------------------------------------------
       - name: Test OTAS MAX32655
-        uses: Analog-Devices-MSDK/btm-ci-scripts/.github/actions/otas-test.yml@main
+        if: ${{MAX32655_OTAS_CONNECTED_TEST}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/.github/actions/otas-test@main
         with: 
             board_client: 'max32655_board1'
             board_server: 'max32655_board2'
