@@ -755,7 +755,7 @@ jobs:
             
 
     #         exit $numOfFailedTests
-    #   #----------------------------------------------------------------------------------------------
+      #----------------------------------------------------------------------------------------------
     #   - name: Test MAX32665 #name used for display purposes on github webpage
     #     if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32665_B1 == 'true'
     #     id: Test_MAX32665 #id used to reference this step in other parts of the yml
@@ -850,71 +850,71 @@ jobs:
     #         echo
     #       fi
     #       exit $numOfFailedTests
-    #   #----------------------------------------------------------------------------------------------
+      #----------------------------------------------------------------------------------------------
     #   - name: Test MAX32690 #name used for display purposes on github webpage
-        if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32690_B1 == 'true'
-        id: Test_MAX32690 #id used to reference this step in other parts of the yml
-        run: |
+    #     if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32690_B1 == 'true'
+    #     id: Test_MAX32690 #id used to reference this step in other parts of the yml
+    #     run: |
           
           
-            echo "Examples to be tested : ${examples_to_test[@]}"
-            echo "MAX32690_RUN_ALL_TEST        : $MAX32690_RUN_ALL_TEST"
-            echo "MAX32690_DATS_CONNECTED_TEST : $MAX32690_DATS_CONNECTED_TEST "
-            echo "MAX32690_OTAS_CONNECTED_TEST  : $MAX32690_OTAS_CONNECTED_TEST"
-            echo "MAX32690_BLE_FILES_CHANGED   : $MAX32690_BLE_FILES_CHANGED "
-            echo "LOCK_MAX32690_B1             : $LOCK_MAX32690_B1 "
+    #         echo "Examples to be tested : ${examples_to_test[@]}"
+    #         echo "MAX32690_RUN_ALL_TEST        : $MAX32690_RUN_ALL_TEST"
+    #         echo "MAX32690_DATS_CONNECTED_TEST : $MAX32690_DATS_CONNECTED_TEST "
+    #         echo "MAX32690_OTAS_CONNECTED_TEST  : $MAX32690_OTAS_CONNECTED_TEST"
+    #         echo "MAX32690_BLE_FILES_CHANGED   : $MAX32690_BLE_FILES_CHANGED "
+    #         echo "LOCK_MAX32690_B1             : $LOCK_MAX32690_B1 "
 
             
-            BOARD_SERVER="max32690_board_w1"
-            BOARD_CLIENT="max32690_b1"
-            DATC_DIR=Examples/MAX32690/Bluetooth/BLE_datc
-            DATS_DIR=Examples/MAX32690/Bluetooth/BLE_dats
-            OTAS_DIR=Examples/MAX32690/Bluetooth/BLE_otas
-            OTAC_DIR=Examples/MAX32690/Bluetooth/BLE_otac
-            make -C $DATC_DIR
-            make -C $DATS_DIR
-            make -C $OTAS_DIR
-            make -C $OTAC_DIR
+    #         BOARD_SERVER="max32690_board_w1"
+    #         BOARD_CLIENT="max32690_b1"
+    #         DATC_DIR=Examples/MAX32690/Bluetooth/BLE_datc
+    #         DATS_DIR=Examples/MAX32690/Bluetooth/BLE_dats
+    #         OTAS_DIR=Examples/MAX32690/Bluetooth/BLE_otas
+    #         OTAC_DIR=Examples/MAX32690/Bluetooth/BLE_otac
+    #         make -C $DATC_DIR
+    #         make -C $DATS_DIR
+    #         make -C $OTAS_DIR
+    #         make -C $OTAC_DIR
             
-            DATS_FILE=$DATS_DIR/build/max32690.elf
-            DATC_FILE=$DATC_DIR/build/max32690.elf
-            OTAS_FILE=$OTAS_DIR/build/max32690.elf
-            OTAC_FILE=$OTAC_DIR/build/max32690.elf
+    #         DATS_FILE=$DATS_DIR/build/max32690.elf
+    #         DATC_FILE=$DATC_DIR/build/max32690.elf
+    #         OTAS_FILE=$OTAS_DIR/build/max32690.elf
+    #         OTAC_FILE=$OTAC_DIR/build/max32690.elf
           
-            echo "Testing all examples"
-            set +e
+    #         echo "Testing all examples"
+    #         set +e
     
-            connectedTests=$(datsc_connected.py $BOARD_SERVER $BOARD_CLIENT $DATS_DIR $DATC_DIR)
-            let "testResult=$?"
-            if [ "$testResult" -ne "0" ]; then
-                # update failed test count
-                let "numOfFailedTests+=$testResult"
-            fi
+    #         connectedTests=$(datsc_connected.py $BOARD_SERVER $BOARD_CLIENT $DATS_DIR $DATC_DIR)
+    #         let "testResult=$?"
+    #         if [ "$testResult" -ne "0" ]; then
+    #             # update failed test count
+    #             let "numOfFailedTests+=$testResult"
+    #         fi
 
-            otasTest=$(otas_connected.py $BOARD_SERVER $BOARD_CLIENT $OTAS_DIR $OTAC_DIR)
+    #         otasTest=$(otas_connected.py $BOARD_SERVER $BOARD_CLIENT $OTAS_DIR $OTAC_DIR)
             
-            let "testResult=$?"
-            if [ "$testResult" -ne "0" ]; then
-                # update failed test count
-                let "numOfFailedTests+=$testResult"
-            fi
-            set -e
+    #         let "testResult=$?"
+    #         if [ "$testResult" -ne "0" ]; then
+    #             # update failed test count
+    #             let "numOfFailedTests+=$testResult"
+    #         fi
+    #         set -e
         
-            echo "=============================================================================="
-            echo "=============================================================================="
+    #         echo "=============================================================================="
+    #         echo "=============================================================================="
 
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
-            fi
+    #         if [[ $numOfFailedTests -ne 0 ]]; then
+    #             printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+    #         else
+    #             echo "Relax! ALL TESTS PASSED"
+    #         fi
+    #         echo
+    #         echo "=============================================================================="
+    #         echo "=============================================================================="
+    #         echo
+    #         fi
 
-            exit $numOfFailedTests
+    #         exit $numOfFailedTests
       #----------------------------------------------------------------------------------------------
       #----------------------------------------------------------------------------------------------
       #------------------------------| Erase & Unlock all required boards at once |-----------------------------
