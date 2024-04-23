@@ -52,9 +52,9 @@ env:
   LOCK_MAX32655_B2: false
   LOCK_MAX32655_B1: false
   LOCK_MAX32665_B1: false
-defaults:
-  run:
-    shell: bash -leo pipefail {0}
+# defaults:
+#   run:
+#     shell: bash -leo pipefail {0}
 #----------------------------------------------------------------------------------------------
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -642,6 +642,7 @@ jobs:
         if: env.LOCK_MAX32655_B1 == 'true' || env.LOCK_MAX32655_B2 == 'true' || env.LOCK_MAX32665_B1 == 'true' || env.LOCK_MAX32690_B1 == 'true'
         id: lock_boards
         run: |
+            printenv
 
             resource_manager.py -l max32655_board1 max32655_board2 max32665_board1 max32690_board_w1 -t 3600
           
