@@ -52,6 +52,7 @@ env:
   LOCK_MAX32655_B2: false
   LOCK_MAX32655_B1: false
   LOCK_MAX32665_B1: false
+  CI_BOARD_CONFIG: ${{env.CI_BOARD_CONFIG}}
 defaults:
   run:
     shell: bash -leo pipefail {0}
