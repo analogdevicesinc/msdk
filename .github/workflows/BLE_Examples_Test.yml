@@ -71,7 +71,9 @@ jobs:
     steps:
       - name: Test1
         run: | 
-            printenv
+            echo $CI_BOARD_CONFIG
+
+            # printenv
 
       # Clean and remove any local modifications
       - name: Clean
