@@ -76,12 +76,9 @@ typedef struct {
     __IO uint32_t cnt;                  /**< <tt>\b 0x00:</tt> WUT CNT Register */
     __IO uint32_t cmp;                  /**< <tt>\b 0x04:</tt> WUT CMP Register */
     __R  uint32_t rsv_0x8;
-    __IO uint32_t intr;                 /**< <tt>\b 0x0C:</tt> WUT INTR Register */
+    __IO uint32_t intfl;                /**< <tt>\b 0x0C:</tt> WUT INTFL Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x10:</tt> WUT CTRL Register */
-    __IO uint32_t nolcmp;               /**< <tt>\b 0x14:</tt> WUT NOLCMP Register */
-    __IO uint32_t preset;               /**< <tt>\b 0x18:</tt> WUT PRESET Register */
-    __IO uint32_t reload;               /**< <tt>\b 0x1C:</tt> WUT RELOAD Register */
-    __IO uint32_t snapshot;             /**< <tt>\b 0x20:</tt> WUT SNAPSHOT Register */
+    __I  uint32_t nolcmp;               /**< <tt>\b 0x14:</tt> WUT NOLCMP Register */
 } mxc_wut_regs_t;
 
 /* Register offsets for module WUT */
@@ -93,18 +90,15 @@ typedef struct {
  */
 #define MXC_R_WUT_CNT                      ((uint32_t)0x00000000UL) /**< Offset from WUT Base Address: <tt> 0x0000</tt> */
 #define MXC_R_WUT_CMP                      ((uint32_t)0x00000004UL) /**< Offset from WUT Base Address: <tt> 0x0004</tt> */
-#define MXC_R_WUT_INTR                     ((uint32_t)0x0000000CUL) /**< Offset from WUT Base Address: <tt> 0x000C</tt> */
+#define MXC_R_WUT_INTFL                    ((uint32_t)0x0000000CUL) /**< Offset from WUT Base Address: <tt> 0x000C</tt> */
 #define MXC_R_WUT_CTRL                     ((uint32_t)0x00000010UL) /**< Offset from WUT Base Address: <tt> 0x0010</tt> */
 #define MXC_R_WUT_NOLCMP                   ((uint32_t)0x00000014UL) /**< Offset from WUT Base Address: <tt> 0x0014</tt> */
-#define MXC_R_WUT_PRESET                   ((uint32_t)0x00000018UL) /**< Offset from WUT Base Address: <tt> 0x0018</tt> */
-#define MXC_R_WUT_RELOAD                   ((uint32_t)0x0000001CUL) /**< Offset from WUT Base Address: <tt> 0x001C</tt> */
-#define MXC_R_WUT_SNAPSHOT                 ((uint32_t)0x00000020UL) /**< Offset from WUT Base Address: <tt> 0x0020</tt> */
 /**@} end of group wut_registers */
 
 /**
  * @ingroup  wut_registers
  * @defgroup WUT_CNT WUT_CNT
- * @brief    Count.  This register stores the current timer count.
+ * @brief    Count. This register stores the current timer count.
  * @{
  */
 #define MXC_F_WUT_CNT_COUNT_POS                        0 /**< CNT_COUNT Position */
@@ -115,8 +109,7 @@ typedef struct {
 /**
  * @ingroup  wut_registers
  * @defgroup WUT_CMP WUT_CMP
- * @brief    Compare.  This register stores the compare value, which is used to set the
- *           maximum count value to initiate a reload of the timer to 0x0001.
+ * @brief    Compare. This register stores the compare value for the timer's count value.
  * @{
  */
 #define MXC_F_WUT_CMP_COMPARE_POS                      0 /**< CMP_COMPARE Position */
@@ -126,15 +119,15 @@ typedef struct {
 
 /**
  * @ingroup  wut_registers
- * @defgroup WUT_INTR WUT_INTR
- * @brief    Clear Interrupt. Writing a value (0 or 1) to a bit in this register clears the
- *           associated interrupt.
+ * @defgroup WUT_INTFL WUT_INTFL
+ * @brief    Timer Interrupt Flag. Writing a value (0 or 1) to a bit in this register clears
+ *           the associated interrupt.
  * @{
  */
-#define MXC_F_WUT_INTR_IF_CLR_POS                      0 /**< INTR_IF_CLR Position */
-#define MXC_F_WUT_INTR_IF_CLR                          ((uint32_t)(0x1UL << MXC_F_WUT_INTR_IF_CLR_POS)) /**< INTR_IF_CLR Mask */
+#define MXC_F_WUT_INTFL_IRQ_CLR_POS                    0 /**< INTFL_IRQ_CLR Position */
+#define MXC_F_WUT_INTFL_IRQ_CLR                        ((uint32_t)(0x1UL << MXC_F_WUT_INTFL_IRQ_CLR_POS)) /**< INTFL_IRQ_CLR Mask */
 
-/**@} end of group WUT_INTR_Register */
+/**@} end of group WUT_INTFL_Register */
 
 /**
  * @ingroup  wut_registers
@@ -148,16 +141,8 @@ typedef struct {
 #define MXC_S_WUT_CTRL_TMODE_ONESHOT                   (MXC_V_WUT_CTRL_TMODE_ONESHOT << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_ONESHOT Setting */
 #define MXC_V_WUT_CTRL_TMODE_CONTINUOUS                ((uint32_t)0x1UL) /**< CTRL_TMODE_CONTINUOUS Value */
 #define MXC_S_WUT_CTRL_TMODE_CONTINUOUS                (MXC_V_WUT_CTRL_TMODE_CONTINUOUS << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CONTINUOUS Setting */
-#define MXC_V_WUT_CTRL_TMODE_COUNTER                   ((uint32_t)0x2UL) /**< CTRL_TMODE_COUNTER Value */
-#define MXC_S_WUT_CTRL_TMODE_COUNTER                   (MXC_V_WUT_CTRL_TMODE_COUNTER << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_COUNTER Setting */
-#define MXC_V_WUT_CTRL_TMODE_CAPTURE                   ((uint32_t)0x4UL) /**< CTRL_TMODE_CAPTURE Value */
-#define MXC_S_WUT_CTRL_TMODE_CAPTURE                   (MXC_V_WUT_CTRL_TMODE_CAPTURE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CAPTURE Setting */
 #define MXC_V_WUT_CTRL_TMODE_COMPARE                   ((uint32_t)0x5UL) /**< CTRL_TMODE_COMPARE Value */
 #define MXC_S_WUT_CTRL_TMODE_COMPARE                   (MXC_V_WUT_CTRL_TMODE_COMPARE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_COMPARE Setting */
-#define MXC_V_WUT_CTRL_TMODE_GATED                     ((uint32_t)0x6UL) /**< CTRL_TMODE_GATED Value */
-#define MXC_S_WUT_CTRL_TMODE_GATED                     (MXC_V_WUT_CTRL_TMODE_GATED << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_GATED Setting */
-#define MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE            ((uint32_t)0x7UL) /**< CTRL_TMODE_CAPTURECOMPARE Value */
-#define MXC_S_WUT_CTRL_TMODE_CAPTURECOMPARE            (MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CAPTURECOMPARE Setting */
 
 #define MXC_F_WUT_CTRL_PRES_POS                        3 /**< CTRL_PRES Position */
 #define MXC_F_WUT_CTRL_PRES                            ((uint32_t)(0x7UL << MXC_F_WUT_CTRL_PRES_POS)) /**< CTRL_PRES Mask */
@@ -183,58 +168,27 @@ typedef struct {
 
 #define MXC_F_WUT_CTRL_TEN_POS                         7 /**< CTRL_TEN Position */
 #define MXC_F_WUT_CTRL_TEN                             ((uint32_t)(0x1UL << MXC_F_WUT_CTRL_TEN_POS)) /**< CTRL_TEN Mask */
+#define MXC_V_WUT_CTRL_TEN_DIS                         ((uint32_t)0x0UL) /**< CTRL_TEN_DIS Value */
+#define MXC_S_WUT_CTRL_TEN_DIS                         (MXC_V_WUT_CTRL_TEN_DIS << MXC_F_WUT_CTRL_TEN_POS) /**< CTRL_TEN_DIS Setting */
+#define MXC_V_WUT_CTRL_TEN_EN                          ((uint32_t)0x1UL) /**< CTRL_TEN_EN Value */
+#define MXC_S_WUT_CTRL_TEN_EN                          (MXC_V_WUT_CTRL_TEN_EN << MXC_F_WUT_CTRL_TEN_POS) /**< CTRL_TEN_EN Setting */
 
 #define MXC_F_WUT_CTRL_PRES3_POS                       8 /**< CTRL_PRES3 Position */
 #define MXC_F_WUT_CTRL_PRES3                           ((uint32_t)(0x1UL << MXC_F_WUT_CTRL_PRES3_POS)) /**< CTRL_PRES3 Mask */
 
+#define MXC_F_WUT_CTRL_PWMSYNC_POS                     9 /**< CTRL_PWMSYNC Position */
+#define MXC_F_WUT_CTRL_PWMSYNC                         ((uint32_t)(0x1UL << MXC_F_WUT_CTRL_PWMSYNC_POS)) /**< CTRL_PWMSYNC Mask */
+
+#define MXC_F_WUT_CTRL_NOLHPOL_POS                     10 /**< CTRL_NOLHPOL Position */
+#define MXC_F_WUT_CTRL_NOLHPOL                         ((uint32_t)(0x1UL << MXC_F_WUT_CTRL_NOLHPOL_POS)) /**< CTRL_NOLHPOL Mask */
+
+#define MXC_F_WUT_CTRL_NOLLPOL_POS                     11 /**< CTRL_NOLLPOL Position */
+#define MXC_F_WUT_CTRL_NOLLPOL                         ((uint32_t)(0x1UL << MXC_F_WUT_CTRL_NOLLPOL_POS)) /**< CTRL_NOLLPOL Mask */
+
+#define MXC_F_WUT_CTRL_PWMCLKBD_POS                    12 /**< CTRL_PWMCLKBD Position */
+#define MXC_F_WUT_CTRL_PWMCLKBD                        ((uint32_t)(0x1UL << MXC_F_WUT_CTRL_PWMCLKBD_POS)) /**< CTRL_PWMCLKBD Mask */
+
 /**@} end of group WUT_CTRL_Register */
-
-/**
- * @ingroup  wut_registers
- * @defgroup WUT_NOLCMP WUT_NOLCMP
- * @brief    Timer Non-Overlapping Compare Register.
- * @{
- */
-#define MXC_F_WUT_NOLCMP_NOL_LO_POS                    0 /**< NOLCMP_NOL_LO Position */
-#define MXC_F_WUT_NOLCMP_NOL_LO                        ((uint32_t)(0xFFUL << MXC_F_WUT_NOLCMP_NOL_LO_POS)) /**< NOLCMP_NOL_LO Mask */
-
-#define MXC_F_WUT_NOLCMP_NOL_HI_POS                    8 /**< NOLCMP_NOL_HI Position */
-#define MXC_F_WUT_NOLCMP_NOL_HI                        ((uint32_t)(0xFFUL << MXC_F_WUT_NOLCMP_NOL_HI_POS)) /**< NOLCMP_NOL_HI Mask */
-
-/**@} end of group WUT_NOLCMP_Register */
-
-/**
- * @ingroup  wut_registers
- * @defgroup WUT_PRESET WUT_PRESET
- * @brief    Preset register.
- * @{
- */
-#define MXC_F_WUT_PRESET_PRESET_POS                    0 /**< PRESET_PRESET Position */
-#define MXC_F_WUT_PRESET_PRESET                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_PRESET_PRESET_POS)) /**< PRESET_PRESET Mask */
-
-/**@} end of group WUT_PRESET_Register */
-
-/**
- * @ingroup  wut_registers
- * @defgroup WUT_RELOAD WUT_RELOAD
- * @brief    Reload register.
- * @{
- */
-#define MXC_F_WUT_RELOAD_RELOAD_POS                    0 /**< RELOAD_RELOAD Position */
-#define MXC_F_WUT_RELOAD_RELOAD                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_RELOAD_RELOAD_POS)) /**< RELOAD_RELOAD Mask */
-
-/**@} end of group WUT_RELOAD_Register */
-
-/**
- * @ingroup  wut_registers
- * @defgroup WUT_SNAPSHOT WUT_SNAPSHOT
- * @brief    Snapshot register.
- * @{
- */
-#define MXC_F_WUT_SNAPSHOT_SNAPSHOT_POS                0 /**< SNAPSHOT_SNAPSHOT Position */
-#define MXC_F_WUT_SNAPSHOT_SNAPSHOT                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_SNAPSHOT_SNAPSHOT_POS)) /**< SNAPSHOT_SNAPSHOT Mask */
-
-/**@} end of group WUT_SNAPSHOT_Register */
 
 #ifdef __cplusplus
 }
