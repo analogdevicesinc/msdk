@@ -69,7 +69,9 @@ jobs:
     #----------------------------------------------------------------------------------------------
     # De inits submodules and cleans repo
     steps:
-
+      - name: Test1
+        run: | 
+            printenv
 
       # Clean and remove any local modifications
       - name: Clean
