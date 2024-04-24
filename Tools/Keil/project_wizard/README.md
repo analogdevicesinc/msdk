@@ -44,11 +44,10 @@ To properly setup your project using the Project Wizard App, follow these steps:
 16. In the `Linker` Tab, uncheck `Use Memory Layout from Target Dialog`.
 17. Use the browse button (`...`) next to the `Scatter File` text box to select the `MAX32675.sct` file located in the `Tools/Keil/` folder of the MSDK repository you cloned in step #2.
 18. In the `Debug` Tab -> Top right corner, select the `CMSIS-DAP Debugger` or the board's supported debugger adapter.
-    - (Optional) Press the `Run to main()` checkbox right underneath the debugger adapter selector.
 19. In the `Utilities` Tab, press the `Settings` button in the `Configure Flash Menu Command` section. A `Target Driver Setup` window should open.
 20. In the `Flash Download` Tab, click the `Erase Full Chip` option in the `Download Function` section.
 21. In the `RAM for Algorithm`, set the `Size` field to `0x3000`.
-22. In the `Debug` Tab, within the sections `Debug` -> `Connect & Reset Options`, select the `Reset:` option to `VECTRESET`.
+22. If using the `CMSIS-DAP Debugger` from step **18**: In the `Debug` Tab, within the sections `Debug` -> `Connect & Reset Options`, select the `Reset:` option to `VECTRESET`.
 23. Press `OK` to save everything.
 24. Build and load the project. Enjoy!
 
