@@ -73,7 +73,7 @@ jobs:
         run: | 
             echo $CI_BOARD_CONFIG
 
-            # printenv
+            printenv
 
       # Clean and remove any local modifications
       - name: Clean
