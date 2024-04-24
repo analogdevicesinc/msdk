@@ -1,456 +1,255 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
-  <peripheral>
-    <name>FCR</name>
-    <description>Function Control Register.</description>
-    <baseAddress>0x40000800</baseAddress>
-    <addressBlock>
-      <offset>0x00</offset>
-      <size>0x400</size>
-      <usage>registers</usage>
-    </addressBlock>
-    <registers>
-      <register>
-        <name>FCTRL0</name>
-        <description>Register 0.</description>
-        <addressOffset>0x00</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>USBCLKSEL</name>
-            <description>USB External Core Clock Select.</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>sys</name>
-                <description>Generated clock from system clock.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>dig</name>
-                <description>Digital clock from a GPIO.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C0DGEN0</name>
-            <description>I2C0 SDA Glitch Filter Enable.</description>
-            <bitOffset>20</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C0DGEN1</name>
-            <description>I2C0 SCL Glitch Filter Enable.</description>
-            <bitOffset>21</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C1DGEN0</name>
-            <description>I2C1 SDA Glitch Filter Enable.</description>
-            <bitOffset>22</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C1DGEN1</name>
-            <description>I2C1 SCL Glitch Filter Enable.</description>
-            <bitOffset>23</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C2ADGEN0</name>
-            <description>I2C2 AF2 SDA Glitch Filter Enable.</description>
-            <bitOffset>24</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C2ADGEN1</name>
-            <description>I2C2 AF2 SCL Glitch Filter Enable.</description>
-            <bitOffset>25</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C2BDGEN0</name>
-            <description>I2C2 AF3 SDA Glitch Filter Enable.</description>
-            <bitOffset>26</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C2BDGEN1</name>
-            <description>I2C2 AF3 SCL Glitch Filter Enable.</description>
-            <bitOffset>27</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C2CDGEN0</name>
-            <description>I2C2 AF4 SDA Glitch Filter Enable</description>
-            <bitOffset>28</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>I2C2CDGEN1</name>
-            <description>I2C2 AF4 SCL Glitch Filter Enable</description>
-            <bitOffset>29</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FCTRL1</name>
-        <description>Register 1.</description>
-        <addressOffset>0x04</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>AC_EN</name>
-            <description>Auto-calibration Enable.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>AC_RUN</name>
-            <description>Autocalibration Run.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>LOAD_TRIM</name>
-            <description>Load Trim.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>GAIN_INV</name>
-            <description>Invert Gain.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>ATOMIC</name>
-            <description>Atomic mode.</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>MU</name>
-            <description>MU value.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>12</bitWidth>
-          </field>
-          <field>
-            <name>AC_TRIM</name>
-            <description>150MHz HFIO Auto Calibration Trim</description>
-            <bitOffset>23</bitOffset>
-            <bitWidth>9</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FCTRL2</name>
-        <description>Register 2.</description>
-        <addressOffset>0x08</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>NFC_FWD_EN</name>
-            <description>Enabled FWD mode for NFC block</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>NFC_CLK_EN</name>
-            <description>Enabled the NFC blocks clock divider in Analog</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>NFC_FWD_TX_DATA_OVR</name>
-            <description>FWD input for NFC block</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>XO_EN_DGL</name>
-            <description>TBD</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RX_BIAS_PD</name>
-            <description>Power down enable for NFC receiver analog block</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RX_BIAS_EN</name>
-            <description>Enable the NFC receiver analog blocks</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RX_TM_VBG_VABUS</name>
-            <description>TBD</description>
-            <bitOffset>6</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RX_TM_BIAS</name>
-            <description>TBD</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>NFC_FWD_DOUT</name>
-            <description>FWD output from FNC block</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FCTRL3</name>
-        <description>Register 3.</description>
-        <addressOffset>0x0C</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>DONECNT</name>
-            <description>Auto-calibration Done Counter Setting.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>8</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>GP</name>
-        <description>General Purpose Register.</description>
-        <addressOffset>0x1C</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>GP</name>
-            <description>General Purpose.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>MSRTRIM</name>
-        <description>MSR Trim Register.</description>
-        <addressOffset>0x20</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>R1</name>
-            <description>MSR Trim R1.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
-          </field>
-          <field>
-            <name>R2</name>
-            <description>MSR Trim R2.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>3</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FLVFILT</name>
-        <description>Flash Low Voltage Filter Control Register.</description>
-        <addressOffset>0x24</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>NUM</name>
-            <description>Defines the number of consecutive samples of FLV status that must be good for ROM to continue.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>8</bitWidth>
-          </field>
-          <field>
-            <name>RATE</name>
-            <description>Defines the rate for ROM sampling of the FLV status.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>8</bitWidth>
-          </field>
-          <field>
-            <name>DELAY</name>
-            <description>Defines the delay from change in system clock divider until ROM begins filtering process of the FLV status.</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>8</bitWidth>
-          </field>
-        </fields>
-      </register>
-    </registers>
-  </peripheral>
-  <!-- NBBFC: Non Battery-Backed Function Control -->
+ <peripheral>
+  <name>FCR</name>
+  <description>Function Control Register.</description>
+  <baseAddress>0x40000800</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>FCTRL0</name>
+    <description>Function Control 0.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>I2CI3CDGEN0</name>
+      <description>I2C/I3C SDA Glitch Filter Enable.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Glitch filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Glitch filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2CI3CDGEN1</name>
+      <description>I2C/I3C SCL Glitch Filter Enable.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Glitch filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Glitch filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>BLELDORX</name>
+      <description>BLE LDO RX Trim</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>4</bitWidth>
+     </field>
+     <field>
+      <name>BLELDOTX</name>
+      <description>BLE LDO tX Trim</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>4</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL0</name>
+    <description>Automatic Calibration 0.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>ACEN</name>
+      <description>IPO Auto-calibration Enable. Selects the trim value to use for the IPO. The reset default for this field uses the factory trim for the IPO. Setting this field to 1 uses the automatic calibration trim output stored in FCR_AUTOCAL0.ldtrm.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Use default trim from factory.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Use automatic calibration trim value calculated and stored in FCR_AUTOCAL0.ldtrm.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ACRUN</name>
+      <description>Autocalibration Run.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LDTRM</name>
+      <description>Load Trim.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>GAININV</name>
+      <description>IPO Trim Step Invert. Set this field to invert the up/down trim steps during calibration operations.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Trim steps are not inverted.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Enable inverted trim steps for calibration.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ATOMIC</name>
+      <description>IPO Trim Atomic Start. Set this bit to start an atomic automatic calibration of the IPO. The calibration will run for FCR_AUTOCAL2.donecnt milliseconds. This bit is automatically cleared by hardware when the calibration is complete.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>MU</name>
+      <description>IPO Trim Pulse Count. Load this field with the desired number of trim adjustment pulses required before the trim is updated during automatic calibration operation. The recommended value for this field is 4.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>12</bitWidth>
+     </field>
+     <field>
+      <name>IPOMACTMROUT</name>
+      <description>IPO Automatic Trim Value Output. This field contains the calculated trim output from an automatic calibration run.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>9</bitWidth>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL1</name>
+    <description>Automatic Calibration 1.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INITIAL</name>
+      <description>IPO Trim Automatic Calibration Initial Trim. This field contains the initial trim setting for the IPO. Set this field to the desired initial trim value to use for an IPO automatic calibration operation. The closer this field is to the target trim value required, the faster the automatic trim operation completes.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL2</name>
+    <description>Automatic Calibration 2</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>RUNTIME</name>
+      <description>IPO Trim Automatic Calibration Run Time. Set this field to the desired number of milliseconds for the atomic calibration runtime for the IPO.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>DIV</name>
+      <description>IPO Trim Automatic Calibration Divide Factor. The target frequency of the calibration is determined by dividing the IPO frequency by 32,768 before comparing it with the ERTCO frequency. For example, to achieve a target IPO frequency of 100MHz, load this field with 0xBEB (3,051).</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>13</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ERFOKS</name>
+    <description>ERFO Kick Start Register.</description>
+    <addressOffset>0x18</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>KSERFO_CNT</name>
+      <description>Kick Start ERFO Counter.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>7</bitWidth>
+     </field>
+     <field>
+      <name>KSERFO_EN</name>
+      <description>Kick Start ERFO Enable.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>KSERFODRIVER</name>
+      <description>Kick Start ERFO Drive Strength.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>
+     <field>
+      <name>KSERFO2X</name>
+      <description>Kick Start ERFO Double Pulse Length.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>KSCLKSEL</name>
+      <description>Kick Start Clock Select for ERFO.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>NONE</name>
+        <description>No kick start clock.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>IPO</name>
+        <description>IPO.</description>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
 </device>

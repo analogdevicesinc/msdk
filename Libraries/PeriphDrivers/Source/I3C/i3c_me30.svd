@@ -1,0 +1,3461 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>I3C</name>
+    <description>I3C Registers</description>
+    <baseAddress>0x40018000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>I3C</name>
+      <description>I3C interrupt.</description>
+      <value>10</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>MCONFIG</name>
+        <description>Controller Configuration Register</description>
+        <addressOffset>0x000</addressOffset>
+        <fields>
+          <field>
+            <name>CTARENA</name>
+            <description>Controller device enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>OFF</name>
+                <description>Controller mode off.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ON</name>
+                <description>Controller mode on.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CAPABLE</name>
+                <description>Controller mode capable.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DISTO</name>
+            <description>Disable timeout error (used only when configuration parameter
+              WITH_TIMEOUT = 1).</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ENABLE</name>
+                <description>Enable timeout error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DISABLE</name>
+                <description>Disable the timeout error (MERRWARN.TIMEOUT) that occurs
+                  when the controller remains in a state other than stopped for more
+                  than 100 us.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HKEEP</name>
+            <description>High-keeper implementation. Specifies how high-keeper control is
+              implemented in this device.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>OFF</name>
+                <description>No high-keeper support.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ONCHIP_SCL_SDA</name>
+                <description>On-chip high-keeper support.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXTERNAL_SDA</name>
+                <description>External high-keeper support for SDA.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXTERNAL_SCL_SDA</name>
+                <description>External high-keeper support for SCL and SDA.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ODSTOP</name>
+            <description>Use open-drain speed for STOP.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PUSH_PULL</name>
+                <description>The I3C_11_AC emits STOP at push-pull speed for I3C messages.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>OPEN_DRAIN</name>
+                <description>The I3C_11_AC emits STOP at open-drain speed for I3C messages.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PPBAUD</name>
+            <description>SCL frequency for push-pull drive.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>FCLK1</name>
+                <description>SCL high period is one fclk period.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK2</name>
+                <description>SCL high period is two fclk periods.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK3</name>
+                <description>SCL high period is three fclk periods.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK4</name>
+                <description>SCL high period is four fclk periods.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK5</name>
+                <description>SCL high period is five fclk periods.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK6</name>
+                <description>SCL high period is six fclk periods.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK7</name>
+                <description>SCL high period is seven fclk periods.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK8</name>
+                <description>SCL high period is eight fclk periods.</description>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK9</name>
+                <description>SCL high period is nine fclk periods.</description>
+                <value>8</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK10</name>
+                <description>SCL high period is ten fclk periods.</description>
+                <value>9</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK11</name>
+                <description>SCL high period is eleven fclk periods.</description>
+                <value>10</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK12</name>
+                <description>SCL high period is twelve fclk periods.</description>
+                <value>11</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK13</name>
+                <description>SCL high period is thirteen fclk periods.</description>
+                <value>12</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK14</name>
+                <description>SCL high period is fourteen fclk periods.</description>
+                <value>13</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK15</name>
+                <description>SCL high period is fifteen fclk periods.</description>
+                <value>14</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK16</name>
+                <description>SCL high period is sixteen fclk periods.</description>
+                <value>15</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PPLOW</name>
+            <description>Number of fclk periods to add to the base SCL low period for push-pull operation.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>FCLK0</name>
+                <description>Add zero fclk periods to the SCL low period.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK1</name>
+                <description>Add one fclk period to the SCL low period.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK2</name>
+                <description>Add two fclk periods to the SCL low period.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK3</name>
+                <description>Add three fclk periods to the SCL low period.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK4</name>
+                <description>Add four fclk periods to the SCL low period.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK5</name>
+                <description>Add five fclk periods to the SCL low period.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK6</name>
+                <description>Add six fclk periods to the SCL low period.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK7</name>
+                <description>Add seven fclk periods to the SCL low period.</description>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK8</name>
+                <description>Add eight fclk periods to the SCL low period.</description>
+                <value>8</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK9</name>
+                <description>Add nine fclk periods to the SCL low period.</description>
+                <value>9</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK10</name>
+                <description>Add ten fclk periods to the SCL low period.</description>
+                <value>10</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK11</name>
+                <description>Add eleven fclk periods to the SCL low period.</description>
+                <value>11</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK12</name>
+                <description>Add twelve fclk periods to the SCL low period.</description>
+                <value>12</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK13</name>
+                <description>Add thirteen fclk periods to the SCL low period.</description>
+                <value>13</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK14</name>
+                <description>Add fourteen fclk periods to the SCL low period.</description>
+                <value>14</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK15</name>
+                <description>Add fifteen fclk periods to the SCL low period.</description>
+                <value>15</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ODBAUD</name>
+            <description>Number of PPBAUD periods (minus 1) to make one SCL low period for I3C open-drain operation.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>ODHPP</name>
+            <description>Controls SCL high period for I3C open-drain operation.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SKEW</name>
+            <description>Number of fclk periods to delay the SDA value change from the SCL edge for I3C push-pull operation.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>FCLK0</name>
+                <description>Delay for zero fclk periods.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK1</name>
+                <description>Delay for one fclk period.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK2</name>
+                <description>Delay for two fclk periods.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK3</name>
+                <description>Delay for three fclk periods.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK4</name>
+                <description>Delay for four fclk periods.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK5</name>
+                <description>Delay for five fclk periods.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK6</name>
+                <description>Delay for six fclk periods.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCLK7</name>
+                <description>Delay for seven fclk periods.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2CBAUD</name>
+            <description>Determines SCL high and low periods for I2C mode, in units of ODBAUD period.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CONFIG</name>
+        <description>Configuration Register</description>
+        <addressOffset>0x004</addressOffset>
+        <fields>
+          <field>
+            <name>TGTENA</name>
+            <description>Target device enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MATCHSS</name>
+            <description>Match STOP and START.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>S0IGNORE</name>
+            <description>Ignore TE0 and TE1 errors.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BTML</name>
+            <description>BTML specifies the number of SDA lanes to support for HDR-BT mode transfers.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>S_LANE</name>
+                <description>Single-lane only.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SD_LANE</name>
+                <description>Single-lane or dual-lane.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SDQ_LANE</name>
+                <description>Single-lane, dual-lane, or quad-lane.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IDRAND</name>
+            <description>IDRAND contains the value for bit 32 of the 48-bit Provisioned ID,
+              indicating whether the value in the PARTNO register is a Vendor
+              Fixed Value or Random Value.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OFFLINE</name>
+            <description>Re-join I3C bus with existing dynamic address.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HDRCMD</name>
+            <description>HDRCMD controls whether the command byte of an incoming HDR-DDR mode message is
+              sent to the application through the HDRCMD register or through the
+              receive buffer/FIFO.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>TO_FIFO</name>
+                <description>Command byte of incoming HDR-DDR mode message is
+                  written to the receive buffer/FIFO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TO_HDRCMD</name>
+                <description>Command byte of incoming HDR-DDR mode read or write
+                  message is written to the HDRCMD register.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TO_HDRCMD_FIFO</name>
+                <description>Command byte of incoming HDR-DDR mode read message is
+                  written to the HDRCMD register. Command byte of incoming HDRDDR
+                  mode write message is written to the receive buffer/FIFO.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BAMATCH</name>
+            <description>BAMATCH contains the value to be compared with the clk_slow
+              counter value to determine when the 1-us Bus Available time has
+              elapsed for event generation.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>SADDR</name>
+            <description>SADDR contains the 7-bit I2C-style static address written by the application.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STATUS</name>
+        <description>Status Register</description>
+        <addressOffset>0x008</addressOffset>
+        <fields>
+          <field>
+            <name>STNOTSTOP</name>
+            <description>Not stopped.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STMSG</name>
+            <description>Message.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STCCCH</name>
+            <description>CCC is being handled.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STREQRD</name>
+            <description>SDR mode read.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STREQWR</name>
+            <description>SDR mode write.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STDAA</name>
+            <description>DAA mode.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STHDR</name>
+            <description>HDR mode.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>START</name>
+            <description>START detected.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MATCHED</name>
+            <description>Address matched.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STOP</name>
+            <description>STOP detected.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for to-bus (transmit) data.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DACHG</name>
+            <description>Dynamic address changed.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCC</name>
+            <description>CCC received.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HDRMATCHED</name>
+            <description>HDR mode address match.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CHANDLED</name>
+            <description>CCC handled.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EVENT</name>
+            <description>Event requested.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TGTRST</name>
+            <description>I3C Target Reset.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EVDET</name>
+            <description>Holds the status of the current (when EVENT = 1) or pending event.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>None.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>REQ_NOT_SENT</name>
+                <description>Request not yet sent.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>REQ_NACKED</name>
+                <description>Request was sent and NACKed and will be tried again.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>REQ_ACKED</name>
+                <description>Request was sent and ACKed.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IBIDIS</name>
+            <description>Indicates whether IBI events are disabled.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MRDIS</name>
+            <description>Indicates whether bus controller request events are disabled.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HJDIS</name>
+            <description>Indicates whether Hot-Join events are disabled.</description>
+            <bitOffset>27</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACTSTATE</name>
+            <description>Holds the current activity state.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>LATENCY_NONE</name>
+                <description>No latency.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>LATENCY_1MS</name>
+                <description>1 ms latency.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>LATENCY_100MS</name>
+                <description>100 ms latency.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>LATENCY_10S</name>
+                <description>10 s latency.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMECTRL</name>
+            <description>Timing control mode.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DISABLED</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SYNC</name>
+                <description>Timing Control Synchronous Mode is enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ASYNCHRONOUS</name>
+                <description>Timing Control Asynchronous Mode 0 or 1 is enabled.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SYNC_ASYNC</name>
+                <description>Both Synchronous Mode and Asynchronous Mode 0 are enabled.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>I3C Control Register</description>
+        <addressOffset>0x00C</addressOffset>
+        <fields>
+          <field>
+            <name>EVENT</name>
+            <description>Generate event request on the I3C bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NORMAL</name>
+                <description>Normal mode (no event requested).</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IBI</name>
+                <description>Generate an IBI on the I3C bus.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CTLR_REQ</name>
+                <description>Request control of the I3C bus.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HOTJOIN</name>
+                <description>Generate a Hot-Join request.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTDATA</name>
+            <description>Send additional IBI data bytes data when generating an IBI.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MAPIDX</name>
+            <description>Index of the dynamic address for the current IBI request.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>IBIDATA</name>
+            <description>Mandatory data byte to be sent when generating an IBI.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>PENDINT</name>
+            <description>Pending Interrupt field of a GETSTATUS CCC.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>ACTSTATE</name>
+            <description>Activity Mode field of a GETSTATUS CCC.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>VENDINFO</name>
+            <description>Vendor Reserved field of a GETSTATUS CCC.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTSET</name>
+        <description>Interrupt Enable Set Register</description>
+        <addressOffset>0x010</addressOffset>
+        <resetValue>0x00080000</resetValue>
+        <fields>
+          <field>
+            <name>START</name>
+            <description>START detected interrupt enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MATCHED</name>
+            <description>Address matched interrupt enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STOP</name>
+            <description>STOP detected interrupt enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready interrupt enable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for to-bus (transmit) data interrupt enable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DACHG</name>
+            <description>W1S Dynamic address changed interrupt enable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCC</name>
+            <description>CCC received interrupt enable.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning interrupt enable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HDRMATCHED</name>
+            <description>HDR address match interrupt enable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CHANDLED</name>
+            <description>CCC handled interrupt enable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EVENT</name>
+            <description>Event requested interrupt enable.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TGRST</name>
+            <description>I3C target reset interrupt enable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTCLR</name>
+        <description>Interrupt Enable Clear Register</description>
+        <addressOffset>0x014</addressOffset>
+        <resetValue>0x00080000</resetValue>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>START</name>
+            <description>START detected interrupt disable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MATCHED</name>
+            <description>Address matched interrupt disable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STOP</name>
+            <description>STOP detected interrupt disable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready interrupt disable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for to-bus (transmit) data interrupt disable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DACHG</name>
+            <description>W1S Dynamic address changed interrupt disable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCC</name>
+            <description>CCC received interrupt disable.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning interrupt disable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HDRMATCHED</name>
+            <description>HDR address match interrupt disable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CHANDLED</name>
+            <description>CCC handled interrupt disable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EVENT</name>
+            <description>Event requested interrupt disable.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TGRST</name>
+            <description>I3C target reset interrupt disable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTMASKED</name>
+        <description>Interrupt Masked Register</description>
+        <addressOffset>0x018</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>START</name>
+            <description>START detected interrupt active.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MATCHED</name>
+            <description>Address matched interrupt active.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STOP</name>
+            <description>STOP detected interrupt active.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready interrupt active.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for to-bus (transmit) data interrupt active.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DACHG</name>
+            <description>W1S Dynamic address changed interrupt active.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCC</name>
+            <description>CCC received interrupt active.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning interrupt active.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HDRMATCHED</name>
+            <description>HDR address match interrupt active.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CHANDLED</name>
+            <description>CCC handled interrupt active.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EVENT</name>
+            <description>Event requested interrupt active.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TGRST</name>
+            <description>I3C target reset interrupt active.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ERRWARN</name>
+        <description>Error and Warning Register</description>
+        <addressOffset>0x01C</addressOffset>
+        <fields>
+          <field>
+            <name>ORUN</name>
+            <description>Overrun.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>URUN</name>
+            <description>Underrun.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>URUNNACK</name>
+            <description>Underrun caused NACK.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TERM</name>
+            <description>Controller terminated read.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INVSTART</name>
+            <description>Invalid START.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SPAR</name>
+            <description>SDR parity error.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HPAR</name>
+            <description>HDR parity error.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HCRC</name>
+            <description>HDR CRC Error.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>S0S1</name>
+            <description>TE0 or TE1 error</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HNOVERIFY</name>
+            <description>An HDR-BT mode read was not verified.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HINVREQ</name>
+            <description>Invalid request in HDR-BT mode.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OREAD</name>
+            <description>Read data underrun.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OWRITE</name>
+            <description>Write data overrun.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WRONGSIZE</name>
+            <description>Application wrote or read the wrong data register for the current mode.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMACTRL</name>
+        <description>DMA Control Register</description>
+        <addressOffset>0x020</addressOffset>
+        <resetValue>0x00000010</resetValue>
+        <fields>
+          <field>
+            <name>DMAFB</name>
+            <description>DMA read (from-bus) enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DISABLE</name>
+                <description>Disable DMA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EN_ONEFRAME_SDR</name>
+                <description>Enable DMA for one frame in SDR mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ENABLE</name>
+                <description>Enable DMA until DMA is disabled by setting DMAFB to 00.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMATB</name>
+            <description>DMA write (to-bus) enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DISABLE</name>
+                <description>Disable DMA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EN_ONEFRAME_SDR</name>
+                <description>Enable DMA for one frame in SDR mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ENABLE</name>
+                <description>Enable DMA until DMA is disabled by setting DMATB to 00.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMAWIDTH</name>
+            <description>DMA transfer data width.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>BYTE</name>
+                <description>Byte.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HALFWORD</name>
+                <description>Half-word.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HDRBTCFG</name>
+        <description>HDR-BT Configuration Register</description>
+        <addressOffset>0x024</addressOffset>
+        <fields>
+          <field>
+            <name>CRC32</name>
+            <description>Allow CRC32.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>CRC16_ONLY</name>
+                <description>Allow only CRC16.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CRC32_OR_CRC16</name>
+                <description>Allow either CRC32 or CRC16.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WDATAMAX</name>
+            <description>Maximum data length for HDR-BT mode write, in units of 32-byte blocks.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+          <field>
+            <name>RDATALEN</name>
+            <description>Length of data to be returned for HDR-BT mode read.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HDRBTLAST</name>
+        <description>HDR-BT Last Data Length Register</description>
+        <addressOffset>0x028</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATALEN</name>
+            <description>Data length of most recent HDR-BT mode transfer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DATACTRL</name>
+        <description>Data Control Register</description>
+        <addressOffset>0x02C</addressOffset>
+        <resetValue>0x80000030</resetValue>
+        <fields>
+          <field>
+            <name>FLUSHTB</name>
+            <description>Flush transmit buffer or FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLUSHFB</name>
+            <description>Flush receive buffer or FIFO.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNLOCK</name>
+            <description>Unlock FIFO triggers.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXTRIG</name>
+            <description>Transmit (to-bus) FIFO trigger level.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>EMPTY</name>
+                <description>Trigger when empty.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>QUARTER_FULL</name>
+                <description>Trigger when 1/4 full or less.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HALF_FULL</name>
+                <description>Trigger when 1/2 full or less.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ALMOST_FULL</name>
+                <description>Trigger when 1 less than full or less.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RXTRIG</name>
+            <description>Receive (from-bus) FIFO trigger level.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NOT_EMPTY</name>
+                <description>Trigger when not empty.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>QUARTER_FULL</name>
+                <description>Trigger when 1/4 full or more.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HALF_FULL</name>
+                <description>Trigger when 1/2 full or more.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3_4_FULL</name>
+                <description>Trigger when 3/4 full or more.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXCOUNT</name>
+            <description>Number of entries in transmit (to-bus) buffer or FIFO.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>RXCOUNT</name>
+            <description>Number of entries in receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>TXFULL</name>
+            <description>Transmit buffer full.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXEMPTY</name>
+            <description>Receive buffer empty.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATAB</name>
+        <description>Write Byte Data Register</description>
+        <addressOffset>0x030</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data byte to be sent to the I3C or I2C bus controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>END</name>
+            <description>End-of-data.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>END2</name>
+            <description>End-of-data.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATABE</name>
+        <description>Write Byte Data as End Register</description>
+        <addressOffset>0x034</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>The last data byte to be sent to the I3C bus controller for the current message.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATAH</name>
+        <description>Write Half-Word Data Register</description>
+        <addressOffset>0x038</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA0</name>
+            <description>First data byte to be sent to the I3C or I2C bus controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DATA1</name>
+            <description>Second data byte to be sent to the I3C or I2C bus controller.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>END</name>
+            <description>Set DATA1 as the last byte of the message.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATAHE</name>
+        <description>Write Half-Word Data as End Register</description>
+        <addressOffset>0x03C</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA0</name>
+            <description>First data byte to be sent to the I3C or I2C bus controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DATA1</name>
+            <description>Second data byte to be sent to the I3C or I2C bus controller.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RDATAB</name>
+        <description>Read Byte Data Register</description>
+        <addressOffset>0x040</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read data byte from receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RDATAH</name>
+        <description>Read Half-Word Data Register</description>
+        <addressOffset>0x048</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA0</name>
+            <description>First read data byte from receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DATA1</name>
+            <description>Second read data byte from receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATAB1</name>
+        <description>Byte-Only Write Byte Data Register</description>
+        <addressOffset>0x054</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data byte to be sent to the I3C bus controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CAPABILITIES2</name>
+        <description>Capabilities 2 Register</description>
+        <addressOffset>0x05C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>MAPCNT</name>
+            <description>Number of mapped target addresses supported.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>I2C10B</name>
+            <description>I2C 10-bit address support.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>I2CRST</name>
+            <description>I2C software reset support.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>I2CDEVID</name>
+            <description>I2C device ID support.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA32</name>
+            <description>32-bit WDATAW and RDATAW registers available.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIEXT</name>
+            <description>Extended IBI data support.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIXREG</name>
+            <description>Extended IBI data register support.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SMLANE</name>
+            <description>Multi-lane support for HDR-BT mode.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>S_LANE</name>
+                <description>Single-lane only.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SD_LANE</name>
+                <description>Single-lane or dual-lane.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SDQ_LANE</name>
+                <description>Single-lane, dual-lane, or quad-lane.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>V1_1</name>
+            <description>I3C 1.1 CCC support.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TGRST</name>
+            <description>I3C 1.1 Target Reset support.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>GROUP</name>
+            <description>Group address support.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>Group addresses not supported.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ONE</name>
+                <description>One group address supported.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TWO</name>
+                <description>Two group addresses supported.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>THREE</name>
+                <description>Two group addresses supported.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AASA</name>
+            <description>SETAASA CCC support.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SSTSUB</name>
+            <description>SETAASA CCC support.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SSTWR</name>
+            <description>Target-to-target write support.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CAPABILITIES</name>
+        <description>Capabilities Register</description>
+        <addressOffset>0x060</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>IDENA</name>
+            <description>Provisioned ID implementation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PROV_PROG</name>
+                <description>Provisioned ID is programmable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PROV_SET</name>
+                <description>Provisioned ID is set by hardware parameters ID_MAN, ID_PART, ID_INST, and ID_VENDOR.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>INST_PROG</name>
+                <description>Provisioned ID is set by hardware parameters ID_MAN, ID_PART, and ID_VENDOR; Instance ID is programmable.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PART_PROG</name>
+                <description>Manufacturer ID field is set by hardware parameter ID_MAN; Part Number field is programmable.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IDREG</name>
+            <description>Provisioned ID, BCR, DCR implementation.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>HDRSUPP</name>
+            <description>Supported HDR modes.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>CNTLR</name>
+            <description>Controller mode capable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SADDR</name>
+            <description>I2C-style static address implementation.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>No static address support.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SADDR</name>
+                <description>The device has a 7-bit static address set.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXT_TGTSA</name>
+                <description>The device has a 7-bit static address set through input pin.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CONFIG</name>
+                <description>The static address is software-programmable.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CCCHANDLE</name>
+            <description>CCCs handled by the controller.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>IBI_MR_HJ</name>
+            <description>Supported events.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>TIMECTRL</name>
+            <description>Timing Control support.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EXTFIFO</name>
+            <description>External FIFO configuration.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>FIFOTX</name>
+            <description>Internal transmit (to-bus) FIFO configuration.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>No internal transmit FIFO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4BYTE</name>
+                <description>4-byte transmit FIFO.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8BYTE</name>
+                <description>8-byte transmit FIFO.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>16BYTE</name>
+                <description>16-byte transmit FIFO or larger.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FIFORX</name>
+            <description>Internal receive (from-bus) FIFO configuration.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>No internal receive FIFO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4BYTE</name>
+                <description>4-byte receive FIFO.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8BYTE</name>
+                <description>8-byte receive FIFO.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>16BYTE</name>
+                <description>16-byte receive FIFO or larger.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>INT</name>
+            <description>Interrupt support.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DMA</name>
+            <description>DMA support.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DYNADDR</name>
+        <description>Dynamic Address Register</description>
+        <addressOffset>0x064</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DAVALID</name>
+            <description>Address valid.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DADDR</name>
+            <description>The dynamic address assigned to this I3C target device.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>CAUSE</name>
+            <description>How the last primary dynamic address (DA) value change occurred.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NO_CHANGE</name>
+                <description>No change to DA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ENTDAA</name>
+                <description>Primary DA was last assigned by ENTDAA.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SETDASA_AASA_NEWDA</name>
+                <description>Primary DA was last assigned by SETDASA, SETAASA, or SETNEWDA.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RSTDAA</name>
+                <description>Primary DA was cleared by RSTDAA.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>MAPPED_ADDR_OP</name>
+                <description>Primary DA was changed due to a mapped address related operation.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MAXLIMITS</name>
+        <description>Maximum Limits Register</description>
+        <addressOffset>0x068</addressOffset>
+        <fields>
+          <field>
+            <name>MAXRD</name>
+            <description>The maximum number of bytes that the I3C controller may read from this I3C target device per message.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+          <field>
+            <name>MAXWR</name>
+            <description>The maximum number of bytes that the I3C bus controller may write to this I3C target device per message, with the exception of broadcast CCCs.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PARTNO</name>
+        <description>Part Number Register</description>
+        <addressOffset>0x06C</addressOffset>
+        <fields>
+          <field>
+            <name>VENDDEF</name>
+            <description>Vendor-defined field of Provisioned ID.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+          <field>
+            <name>INSTID</name>
+            <description>Instance ID field of Provisioned ID.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>PARTID</name>
+            <description>Part ID field of Provisioned ID.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IDEXT</name>
+        <description>ID Extension Register</description>
+        <addressOffset>0x070</addressOffset>
+        <fields>
+          <field>
+            <name>INSTANCE</name>
+            <description>4-bit Instance ID written by the application.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>DCR</name>
+            <description>8-bit DCR value written by the application.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>BCR</name>
+            <description>BCR contains the 8-bit BCR value written by the application.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VENDORID</name>
+        <description>Vendor ID Register</description>
+        <addressOffset>0x074</addressOffset>
+        <fields>
+          <field>
+            <name>VID</name>
+            <description>MIPI Manufacturer ID field of the 48-bit Provisioned ID.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>15</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TCCLOCK</name>
+        <description>Timing Control Clock Register</description>
+        <addressOffset>0x078</addressOffset>
+        <fields>
+          <field>
+            <name>ACCURACY</name>
+            <description>Maximum variation of the Timing Control clock source in 0.1% units.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>FREQ</name>
+            <description>Frequency of the Timing Control clock source in 0.5-MHz units.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MSGLAST</name>
+        <description>Matching Address Index Register</description>
+        <addressOffset>0x07C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>MAPLAST</name>
+            <description>Index or group number of last matched address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>LASTSTATIC</name>
+            <description>Last matched address was a static address.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LASTGROUP</name>
+            <description>The last matched address was a group address.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LASTMODE</name>
+            <description>Mode of the last access.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>I3C_SDR_OR_I2C</name>
+                <description>I3C SDR or I2C.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HDRDDR</name>
+                <description>HDR-DDR.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HDRBT</name>
+                <description>HDR-BT.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MAPLASTM1</name>
+            <description>Index or group of previously matched address.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>LASTGROUPM1</name>
+            <description>Group address indicator of previous access.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LASTMODE1</name>
+            <description></description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>I3C_SDR_OR_I2C</name>
+                <description>I3C SDR or I2C.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HDRDDR</name>
+                <description>HDR-DDR.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HDRBT</name>
+                <description>HDR-BT.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MAPLASTM2</name>
+            <description>Index or group of second previously matched address.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>LASTGROUPM2</name>
+            <description>Group address indicator of second previous access.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LASTMODE2</name>
+            <description>Mode of second previous access.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>I3C_SDR_OR_I2C</name>
+                <description>I3C SDR or I2C.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HDRDDR</name>
+                <description>HDR-DDR.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HDRBT</name>
+                <description>HDR-BT.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MCTRL</name>
+        <description>Controller Control Register</description>
+        <addressOffset>0x084</addressOffset>
+        <fields>
+          <field>
+            <name>REQUEST</name>
+            <description>Requests an I3C or I2C bus operation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>None.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EMIT_START_ADDR</name>
+                <description>Emit a START with address and read/write bit.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EMIT_STOP</name>
+                <description>Emit a STOP.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IBI_ACK_NACK</name>
+                <description>Manually ACK or NACK an IBI.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PROCESS_DAA</name>
+                <description>Starts the DAA process.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FORCE_EXIT_RESET</name>
+                <description>ForceExit/Target Reset.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>AUTO_IBI</name>
+                <description>Auto IBI.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TYPE</name>
+            <description>Controls type of operation when REQUEST = EmitStartAddr or ForceExit/Target Reset.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>IBIRESP</name>
+            <description>Response to use when an IBI occurs.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>DIR</name>
+            <description>Direction of the transfer.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>WRITE</name>
+                <description>Write.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>READ</name>
+                <description>Read.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADDR</name>
+            <description>Address to send with START.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>RDTERM</name>
+            <description>Termination count for read.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MSTATUS</name>
+        <description>Controller Status Register</description>
+        <addressOffset>0x088</addressOffset>
+        <resetValue>0x00001000</resetValue>
+        <fields>
+          <field>
+            <name>STATE</name>
+            <description>Current working state of the I3C controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>IDLE</name>
+                <description>The I3C bus is stopped.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TGTREQ</name>
+                <description>The I3C bus is stopped and a target is holding SDA low.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>MSGSDR</name>
+                <description>SDR message mode using MWMSG_SDR.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>NORMACT</name>
+                <description>SDR message mode using MCTRL, MWDATAB/H(E) and MRDATAB/H.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DDR</name>
+                <description>DDR message mode initiated using either MWMSG_DDR or MCTRL.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DAA</name>
+                <description>DAA mode.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IBIACK</name>
+                <description>Waiting for the application to provide ACK/NACK decision.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IBIRCV</name>
+                <description>Receiving an IBI.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BETWEEN</name>
+            <description>Behavior of this field depends on current STATE.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NACKED</name>
+            <description>Address NACKed.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBITYPE</name>
+            <description>Type of event for which arbitration was last won.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NONE</name>
+                <description>None.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IBI</name>
+                <description>IBI.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CONTROLLER_REQ</name>
+                <description>Controller request.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HOTJOIN_REQ</name>
+                <description>Hot-Join request.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TGTSTART</name>
+            <description>Target START detected.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MCTRLDONE</name>
+            <description>MCTRL request completed.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>COMPLETE</name>
+            <description>Message completed.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for to-bus (transmit) data.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIWON</name>
+            <description>IBI arbitration won.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOWCNTLR</name>
+            <description>Controller transitioned from I3C bus target to I3C bus controller.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIADDR</name>
+            <description>The address of a received IBI or controller request.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IBIRULES</name>
+        <description>IBI Registry and Rules Register</description>
+        <addressOffset>0x08C</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR0</name>
+            <description>Target 0 dynamic address. Same function as ADDR4.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>ADDR1</name>
+            <description>Target 1 dynamic address. Same function as ADDR4.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>ADDR2</name>
+            <description>Target 2 dynamic address. Same function as ADDR4.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>ADDR3</name>
+            <description>Target 3 dynamic address. Same function as ADDR4.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>ADDR4</name>
+            <description>Target 4 dynamic address.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>MSB0</name>
+            <description>Implementation of MSb for I3C dynamic addresses.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>MAY_HAVE_MSB0</name>
+                <description>I3C dynamic addresses may have MSb = 0 or MSb = 1.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HAVE_MSB0</name>
+                <description>All I3C dynamic addresses have MSb = 0.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>NOBYTE</name>
+            <description>Specifies if ADDR0-ADDR4 provide a mandatory byte when sending an IBI.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MINTSET</name>
+        <description>Controller Interrupt Enable Set Register</description>
+        <addressOffset>0x090</addressOffset>
+        <fields>
+          <field>
+            <name>TGTSTART</name>
+            <description>Target START detected interrupt enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MCTRLDONE</name>
+            <description>MCTRL request completed interrupt enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>COMPLETE</name>
+            <description>Message complete interrupt enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready interrupt enable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for transmit (to-bus) data interrupt enable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIWON</name>
+            <description>IBI arbitration won interrupt enable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning interrupt enable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOWCNTLR</name>
+            <description>Target to controller transition interrupt enable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MINTCLR</name>
+        <description>Controller Interrupt Enable Clear Register</description>
+        <addressOffset>0x094</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>TGTSTART</name>
+            <description>Target START detected interrupt disable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MCTRLDONE</name>
+            <description>MCTRL request completed interrupt disable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>COMPLETE</name>
+            <description>Message complete interrupt disable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready interrupt disable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for transmit (to-bus) data interrupt disable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIWON</name>
+            <description>IBI arbitration won interrupt disable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning interrupt disable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOWCNTLR</name>
+            <description>Target to controller transition interrupt disable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MINTMASKED</name>
+        <description>Controller Interrupt Masked Register</description>
+        <addressOffset>0x098</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>TGTSTART</name>
+            <description>Target START detected interrupt active.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MCTRLDONE</name>
+            <description>MCTRL request completed interrupt active.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>COMPLETE</name>
+            <description>Message complete interrupt active.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXPEND</name>
+            <description>Receive (from-bus) data ready interrupt active.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXNOTFULL</name>
+            <description>Ready for transmit (to-bus) data interrupt active.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIWON</name>
+            <description>IBI arbitration won interrupt active.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRWARN</name>
+            <description>Error/warning interrupt active.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOWCNTLR</name>
+            <description>Target to controller transition interrupt active.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MERRWARN</name>
+        <description>Controller Error and Warning Register</description>
+        <addressOffset>0x09C</addressOffset>
+        <fields>
+          <field>
+            <name>URUN</name>
+            <description>Transmit buffer/FIFO underrun.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NACK</name>
+            <description>Address NACKed.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WRABT</name>
+            <description>Write aborted due to data NACK.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TERM</name>
+            <description>Controller terminated read in message mode.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HPAR</name>
+            <description>HDR parity error.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HCRC</name>
+            <description>HDR-DDR CRC error.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HNOVERIFY</name>
+            <description>Target did not verify an HDR-BT write.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OREAD</name>
+            <description>Read data underrun.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OWRITE</name>
+            <description>Write data overrun.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MSGERR</name>
+            <description>Message mode error.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INVREQ</name>
+            <description>Invalid use of request.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TIMEOUT</name>
+            <description>Controller timeout.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WRONGSIZE</name>
+            <description></description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MDMACTRL</name>
+        <description>Controller DMA Control Register</description>
+        <addressOffset>0x0A0</addressOffset>
+        <resetValue>0x00000010</resetValue>
+        <fields>
+          <field>
+            <name>DMAFB</name>
+            <description>DMA read (from-bus) enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DISABLE</name>
+                <description>Disable DMA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EN_ONEFRAME_SDR</name>
+                <description>Enable DMA for one frame.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ENABLE</name>
+                <description>Enable DMA until DMA is disabled by setting DMAFB to 00.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMATB</name>
+            <description>DMA write (to-bus) enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DISABLE</name>
+                <description>Disable DMA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EN_ONEFRAME_SDR</name>
+                <description>Enable DMA for one frame.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ENABLE</name>
+                <description>Enable DMA until DMA is disabled by setting DMATB to 00.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMAWIDTH</name>
+            <description>DMA transfer data width.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>BYTE</name>
+                <description>Byte.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HALFWORD</name>
+                <description>Half-word.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MHDRBTCFG</name>
+        <description>Controller HDR-BT Configuration Register</description>
+        <addressOffset>0x0A4</addressOffset>
+        <fields>
+          <field>
+            <name>MLHDR</name>
+            <description>Number of lanes to use for the header segment of an HDR-BT mode transfer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>SINGLE_LANE</name>
+                <description>Single-lane.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DUAL_LANE</name>
+                <description>Dual-lane.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>QUAD_LANE</name>
+                <description>Quad-lane.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MLDAT</name>
+            <description>Number of lanes to use for the data segment of an HDR-BT mode transfer.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>SINGLE_LANE</name>
+                <description>Single-lane.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DUAL_LANE</name>
+                <description>Dual-lane.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>QUAD_LANE</name>
+                <description>Quad-lane.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CRC32</name>
+            <description>Select CRC32 or CRC16 for an HDR-BT mode transfer.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>CRC16</name>
+                <description>CRC16.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CRC32</name>
+                <description>CRC32.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DATALEN</name>
+            <description>Data length for HDR-BT mode transfer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MHDRBTLAST</name>
+        <description>Controller HDR-BT Last Data Length Register</description>
+        <addressOffset>0x0A8</addressOffset>
+        <fields>
+          <field>
+            <name>DATALEN</name>
+            <description>Data length of most recent HDR-BT mode transfer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MDATACTRL</name>
+        <description>Controller Data Control Register</description>
+        <addressOffset>0x0AC</addressOffset>
+        <resetValue>0x80000030</resetValue>
+        <fields>
+          <field>
+            <name>FLUSHTB</name>
+            <description>Flush transmit buffer or FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLUSHFB</name>
+            <description>Flush receive buffer or FIFO.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNLOCK</name>
+            <description>Unlock FIFO triggers.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXTRIG</name>
+            <description>Transmit (to-bus) FIFO trigger level.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>EMPTY</name>
+                <description>Trigger when empty.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>QUARTER_FULL</name>
+                <description>Trigger when 1/4 full or less.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HALF_FULL</name>
+                <description>Trigger when 1/2 full or less.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ALMOST_FULL</name>
+                <description>Trigger when 1 less than full or less.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RXTRIG</name>
+            <description></description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NOT_EMPTY</name>
+                <description>Trigger when not empty.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>QUARTER_FULL</name>
+                <description>Trigger when 1/4 full or more.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>HALF_FULL</name>
+                <description>Trigger when 1/2 full or more.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3_4_FULL</name>
+                <description>Trigger when 3/4 full or more.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXCOUNT</name>
+            <description>Number of entries in transmit (to-bus) buffer or FIFO.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>RXCOUNT</name>
+            <description>Number of entries in receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>TXFULL</name>
+            <description>Transmit buffer full.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXEMPTY</name>
+            <description>Receive buffer empty.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWDATAB</name>
+        <description>Controller Write Byte Data Register</description>
+        <addressOffset>0x0B0</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data byte to be sent to the I3C or I2C bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>END</name>
+            <description>End-of-data.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>END2</name>
+            <description>End-of-data.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWDATABE</name>
+        <description>Controller Write Byte Data as End Register</description>
+        <addressOffset>0x0B4</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>The last data byte to be sent to the I3C or I2C bus for the current message.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWDATAH</name>
+        <description>Controller Write Half-Word Data Register</description>
+        <addressOffset>0x0B8</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA0</name>
+            <description>First data byte to be sent to the I3C or I2C bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DATA1</name>
+            <description>Second data byte to be sent to the I3C or I2C bus.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>END</name>
+            <description>End-of-data.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWDATAHE</name>
+        <description>Controller Write Half-Word Data as End Register</description>
+        <addressOffset>0x0BC</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA0</name>
+            <description>First data byte to be sent to the I3C or I2C bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DATA1</name>
+            <description>Second data byte to be sent to the I3C or I2C bus.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MRDATAB</name>
+        <description>Controller Read Byte Data Register</description>
+        <addressOffset>0x0C0</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read data byte from receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MRDATAH</name>
+        <description>Controller Read Half-Word Data Register</description>
+        <addressOffset>0x0C8</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA0</name>
+            <description>First read data byte from receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DATA1</name>
+            <description>Second read data byte from receive (from-bus) buffer or FIFO.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWDATAB1</name>
+        <description>Controller Byte-Only Write Byte Data Register</description>
+        <addressOffset>0x0CC</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data byte to be transmitted I3C or I2C bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWMSG_SDR</name>
+        <description>Start or Continue SDR Message Register</description>
+        <addressOffset>0x0D0</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DIR</name>
+            <description>Direction.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>WRITE</name>
+                <description>Write.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>READ</name>
+                <description>Read.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADDR</name>
+            <description>Destination address of message.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>END</name>
+            <description>How to end message.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>WAIT_SDR</name>
+                <description>End waiting for new SDR message.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>STOP</name>
+                <description>End by emitting STOP.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C</name>
+            <description>I2C mode.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>I2C_I3C_MODE</name>
+                <description>I3C mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>I2C_I2C_MODE</name>
+                <description>I2C mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LEN</name>
+            <description>Message length in bytes.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MRMSG_SDR</name>
+        <description>Read SDR Message Data Register</description>
+        <addressOffset>0x0D4</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read data (16 bits).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWMSG_DDR</name>
+        <description>Start or Continue DDR Message Register</description>
+        <addressOffset>0x0D8</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>CONTROL_ADDRCMD_DATA</name>
+            <description>Control information, mode address and command, or data for HDR-DDR write message.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MRMSG_DDR</name>
+        <description>Read DDR Message Data Register</description>
+        <addressOffset>0x0DC</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read data (16 bits).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MDYNADDR</name>
+        <description>Controller Dynamic Address Register</description>
+        <addressOffset>0x0E4</addressOffset>
+        <fields>
+          <field>
+            <name>DAVALID</name>
+            <description>Address valid.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DADDR</name>
+            <description>The assigned dynamic address.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MWDATAW</name>
+        <description>Controller Write Word Data Register</description>
+        <addressOffset>0x0F0</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data to be transmitted in HDR-BT mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MRDATAW</name>
+        <description>Controller Read Word Data Register</description>
+        <addressOffset>0x0F8</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read data from receive (from-bus) FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RSTACTTIME</name>
+        <description>Target Reset Recovery Time Register</description>
+        <addressOffset>0x100</addressOffset>
+        <fields>
+          <field>
+            <name>PERRSTTIM</name>
+            <description>I3C peripheral reset time to be returned in response to an RSTACT CCC.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>SYSRSTTIM</name>
+            <description>whole target reset time to be returned in response to an RSTACT CCC.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HDRCMD</name>
+        <description>HDR Command Byte Register</description>
+        <addressOffset>0x108</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>CMD0</name>
+            <description>The HDR-DDR mode command byte from the most recently received HDR-DDR mode message.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>OVFLW</name>
+            <description>Command byte overflow.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NEWCMD</name>
+            <description>New command byte stored.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GROUPDEF</name>
+        <description>Group Definition Register</description>
+        <addressOffset>0x114</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>GRP0ENA</name>
+            <description>Group address 0 enabled.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>GRP0DA</name>
+            <description>The assigned address for group address 0.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>GRP1ENA</name>
+            <description>Group address 1 enabled.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>GRP1DA</name>
+            <description>The assigned address for group address 1.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>GRP2ENA</name>
+            <description>Group address 2 enabled.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>GRP2DA</name>
+            <description>The assigned address for group address 2.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MAPCTRL0</name>
+        <description>Map Control Register 0</description>
+        <addressOffset>0x11C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>ENA</name>
+            <description>Primary dynamic address enabled.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DA</name>
+            <description>Primary dynamic address.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>CAUSE</name>
+            <description></description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NO_CHANGE</name>
+                <description>No change to DA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ENTDAA</name>
+                <description>Primary DA was last assigned by ENTDAA.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SETDASA_AASA_NEWDA</name>
+                <description>Primary DA was last assigned by SETDASA, SETAASA, or SETNEWDA.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RSTDAA</name>
+                <description>Primary DA was cleared by RSTDAA.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>MAPPED_ADDR_OP</name>
+                <description>Primary DA was changed due to a mapped address related operation.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MAPCTRLn[%s]</name>
+        <description>Map Control Register n</description>
+        <addressOffset>0x120</addressOffset>
+        <fields>
+          <field>
+            <name>ENA</name>
+            <description>Slot enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ADDR</name>
+            <description>Static or dynamic address assigned to this mapped address slot.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>MAPSA</name>
+            <description>Static address.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SA10B</name>
+            <description>Upper 3 bits of a 10-bit I2C static address or 7-bit static or dynamic address.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>NACK</name>
+            <description>NACK incoming addresses that match this mapped address.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AUTO</name>
+            <description>Enable slot for automatic dynamic address assignment.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PID</name>
+            <description>Slot-specific PID replacement bits [9:0].</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>10</bitWidth>
+          </field>
+          <field>
+            <name>DCR_OR_PID</name>
+            <description>DCR or PID replacement fields [17:10]</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IBIEXT1</name>
+        <description>Extended IBI Data Register 1</description>
+        <addressOffset>0x140</addressOffset>
+        <fields>
+          <field>
+            <name>CNT</name>
+            <description>The number of extended IBI data bytes to send from the IBIEXT1 and IBIEXT2 registers.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>MAX</name>
+            <description>The maximum number of extended IBI data bytes that can be sent using the IBIEXT1 and IBIEXT2 registers.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>EXT1</name>
+            <description>First extended IBI data byte to send with an IBI.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>EXT2</name>
+            <description>Second extended IBI data byte to send with an IBI.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>EXT3</name>
+            <description>Third extended IBI data byte to send with an IBI.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IBIEXT2</name>
+        <description>Extended IBI Data Register 2</description>
+        <addressOffset>0x144</addressOffset>
+        <fields>
+          <field>
+            <name>EXT4</name>
+            <description>Fourth extended IBI data byte to send with an IBI.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>EXT5</name>
+            <description>Fifth extended IBI data byte to send with an IBI.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>EXT6</name>
+            <description>Sixth extended IBI data byte to send with an IBI.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>EXT7</name>
+            <description>Seventh extended IBI data byte to send with an IBI.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATAW</name>
+        <description>Write Word Data Register</description>
+        <addressOffset>0x150</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data to be transmitted in HDR-BT mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RDATAW</name>
+        <description>Read Word Data Register</description>
+        <addressOffset>0x158</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read data from receive (from-bus) FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ID</name>
+        <description>Block ID Register</description>
+        <addressOffset>0xFFC</addressOffset>
+        <fields>
+          <field>
+            <name>ID</name>
+            <description>Vendor-specific information set by hardware configuration parameter BLOCK_ID.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- i3c: I3C Registers-->
+</device>

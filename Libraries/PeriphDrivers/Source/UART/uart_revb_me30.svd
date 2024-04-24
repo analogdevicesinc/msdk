@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+  xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
     <name>UART</name>
     <description>UART Low Power Registers</description>
@@ -9,6 +10,11 @@
       <size>0x1000</size>
       <usage>registers</usage>
     </addressBlock>
+    <interrupt>
+      <name>UART</name>
+      <description>UART interrupt.</description>
+      <value>11</value>
+    </interrupt>
     <registers>
       <register>
         <name>CTRL</name>
@@ -17,7 +23,7 @@
         <fields>
           <field>
             <name>RX_THD_VAL</name>
-            <description>This field specifies the depth of receive FIFO for interrupt generation (value 0 and &gt; 16 are ignored) </description>
+            <description>This field specifies the depth of receive FIFO for interrupt generation (value 0 and &gt; 8 are ignored) </description>
             <bitOffset>0</bitOffset>
             <bitWidth>4</bitWidth>
           </field>
@@ -47,13 +53,13 @@
           </field>
           <field>
             <name>TX_FLUSH</name>
-            <description>Flushes the TX FIFO buffer. This bit is automatically cleared by hardware when flush is completed.</description>
+            <description>Flushes the TX FIFO buffer. This bit always reads 0.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>RX_FLUSH</name>
-            <description>Flushes the RX FIFO buffer. This bit is automatically cleared by hardware when flush is completed.</description>
+            <description>Flushes the RX FIFO buffer. This bit always reads 0.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -98,53 +104,55 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RTS_NEG</name>
-            <description>The condition to negate RTS in HFC mode.</description>
+            <name>RTSDC</name>
+            <description>Hardware Flow Control RTS Mode</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
           <field>
-            <name>CLK_EN</name>
+            <name>BCLKEN</name>
             <description>Baud clock enable</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>CLK_SEL</name>
+            <name>BCLKSRC</name>
             <description>To select the UART clock source for the UART engine (except APB registers). Secondary clock (used for baud rate generator) can be asynchronous from APB clock.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>Peripheral_Clock</name>
-                <description>apb clock</description>
+                <name>CLK0</name>
+                <description>Clock option 0</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>External_Clock</name>
-                <description>Clock 1</description>
+                <name>CLK1</name>
+                <description>Clock option 1</description>
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>CLK2</name>
-                <description>Clock 2</description>
+                <description>Clock option 2</description>
                 <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>CLK3</name>
-                <description>Clock 3</description>
+                <description>Clock option 3</description>
                 <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>CLK_RDY</name>
+            <name>BCLKRDY</name>
             <description>Baud clock Ready read only bit</description>
             <bitOffset>19</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
           <field>
-            <name>CLK_GATE</name>
+            <name>UCAGM</name>
             <description>UART Clock Auto Gating mode</description>
             <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
@@ -195,20 +203,20 @@
           </field>
           <field>
             <name>RX_LVL</name>
-            <description>Indicates the number of bytes currently in the RX FIFO (0-RX FIFO_ELTS) </description>
+            <description>Indicates the number of bytes currently in the RX FIFO (0-8) </description>
             <bitOffset>8</bitOffset>
             <bitWidth>4</bitWidth>
           </field>
           <field>
             <name>TX_LVL</name>
-            <description>Indicates the number of bytes currently in the TX FIFO (0-TX FIFO_ELTS) </description>
+            <description>Indicates the number of bytes currently in the TX FIFO (0-8) </description>
             <bitOffset>12</bitOffset>
             <bitWidth>4</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>INTEN</name>
+        <name>INT_EN</name>
         <description>Interrupt Enable control register</description>
         <addressOffset>0x0008</addressOffset>
         <fields>
@@ -244,7 +252,7 @@
           </field>
           <field>
             <name>TX_OB</name>
-            <description>Enable Interrupt For TX FIFO when only one byte is remaining.</description>
+            <description>Enable Interrupt For TX FIFO has one byte remaining</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -256,14 +264,14 @@
           </field>
           <field>
             <name>RX_FULL</name>
-            <description>Enable for RX FIFO Full interrupt.</description>
+            <description>Enable Interrupt For RX FIFO full</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>INTFL</name>
+        <name>INT_FL</name>
         <description>Interrupt status flags Control register</description>
         <addressOffset>0x000C</addressOffset>
         <fields>
@@ -299,7 +307,7 @@
           </field>
           <field>
             <name>TX_OB</name>
-            <description>Flag for interrupt when TX FIFO has only one byte is remaining.</description>
+            <description>Flag for interrupt when TX FIFO has one byte remaining</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -311,7 +319,7 @@
           </field>
           <field>
             <name>RX_FULL</name>
-            <description>Flag for full RX FIFO.</description>
+            <description>Flag for interrupt when RX FIFO is full</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -340,6 +348,38 @@
             <description>OSR</description>
             <bitOffset>0</bitOffset>
             <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>128</name>
+                <description>128x</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>64</name>
+                <description>64x</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>32</name>
+                <description>32x</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>16</name>
+                <description>16x</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8</name>
+                <description>8x</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4</name>
+                <description>4x</description>
+                <value>5</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
         </fields>
       </register>
@@ -350,15 +390,15 @@
         <fields>
           <field>
             <name>DATA</name>
-            <description>Read TX FIFO next data. Reading from this field does not affect the contents of TX FIFO. Note that the parity bit is available from this field.</description>
+            <description>Transmit FIFO Data. Reading from this field does not affect the contents of TX FIFO. Note that the parity bit is available from this field.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>PIN</name>
-        <description> Pin register</description>
+        <name>PNR</name>
+        <description>Pin register</description>
         <addressOffset>0x001C</addressOffset>
         <fields>
           <field>

@@ -5,21 +5,23 @@
     <description>Flash Memory Control.</description>
     <prependToName>FLSH_</prependToName>
     <baseAddress>0x40029000</baseAddress>
+    <access>read-write</access>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x400</size>
+      <size>0x1000</size>
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
       <name>Flash_Controller</name>
       <description>Flash Controller interrupt.</description>
-      <value>23</value>
+      <value>13</value>
     </interrupt>
     <registers>
       <register>
         <name>ADDR</name>
         <description>Flash Write Address.</description>
         <addressOffset>0x00</addressOffset>
+        <resetValue>0x10000000</resetValue>
         <fields>
           <field>
             <name>ADDR</name>
@@ -76,6 +78,12 @@
             <name>PGE</name>
             <description>Page Erase.  This bit is automatically cleared after the operation.</description>
             <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WDTH</name>
+            <description>TBD</description>
+            <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
@@ -176,7 +184,7 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>noError</name>
+                <name>noerr</name>
                 <description>No Failure.</description>
                 <value>0</value>
               </enumeratedValue>
@@ -194,40 +202,33 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>disable</name>
+                <name>dis</name>
                 <description>Disable.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>enable</name>
+                <name>en</name>
                 <description>Enable.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="DONE_IE">
+          <field>
             <name>AF_IE</name>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>ECCDATA</name>
-        <description>ECC Data Register.</description>
-        <addressOffset>0x2C</addressOffset>
-        <fields>
-          <field>
-            <name>EVEN</name>
-            <description>Error Correction Code Odd Data.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>9</bitWidth>
-          </field>
-          <field>
-            <name>ODD</name>
-            <description>Error Correction Code Even Data.</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>9</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
         </fields>
       </register>
@@ -248,12 +249,8 @@
       </register>
       <register>
         <name>ACTRL</name>
-        <description>Access Control Register. Writing the ACTRL register with the following values in the order shown, allows read and write access to the system and user Information block:
-    pflc-actrl = 0x3a7f5ca3;
-    pflc-actrl = 0xa1e34f20;
-    pflc-actrl = 0x9608b2c1. When unlocked, a write of any word will disable access to system and user information block. Readback of this register is always zero.</description>
+        <description>Access Control Register. Writing the ACNTL register with the following values in the order shown, allows read and write access to the system and user Information block: pflc-acntl = 0x3a7f5ca3; pflc-acntl = 0xa1e34f20; pflc-acntl = 0x9608b2c1. When unlocked, a write of any word will disable access to system and user information block. Readback of this register is always zero.</description>
         <addressOffset>0x40</addressOffset>
-        <access>write-only</access>
         <fields>
           <field>
             <name>ACTRL</name>
@@ -265,25 +262,13 @@
       </register>
       <register>
         <name>WELR0</name>
-        <description>WELR0</description>
+        <description>Flash Write/Lock 0 Register.</description>
         <addressOffset>0x80</addressOffset>
+        <resetValue>0xFFFFFFFF</resetValue>
         <fields>
           <field>
             <name>WELR0</name>
-            <description>Access control.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>WELR1</name>
-        <description>WELR1</description>
-        <addressOffset>0x88</addressOffset>
-        <fields>
-          <field>
-            <name>WELR1</name>
-            <description>Access control.</description>
+            <description>Flash Write/Lock Bit.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>
@@ -291,25 +276,13 @@
       </register>
       <register>
         <name>RLR0</name>
-        <description>RLR0</description>
-        <addressOffset>0x90</addressOffset>
+        <description>Flash Read Lock 0 Register.</description>
+        <addressOffset>0x84</addressOffset>
+        <resetValue>0xFFFFFFFF</resetValue>
         <fields>
           <field>
             <name>RLR0</name>
-            <description>Access control.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>RLR1</name>
-        <description>RLR1</description>
-        <addressOffset>0x98</addressOffset>
-        <fields>
-          <field>
-            <name>RLR1</name>
-            <description>Access control.</description>
+            <description>Read Lock Bit.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>
@@ -317,5 +290,5 @@
       </register>
     </registers>
   </peripheral>
-  <!-- FLC: Flash Memory Control                   -->
+  <!-- FLC: Flash Memory Control -->
 </device>

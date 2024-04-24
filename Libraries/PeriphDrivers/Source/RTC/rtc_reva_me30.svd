@@ -12,7 +12,7 @@
     <interrupt>
       <name>RTC</name>
       <description>RTC interrupt.</description>
-      <value>3</value>
+      <value>2</value>
     </interrupt>
     <registers>
       <register>
@@ -188,7 +188,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TOD_ALARM_IF</name>
+            <name>TOD_ALARM</name>
             <description>Time-of-Day Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
@@ -196,18 +196,18 @@
             <enumeratedValues>
               <enumeratedValue>
                 <name>inactive</name>
-                <description>Not active.</description>
+                <description>Not active</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>pending</name>
-                <description>Active.</description>
+                <name>Pending</name>
+                <description>Active</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>SSEC_ALARM_IF</name>
+            <name>SSEC_ALARM</name>
             <description>Sub-second Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -215,12 +215,12 @@
             <enumeratedValues>
               <enumeratedValue>
                 <name>inactive</name>
-                <description>Not active.</description>
+                <description>Not active</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>pending</name>
-                <description>Active.</description>
+                <name>Pending</name>
+                <description>Active</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -232,13 +232,13 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
+                <name>inactive</name>
+                <description>Not active</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
+                <name>Pending</name>
+                <description>Active</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -264,6 +264,11 @@
                 <description>4 KHz.</description>
                 <value>2</value>
               </enumeratedValue>
+              <enumeratedValue>
+                <name>clkDiv8</name>
+                <description>RTC Input Clock / 8.</description>
+                <value>3</value>
+              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -271,18 +276,6 @@
             <description>Asynchronous Counter Read Enable.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>sync</name>
-                <description>Synchronous.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>async</name>
-                <description>Asynchronous.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>WR_EN</name>
@@ -291,13 +284,13 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>ignore</name>
-                <description>Ignored.</description>
+                <name>inactive</name>
+                <description>Not active</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>allow</name>
-                <description>Allowed.</description>
+                <name>Pending</name>
+                <description>Active</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -317,7 +310,7 @@
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>VBAT_TMR</name>
+            <name>VRTC_TMR</name>
             <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>24</bitWidth>
@@ -332,37 +325,25 @@
         <fields>
           <field>
             <name>FILTER_EN</name>
-            <description>Enable Filter.</description>
+            <description>Enables analog deglitch filter.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>IBIAS_SEL</name>
-            <description>IBIAS Select.</description>
+            <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>2x</name>
-                <description>2x</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>4x</name>
-                <description>4x</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>HYST_EN</name>
-            <description>RTC Hysteresis Enable.</description>
+            <description>Enables high current hysteresis buffer.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>IBIAS_EN</name>
-            <description>RTC IBIAS Enable.</description>
+            <description>Enables higher 4x,2x current modes.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -371,36 +352,12 @@
             <description>RTC Crystal Bypass</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>SQW_32K</name>
             <description>RTC 32kHz Square Wave Output</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
         </fields>
       </register>

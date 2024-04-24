@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <name>DMA</name>
+    <name>DMA0</name>
     <description>DMA Controller Fully programmable, chaining capable DMA channels.</description>
     <baseAddress>0x40028000</baseAddress>
     <size>32</size>
@@ -11,20 +11,20 @@
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
-      <name>DMA0</name>
-      <value>28</value>
+      <name>DMA_CH0</name>
+      <value>16</value>
     </interrupt>
     <interrupt>
-      <name>DMA1</name>
-      <value>29</value>
+      <name>DMA_CH1</name>
+      <value>17</value>
     </interrupt>
     <interrupt>
-      <name>DMA2</name>
-      <value>30</value>
+      <name>DMA_CH2</name>
+      <value>18</value>
     </interrupt>
     <interrupt>
-      <name>DMA3</name>
-      <value>31</value>
+      <name>DMA_CH3</name>
+      <value>19</value>
     </interrupt>
     <registers>
       <register>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <name>SPI</name>
+    <name>SPI0</name>
     <description>SPI peripheral.</description>
-    <baseAddress>0x400BE000</baseAddress>
+    <baseAddress>0x40046000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x1000</size>
@@ -11,7 +11,7 @@
     </addressBlock>
     <interrupt>
       <name>SPI0</name>
-      <value>16</value>
+      <value>12</value>
     </interrupt>
     <registers>
       <register>
@@ -34,7 +34,6 @@
         <dimIncrement>2</dimIncrement>
         <name>FIFO16[%s]</name>
         <description>Register for reading and writing the FIFO.</description>
-        <alternateRegister>FIFO32</alternateRegister>
         <addressOffset>0x00</addressOffset>
         <size>16</size>
         <access>read-write</access>
@@ -52,7 +51,6 @@
         <dimIncrement>1</dimIncrement>
         <name>FIFO8[%s]</name>
         <description>Register for reading and writing the FIFO.</description>
-        <alternateRegister>FIFO32</alternateRegister>
         <addressOffset>0x00</addressOffset>
         <size>8</size>
         <access>read-write</access>
@@ -249,24 +247,6 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SCLK_FB_INV</name>
-            <description>Clock Polarity.</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>Normal</name>
-                <description>Normal Clock. Use when in SPI Mode 0 and Mode 1</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>Inverted</name>
-                <description>Inverted Clock. Use when in SPI Mode 2 and Mode 3</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
             <name>NUMBITS</name>
             <description>Number of Bits per character.</description>
             <bitOffset>8</bitOffset>
@@ -379,7 +359,7 @@
           </field>
           <field>
             <name>THREE_WIRE</name>
-            <description>Three Wire mode. MOSI/MISO pin(s) shared. Only Mono mode suports Four-Wire.</description>
+            <description>Three Wire mode. MOSI/MISO pin (s) shared. Only Mono mode suports Four-Wire.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -396,10 +376,10 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSPOL</name>
+            <name>SS_POL</name>
             <description>Slave Select Polarity, each Slave Select can have unique polarity.</description>
             <bitOffset>16</bitOffset>
-            <bitWidth>4</bitWidth>
+            <bitWidth>8</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>SS0_high</name>
@@ -544,9 +524,7 @@
           </field>
           <field>
             <name>TX_FLUSH</name>
-            <description>Clear TX FIFO, clear is accomplished by resetting the read and write
-            pointers. This should be done when FIFO is not being accessed on the SPI side.
-          .</description>
+            <description>Clear TX FIFO, clear is accomplished by resetting the read and write pointers. This should be done when FIFO is not being accessed on the SPI side.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -565,7 +543,7 @@
             <access>read-only</access>
           </field>
           <field>
-            <name>TX_EN</name>
+            <name>DMA_TX_EN</name>
             <description>TX DMA Enable.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -627,7 +605,7 @@
             <access>read-only</access>
           </field>
           <field>
-            <name>RX_EN</name>
+            <name>DMA_RX_EN</name>
             <description>RX DMA Enable.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1206,7 +1184,7 @@
         </fields>
       </register>
       <register>
-        <name>STATUS</name>
+        <name>STAT</name>
         <description>SPI Status register.</description>
         <addressOffset>0x30</addressOffset>
         <access>read-only</access>
@@ -1233,5 +1211,5 @@
       </register>
     </registers>
   </peripheral>
-  <!-- SPI: Serial Peripheral Interface     -->
+  <!-- SPI:  Serial Peripheral Interface     -->
 </device>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>MPC</name>
+    <description>Memory Protection Control.</description>
+    <baseAddress>0x50091000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>MPC</name>
+      <value>48</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>Control register.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetValue>0x00000100</resetValue>
+        <fields>
+          <field>
+            <name>CFG_SEC_RESP</name>
+            <description>Security error response configuration.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>RAZ_WI</name>
+                <description>Read as zero or writes ignored.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>BUS_ERR</name>
+                <description>Bus error.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DATA_IF_GATE_REQ</name>
+            <description>Data interface gating request.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA_IF_GATE_ACK</name>
+            <description>Data interface gating acknowledge.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>AUTOINCREMENT</name>
+            <description>Auto increment block index.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SEC_LOCKDOWN</name>
+            <description>Security lockdown.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_MAX</name>
+        <description>Maximum value of block based index register.</description>
+        <addressOffset>0x10</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>IND_MAX</name>
+            <description>Maximum value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_CFG</name>
+        <description>Block configuration.</description>
+        <addressOffset>0x14</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>BLOCK_SIZE</name>
+            <description>Block size.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>INIT</name>
+            <description>Initialization in progress.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_IDX</name>
+        <description>Index value for accessing block based look up table.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>INDEX</name>
+            <description>Index value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_LUTn</name>
+        <description>Block based LUT. Access to block based look up configuration space pointed to by BLK_IDX.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>BLOCK</name>
+            <description>Each bit indicates one block.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>SECURE</name>
+                <description>Secure.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>NONSECURE</name>
+                <description>Non-secure.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_STAT</name>
+        <description>Interrupt status register.</description>
+        <addressOffset>0x20</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>mpc_irq_fl</name>
+            <description>MPC interrupt triggered.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_CLEAR</name>
+        <description>Interrupt enable register.</description>
+        <addressOffset>0x24</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>mpc_irq_clr</name>
+            <description>MPC interrupt clear (cleared automatically).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_EN</name>
+        <description>Interrupt enable register.</description>
+        <addressOffset>0x28</addressOffset>
+        <resetValue>0x1</resetValue>
+        <fields>
+          <field>
+            <name>mpc_irq_en</name>
+            <description>Enables interrupt output generation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_INFO1</name>
+        <description>First security violating address. Subsequent security violationg transfers are not captured in this register until mpc_irq is cleared.</description>
+        <addressOffset>0x2C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>HADDR</name>
+            <description>Security violating address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_INFO2</name>
+        <description>Additional control bits of the first security violating address.</description>
+        <addressOffset>0x30</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>HMASTER</name>
+            <description>Master identifier.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>HNONSEC</name>
+            <description>Non-secure transfer indicator.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CFG_NS</name>
+            <description>Non-secure.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_SET</name>
+        <description>Interrupt setting.</description>
+        <addressOffset>0x34</addressOffset>
+        <fields>
+          <field>
+            <name>mpc_irq</name>
+            <description>Debug only. Sets mpc_irq triggered in INT_STAT regardless of mpc_irq being enabled or not.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR4</name>
+        <description>Peripheral ID 4.</description>
+        <addressOffset>0xFD0</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x04</resetValue>
+        <fields>
+          <field>
+            <name>JEP106_C_CODE</name>
+            <description>JEP106 continuation code.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>BLOCK_COUNT</name>
+            <description>Block count.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR5</name>
+        <description>Peripheral ID 5.</description>
+        <addressOffset>0xFD4</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>PID5</name>
+            <description>Not used.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR6</name>
+        <description>Peripheral ID 6.</description>
+        <addressOffset>0xFD8</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>PID6</name>
+            <description>Not used.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR7</name>
+        <description>Peripheral ID 7.</description>
+        <addressOffset>0xFDC</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>PID7</name>
+            <description>Not used.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR0</name>
+        <description>Peripheral ID 0.</description>
+        <addressOffset>0xFE0</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x60</resetValue>
+        <fields>
+          <field>
+            <name>PART_NUMBER</name>
+            <description>Part number.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR1</name>
+        <description>Peripheral ID 1.</description>
+        <addressOffset>0xFE4</addressOffset>
+        <access>read-only</access>
+        <resetValue>0xB8</resetValue>
+        <fields>
+          <field>
+            <name>PART_NUMBER</name>
+            <description>Bits [11:8] of part number.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>JEP106_ID_3_0</name>
+            <description>Bits [3:0] of the JEDEC JEP106 Manufacturer ID code.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR2</name>
+        <description>Peripheral ID 2.</description>
+        <addressOffset>0xFE8</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x1B</resetValue>
+        <fields>
+          <field>
+            <name>JEP106_ID_6_4</name>
+            <description>Bits [6:4] of the JEDEC JEP106 Manufacturer ID code.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>JEDEC_USED</name>
+            <description>Jedec used.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>REVISION</name>
+            <description>Revision.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR3</name>
+        <description>Peripheral ID 3.</description>
+        <addressOffset>0xFEC</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>CUSTOMER_MOD_NO</name>
+            <description>Customer modification number.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>ECO_REV</name>
+            <description>ECO revision number.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CIDR0</name>
+        <description>Component ID 0.</description>
+        <addressOffset>0xFF0</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x0D</resetValue>
+        <fields>
+          <field>
+            <name>CID0</name>
+            <description>Component ID 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CIDR1</name>
+        <description>Component ID 1.</description>
+        <addressOffset>0xFF4</addressOffset>
+        <access>read-only</access>
+        <resetValue>0xF0</resetValue>
+        <fields>
+          <field>
+            <name>CID1</name>
+            <description>Component ID 1 (PrimeCell class).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CIDR2</name>
+        <description>Component ID 2.</description>
+        <addressOffset>0xFF8</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x05</resetValue>
+        <fields>
+          <field>
+            <name>CID2</name>
+            <description>Component ID 2.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CIDR3</name>
+        <description>Component ID 3.</description>
+        <addressOffset>0xFFC</addressOffset>
+        <access>read-only</access>
+        <resetValue>0xB1</resetValue>
+        <fields>
+          <field>
+            <name>CID3</name>
+            <description>Component ID 3.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

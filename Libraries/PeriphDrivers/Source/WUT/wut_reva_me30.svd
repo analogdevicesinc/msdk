@@ -6,20 +6,20 @@
     <baseAddress>0x40006400</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x400</size>
+      <size>0x200</size>
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
-      <name>WUT</name>
+      <name>Wakeup_Timer</name>
       <description>WUT IRQ</description>
-      <value>1</value>
+      <value>24</value>
     </interrupt>
     <registers>
       <register>
         <name>CNT</name>
-        <description>Count.  This register stores the current timer count.</description>
+        <description>Count. This register stores the current timer count.</description>
         <addressOffset>0x00</addressOffset>
-        <resetValue>0x00000001</resetValue>
+        <resetValue>0x00000000</resetValue>
         <fields>
           <field>
             <name>COUNT</name>
@@ -31,9 +31,9 @@
       </register>
       <register>
         <name>CMP</name>
-        <description>Compare.  This register stores the compare value, which is used to set the maximum count value to initiate a reload of the timer to 0x0001.</description>
+        <description>Compare. This register stores the compare value for the timer's count value.</description>
         <addressOffset>0x04</addressOffset>
-        <resetValue>0x0000FFFF</resetValue>
+        <resetValue>0x00000000</resetValue>
         <fields>
           <field>
             <name>COMPARE</name>
@@ -44,13 +44,13 @@
         </fields>
       </register>
       <register>
-        <name>INTR</name>
-        <description>Clear Interrupt. Writing a value (0 or 1) to a bit in this register clears the associated interrupt.</description>
+        <name>INTFL</name>
+        <description>Timer Interrupt Flag. Writing a value (0 or 1) to a bit in this register clears the associated interrupt.</description>
         <addressOffset>0x0C</addressOffset>
         <modifiedWriteValues>oneToClear</modifiedWriteValues>
         <fields>
           <field>
-            <name>IF_CLR</name>
+            <name>IRQ_CLR</name>
             <description>Clear Interrupt.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -79,29 +79,9 @@
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>counter</name>
-                <description>Counter Mode.</description>
-                <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>capture</name>
-                <description>Capture Mode.</description>
-                <value>4</value>
-              </enumeratedValue>
-              <enumeratedValue>
                 <name>compare</name>
                 <description>Compare Mode.</description>
                 <value>5</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>gated</name>
-                <description>Gated Mode.</description>
-                <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>captureCompare</name>
-                <description>Capture/Compare Mode.</description>
-                <value>7</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
@@ -155,21 +135,10 @@
           </field>
           <field>
             <name>TPOL</name>
-            <description>Timer input/output polarity bit.</description>
+            <description>Reserved.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>activeHi</name>
-                <description>Active High.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>activeLo</name>
-                <description>Active Low.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
+            <access>read-only</access>
           </field>
           <field>
             <name>TEN</name>
@@ -195,65 +164,37 @@
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field>
+            <name>PWMSYNC</name>
+            <description>Reserved.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOLHPOL</name>
+            <description>Reserved.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOLLPOL</name>
+            <description>Reserved.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWMCLKBD</name>
+            <description>Reserved.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
         <name>NOLCMP</name>
-        <description>Timer Non-Overlapping Compare Register.</description>
+        <description>Reserved.</description>
         <addressOffset>0x14</addressOffset>
-        <fields>
-          <field>
-            <name>NOL_LO</name>
-            <description>Non-overlapping Low Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A and next rising edge of PWM output 0A'.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>8</bitWidth>
-          </field>
-          <field>
-            <name>NOL_HI</name>
-            <description>Non-overlapping High Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A' and next rising edge of PWM output 0A.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>8</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>PRESET</name>
-        <description>Preset register.</description>
-        <addressOffset>0x18</addressOffset>
-        <fields>
-          <field>
-            <name>PRESET</name>
-            <description>Preset Value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>RELOAD</name>
-        <description>Reload register.</description>
-        <addressOffset>0x1C</addressOffset>
-        <fields>
-          <field>
-            <name>RELOAD</name>
-            <description>Rerload Value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>SNAPSHOT</name>
-        <description>Snapshot register.</description>
-        <addressOffset>0x20</addressOffset>
-        <fields>
-          <field>
-            <name>SNAPSHOT</name>
-            <description>Snapshot Value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
+        <access>read-only</access>
       </register>
     </registers>
   </peripheral>

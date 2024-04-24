@@ -19,7 +19,7 @@
         <fields>
           <field>
             <name>MAGIC</name>
-            <description>Magic Word Validation.  This bit is set by the system initialization block following power-up.</description>
+            <description>Configuration Valid Flag. This field is set to 1 by hardware during reset if the device configuration is valid.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <access>read-only</access>
@@ -27,19 +27,19 @@
               <usage>read</usage>
               <enumeratedValue>
                 <name>magicNotSet</name>
-                <description>Magic word was not set (OTP has not been initialized properly).</description>
+                <description>Configuration invalid.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>magicSet</name>
-                <description>Magic word was set (OTP contains valid settings).</description>
+                <description>Configuration valid.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
             <name>CRCERR</name>
-            <description>CRC Error Status.  This bit is set by the system initialization block following power-up.</description>
+            <description>Configuration Error Flag. This field is set by hardware during reset if an error in the device configuration is detected.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <access>read-only</access>
@@ -47,12 +47,12 @@
               <usage>read</usage>
               <enumeratedValue>
                 <name>noError</name>
-                <description>No CRC errors occurred during the read of the OTP memory block.</description>
+                <description>Configuration valid.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>error</name>
-                <description>A CRC error occurred while reading the OTP. The address of the failure location in the OTP memory is stored in the ERRADDR register.</description>
+                <description>Configuration invalid.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -61,140 +61,278 @@
       </register>
       <register>
         <name>ADDR</name>
-        <description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
+        <description>System Initialization Address Error Register.</description>
         <addressOffset>0x04</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
             <name>ERRADDR</name>
+            <description>Configuration Error Address. If the SIR_SISTAT.crcerr field is set to 1, the value in this register is the address of the configuration failure.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>BTLELDOTRIM</name>
-        <description>BTLE LDO Trim register.</description>
-        <addressOffset>0x48</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>TX</name>
-            <description>TX LDO trim value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>5</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>RX</name>
-            <description>RX LDO trim value.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>5</bitWidth>
-            <access>read-write</access>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FSTAT</name>
-        <description>funcstat register.</description>
-        <addressOffset>0x100</addressOffset>
-        <access>read-only</access>
-        <fields>
-          <field>
-            <name>FPU</name>
-            <description>FPU Function.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>ADC</name>
-            <description>10-bit Sigma Delta ADC.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>SEMA</name>
-            <description>Semaphore function.</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>SFSTAT</name>
-        <description>Security function status register.</description>
+        <description>System Initialization Security Function Status Register.</description>
         <addressOffset>0x104</addressOffset>
-        <access>read-only</access>
         <fields>
           <field>
             <name>SECBOOT</name>
-            <description>Security Boot.</description>
+            <description>SecROM Function Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TRNG</name>
-            <description> TRNG Function.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
+            <access>read-only</access>
             <enumeratedValues>
               <enumeratedValue>
-                <name>no</name>
+                <name>disable</name>
+                <description>Disable.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>yes</name>
+                <name>enable</name>
+                <description>Enable.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>AES</name>
-            <description>AES Block.</description>
-            <bitOffset>3</bitOffset>
+            <name>SECEXT</name>
+            <description>M33 SecExt Function Enable.</description>
+            <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>no</name>
+                <name>disable</name>
+                <description>Disable.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>yes</name>
+                <name>enable</name>
+                <description>Enable.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
         </fields>
+      </register>
+      <register>
+        <name>SICFG0</name>
+        <description>System Initialization Configuration Register 0.</description>
+        <addressOffset>0x08</addressOffset>
+      </register>
+      <register>
+        <name>SICFG1</name>
+        <description>System Initialization Configuration Register 1.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>SRAMCLKGDIS</name>
+            <description>System RAM Clock Gate Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICCLKGDIS</name>
+            <description>ICache Clock Gate Disable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRBDIS</name>
+            <description>Cache Read Buffer Disable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLCREDDIS</name>
+            <description>Flash Redundancy Disable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR4</name>
+        <description>System Initialization Register 4.</description>
+        <addressOffset>0x10</addressOffset>
+      </register>
+      <register>
+        <name>SIR5</name>
+        <description>System Initialization Register 5.</description>
+        <addressOffset>0x14</addressOffset>
+      </register>
+      <register>
+        <name>SIR6</name>
+        <description>System Initialization Register 6.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>SECBOOTL</name>
+            <description>SecROM Function Disable. Write 0xAA to disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>SECEXTL</name>
+            <description>SecExt Function Disable. Write 0xAA to disable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>SECBOOTH</name>
+            <description>SecROM Function Disable. Write 0xAA to disable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>SECEXTH</name>
+            <description>SecExt Function Disable. Write 0xAA to disable.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR7</name>
+        <description>System Initialization Register 7.</description>
+        <addressOffset>0x1C</addressOffset>
+      </register>
+      <register>
+        <name>SIR8</name>
+        <description>System Initialization Register 8.</description>
+        <addressOffset>0x20</addressOffset>
+        <resetValue>0x00100008</resetValue>
+        <fields>
+          <field>
+            <name>RNGEN</name>
+            <description>RNGEN[31:0] Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR9</name>
+        <description>System Initialization Register 9.</description>
+        <addressOffset>0x24</addressOffset>
+        <resetValue>0x3</resetValue>
+        <fields>
+          <field>
+            <name>XOBIAS</name>
+            <description>XO Bias Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>24MHZ</name>
+                <description>24MHz</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>32MHZ</name>
+                <description>32MHZ</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR10</name>
+        <description>System Initialization Register 10.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>RNGEN</name>
+            <description>RNGEN[63:32] Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR11</name>
+        <description>System Initialization Register 11.</description>
+        <addressOffset>0x2C</addressOffset>
+        <fields>
+          <field>
+            <name>ENTROPYDIS</name>
+            <description>RNG Entropy Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR12</name>
+        <description>System Initialization Register 12.</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>  
+          <field>
+            <name>RNGEN2</name>
+            <description>RNGEN2[31:0] Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR13</name>
+        <description>System Initialization Register 13.</description>
+        <addressOffset>0x34</addressOffset>
+      </register>
+      <register>
+        <name>SIR14</name>
+        <description>System Initialization Register 14.</description>
+        <addressOffset>0x38</addressOffset>
+        <fields>  
+          <field>
+            <name>RNGEN2</name>
+            <description>RNGEN2[63:32] Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR15</name>
+        <description>System Initialization Register 15.</description>
+        <addressOffset>0x3C</addressOffset>
+        <fields>
+          <field>
+            <name>I2CIRRX</name>
+            <description>I2C Glitch Filter Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR16</name>
+        <description>System Initialization Register 16.</description>
+        <addressOffset>0x40</addressOffset>
+        <resetValue>0xFF0100</resetValue>
+        <fields>
+          <field>
+            <name>ACMIN</name>
+            <description>Auto Cal Min Trim bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+          <field>
+            <name>ACMAX</name>
+            <description>Auto Cal Min Trim bits.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR17</name>
+        <description>System Initialization Register 17.</description>
+        <addressOffset>0x44</addressOffset>
       </register>
     </registers>
   </peripheral>
