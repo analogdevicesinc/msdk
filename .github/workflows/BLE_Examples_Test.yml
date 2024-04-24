@@ -52,12 +52,11 @@ env:
   LOCK_MAX32655_B2: false
   LOCK_MAX32655_B1: false
   LOCK_MAX32665_B1: false
-#   CI_BOARD_CONFIG: ${{ vars.CI_BOARD_CONFIG }}
-#   RESOURCE_LOCK_DIR: ${{ vars.RESOURCE_LOCK_DIR }}
 
-defaults:
-  run:
-    shell: bash -leo pipefail {0}
+
+# defaults:
+#   run:
+#     shell: bash -leo pipefail {0}
 #----------------------------------------------------------------------------------------------
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -70,10 +69,8 @@ jobs:
     #----------------------------------------------------------------------------------------------
     # De inits submodules and cleans repo
     steps:
-      - name: test1
-        run: |
-            printenv
-            
+
+
       # Clean and remove any local modifications
       - name: Clean
         continue-on-error: true
