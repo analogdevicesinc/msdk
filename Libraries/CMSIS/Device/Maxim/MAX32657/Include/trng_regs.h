@@ -108,14 +108,8 @@ typedef struct {
 #define MXC_F_TRNG_CTRL_HEALTH_IE_POS                  2 /**< CTRL_HEALTH_IE Position */
 #define MXC_F_TRNG_CTRL_HEALTH_IE                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_IE_POS)) /**< CTRL_HEALTH_IE Mask */
 
-#define MXC_F_TRNG_CTRL_AESKG_MEU_POS                  3 /**< CTRL_AESKG_MEU Position */
-#define MXC_F_TRNG_CTRL_AESKG_MEU                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEU_POS)) /**< CTRL_AESKG_MEU Mask */
-
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_XIP_POS          4 /**< CTRL_AESKG_MEMPROT_XIP Position */
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_XIP              ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEMPROT_XIP_POS)) /**< CTRL_AESKG_MEMPROT_XIP Mask */
-
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_DIP_POS          5 /**< CTRL_AESKG_MEMPROT_DIP Position */
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_DIP              ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEMPROT_DIP_POS)) /**< CTRL_AESKG_MEMPROT_DIP Mask */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN_POS                 3 /**< CTRL_MEU_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_MEU_KEYGEN_POS)) /**< CTRL_MEU_KEYGEN Mask */
 
 #define MXC_F_TRNG_CTRL_OD_ROMON_POS                   6 /**< CTRL_OD_ROMON Position */
 #define MXC_F_TRNG_CTRL_OD_ROMON                       ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_ROMON_POS)) /**< CTRL_OD_ROMON Mask */
@@ -149,15 +143,6 @@ typedef struct {
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_1                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_1 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_1 Setting */
 #define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x4UL) /**< CTRL_ROMON_DIS_RO_2 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_2                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_2 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_2 Setting */
-
-#define MXC_F_TRNG_CTRL_ROMON_DIV2_POS                 28 /**< CTRL_ROMON_DIV2 Position */
-#define MXC_F_TRNG_CTRL_ROMON_DIV2                     ((uint32_t)(0x7UL << MXC_F_TRNG_CTRL_ROMON_DIV2_POS)) /**< CTRL_ROMON_DIV2 Mask */
-#define MXC_V_TRNG_CTRL_ROMON_DIV2_RO_0                ((uint32_t)0x0UL) /**< CTRL_ROMON_DIV2_RO_0 Value */
-#define MXC_S_TRNG_CTRL_ROMON_DIV2_RO_0                (MXC_V_TRNG_CTRL_ROMON_DIV2_RO_0 << MXC_F_TRNG_CTRL_ROMON_DIV2_POS) /**< CTRL_ROMON_DIV2_RO_0 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIV2_RO_1                ((uint32_t)0x1UL) /**< CTRL_ROMON_DIV2_RO_1 Value */
-#define MXC_S_TRNG_CTRL_ROMON_DIV2_RO_1                (MXC_V_TRNG_CTRL_ROMON_DIV2_RO_1 << MXC_F_TRNG_CTRL_ROMON_DIV2_POS) /**< CTRL_ROMON_DIV2_RO_1 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIV2_RO_2                ((uint32_t)0x2UL) /**< CTRL_ROMON_DIV2_RO_2 Value */
-#define MXC_S_TRNG_CTRL_ROMON_DIV2_RO_2                (MXC_V_TRNG_CTRL_ROMON_DIV2_RO_2 << MXC_F_TRNG_CTRL_ROMON_DIV2_POS) /**< CTRL_ROMON_DIV2_RO_2 Setting */
 
 /**@} end of group TRNG_CTRL_Register */
 
