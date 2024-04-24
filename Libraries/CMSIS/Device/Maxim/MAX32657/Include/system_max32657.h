@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32655_INCLUDE_SYSTEM_MAX32657_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32655_INCLUDE_SYSTEM_MAX32657_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_INCLUDE_SYSTEM_MAX32657_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_INCLUDE_SYSTEM_MAX32657_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,19 +40,13 @@ extern "C" {
 #define EXTCLK_FREQ 75000000
 #endif
 
-/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
-         Update if use of this oscillator requires precise timing.*/
 /* NOTE: INRO was previously named NANORING */
 #ifndef INRO_FREQ
 #define INRO_FREQ 8000
 #endif
 
 #ifndef IPO_FREQ
-#define IPO_FREQ 100000000
-#endif
-
-#ifndef ISO_FREQ
-#define ISO_FREQ 60000000
+#define IPO_FREQ 50000000
 #endif
 
 #ifndef ERFO_FREQ
@@ -98,4 +92,4 @@ void SystemCoreClockUpdate(void);
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32655_INCLUDE_SYSTEM_MAX32657_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_INCLUDE_SYSTEM_MAX32657_H_
