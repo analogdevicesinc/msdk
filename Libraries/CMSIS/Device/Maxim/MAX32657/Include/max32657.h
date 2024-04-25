@@ -76,116 +76,60 @@ typedef enum {
     /*                         ||||  table offset address                          */
     /*                         vvvv  vvvvvv                                        */
 
-    MSP_IRQn = 0,           /* 0x10  0x0040  16: MSP Initial Value */
-    Reset_IRQn,             /* 0x11  0x0044  17: Reset */
-    RSV02_IRQn,             /* 0x12  0x0048  18: Reserved */
-    RTC_IRQn,               /* 0x13  0x004C  19: RTC */
-    TRNG_IRQn,              /* 0x14  0x0050  20: True Random Number Generator */
-    TMR0_IRQn,              /* 0x15  0x0054  21: Timer 0 */
-    TMR1_IRQn,              /* 0x16  0x0058  22: Timer 1 */
-    TMR2_IRQn,              /* 0x17  0x005C  23: Timer 2 */
-    TMR3_IRQn,              /* 0x18  0x0060  24: Timer 3 */
-    TMR4_IRQn,              /* 0x19  0x0064  25: Timer 4 (LP) */
-    TMR5_IRQn,              /* 0x1A  0x0068  26: Timer 5 (LP) */
-    RSV11_IRQn,             /* 0x1B  0x006C  27: Reserved */
-    RSV12_IRQn,             /* 0x1C  0x0070  28: Reserved */
-    I3C_IRQn,               /* 0x1D  0x0074  29: I3C */
-    UART_IRQn,              /* 0x1E  0x0078  30: UART */
+    ICE_IRQn = 0,           /* 0x10  0x0040  16: ICE Unlock */
+    WDT_IRQn,               /* 0x11  0x0044  17: Watchdog Timer */
+    RTC_IRQn,               /* 0x12  0x0048  18: RTC */
+    TRNG_IRQn,              /* 0x13  0x004C  19: True Random Number Generator */
+    TMR0_IRQn,              /* 0x14  0x0050  20: Timer 0 */
+    TMR1_IRQn,              /* 0x15  0x0054  21: Timer 1 */
+    TMR2_IRQn,              /* 0x16  0x0058  22: Timer 2 */
+    TMR3_IRQn,              /* 0x17  0x005C  23: Timer 3 */
+    TMR4_IRQn,              /* 0x18  0x0060  24: Timer 4 */
+    TMR5_IRQn,              /* 0x19  0x0064  25: Timer 5 */
+    I3C_IRQn,               /* 0x1A  0x0068  26: I3C */
+    UART_IRQn,              /* 0x1B  0x006C  27: UART */
+    SPI_IRQn,               /* 0x1C  0x0070  28: SPI */
+    FLC_IRQn,               /* 0x1D  0x0074  29: FLC */
+    GPIO0_IRQn,             /* 0x1E  0x0078  30: GPIO0 */
     RSV15_IRQn,             /* 0x1F  0x007C  31: Reserved */
-    RSV16_IRQn,             /* 0x20  0x0080  32: Reserved */
-    RSV17_IRQn,             /* 0x21  0x0084  33: Reserved */
-    RSV18_IRQn,             /* 0x22  0x0088  34: Reserved */
-    RSV19_IRQn,             /* 0x23  0x008C  35: Reserved */
-    RSV20_IRQn,             /* 0x24  0x0090  36: Reserved */
-    RSV21_IRQn,             /* 0x25  0x0094  37: Reserved */
-    RSV22_IRQn,             /* 0x26  0x0098  38: Reserved */
-    FLC_IRQn,               /* 0x27  0x009C  39: Flash Controller */
-    GPIO0_IRQn,             /* 0x28  0x00A0  40: GPIO0 */
-    RSV25_IRQn,             /* 0x29  0x00A4  41: Reserved */
-    RSV26_IRQn,             /* 0x2A  0x00A8  42: Reserved */
-    RSV27_IRQn,             /* 0x2B  0x00AC  43: Reserved */
-    DMA0_IRQn,              /* 0x2C  0x00B0  44: DMA0 */
-    DMA1_IRQn,              /* 0x2D  0x00B4  45: DMA1 */
-    DMA2_IRQn,              /* 0x2E  0x00B8  46: DMA2 */
-    DMA3_IRQn,              /* 0x2F  0x00BC  47: DMA3 */
-    RSV32_IRQn,             /* 0x30  0x00C0  48: Reserved */
-    RSV33_IRQn,             /* 0x31  0x00C4  49: Reserved */
-    RSV34_IRQn,             /* 0x32  0x00C8  50: Reserved */
-    RSV35_IRQn,             /* 0x33  0x00CC  51: Reserved */
-    RSV36_IRQn,             /* 0x34  0x00D0  52: Reserved */
-    RSV37_IRQn,             /* 0x35  0x00D4  53: Reserved */
-    RSV38_IRQn,             /* 0x36  0x00D8  54: Reserved */
-    BTLE_TX_DONE_IRQn,      /* 0x37  0x00DC  55: BTLE TX Done */
-    BTLE_RX_RCVD_IRQn,      /* 0x38  0x00E0  56: BTLE RX Received */
-    BTLE_RX_ENG_DET_IRQn,   /* 0x39  0x00E4  57: BTLE RX Energy Detected */
-    BTLE_SFD_DET_IRQn,      /* 0x3A  0x00E8  58: BTLE SFD Detected */
-    BTLE_SFD_TO_IRQn,       /* 0x3B  0x00EC  59: BTLE SFD Timeout*/
-    BTLE_GP_EVENT_IRQn,     /* 0x3C  0x00F0  60: BTLE Timestamp*/
-    BTLE_CFO_IRQn,          /* 0x3D  0x00F4  61: BTLE CFO Done */
-    BTLE_SIG_DET_IRQn,      /* 0x3E  0x00F8  62: BTLE Signal Detected */
-    BTLE_AGC_EVENT_IRQn,    /* 0x3F  0x00FC  63: BTLE AGC Event */
-    BTLE_RFFE_SPIM_IRQn,    /* 0x40  0x0100  64: BTLE RFFE SPIM Done */
-    BTLE_TX_AES_IRQn,       /* 0x41  0x0104  65: BTLE TX AES Done */
-    BTLE_RX_AES_IRQn,       /* 0x42  0x0108  66: BTLE RX AES Done */
-    BTLE_INV_APB_ADDR_IRQn, /* 0x43  0x010C  67: BTLE Invalid APB Address*/
-    BTLE_IQ_DATA_VALID_IRQn, /* 0x44  0x0110  68: BTLE IQ Data Valid */
-    WUT0_IRQn,              /* 0x45  0x0114  69: Wakeup Timer 0 */
-    GPIOWAKE_IRQn,          /* 0x46  0x0118  70: GPIO Wakeup */
-    RSV55_IRQn,             /* 0x47  0x011C  71: Reserved */
-    SPI_IRQn,               /* 0x48  0x0120  72: SPI */
-    RSV57_IRQn,             /* 0x49  0x0124  73: Reserved */
-    RSV58_IRQn,             /* 0x4A  0x0128  74: Reserved */
-    RSV59_IRQn,             /* 0x4B  0x012C  75: Reserved */
-    RSV60_IRQn,             /* 0x4C  0x0130  76: Reserved */
-    RSV61_IRQn,             /* 0x4D  0x0134  77: Reserved */
-    RSV62_IRQn,             /* 0x4E  0x0138  78: Reserved */
-    RSV63_IRQn,             /* 0x4F  0x013C  79: Reserved */
-    RSV64_IRQn,             /* 0x50  0x0140  80: Reserved */
-    RSV65_IRQn,             /* 0x51  0x0144  81: Reserved */
-    RSV66_IRQn,             /* 0x52  0x0148  82: Reserved */
-    RSV67_IRQn,             /* 0x53  0x014C  83: Reserved */
-    RSV68_IRQn,             /* 0x54  0x0150  84: Reserved */
-    RSV69_IRQn,             /* 0x55  0x0154  85: Reserved */
-    RSV70_IRQn,             /* 0x56  0x0158  86: Reserved */
-    RSV71_IRQn,             /* 0x57  0x015C  87: Reserved */
-    RSV72_IRQn,             /* 0x58  0x0160  88: Reserved */
-    RSV73_IRQn,             /* 0x59  0x0164  89: Reserved */
-    RSV74_IRQn,             /* 0x5A  0x0168  90: Reserved */
-    RSV75_IRQn,             /* 0x5B  0x016C  91: Reserved */
-    RSV76_IRQn,             /* 0x5C  0x0170  92: Reserved */
-    RSV77_IRQn,             /* 0x5D  0x0174  93: Reserved */
-    RSV78_IRQn,             /* 0x5E  0x0178  94: Reserved */
-    RSV79_IRQn,             /* 0x5F  0x017C  95: Reserved */
-    RSV80_IRQn,             /* 0x60  0x0180  96: Reserved */
-    RSV81_IRQn,             /* 0x61  0x0184  97: Reserved */
-    RSV82_IRQn,             /* 0x62  0x0188  98: Reserved */
-    RSV83_IRQn,             /* 0x63  0x018C  99: Reserved */
-    RSV84_IRQn,             /* 0x64  0x0190 100: Reserved */
-    RSV85_IRQn,             /* 0x65  0x0194 101: Reserved */
-    RSV86_IRQn,             /* 0x66  0x0198 102: Reserved */
-    RSV87_IRQn,             /* 0x67  0x019C 103: Reserved */
-    RSV88_IRQn,             /* 0x68  0x01A0 104: Reserved */
-    RSV89_IRQn,             /* 0x69  0x01A4 105: Reserved */
-    RSV90_IRQn,             /* 0x6A  0x01A8 106: Reserved */
-    RSV91_IRQn,             /* 0x6B  0x01AC 107: Reserved */
-    RSV92_IRQn,             /* 0x6C  0x01B0 108: Reserved */
-    RSV93_IRQn,             /* 0x6D  0x01B4 109: Reserved */
-    RSV94_IRQn,             /* 0x6E  0x01B8 110: Reserved */
-    RSV95_IRQn,             /* 0x6F  0x01BC 111: Reserved */
-    RSV96_IRQn,             /* 0x70  0x01C0 112: Reserved */
-    AES_IRQn,               /* 0x71  0x01C4 113: AES */
-    RSV98_IRQn,             /* 0x72  0x01C8 114: Reserved */
-    RSV99_IRQn,             /* 0x73  0x01CC 115: Reserved */
-    RSV100_IRQn,            /* 0x74  0x01D0 116: Reserved */
-    RSV101_IRQn,            /* 0x75  0x01D4 117: Reserved */
-    RSV102_IRQn,            /* 0x76  0x01D8 118: Reserved */
-    RSV103_IRQn,            /* 0x77  0x01Dc 119: Reserved */
-    RSV104_IRQn,            /* 0x78  0x01E0 120: Reserved */
-    RSV105_IRQn,            /* 0x79  0x01E4 121: Reserved */
-    RSV106_IRQn,            /* 0x7A  0x01E8 122: Reserved */
-    RSV107_IRQn,            /* 0x7B  0x01EC 123: Reserved */
-    RSV108_IRQn,            /* 0x7C  0x01F0 124: Reserved */
-    WUT1_IRQn,              /* 0x7D  0x01F4 125: ERFO Ready/WUT 1 */
+    DMA0_CH0_IRQn,          /* 0x20  0x0080  32: DMA0 Channel 0 */
+    DMA0_CH1_IRQn,          /* 0x21  0x0084  33: DMA0 Channel 1 */
+    DMA0_CH2_IRQn,          /* 0x22  0x0088  34: DMA0 Channel 2 */
+    DMA0_CH3_IRQn,          /* 0x23  0x008C  35: DMA0 Channel 3 */
+    DMA1_CH0_IRQn,          /* 0x24  0x0090  36: DMA1 Channel 0 */
+    DMA1_CH1_IRQn,          /* 0x25  0x0094  37: DMA1 Channel 1 */
+    DMA1_CH2_IRQn,          /* 0x26  0x0098  38: DMA1 CHannel 2 */
+    DMA1_CH3_IRQn,          /* 0x27  0x009C  39: DMA1 Channel 3 */
+    WUT0_IRQn,              /* 0x28  0x00A0  40: Wakeup Timer 0 */
+    WUT1_IRQn,              /* 0x29  0x00A4  41: Wakeup TImer 1 */
+    GPIOWAKE_IRQn,          /* 0x2A  0x00A8  42: GPIO Wakeup */
+    CRC_IRQn,               /* 0x2B  0x00AC  43: CRC */
+    AES_IRQn,               /* 0x2C  0x00B0  44: AES */
+    ERFO_IRQn,              /* 0x2D  0x00B4  45: ERFO Ready */
+    BOOST_IRQn,             /* 0x2E  0x00B8  46: Boost Controller */
+    ECC_IRQn,               /* 0x2F  0x00BC  47: ECC */
+    BTLE_TX_DONE_IRQn,      /* 0x30  0x00C0  48: BTLE TX Done */
+    BTLE_RX_RCVD_IRQn,      /* 0x31  0x00C4  49: BTLE RX Received */
+    BTLE_RX_ENG_DET_IRQn,   /* 0x32  0x00C8  50: BTLE RX Energy Detected */
+    BTLE_SFD_DET_IRQn,      /* 0x33  0x00CC  51: BTLE SFD Detected */
+    BTLE_SFD_TO_IRQn,       /* 0x34  0x00D0  52: BTLE SFD Timeout */
+    BTLE_GP_EVENT_IRQn,     /* 0x35  0x00D4  53: BTLE BTLE Timestamp */
+    BTLE_CFO_IRQn,          /* 0x36  0x00D8  54: BTLE CFO Done */
+    BTLE_SIG_DET_IRQn,      /* 0x37  0x00DC  55: BTLE Signal Detected */
+    BTLE_AGC_EVENT_IRQn,    /* 0x38  0x00E0  56: BTLE AGC Event */
+    BTLE_RFFE_SPIM_IRQn,    /* 0x39  0x00E4  57: BTLE RFFE SPIM Done */
+    BTLE_TX_AES_IRQn,       /* 0x3A  0x00E8  58: BTLE TX AES Done */
+    BTLE_RX_AES_IRQn,       /* 0x3B  0x00EC  59: BTLE RX AES Done */
+    BTLE_INV_APB_ADDR_IRQn, /* 0x3C  0x00F0  60: BTLE Invalid APB Address */
+    BTLE_IQ_DATA_VALID_IRQn, /* 0x3D  0x00F4  61:BTLE IQ Data Valid */
+    BTLE_XXXX_IRQn,         /* 0x3E  0x00F8  62: BTLE XXXX TODO(ME30): Verify BTLE IRQs */
+    RSV47_IRQn,             /* 0x3F  0x00FC  63: Reserved */
+    MPC_IRQn,               /* 0x40  0x0100  64: MPC Combined (Secure) */
+    PPC_IRQn,               /* 0x41  0x0104  65: PPC Combined (Secure) */
+    RSV50_IRQn,             /* 0x42  0x0108  66: Reserved  */
+    RSV51_IRQn,             /* 0x43  0x010C  67: Reserved */
+    RSV52_IRQn,             /* 0x44  0x0110  68: Reserved */
+    RSV53_IRQn,             /* 0x45  0x0114  69: Reserved */
     MXC_IRQ_EXT_COUNT,
 } IRQn_Type;
 // clang-format on
