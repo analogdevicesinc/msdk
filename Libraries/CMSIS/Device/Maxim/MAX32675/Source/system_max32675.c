@@ -167,6 +167,12 @@ __weak void SystemInit(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 
+    /* Various revisions of the MAX32675 have different startup frequencies. 
+	   Calling SystemCoreClockUpdate will examine the part's registers to 
+	   determine the correct initial value for the SystemCoreClock variable.
+	 */
+    SystemCoreClockUpdate();
+
     PinInit();
     Board_Init();
 }
