@@ -69,11 +69,6 @@ jobs:
     #----------------------------------------------------------------------------------------------
     # De inits submodules and cleans repo
     steps:
-      - name: Test1
-        run: | 
-            echo $CI_BOARD_CONFIG
-
-            printenv
 
       # Clean and remove any local modifications
       - name: Clean
