@@ -53,12 +53,10 @@ typedef struct {
 
 uart_reva_req_state_t states[MXC_UART_INSTANCES];
 
-#define DEFAULT_UART_REVA_REQ_STATE {\
-        .tx_req = NULL,\
-        .rx_req = NULL,\
-        .channelTx = -1,\
-        .channelRx = -1,\
-        .auto_dma_handlers = false\
+#define DEFAULT_UART_REVA_REQ_STATE                                       \
+    {                                                                     \
+        .tx_req = NULL, .rx_req = NULL, .channelTx = -1, .channelRx = -1, \
+        .auto_dma_handlers = false                                        \
     }
 
 bool g_is_state_initialized = false;
