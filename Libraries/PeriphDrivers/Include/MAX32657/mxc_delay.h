@@ -1,13 +1,11 @@
 /**
- * @file
+ * @file     mxc_delay.h
  * @brief    Asynchronous delay routines based on the SysTick Timer.
 */
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,23 +69,6 @@ extern "C" {
  */
 typedef void (*mxc_delay_complete_t)(int result);
 
-#ifdef __riscv
-
-/**
- * @brief      Blocks and delays for the specified number of microseconds.
- * @details    Uses the Performance Counter to create the requested delay. The current
- *             and settings of the performance counter registers will be destroyed.
- * @param      us    microseconds to delay
- * @return     #E_NO_ERROR if no errors, @ref MXC_Error_Codes "error" if unsuccessful.
- */
-int MXC_Delay(uint32_t us);
-
-int MXC_DelayAsync(uint32_t us, mxc_delay_complete_t callback);
-int MXC_DelayCheck(void);
-void MXC_DelayAbort(void);
-
-#else
-
 /***** Function Prototypes *****/
 
 /**
@@ -109,7 +90,7 @@ int MXC_Delay(uint32_t us);
  * @note       MXC_Delay_handler() must be called from the SysTick interrupt service
  *             routine or at a rate greater than the SysTick overflow rate.
  * @param      us    microseconds to delay
- * @param      callback Function pointer to the function to call after the delay has expired.
+ * @param      callback   Function pointer to the function to call after the delay has expired.
  * @return     #E_NO_ERROR if no errors, #E_BUSY if currently servicing another
  *             delay request.
  */
@@ -136,8 +117,6 @@ void MXC_DelayAbort(void);
 void MXC_DelayHandler(void);
 
 /**@} end of group MXC_delay */
-
-#endif /* __riscv */
 
 #ifdef __cplusplus
 }

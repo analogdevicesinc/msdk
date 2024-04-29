@@ -31,6 +31,11 @@ int MXC_GPIO_RevB_Config(const mxc_gpio_cfg_t *cfg, uint8_t psMask)
 {
     mxc_gpio_regs_t *gpio = cfg->port;
 
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     // Set the GPIO type
     switch (cfg->func) {
     case MXC_GPIO_FUNC_IN:
@@ -198,6 +203,11 @@ uint32_t MXC_GPIO_RevB_GetFlags(mxc_gpio_regs_t *port)
 
 int MXC_GPIO_RevB_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     // Configure the vssel
     switch (vssel) {
     case MXC_GPIO_VSSEL_VDDIO:

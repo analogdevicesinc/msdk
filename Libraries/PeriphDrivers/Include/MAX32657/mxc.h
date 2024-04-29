@@ -1,8 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
-
-#ifdef __riscv
-// TODO(JC): This is a somewhat ugly hack added to avoid
-// implicit function warnings on RISC-V projects
-// when LIB_BOARD was added to libs.mk.  When the
-// RISC-V build system is improved to use libs.mk
-// this should be removed.
-#ifndef LIB_BOARD
-#define LIB_BOARD
-#endif
-#endif
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
 
 #include "mxc_device.h"
 #include "mxc_delay.h"
@@ -47,26 +34,17 @@
 /*
  *  Peripheral Driver Includes
  */
-#include "adc.h"
-#include "aes.h"
-#include "cameraif.h"
-#include "crc.h"
 #include "dma.h"
 #include "flc.h"
 #include "gpio.h"
 #include "i2c.h"
-#include "i2s.h"
 #include "icc.h"
 #include "lp.h"
-#include "owm.h"
-#include "pt.h"
 #include "rtc.h"
-#include "sema.h"
 #include "spi.h"
 #include "tmr.h"
-#include "trng.h"
 #include "uart.h"
 #include "wdt.h"
 #include "wut.h"
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
