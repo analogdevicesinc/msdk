@@ -120,6 +120,12 @@ LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 # Set target architecture
 MCPU := cortex-m33
 
+# Set FPU architecture
+# (See Arm Cortex M33 Technical Reference Manual Chapter B5
+# Armv8-M Floating-Point extension with FPv5 architecture
+# Single-precision with 16 double-word registers
+MFPU := fpv5-sp-d16
+
 # Include the rules and goals for building
 include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
 
