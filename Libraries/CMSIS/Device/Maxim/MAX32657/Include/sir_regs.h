@@ -139,7 +139,7 @@ typedef struct {
 /**
  * @ingroup  sir_registers
  * @defgroup SIR_FSTAT SIR_FSTAT
- * @brief    funcstat register.
+ * @brief    Function Status register.
  * @{
  */
 #define MXC_F_SIR_FSTAT_FPU_POS                        0 /**< FSTAT_FPU Position */
@@ -161,12 +161,6 @@ typedef struct {
  */
 #define MXC_F_SIR_SFSTAT_SECBOOT_POS                   0 /**< SFSTAT_SECBOOT Position */
 #define MXC_F_SIR_SFSTAT_SECBOOT                       ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_SECBOOT_POS)) /**< SFSTAT_SECBOOT Mask */
-
-#define MXC_F_SIR_SFSTAT_TRNG_POS                      2 /**< SFSTAT_TRNG Position */
-#define MXC_F_SIR_SFSTAT_TRNG                          ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_TRNG_POS)) /**< SFSTAT_TRNG Mask */
-
-#define MXC_F_SIR_SFSTAT_AES_POS                       3 /**< SFSTAT_AES Position */
-#define MXC_F_SIR_SFSTAT_AES                           ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_AES_POS)) /**< SFSTAT_AES Mask */
 
 /**@} end of group SIR_SFSTAT_Register */
 
