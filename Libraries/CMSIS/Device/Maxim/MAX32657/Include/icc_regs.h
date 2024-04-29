@@ -7,7 +7,6 @@
 
 /******************************************************************************
  *
- * Analog Devices, Inc.),
  * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
