@@ -5,9 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +21,14 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_NVIC_TABLE_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_NVIC_TABLE_H_
-
-#ifndef __riscv
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_NVIC_TABLE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_NVIC_TABLE_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "max78000.h"
+#include "max32657.h"
 
 /**
  * @brief Set an IRQ hander callback function.  If the IRQ table is in
@@ -106,6 +102,4 @@ NVIC_GetVector(IRQn_Type irqn)
 }
 #endif
 
-#endif /* !__riscv */
-
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_NVIC_TABLE_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_NVIC_TABLE_H_

@@ -1,8 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +25,8 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_SYS_H_
 
 #include "mxc_device.h"
-#include "lpgcr_regs.h"
 #include "gcr_regs.h"
+#include "lpgcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,6 +71,7 @@ typedef enum {
     MXC_SYS_RESET1_SMPHR = (MXC_F_GCR_RST1_SMPHR_POS + 32), /**< Reset SMPHR */
     MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset I2C2 */
     MXC_SYS_RESET1_I2S = (MXC_F_GCR_RST1_I2S_POS + 32), /**< Reset I2S*/
+    // MXC_SYS_RESET1_BTLE      = (MXC_F_GCR_RST1_BTLE_POS + 32),     /**< Reset BTLE*/
     MXC_SYS_RESET1_DVS = (MXC_F_GCR_RST1_DVS_POS + 32), /**< Reset DVS */
     MXC_SYS_RESET1_SIMO = (MXC_F_GCR_RST1_SIMO_POS + 32), /**< Reset SIMO */
     MXC_SYS_RESET1_SPI0 = (MXC_F_GCR_RST1_SPI0_POS + 32), /**< Reset SPI0 */
@@ -134,8 +133,6 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_I2S_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2S clock */
     MXC_SYS_PERIPH_CLOCK_SPI0 =
         (MXC_F_GCR_PCLKDIS1_SPI0_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_SPI0 clock */
-    MXC_SYS_PERIPH_CLOCK_PCIF =
-        (MXC_F_GCR_PCLKDIS1_PCIF_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_PCIF clock */
     MXC_SYS_PERIPH_CLOCK_I2C2 =
         (MXC_F_GCR_PCLKDIS1_I2C2_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2C2 clock */
     MXC_SYS_PERIPH_CLOCK_WDT0 =
@@ -146,7 +143,7 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_GPIO2 =
         (MXC_F_LPGCR_PCLKDIS_GPIO2_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_GPIO2 clock */
     MXC_SYS_PERIPH_CLOCK_WDT1 =
-        (MXC_F_LPGCR_PCLKDIS_WDT1_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_WDT2 clock */
+        (MXC_F_LPGCR_PCLKDIS_WDT1_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_WDT1 clock */
     MXC_SYS_PERIPH_CLOCK_TMR4 =
         (MXC_F_LPGCR_PCLKDIS_TMR4_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */
     MXC_SYS_PERIPH_CLOCK_TMR5 =
@@ -159,12 +156,14 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
+    MXC_SYS_CLOCK_ISO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
     MXC_SYS_CLOCK_IPO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
     MXC_SYS_CLOCK_IBRO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
-    MXC_SYS_CLOCK_ISO =
-        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
+    MXC_SYS_CLOCK_ERFO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO, /**< Select the External RF Crystal Oscillator */
     MXC_SYS_CLOCK_INRO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
     MXC_SYS_CLOCK_ERTCO =
@@ -332,6 +331,24 @@ void MXC_SYS_RTCClockEnable(void);
 int MXC_SYS_RTCClockDisable(void);
 
 /**
+ * @brief Enables the 32kHz oscillator to be powered down when not in use.
+ *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
+ *        Rev. A chips.
+ * 
+ * @returns  E_NO_ERROR if everything is successful
+ */
+void MXC_SYS_RTCClockPowerDownEn(void);
+
+/**
+ * @brief Disables the 32kHz oscillator from being powered down when not in use.
+ *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
+ *        Rev. A chips.
+ * 
+ * @returns  E_NO_ERROR if everything is successful
+ */
+void MXC_SYS_RTCClockPowerDownDis(void);
+
+/**
  * @brief Enable System Clock Source without switching to it
  * @param      clock The clock to enable
  * @return     E_NO_ERROR if everything is successful
@@ -346,10 +363,12 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);
 int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 
 /**
- * @brief Get the current system clock divider.
- * @returns The enumerator for the current system clock divider.
+ * @brief Select the system clock.
+ * @param clock     Enumeration for desired clock.  Note:  If using the external clock input be sure to define EXTCLK_FREQ correctly.
+ *                  The default EXTCLK_FREQ value is defined in the system_max32655.h file and can be overridden at compile time.
+ * @returns         E_NO_ERROR if everything is successful.
  */
-mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
+int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Set the system clock divider.
@@ -358,12 +377,10 @@ mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
 void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
 
 /**
- * @brief Select the system clock.
- * @param clock     Enumeration for desired clock.  Note:  If using the external clock input be sure to define EXTCLK_FREQ correctly.
- *                  The default EXTCLK_FREQ value is defined in the system_max32657.h file and can be overridden at compile time.
- * @returns         E_NO_ERROR if everything is successful.
+ * @brief Get the system clock divider.
+ * @returns         System clock divider.
  */
-int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
 
 /**
  * @brief Wait for a clock to enable with timeout
@@ -371,7 +388,6 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
 int MXC_SYS_Clock_Timeout(uint32_t ready);
-
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param           Enumeration for what to reset. Can reset multiple items at once.

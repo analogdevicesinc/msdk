@@ -16,35 +16,9 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
+#include "max32657.h"
 
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "mxc_assert.h"
-#include "mxc_errors.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include "nvic_table.h"
-#ifdef LIB_BOARD
-#include "board.h"
-#endif
-
-/*
- *  Peripheral Driver Includes
+/* 
+ * This function is called during boot up.
  */
-#include "dma.h"
-#include "flc.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "icc.h"
-#include "lp.h"
-#include "rtc.h"
-#include "spi.h"
-#include "tmr.h"
-#include "uart.h"
-#include "wdt.h"
-#include "wut.h"
-
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
+void max32xx_system_init(void) {}

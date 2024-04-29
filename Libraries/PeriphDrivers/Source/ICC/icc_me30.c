@@ -16,35 +16,42 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
-
+/* **** Includes **** */
 #include "mxc_device.h"
-#include "mxc_delay.h"
-#include "mxc_assert.h"
 #include "mxc_errors.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "nvic_table.h"
-#ifdef LIB_BOARD
-#include "board.h"
-#endif
-
-/*
- *  Peripheral Driver Includes
- */
-#include "dma.h"
-#include "flc.h"
-#include "gpio.h"
-#include "i2c.h"
 #include "icc.h"
-#include "lp.h"
-#include "rtc.h"
-#include "spi.h"
-#include "tmr.h"
-#include "uart.h"
-#include "wdt.h"
-#include "wut.h"
+#include "icc_reva.h"
+#include "icc_common.h"
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
+/* **** Definitions **** */
+
+/* **** Globals **** */
+
+/* **** Functions **** */
+
+/* ******************************************************************************
+Maxim Internal Use
+ * ****************************************************************************** */
+
+int MXC_ICC_ID(mxc_icc_regs_t *icc, mxc_icc_info_t cid)
+{
+    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)icc, cid);
+}
+
+void MXC_ICC_Enable(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)icc);
+}
+
+void MXC_ICC_Disable(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)icc);
+}
+
+void MXC_ICC_Flush(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_Disable(icc);
+    MXC_ICC_Enable(icc);
+}
