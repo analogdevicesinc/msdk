@@ -90,37 +90,37 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MST_MODE</name>
-            <description>Master Mode Enable.</description>
+            <name>CTRLR_MODE</name>
+            <description>Controller Mode Enable.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>dis</name>
-                <description>SPI is Slave mode.</description>
+                <description>SPI is Target mode.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>en</name>
-                <description>SPI is  Master mode.</description>
+                <description>SPI is  Controller mode.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>SS_IO</name>
-            <description>Slave Select 0, IO direction, to support Multi-Master mode,Slave Select 0 can be input in Master mode. This bit has no effect in slave mode.</description>
+            <name>TS_IO</name>
+            <description>Target Select 0, IO direction, to support Multi-Controller mode,Target Select 0 can be input in Controller mode. This bit has no effect in target mode.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>output</name>
-                <description>Slave select 0 is output.</description>
+                <description>Target select 0 is output.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>input</name>
-                <description>Slave Select 0 is input, only valid if MMEN=1.</description>
+                <description>Target Select 0 is input, only valid if MMEN=1.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -133,53 +133,53 @@
             <enumeratedValues>
               <enumeratedValue>
                 <name>start</name>
-                <description>Master Initiates a transaction, this bit is self clearing when transactions are done. If a transaction cimpletes, and the TX FIFO is empty, the Master halts, if a transaction completes, and the TX FIFO is not empty, the Master initiates another transaction.</description>
+                <description>Controller Initiates a transaction, this bit is self clearing when transactions are done. If a transaction cimpletes, and the TX FIFO is empty, the Controller halts, if a transaction completes, and the TX FIFO is not empty, the Controller initiates another transaction.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>SS_CTRL</name>
-            <description>Start Select Control. Used in Master mode to control the behavior of the Slave Select signal at the end of a transaction.</description>
+            <name>TS_CTRL</name>
+            <description>Start Select Control. Used in Controller mode to control the behavior of the Target Select signal at the end of a transaction.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>DEASSERT</name>
-                <description>SPI De-asserts Slave Select at the end of a transaction.</description>
+                <description>SPI De-asserts Target Select at the end of a transaction.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>ASSERT</name>
-                <description>SPI leaves Slave Select asserted at the end of a transaction.</description>
+                <name>ATSERT</name>
+                <description>SPI leaves Target Select asserted at the end of a transaction.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>SS_ACTIVE</name>
-            <description>Slave Select, when in Master mode selects which Slave devices are selected. More than one Slave device can be selected.</description>
+            <name>TS_ACTIVE</name>
+            <description>Target Select, when in Controller mode selects which Target devices are selected. More than one Target device can be selected.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>4</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>SS0</name>
-                <description>SS0 is selected.</description>
+                <name>TS0</name>
+                <description>TS0 is selected.</description>
                 <value>0x1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SS1</name>
-                <description>SS1 is selected.</description>
+                <name>TS1</name>
+                <description>TS1 is selected.</description>
                 <value>0x2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SS2</name>
-                <description>SS2 is selected.</description>
+                <name>TS2</name>
+                <description>TS2 is selected.</description>
                 <value>0x4</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SS3</name>
-                <description>SS3 is selected.</description>
+                <name>TS3</name>
+                <description>TS3 is selected.</description>
                 <value>0x8</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -396,29 +396,29 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSPOL</name>
-            <description>Slave Select Polarity, each Slave Select can have unique polarity.</description>
+            <name>TSPOL</name>
+            <description>Target Select Polarity, each Target Select can have unique polarity.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>4</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>SS0_high</name>
-                <description>SS0 active high.</description>
+                <name>TS0_high</name>
+                <description>TS0 active high.</description>
                 <value>0x1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SS1_high</name>
-                <description>SS1 active high.</description>
+                <name>TS1_high</name>
+                <description>TS1 active high.</description>
                 <value>0x2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SS2_high</name>
-                <description>SS2 active high.</description>
+                <name>TS2_high</name>
+                <description>TS2 active high.</description>
                 <value>0x4</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SS3_high</name>
-                <description>SS3 active high.</description>
+                <name>TS3_high</name>
+                <description>TS3 active high.</description>
                 <value>0x8</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -426,40 +426,40 @@
         </fields>
       </register>
       <register>
-        <name>SSTIME</name>
-        <description>Register for controlling SPI peripheral/Slave Select Timing.</description>
+        <name>TSTIME</name>
+        <description>Register for controlling SPI peripheral/Target Select Timing.</description>
         <addressOffset>0x10</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
             <name>PRE</name>
-            <description>Slave Select Pre delay 1.</description>
+            <description>Target Select Pre delay 1.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>256</name>
-                <description>256 system clocks between SS active and first serial clock edge.</description>
+                <description>256 system clocks between TS active and first serial clock edge.</description>
                 <value>0</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
             <name>POST</name>
-            <description>Slave Select Post delay 2.</description>
+            <description>Target Select Post delay 2.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>8</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>256</name>
-                <description>256 system clocks between last serial clock edge and SS inactive.</description>
+                <description>256 system clocks between last serial clock edge and TS inactive.</description>
                 <value>0</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
             <name>INACT</name>
-            <description>Slave Select Inactive delay.</description>
+            <description>Target Select Inactive delay.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>8</bitWidth>
             <enumeratedValues>
@@ -705,8 +705,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSA</name>
-            <description>Slave Select Asserted.</description>
+            <name>TSA</name>
+            <description>Target Select Asserted.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -718,8 +718,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSD</name>
-            <description>Slave Select Deasserted.</description>
+            <name>TSD</name>
+            <description>Target Select Deasserted.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -732,7 +732,7 @@
           </field>
           <field>
             <name>FAULT</name>
-            <description>Multi-Master Mode Fault.</description>
+            <description>Multi-Controller Mode Fault.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -745,7 +745,7 @@
           </field>
           <field>
             <name>ABORT</name>
-            <description>Slave Abort Detected.</description>
+            <description>Target Abort Detected.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -757,8 +757,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MST_DONE</name>
-            <description>Master Done, set when SPI Master has completed any transactions.</description>
+            <name>CTRLR_DONE</name>
+            <description>Controller Done, set when SPI Controller has completed any transactions.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -902,8 +902,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSA</name>
-            <description>Slave Select Asserted interrupt enable.</description>
+            <name>TSA</name>
+            <description>Target Select Asserted interrupt enable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -920,8 +920,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSD</name>
-            <description>Slave Select Deasserted interrupt enable.</description>
+            <name>TSD</name>
+            <description>Target Select Deasserted interrupt enable.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -939,7 +939,7 @@
           </field>
           <field>
             <name>FAULT</name>
-            <description>Multi-Master Mode Fault interrupt enable.</description>
+            <description>Multi-Controller Mode Fault interrupt enable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -957,7 +957,7 @@
           </field>
           <field>
             <name>ABORT</name>
-            <description>Slave Abort Detected interrupt enable.</description>
+            <description>Target Abort Detected interrupt enable.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -974,8 +974,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MST_DONE</name>
-            <description>Master Done interrupt enable.</description>
+            <name>CTRLR_DONE</name>
+            <description>Controller Done interrupt enable.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -1213,7 +1213,7 @@
         <fields>
           <field>
             <name>BUSY</name>
-            <description>SPI active status. In Master mode, set when transaction starts, cleared when last bit of last character is acted upon and Slave Select de-assertion would occur. In Slave mode, set when Slave Select is asserted, cleared when Slave Select is de-asserted. Not used in Timer mode. </description>
+            <description>SPI active status. In Controller mode, set when transaction starts, cleared when last bit of last character is acted upon and Target Select de-assertion would occur. In Target mode, set when Target Select is asserted, cleared when Target Select is de-asserted. Not used in Timer mode. </description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>

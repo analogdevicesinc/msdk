@@ -75,7 +75,7 @@ typedef struct {
     __IO uint32_t cnt;                  /**< <tt>\b 0x00:</tt> WUT CNT Register */
     __IO uint32_t cmp;                  /**< <tt>\b 0x04:</tt> WUT CMP Register */
     __R  uint32_t rsv_0x8;
-    __IO uint32_t intr;                 /**< <tt>\b 0x0C:</tt> WUT INTR Register */
+    __IO uint32_t intfl;                /**< <tt>\b 0x0C:</tt> WUT INTFL Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x10:</tt> WUT CTRL Register */
     __IO uint32_t nolcmp;               /**< <tt>\b 0x14:</tt> WUT NOLCMP Register */
     __IO uint32_t preset;               /**< <tt>\b 0x18:</tt> WUT PRESET Register */
@@ -92,7 +92,7 @@ typedef struct {
  */
 #define MXC_R_WUT_CNT                      ((uint32_t)0x00000000UL) /**< Offset from WUT Base Address: <tt> 0x0000</tt> */
 #define MXC_R_WUT_CMP                      ((uint32_t)0x00000004UL) /**< Offset from WUT Base Address: <tt> 0x0004</tt> */
-#define MXC_R_WUT_INTR                     ((uint32_t)0x0000000CUL) /**< Offset from WUT Base Address: <tt> 0x000C</tt> */
+#define MXC_R_WUT_INTFL                    ((uint32_t)0x0000000CUL) /**< Offset from WUT Base Address: <tt> 0x000C</tt> */
 #define MXC_R_WUT_CTRL                     ((uint32_t)0x00000010UL) /**< Offset from WUT Base Address: <tt> 0x0010</tt> */
 #define MXC_R_WUT_NOLCMP                   ((uint32_t)0x00000014UL) /**< Offset from WUT Base Address: <tt> 0x0014</tt> */
 #define MXC_R_WUT_PRESET                   ((uint32_t)0x00000018UL) /**< Offset from WUT Base Address: <tt> 0x0018</tt> */
@@ -125,15 +125,15 @@ typedef struct {
 
 /**
  * @ingroup  wut_registers
- * @defgroup WUT_INTR WUT_INTR
+ * @defgroup WUT_INTFL WUT_INTFL
  * @brief    Clear Interrupt. Writing a value (0 or 1) to a bit in this register clears the
  *           associated interrupt.
  * @{
  */
-#define MXC_F_WUT_INTR_IF_CLR_POS                      0 /**< INTR_IF_CLR Position */
-#define MXC_F_WUT_INTR_IF_CLR                          ((uint32_t)(0x1UL << MXC_F_WUT_INTR_IF_CLR_POS)) /**< INTR_IF_CLR Mask */
+#define MXC_F_WUT_INTFL_CLR_POS                        0 /**< INTFL_CLR Position */
+#define MXC_F_WUT_INTFL_CLR                            ((uint32_t)(0x1UL << MXC_F_WUT_INTFL_CLR_POS)) /**< INTFL_CLR Mask */
 
-/**@} end of group WUT_INTR_Register */
+/**@} end of group WUT_INTFL_Register */
 
 /**
  * @ingroup  wut_registers

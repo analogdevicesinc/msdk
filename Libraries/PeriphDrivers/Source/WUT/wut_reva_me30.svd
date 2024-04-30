@@ -44,13 +44,13 @@
         </fields>
       </register>
       <register>
-        <name>INTR</name>
+        <name>INTFL</name>
         <description>Clear Interrupt. Writing a value (0 or 1) to a bit in this register clears the associated interrupt.</description>
         <addressOffset>0x0C</addressOffset>
         <modifiedWriteValues>oneToClear</modifiedWriteValues>
         <fields>
           <field>
-            <name>IF_CLR</name>
+            <name>CLR</name>
             <description>Clear Interrupt.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>

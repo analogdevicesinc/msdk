@@ -72,11 +72,23 @@ extern "C" {
  * Structure type to access the ICC Registers.
  */
 typedef struct {
+    __IO uint32_t lbound;               /**< <tt>\b 0x0000:</tt> ICC LBOUND Register */
+    __IO uint32_t hbound;               /**< <tt>\b 0x004:</tt> ICC HBOUND Register */
+} mxc_icc_reg_regs_t;
+
+typedef struct {
     __I  uint32_t info;                 /**< <tt>\b 0x0000:</tt> ICC INFO Register */
     __I  uint32_t sz;                   /**< <tt>\b 0x0004:</tt> ICC SZ Register */
     __R  uint32_t rsv_0x8_0xff[62];
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0100:</tt> ICC CTRL Register */
-    __R  uint32_t rsv_0x104_0x6ff[383];
+    __R  uint32_t rsv_0x104_0x1ff[63];
+    __IO uint32_t way;                  /**< <tt>\b 0x0200:</tt> ICC WAY Register */
+    __IO uint32_t regctrl;              /**< <tt>\b 0x0204:</tt> ICC REGCTRL Register */
+    __IO mxc_icc_reg_regs_t region[15]; /**< <tt>\b 0x0208:</tt> ICC REGION Register */
+    __R  uint32_t rsv_0x244_0x2ff[47];
+    __IO uint32_t pfmctrl;              /**< <tt>\b 0x0300:</tt> ICC PFMCTRL Register */
+    __IO uint32_t pfmcnt;               /**< <tt>\b 0x0304:</tt> ICC PFMCNT Register */
+    __R  uint32_t rsv_0x308_0x6ff[254];
     __IO uint32_t invalidate;           /**< <tt>\b 0x0700:</tt> ICC INVALIDATE Register */
 } mxc_icc_regs_t;
 
@@ -87,9 +99,16 @@ typedef struct {
  * @brief      ICC Peripheral Register Offsets from the ICC Base Peripheral Address.
  * @{
  */
+#define MXC_R_ICC_LBOUND                   ((uint32_t)0x00000000UL) /**< Offset from ICC Base Address: <tt> 0x0000</tt> */
+#define MXC_R_ICC_HBOUND                   ((uint32_t)0x00000004UL) /**< Offset from ICC Base Address: <tt> 0x0004</tt> */
 #define MXC_R_ICC_INFO                     ((uint32_t)0x00000000UL) /**< Offset from ICC Base Address: <tt> 0x0000</tt> */
 #define MXC_R_ICC_SZ                       ((uint32_t)0x00000004UL) /**< Offset from ICC Base Address: <tt> 0x0004</tt> */
 #define MXC_R_ICC_CTRL                     ((uint32_t)0x00000100UL) /**< Offset from ICC Base Address: <tt> 0x0100</tt> */
+#define MXC_R_ICC_WAY                      ((uint32_t)0x00000200UL) /**< Offset from ICC Base Address: <tt> 0x0200</tt> */
+#define MXC_R_ICC_REGCTRL                  ((uint32_t)0x00000204UL) /**< Offset from ICC Base Address: <tt> 0x0204</tt> */
+#define MXC_R_ICC_REGION                   ((uint32_t)0x00000208UL) /**< Offset from ICC Base Address: <tt> 0x0208</tt> */
+#define MXC_R_ICC_PFMCTRL                  ((uint32_t)0x00000300UL) /**< Offset from ICC Base Address: <tt> 0x0300</tt> */
+#define MXC_R_ICC_PFMCNT                   ((uint32_t)0x00000304UL) /**< Offset from ICC Base Address: <tt> 0x0304</tt> */
 #define MXC_R_ICC_INVALIDATE               ((uint32_t)0x00000700UL) /**< Offset from ICC Base Address: <tt> 0x0700</tt> */
 /**@} end of group icc_registers */
 
@@ -140,6 +159,53 @@ typedef struct {
 
 /**
  * @ingroup  icc_registers
+ * @defgroup ICC_WAY ICC_WAY
+ * @brief    Cache Way Control Register.
+ * @{
+ */
+#define MXC_F_ICC_WAY_WAY_POS                          0 /**< WAY_WAY Position */
+#define MXC_F_ICC_WAY_WAY                              ((uint32_t)(0x1UL << MXC_F_ICC_WAY_WAY_POS)) /**< WAY_WAY Mask */
+
+/**@} end of group ICC_WAY_Register */
+
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_REGCTRL ICC_REGCTRL
+ * @brief    Regional Control Register.
+ * @{
+ */
+#define MXC_F_ICC_REGCTRL_EN_POS                       0 /**< REGCTRL_EN Position */
+#define MXC_F_ICC_REGCTRL_EN                           ((uint32_t)(0xFFUL << MXC_F_ICC_REGCTRL_EN_POS)) /**< REGCTRL_EN Mask */
+
+#define MXC_F_ICC_REGCTRL_EXC_POS                      8 /**< REGCTRL_EXC Position */
+#define MXC_F_ICC_REGCTRL_EXC                          ((uint32_t)(0xFFUL << MXC_F_ICC_REGCTRL_EXC_POS)) /**< REGCTRL_EXC Mask */
+
+/**@} end of group ICC_REGCTRL_Register */
+
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_PFMCTRL ICC_PFMCTRL
+ * @brief    Performance Control Register.
+ * @{
+ */
+#define MXC_F_ICC_PFMCTRL_EN_POS                       0 /**< PFMCTRL_EN Position */
+#define MXC_F_ICC_PFMCTRL_EN                           ((uint32_t)(0x1UL << MXC_F_ICC_PFMCTRL_EN_POS)) /**< PFMCTRL_EN Mask */
+
+/**@} end of group ICC_PFMCTRL_Register */
+
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_PFMCNT ICC_PFMCNT
+ * @brief    Performance Counter Register.
+ * @{
+ */
+#define MXC_F_ICC_PFMCNT_CNT_POS                       0 /**< PFMCNT_CNT Position */
+#define MXC_F_ICC_PFMCNT_CNT                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_ICC_PFMCNT_CNT_POS)) /**< PFMCNT_CNT Mask */
+
+/**@} end of group ICC_PFMCNT_Register */
+
+/**
+ * @ingroup  icc_registers
  * @defgroup ICC_INVALIDATE ICC_INVALIDATE
  * @brief    Invalidate All Registers.
  * @{
@@ -148,6 +214,28 @@ typedef struct {
 #define MXC_F_ICC_INVALIDATE_INVALID                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_ICC_INVALIDATE_INVALID_POS)) /**< INVALIDATE_INVALID Mask */
 
 /**@} end of group ICC_INVALIDATE_Register */
+
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_LBOUND ICC_LBOUND
+ * @brief    Regional Low Bound Register.
+ * @{
+ */
+#define MXC_F_ICC_REG_LBOUND_BOUND_POS                 0 /**< REG_LBOUND_BOUND Position */
+#define MXC_F_ICC_REG_LBOUND_BOUND                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_ICC_REG_LBOUND_BOUND_POS)) /**< REG_LBOUND_BOUND Mask */
+
+/**@} end of group ICC_REG_LBOUND_Register */
+
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_HBOUND ICC_HBOUND
+ * @brief    DMA Channel Status Register.
+ * @{
+ */
+#define MXC_F_ICC_REG_HBOUND_BOUND_POS                 0 /**< REG_HBOUND_BOUND Position */
+#define MXC_F_ICC_REG_HBOUND_BOUND                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_ICC_REG_HBOUND_BOUND_POS)) /**< REG_HBOUND_BOUND Mask */
+
+/**@} end of group ICC_REG_HBOUND_Register */
 
 #ifdef __cplusplus
 }
