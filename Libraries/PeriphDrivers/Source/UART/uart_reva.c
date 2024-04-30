@@ -64,7 +64,7 @@ bool g_is_state_initialized = false;
 /* **** Function Prototypes **** */
 
 /* Internal function for initializing the internal state array. */
-inline void MXC_UART_RevB_Init_State(void)
+void MXC_UART_RevB_Init_State(void)
 {
     uart_reva_req_state_t default_state = DEFAULT_UART_REVA_REQ_STATE;
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
