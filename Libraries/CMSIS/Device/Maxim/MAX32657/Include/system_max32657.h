@@ -48,11 +48,7 @@ extern "C" {
 #endif
 
 #ifndef IPO_FREQ
-#define IPO_FREQ 100000000
-#endif
-
-#ifndef ISO_FREQ
-#define ISO_FREQ 60000000
+#define IPO_FREQ 50000000
 #endif
 
 #ifndef ERFO_FREQ
