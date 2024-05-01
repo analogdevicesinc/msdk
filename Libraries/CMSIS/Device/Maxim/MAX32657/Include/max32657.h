@@ -383,6 +383,19 @@ typedef enum {
 #define MXC_CFG_GPIO_INSTANCES (1)
 #define MXC_CFG_GPIO_PINS_PORT (32)
 
+/* Utility macros
+
+Note(JC): There is only 1 GPIO instance, but for driver compatibility these must be
+implemented.
+
+For GET_IDX and GET_GPIO we return -1 so that other MXC_ASSERTs might error out.
+For GET_IRQ we follow precedent and return the base 0 IRQn, which is the ICE unlock.
+We may want to handle GET_IRQ better...
+*/
+#define MXC_GPIO_GET_IDX(p) ((p) == MXC_GPIO0 ? 0 : -1)
+#define MXC_GPIO_GET_GPIO(i) ((i) == 0 ? MXC_GPIO0 : -1)
+#define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : (IRQn_Type)0)
+
 /* Non-secure Mapping */
 #define MXC_BASE_GPIO0_NS ((uint32_t)0x40008000UL)
 #define MXC_GPIO0_NS ((mxc_gpio_regs_t *)MXC_BASE_GPIO0_NS)
