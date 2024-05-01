@@ -19,15 +19,15 @@
  ******************************************************************************/
 
     .syntax unified
-    .arch armv8-m
+    .arch armv8-m.main
 
     .section .stack
     .align 3
 #ifdef __STACK_SIZE
     .equ    Stack_Size, __STACK_SIZE
 #else
-    // TODO: Update max stack size
-    .equ    Stack_Size, 0x00001000
+    // Default stack size (192KB)
+    .equ    Stack_Size, 0x00030000
 #endif
     .globl    __StackTop
     .globl    __StackLimit
@@ -42,8 +42,8 @@ __StackTop:
 #ifdef __HEAP_SIZE
     .equ    Heap_Size, __HEAP_SIZE
 #else
-    // TODO: Update max heap size
-    .equ    Heap_Size, 0x00000C00
+    // Default heap size (64KB)
+    .equ    Heap_Size, 0x00010000
 #endif
     .globl    __HeapBase
     .globl    __HeapLimit
