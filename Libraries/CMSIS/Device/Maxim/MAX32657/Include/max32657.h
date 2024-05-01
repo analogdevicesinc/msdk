@@ -59,6 +59,7 @@
 /* ================================================================================ */
 
 // clang-format off
+// TODO(ME30): Secure vs non-secure interrupt vectors
 typedef enum {
     NonMaskableInt_IRQn = -14,
     HardFault_IRQn = -13,
@@ -617,11 +618,22 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_UART_S ((uint32_t)0x50042000UL)
 #define MXC_UART_S ((mxc_uart_regs_t *)MXC_BASE_UART_S)
 
+#define MXC_UART_S_GET_UART(i) ((i) == 0 ? MXC_UART_S : 0)
+#define MXC_UART_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_S : 0)
+
+#ifdef MSECURITY_MODE_SECURE
 #define MXC_BASE_UART MXC_BASE_UART_S
 #define MXC_UART MXC_UART_S
 
-#define MXC_UART_S_GET_UART(i) ((i) == 0 ? MXC_UART_S : 0)
-#define MXC_UART_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_S : 0)
+#define MXC_UART_GET_UART(i) MXC_UART_S_GET_UART(i)
+#endif
+
+#ifdef MSECURITY_MODE_NONSECURE
+#define MXC_BASE_UART MXC_BASE_UART_NS
+#define MXC_UART MXC_UART_NS
+
+#define MXC_UART_GET_UART(i) MXC_UART_NS_GET_UART(i)
+#endif
 
 #define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : 0)
 #define MXC_UART_GET_IDX(p) ((p) == MXC_UART_NS ? 0 : (p) == MXC_UART_S ? 0 : -1)
