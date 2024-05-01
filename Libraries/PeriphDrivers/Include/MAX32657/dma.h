@@ -187,6 +187,7 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
 /*************************/
 /**
  * @brief      Initialize DMA resources
+ * @param 	   dma 	Pointer to DMA registers.
  * @details    This initialization is required before using the DMA driver functions.
  * @note       On default this function enables DMA peripheral clock.
  *             if you wish to manage clock and gpio related things in upper level instead of here.
@@ -194,15 +195,18 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
  *             By this flag this function will remove clock and gpio related codes from file.
  * @return     #E_NO_ERROR if successful
  */
-int MXC_DMA_Init(void);
+int MXC_DMA_Init(mxc_dma_regs_t *dma);
 
 /**
  * @brief      De-Initialize DMA resources.
+ * 
+ * @param      dma  Pointer to DMA registers.
  */
-void MXC_DMA_DeInit(void);
+void MXC_DMA_DeInit(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Request DMA channel
+ * @param 	   dma 	Pointer to DMA registers.
  * @details    Returns a handle to the first free DMA channel, which can be used via API calls
  *             or direct access to channel registers using the MXC_DMA_GetCHRegs(int ch) function.
  * @return     Non-negative channel handle (inclusive of zero).
@@ -210,13 +214,13 @@ void MXC_DMA_DeInit(void);
  * @return     #E_BAD_STATE     DMA is not initialized, call MXC_DMA_Init() first.
  * @return     #E_BUSY          DMA is currently busy (locked), try again later.
  */
-int MXC_DMA_AcquireChannel(void);
+int MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Release DMA channel
  * @details    Stops any DMA operation on the channel and returns it to the pool of free channels.
  *
- * @param      ch   DMA channel to release
+ * @param          ch   channel handle to release
  *
  * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
@@ -260,6 +264,7 @@ int MXC_DMA_SetSrcDst(mxc_dma_srcdst_t srcdst);
  *
  * @return     See \ref MXC_Error_Codes for a list of return values
  */
+
 int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t *srcdst);
 
 /**
@@ -280,11 +285,12 @@ int MXC_DMA_SetSrcReload(mxc_dma_srcdst_t srcdstReload);
  *
  * @return     See \ref MXC_Error_Codes for a list of return values
  */
+
 int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t *srcdstReload);
 
 /**
  * @brief      Set channel interrupt callback
- * @param      ch        DMA channel
+ * @param      ch        channel handle
  * @param      callback  Pointer to a function to call when the channel
  *                       interrupt flag is set and interrupts are enabled or
  *                       when DMA is shutdown by the driver.
@@ -301,8 +307,8 @@ int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t *srcdstReload);
  *             reason is either #E_NO_ERROR for a DMA interrupt or #E_SHUTDOWN
  *             if the DMA is being shutdown.
  *
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR
+ *             otherwise
  */
 int MXC_DMA_SetCallback(int ch, void (*callback)(int, int));
 
@@ -311,7 +317,7 @@ int MXC_DMA_SetCallback(int ch, void (*callback)(int, int));
  * @note       Each channel has two interrupts (complete, and count to zero).
  *             To enable complete, pass true for chdis. To enable count to zero,
  *             pass true for ctz.
- * @param      ch DMA channel
+ * @param      ch Channel Handle
  * @param      chdis Enable channel complete interrupt
  * @param      ctz Enable channel count to zero interrupt.
  * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
@@ -322,36 +328,32 @@ int MXC_DMA_SetChannelInterruptEn(int ch, bool chdis, bool ctz);
  * @brief      Enable channel interrupt
  * @note       Each channel has two interrupts (complete, and count to zero)
                which must also be enabled with MXC_DMA_SetChannelInterruptEn()
- * @param      ch   DMA channel to enable interrupts for.
+ * @param      ch   channel handle
  * @param      flags The flags to enable
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_ChannelEnableInt(int ch, int flags);
 
 /**
  * @brief      Disable channel interrupt
- * @param      ch   DMA channel to clear flags for.
+ * @param      ch   channel handle
  * @param      flags The flags to disable
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_ChannelDisableInt(int ch, int flags);
 
 /**
  * @brief      Read channel interrupt flags
- * @param      ch   DMA channel to get interrupt status from. 
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             flags otherwise, \ref MXC_Error_Codes
+ * @param      ch   channel handle
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, flags otherwise
  */
 int MXC_DMA_ChannelGetFlags(int ch);
 
 /**
  * @brief      Clear channel interrupt flags
- * @param      ch   DMA channel to clear the interrupt flag for.
+ * @param      ch   channel handle
  * @param      flags The flags to clear
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_ChannelClearFlags(int ch, int flags);
 
@@ -359,40 +361,36 @@ int MXC_DMA_ChannelClearFlags(int ch, int flags);
  * @brief      Enable channel interrupt
  * @note       Each channel has two interrupts (complete, and count to zero)
                which must also be enabled with MXC_DMA_SetChannelInterruptEn()
- * @param      ch   DMA channel to enable interrupts for.
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
+ * @param      ch   channel handle
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_EnableInt(int ch);
 
 /**
  * @brief      Disable channel interrupt
- * @param      ch   DMA channel to disable interrupts for.
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes 
+ * @param      ch   channel handle
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_DisableInt(int ch);
 
 /**
  * @brief      Start transfer
- * @param      ch   DMA channel
- * @details    Start the DMA channel transfer, assumes that MXC_DMA_SetSrcDstCnt() has been called beforehand.
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes 
+ * @param      ch   channel handle
+ * @note       Start the DMA channel transfer, assumes that MXC_DMA_SetSrcDstCnt() has been called beforehand.
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_Start(int ch);
 
 /**
  * @brief      Stop DMA transfer, irrespective of status (complete or in-progress)
- * @param      ch  DMA channel
- * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
- *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
+ * @param      ch   channel handle
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_Stop(int ch);
 
 /**
  * @brief      Get a pointer to the DMA channel registers
- * @param      ch   DMA channel
+ * @param      ch   channel handle
  * @note       If direct access to DMA channel registers is required, this
  *             function can be used on a channel handle returned by MXC_DMA_AcquireChannel().
  * @return     NULL if an unused or invalid channel handle, or a valid pointer otherwise
@@ -401,10 +399,11 @@ mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
 
 /**
  * @brief      Interrupt handler function
+ * @param 	   dma 	Pointer to DMA registers.
  * @details    Call this function as the ISR for each DMA channel under driver control.
  *             Interrupt flags for channel ch will be automatically cleared before return.
  */
-void MXC_DMA_Handler(void);
+void MXC_DMA_Handler(mxc_dma_regs_t *dma);
 
 /*************************/
 /* High Level Functions  */
@@ -415,6 +414,7 @@ void MXC_DMA_Handler(void);
  * @note       The user must have the DMA interrupt enabled and call
  *             MXC_DMA_Handler() from the ISR.
  *
+ * @param 	   dma 	Pointer to DMA registers.
  * @param      dest     pointer to destination memory
  * @param      src      pointer to source memory
  * @param      len      number of bytes to copy
@@ -422,20 +422,22 @@ void MXC_DMA_Handler(void);
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t callback);
+int MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
+                   mxc_dma_complete_cb_t callback);
 
 /**
  * @brief      Performs a memcpy, using DMA, optionally asynchronous
  * @note       The user must have the DMA interrupt enabled and call
  *             MXC_DMA_Handler() from the ISR.
  *
+ * @param 	   dma 	Pointer to DMA registers.
  * @param      config   The channel config struct
  * @param      firstSrcDst  The source, destination, and count for the first transfer
  * @param      callback function is called when transfer is complete
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
+int MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
                        mxc_dma_trans_chain_t callback);
 /**
  * For other functional uses of DMA (UART, SPI, etc) see the appropriate peripheral driver

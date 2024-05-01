@@ -91,8 +91,6 @@ typedef enum {
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
     MXC_SYS_PERIPH_CLOCK_TRNG =
         (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable TRNG clock */
-    // MXC_SYS_PERIPH_CLOCK_SMPHR =
-    //     (MXC_F_GCR_PCLKDIS1_SMPHR_POS + 32), /**< Disable SMPHR clock */
     MXC_SYS_PERIPH_CLOCK_CRC =
         (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable CRC clock */
     MXC_SYS_PERIPH_CLOCK_AES =
