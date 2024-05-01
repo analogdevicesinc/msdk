@@ -149,6 +149,8 @@ typedef enum {
 #define __NVIC_PRIO_BITS          4U      /**< NVIC interrupt priority bits */
 #define __Vendor_SysTickConfig    0U      /**< Is 1 if different SysTick counter is used */
 
+#include <core_cm33.h>
+
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
 /* ================================================================================ */
