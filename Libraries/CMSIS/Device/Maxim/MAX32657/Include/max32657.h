@@ -604,7 +604,7 @@ We may want to handle GET_IRQ better...
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
 #define MXC_UART_INSTANCES (1)
-#define MXC_UART_FIFO_DEPTH (8) // TOD(ME30): Check this is correct.
+#define MXC_UART_FIFO_DEPTH (8) // TODO(ME30): Check this is correct.
 
 /* Non-secure Mapping */
 #define MXC_BASE_UART_NS ((uint32_t)0x40042000UL)
