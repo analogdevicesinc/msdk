@@ -31,6 +31,7 @@
 #define MXC_NUMCORES 1
 
 #include <stdint.h>
+#include "system_max32657.h"
 
 #ifndef FALSE
 #define FALSE (0)
@@ -767,5 +768,13 @@ We may want to handle GET_IRQ better...
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
 #define MXC_SETFIELD(reg, mask, setting) ((reg) = ((reg) & ~(mask)) | ((setting) & (mask)))
+
+/******************************************************************************/
+/*                                                         CPACR Definitions  */
+/* Note: Added by Maxim Integrated, as these are missing from CMSIS/Core/Include/core_cm33.h */
+#define SCB_CPACR_CP10_Pos 20 /*!< SCB CPACR: Coprocessor 10 Position */
+#define SCB_CPACR_CP10_Msk (0x3UL << SCB_CPACR_CP10_Pos) /*!< SCB CPACR: Coprocessor 10 Mask */
+#define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
+#define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
 #endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX326657_INCLUDE_MAX32657_H_
