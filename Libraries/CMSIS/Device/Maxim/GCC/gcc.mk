@@ -255,6 +255,26 @@ endif
 # - cortex-m33
 MCPU ?= cortex-m4
 
+ifeq "$(MCPU)" "cortex-m33"
+# Security mode for the target processor.
+# Acceptable values are
+# - SECURE
+# - NONSECURE
+#
+# When "SECURE" is selected, the build system will link the program binary into the secure
+# memory sections and map peripheral instances onto their corresponding secure
+# address aliases.  "MSECURITY_MODE_SECURE" will be defined at compile time.
+#
+# When "NONSCURE" is selected, the program binary will be linked into the non-secure memory
+# sections and peripherals will be mapped onto the non-secure address aliases.
+# It should be noted that the M33 will boot into secure mode by default, which has access to
+# both the secure and non-secure addresses and aliases.  "MSECURITY_MODE_NONSECURE" will be defined
+# at compile time.
+MSECURITY_MODE ?= SECURE
+
+PROJ_CFLAGS += -DMSECURITY_MODE_$(MSECURITY_MODE)
+endif
+
 # Float ABI options:
 # See https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html (-mfloat-abi)
 # Specifies which floating-point ABI to use. Permissible values are: ‘soft’, ‘softfp’ and ‘hard’.
