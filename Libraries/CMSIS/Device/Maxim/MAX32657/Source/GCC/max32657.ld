@@ -1,8 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +17,12 @@
  ******************************************************************************/
 
 MEMORY {
-    ROM        (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB ROM */
-    FLASH      (rx) : ORIGIN = 0x10000000, LENGTH = 0x00080000 /* 512KB Flash */
-    SRAM      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00020000 /* 128kB SRAM */
+    ROM_S         (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB secure ROM (ROM always secure) */
+    FLASH_NS      (rx) : ORIGIN = 0x01000000, LENGTH = 0x00100000 /* 1MB non-secure Flash */
+    SRAM_NS      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00040000 /* 256KB non-secure SRAM */
+    FLASH_S       (rx) : ORIGIN = 0x11000000, LENGTH = 0x00100000 /* 1MB secure Flash */
+    FLASH_INFO_S  (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
+    SRAM_S       (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00040000 /* 256KB secure SRAM */
 }
 
 SECTIONS {
@@ -29,7 +30,7 @@ SECTIONS {
     {
         KEEP(*(.rom_vector))
         *(.rom_handlers*)
-    } > ROM
+    } > ROM_S
 
     .text :
     {
@@ -58,12 +59,12 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > FLASH
+    } > FLASH_S
 
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > FLASH
+    } > FLASH_S
 
     /* Binary import */
     .bin_storage :
@@ -73,7 +74,7 @@ SECTIONS {
       KEEP(*(.bin_storage_img))
       _bin_end_ = .;
       . = ALIGN(4);
-    } > FLASH
+    } > FLASH_S
     
     .rom_code :
     {
@@ -81,7 +82,7 @@ SECTIONS {
         _sran_code = .;
         *(.rom_code_section)
         _esran_code = .;
-    } > ROM
+    } > ROM_S
 
     .flash_code :
     {
@@ -89,7 +90,7 @@ SECTIONS {
         _sran_code = .;
         *(.flash_code_section)
         _esran_code = .;
-    } > FLASH
+    } > FLASH_S
 
     .sram_code :
     {
@@ -97,7 +98,7 @@ SECTIONS {
         _sran_code = .;
         *(.sram_code_section)
         _esran_code = .;
-    } > SRAM
+    } > SRAM_S
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -106,7 +107,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
-    } > FLASH
+    } > FLASH_S
 
     .data :
     {
@@ -137,7 +138,7 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>FLASH
+    } > SRAM_S AT>FLASH_S
     __load_data = LOADADDR(.data);
 
     .bss :
@@ -145,24 +146,12 @@ SECTIONS {
         . = ALIGN(4);
         _bss = .;
         *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
-        *(COMMON)
         _ebss = ALIGN(., 4);
-    } > SRAM
-
-    .shared :
-    {
-        . = ALIGN(4);
-        _shared = .;
-        *(.mailbox*)
-        . = ALIGN(4);
-        *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
-        _eshared = ALIGN(., 4);
-    } > SRAM AT>FLASH
-    __shared_data = LOADADDR(.shared);
+    } > SRAM_S
 
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */
-    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
+    __StackTop = ORIGIN(SRAM_S) + LENGTH(SRAM_S);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
     /* .stack_dummy section doesn't contains any symbols. It is only
@@ -171,27 +160,18 @@ SECTIONS {
     .stack_dummy (COPY):
     {
         *(.stack*)
-    } > SRAM
+    } > SRAM_S
 
     .heap (COPY):
     {
         . = ALIGN(4);
         *(.heap*)
         __HeapLimit = ABSOLUTE(__StackLimit);
-    } > SRAM
+    } > SRAM_S
 
     PROVIDE(__stack = __StackTop);
 
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
 
-    /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system. */
-    .riscv_flash :
-    {
-        /* Align address to mod 256 with a small offset. This is required to match the flash page size.*/
-        . = ALIGN(256); /* ALIGN operatator is used here.  Note that (. & 0x1FFFFF00) was used in the past, but a strange bug was seen on Windows where the & did not behave as expected.*/
-        . += 0x100;
-        _riscv_boot = .;
-        KEEP(*riscv.o (.text*))
-    } > FLASH
 }
