@@ -606,6 +606,10 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_FLC_S MXC_BASE_FLC
 #define MXC_FLC_S MXC_FLC
 
+// Note(JC): There is only one flash instance, but some bottom-level RevX implementations
+// depend on MXC_FLC_GET_FLC
+#define MXC_FLC_GET_FLC(i) MXC_FLC
+
 /******************************************************************************/
 /*                                                  Internal Cache Controller */
 #define MXC_ICC_INSTANCES (1)
