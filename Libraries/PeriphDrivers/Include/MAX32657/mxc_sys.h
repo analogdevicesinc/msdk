@@ -105,9 +105,8 @@ typedef enum {
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
+// TODO(ME30): CLKCTRL sysclk_sel values seem incorrect.
 typedef enum {
-    MXC_SYS_CLOCK_ISO =
-        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
     MXC_SYS_CLOCK_IPO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
     MXC_SYS_CLOCK_IBRO =

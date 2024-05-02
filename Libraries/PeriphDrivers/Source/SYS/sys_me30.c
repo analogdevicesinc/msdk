@@ -29,7 +29,6 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
-#include "lpgcr_regs.h"
 #include "gcr_regs.h"
 #include "fcr_regs.h"
 #include "mcr_regs.h"
@@ -61,14 +60,14 @@ extern uint32_t _binary_riscv_bin_start;
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     int err = E_NO_ERROR;
-    uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
+    uint32_t *infoblock = (uint32_t *)MXC_INFO_MEM_BASE;
 
     if (usn == NULL) {
         return E_NULL_PTR;
     }
 
     /* Read the USN from the info block */
-    MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
+    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
 
     memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
 
@@ -96,7 +95,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
         err = MXC_AES_Init();
         if (err) {
-            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
             return err;
         }
 
@@ -114,7 +113,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
         err = MXC_AES_Generic(&aes_req);
         if (err) {
-            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
             return err;
         }
 
@@ -122,7 +121,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
         // Verify Checksum
         if (check_csum[0] != checksum[1] || check_csum[1] != checksum[0]) {
-            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
             return E_INVALID;
         }
     }
@@ -131,7 +130,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     usn[11] = ((infoblock[3] & 0x7F800000) >> 23);
     usn[12] = ((infoblock[4] & 0x007F8000) >> 15);
 
-    MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     return err;
 }
@@ -146,10 +145,7 @@ int MXC_SYS_GetRevision(void)
 int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 {
     /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 and 64 for the perckcn1 register. */
-    if (clock > 63) {
-        clock -= 64;
-        return !(MXC_LPGCR->pclkdis & (0x1 << clock));
-    } else if (clock > 31) {
+    if (clock > 31) {
         clock -= 32;
         return !(MXC_GCR->pclkdis1 & (0x1 << clock));
     } else {
@@ -161,10 +157,7 @@ int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 {
     /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 and 64 for the perckcn1 register. */
-    if (clock > 63) {
-        clock -= 64;
-        MXC_LPGCR->pclkdis |= (0x1 << clock);
-    } else if (clock > 31) {
+    if (clock > 31) {
         clock -= 32;
         MXC_GCR->pclkdis1 |= (0x1 << clock);
     } else {
@@ -176,10 +169,7 @@ void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 {
     /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 and 64 for the perckcn1 register. */
-    if (clock > 63) {
-        clock -= 64;
-        MXC_LPGCR->pclkdis &= ~(0x1 << clock);
-    } else if (clock > 31) {
+    if (clock > 31) {
         clock -= 32;
         MXC_GCR->pclkdis1 &= ~(0x1 << clock);
     } else {
@@ -232,10 +222,11 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
         break;
 
-    case MXC_SYS_CLOCK_EXTCLK:
-        // No "RDY" bit to monitor, so just configure the GPIO
-        return MXC_GPIO_Config(&gpio_cfg_extclk);
-        break;
+    // TODO(ME30): EXTCLK is missing from register definitions
+    // case MXC_SYS_CLOCK_EXTCLK:
+    //     // No "RDY" bit to monitor, so just configure the GPIO
+    //     return MXC_GPIO_Config(&gpio_cfg_extclk);
+    //     break;
 
     case MXC_SYS_CLOCK_INRO:
         // The 80k clock is always enabled
@@ -243,20 +234,21 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERFO:
-        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_LDOTXEN | MXC_F_GCR_BTLELDOCTRL_LDORXEN;
+        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_TX_EN | MXC_F_GCR_BTLELDOCTRL_RX_EN;
 
         /* Initialize kickstart circuit
            Select Kick start circuit clock source- IPO/ISO 
         */
-        MXC_FCR->erfoks = ((MXC_S_FCR_ERFOKS_KSCLKSEL_ISO)
-                           /* Set Drive strengh - 0x1,0x2,0x3 */
-                           | ((0x1) << MXC_F_FCR_ERFOKS_KSERFODRIVER_POS)
-                           /* Set kick count 1-127 */
-                           | (0x8)
-                           /* Set double pulse length  On/Off*/
-                           | (0 & MXC_F_FCR_ERFOKS_KSERFO2X)
-                           /* Enable On/Off */
-                           | (MXC_F_FCR_ERFOKS_KSERFO_EN));
+       // TODO(ME30): MXC_FCR missing ERFOKS definition
+        // MXC_FCR->erfoks = ((MXC_S_FCR_ERFOKS_KSCLKSEL_ISO)
+        //                    /* Set Drive strengh - 0x1,0x2,0x3 */
+        //                    | ((0x1) << MXC_F_FCR_ERFOKS_KSERFODRIVER_POS)
+        //                    /* Set kick count 1-127 */
+        //                    | (0x8)
+        //                    /* Set double pulse length  On/Off*/
+        //                    | (0 & MXC_F_FCR_ERFOKS_KSERFO2X)
+        //                    /* Enable On/Off */
+        //                    | (MXC_F_FCR_ERFOKS_KSERFO_EN));
 
         /* Enable ERFO */
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
@@ -295,15 +287,16 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IBRO_EN;
         break;
 
-    case MXC_SYS_CLOCK_EXTCLK:
-        /*
-        There's not a great way to disable the external clock.
-        Deinitializing the GPIO here may have unintended consequences
-        for application code.
-        Selecting a different system clock source is sufficient
-        to "disable" the EXT_CLK source.
-        */
-        break;
+    // TODO(ME30): Missing EXTCLK register definition
+    // case MXC_SYS_CLOCK_EXTCLK:
+    //     /*
+    //     There's not a great way to disable the external clock.
+    //     Deinitializing the GPIO here may have unintended consequences
+    //     for application code.
+    //     Selecting a different system clock source is sufficient
+    //     to "disable" the EXT_CLK source.
+    //     */
+    //     break;
 
     case MXC_SYS_CLOCK_INRO:
         // The 80k clock is always enabled
@@ -356,29 +349,11 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
-    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
 
     switch (clock) {
-    case MXC_SYS_CLOCK_ISO:
-
-        // Enable ISO clock
-        if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ISO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ISO_EN;
-
-            // Check if ISO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ISO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
-        }
-
-        // Set ISO clock as System Clock
-        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO);
-
-        break;
     case MXC_SYS_CLOCK_IPO:
 
         // Enable IPO clock
@@ -415,20 +390,21 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         break;
 
-    case MXC_SYS_CLOCK_EXTCLK:
-        /*
-        There's not "EXT_CLK RDY" bit for the ME17, so we'll
-        blindly enable (configure GPIO) the external clock every time.
-        */
-        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-        if (err)
-            return err;
+    // TODO(ME30): Missing EXTCLK register definition
+    // case MXC_SYS_CLOCK_EXTCLK:
+    //     /*
+    //     There's not "EXT_CLK RDY" bit for the ME17, so we'll
+    //     blindly enable (configure GPIO) the external clock every time.
+    //     */
+    //     err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+    //     if (err)
+    //         return err;
 
-        // Set EXT clock as System Clock
-        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+    //     // Set EXT clock as System Clock
+    //     MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+    //                  MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
-        break;
+    //     break;
 
     case MXC_SYS_CLOCK_ERFO:
 
@@ -514,52 +490,13 @@ mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
     /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 and 64 for the rst register. */
-    if (reset > 63) {
-        reset -= 64;
-        MXC_LPGCR->rst = (0x1 << reset);
-        while (MXC_LPGCR->rst & (0x1 << reset)) {}
-    } else if (reset > 31) {
+    if (reset > 31) {
         reset -= 32;
         MXC_GCR->rst1 = (0x1 << reset);
         while (MXC_GCR->rst1 & (0x1 << reset)) {}
     } else {
         MXC_GCR->rst0 = (0x1 << reset);
         while (MXC_GCR->rst0 & (0x1 << reset)) {}
-    }
-}
-
-/* ************************************************************************** */
-void MXC_SYS_RISCVRun(void)
-{
-    /* Disable the the RSCV */
-    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
-
-    /* Set the interrupt vector base address */
-    MXC_FCR->urvbootaddr = (uint32_t)&_binary_riscv_bin_start;
-
-    /* Power up the RSCV */
-    MXC_GCR->pclkdis1 &= ~(MXC_F_GCR_PCLKDIS1_CPU1);
-
-    /* CPU1 reset */
-    MXC_GCR->rst1 |= MXC_F_GCR_RST1_CPU1;
-}
-
-/* ************************************************************************** */
-void MXC_SYS_RISCVShutdown(void)
-{
-    /* Disable the the RSCV */
-    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
-}
-
-/* ************************************************************************** */
-uint32_t MXC_SYS_RiscVClockRate(void)
-{
-    // If in LPM mode and the PCLK is selected as the RV32 clock source,
-    if (((MXC_GCR->pm & MXC_F_GCR_PM_MODE) == MXC_S_GCR_PM_MODE_LPM) &&
-        (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LPMCLKSEL)) {
-        return ISO_FREQ;
-    } else {
-        return PeripheralClock;
     }
 }
 
