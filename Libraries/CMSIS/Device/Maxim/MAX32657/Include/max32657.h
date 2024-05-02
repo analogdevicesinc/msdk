@@ -216,8 +216,11 @@ typedef enum {
 #define MXC_BASE_GCR_S ((uint32_t)0x50000000UL)
 #define MXC_GCR_S ((mxc_gcr_regs_t *)MXC_BASE_GCR_S)
 
-#define MXC_BASE_GCR MXC_BASE_GCR_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_GCR MXC_GCR_S
+#else
+#define MXC_GCR MXC_GCR_NS
+#endif
 
 /******************************************************************************/
 /*                                            Non-battery backed SI Registers */
