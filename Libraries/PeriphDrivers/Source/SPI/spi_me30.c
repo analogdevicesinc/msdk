@@ -66,9 +66,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     }
 
     // Configure GPIO for spi
-    if (spi == MXC_SPI1) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
+    MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI);
 
 #if (TARGET != MAX78000 || TARGET_NUM == 32655)
 
@@ -86,86 +85,36 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         }
 
 #endif
-        //clear mask
-        gpio_cfg_spi.mask = 0;
+    //clear mask
+    gpio_cfg_spi.mask = 0;
 
-        // check rest of the pins
-        if (pins.clock) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_23;
-        }
-
-        if (pins.miso) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_22;
-        }
-
-        if (pins.mosi) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_21;
-        }
-
-        if (pins.sdio2) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_24;
-        }
-
-        if (pins.sdio3) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_25;
-        }
-
-        if (pins.ss0) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_20;
-        }
-
-        gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
-#ifdef MXC_SPI0
-    } else if (spi == MXC_SPI0) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-
-        //Define pins
-        if (pins.ss1) {
-            gpio_cfg_spi.mask = MXC_GPIO_PIN_11;
-            gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
-            MXC_GPIO_Config(&gpio_cfg_spi);
-        }
-
-        if (pins.ss2) {
-            gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
-            gpio_cfg_spi.mask = MXC_GPIO_PIN_10;
-            MXC_GPIO_Config(&gpio_cfg_spi);
-        }
-
-        //clear mask
-        gpio_cfg_spi.mask = 0;
-
-        // check rest of the pins
-        if (pins.clock) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_7;
-        }
-
-        if (pins.miso) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_6;
-        }
-
-        if (pins.mosi) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_5;
-        }
-
-        if (pins.sdio2) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_8;
-        }
-
-        if (pins.sdio3) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_9;
-        }
-
-        if (pins.ss0) {
-            gpio_cfg_spi.mask |= MXC_GPIO_PIN_4;
-        }
-
-        gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
-#endif
-    } else {
-        return E_NO_DEVICE;
+    // TODO(ME30): Validate pin assignments
+    // check rest of the pins
+    if (pins.clock) {
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_23;
     }
+
+    if (pins.miso) {
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_22;
+    }
+
+    if (pins.mosi) {
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_21;
+    }
+
+    if (pins.sdio2) {
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_24;
+    }
+
+    if (pins.sdio3) {
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_25;
+    }
+
+    if (pins.ss0) {
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_20;
+    }
+
+    gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
 
     MXC_GPIO_Config(&gpio_cfg_spi);
 #else
@@ -185,15 +134,7 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 
     MXC_SPI_RevA1_Shutdown((mxc_spi_reva_regs_t *)spi);
 
-    if (spi == MXC_SPI1) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
-#ifdef MXC_SPI0
-    } else if (spi == MXC_SPI0) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
-#endif
-    } else {
-        return E_NO_DEVICE;
-    }
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI);
 
     return E_NO_ERROR;
 }
@@ -207,42 +148,33 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 {
     int retval;
 
-    if (spi == MXC_SPI1) {
-        retval = PeripheralClock;
-#ifdef MXC_SPI0 // SPI0 is not accessible from the RISC core.
-    } else if (spi == MXC_SPI0) {
-        int sys_clk = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
-                      MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
-        switch (sys_clk) {
-        case MXC_SYS_CLOCK_IPO:
-            retval = IPO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_IBRO:
-            retval = IBRO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_ISO:
-            retval = ISO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_INRO:
-            retval = INRO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_ERTCO:
-            retval = ERTCO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_EXTCLK:
-            retval = EXTCLK_FREQ;
-            break;
+    // TODO(ME30): Validate this logic
+    int sys_clk = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
+                    MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
+    switch (sys_clk) {
+    case MXC_SYS_CLOCK_IPO:
+        retval = IPO_FREQ;
+        break;
+    case MXC_SYS_CLOCK_IBRO:
+        retval = IBRO_FREQ;
+        break;
+    case MXC_SYS_CLOCK_INRO:
+        retval = INRO_FREQ;
+        break;
+    case MXC_SYS_CLOCK_ERTCO:
+        retval = ERTCO_FREQ;
+        break;
+    // TODO(ME30): EXTCLK definition is missing from registers
+    // case MXC_SYS_CLOCK_EXTCLK:
+    //     retval = EXTCLK_FREQ;
+    //     break;
 #if TARGET_NUM == 32655 || TARGET_NUM == 32680
         case MXC_SYS_CLOCK_ERFO:
             retval = ERFO_FREQ;
             break;
 #endif
-        default:
-            return E_BAD_STATE;
-        }
-#endif // MXC_SPI0
-    } else {
-        return E_BAD_PARAM;
+    default:
+        return E_BAD_STATE;
     }
 
     retval /= 2;
