@@ -24,7 +24,6 @@
 #include "gpio_reva.h"
 #include "gpio_common.h"
 #include "mxc_sys.h"
-#include "lpgcr_regs.h"
 #include "mcr_regs.h"
 #include "pwrseq_regs.h"
 
@@ -53,14 +52,6 @@ int MXC_GPIO_Init(uint32_t portmask)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     }
 
-    if (portmask & 0x2) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
-    }
-
-    if (portmask & 0x4) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
-    }
-
     return MXC_GPIO_Common_Init(portmask);
 }
 
@@ -70,14 +61,6 @@ int MXC_GPIO_Shutdown(uint32_t portmask)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     }
 
-    if (portmask & 0x2) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO1);
-    }
-
-    if (portmask & 0x4) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO2);
-    }
-
     return E_NO_ERROR;
 }
 
@@ -85,14 +68,6 @@ int MXC_GPIO_Reset(uint32_t portmask)
 {
     if (portmask & 0x1) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_GPIO0);
-    }
-
-    if (portmask & 0x2) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_GPIO1);
-    }
-
-    if (portmask & 0x4) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_GPIO2);
     }
 
     return E_NO_ERROR;
@@ -118,88 +93,46 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return error;
     }
 
-    if (cfg->port == MXC_GPIO3) {
-        switch (cfg->func) {
-        case MXC_GPIO_FUNC_IN:
-            MXC_MCR->gpio3_ctrl &= ~(P30_OUT_EN(cfg->mask) | P31_OUT_EN(cfg->mask));
-            MXC_MCR->outen &= ~(SQWAVE_OUT_EN(cfg->mask) | PDOWN_OUT_EN(cfg->mask));
-            break;
+    // Configure alternate function
+    error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
 
-        case MXC_GPIO_FUNC_OUT:
-            MXC_MCR->gpio3_ctrl |= P30_OUT_EN(cfg->mask) | P31_OUT_EN(cfg->mask);
-            MXC_MCR->outen &= ~(SQWAVE_OUT_EN(cfg->mask) | PDOWN_OUT_EN(cfg->mask));
-            break;
+    // Configure the pad
+    // TODO(ME30): "ps" (weak vs strong pull-up/down select) register field missing
+    switch (cfg->pad) {
+    case MXC_GPIO_PAD_NONE:
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        break;
 
-        case MXC_GPIO_FUNC_ALT1:
-            MXC_MCR->gpio3_ctrl |= P30_OUT_EN(cfg->mask) | P31_OUT_EN(cfg->mask);
-            MXC_MCR->outen |= SQWAVE_OUT_EN(cfg->mask) | PDOWN_OUT_EN(cfg->mask);
-            break;
+    case MXC_GPIO_PAD_WEAK_PULL_UP:
+        gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        // gpio->ps &= ~cfg->mask;
+        break;
 
-        default:
-            return E_NOT_SUPPORTED;
-        }
+    case MXC_GPIO_PAD_PULL_UP:
+        gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        // gpio->ps |= cfg->mask;
+        break;
 
-        switch (cfg->pad) {
-        case MXC_GPIO_PAD_NONE:
-            MXC_MCR->gpio3_ctrl |= P30_PULL_DIS(cfg->mask) | P31_PULL_DIS(cfg->mask);
-            break;
+    case MXC_GPIO_PAD_WEAK_PULL_DOWN:
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
+        // gpio->ps &= ~cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_PULL_UP:
-        case MXC_GPIO_PAD_WEAK_PULL_UP:
-            MXC_MCR->gpio3_ctrl |= P30_DATA_OUT(cfg->mask) | P31_DATA_OUT(cfg->mask);
-            MXC_MCR->gpio3_ctrl &= ~(P30_PULL_DIS(cfg->mask) | P31_PULL_DIS(cfg->mask));
-            break;
+    case MXC_GPIO_PAD_PULL_DOWN:
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
+        // gpio->ps |= cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_PULL_DOWN:
-        case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-            MXC_MCR->gpio3_ctrl &= ~(P30_DATA_OUT(cfg->mask) | P31_DATA_OUT(cfg->mask));
-            MXC_MCR->gpio3_ctrl &= ~(P30_PULL_DIS(cfg->mask) | P31_PULL_DIS(cfg->mask));
-            break;
-
-        default:
-            return E_NOT_SUPPORTED;
-        }
-    } else {
-        // Configure alternate function
-        error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-
-        // Configure the pad
-        switch (cfg->pad) {
-        case MXC_GPIO_PAD_NONE:
-            gpio->padctrl0 &= ~cfg->mask;
-            gpio->padctrl1 &= ~cfg->mask;
-            break;
-
-        case MXC_GPIO_PAD_WEAK_PULL_UP:
-            gpio->padctrl0 |= cfg->mask;
-            gpio->padctrl1 &= ~cfg->mask;
-            gpio->ps &= ~cfg->mask;
-            break;
-
-        case MXC_GPIO_PAD_PULL_UP:
-            gpio->padctrl0 |= cfg->mask;
-            gpio->padctrl1 &= ~cfg->mask;
-            gpio->ps |= cfg->mask;
-            break;
-
-        case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-            gpio->padctrl0 &= ~cfg->mask;
-            gpio->padctrl1 |= cfg->mask;
-            gpio->ps &= ~cfg->mask;
-            break;
-
-        case MXC_GPIO_PAD_PULL_DOWN:
-            gpio->padctrl0 &= ~cfg->mask;
-            gpio->padctrl1 |= cfg->mask;
-            gpio->ps |= cfg->mask;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
+    default:
+        return E_BAD_PARAM;
     }
 
     // Configure the drive strength
@@ -213,122 +146,54 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    uint32_t in = 0;
-
-    if (port == MXC_GPIO3) {
-        if (MXC_MCR->gpio3_ctrl & P30_DATA_IN(mask)) {
-            in |= MXC_GPIO_PIN_0;
-        }
-
-        if (MXC_MCR->gpio3_ctrl & P31_DATA_IN(mask)) {
-            in |= MXC_GPIO_PIN_1;
-        }
-
-        return in;
-    }
-
     return MXC_GPIO_RevA_InGet((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_OutSet(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_MCR->gpio3_ctrl |= P30_DATA_OUT(mask) | P31_DATA_OUT(mask);
-        return;
-    }
-
     MXC_GPIO_RevA_OutSet((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_MCR->gpio3_ctrl &= ~(P30_DATA_OUT(mask) | P31_DATA_OUT(mask));
-        return;
-    }
-
     MXC_GPIO_RevA_OutClr((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    uint32_t out = 0;
-
-    if (port == MXC_GPIO3) {
-        if (MXC_MCR->gpio3_ctrl & P30_DATA_OUT(mask)) {
-            out |= MXC_GPIO_PIN_0;
-        }
-
-        if (MXC_MCR->gpio3_ctrl & P31_DATA_OUT(mask)) {
-            out |= MXC_GPIO_PIN_1;
-        }
-
-        return out;
-    }
-
     return MXC_GPIO_RevA_OutGet((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
 {
-    if (port == MXC_GPIO3) {
-        uint32_t gpio3_cp = MXC_MCR->gpio3_ctrl & ~(P30_DATA_OUT(mask) | P31_DATA_OUT(mask));
-
-        MXC_MCR->gpio3_ctrl = gpio3_cp | P30_DATA_OUT((mask & val)) | P31_DATA_OUT((mask & val));
-        return;
-    }
-
     MXC_GPIO_RevA_OutPut((mxc_gpio_reva_regs_t *)port, mask, val);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_MCR->gpio3_ctrl ^= P30_DATA_OUT(mask) | P31_DATA_OUT(mask);
-        return;
-    }
-
     MXC_GPIO_RevA_OutToggle((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 {
-    if (cfg->port == MXC_GPIO3) {
-        if (pol != MXC_GPIO_INT_BOTH) {
-            return E_NOT_SUPPORTED;
-        }
-
-        return E_NO_ERROR;
-    }
-
     return MXC_GPIO_RevA_IntConfig(cfg, pol);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_PWRSEQ->lpwken3 |= mask;
-        return;
-    }
-
     MXC_GPIO_RevA_EnableInt((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_PWRSEQ->lpwken3 &= ~mask;
-        return;
-    }
-
     MXC_GPIO_RevA_DisableInt((mxc_gpio_reva_regs_t *)port, mask);
 }
 
@@ -347,67 +212,36 @@ void MXC_GPIO_Handler(unsigned int port)
 /* ************************************************************************** */
 void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 {
-    if (port == MXC_GPIO3) {
-        MXC_PWRSEQ->lpwkst3 = flags;
-        return;
-    }
-
     MXC_GPIO_RevA_ClearFlags((mxc_gpio_reva_regs_t *)port, flags);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 {
-    if (port == MXC_GPIO3) {
-        return MXC_PWRSEQ->lpwkst3;
-    }
-
     return MXC_GPIO_RevA_GetFlags((mxc_gpio_reva_regs_t *)port);
 }
 
 /* ************************************************************************** */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        if (vssel == MXC_GPIO_VSSEL_VDDIO) {
-            return E_NOT_SUPPORTED;
-        }
-
-        return E_NO_ERROR;
-    }
-
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_PWRSEQ->lpwken3 |= mask;
-        return;
-    }
-
     MXC_GPIO_RevA_SetWakeEn((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if (port == MXC_GPIO3) {
-        MXC_PWRSEQ->lpwken3 &= ~mask;
-        return;
-    }
-
     MXC_GPIO_RevA_ClearWakeEn((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 {
-    if (port == MXC_GPIO3) {
-        return MXC_PWRSEQ->lpwken3;
-    }
-
     return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
 }
 
