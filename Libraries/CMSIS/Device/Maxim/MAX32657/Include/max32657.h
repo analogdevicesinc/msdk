@@ -233,8 +233,11 @@ typedef enum {
 #define MXC_BASE_SIR_S ((uint32_t)0x50000400UL)
 #define MXC_SIR_S ((mxc_sir_regs_t *)MXC_BASE_SIR_S)
 
-#define MXC_BASE_SIR MXC_BASE_SIR_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_SIR MXC_SIR_S
+#else
+#define MXC_SIR MXC_SIR_NS
+#endif
 
 /******************************************************************************/
 /*                                        Non-Battery Backed Function Control */
@@ -246,6 +249,12 @@ typedef enum {
 /* Secure Mapping */
 #define MXC_BASE_FCR_S ((uint32_t)0x50000800UL)
 #define MXC_FCR_S ((mxc_fcr_regs_t *)MXC_BASE_FCR_S)
+
+#if IS_SECURE_ENVIRONMENT
+#define MXC_FCR MXC_FCR_S
+#else
+#define MXC_FCR_NS
+#endif
 
 /******************************************************************************/
 /*                                                    Windowed Watchdog Timer */
@@ -259,8 +268,11 @@ typedef enum {
 #define MXC_BASE_WDT_S ((uint32_t)0x50003000UL)
 #define MXC_WDT_S ((mxc_wdt_regs_t *)MXC_BASE_WDT_S)
 
-#define MXC_BASE_WDT MXC_BASE_WDT_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_WDT MXC_WDT_S
+#else
+#define MXC_WDT MXC_WDT_NS
+#endif
 
 /******************************************************************************/
 /*                                                             SVM Controller */
@@ -273,8 +285,11 @@ typedef enum {
 #define MXC_BASE_SVM_S ((uint32_t)0x50004800UL)
 #define MXC_SVM_S //TODO(ME30): Add SVM controller registers.
 
-#define MXC_BASE_SVM MXC_BASE_SVM_S
-#define MXC_SVM //TODO(ME30): Add SVM controller registers.
+#if IS_SECURE_ENVIRONMENT
+#define MXC_SVM MXC_SVM_S //TODO(ME30): Add SVM controller registers
+#else
+#define MXC_SVM MXC_SVM_NS
+#endif
 
 /******************************************************************************/
 /*                                                           Boost Controller */
@@ -287,8 +302,11 @@ typedef enum {
 #define MXC_BASE_BOOST_S ((uint32_t)0x50004C00UL)
 #define MXC_BOOST_S //TODO(ME30): Add Boost controller registers.
 
-#define MXC_BASE_BOOST MXC_BASE_BOOST_S
-#define MXC_BOOST //TODO(ME30): Add Boost controller registers.
+#if IS_SECURE_ENVIRONMENT
+#define MXC_BOOST MXC_BOOST_S
+#else
+#define MXC_BOOST MXC_BOOST_NS
+#endif
 
 /******************************************************************************/
 /*                                         Trim System Initalization Register */
@@ -301,8 +319,11 @@ typedef enum {
 #define MXC_BASE_TRIMSIR_S ((uint32_t)0x50005400UL)
 #define MXC_TRIMSIR_S ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR_S)
 
-#define MXC_BASE_TRIMSIR MXC_BASE_TRIMSIR_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_TRIMSIR MXC_TRIMSIR_S
+#else
+#define MXC_TRIMSIR MXC_TRIMSIR_NS
+#endif
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -315,8 +336,11 @@ typedef enum {
 #define MXC_BASE_RTC_S ((uint32_t)0x50006000UL)
 #define MXC_RTC_S ((mxc_rtc_regs_t *)MXC_BASE_RTC_S)
 
-#define MXC_BASE_RTC MXC_BASE_RTC_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_RTC MXC_RTC_S
+#else
+#define MXC_RTC MXC_RTC_NS
+#endif
 
 /******************************************************************************/
 /*                                                        Wake-Up Timer (WUT) */
@@ -334,10 +358,13 @@ typedef enum {
 #define MXC_BASE_WUT1_S ((uint32_t)0x50006600UL)
 #define MXC_WUT1_S ((mxc_wut_regs_t *)MXC_BASE_WUT1_S)
 
-#define MXC_BASE_WUT0 MXC_BASE_WUT0_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_WUT0 MXC_WUT0_S
-#define MXC_BASE_WUT1 MXC_BASE_WUT1_S
 #define MXC_WUT1 MXC_WUT1_S
+#else
+#define MXC_WUT0 MXC_WUT0_NS
+#define MXC_WUT1 MXC_WUT1_NS
+#endif
 
 /******************************************************************************/
 /*                                                            Power Sequencer */
@@ -350,8 +377,11 @@ typedef enum {
 #define MXC_BASE_PWRSEQ_S ((uint32_t)0x50006800UL)
 #define MXC_PWRSEQ_S ((mxc_pwrseq_regs_t *)MXC_BASE_PWRSEQ_S)
 
-#define MXC_BASE_PWRSEQ MXC_BASE_PWRSEQ_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_PWRSEQ MXC_PWRSEQ_S
+#else
+#define MXC_PWRSEQ MXC_PWRSEQ_NS
+#endif
 
 /******************************************************************************/
 /*                                                              Misc Control  */
@@ -364,8 +394,11 @@ typedef enum {
 #define MXC_BASE_MCR_S ((uint32_t)0x50006C00UL)
 #define MXC_MCR_S ((mxc_mcr_regs_t *)MXC_BASE_MCR_S)
 
-#define MXC_BASE_MCR MXC_BASE_MCR_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_MCR MXC_MCR_S
+#else
+#define MXC_MCR MXC_MCR_S
+#endif
 
 /******************************************************************************/
 /*                                                                        AES */
@@ -378,8 +411,11 @@ typedef enum {
 #define MXC_BASE_AES_S ((uint32_t)0x50007400UL)
 #define MXC_AES_S ((mxc_aes_regs_t *)MXC_BASE_AES_NS)
 
-#define MXC_BASE_AES MXC_BASE_AES_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_AES MXC_AES_S
+#else
+#define MXC_AES MXC_AES_NS
+#endif
 
 /******************************************************************************/
 /*                                                                   AES Keys */
@@ -392,8 +428,11 @@ typedef enum {
 #define MXC_BASE_AESKEYS_S ((uint32_t)0x50007800UL)
 #define MXC_AESKEYS_S ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS_S)
 
-#define MXC_BASE_AESKEYS MXC_BASE_AESKEYS_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_AESKEYS MXC_AESKEYS_S
+#else
+#define MXC_AESKEYS MXC_AESKEYS_NS
+#endif
 
 /******************************************************************************/
 /*                                                                       GPIO */
@@ -441,8 +480,11 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_CRC_S ((uint32_t)0x5000F000UL)
 #define MXC_CRC_S ((mxc_crc_regs_t *)MXC_BASE_CRC_S)
 
-#define MXC_BASE_CRC MXC_BASE_CRC_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_CRC MXC_CRC_S
+#else
+#define MXC_CRC MXC_CRC_NS
+#endif
 
 /******************************************************************************/
 /*                                                                      Timer */
@@ -498,35 +540,29 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_TMR5_S ((uint32_t)0x50081000UL)
 #define MXC_TMR5_S ((mxc_tmr_regs_t *)MXC_BASE_TMR5_S)
 
-#define MXC_BASE_TMR0 MXC_BASE_TMR0_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_TMR0 MXC_TMR0_S
-#define MXC_BASE_TMR1 MXC_BASE_TMR1_S
 #define MXC_TMR1 MXC_TMR1_S
-#define MXC_BASE_TMR2 MXC_BASE_TMR2_S
 #define MXC_TMR2 MXC_TMR2_S
-#define MXC_BASE_TMR3 MXC_BASE_TMR3_S
 #define MXC_TMR3 MXC_TMR3_S
-#define MXC_BASE_TMR4 MXC_BASE_TMR4_S
 #define MXC_TMR4 MXC_TMR4_S
-#define MXC_BASE_TMR5 MXC_BASE_TMR5_S
 #define MXC_TMR5 MXC_TMR5_S
-
-#define MXC_TMR_S_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_TMR0_S : \
-     (i) == 1 ? MXC_BASE_TMR1_S : \
-     (i) == 2 ? MXC_BASE_TMR2_S : \
-     (i) == 3 ? MXC_BASE_TMR3_S : \
-     (i) == 4 ? MXC_BASE_TMR4_S : \
-     (i) == 5 ? MXC_BASE_TMR5_S : \
-                0)
+#else
+#define MXC_TMR0 MXC_TMR0_NS
+#define MXC_TMR1 MXC_TMR1_NS
+#define MXC_TMR2 MXC_TMR2_NS
+#define MXC_TMR3 MXC_TMR3_NS
+#define MXC_TMR4 MXC_TMR4_NS
+#define MXC_TMR5 MXC_TMR5_NS
+#endif
 
 #define MXC_TMR_S_GET_TMR(i) \
-    ((i) == 0 ? MXC_TMR0_S : \
-     (i) == 1 ? MXC_TMR1_S : \
-     (i) == 2 ? MXC_TMR2_S : \
-     (i) == 3 ? MXC_TMR3_S : \
-     (i) == 4 ? MXC_TMR4_S : \
-     (i) == 5 ? MXC_TMR5_S : \
+    ((i) == 0 ? MXC_TMR0 : \
+     (i) == 1 ? MXC_TMR1 : \
+     (i) == 2 ? MXC_TMR2 : \
+     (i) == 3 ? MXC_TMR3 : \
+     (i) == 4 ? MXC_TMR4 : \
+     (i) == 5 ? MXC_TMR5 : \
                 0)
 
 #define MXC_TMR_GET_IRQ(i)             \
@@ -555,6 +591,8 @@ We may want to handle GET_IRQ better...
 
 /******************************************************************************/
 /*                                                                        I3C */
+#define MXC_I3C_FIFO_DEPTH (8) // TODO(ME30): Confirm this is correct.
+
 /* Non-secure Mapping */
 #define MXC_BASE_I3C_NS ((uint32_t)0x4001D000UL)
 #define MXC_I3C_NS ((mxc_i2c_regs_t *)MXC_BASE_I3C_NS)
@@ -563,10 +601,11 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_I3C_S ((uint32_t)0x5001D000UL)
 #define MXC_I3C_S ((mxc_i2c_regs_t *)MXC_BASE_I3C_S)
 
-#define MXC_BASE_I3C MXC_BASE_I2C_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_I3C MXC_I3C_S
-
-#define MXC_I3C_FIFO_DEPTH (8) // TODO(ME30): Confirm this is correct.
+#else
+#define MXC_I3C MXC_I3C_NS
+#endif
 
 /******************************************************************************/
 /*                                                                        DMA */
@@ -635,7 +674,6 @@ We may want to handle GET_IRQ better...
 #define MXC_ICC ((mxc_icc_regs_t *)MXC_BASE_ICC_S)
 
 /* Added for consistency and explicitness */
-#define MXC_BASE_ICC_S MXC_BASE_ICC
 #define MXC_ICC_S MXC_ICC
 
 /******************************************************************************/
@@ -647,26 +685,17 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_UART_NS ((uint32_t)0x40042000UL)
 #define MXC_UART_NS ((mxc_uart_regs_t *)MXC_BASE_UART_NS)
 
-#define MXC_UART_NS_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_NS : 0)
-#define MXC_UART_NS_GET_UART(i) ((i) == 0 ? MXC_UART_NS : 0)
-
 /* Secure Mapping */
 #define MXC_BASE_UART_S ((uint32_t)0x50042000UL)
 #define MXC_UART_S ((mxc_uart_regs_t *)MXC_BASE_UART_S)
 
-#define MXC_UART_S_GET_UART(i) ((i) == 0 ? MXC_UART_S : 0)
-#define MXC_UART_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_S : 0)
-
 #if IS_SECURE_ENVIRONMENT
-#define MXC_BASE_UART MXC_BASE_UART_S
 #define MXC_UART MXC_UART_S
-#define MXC_UART_GET_UART(i) MXC_UART_S_GET_UART(i)
 #else
-#define MXC_BASE_UART MXC_BASE_UART_NS
 #define MXC_UART MXC_UART_NS
-#define MXC_UART_GET_UART(i) MXC_UART_NS_GET_UART(i)
 #endif
 
+#define MXC_UART_GET_UART(i) ((i) == 0 ? MXC_UART : 0)
 #define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : 0)
 #define MXC_UART_GET_IDX(p) ((p) == MXC_UART_NS ? 0 : (p) == MXC_UART_S ? 0 : -1)
 
@@ -687,12 +716,13 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_SPI_S ((uint32_t)0x50046000UL)
 #define MXC_SPI_S ((mxc_spi_regs_t *)MXC_BASE_SPI_S)
 
-#define MXC_BASE_SPI MXC_BASE_SPI_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_SPI MXC_SPI_S
+#else
+#define MXC_SPI MXC_SPI_NS
+#endif
 
-#define MXC_SPI_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_SPI_S : 0)
-#define MXC_SPI_S_GET_SPI(i) ((i) == 0 ? MXC_SPI_S : 0)
-
+#define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI : 0)
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI_IRQn : 0)
 #define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI_NS ? 0 : (p) == MXC_SPI_S ? 0 : -1)
 
@@ -707,8 +737,11 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_TRNG_S ((uint32_t)0x5004D000UL)
 #define MXC_TRNG_S ((mxc_trng_regs_t *)MXC_BASE_TRNG_S)
 
-#define MXC_BASE_TRNG MXC_BASE_TRNG_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_TRNG MXC_TRNG_S
+#else
+#define MXC_TRNG MXC_TRNG_NS
+#endif
 
 /******************************************************************************/
 /*                                                                       BTLE */
@@ -722,8 +755,12 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_BTLE_S ((uint32_t)0x50050000UL)
 #define MXC_BTLE_S // TODO(ME30): Add BTLE related registers? This section doesn't exist for ME17.
 
-#define MXC_BASE_BTLE MXC_BASE_BTLE_S
-#define MXC_BTLE // TODO(ME30): Does this have registers?
+#if IS_SECURE_ENVIRONMENT
+// TODO(ME30): Does this have registers?
+#define MXC_BTLE MXC_BTLE_S
+#else
+#define MXC_BTLE MXC_BTLE_NS
+#endif
 
 /******************************************************************************/
 /*                                          Secure Privilege Control (SPC TZ) */
@@ -731,8 +768,6 @@ We may want to handle GET_IRQ better...
 /* Secure Mapping Only */
 #define MXC_BASE_SPC ((uint32_t)0x50090000UL)
 #define MXC_SPC // TODO(ME30): Does this have registers?
-
-#define MXC_BASE_SPC_S MXC_BASE_SPC
 #define MXC_SPC_S // TODO(ME30): Does this have registers?
 
 /******************************************************************************/
