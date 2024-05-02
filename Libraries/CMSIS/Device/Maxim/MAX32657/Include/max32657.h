@@ -179,6 +179,7 @@ typedef enum {
 #define MXC_SRAM_S_MEM_SIZE 0x00040000UL
 
 /* Secure Region name redefinitions for explicit use */
+#if IS_SECURE_ENVIRONMENT
 #define MXC_FLASH_MEM_BASE MXC_FLASH_S_MEM_BASE
 #define MXC_FLASH_PAGE_SIZE MXC_FLASH_S_PAGE_SIZE
 #define MXC_FLASH_MEM_SIZE MXC_FLASH_S_MEM_SIZE
@@ -186,6 +187,15 @@ typedef enum {
 #define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
 #define MXC_SRAM_MEM_BASE MXC_SRAM_S_MEM_BASE
 #define MXC_SRAM_MEM_SIZE MXC_SRAM_S_MEM_SIZE
+#else
+#define MXC_FLASH_MEM_BASE MXC_FLASH_NS_MEM_BASE
+#define MXC_FLASH_PAGE_SIZE MXC_FLASH_NS_PAGE_SIZE
+#define MXC_FLASH_MEM_SIZE MXC_FLASH_NS_MEM_SIZE
+#define MXC_INFO_MEM_BASE MXC_INFO_NS_MEM_BASE
+#define MXC_INFO_MEM_SIZE MXC_INFO_NS_MEM_SIZE
+#define MXC_SRAM_MEM_BASE MXC_SRAM_NS_MEM_BASE
+#define MXC_SRAM_MEM_SIZE MXC_SRAM_NS_MEM_SIZE
+#endif
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */
