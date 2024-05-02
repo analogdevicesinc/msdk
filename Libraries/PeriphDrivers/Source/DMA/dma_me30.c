@@ -35,10 +35,15 @@
 int MXC_DMA_Init(void)
 {
 #ifndef MSDK_NO_GPIO_CLK_INIT
-    if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA);
+    if (MXC_DMA == MXC_DMA0 && !MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA0)) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA0);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA0);
     }
+    // TODO(ME30): There is no periph clock enable register for DMA1 atm
+    // else if (MXC_DMA == MXC_DMA1 && !MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA1))
+    //     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA1);
+    //     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA1);
+    // }
 #endif
 
     return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t *)MXC_DMA);

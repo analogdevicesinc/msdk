@@ -560,25 +560,39 @@ We may want to handle GET_IRQ better...
 /* Non-secure Mapping */
 #define MXC_BASE_DMA0_NS ((uint32_t)0x40028000UL)
 #define MXC_DMA0_NS ((mxc_dma_regs_t *)MXC_BASE_DMA0_NS)
-/* DMA1 instance only for secure mode. */
+/* DMA0 instance only for secure mode. */
 
 /* Secure Mapping */
+// TODO(ME30): Is there actuall a secure mapping for DMA0?
 #define MXC_BASE_DMA0_S ((uint32_t)0x50028000UL)
 #define MXC_DMA0_S ((mxc_dma_regs_t *)MXC_BASE_DMA0_S)
 #define MXC_BASE_DMA1_S ((uint32_t)0x50035000UL)
 #define MXC_DMA1_S ((mxc_dma_regs_t *)MXC_BASE_DMA1_S)
 
 #define MXC_BASE_DMA0 MXC_BASE_DMA0_S
-#define MXC_DMA0 MXC_DMA0_S
+#define MXC_DMA0 MXC_DMA0_NS
 #define MXC_BASE_DMA1 MXC_BASE_DMA1_S
 #define MXC_DMA1 MXC_DMA1_S
 
+#if IS_SECURE_ENVIRONMENT
+#define MXC_DMA MXC_DMA1_S
 #define MXC_DMA_CH_GET_IRQ(i)             \
-    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
-                 ((i) == 1) ? DMA1_IRQn : \
-                 ((i) == 2) ? DMA2_IRQn : \
-                 ((i) == 3) ? DMA3_IRQn : \
+    ((IRQn_Type)(((i) == 0) ? DMA1_CH0_IRQn : \
+                 ((i) == 1) ? DMA1_CH1_IRQn : \
+                 ((i) == 2) ? DMA1_CH2_IRQn : \
+                 ((i) == 3) ? DMA1_CH3_IRQn : \
                               0))
+#else
+#define MXC_DMA MXC_DMA0_NS
+#define MXC_DMA_CH_GET_IRQ(i)             \
+    ((IRQn_Type)(((i) == 0) ? DMA0_CH0_IRQn : \
+                 ((i) == 1) ? DMA0_CH1_IRQn : \
+                 ((i) == 2) ? DMA0_CH2_IRQn : \
+                 ((i) == 3) ? DMA0_CH3_IRQn : \
+                              0))
+#endif
+
+#define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0 ? 0 : (p) == MXC_DMA1 ? 1 : -1)
 
 /******************************************************************************/
 /*                                                           Flash Controller */
