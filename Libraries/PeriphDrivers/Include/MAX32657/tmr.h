@@ -137,10 +137,10 @@ typedef enum {
 /**
  * @brief      Peripheral Clock settings 
  */
+// TODO(ME30): TMR clock sources
 typedef enum {
     MXC_TMR_APB_CLK = 0, /**< PCLK */
     MXC_TMR_EXT_CLK = 1, /**< External Clock */
-    MXC_TMR_ISO_CLK = 2, /**< 60MHz Clock */
     MXC_TMR_IBRO_CLK = 3, /**< 7.3728MHz Clock */
     MXC_TMR_ERTCO_CLK = 4, /**< 32.768KHz Clock */
     MXC_TMR_INRO_CLK = 5, /**< 8-30KHz Clock */
