@@ -152,6 +152,8 @@ typedef enum {
 #define __Vendor_SysTickConfig    0U      /**< Is 1 if different SysTick counter is used */
 
 #include <core_cm33.h>
+#include <arm_cmse.h>
+#define IS_SECURE_ENVIRONMENT (defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U))
 
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
@@ -621,17 +623,13 @@ We may want to handle GET_IRQ better...
 #define MXC_UART_S_GET_UART(i) ((i) == 0 ? MXC_UART_S : 0)
 #define MXC_UART_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_S : 0)
 
-#ifdef MSECURITY_MODE_SECURE
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_UART MXC_BASE_UART_S
 #define MXC_UART MXC_UART_S
-
 #define MXC_UART_GET_UART(i) MXC_UART_S_GET_UART(i)
-#endif
-
-#ifdef MSECURITY_MODE_NONSECURE
+#else
 #define MXC_BASE_UART MXC_BASE_UART_NS
 #define MXC_UART MXC_UART_NS
-
 #define MXC_UART_GET_UART(i) MXC_UART_NS_GET_UART(i)
 #endif
 

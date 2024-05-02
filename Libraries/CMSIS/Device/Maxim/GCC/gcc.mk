@@ -272,7 +272,12 @@ ifeq "$(MCPU)" "cortex-m33"
 # at compile time.
 MSECURITY_MODE ?= SECURE
 
-PROJ_CFLAGS += -DMSECURITY_MODE_$(MSECURITY_MODE)
+ifeq "$(MSECURITY_MODE)" "SECURE"
+# Tell the compiler we are building a secure project.  This is required to satisfy the requirements
+# defined in "Armv8-M Security Extension: Requirements on Developments Tools"
+# https://developer.arm.com/documentation/ecm0359818/latest
+PROJ_CFLAGS += -mcmse
+endif
 endif
 
 # Float ABI options:
