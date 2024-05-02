@@ -610,7 +610,9 @@ We may want to handle GET_IRQ better...
 /******************************************************************************/
 /*                                                                        DMA */
 #define MXC_DMA_CHANNELS (4)
-#define MXC_DMA_INSTANCES (2)
+#define MXC_DMA_INSTANCES (1)
+// ^ Note: We have 2 DMA instances in hardware, but they are secure vs non-secure
+// instances.  Therefore we treat the part as if there is only 1.
 
 /* Non-secure Mapping */
 #define MXC_BASE_DMA0_NS ((uint32_t)0x40028000UL)

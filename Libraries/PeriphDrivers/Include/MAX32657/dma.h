@@ -53,6 +53,7 @@ typedef enum {
 } mxc_dma_priority_t;
 
 /** @brief DMA request select */
+// TODO(ME30): Updated DMA reqsel
 typedef enum {
     MXC_DMA_REQUEST_MEMTOMEM =
         MXC_S_DMA_CTRL_REQUEST_MEMTOMEM, ///< Memory to Memory DMA Request Selection
