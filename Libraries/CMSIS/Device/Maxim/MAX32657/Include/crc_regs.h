@@ -75,9 +75,10 @@ typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0000:</tt> CRC CTRL Register */
     union {
         __IO uint32_t datain32;         /**< <tt>\b 0x0004:</tt> CRC DATAIN32 Register */
-        __IO uint16_t datain16[2];      /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
-        __IO uint8_t  datain8[4];       /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
+        __IO uint16_t datain16;         /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
+        __IO uint8_t  datain8;          /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
     };
+    __R  uint8_t  rsv_0x5_0x7[3];
     __IO uint32_t poly;                 /**< <tt>\b 0x0008:</tt> CRC POLY Register */
     __IO uint32_t val;                  /**< <tt>\b 0x000C:</tt> CRC VAL Register */
 } mxc_crc_regs_t;

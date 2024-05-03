@@ -78,8 +78,6 @@ typedef struct {
     __IO uint32_t fctrl3;               /**< <tt>\b 0x0C:</tt> FCR FCTRL3 Register */
     __R  uint32_t rsv_0x10_0x17[2];
     __IO uint32_t erfoks;               /**< <tt>\b 0x18:</tt> FCR ERFOKS Register */
-    __R  uint32_t rsv_0x1c_0x23[2];
-    __IO uint32_t flvfilt;              /**< <tt>\b 0x24:</tt> FCR FLVFILT Register */
 } mxc_fcr_regs_t;
 
 /* Register offsets for module FCR */
@@ -94,7 +92,6 @@ typedef struct {
 #define MXC_R_FCR_FCTRL2                   ((uint32_t)0x00000008UL) /**< Offset from FCR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_FCR_FCTRL3                   ((uint32_t)0x0000000CUL) /**< Offset from FCR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000018UL) /**< Offset from FCR Base Address: <tt> 0x0018</tt> */
-#define MXC_R_FCR_FLVFILT                  ((uint32_t)0x00000024UL) /**< Offset from FCR Base Address: <tt> 0x0024</tt> */
 /**@} end of group fcr_registers */
 
 /**
@@ -103,49 +100,17 @@ typedef struct {
  * @brief    Register 0.
  * @{
  */
-#define MXC_F_FCR_FCTRL0_BTLELDOTX_POS                 0 /**< FCTRL0_BTLELDOTX Position */
-#define MXC_F_FCR_FCTRL0_BTLELDOTX                     ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDOTX_POS)) /**< FCTRL0_BTLELDOTX Mask */
-#define MXC_V_FCR_FCTRL0_BTLELDOTX_SYS                 ((uint32_t)0x0UL) /**< FCTRL0_BTLELDOTX_SYS Value */
-#define MXC_S_FCR_FCTRL0_BTLELDOTX_SYS                 (MXC_V_FCR_FCTRL0_BTLELDOTX_SYS << MXC_F_FCR_FCTRL0_BTLELDOTX_POS) /**< FCTRL0_BTLELDOTX_SYS Setting */
-#define MXC_V_FCR_FCTRL0_BTLELDOTX_DIG                 ((uint32_t)0x1UL) /**< FCTRL0_BTLELDOTX_DIG Value */
-#define MXC_S_FCR_FCTRL0_BTLELDOTX_DIG                 (MXC_V_FCR_FCTRL0_BTLELDOTX_DIG << MXC_F_FCR_FCTRL0_BTLELDOTX_POS) /**< FCTRL0_BTLELDOTX_DIG Setting */
+#define MXC_F_FCR_FCTRL0_BTLELDO_TX_POS                0 /**< FCTRL0_BTLELDO_TX Position */
+#define MXC_F_FCR_FCTRL0_BTLELDO_TX                    ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDO_TX_POS)) /**< FCTRL0_BTLELDO_TX Mask */
 
-#define MXC_F_FCR_FCTRL0_BTLELDORX_POS                 8 /**< FCTRL0_BTLELDORX Position */
-#define MXC_F_FCR_FCTRL0_BTLELDORX                     ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDORX_POS)) /**< FCTRL0_BTLELDORX Mask */
-#define MXC_V_FCR_FCTRL0_BTLELDORX_SYS                 ((uint32_t)0x0UL) /**< FCTRL0_BTLELDORX_SYS Value */
-#define MXC_S_FCR_FCTRL0_BTLELDORX_SYS                 (MXC_V_FCR_FCTRL0_BTLELDORX_SYS << MXC_F_FCR_FCTRL0_BTLELDORX_POS) /**< FCTRL0_BTLELDORX_SYS Setting */
-#define MXC_V_FCR_FCTRL0_BTLELDORX_DIG                 ((uint32_t)0x1UL) /**< FCTRL0_BTLELDORX_DIG Value */
-#define MXC_S_FCR_FCTRL0_BTLELDORX_DIG                 (MXC_V_FCR_FCTRL0_BTLELDORX_DIG << MXC_F_FCR_FCTRL0_BTLELDORX_POS) /**< FCTRL0_BTLELDORX_DIG Setting */
+#define MXC_F_FCR_FCTRL0_BTLELDO_RX_POS                8 /**< FCTRL0_BTLELDO_RX Position */
+#define MXC_F_FCR_FCTRL0_BTLELDO_RX                    ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDO_RX_POS)) /**< FCTRL0_BTLELDO_RX Mask */
 
-#define MXC_F_FCR_FCTRL0_I2C0DGEN0_POS                 20 /**< FCTRL0_I2C0DGEN0 Position */
-#define MXC_F_FCR_FCTRL0_I2C0DGEN0                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C0DGEN0_POS)) /**< FCTRL0_I2C0DGEN0 Mask */
+#define MXC_F_FCR_FCTRL0_I3CDGEN0_POS                  20 /**< FCTRL0_I3CDGEN0 Position */
+#define MXC_F_FCR_FCTRL0_I3CDGEN0                      ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I3CDGEN0_POS)) /**< FCTRL0_I3CDGEN0 Mask */
 
-#define MXC_F_FCR_FCTRL0_I2C0DGEN1_POS                 21 /**< FCTRL0_I2C0DGEN1 Position */
-#define MXC_F_FCR_FCTRL0_I2C0DGEN1                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C0DGEN1_POS)) /**< FCTRL0_I2C0DGEN1 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C1DGEN0_POS                 22 /**< FCTRL0_I2C1DGEN0 Position */
-#define MXC_F_FCR_FCTRL0_I2C1DGEN0                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C1DGEN0_POS)) /**< FCTRL0_I2C1DGEN0 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C1DGEN1_POS                 23 /**< FCTRL0_I2C1DGEN1 Position */
-#define MXC_F_FCR_FCTRL0_I2C1DGEN1                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C1DGEN1_POS)) /**< FCTRL0_I2C1DGEN1 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C2ADGEN0_POS                24 /**< FCTRL0_I2C2ADGEN0 Position */
-#define MXC_F_FCR_FCTRL0_I2C2ADGEN0                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C2ADGEN0_POS)) /**< FCTRL0_I2C2ADGEN0 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C2ADGEN1_POS                25 /**< FCTRL0_I2C2ADGEN1 Position */
-#define MXC_F_FCR_FCTRL0_I2C2ADGEN1                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C2ADGEN1_POS)) /**< FCTRL0_I2C2ADGEN1 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C2BDGEN0_POS                26 /**< FCTRL0_I2C2BDGEN0 Position */
-#define MXC_F_FCR_FCTRL0_I2C2BDGEN0                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C2BDGEN0_POS)) /**< FCTRL0_I2C2BDGEN0 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C2BDGEN1_POS                27 /**< FCTRL0_I2C2BDGEN1 Position */
-#define MXC_F_FCR_FCTRL0_I2C2BDGEN1                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C2BDGEN1_POS)) /**< FCTRL0_I2C2BDGEN1 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C2CDGEN0_POS                28 /**< FCTRL0_I2C2CDGEN0 Position */
-#define MXC_F_FCR_FCTRL0_I2C2CDGEN0                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C2CDGEN0_POS)) /**< FCTRL0_I2C2CDGEN0 Mask */
-
-#define MXC_F_FCR_FCTRL0_I2C2CDGEN1_POS                29 /**< FCTRL0_I2C2CDGEN1 Position */
-#define MXC_F_FCR_FCTRL0_I2C2CDGEN1                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I2C2CDGEN1_POS)) /**< FCTRL0_I2C2CDGEN1 Mask */
+#define MXC_F_FCR_FCTRL0_I3CDGEN1_POS                  21 /**< FCTRL0_I3CDGEN1 Position */
+#define MXC_F_FCR_FCTRL0_I3CDGEN1                      ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I3CDGEN1_POS)) /**< FCTRL0_I3CDGEN1 Mask */
 
 /**@} end of group FCR_FCTRL0_Register */
 
@@ -173,8 +138,8 @@ typedef struct {
 #define MXC_F_FCR_FCTRL1_MU_POS                        8 /**< FCTRL1_MU Position */
 #define MXC_F_FCR_FCTRL1_MU                            ((uint32_t)(0xFFFUL << MXC_F_FCR_FCTRL1_MU_POS)) /**< FCTRL1_MU Mask */
 
-#define MXC_F_FCR_FCTRL1_AC_TRIM_POS                   23 /**< FCTRL1_AC_TRIM Position */
-#define MXC_F_FCR_FCTRL1_AC_TRIM                       ((uint32_t)(0x1FFUL << MXC_F_FCR_FCTRL1_AC_TRIM_POS)) /**< FCTRL1_AC_TRIM Mask */
+#define MXC_F_FCR_FCTRL1_AC_TRIM_OUT_POS               23 /**< FCTRL1_AC_TRIM_OUT Position */
+#define MXC_F_FCR_FCTRL1_AC_TRIM_OUT                   ((uint32_t)(0x1FFUL << MXC_F_FCR_FCTRL1_AC_TRIM_OUT_POS)) /**< FCTRL1_AC_TRIM_OUT Mask */
 
 /**@} end of group FCR_FCTRL1_Register */
 
@@ -184,32 +149,8 @@ typedef struct {
  * @brief    Register 2.
  * @{
  */
-#define MXC_F_FCR_FCTRL2_NFC_FWD_EN_POS                0 /**< FCTRL2_NFC_FWD_EN Position */
-#define MXC_F_FCR_FCTRL2_NFC_FWD_EN                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_NFC_FWD_EN_POS)) /**< FCTRL2_NFC_FWD_EN Mask */
-
-#define MXC_F_FCR_FCTRL2_NFC_CLK_EN_POS                1 /**< FCTRL2_NFC_CLK_EN Position */
-#define MXC_F_FCR_FCTRL2_NFC_CLK_EN                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_NFC_CLK_EN_POS)) /**< FCTRL2_NFC_CLK_EN Mask */
-
-#define MXC_F_FCR_FCTRL2_NFC_FWD_TX_DATA_OVR_POS       2 /**< FCTRL2_NFC_FWD_TX_DATA_OVR Position */
-#define MXC_F_FCR_FCTRL2_NFC_FWD_TX_DATA_OVR           ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_NFC_FWD_TX_DATA_OVR_POS)) /**< FCTRL2_NFC_FWD_TX_DATA_OVR Mask */
-
-#define MXC_F_FCR_FCTRL2_XO_EN_DGL_POS                 3 /**< FCTRL2_XO_EN_DGL Position */
-#define MXC_F_FCR_FCTRL2_XO_EN_DGL                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_XO_EN_DGL_POS)) /**< FCTRL2_XO_EN_DGL Mask */
-
-#define MXC_F_FCR_FCTRL2_RX_BIAS_PD_POS                4 /**< FCTRL2_RX_BIAS_PD Position */
-#define MXC_F_FCR_FCTRL2_RX_BIAS_PD                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_RX_BIAS_PD_POS)) /**< FCTRL2_RX_BIAS_PD Mask */
-
-#define MXC_F_FCR_FCTRL2_RX_BIAS_EN_POS                5 /**< FCTRL2_RX_BIAS_EN Position */
-#define MXC_F_FCR_FCTRL2_RX_BIAS_EN                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_RX_BIAS_EN_POS)) /**< FCTRL2_RX_BIAS_EN Mask */
-
-#define MXC_F_FCR_FCTRL2_RX_TM_VBG_VABUS_POS           6 /**< FCTRL2_RX_TM_VBG_VABUS Position */
-#define MXC_F_FCR_FCTRL2_RX_TM_VBG_VABUS               ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_RX_TM_VBG_VABUS_POS)) /**< FCTRL2_RX_TM_VBG_VABUS Mask */
-
-#define MXC_F_FCR_FCTRL2_RX_TM_BIAS_POS                7 /**< FCTRL2_RX_TM_BIAS Position */
-#define MXC_F_FCR_FCTRL2_RX_TM_BIAS                    ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_RX_TM_BIAS_POS)) /**< FCTRL2_RX_TM_BIAS Mask */
-
-#define MXC_F_FCR_FCTRL2_NFC_FWD_DOUT_POS              8 /**< FCTRL2_NFC_FWD_DOUT Position */
-#define MXC_F_FCR_FCTRL2_NFC_FWD_DOUT                  ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_NFC_FWD_DOUT_POS)) /**< FCTRL2_NFC_FWD_DOUT Mask */
+#define MXC_F_FCR_FCTRL2_AC_INIT_TRIM_POS              0 /**< FCTRL2_AC_INIT_TRIM Position */
+#define MXC_F_FCR_FCTRL2_AC_INIT_TRIM                  ((uint32_t)(0x1FFUL << MXC_F_FCR_FCTRL2_AC_INIT_TRIM_POS)) /**< FCTRL2_AC_INIT_TRIM Mask */
 
 /**@} end of group FCR_FCTRL2_Register */
 
@@ -219,8 +160,11 @@ typedef struct {
  * @brief    Register 3.
  * @{
  */
-#define MXC_F_FCR_FCTRL3_DONECNT_POS                   0 /**< FCTRL3_DONECNT Position */
-#define MXC_F_FCR_FCTRL3_DONECNT                       ((uint32_t)(0xFFUL << MXC_F_FCR_FCTRL3_DONECNT_POS)) /**< FCTRL3_DONECNT Mask */
+#define MXC_F_FCR_FCTRL3_AC_RUNTIME_POS                0 /**< FCTRL3_AC_RUNTIME Position */
+#define MXC_F_FCR_FCTRL3_AC_RUNTIME                    ((uint32_t)(0xFFUL << MXC_F_FCR_FCTRL3_AC_RUNTIME_POS)) /**< FCTRL3_AC_RUNTIME Mask */
+
+#define MXC_F_FCR_FCTRL3_AC_DIV_POS                    8 /**< FCTRL3_AC_DIV Position */
+#define MXC_F_FCR_FCTRL3_AC_DIV                        ((uint32_t)(0x1FFFUL << MXC_F_FCR_FCTRL3_AC_DIV_POS)) /**< FCTRL3_AC_DIV Mask */
 
 /**@} end of group FCR_FCTRL3_Register */
 
@@ -230,27 +174,26 @@ typedef struct {
  * @brief    ERFO Kick Start Register.
  * @{
  */
-#define MXC_F_FCR_ERFOKS_GP_POS                        0 /**< ERFOKS_GP Position */
-#define MXC_F_FCR_ERFOKS_GP                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_FCR_ERFOKS_GP_POS)) /**< ERFOKS_GP Mask */
+#define MXC_F_FCR_ERFOKS_CNT_POS                       0 /**< ERFOKS_CNT Position */
+#define MXC_F_FCR_ERFOKS_CNT                           ((uint32_t)(0x7FUL << MXC_F_FCR_ERFOKS_CNT_POS)) /**< ERFOKS_CNT Mask */
+
+#define MXC_F_FCR_ERFOKS_EN_POS                        7 /**< ERFOKS_EN Position */
+#define MXC_F_FCR_ERFOKS_EN                            ((uint32_t)(0x1UL << MXC_F_FCR_ERFOKS_EN_POS)) /**< ERFOKS_EN Mask */
+
+#define MXC_F_FCR_ERFOKS_DRVSTR_POS                    8 /**< ERFOKS_DRVSTR Position */
+#define MXC_F_FCR_ERFOKS_DRVSTR                        ((uint32_t)(0x7UL << MXC_F_FCR_ERFOKS_DRVSTR_POS)) /**< ERFOKS_DRVSTR Mask */
+
+#define MXC_F_FCR_ERFOKS_X2_PLEN_POS                   11 /**< ERFOKS_X2_PLEN Position */
+#define MXC_F_FCR_ERFOKS_X2_PLEN                       ((uint32_t)(0x1UL << MXC_F_FCR_ERFOKS_X2_PLEN_POS)) /**< ERFOKS_X2_PLEN Mask */
+
+#define MXC_F_FCR_ERFOKS_CLKSEL_POS                    12 /**< ERFOKS_CLKSEL Position */
+#define MXC_F_FCR_ERFOKS_CLKSEL                        ((uint32_t)(0x3UL << MXC_F_FCR_ERFOKS_CLKSEL_POS)) /**< ERFOKS_CLKSEL Mask */
+#define MXC_V_FCR_ERFOKS_CLKSEL_NO_CLK                 ((uint32_t)0x0UL) /**< ERFOKS_CLKSEL_NO_CLK Value */
+#define MXC_S_FCR_ERFOKS_CLKSEL_NO_CLK                 (MXC_V_FCR_ERFOKS_CLKSEL_NO_CLK << MXC_F_FCR_ERFOKS_CLKSEL_POS) /**< ERFOKS_CLKSEL_NO_CLK Setting */
+#define MXC_V_FCR_ERFOKS_CLKSEL_IPO                    ((uint32_t)0x3UL) /**< ERFOKS_CLKSEL_IPO Value */
+#define MXC_S_FCR_ERFOKS_CLKSEL_IPO                    (MXC_V_FCR_ERFOKS_CLKSEL_IPO << MXC_F_FCR_ERFOKS_CLKSEL_POS) /**< ERFOKS_CLKSEL_IPO Setting */
 
 /**@} end of group FCR_ERFOKS_Register */
-
-/**
- * @ingroup  fcr_registers
- * @defgroup FCR_FLVFILT FCR_FLVFILT
- * @brief    Flash Low Voltage Filter Control Register.
- * @{
- */
-#define MXC_F_FCR_FLVFILT_NUM_POS                      0 /**< FLVFILT_NUM Position */
-#define MXC_F_FCR_FLVFILT_NUM                          ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_NUM_POS)) /**< FLVFILT_NUM Mask */
-
-#define MXC_F_FCR_FLVFILT_RATE_POS                     8 /**< FLVFILT_RATE Position */
-#define MXC_F_FCR_FLVFILT_RATE                         ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_RATE_POS)) /**< FLVFILT_RATE Mask */
-
-#define MXC_F_FCR_FLVFILT_DELAY_POS                    16 /**< FLVFILT_DELAY Position */
-#define MXC_F_FCR_FLVFILT_DELAY                        ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_DELAY_POS)) /**< FLVFILT_DELAY Mask */
-
-/**@} end of group FCR_FLVFILT_Register */
 
 #ifdef __cplusplus
 }

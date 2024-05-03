@@ -73,126 +73,22 @@
         </fields>
       </register>
       <register>
-        <name>BTLELDOTRIM</name>
-        <description>BTLE LDO Trim register.</description>
-        <addressOffset>0x48</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>TX</name>
-            <description>TX LDO trim value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>5</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>RX</name>
-            <description>RX LDO trim value.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>5</bitWidth>
-            <access>read-write</access>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FSTAT</name>
-        <description>funcstat register.</description>
-        <addressOffset>0x100</addressOffset>
-        <access>read-only</access>
-        <fields>
-          <field>
-            <name>FPU</name>
-            <description>FPU Function.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>ADC</name>
-            <description>10-bit Sigma Delta ADC.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>SEMA</name>
-            <description>Semaphore function.</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>SFSTAT</name>
         <description>Security function status register.</description>
         <addressOffset>0x104</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
-            <name>SECBOOT</name>
+            <name>SECBOOT_EN</name>
             <description>Security Boot.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TRNG</name>
-            <description> TRNG Function.</description>
-            <bitOffset>2</bitOffset>
+            <name>SECEXT_EN</name>
+            <description>M33 SecExt Function Enable.</description>
+            <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>AES</name>
-            <description>AES Block.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
         </fields>
       </register>

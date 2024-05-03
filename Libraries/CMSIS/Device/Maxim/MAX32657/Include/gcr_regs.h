@@ -96,10 +96,6 @@ typedef struct {
     __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
     __IO uint32_t btleldoctrl;          /**< <tt>\b 0x74:</tt> GCR BTLELDOCTRL Register */
     __IO uint32_t btleldodly;           /**< <tt>\b 0x78:</tt> GCR BTLELDODLY Register */
-    __R  uint32_t rsv_0x7c;
-    __IO uint32_t flvrst;               /**< <tt>\b 0x80:</tt> GCR FLVRST Register */
-    __IO uint32_t flvclkctrl;           /**< <tt>\b 0x84:</tt> GCR FLVCLKCTRL Register */
-    __IO uint32_t flvstat;              /**< <tt>\b 0x88:</tt> GCR FLVSTAT Register */
 } mxc_gcr_regs_t;
 
 /* Register offsets for module GCR */
@@ -128,9 +124,6 @@ typedef struct {
 #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
 #define MXC_R_GCR_BTLELDOCTRL              ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */
 #define MXC_R_GCR_BTLELDODLY               ((uint32_t)0x00000078UL) /**< Offset from GCR Base Address: <tt> 0x0078</tt> */
-#define MXC_R_GCR_FLVRST                   ((uint32_t)0x00000080UL) /**< Offset from GCR Base Address: <tt> 0x0080</tt> */
-#define MXC_R_GCR_FLVCLKCTRL               ((uint32_t)0x00000084UL) /**< Offset from GCR Base Address: <tt> 0x0084</tt> */
-#define MXC_R_GCR_FLVSTAT                  ((uint32_t)0x00000088UL) /**< Offset from GCR Base Address: <tt> 0x0088</tt> */
 /**@} end of group gcr_registers */
 
 /**
@@ -139,22 +132,6 @@ typedef struct {
  * @brief    System Control.
  * @{
  */
-#define MXC_F_GCR_SYSCTRL_BSTAP_EN_POS                 0 /**< SYSCTRL_BSTAP_EN Position */
-#define MXC_F_GCR_SYSCTRL_BSTAP_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_BSTAP_EN_POS)) /**< SYSCTRL_BSTAP_EN Mask */
-
-#define MXC_F_GCR_SYSCTRL_SBUSARB_POS                  1 /**< SYSCTRL_SBUSARB Position */
-#define MXC_F_GCR_SYSCTRL_SBUSARB                      ((uint32_t)(0x3UL << MXC_F_GCR_SYSCTRL_SBUSARB_POS)) /**< SYSCTRL_SBUSARB Mask */
-#define MXC_V_GCR_SYSCTRL_SBUSARB_FIX                  ((uint32_t)0x0UL) /**< SYSCTRL_SBUSARB_FIX Value */
-#define MXC_S_GCR_SYSCTRL_SBUSARB_FIX                  (MXC_V_GCR_SYSCTRL_SBUSARB_FIX << MXC_F_GCR_SYSCTRL_SBUSARB_POS) /**< SYSCTRL_SBUSARB_FIX Setting */
-#define MXC_V_GCR_SYSCTRL_SBUSARB_ROUND                ((uint32_t)0x1UL) /**< SYSCTRL_SBUSARB_ROUND Value */
-#define MXC_S_GCR_SYSCTRL_SBUSARB_ROUND                (MXC_V_GCR_SYSCTRL_SBUSARB_ROUND << MXC_F_GCR_SYSCTRL_SBUSARB_POS) /**< SYSCTRL_SBUSARB_ROUND Setting */
-
-#define MXC_F_GCR_SYSCTRL_FLASH_PAGE_FLIP_POS          4 /**< SYSCTRL_FLASH_PAGE_FLIP Position */
-#define MXC_F_GCR_SYSCTRL_FLASH_PAGE_FLIP              ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_FLASH_PAGE_FLIP_POS)) /**< SYSCTRL_FLASH_PAGE_FLIP Mask */
-
-#define MXC_F_GCR_SYSCTRL_FPU_DIS_POS                  5 /**< SYSCTRL_FPU_DIS Position */
-#define MXC_F_GCR_SYSCTRL_FPU_DIS                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_FPU_DIS_POS)) /**< SYSCTRL_FPU_DIS Mask */
-
 #define MXC_F_GCR_SYSCTRL_ICC_FLUSH_POS                6 /**< SYSCTRL_ICC_FLUSH Position */
 #define MXC_F_GCR_SYSCTRL_ICC_FLUSH                    ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_ICC_FLUSH_POS)) /**< SYSCTRL_ICC_FLUSH Mask */
 
@@ -240,17 +217,6 @@ typedef struct {
  * @brief    Clock Control.
  * @{
  */
-#define MXC_F_GCR_CLKCTRL_PCLK_DIV_POS                 3 /**< CLKCTRL_PCLK_DIV Position */
-#define MXC_F_GCR_CLKCTRL_PCLK_DIV                     ((uint32_t)(0x7UL << MXC_F_GCR_CLKCTRL_PCLK_DIV_POS)) /**< CLKCTRL_PCLK_DIV Mask */
-#define MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV1                ((uint32_t)0x0UL) /**< CLKCTRL_PCLK_DIV_DIV1 Value */
-#define MXC_S_GCR_CLKCTRL_PCLK_DIV_DIV1                (MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV1 << MXC_F_GCR_CLKCTRL_PCLK_DIV_POS) /**< CLKCTRL_PCLK_DIV_DIV1 Setting */
-#define MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV2                ((uint32_t)0x1UL) /**< CLKCTRL_PCLK_DIV_DIV2 Value */
-#define MXC_S_GCR_CLKCTRL_PCLK_DIV_DIV2                (MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV2 << MXC_F_GCR_CLKCTRL_PCLK_DIV_POS) /**< CLKCTRL_PCLK_DIV_DIV2 Setting */
-#define MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV4                ((uint32_t)0x2UL) /**< CLKCTRL_PCLK_DIV_DIV4 Value */
-#define MXC_S_GCR_CLKCTRL_PCLK_DIV_DIV4                (MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV4 << MXC_F_GCR_CLKCTRL_PCLK_DIV_POS) /**< CLKCTRL_PCLK_DIV_DIV4 Setting */
-#define MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV8                ((uint32_t)0x3UL) /**< CLKCTRL_PCLK_DIV_DIV8 Value */
-#define MXC_S_GCR_CLKCTRL_PCLK_DIV_DIV8                (MXC_V_GCR_CLKCTRL_PCLK_DIV_DIV8 << MXC_F_GCR_CLKCTRL_PCLK_DIV_POS) /**< CLKCTRL_PCLK_DIV_DIV8 Setting */
-
 #define MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS               6 /**< CLKCTRL_SYSCLK_DIV Position */
 #define MXC_F_GCR_CLKCTRL_SYSCLK_DIV                   ((uint32_t)(0x7UL << MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS)) /**< CLKCTRL_SYSCLK_DIV Mask */
 #define MXC_V_GCR_CLKCTRL_SYSCLK_DIV_DIV1              ((uint32_t)0x0UL) /**< CLKCTRL_SYSCLK_DIV_DIV1 Value */
@@ -272,18 +238,18 @@ typedef struct {
 
 #define MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS               9 /**< CLKCTRL_SYSCLK_SEL Position */
 #define MXC_F_GCR_CLKCTRL_SYSCLK_SEL                   ((uint32_t)(0x7UL << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS)) /**< CLKCTRL_SYSCLK_SEL Mask */
-#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO               ((uint32_t)0x0UL) /**< CLKCTRL_SYSCLK_SEL_ISO Value */
-#define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO               (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_ISO Setting */
+#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO               ((uint32_t)0x0UL) /**< CLKCTRL_SYSCLK_SEL_IPO Value */
+#define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO               (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_IPO Setting */
 #define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO              ((uint32_t)0x2UL) /**< CLKCTRL_SYSCLK_SEL_ERFO Value */
 #define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERFO              (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_ERFO Setting */
 #define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO              ((uint32_t)0x3UL) /**< CLKCTRL_SYSCLK_SEL_INRO Value */
 #define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO              (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_INRO Setting */
-#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO               ((uint32_t)0x4UL) /**< CLKCTRL_SYSCLK_SEL_IPO Value */
-#define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO               (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_IPO Setting */
 #define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO              ((uint32_t)0x5UL) /**< CLKCTRL_SYSCLK_SEL_IBRO Value */
 #define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO              (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_IBRO Setting */
 #define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO             ((uint32_t)0x6UL) /**< CLKCTRL_SYSCLK_SEL_ERTCO Value */
 #define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO             (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_ERTCO Setting */
+#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK            ((uint32_t)0x7UL) /**< CLKCTRL_SYSCLK_SEL_EXTCLK Value */
+#define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK            (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_EXTCLK Setting */
 
 #define MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS               13 /**< CLKCTRL_SYSCLK_RDY Position */
 #define MXC_F_GCR_CLKCTRL_SYSCLK_RDY                   ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS)) /**< CLKCTRL_SYSCLK_RDY Mask */
@@ -294,7 +260,7 @@ typedef struct {
 #define MXC_F_GCR_CLKCTRL_ERTCO_EN_POS                 17 /**< CLKCTRL_ERTCO_EN Position */
 #define MXC_F_GCR_CLKCTRL_ERTCO_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_ERTCO_EN_POS)) /**< CLKCTRL_ERTCO_EN Mask */
 
-#define MXC_F_GCR_CLKCTRL_IPO_EN_POS                   18 /**< CLKCTRL_IPO_EN Position */
+#define MXC_F_GCR_CLKCTRL_IPO_EN_POS                   19 /**< CLKCTRL_IPO_EN Position */
 #define MXC_F_GCR_CLKCTRL_IPO_EN                       ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_IPO_EN_POS)) /**< CLKCTRL_IPO_EN Mask */
 
 #define MXC_F_GCR_CLKCTRL_IBRO_EN_POS                  20 /**< CLKCTRL_IBRO_EN Position */
@@ -309,7 +275,7 @@ typedef struct {
 #define MXC_F_GCR_CLKCTRL_ERTCO_RDY_POS                25 /**< CLKCTRL_ERTCO_RDY Position */
 #define MXC_F_GCR_CLKCTRL_ERTCO_RDY                    ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_ERTCO_RDY_POS)) /**< CLKCTRL_ERTCO_RDY Mask */
 
-#define MXC_F_GCR_CLKCTRL_IPO_RDY_POS                  28 /**< CLKCTRL_IPO_RDY Position */
+#define MXC_F_GCR_CLKCTRL_IPO_RDY_POS                  26 /**< CLKCTRL_IPO_RDY Position */
 #define MXC_F_GCR_CLKCTRL_IPO_RDY                      ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_IPO_RDY_POS)) /**< CLKCTRL_IPO_RDY Mask */
 
 #define MXC_F_GCR_CLKCTRL_IBRO_RDY_POS                 28 /**< CLKCTRL_IBRO_RDY Position */
@@ -330,12 +296,10 @@ typedef struct {
 #define MXC_F_GCR_PM_MODE                              ((uint32_t)(0xFUL << MXC_F_GCR_PM_MODE_POS)) /**< PM_MODE Mask */
 #define MXC_V_GCR_PM_MODE_ACTIVE                       ((uint32_t)0x0UL) /**< PM_MODE_ACTIVE Value */
 #define MXC_S_GCR_PM_MODE_ACTIVE                       (MXC_V_GCR_PM_MODE_ACTIVE << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_ACTIVE Setting */
-#define MXC_V_GCR_PM_MODE_DEEPSLEEP                    ((uint32_t)0x2UL) /**< PM_MODE_DEEPSLEEP Value */
-#define MXC_S_GCR_PM_MODE_DEEPSLEEP                    (MXC_V_GCR_PM_MODE_DEEPSLEEP << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_DEEPSLEEP Setting */
-#define MXC_V_GCR_PM_MODE_SHUTDOWN                     ((uint32_t)0x3UL) /**< PM_MODE_SHUTDOWN Value */
-#define MXC_S_GCR_PM_MODE_SHUTDOWN                     (MXC_V_GCR_PM_MODE_SHUTDOWN << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_SHUTDOWN Setting */
-#define MXC_V_GCR_PM_MODE_BACKUP                       ((uint32_t)0x4UL) /**< PM_MODE_BACKUP Value */
+#define MXC_V_GCR_PM_MODE_BACKUP                       ((uint32_t)0x9UL) /**< PM_MODE_BACKUP Value */
 #define MXC_S_GCR_PM_MODE_BACKUP                       (MXC_V_GCR_PM_MODE_BACKUP << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_BACKUP Setting */
+#define MXC_V_GCR_PM_MODE_PDM                          ((uint32_t)0xAUL) /**< PM_MODE_PDM Value */
+#define MXC_S_GCR_PM_MODE_PDM                          (MXC_V_GCR_PM_MODE_PDM << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_PDM Setting */
 
 #define MXC_F_GCR_PM_GPIO_WE_POS                       4 /**< PM_GPIO_WE Position */
 #define MXC_F_GCR_PM_GPIO_WE                           ((uint32_t)(0x1UL << MXC_F_GCR_PM_GPIO_WE_POS)) /**< PM_GPIO_WE Mask */
@@ -359,6 +323,17 @@ typedef struct {
  */
 #define MXC_F_GCR_PCLKDIV_ADCFRQ_POS                   10 /**< PCLKDIV_ADCFRQ Position */
 #define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0xFUL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
+
+#define MXC_F_GCR_PCLKDIV_AONCLKDIV_POS                14 /**< PCLKDIV_AONCLKDIV Position */
+#define MXC_F_GCR_PCLKDIV_AONCLKDIV                    ((uint32_t)(0x3UL << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS)) /**< PCLKDIV_AONCLKDIV Mask */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV4               ((uint32_t)0x0UL) /**< PCLKDIV_AONCLKDIV_DIV4 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV4               (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV4 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV4 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV8               ((uint32_t)0x1UL) /**< PCLKDIV_AONCLKDIV_DIV8 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV8               (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV8 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV8 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV16              ((uint32_t)0x2UL) /**< PCLKDIV_AONCLKDIV_DIV16 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV16              (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV16 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV16 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV32              ((uint32_t)0x3UL) /**< PCLKDIV_AONCLKDIV_DIV32 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV32              (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV32 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV32 Setting */
 
 /**@} end of group GCR_PCLKDIV_Register */
 
@@ -544,7 +519,7 @@ typedef struct {
  * @brief    ECC Interrupt Enable Register
  * @{
  */
-#define MXC_F_GCR_ECCINTEN_FLASH_POS                   0 /**< ECCINTEN_FLASH Position */
+#define MXC_F_GCR_ECCINTEN_FLASH_POS                   11 /**< ECCINTEN_FLASH Position */
 #define MXC_F_GCR_ECCINTEN_FLASH                       ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_FLASH_POS)) /**< ECCINTEN_FLASH Mask */
 
 /**@} end of group GCR_ECCINTEN_Register */
@@ -641,62 +616,6 @@ typedef struct {
 #define MXC_F_GCR_BTLELDODLY_TX_CNT                    ((uint32_t)(0x1FFUL << MXC_F_GCR_BTLELDODLY_TX_CNT_POS)) /**< BTLELDODLY_TX_CNT Mask */
 
 /**@} end of group GCR_BTLELDODLY_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_FLVRST GCR_FLVRST
- * @brief    Flash Low Voltage Reset Control Register
- * @{
- */
-#define MXC_F_GCR_FLVRST_EN_POS                        0 /**< FLVRST_EN Position */
-#define MXC_F_GCR_FLVRST_EN                            ((uint32_t)(0x1UL << MXC_F_GCR_FLVRST_EN_POS)) /**< FLVRST_EN Mask */
-
-/**@} end of group GCR_FLVRST_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_FLVCLKCTRL GCR_FLVCLKCTRL
- * @brief    Flash Low Voltage Clock Control Register
- * @{
- */
-#define MXC_F_GCR_FLVCLKCTRL_DIV_POS                   0 /**< FLVCLKCTRL_DIV Position */
-#define MXC_F_GCR_FLVCLKCTRL_DIV                       ((uint32_t)(0x3UL << MXC_F_GCR_FLVCLKCTRL_DIV_POS)) /**< FLVCLKCTRL_DIV Mask */
-#define MXC_V_GCR_FLVCLKCTRL_DIV_512                   ((uint32_t)0x0UL) /**< FLVCLKCTRL_DIV_512 Value */
-#define MXC_S_GCR_FLVCLKCTRL_DIV_512                   (MXC_V_GCR_FLVCLKCTRL_DIV_512 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_512 Setting */
-#define MXC_V_GCR_FLVCLKCTRL_DIV_256                   ((uint32_t)0x1UL) /**< FLVCLKCTRL_DIV_256 Value */
-#define MXC_S_GCR_FLVCLKCTRL_DIV_256                   (MXC_V_GCR_FLVCLKCTRL_DIV_256 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_256 Setting */
-#define MXC_V_GCR_FLVCLKCTRL_DIV_128                   ((uint32_t)0x2UL) /**< FLVCLKCTRL_DIV_128 Value */
-#define MXC_S_GCR_FLVCLKCTRL_DIV_128                   (MXC_V_GCR_FLVCLKCTRL_DIV_128 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_128 Setting */
-#define MXC_V_GCR_FLVCLKCTRL_DIV_64                    ((uint32_t)0x3UL) /**< FLVCLKCTRL_DIV_64 Value */
-#define MXC_S_GCR_FLVCLKCTRL_DIV_64                    (MXC_V_GCR_FLVCLKCTRL_DIV_64 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_64 Setting */
-
-/**@} end of group GCR_FLVCLKCTRL_Register */
-
-/**
- * @ingroup  gcr_registers
- * @defgroup GCR_FLVSTAT GCR_FLVSTAT
- * @brief    Flash Low Voltage Status Register
- * @{
- */
-#define MXC_F_GCR_FLVSTAT_FLV_POS                      0 /**< FLVSTAT_FLV Position */
-#define MXC_F_GCR_FLVSTAT_FLV                          ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_FLV_POS)) /**< FLVSTAT_FLV Mask */
-
-#define MXC_F_GCR_FLVSTAT_ONES_POS                     6 /**< FLVSTAT_ONES Position */
-#define MXC_F_GCR_FLVSTAT_ONES                         ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ONES_POS)) /**< FLVSTAT_ONES Mask */
-
-#define MXC_F_GCR_FLVSTAT_ZEROS_POS                    7 /**< FLVSTAT_ZEROS Position */
-#define MXC_F_GCR_FLVSTAT_ZEROS                        ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ZEROS_POS)) /**< FLVSTAT_ZEROS Mask */
-
-#define MXC_F_GCR_FLVSTAT_ONES_FL_POS                  14 /**< FLVSTAT_ONES_FL Position */
-#define MXC_F_GCR_FLVSTAT_ONES_FL                      ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ONES_FL_POS)) /**< FLVSTAT_ONES_FL Mask */
-
-#define MXC_F_GCR_FLVSTAT_ZEROS_FL_POS                 15 /**< FLVSTAT_ZEROS_FL Position */
-#define MXC_F_GCR_FLVSTAT_ZEROS_FL                     ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ZEROS_FL_POS)) /**< FLVSTAT_ZEROS_FL Mask */
-
-#define MXC_F_GCR_FLVSTAT_BUF_POS                      16 /**< FLVSTAT_BUF Position */
-#define MXC_F_GCR_FLVSTAT_BUF                          ((uint32_t)(0x3FFUL << MXC_F_GCR_FLVSTAT_BUF_POS)) /**< FLVSTAT_BUF Mask */
-
-/**@} end of group GCR_FLVSTAT_Register */
 
 #ifdef __cplusplus
 }
