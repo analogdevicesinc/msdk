@@ -16,20 +16,23 @@
  *
  ******************************************************************************/
 
-// TODO(ME30): System implementation
-
-#include "system_max32657.h"
-#include "max32657.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "mxc_sys.h"
-#include "icc.h"
+#include "max32657.h"
+#include "system_max32657.h"
+#include "partition_max32657.h"
+#include "gcr_regs.h"
 
 extern void (*const __isr_vector[])(void);
-uint32_t SystemCoreClock = IPO_FREQ; // Part defaults to IPO on startup
+
+uint32_t SystemCoreClock = IPO_FREQ;
 
 /*
-The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
-There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
-we implement stub functions that return an error code to resolve linker warnings.
+    The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
+    There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
+    we implement stub functions that return an error code to resolve linker warnings.
 */
 int _getpid(void)
 {
@@ -47,7 +50,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src) {    
+    switch (clk_src) {
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
         base_freq = IPO_FREQ;
         break;
@@ -56,15 +59,12 @@ __weak void SystemCoreClockUpdate(void)
         break;
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
         base_freq = INRO_FREQ;
-        break;    
+        break;
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
         base_freq = IBRO_FREQ;
         break;
-    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
-        base_freq = ERTCO_FREQ;
-        break;
-    // case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-    //     base_freq = EXTCLK_FREQ;
+    // case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
+    //     base_freq = ERTCO_FREQ;
     //     break;
     // TODO(JC): ^^^ Uncomment when EXTCLK register definition is added
     default:
@@ -90,8 +90,9 @@ __weak void SystemCoreClockUpdate(void)
  */
 __weak int PreInit(void)
 {
-    // TODO(JC): No SIMO on this device, confirm nothing needs to be done here.  
-
+    /* Do nothing */
+    // TODO(JC): No SIMO on this device, confirm nothing needs to be done here.
+    //     (SW): Correct, different power HW.
     return 0;
 }
 
@@ -121,25 +122,37 @@ __weak int Board_Init(void)
  */
 __weak void SystemInit(void)
 {
-    /* Configure the interrupt controller to use the application vector table in */
-    /* the application space */
-#if defined(__CC_ARM) || defined(__GNUC__)
-    /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
+
+#if defined(__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
     SCB->VTOR = (uint32_t)__isr_vector;
-#endif /* __CC_ARM || __GNUC__ */
+#endif /* __VTOR_PRESENT check */
 
-    /* Make sure interrupts are enabled. */
-    __enable_irq();
-
-    /* Enable instruction cache */
-    MXC_ICC_Enable(MXC_ICC);
-
-    /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11 */
-    /* Grant full access, per "Table B3-24 CPACR bit assignments". */
-    /* DDI0403D "ARMv7-M Architecture Reference Manual" */
+#if (__FPU_PRESENT == 1U)
+    /* Enable FPU - coprocessor slots 10 & 11 full access */
     SCB->CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
+#endif /* __FPU_PRESENT check */
+
+    /* 
+        Enable Unaligned Access Trapping to throw an exception when there is an
+        unaligned memory access while unaligned access support is disabled.
+
+        Note: ARMv8-M without the Main Extension disables unaligned access by default.
+    */
+#if defined(UNALIGNED_SUPPORT_DISABLE) || defined(__ARM_FEATURE_UNALIGNED)
+    SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
+#endif
+
+    /* Security Extension Features */
+#if IS_SECURE_ENVIRONMENT
+    /* Settings for TrustZone SAU setup are defined in partitions_max32657.h */
+    TZ_SAU_Setup();
+#endif /* TrustZone */
+
     __DSB();
     __ISB();
+
+    /* Enable interrupts */
+    __enable_irq();
 
     /* Change system clock source to the main high-speed clock */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
