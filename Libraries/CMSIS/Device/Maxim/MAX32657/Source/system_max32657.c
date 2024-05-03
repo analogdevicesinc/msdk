@@ -27,7 +27,7 @@
 
 extern void (*const __isr_vector[])(void);
 
-uint32_t SystemCoreClock = IPO_FREQ;
+uint32_t SystemCoreClock = IPO_FREQ; // Part defaults to IPO on startup
 
 /*
     The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
@@ -122,7 +122,6 @@ __weak int Board_Init(void)
  */
 __weak void SystemInit(void)
 {
-
 #if defined(__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
     SCB->VTOR = (uint32_t)__isr_vector;
 #endif /* __VTOR_PRESENT check */
