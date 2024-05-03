@@ -672,7 +672,7 @@ We may want to handle GET_IRQ better...
 #define MXC_ICC_INSTANCES (1)
 
 /* Secure Mapping Only */
-#define MXC_BASE_ICC ((uint32_t)0x5002A000UL)
+#define MXC_BASE_ICC_S ((uint32_t)0x5002A000UL)
 #define MXC_ICC ((mxc_icc_regs_t *)MXC_BASE_ICC_S)
 
 /* Added for consistency and explicitness */
