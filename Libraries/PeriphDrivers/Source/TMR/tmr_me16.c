@@ -25,14 +25,14 @@
 
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 {
-    uint8_t tmr_id;
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
     uint8_t clockSource = MXC_TMR_CLK0;
 
     if (cfg == NULL) {
         return E_NULL_PTR;
     }
 
-    MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
+    MXC_ASSERT(tmr_id >= 0);
 
     switch (cfg->clock) {
     case MXC_TMR_EXT_CLK:
