@@ -53,7 +53,7 @@
 #include "pal_uart.h"
 #include "tmr.h"
 #include "svc_sds.h"
-
+#include "wsf_cs.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -405,6 +405,8 @@ static void datsCccCback(attsCccEvt_t *pEvt)
 /*************************************************************************************************/
 static void trimStart(void)
 {
+    WsfCsEnter();
+
     int err;
     extern void wutTrimCb(int err);
 
@@ -413,6 +415,8 @@ static void trimStart(void)
     if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("Error starting 32kHz crystal trim %d", err);
     }
+
+    WsfCsExit();
 }
 
 /*************************************************************************************************/
@@ -927,8 +931,14 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         }
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
+            /*Protect against spurious interupts in initialization*/
+            if (!btnTmrIsEnabled(BTN_1_TMR)) {
+                APP_TRACE_INFO0("Software timer is not enabled!");
+                return;
+            }
+
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {
@@ -951,7 +961,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {
@@ -1012,6 +1022,9 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void DatsStart(void)
 {
+
+    trimStart();
+
     /* Register for stack callbacks */
     DmRegister(datsDmCback);
     DmConnRegister(DM_CLIENT_ID_APP, datsDmCback);

@@ -1262,7 +1262,7 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 static bool_t btnTmrIsEnabled(mxc_tmr_regs_t *tmr)
 {
-    return (bool_t)(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B));
+    return (BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B)) ? TRUE :FALSE ;
 }
 /*************************************************************************************************/
 /*!
