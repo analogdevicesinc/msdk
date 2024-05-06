@@ -23,19 +23,20 @@
 #include "aes_revb.h"
 #include "trng.h"
 #include "trng_revb.h"
+#include "dma.h"
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
 
-int MXC_AES_Init(void)
+int MXC_AES_Init(mxc_dma_regs_t *dma)
 {
 #ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_AES);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 #endif
 
-    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES);
+    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES, dma);
 }
 
 void MXC_AES_EnableInt(uint32_t interrupt)
@@ -123,14 +124,14 @@ int MXC_AES_Decrypt(mxc_aes_req_t *req)
     return MXC_AES_RevB_Decrypt((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req);
 }
 
-int MXC_AES_TXDMAConfig(void *src_addr, int len)
+int MXC_AES_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma)
 {
-    return MXC_AES_RevB_TXDMAConfig(src_addr, len);
+    return MXC_AES_RevB_TXDMAConfig(src_addr, len, dma);
 }
 
-int MXC_AES_RXDMAConfig(void *dest_addr, int len)
+int MXC_AES_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma)
 {
-    return MXC_AES_RevB_RXDMAConfig(dest_addr, len);
+    return MXC_AES_RevB_RXDMAConfig(dest_addr, len, dma);
 }
 
 int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc)

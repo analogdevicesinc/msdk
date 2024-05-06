@@ -23,18 +23,19 @@
 
 #include "crc.h"
 #include "crc_reva.h"
+#include "dma.h"
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
 
-int MXC_CRC_Init(void)
+int MXC_CRC_Init(mxc_dma_regs_t *dma)
 {
 #ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CRC);
 #endif
 
-    MXC_CRC_RevA_Init((mxc_crc_reva_regs_t *)MXC_CRC);
+    MXC_CRC_RevA_Init((mxc_crc_reva_regs_t *)MXC_CRC, dma);
 
     return E_NO_ERROR;
 }

@@ -337,7 +337,7 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
     return MXC_SPI_RevA1_MasterTransactionAsync((mxc_spi_reva_req_t *)req);
 }
 
-int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
+int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
 {
     int reqselTx = -1;
     int reqselRx = -1;
@@ -377,8 +377,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
         }
     }
 
-    return MXC_SPI_RevA1_MasterTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,
-                                              MXC_DMA);
+    return MXC_SPI_RevA1_MasterTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx, dma);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
@@ -391,7 +390,7 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
     return MXC_SPI_RevA1_SlaveTransactionAsync((mxc_spi_reva_req_t *)req);
 }
 
-int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
+int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
 {
     int reqselTx = -1;
     int reqselRx = -1;
@@ -433,8 +432,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
         }
     }
 
-    return MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,
-                                             MXC_DMA);
+    return MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx, dma);
 }
 
 int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)

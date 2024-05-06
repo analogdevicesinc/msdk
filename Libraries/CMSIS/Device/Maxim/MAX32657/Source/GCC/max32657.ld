@@ -40,7 +40,7 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
-        EXCLUDE_FILE (*riscv.o) *(.text*)    /* Program code (exclude RISCV code) */
+        *(.text*)    /* Program code */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))
@@ -65,19 +65,21 @@ SECTIONS {
         _etext = .;
     } > FLASH
 
+
+    /*
+     * Secure Gatway (SG) veneers.
+     *  All SG veneers are placed in the special output section .gnu.sgstubs.
+     */
+    .gnu.sgstubs :
+    {
+        _sg_veneers = .;
+        *(.gnu.sgstubs*)
+        _esg_veneers = .;
+    } > FLASH
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > FLASH
-
-    /* Binary import */
-    .bin_storage :
-    {
-       FILL(0xFF)
-      _bin_start_ = .;
-      KEEP(*(.bin_storage_img))
-      _bin_end_ = .;
-      . = ALIGN(4);
     } > FLASH
     
     .rom_code :
@@ -153,17 +155,34 @@ SECTIONS {
         _ebss = ALIGN(., 4);
     } > SRAM
 
-    /* Set stack top to end of RAM, and stack limit move down by
-     * size of stack_dummy section */
+    /**
+     *  Stack Seal section is required for secure builds. Stack sealing protects
+     *  secure stack from illegal access by non-secure code.
+     */
+    .stackseal (COPY):
+    {
+        . = ALIGN(8);
+        __StackSeal = .;
+        . = . + 8;
+        . = ALIGN(8);
+    } > SRAM
+
+    /**
+     *   Set stack top to end of RAM, and stack limit move down by
+     *      size of stack_dummy section.
+     */
     __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
-    /* .stack_dummy section doesn't contains any symbols. It is only
-     * used for linker to calculate size of stack sections, and assign
-     * values to stack symbols later */
+    /**
+     *  .stack_dummy section doesn't contains any symbols. It is only
+     *  used for linker to calculate size of stack sections, and assign
+     *  values to stack symbols later.
+     */
     .stack_dummy (COPY):
     {
-        *(.stack*)
+        KEEP(*(.stack*))
+        *(.stackseal*)
     } > SRAM
 
     .heap (COPY):
@@ -177,5 +196,4 @@ SECTIONS {
 
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
-
 }
