@@ -27,6 +27,7 @@
 /***** Includes *****/
 #include "aes_regs.h"
 #include "aeskeys_regs.h"
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -89,9 +90,10 @@ typedef struct _mxc_aes_cipher_req_t {
 /**
  * @brief   Enable portions of the AES
  *
+ * @param   dma   DMA instance used for AES
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_Init(void);
+int MXC_AES_Init(mxc_dma_regs_t *dma);
 
 /**
  * @brief   Enable AES Interrupts
@@ -213,18 +215,20 @@ int MXC_AES_Decrypt(mxc_aes_req_t *req);
  * 
  * @param   src_addr  source address
  * @param   len       number of words of data
+ * @param   dma       DMA instance to configue for AES
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
-int MXC_AES_TXDMAConfig(void *src_addr, int len);
+int MXC_AES_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma);
 
 /**
  * @brief   Perform AES RX using DMA. Configures DMA request and receives data from AES FIFO.
  * 
  * @param   dest_addr destination address
  * @param   len       number of words of data
+ * @param   dma       DMA instance to configure for AES
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
-int MXC_AES_RXDMAConfig(void *dest_addr, int len);
+int MXC_AES_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma);
 
 /**
  * @brief   Perform encryption or decryption using DMA 

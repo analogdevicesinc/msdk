@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include "uart_regs.h"
 #include "mxc_sys.h"
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -377,14 +378,15 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, un
 /**
  * @brief   Unloads bytes from the receive FIFO user DMA for longer reads.
  *
- * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   uart        Pointer to UART registers (selects the UART block used).
+ * @param   dma         Pointer to DMA registers (selects the DMA block used for UART DMA).
  * @param   bytes       The buffer to read the data into.
  * @param   len         The number of bytes to read.
  * @param   callback    The function to call when the read is complete
  *
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
-int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes, unsigned int len,
                            mxc_uart_dma_complete_cb_t callback);
 
 /**
@@ -410,14 +412,15 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, u
 /**
  * @brief   Loads bytes into the transmit FIFO using DMA for longer writes
  *
- * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   uart        Pointer to UART registers (selects the UART block used).
+ * @param   dma         Pointer to DMA registers (selects the DMA block used for UART DMA).
  * @param   bytes       The buffer containing the bytes to write
  * @param   len         The number of bytes to write.
  * @param   callback    The function to call when the write is complete
  *
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
-int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes, unsigned int len,
                             mxc_uart_dma_complete_cb_t callback);
 
 /**
@@ -602,10 +605,11 @@ int MXC_UART_TransactionAsync(mxc_uart_req_t *req);
  *          returned to the system at the end of the transaction.
  *
  * @param   req             Pointer to details of the transaction
+ * @param   dma             Pointer to DMA registers used for UART DMA
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_UART_TransactionDMA(mxc_uart_req_t *req);
+int MXC_UART_TransactionDMA(mxc_uart_req_t *req, mxc_dma_regs_t *dma);
 
 /**
  * @brief   The processing function for DMA transactions.

@@ -474,8 +474,6 @@ typedef enum {
 #define MXC_BASE_GPIO0_S ((uint32_t)0x50008000UL)
 #define MXC_GPIO0_S ((mxc_gpio_regs_t *)MXC_BASE_GPIO0_S)
 
-#define MXC_BASE_GPIO0 MXC_BASE_GPIO0_S
-
 #if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_GPIO0 MXC_BASE_GPIO0_S
 #define MXC_GPIO0 MXC_GPIO0_S
@@ -654,11 +652,15 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_DMA1 MXC_BASE_DMA1_S
 #define MXC_DMA1 MXC_DMA1_S
 
-#define MXC_DMA1_CH_GET_IRQ(i)                \
-    ((IRQn_Type)(((i) == 0) ? DMA1_CH0_IRQn : \
-                 ((i) == 1) ? DMA1_CH1_IRQn : \
-                 ((i) == 2) ? DMA1_CH2_IRQn : \
-                 ((i) == 3) ? DMA1_CH3_IRQn : \
+#define MXC_DMA_CH_GET_IRQ(p, i)                \
+    ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 0) ? DMA1_CH0_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 1) ? DMA1_CH1_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 2) ? DMA1_CH2_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 3) ? DMA1_CH3_IRQn : \
                               0))
 
 #else
@@ -672,17 +674,15 @@ We may want to handle GET_IRQ better...
 #define MXC_DMA1 0
 
 /* DMA1 IRQs not usable in Non-Secure state. */
-#define MXC_DMA1_CH_GET_IRQ(i) ((IRQn_Type)(0))
+#define MXC_DMA_CH_GET_IRQ(p, i)                \
+    ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
+                              0))
 #endif // IS_SECURE_ENVIRONMENT
 
 #define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0 ? 0 : (p) == MXC_BASE_DMA1 ? 1 : -1)
-
-#define MXC_DMA0_CH_GET_IRQ(i)                \
-    ((IRQn_Type)(((i) == 0) ? DMA0_CH0_IRQn : \
-                 ((i) == 1) ? DMA0_CH1_IRQn : \
-                 ((i) == 2) ? DMA0_CH2_IRQn : \
-                 ((i) == 3) ? DMA0_CH3_IRQn : \
-                              0))
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0 ? 0 : (p) == MXC_DMA1 ? 1 : -1)
 

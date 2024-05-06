@@ -32,6 +32,7 @@
 #include "gpio.h"
 #include "mxc_pins.h"
 #include "mxc_lock.h"
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -595,11 +596,12 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req);
  * possible. The channel will be reset and returned to the system at the end of
  * the transaction.
  *
- * @param   req             Pointer to details of the transaction
+ * @param   req     Pointer to details of the transaction
+ * @param   dma     DMA instance to use for SPI DMA
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
+int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma);
 
 /**
  * @brief   Performs a blocking SPI transaction.
@@ -642,10 +644,11 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req);
  * the transaction.
  *
  * @param   req             Pointer to details of the transaction
+ * @param   dma             DMA instance to use for SPI DMA
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req);
+int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma);
 
 /**
  * @brief   Sets the TX data to transmit as a 'dummy' byte

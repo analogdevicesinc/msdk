@@ -30,6 +30,8 @@
 
 #include "max32657.h"
 
+#if IS_SECURE_ENVIRONMENT
+
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
 */
@@ -1277,5 +1279,7 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
   /* repeat this for all possible ITNS elements */
 
 }
+
+#endif // IS_SECURE_EVIRONMENT
 
 #endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_SOURCE_PARTITION_MAX32657_H_

@@ -182,13 +182,13 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, un
     return MXC_UART_RevA_ReadRXFIFO((mxc_uart_reva_regs_t *)uart, bytes, len);
 }
 
-int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes, unsigned int len,
                            mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
     config.reqsel = MXC_DMA_REQUEST_UART0RX; // TODO(ME30): Updated DMA reqsel
 
-    return MXC_UART_RevA_ReadRXFIFODMA((mxc_uart_reva_regs_t *)uart, MXC_DMA, bytes, len, callback,
+    return MXC_UART_RevA_ReadRXFIFODMA((mxc_uart_reva_regs_t *)uart, dma, bytes, len, callback,
                                        config);
 }
 
@@ -202,13 +202,13 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, u
     return MXC_UART_RevA_WriteTXFIFO((mxc_uart_reva_regs_t *)uart, bytes, len);
 }
 
-int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes, unsigned int len,
                             mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
     config.reqsel = MXC_DMA_REQUEST_UART0TX; // TODO(ME30): Updated DMA reqsel
 
-    return MXC_UART_RevA_WriteTXFIFODMA((mxc_uart_reva_regs_t *)uart, MXC_DMA, bytes, len, callback,
+    return MXC_UART_RevA_WriteTXFIFODMA((mxc_uart_reva_regs_t *)uart, dma, bytes, len, callback,
                                         config);
 }
 
@@ -282,9 +282,9 @@ int MXC_UART_TransactionAsync(mxc_uart_req_t *req)
     return MXC_UART_RevA_TransactionAsync((mxc_uart_reva_req_t *)req);
 }
 
-int MXC_UART_TransactionDMA(mxc_uart_req_t *req)
+int MXC_UART_TransactionDMA(mxc_uart_req_t *req, mxc_dma_regs_t *dma)
 {
-    return MXC_UART_RevA_TransactionDMA((mxc_uart_reva_req_t *)req, MXC_DMA);
+    return MXC_UART_RevA_TransactionDMA((mxc_uart_reva_req_t *)req, dma);
 }
 
 int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)

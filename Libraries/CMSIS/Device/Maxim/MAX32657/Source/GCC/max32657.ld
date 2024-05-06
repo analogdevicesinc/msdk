@@ -70,14 +70,12 @@ SECTIONS {
      * Secure Gatway (SG) veneers.
      *  All SG veneers are placed in the special output section .gnu.sgstubs.
      */
-#if SECURE_LINK
     .gnu.sgstubs :
     {
         _sg_veneers = .;
-        KEEP(*(.gnu.sgstubs*))
+        *(.gnu.sgstubs*)
         _esg_veneers = .;
     } > FLASH
-#endif
 
     .ARM.extab :
     {
@@ -161,7 +159,6 @@ SECTIONS {
      *  Stack Seal section is required for secure builds. Stack sealing protects
      *  secure stack from illegal access by non-secure code.
      */
-#if SECURE_LINK
     .stackseal (COPY):
     {
         . = ALIGN(8);
@@ -169,7 +166,6 @@ SECTIONS {
         . = . + 8;
         . = ALIGN(8);
     } > SRAM
-#endif
 
     /**
      *   Set stack top to end of RAM, and stack limit move down by
@@ -185,10 +181,8 @@ SECTIONS {
      */
     .stack_dummy (COPY):
     {
-        *(.stack*)
-#if SECURE_LINK
+        KEEP(*(.stack*))
         *(.stackseal*)
-#endif
     } > SRAM
 
     .heap (COPY):

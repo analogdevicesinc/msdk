@@ -155,12 +155,12 @@ int MXC_AES_Decrypt(mxc_aes_req_t *req)
 
 int MXC_AES_TXDMAConfig(void *src_addr, int len)
 {
-    return MXC_AES_RevB_TXDMAConfig(src_addr, len);
+    return MXC_AES_RevB_TXDMAConfig(src_addr, len, MXC_DMA);
 }
 
 int MXC_AES_RXDMAConfig(void *dest_addr, int len)
 {
-    return MXC_AES_RevB_RXDMAConfig(dest_addr, len);
+    return MXC_AES_RevB_RXDMAConfig(dest_addr, len, MXC_DMA);
 }
 
 int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc)
