@@ -157,6 +157,9 @@ __weak void SystemInit(void)
     /* Enable interrupts */
     __enable_irq();
 
+    // TODO(ICC): Enable the internal cache controller after testing.
+    // MXC_ICC_Enable();
+
     /* Change system clock source to the main high-speed clock */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     MXC_SYS_SetClockDiv(MXC_SYS_CLOCK_DIV_1);
