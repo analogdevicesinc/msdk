@@ -18,12 +18,16 @@
 
 MEMORY {
     ROM_S         (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB secure ROM (ROM always secure) */
-    FLASH_NS      (rx) : ORIGIN = 0x01000000, LENGTH = 0x00100000 /* 1MB non-secure Flash */
-    SRAM_NS      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00040000 /* 256KB non-secure SRAM */
-    FLASH_S       (rx) : ORIGIN = 0x11000000, LENGTH = 0x00100000 /* 1MB secure Flash */
+    FLASH         (rx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x11000000 : 0x01000000, LENGTH = 0x00100000 /* 1MB Flash */
     FLASH_INFO_S  (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
-    SRAM_S       (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00040000 /* 256KB secure SRAM */
+    SRAM         (rwx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x30000000 : 0x20000000, LENGTH = 0x00040000 /* 256KB SRAM */
 }
+/* Note(JC): "SECURE_LINK" is a symbol defined at link-time by Libraries/CMSIS/Device/Maxim/GCC/gcc.mk
+ * It's only defined for when building secure binaries (which is the default).
+ * When it's defined, the FLASH and SRAM memory addresses will use the secure ranges.  Otherwise, the
+ * non-secure ranges will be used.  This mechanism allows secure and non-secure binaries to be linked
+ * without having to maintain a separate copy of the linkerfile.
+ */
 
 SECTIONS {
     .rom :
@@ -59,23 +63,26 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > FLASH_S
+    } > FLASH
+
 
     /*
      * Secure Gatway (SG) veneers.
      *  All SG veneers are placed in the special output section .gnu.sgstubs.
      */
+#if SECURE_LINK
     .gnu.sgstubs :
     {
         _sg_veneers = .;
         KEEP(*(.gnu.sgstubs*))
         _esg_veneers = .;
-    } > FLASH_S
+    } > FLASH
+#endif
 
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > FLASH_S
+    } > FLASH
     
     .rom_code :
     {
@@ -91,7 +98,7 @@ SECTIONS {
         _sran_code = .;
         *(.flash_code_section)
         _esran_code = .;
-    } > FLASH_S
+    } > FLASH
 
     .sram_code :
     {
@@ -99,7 +106,7 @@ SECTIONS {
         _sran_code = .;
         *(.sram_code_section)
         _esran_code = .;
-    } > SRAM_S
+    } > SRAM
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -108,7 +115,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
-    } > FLASH_S
+    } > FLASH
 
     .data :
     {
@@ -139,7 +146,7 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM_S AT>FLASH_S
+    } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
 
     .bss :
@@ -148,25 +155,27 @@ SECTIONS {
         _bss = .;
         *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
         _ebss = ALIGN(., 4);
-    } > SRAM_S
+    } > SRAM
 
     /**
      *  Stack Seal section is required for secure builds. Stack sealing protects
      *  secure stack from illegal access by non-secure code.
      */
+#if SECURE_LINK
     .stackseal (COPY):
     {
         . = ALIGN(8);
         __StackSeal = .;
         . = . + 8;
         . = ALIGN(8);
-    } > SRAM_S
+    } > SRAM
+#endif
 
     /**
      *   Set stack top to end of RAM, and stack limit move down by
      *      size of stack_dummy section.
      */
-    __StackTop = ORIGIN(SRAM_S) + LENGTH(SRAM_S);
+    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
     /**
@@ -176,16 +185,18 @@ SECTIONS {
      */
     .stack_dummy (COPY):
     {
-        *(.stack*)
+        *(.stack*)\
+#if SECURE_LINK
         *(.stackseal*)
-    } > SRAM_S
+#endif
+    } > SRAM
 
     .heap (COPY):
     {
         . = ALIGN(4);
         *(.heap*)
         __HeapLimit = ABSOLUTE(__StackLimit);
-    } > SRAM_S
+    } > SRAM
 
     PROVIDE(__stack = __StackTop);
 
