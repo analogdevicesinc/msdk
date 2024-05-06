@@ -1,8 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +17,30 @@
  ******************************************************************************/
 
 MEMORY {
-    ROM        (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB ROM */
-    FLASH      (rx) : ORIGIN = 0x10000000, LENGTH = 0x00080000 /* 512KB Flash */
-    SRAM      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00020000 /* 128kB SRAM */
+    ROM_S         (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB secure ROM (ROM always secure) */
+    FLASH         (rx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x11000000 : 0x01000000, LENGTH = 0x00100000 /* 1MB Flash */
+    FLASH_INFO_S  (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
+    SRAM         (rwx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x30000000 : 0x20000000, LENGTH = 0x00040000 /* 256KB SRAM */
 }
+/* Note(JC): "SECURE_LINK" is a symbol defined at link-time by Libraries/CMSIS/Device/Maxim/GCC/gcc.mk
+ * It's only defined for when building secure binaries (which is the default).
+ * When it's defined, the FLASH and SRAM memory addresses will use the secure ranges.  Otherwise, the
+ * non-secure ranges will be used.  This mechanism allows secure and non-secure binaries to be linked
+ * without having to maintain a separate copy of the linkerfile.
+ */
 
 SECTIONS {
     .rom :
     {
         KEEP(*(.rom_vector))
         *(.rom_handlers*)
-    } > ROM
+    } > ROM_S
 
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
-        EXCLUDE_FILE (*riscv.o) *(.text*)    /* Program code (exclude RISCV code) */
+        *(.text*)    /* Program code */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))
@@ -60,19 +65,21 @@ SECTIONS {
         _etext = .;
     } > FLASH
 
+
+    /*
+     * Secure Gatway (SG) veneers.
+     *  All SG veneers are placed in the special output section .gnu.sgstubs.
+     */
+    .gnu.sgstubs :
+    {
+        _sg_veneers = .;
+        *(.gnu.sgstubs*)
+        _esg_veneers = .;
+    } > FLASH
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > FLASH
-
-    /* Binary import */
-    .bin_storage :
-    {
-       FILL(0xFF)
-      _bin_start_ = .;
-      KEEP(*(.bin_storage_img))
-      _bin_end_ = .;
-      . = ALIGN(4);
     } > FLASH
     
     .rom_code :
@@ -81,7 +88,7 @@ SECTIONS {
         _sran_code = .;
         *(.rom_code_section)
         _esran_code = .;
-    } > ROM
+    } > ROM_S
 
     .flash_code :
     {
@@ -145,32 +152,37 @@ SECTIONS {
         . = ALIGN(4);
         _bss = .;
         *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
-        *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
 
-    .shared :
+    /**
+     *  Stack Seal section is required for secure builds. Stack sealing protects
+     *  secure stack from illegal access by non-secure code.
+     */
+    .stackseal (COPY):
     {
-        . = ALIGN(4);
-        _shared = .;
-        *(.mailbox*)
-        . = ALIGN(4);
-        *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
-        _eshared = ALIGN(., 4);
-    } > SRAM AT>FLASH
-    __shared_data = LOADADDR(.shared);
+        . = ALIGN(8);
+        __StackSeal = .;
+        . = . + 8;
+        . = ALIGN(8);
+    } > SRAM
 
-    /* Set stack top to end of RAM, and stack limit move down by
-     * size of stack_dummy section */
+    /**
+     *   Set stack top to end of RAM, and stack limit move down by
+     *      size of stack_dummy section.
+     */
     __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
-    /* .stack_dummy section doesn't contains any symbols. It is only
-     * used for linker to calculate size of stack sections, and assign
-     * values to stack symbols later */
+    /**
+     *  .stack_dummy section doesn't contains any symbols. It is only
+     *  used for linker to calculate size of stack sections, and assign
+     *  values to stack symbols later.
+     */
     .stack_dummy (COPY):
     {
-        *(.stack*)
+        KEEP(*(.stack*))
+        *(.stackseal*)
     } > SRAM
 
     .heap (COPY):
@@ -184,14 +196,4 @@ SECTIONS {
 
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
-
-    /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system. */
-    .riscv_flash :
-    {
-        /* Align address to mod 256 with a small offset. This is required to match the flash page size.*/
-        . = ALIGN(256); /* ALIGN operatator is used here.  Note that (. & 0x1FFFFF00) was used in the past, but a strange bug was seen on Windows where the & did not behave as expected.*/
-        . += 0x100;
-        _riscv_boot = .;
-        KEEP(*riscv.o (.text*))
-    } > FLASH
 }

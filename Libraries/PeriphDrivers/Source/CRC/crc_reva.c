@@ -33,13 +33,16 @@
 
 /***** Global Variables *****/
 static mxc_crc_reva_req_t *CRCreq;
+static mxc_dma_regs_t *CRCdma;
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
 
-int MXC_CRC_RevA_Init(mxc_crc_reva_regs_t *crc)
+int MXC_CRC_RevA_Init(mxc_crc_reva_regs_t *crc, mxc_dma_regs_t *dma)
 {
+    CRCdma = dma;
+
     crc->ctrl = 0x00;
     crc->val = 0xFFFFFFFF;
     return E_NO_ERROR;
@@ -160,9 +163,15 @@ int MXC_CRC_RevA_ComputeAsync(mxc_crc_reva_regs_t *crc, mxc_crc_reva_req_t *req)
 
     CRCreq = req;
 
+#if (TARGET_NUM == 32657)
+    MXC_DMA_Init(CRCdma);
+
+    channel = MXC_DMA_AcquireChannel(CRCdma);
+#else
     MXC_DMA_Init();
 
     channel = MXC_DMA_AcquireChannel();
+#endif
 
     config.reqsel = MXC_DMA_REQUEST_CRCTX;
 
@@ -183,7 +192,13 @@ int MXC_CRC_RevA_ComputeAsync(mxc_crc_reva_regs_t *crc, mxc_crc_reva_req_t *req)
 
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_CRC_Handler);
+
+#if (TARGET_NUM == 32657)
+    MXC_DMA_EnableInt(CRCdma, channel);
+#else
     MXC_DMA_EnableInt(channel);
+#endif
+
     MXC_DMA_Start(channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
     MXC_DMA_SetChannelInterruptEn(channel, 0, 1);

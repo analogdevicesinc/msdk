@@ -85,9 +85,5 @@ void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callb
 
 int MXC_TRNG_HealthTest(void)
 {
-    if ((MXC_SYS_GetRevision() & 0xF0) == 0xA0) { // ME17 Rev. A does not support health tests.
-        return E_NOT_SUPPORTED;
-    }
-
     return MXC_TRNG_RevB_HealthTest((mxc_trng_revb_regs_t *)MXC_TRNG);
 }

@@ -29,27 +29,22 @@
 int MXC_WDT_Init(mxc_wdt_regs_t *wdt, mxc_wdt_cfg_t *cfg)
 {
 #ifndef MSDK_NO_GPIO_CLK_INIT
-    if (wdt == MXC_WDT0) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT0);
-    } else if (wdt == MXC_WDT1) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT1);
+    if (wdt == MXC_WDT) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT);
     } else {
         return E_BAD_PARAM;
     }
 #endif
 
-    MXC_WDT_RevB_Init((mxc_wdt_revb_regs_t *)wdt, (mxc_wdt_revb_cfg_t *)cfg);
-
-    return E_NO_ERROR;
+    return MXC_WDT_RevB_Init((mxc_wdt_revb_regs_t *)wdt, (mxc_wdt_revb_cfg_t *)cfg);
 }
 
 int MXC_WDT_Shutdown(mxc_wdt_regs_t *wdt)
 {
-    if (wdt == MXC_WDT0) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT0);
-    } else if (wdt == MXC_WDT1) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT1);
-    } else {
+    if (wdt == MXC_WDT) {
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT);
+    }
+    else {
         return E_BAD_PARAM;
     }
 
@@ -127,24 +122,12 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
     uint8_t idx = 0;
     uint8_t instance = 0;
 
-#if TARGET_NUM == 32655 || TARGET_NUM == 78000
-    mxc_wdt_clock_t clock_sources[2][8] = {
+    mxc_wdt_clock_t clock_sources[1][8] = {
         { MXC_WDT_PCLK, MXC_WDT_IBRO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
-        { MXC_WDT_IBRO_CLK, MXC_WDT_INRO_CLK, MXC_WDT_ERTCO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
     };
-#elif TARGET_NUM == 32680
-    mxc_wdt_clock_t clock_sources[2][8] = {
-        { MXC_WDT_PCLK, MXC_WDT_IBRO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
-        { MXC_WDT_IBRO_CLK, 0xFF, MXC_WDT_INRO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-    };
-#else
-#error ME17 WDT driver does not support given target number.
-#endif
 
-    if (wdt == MXC_WDT0) {
+    if (wdt == MXC_WDT) {
         instance = 0;
-    } else if (wdt == MXC_WDT1) {
-        instance = 1;
     } else {
         return E_BAD_PARAM;
     }

@@ -53,6 +53,7 @@ typedef enum {
 } mxc_dma_priority_t;
 
 /** @brief DMA request select */
+// TODO(ME30): Updated DMA reqsel
 typedef enum {
     MXC_DMA_REQUEST_MEMTOMEM =
         MXC_S_DMA_CTRL_REQUEST_MEMTOMEM, ///< Memory to Memory DMA Request Selection
@@ -192,25 +193,30 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
  *             if you wish to manage clock and gpio related things in upper level instead of here.
  *             Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
  *             By this flag this function will remove clock and gpio related codes from file.
+ * @param      dma  Pointer to selected DMA instance's registers.
+ * 
  * @return     #E_NO_ERROR if successful
  */
-int MXC_DMA_Init(void);
+int MXC_DMA_Init(mxc_dma_regs_t *dma);
 
 /**
  * @brief      De-Initialize DMA resources.
+ * 
+ * @param      dma  Pointer to selected DMA instance's registers.
  */
-void MXC_DMA_DeInit(void);
+void MXC_DMA_DeInit(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Request DMA channel
  * @details    Returns a handle to the first free DMA channel, which can be used via API calls
  *             or direct access to channel registers using the MXC_DMA_GetCHRegs(int ch) function.
+ * @param      dma  Pointer to selected DMA instance's registers.
  * @return     Non-negative channel handle (inclusive of zero).
  * @return     #E_NONE_AVAIL    All channels in use.
  * @return     #E_BAD_STATE     DMA is not initialized, call MXC_DMA_Init() first.
  * @return     #E_BUSY          DMA is currently busy (locked), try again later.
  */
-int MXC_DMA_AcquireChannel(void);
+int MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Release DMA channel
@@ -359,19 +365,21 @@ int MXC_DMA_ChannelClearFlags(int ch, int flags);
  * @brief      Enable channel interrupt
  * @note       Each channel has two interrupts (complete, and count to zero)
                which must also be enabled with MXC_DMA_SetChannelInterruptEn()
+ * @param      dma  DMA instance used for the DMA channel registers.
  * @param      ch   DMA channel to enable interrupts for.
  * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
  *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
  */
-int MXC_DMA_EnableInt(int ch);
+int MXC_DMA_EnableInt(mxc_dma_regs_t *dma, int ch);
 
 /**
  * @brief      Disable channel interrupt
+ * @param      dma  DMA instance used for the DMA channel registers.
  * @param      ch   DMA channel to disable interrupts for.
  * @return     #E_BAD_PARAM if an unused or invalid channel handle, 
  *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes 
  */
-int MXC_DMA_DisableInt(int ch);
+int MXC_DMA_DisableInt(mxc_dma_regs_t *dma, int ch);
 
 /**
  * @brief      Start transfer
@@ -401,10 +409,11 @@ mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
 
 /**
  * @brief      Interrupt handler function
+ * @param 	   dma 	Pointer to DMA registers.
  * @details    Call this function as the ISR for each DMA channel under driver control.
  *             Interrupt flags for channel ch will be automatically cleared before return.
  */
-void MXC_DMA_Handler(void);
+void MXC_DMA_Handler(mxc_dma_regs_t *dma);
 
 /*************************/
 /* High Level Functions  */
@@ -415,6 +424,7 @@ void MXC_DMA_Handler(void);
  * @note       The user must have the DMA interrupt enabled and call
  *             MXC_DMA_Handler() from the ISR.
  *
+ * @param 	   dma 	Pointer to DMA registers.
  * @param      dest     pointer to destination memory
  * @param      src      pointer to source memory
  * @param      len      number of bytes to copy
@@ -422,20 +432,22 @@ void MXC_DMA_Handler(void);
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t callback);
+int MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
+                   mxc_dma_complete_cb_t callback);
 
 /**
  * @brief      Performs a memcpy, using DMA, optionally asynchronous
  * @note       The user must have the DMA interrupt enabled and call
  *             MXC_DMA_Handler() from the ISR.
  *
+ * @param 	   dma 	Pointer to DMA registers.
  * @param      config   The channel config struct
  * @param      firstSrcDst  The source, destination, and count for the first transfer
  * @param      callback function is called when transfer is complete
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
+int MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
                        mxc_dma_trans_chain_t callback);
 /**
  * For other functional uses of DMA (UART, SPI, etc) see the appropriate peripheral driver

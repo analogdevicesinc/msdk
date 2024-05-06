@@ -19,7 +19,6 @@
 #include "tmr.h"
 #include "tmr_revb.h"
 #include "tmr_common.h"
-#include "lpgcr_regs.h"
 #include "stdbool.h"
 
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
@@ -34,16 +33,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     MXC_ASSERT(tmr_id >= 0);
 
     switch (cfg->clock) {
-    case MXC_TMR_ISO_CLK:
-        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
-
-        clockSource = MXC_TMR_CLK1;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ISO_FREQ);
-        break;
-
     case MXC_TMR_IBRO_CLK:
         if (tmr_id > 3) { // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
@@ -64,7 +53,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, (IBRO_FREQ / 8));
         break;
 
-#if (TARGET_NUM != 32680)
     case MXC_TMR_ERTCO_CLK:
         if (tmr_id == 4) {
             clockSource = MXC_TMR_CLK1;
@@ -77,7 +65,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
         break;
-#endif
 
     case MXC_TMR_INRO_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
@@ -154,12 +141,12 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case 4:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR4);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
         break;
 
     case 5:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR5);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
         break;
     }
@@ -265,19 +252,13 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = PeripheralClock;
             break;
 
-        case MXC_TMR_ISO_CLK:
-            clockFrequency = ISO_FREQ;
-            break;
-
         case MXC_TMR_IBRO_CLK:
             clockFrequency = IBRO_FREQ;
             break;
 
-#if (TARGET_NUM != 32680)
         case MXC_TMR_ERTCO_CLK:
             clockFrequency = ERTCO_FREQ;
             break;
-#endif
 
         default:
             break;

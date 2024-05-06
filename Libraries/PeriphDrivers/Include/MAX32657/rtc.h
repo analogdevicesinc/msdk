@@ -70,8 +70,8 @@ typedef enum {
  * @brief     Bitmasks for each of the RTC's interrupt flags.
  */
 typedef enum {
-    MXC_RTC_INT_FL_LONG = MXC_F_RTC_CTRL_TOD_ALARM, /**< Long-interval alarm interrupt flag */
-    MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM, /**< Short-interval alarm interrupt flag */
+    MXC_RTC_INT_FL_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IF, /**< Long-interval alarm interrupt flag */
+    MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM_IF, /**< Short-interval alarm interrupt flag */
     MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY, /**< Timer ready interrupt flag */
 } mxc_rtc_int_fl_t;
 

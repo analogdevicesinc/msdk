@@ -26,6 +26,7 @@
 
 /***** Includes *****/
 #include "crc_regs.h"
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,10 +64,10 @@ typedef enum { CRC_LSB_FIRST, CRC_MSB_FIRST } mxc_crc_bitorder_t;
 /**
  * @brief   Enable portions of the CRC
  *
- *
+ * @param   dma   DMA Instance used for CRC calculation
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CRC_Init(void);
+int MXC_CRC_Init(mxc_dma_regs_t *dma);
 
 /**
  * @brief   Disable and reset portions of the CRC

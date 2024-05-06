@@ -31,6 +31,7 @@
 #define MXC_NUMCORES 1
 
 #include <stdint.h>
+#include "system_max32657.h"
 
 #ifndef FALSE
 #define FALSE (0)
@@ -95,10 +96,10 @@ typedef enum {
     DMA0_CH1_IRQn,          /* 0x21  0x0084  33: DMA0 Channel 1 */
     DMA0_CH2_IRQn,          /* 0x22  0x0088  34: DMA0 Channel 2 */
     DMA0_CH3_IRQn,          /* 0x23  0x008C  35: DMA0 Channel 3 */
-    DMA1_CH0_IRQn,          /* 0x24  0x0090  36: DMA1 Channel 0 */
-    DMA1_CH1_IRQn,          /* 0x25  0x0094  37: DMA1 Channel 1 */
-    DMA1_CH2_IRQn,          /* 0x26  0x0098  38: DMA1 CHannel 2 */
-    DMA1_CH3_IRQn,          /* 0x27  0x009C  39: DMA1 Channel 3 */
+    DMA1_CH0_IRQn,          /* 0x24  0x0090  36: DMA1 Channel 0 (Secure) */
+    DMA1_CH1_IRQn,          /* 0x25  0x0094  37: DMA1 Channel 1 (Secure) */
+    DMA1_CH2_IRQn,          /* 0x26  0x0098  38: DMA1 CHannel 2 (Secure) */
+    DMA1_CH3_IRQn,          /* 0x27  0x009C  39: DMA1 Channel 3 (Secure) */
     WUT0_IRQn,              /* 0x28  0x00A0  40: Wakeup Timer 0 */
     WUT1_IRQn,              /* 0x29  0x00A4  41: Wakeup TImer 1 */
     GPIOWAKE_IRQn,          /* 0x2A  0x00A8  42: GPIO Wakeup */
@@ -149,6 +150,10 @@ typedef enum {
 #define __NVIC_PRIO_BITS          4U      /**< NVIC interrupt priority bits */
 #define __Vendor_SysTickConfig    0U      /**< Is 1 if different SysTick counter is used */
 
+#include <core_cm33.h>
+#include <arm_cmse.h>
+#define IS_SECURE_ENVIRONMENT (defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U))
+
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
 /* ================================================================================ */
@@ -167,19 +172,28 @@ typedef enum {
 #define MXC_FLASH_S_MEM_BASE 0x11000000UL
 #define MXC_FLASH_S_PAGE_SIZE 0x00002000UL
 #define MXC_FLASH_S_MEM_SIZE 0x00100000UL
+/* Flash info is always in secure region */
 #define MXC_INFO_S_MEM_BASE 0x12000000UL
 #define MXC_INFO_S_MEM_SIZE 0x00004000UL
 #define MXC_SRAM_S_MEM_BASE 0x30000000UL
 #define MXC_SRAM_S_MEM_SIZE 0x00040000UL
 
-/* Secure Region name redefinitions for explicit use */
+#define MXC_INFO_MEM_BASE MXC_INFO_S_MEM_BASE
+#define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
+
+#if IS_SECURE_ENVIRONMENT
 #define MXC_FLASH_MEM_BASE MXC_FLASH_S_MEM_BASE
 #define MXC_FLASH_PAGE_SIZE MXC_FLASH_S_PAGE_SIZE
 #define MXC_FLASH_MEM_SIZE MXC_FLASH_S_MEM_SIZE
-#define MXC_INFO_MEM_BASE MXC_INFO_S_MEM_BASE
-#define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
 #define MXC_SRAM_MEM_BASE MXC_SRAM_S_MEM_BASE
 #define MXC_SRAM_MEM_SIZE MXC_SRAM_S_MEM_SIZE
+#else
+#define MXC_FLASH_MEM_BASE MXC_FLASH_NS_MEM_BASE
+#define MXC_FLASH_PAGE_SIZE MXC_FLASH_NS_PAGE_SIZE
+#define MXC_FLASH_MEM_SIZE MXC_FLASH_NS_MEM_SIZE
+#define MXC_SRAM_MEM_BASE MXC_SRAM_NS_MEM_BASE
+#define MXC_SRAM_MEM_SIZE MXC_SRAM_NS_MEM_SIZE
+#endif
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */
@@ -200,8 +214,11 @@ typedef enum {
 #define MXC_BASE_GCR_S ((uint32_t)0x50000000UL)
 #define MXC_GCR_S ((mxc_gcr_regs_t *)MXC_BASE_GCR_S)
 
-#define MXC_BASE_GCR MXC_BASE_GCR_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_GCR MXC_GCR_S
+#else
+#define MXC_GCR MXC_GCR_NS
+#endif
 
 /******************************************************************************/
 /*                                            Non-battery backed SI Registers */
@@ -214,8 +231,13 @@ typedef enum {
 #define MXC_BASE_SIR_S ((uint32_t)0x50000400UL)
 #define MXC_SIR_S ((mxc_sir_regs_t *)MXC_BASE_SIR_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_SIR MXC_BASE_SIR_S
 #define MXC_SIR MXC_SIR_S
+#else
+#define MXC_BASE_SIR MXC_BASE_SIR_NS
+#define MXC_SIR MXC_SIR_NS
+#endif
 
 /******************************************************************************/
 /*                                        Non-Battery Backed Function Control */
@@ -227,6 +249,14 @@ typedef enum {
 /* Secure Mapping */
 #define MXC_BASE_FCR_S ((uint32_t)0x50000800UL)
 #define MXC_FCR_S ((mxc_fcr_regs_t *)MXC_BASE_FCR_S)
+
+#if IS_SECURE_ENVIRONMENT
+#define MXC_BASE_FCR MXC_BASE_FCR_S
+#define MXC_FCR MXC_FCR_S
+#else
+#define MXC_BASE_FCR MXC_BASE_FCR_NS
+#define MXC_FCR MXC_FCR_NS
+#endif
 
 /******************************************************************************/
 /*                                                    Windowed Watchdog Timer */
@@ -240,36 +270,51 @@ typedef enum {
 #define MXC_BASE_WDT_S ((uint32_t)0x50003000UL)
 #define MXC_WDT_S ((mxc_wdt_regs_t *)MXC_BASE_WDT_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_WDT MXC_BASE_WDT_S
 #define MXC_WDT MXC_WDT_S
+#else
+#define MXC_BASE_WDT MXC_BASE_WDT_NS
+#define MXC_WDT MXC_WDT_NS
+#endif
 
 /******************************************************************************/
 /*                                                             SVM Controller */
 
 /* Non-secure Mapping */
 #define MXC_BASE_SVM_NS ((uint32_t)0x40004800UL)
-#define MXC_SVM_NS //TODO(ME30): Add SVM controller registers.
+#define MXC_SVM_NS 0 //TODO(ME30): Add SVM controller registers.
 
 /* Secure Mapping */
 #define MXC_BASE_SVM_S ((uint32_t)0x50004800UL)
-#define MXC_SVM_S //TODO(ME30): Add SVM controller registers.
+#define MXC_SVM_S 0 //TODO(ME30): Add SVM controller registers.
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_SVM MXC_BASE_SVM_S
-#define MXC_SVM //TODO(ME30): Add SVM controller registers.
+#define MXC_SVM MXC_SVM_S //TODO(ME30): Add SVM controller registers
+#else
+#define MXC_BASE_SVM MXC_BASE_SVM_NS
+#define MXC_SVM MXC_SVM_NS
+#endif
 
 /******************************************************************************/
 /*                                                           Boost Controller */
 
 /* Non-secure Mapping */
 #define MXC_BASE_BOOST_NS ((uint32_t)0x40004C00UL)
-#define MXC_BOOST_NS //TODO(ME30): Add Boost controller registers.
+#define MXC_BOOST_NS 0 //TODO(ME30): Add Boost controller registers.
 
 /* Secure Mapping */
 #define MXC_BASE_BOOST_S ((uint32_t)0x50004C00UL)
-#define MXC_BOOST_S //TODO(ME30): Add Boost controller registers.
+#define MXC_BOOST_S 0 //TODO(ME30): Add Boost controller registers.
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_BOOST MXC_BASE_BOOST_S
-#define MXC_BOOST //TODO(ME30): Add Boost controller registers.
+#define MXC_BOOST MXC_BOOST_S
+#else
+#define MXC_BASE_BOOST MXC_BASE_BOOST_NS
+#define MXC_BOOST MXC_BOOST_NS
+#endif
 
 /******************************************************************************/
 /*                                         Trim System Initalization Register */
@@ -282,8 +327,13 @@ typedef enum {
 #define MXC_BASE_TRIMSIR_S ((uint32_t)0x50005400UL)
 #define MXC_TRIMSIR_S ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_TRIMSIR MXC_BASE_TRIMSIR_S
 #define MXC_TRIMSIR MXC_TRIMSIR_S
+#else
+#define MXC_BASE_TRIMSIR MXC_BASE_TRIMSIR_NS
+#define MXC_TRIMSIR MXC_TRIMSIR_NS
+#endif
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -296,8 +346,13 @@ typedef enum {
 #define MXC_BASE_RTC_S ((uint32_t)0x50006000UL)
 #define MXC_RTC_S ((mxc_rtc_regs_t *)MXC_BASE_RTC_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_RTC MXC_BASE_RTC_S
 #define MXC_RTC MXC_RTC_S
+#else
+#define MXC_BASE_RTC MXC_BASE_RTC_NS
+#define MXC_RTC MXC_RTC_NS
+#endif
 
 /******************************************************************************/
 /*                                                        Wake-Up Timer (WUT) */
@@ -315,10 +370,17 @@ typedef enum {
 #define MXC_BASE_WUT1_S ((uint32_t)0x50006600UL)
 #define MXC_WUT1_S ((mxc_wut_regs_t *)MXC_BASE_WUT1_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_WUT0 MXC_BASE_WUT0_S
 #define MXC_WUT0 MXC_WUT0_S
 #define MXC_BASE_WUT1 MXC_BASE_WUT1_S
 #define MXC_WUT1 MXC_WUT1_S
+#else
+#define MXC_BASE_WUT0 MXC_BASE_WUT0_NS
+#define MXC_WUT0 MXC_WUT0_NS
+#define MXC_BASE_WUT1 MXC_BASE_WUT1_NS
+#define MXC_WUT1 MXC_WUT1_NS
+#endif
 
 /******************************************************************************/
 /*                                                            Power Sequencer */
@@ -331,8 +393,13 @@ typedef enum {
 #define MXC_BASE_PWRSEQ_S ((uint32_t)0x50006800UL)
 #define MXC_PWRSEQ_S ((mxc_pwrseq_regs_t *)MXC_BASE_PWRSEQ_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_PWRSEQ MXC_BASE_PWRSEQ_S
 #define MXC_PWRSEQ MXC_PWRSEQ_S
+#else
+#define MXC_BASE_PWRSEQ MXC_BASE_PWRSEQ_NS
+#define MXC_PWRSEQ MXC_PWRSEQ_NS
+#endif
 
 /******************************************************************************/
 /*                                                              Misc Control  */
@@ -345,8 +412,13 @@ typedef enum {
 #define MXC_BASE_MCR_S ((uint32_t)0x50006C00UL)
 #define MXC_MCR_S ((mxc_mcr_regs_t *)MXC_BASE_MCR_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_MCR MXC_BASE_MCR_S
 #define MXC_MCR MXC_MCR_S
+#else
+#define MXC_BASE_MCR MXC_BASE_MCR_NS
+#define MXC_MCR MXC_MCR_NS
+#endif
 
 /******************************************************************************/
 /*                                                                        AES */
@@ -359,8 +431,13 @@ typedef enum {
 #define MXC_BASE_AES_S ((uint32_t)0x50007400UL)
 #define MXC_AES_S ((mxc_aes_regs_t *)MXC_BASE_AES_NS)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_AES MXC_BASE_AES_S
 #define MXC_AES MXC_AES_S
+#else
+#define MXC_BASE_AES MXC_BASE_AES_NS
+#define MXC_AES MXC_AES_NS
+#endif
 
 /******************************************************************************/
 /*                                                                   AES Keys */
@@ -373,8 +450,13 @@ typedef enum {
 #define MXC_BASE_AESKEYS_S ((uint32_t)0x50007800UL)
 #define MXC_AESKEYS_S ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_AESKEYS MXC_BASE_AESKEYS_S
 #define MXC_AESKEYS MXC_AESKEYS_S
+#else
+#define MXC_BASE_AESKEYS MXC_BASE_AESKEYS_NS
+#define MXC_AESKEYS MXC_AESKEYS_NS
+#endif
 
 /******************************************************************************/
 /*                                                                       GPIO */
@@ -392,8 +474,24 @@ typedef enum {
 #define MXC_BASE_GPIO0_S ((uint32_t)0x50008000UL)
 #define MXC_GPIO0_S ((mxc_gpio_regs_t *)MXC_BASE_GPIO0_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_GPIO0 MXC_BASE_GPIO0_S
 #define MXC_GPIO0 MXC_GPIO0_S
+#else
+#define MXC_BASE_GPIO0 MXC_BASE_GPIO0_NS
+#define MXC_GPIO0 MXC_GPIO0_NS
+#endif
+
+/*
+Note(JC): There is only 1 GPIO instance, but for driver compatibility these must be
+implemented.
+
+For GET_IRQ we follow precedent and return the base 0 IRQn, which is the ICE unlock.
+We may want to handle GET_IRQ better...
+*/
+#define MXC_GPIO_GET_IDX(p) ((p) == MXC_GPIO0 ? 0 : 0)
+#define MXC_GPIO_GET_GPIO(i) ((i) == 0 ? MXC_GPIO0 : 0)
+#define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : (IRQn_Type)0)
 
 /******************************************************************************/
 /*                                                                        CRC */
@@ -406,8 +504,13 @@ typedef enum {
 #define MXC_BASE_CRC_S ((uint32_t)0x5000F000UL)
 #define MXC_CRC_S ((mxc_crc_regs_t *)MXC_BASE_CRC_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_CRC MXC_BASE_CRC_S
 #define MXC_CRC MXC_CRC_S
+#else
+#define MXC_BASE_CRC MXC_BASE_CRC_NS
+#define MXC_CRC MXC_CRC_NS
+#endif
 
 /******************************************************************************/
 /*                                                                      Timer */
@@ -431,24 +534,6 @@ typedef enum {
 #define MXC_BASE_TMR5_NS ((uint32_t)0x40081000UL)
 #define MXC_TMR5_NS ((mxc_tmr_regs_t *)MXC_BASE_TMR5_NS)
 
-#define MXC_TMR_NS_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_TMR0_NS : \
-     (i) == 1 ? MXC_BASE_TMR1_NS : \
-     (i) == 2 ? MXC_BASE_TMR2_NS : \
-     (i) == 3 ? MXC_BASE_TMR3_NS : \
-     (i) == 4 ? MXC_BASE_TMR4_NS : \
-     (i) == 5 ? MXC_BASE_TMR5_NS : \
-                0)
-
-#define MXC_TMR_NS_GET_TMR(i) \
-    ((i) == 0 ? MXC_TMR0_NS : \
-     (i) == 1 ? MXC_TMR1_NS : \
-     (i) == 2 ? MXC_TMR2_NS : \
-     (i) == 3 ? MXC_TMR3_NS : \
-     (i) == 4 ? MXC_TMR4_NS : \
-     (i) == 5 ? MXC_TMR5_NS : \
-                0)
-
 /* Secure Mapping */
 #define MXC_BASE_TMR0_S ((uint32_t)0x50010000UL)
 #define MXC_TMR0_S ((mxc_tmr_regs_t *)MXC_BASE_TMR0_S)
@@ -463,35 +548,38 @@ typedef enum {
 #define MXC_BASE_TMR5_S ((uint32_t)0x50081000UL)
 #define MXC_TMR5_S ((mxc_tmr_regs_t *)MXC_BASE_TMR5_S)
 
-#define MXC_BASE_TMR0 MXC_BASE_TMR0_S
+#if IS_SECURE_ENVIRONMENT
 #define MXC_TMR0 MXC_TMR0_S
-#define MXC_BASE_TMR1 MXC_BASE_TMR1_S
 #define MXC_TMR1 MXC_TMR1_S
-#define MXC_BASE_TMR2 MXC_BASE_TMR2_S
 #define MXC_TMR2 MXC_TMR2_S
-#define MXC_BASE_TMR3 MXC_BASE_TMR3_S
 #define MXC_TMR3 MXC_TMR3_S
-#define MXC_BASE_TMR4 MXC_BASE_TMR4_S
 #define MXC_TMR4 MXC_TMR4_S
-#define MXC_BASE_TMR5 MXC_BASE_TMR5_S
 #define MXC_TMR5 MXC_TMR5_S
+#else
+#define MXC_TMR0 MXC_TMR0_NS
+#define MXC_TMR1 MXC_TMR1_NS
+#define MXC_TMR2 MXC_TMR2_NS
+#define MXC_TMR3 MXC_TMR3_NS
+#define MXC_TMR4 MXC_TMR4_NS
+#define MXC_TMR5 MXC_TMR5_NS
+#endif
 
-#define MXC_TMR_S_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_TMR0_S : \
-     (i) == 1 ? MXC_BASE_TMR1_S : \
-     (i) == 2 ? MXC_BASE_TMR2_S : \
-     (i) == 3 ? MXC_BASE_TMR3_S : \
-     (i) == 4 ? MXC_BASE_TMR4_S : \
-     (i) == 5 ? MXC_BASE_TMR5_S : \
+#define MXC_TMR_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_TMR0 : \
+     (i) == 1 ? MXC_BASE_TMR1 : \
+     (i) == 2 ? MXC_BASE_TMR2 : \
+     (i) == 3 ? MXC_BASE_TMR3 : \
+     (i) == 4 ? MXC_BASE_TMR4 : \
+     (i) == 5 ? MXC_BASE_TMR5 : \
                 0)
 
-#define MXC_TMR_S_GET_TMR(i) \
-    ((i) == 0 ? MXC_TMR0_S : \
-     (i) == 1 ? MXC_TMR1_S : \
-     (i) == 2 ? MXC_TMR2_S : \
-     (i) == 3 ? MXC_TMR3_S : \
-     (i) == 4 ? MXC_TMR4_S : \
-     (i) == 5 ? MXC_TMR5_S : \
+#define MXC_TMR_GET_TMR(i) \
+    ((i) == 0 ? MXC_TMR0 : \
+     (i) == 1 ? MXC_TMR1 : \
+     (i) == 2 ? MXC_TMR2 : \
+     (i) == 3 ? MXC_TMR3 : \
+     (i) == 4 ? MXC_TMR4 : \
+     (i) == 5 ? MXC_TMR5 : \
                 0)
 
 #define MXC_TMR_GET_IRQ(i)             \
@@ -504,22 +592,18 @@ typedef enum {
                            0)
 
 #define MXC_TMR_GET_IDX(p) \
-    ((p) == MXC_TMR0_NS ? 0 : \
-     (p) == MXC_TMR1_NS ? 1 : \
-     (p) == MXC_TMR2_NS ? 2 : \
-     (p) == MXC_TMR3_NS ? 3 : \
-     (p) == MXC_TMR4_NS ? 4 : \
-     (p) == MXC_TMR5_NS ? 5 : \
-     (p) == MXC_TMR0_S ? 0 : \
-     (p) == MXC_TMR1_S ? 1 : \
-     (p) == MXC_TMR2_S ? 2 : \
-     (p) == MXC_TMR3_S ? 3 : \
-     (p) == MXC_TMR4_S ? 4 : \
-     (p) == MXC_TMR5_S ? 5 : \
-                       -1)
+    ((p) == MXC_TMR0 ? 0 : \
+     (p) == MXC_TMR1 ? 1 : \
+     (p) == MXC_TMR2 ? 2 : \
+     (p) == MXC_TMR3 ? 3 : \
+     (p) == MXC_TMR4 ? 4 : \
+     (p) == MXC_TMR5 ? 5 : \
+                      -1)
 
 /******************************************************************************/
 /*                                                                        I3C */
+#define MXC_I3C_FIFO_DEPTH (8) // TODO(ME30): Confirm this is correct.
+
 /* Non-secure Mapping */
 #define MXC_BASE_I3C_NS ((uint32_t)0x4001D000UL)
 #define MXC_I3C_NS ((mxc_i2c_regs_t *)MXC_BASE_I3C_NS)
@@ -528,38 +612,79 @@ typedef enum {
 #define MXC_BASE_I3C_S ((uint32_t)0x5001D000UL)
 #define MXC_I3C_S ((mxc_i2c_regs_t *)MXC_BASE_I3C_S)
 
-#define MXC_BASE_I3C MXC_BASE_I2C_S
+#if IS_SECURE_ENVIRONMENT
+#define MXC_BASE_I3C MXC_BASE_I3C_S
 #define MXC_I3C MXC_I3C_S
-
-#define MXC_I3C_FIFO_DEPTH (8) // TODO(ME30): Confirm this is correct.
+#else
+#define MXC_BASE_I3C MXC_BASE_I3C_NS
+#define MXC_I3C MXC_I3C_NS
+#endif
 
 /******************************************************************************/
 /*                                                                        DMA */
 #define MXC_DMA_CHANNELS (4)
+#if IS_SECURE_ENVIRONMENT
 #define MXC_DMA_INSTANCES (2)
+#else
+#define MXC_DMA_INSTANCES (1)
+#endif
 
 /* Non-secure Mapping */
 #define MXC_BASE_DMA0_NS ((uint32_t)0x40028000UL)
 #define MXC_DMA0_NS ((mxc_dma_regs_t *)MXC_BASE_DMA0_NS)
-/* DMA1 instance only for secure mode. */
 
 /* Secure Mapping */
+// TODO(ME30): Is there actuall a secure mapping for DMA0?
+//             -Yes, DMA0 can be accessed from secure mode. Realizing this, I think
+//                  we would still have to define two DMA instances.
+//                  DMA0 can only access the non-secure mappings of the peripherals,
+//                  but DMA0 can be accessed in both Non-secure and Secure code.
+//                  DMA1 can access both secure and non-secure addresses of the peripherals,
+//                  but DMA1 can Only be accessed in Secure code.
 #define MXC_BASE_DMA0_S ((uint32_t)0x50028000UL)
 #define MXC_DMA0_S ((mxc_dma_regs_t *)MXC_BASE_DMA0_S)
 #define MXC_BASE_DMA1_S ((uint32_t)0x50035000UL)
 #define MXC_DMA1_S ((mxc_dma_regs_t *)MXC_BASE_DMA1_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_DMA0 MXC_BASE_DMA0_S
 #define MXC_DMA0 MXC_DMA0_S
 #define MXC_BASE_DMA1 MXC_BASE_DMA1_S
 #define MXC_DMA1 MXC_DMA1_S
 
-#define MXC_DMA_CH_GET_IRQ(i)             \
-    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
-                 ((i) == 1) ? DMA1_IRQn : \
-                 ((i) == 2) ? DMA2_IRQn : \
-                 ((i) == 3) ? DMA3_IRQn : \
+#define MXC_DMA_CH_GET_IRQ(p, i)                \
+    ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 0) ? DMA1_CH0_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 1) ? DMA1_CH1_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 2) ? DMA1_CH2_IRQn : \
+                 ((p) == MXC_DMA1 && (i) == 3) ? DMA1_CH3_IRQn : \
                               0))
+
+#else
+#define MXC_BASE_DMA0 MXC_BASE_DMA0_NS
+#define MXC_DMA0 MXC_DMA0_NS
+// TODO(DMA1): Not entirely show how to handle access to MXC_DMA1 in non-secure mode.
+//                  A secure fault should be generated when non-secure code accesses
+//                  a secure peripheral mapping, so it'd be best if a build time warning
+//                  or error was thrown when using MXCX_DMA1.
+#define MXC_BASE_DMA1 0
+#define MXC_DMA1 0
+
+/* DMA1 IRQs not usable in Non-Secure state. */
+#define MXC_DMA_CH_GET_IRQ(p, i)                \
+    ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
+                 ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
+                              0))
+#endif // IS_SECURE_ENVIRONMENT
+
+#define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0 ? 0 : (p) == MXC_BASE_DMA1 ? 1 : -1)
+
+#define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0 ? 0 : (p) == MXC_DMA1 ? 1 : -1)
 
 /******************************************************************************/
 /*                                                           Flash Controller */
@@ -572,6 +697,12 @@ typedef enum {
 /* Added for consistency and explicitness */
 #define MXC_BASE_FLC_S MXC_BASE_FLC
 #define MXC_FLC_S MXC_FLC
+
+/**
+ *  There is only one flash instance, but some bottom-level RevX implementations
+ *  depend on MXC_FLC_GET_FLC
+ */
+#define MXC_FLC_GET_FLC(i) ((i) == 0 ? MXC_FLC : 0)
 
 /******************************************************************************/
 /*                                                  Internal Cache Controller */
@@ -588,25 +719,26 @@ typedef enum {
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
 #define MXC_UART_INSTANCES (1)
-#define MXC_UART_FIFO_DEPTH (8) // TOD(ME30): Check this is correct.
+#define MXC_UART_FIFO_DEPTH (8) // TODO(ME30): Check this is correct.
 
 /* Non-secure Mapping */
 #define MXC_BASE_UART_NS ((uint32_t)0x40042000UL)
 #define MXC_UART_NS ((mxc_uart_regs_t *)MXC_BASE_UART_NS)
 
-#define MXC_UART_NS_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_NS : 0)
-#define MXC_UART_NS_GET_UART(i) ((i) == 0 ? MXC_UART_NS : 0)
-
 /* Secure Mapping */
 #define MXC_BASE_UART_S ((uint32_t)0x50042000UL)
 #define MXC_UART_S ((mxc_uart_regs_t *)MXC_BASE_UART_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_UART MXC_BASE_UART_S
 #define MXC_UART MXC_UART_S
+#else
+#define MXC_BASE_UART MXC_BASE_UART_NS
+#define MXC_UART MXC_UART_NS
+#endif
 
-#define MXC_UART_S_GET_UART(i) ((i) == 0 ? MXC_UART_S : 0)
-#define MXC_UART_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0_S : 0)
-
+#define MXC_UART_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART : 0)
+#define MXC_UART_GET_UART(i) ((i) == 0 ? MXC_UART : 0)
 #define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : 0)
 #define MXC_UART_GET_IDX(p) ((p) == MXC_UART_NS ? 0 : (p) == MXC_UART_S ? 0 : -1)
 
@@ -620,19 +752,20 @@ typedef enum {
 #define MXC_BASE_SPI_NS ((uint32_t)0x40046000UL)
 #define MXC_SPI_NS ((mxc_spi_regs_t *)MXC_BASE_SPI_NS)
 
-#define MXC_SPI_NS_GET_BASE(i) ((i) == 0 ? MXC_BASE_SPI_NS : 0)
-#define MXC_SPI_NS_GET_SPI(i) ((i) == 0 ? MXC_SPI_NS : 0)
-
 /* Secure Mapping */
 #define MXC_BASE_SPI_S ((uint32_t)0x50046000UL)
 #define MXC_SPI_S ((mxc_spi_regs_t *)MXC_BASE_SPI_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_SPI MXC_BASE_SPI_S
 #define MXC_SPI MXC_SPI_S
+#else
+#define MXC_BASE_SPI MXC_BASE_SPI_S
+#define MXC_SPI MXC_SPI_NS
+#endif
 
-#define MXC_SPI_S_GET_BASE(i) ((i) == 0 ? MXC_BASE_SPI_S : 0)
-#define MXC_SPI_S_GET_SPI(i) ((i) == 0 ? MXC_SPI_S : 0)
-
+#define MXC_SPI_GET_BASE(i) ((i) == 0 ? MXC_BASE_SPI : 0)
+#define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI : 0)
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI_IRQn : 0)
 #define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI_NS ? 0 : (p) == MXC_SPI_S ? 0 : -1)
 
@@ -647,8 +780,13 @@ typedef enum {
 #define MXC_BASE_TRNG_S ((uint32_t)0x5004D000UL)
 #define MXC_TRNG_S ((mxc_trng_regs_t *)MXC_BASE_TRNG_S)
 
+#if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_TRNG MXC_BASE_TRNG_S
 #define MXC_TRNG MXC_TRNG_S
+#else
+#define MXC_BASE_TRNG MXC_BASE_TRNG_NS
+#define MXC_TRNG MXC_TRNG_NS
+#endif
 
 /******************************************************************************/
 /*                                                                       BTLE */
@@ -662,8 +800,14 @@ typedef enum {
 #define MXC_BASE_BTLE_S ((uint32_t)0x50050000UL)
 #define MXC_BTLE_S // TODO(ME30): Add BTLE related registers? This section doesn't exist for ME17.
 
+#if IS_SECURE_ENVIRONMENT
+// TODO(ME30): Does this have registers?
 #define MXC_BASE_BTLE MXC_BASE_BTLE_S
-#define MXC_BTLE // TODO(ME30): Does this have registers?
+#define MXC_BTLE MXC_BTLE_S
+#else
+#define MXC_BASE_BTLE MXC_BASE_BTLE_NS
+#define MXC_BTLE MXC_BTLE_NS
+#endif
 
 /******************************************************************************/
 /*                                          Secure Privilege Control (SPC TZ) */
@@ -671,8 +815,6 @@ typedef enum {
 /* Secure Mapping Only */
 #define MXC_BASE_SPC ((uint32_t)0x50090000UL)
 #define MXC_SPC // TODO(ME30): Does this have registers?
-
-#define MXC_BASE_SPC_S MXC_BASE_SPC
 #define MXC_SPC_S // TODO(ME30): Does this have registers?
 
 /******************************************************************************/
@@ -752,5 +894,13 @@ typedef enum {
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
 #define MXC_SETFIELD(reg, mask, setting) ((reg) = ((reg) & ~(mask)) | ((setting) & (mask)))
+
+/******************************************************************************/
+/*                                                         CPACR Definitions  */
+/* Note: Added by Maxim Integrated, as these are missing from CMSIS/Core/Include/core_cm33.h */
+#define SCB_CPACR_CP10_Pos 20 /*!< SCB CPACR: Coprocessor 10 Position */
+#define SCB_CPACR_CP10_Msk (0x3UL << SCB_CPACR_CP10_Pos) /*!< SCB CPACR: Coprocessor 10 Mask */
+#define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
+#define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
 #endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX326657_INCLUDE_MAX32657_H_
