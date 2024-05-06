@@ -53,7 +53,7 @@
 #include "pal_uart.h"
 #include "tmr.h"
 #include "svc_sds.h"
-#include "wsf_cs.h"
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -410,8 +410,6 @@ static void datsCccCback(attsCccEvt_t *pEvt)
 /*************************************************************************************************/
 static void trimStart(void)
 {
-    WsfCsEnter();
-
     int err;
     extern void wutTrimCb(int err);
 
@@ -420,8 +418,6 @@ static void trimStart(void)
     if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("Error starting 32kHz crystal trim %d", err);
     }
-
-    WsfCsExit();
 }
 
 /*************************************************************************************************/
@@ -1027,9 +1023,6 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void DatsStart(void)
 {
-
-    trimStart();
-
     /* Register for stack callbacks */
     DmRegister(datsDmCback);
     DmConnRegister(DM_CLIENT_ID_APP, datsDmCback);
