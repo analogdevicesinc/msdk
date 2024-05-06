@@ -78,6 +78,10 @@
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
 
+#ifndef ENABLE_SECURITY
+#define ENABLE_SECURITY 1
+#endif
+
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
@@ -101,6 +105,9 @@ static const appSlaveCfg_t datsSlaveCfg = {
     1, /*! Maximum connections */
 };
 
+
+
+
 /*! Configurable security parameters to set
 *   pairing and authentication requirements.
 *
@@ -121,7 +128,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    ENABLE_SECURITY /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -221,7 +228,7 @@ static const uint8_t datsScanDataDisc[] = {
     'D',
     'A',
     'T',
-    'S'
+    'Q'
 };
 
 /**************************************************************************************************

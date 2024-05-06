@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +97,7 @@ int Flash_CheckErased(uint32_t startaddr)
 }
 
 //******************************************************************************
-void Flash_Write()
+void Flash_Write(void)
 {
     int fail = 0;
     int i = 0;
@@ -167,7 +166,7 @@ void Flash_InterruptEN(mxc_flc_regs_t *regs)
 }
 
 //******************************************************************************
-void Flash_CommandCheck()
+void Flash_CommandCheck(void)
 {
     static uint8_t isErased = 0;
 

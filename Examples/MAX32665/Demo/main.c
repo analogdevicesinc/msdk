@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +96,7 @@ static void rounder_cb(struct _lv_disp_drv_t *disp_drv, lv_area_t *area)
 }
 
 //============================================================================
-void lvgl_setup()
+void lvgl_setup(void)
 {
     /* LittlevGL setup */
     lv_init();
@@ -119,7 +118,7 @@ void lvgl_setup()
     lv_disp_set_theme(disp, th);
 }
 
-void LV_Tick_TimerHandler()
+void LV_Tick_TimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(TICK_TIMER);
@@ -127,7 +126,7 @@ void LV_Tick_TimerHandler()
     lv_task_handler();
 }
 
-void LV_Tick_Timer_Init()
+void LV_Tick_Timer_Init(void)
 {
     // 200Hz (Can be between 1ms to 10ms)
     uint32_t periodTicks = PeripheralClock / 200;

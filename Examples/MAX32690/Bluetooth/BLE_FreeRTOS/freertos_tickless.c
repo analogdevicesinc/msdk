@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -203,10 +202,10 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
-
-            /* Shutdown BB hardware */
-            PalBbDisable();
         }
+
+        /* Shutdown BB hardware */
+        PalBbDisable();
 
         LED_Off(SLEEP_LED);
         LED_Off(DEEPSLEEP_LED);
@@ -216,12 +215,11 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 
+        /* Enable and restore the BB hardware */
+        PalBbEnable();
+        PalBbRestore();
+
         if (schTimerActive) {
-            /* Enable and restore the BB hardware */
-            PalBbEnable();
-
-            PalBbRestore();
-
             /* Restore the BB counter */
             MXC_WUT_RestoreBBClock(BB_CLK_RATE_HZ);
 

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +61,7 @@ uint8_t *__xip_addr;
 #endif
 
 /******************************************************************************/
-void spixf_cfg_setup()
+void spixf_cfg_setup(void)
 {
     // Disable the SPIXFC before setting the SPIXF
     MXC_SPIXF_Disable();

@@ -1,12 +1,12 @@
 # BLE_datc
 
-Refer to the [BLE_datc_dats](../../../Libraries/Cordio/docs/Applications/BLE_datc_dats.md) documentation in the Cordio Library.
+Refer to the [BLE_datc_dats](../../../../Libraries/Cordio/docs/Applications/BLE_datc_dats.md) documentation in the Cordio Library.
 
 ## Software
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Required Connections
 * Connect a USB cable between the PC and the (USB/PWR - UART) connector.
@@ -26,4 +26,3 @@ An arbitrary pin can be entered in the format `pin (connId) passkey`
     * The server is expected to enter the same connId and passkey to establish a secure connection
     and share bonding information
     * ***Note***: *Either the client or server can enter the passkey first. The peer device must then match.*
-

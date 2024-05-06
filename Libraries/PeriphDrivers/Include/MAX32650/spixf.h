@@ -4,10 +4,9 @@
  */
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -897,12 +896,12 @@ int MXC_SPIXF_IsEnabled(void);
 /**
  * @brief      Set IOCTRL SDIO Drive to High
  */
-void MXC_SPIXF_SetIoctrlSDIODriveHigh();
+void MXC_SPIXF_SetIoctrlSDIODriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SDIO Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSDIODriveLow();
+void MXC_SPIXF_SetIoctrlSDIODriveLow(void);
 
 /**
  * @brief      Get IOCTRL SDIO Drive
@@ -914,12 +913,12 @@ uint8_t MXC_SPIXF_GetIoctrlSDIODrive(void);
 /**
  * @brief      Set IOCTRL SCLK Drive to High
  */
-void MXC_SPIXF_SetIoctrlSCLKDriveHigh();
+void MXC_SPIXF_SetIoctrlSCLKDriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SCLK Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSCLKDriveLow();
+void MXC_SPIXF_SetIoctrlSCLKDriveLow(void);
 
 /**
  * @brief      Get IOCTRL SCLK Drive
@@ -931,12 +930,12 @@ uint8_t MXC_SPIXF_GetIoctrlSCLKDrive(void);
 /**
  * @brief      Set IOCTRL SS Drive to High
  */
-void MXC_SPIXF_SetIoctrlSSDriveHigh();
+void MXC_SPIXF_SetIoctrlSSDriveHigh(void);
 
 /**
  * @brief      Set IOCTRL SS Drive to Low
  */
-void MXC_SPIXF_SetIoctrlSSDriveLow();
+void MXC_SPIXF_SetIoctrlSSDriveLow(void);
 
 /**
  * @brief      Get IOCTRL SS Drive

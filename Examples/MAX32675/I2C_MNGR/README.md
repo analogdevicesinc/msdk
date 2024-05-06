@@ -11,7 +11,7 @@ You may change the configuration of each EEPROM's I2C transaction parameters (sl
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -25,6 +25,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Connect P0.6 on header JH1 to the SCL line of the I2C Bus.
 -   Connect P0.7 on header JH1 to the SDA line of the I2C Bus.
 -   Connect two EEPROM IC's to the I2C Bus.
+
+If using the MAX32675 RevB:
+-	Close I2C pull-up jumpers JP25 and JP26
 
 ## Expected Output
 

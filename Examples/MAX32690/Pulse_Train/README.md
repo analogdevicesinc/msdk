@@ -1,6 +1,6 @@
 ## Description
 
-Two pulse trains are configured in different modes.  
+Two pulse trains are configured in different modes.
 
 The first, PT2, is set to generate a repeating bit pattern of 0x10110 (lsb first) at a rate of 2 bits per second.  If you make the connections described below, you can observe the pattern on LED 1.
 
@@ -16,7 +16,7 @@ On the feather board, use a logic analyzer to observe the signals on P1.8 and P1
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -36,6 +36,13 @@ If using the MAX32690FTHR:
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pin 1.8 on J1 to a logic analyzer channel.
 -   Connect pin 1.9 on J2 to a logic analyzer channel.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Connect pin 1.8 to a logic analyzer channel.
+-   Connect pin 1.9 to a logic analyzer channel.
 
 ## Expected Output
 

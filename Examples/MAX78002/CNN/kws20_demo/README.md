@@ -21,11 +21,11 @@ To improve the unknown detection, the model in version 3.2 is trained with an ad
 
 ### Project Usage
 
-Instructions on building, flashing, and debugging MSDK projects can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+Instructions on building, flashing, and debugging MSDK projects can be found in the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/).
 
 ### Build Notes
 
-See ["Build System"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system) in the MSDK User Guide for detailed documentation.  The section below contains additional notes on options that are specific to this project.
+See ["Build System"](https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system) in the MSDK User Guide for detailed documentation.  The section below contains additional notes on options that are specific to this project.
 
 This project offers the option to enable or disable the TFT display in [project.mk](project.mk) via the `ENABLE_TFT` build configuration variable.
 

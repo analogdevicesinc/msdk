@@ -7,7 +7,7 @@ The example demonstartes the use of USB HID driver class. After doing the requir
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -25,7 +25,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-***** MAX32650 USB HID Keyboard Example *****
+***** USB HID Keyboard Example *****
 Waiting for VBUS...
 VBUS Connect
 Suspended

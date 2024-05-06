@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -368,6 +367,9 @@ void nms(void)
             if (nms_removed[class_idx][nms_idx1] != 1 &&
                 nms_idx1 != num_nms_priors[class_idx] - 1) {
                 for (nms_idx2 = nms_idx1 + 1; nms_idx2 < num_nms_priors[class_idx]; ++nms_idx2) {
+                    if (nms_idx2 > MAX_PRIORS) {
+                        nms_idx2 = MAX_PRIORS - 1;
+                    }
                     prior1_idx = nms_indices[class_idx][nms_idx1];
                     prior2_idx = nms_indices[class_idx][nms_idx2];
 

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,8 +57,8 @@ volatile unsigned int event_flags;
 int remote_wake_en;
 
 /***** Function Prototypes *****/
-int usbStartupCallback();
-int usbShutdownCallback();
+int usbStartupCallback(void);
+int usbShutdownCallback(void);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata);
@@ -196,7 +195,7 @@ int main(void)
 
 /* This callback is used to allow the driver to call part specific initialization functions. */
 /******************************************************************************/
-int usbStartupCallback()
+int usbStartupCallback(void)
 {
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_HIRC96M_EN)) {
@@ -213,7 +212,7 @@ int usbStartupCallback()
 }
 
 /******************************************************************************/
-int usbShutdownCallback()
+int usbShutdownCallback(void)
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

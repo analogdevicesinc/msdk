@@ -2,7 +2,7 @@
 
 This example utilizes the MAX32662 to emulate a 32KiB EEPROM chip with an I2C interface.
 
-This "EEEPROM" can only perform read and write operations.
+This "EEPROM" can only perform read and write operations.
 
 To write data to the EEPROM emulator execute the following steps:
 ```
@@ -48,7 +48,7 @@ To help with syncronization, a "Ready Signal" is set up as an output from a GPIO
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 

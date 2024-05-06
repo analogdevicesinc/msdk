@@ -702,7 +702,7 @@
             <name>REV_ID</name>
             <description>Description not included</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>3</bitWidth>
+            <bitWidth>6</bitWidth>
             <access>read-only</access>
           </field>
         </fields>

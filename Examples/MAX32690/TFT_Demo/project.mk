@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -25,4 +25,8 @@ FONTS = LiberationSans12x12 LiberationSans24x24 LiberationSans28x28 LiberationSa
 
 ifeq ($(BOARD),FTHR)
 $(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
+endif
+
+ifeq ($(BOARD),APARD)
+$(error ERR_NOTSUPPORTED: This project is not supported for the AD-APARD32690 board)
 endif

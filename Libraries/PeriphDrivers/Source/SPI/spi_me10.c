@@ -6,10 +6,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +52,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         return E_BAD_PARAM;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (MXC_SPI_GET_IDX(spi)) {
     case 0:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI0);
@@ -78,6 +78,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     default:
         return E_BAD_PARAM;
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_SPI_RevA1_Init((mxc_spi_reva_regs_t *)spi, masterMode, quadModeUsed, numSlaves,
                               ssPolarity, hz);

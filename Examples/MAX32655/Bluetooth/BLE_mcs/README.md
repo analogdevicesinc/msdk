@@ -2,13 +2,13 @@
 
 Maxim custom Bluetooth profile and service that advertises as "MCS" and accepts
 connection requests.
-Refer to the [BLE_mcs](../../../Libraries/Cordio/docs/Applications/BLE_mcs.md) documentation in the Cordio Library.
+Refer to the [BLE_mcs](../../../../Libraries/Cordio/docs/Applications/BLE_mcs.md) documentation in the Cordio Library.
 
 ## Software
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Required Connections
 * Connect a USB cable between the PC and the (USB/PWR - UART) connector.

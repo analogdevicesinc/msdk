@@ -6,7 +6,7 @@ This application uses two serial ports to send and receive data.  One serial por
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -22,6 +22,12 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 If using the Featherboard (FTHR\_Apps\_P1):
 -   Only one UART instance available. Example not supported.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Connect pins P2.12->P1.9.
 
 ## Expected Output
 

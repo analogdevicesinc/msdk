@@ -160,7 +160,7 @@ SDHC_DRIVER_DIR ?= $(LIBS_DIR)/SDHC
 # - ff13
 # - ff14
 # - ff15
-FATFS_VERSION ?= ff13
+FATFS_VERSION ?= ff15
 ifneq "$(FATFS_VERSION)" "ff13"
 ifneq "$(FATFS_VERSION)" "ff14"
 ifneq "$(FATFS_VERSION)" "ff15"

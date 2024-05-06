@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -13,5 +13,5 @@
 
 # Add your config here!
 
-# Enable the FreeRTOS library
-LIB_FREERTOS=1
+# Enable the CLI library
+LIB_CLI = 1

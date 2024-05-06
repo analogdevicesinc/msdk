@@ -1,12 +1,12 @@
 # BLE_fit
 Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
-Refer to [BLE_fit](../../../Libraries/Cordio/docs/Applications/BLE_fit.md) documentation in the Cordio Library.
+Refer to [BLE_fit](../../../../Libraries/Cordio/docs/Applications/BLE_fit.md) documentation in the Cordio Library.
 
 ## Software
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Required Connections
 

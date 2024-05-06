@@ -10,6 +10,7 @@ Documentation/Libraries
 Documentation/res
 Examples/MAX78000/PowerTest
 Examples/MAX32570
+Examples/MAX32572
 __pycache__
 msdk-internal
 Tools/GNUTools

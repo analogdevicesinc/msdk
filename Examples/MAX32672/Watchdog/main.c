@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +60,7 @@ void WDT0_IRQHandler(void)
     printf("\nTIMEOUT!\n");
 }
 
-void wdt_setup()
+void WDT_Setup(void)
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_ResetTimer(MXC_WDT0);
@@ -114,7 +113,7 @@ int main(void)
     blink_led(0, 3, 100);
 
     //Setup Watchdog
-    wdt_setup();
+    WDT_Setup();
 
     while (1) {
         //Push user push button to reset watchdog

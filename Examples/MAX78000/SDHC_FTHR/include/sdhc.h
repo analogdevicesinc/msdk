@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,15 +43,15 @@
 
 void generateMessage(unsigned length);
 
-int mount();
+int mount(void);
 
-int umount();
+int umount(void);
 
-int formatSDHC();
+int formatSDHC(void);
 
-int getSize();
+int getSize(void);
 
-int ls();
+int ls(void);
 
 int createFile(char *file_name, unsigned int length);
 
@@ -64,8 +63,8 @@ int cd(char *dir_name);
 
 int deleteFile(char *file_name);
 
-int example();
+int example(void);
 
-void waitCardInserted();
+void waitCardInserted(void);
 
 #endif // EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_

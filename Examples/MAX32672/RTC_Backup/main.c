@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +57,7 @@
 void RTC_IRQHandler(void) {}
 
 // *****************************************************************************
-void rescheduleAlarm()
+void rescheduleAlarm(void)
 {
     uint32_t time;
     int flags = MXC_RTC_GetFlags();
@@ -86,7 +85,7 @@ void rescheduleAlarm()
 }
 
 // *****************************************************************************
-void printTime()
+void printTime(void)
 {
     uint32_t day, hr, min, sec;
 
@@ -106,7 +105,7 @@ void printTime()
 }
 
 // *****************************************************************************
-int configureRTC()
+int configureRTC(void)
 {
     int rtcTrim;
 

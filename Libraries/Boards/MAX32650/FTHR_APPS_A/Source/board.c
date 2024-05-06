@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,7 +162,7 @@ static void max11261_reset_set(int ctrl)
     MXC_GPIO_OutPut(MXC_GPIO0, MXC_GPIO_PIN_16, (ctrl ^ ADC_RST_ACTIVE_LOW) << 16);
 }
 
-static int max11261_ready()
+static int max11261_ready(void)
 {
     return !MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_17);
 }

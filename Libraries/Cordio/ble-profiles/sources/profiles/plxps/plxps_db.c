@@ -104,7 +104,7 @@ static const plxpsRec_t plxpsDb[PLXPS_DB_NUM_RECORDS] =
  *  \return Pointer to record or NULL if no record.
  */
 /*************************************************************************************************/
-static const plxpsRec_t *plxpsDbGetEnd()
+static const plxpsRec_t *plxpsDbGetEnd(void)
 {
   return plxpsDb + plxpsDbCb.numRec;
 }

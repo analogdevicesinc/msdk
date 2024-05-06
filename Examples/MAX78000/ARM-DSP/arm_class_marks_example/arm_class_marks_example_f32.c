@@ -139,7 +139,7 @@ uint32_t student_num;
 * Main f32 test function.  It returns maximum marks secured and student number
 * ------------------------------------------------------------------------------- */
 
-int32_t main()
+int main(void)
 {
 #ifndef USE_STATIC_INIT
 

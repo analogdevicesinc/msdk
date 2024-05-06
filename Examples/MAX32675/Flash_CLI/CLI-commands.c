@@ -81,6 +81,7 @@
 #include "definitions.h"
 
 #include "mxc_errors.h"
+#include "ecc_regs.h"
 
 static char *getParamString(const char *commandString, size_t paramNo)
 {
@@ -93,6 +94,20 @@ static char *getParamString(const char *commandString, size_t paramNo)
     buff[length] = 0;
     return buff;
 }
+
+static BaseType_t prvECCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                const char *pcCommandString);
+
+/* Structure that defines the "echo_parameters" command line command.  This
+takes a variable number of parameters that the command simply echos back one at
+a time. */
+static const CLI_Command_Definition_t xECCCommand = {
+    "ecc",
+    "\r\necc <0/1>: \r\n Enables (1) or Disables (0) Flash ECC. You MUST disable ECC to use"
+    "the flash features\r\n",
+    prvECCCommand, /* The function to run. */
+    1 /* The user can enter any number of commands. */
+};
 
 static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                   const char *pcCommandString);
@@ -158,12 +173,43 @@ static const CLI_Command_Definition_t xCRCCommand = {
 void vRegisterCLICommands(void)
 {
     /* Register all the command line commands defined immediately above. */
+    FreeRTOS_CLIRegisterCommand(&xECCCommand);
     FreeRTOS_CLIRegisterCommand(&xEraseCommand);
     FreeRTOS_CLIRegisterCommand(&xWriteCommand);
     FreeRTOS_CLIRegisterCommand(&xReadCommand);
     FreeRTOS_CLIRegisterCommand(&xCRCCommand);
 }
 /*-----------------------------------------------------------*/
+
+static BaseType_t prvECCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                const char *pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
+        write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+        write buffer length is adequate, so does not check for buffer overflows. */
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+
+    const char *pcParameterSetting;
+
+    /* Obtain the parameter string. */
+    pcParameterSetting = getParamString(pcCommandString, 1);
+
+    int setting = atoi(pcParameterSetting);
+
+    portENTER_CRITICAL();
+    if (setting) {
+        MXC_ECC->en |= MXC_F_ECC_EN_FLASH;
+    } else {
+        MXC_ECC->en &= ~MXC_F_ECC_EN_FLASH;
+    }
+    portEXIT_CRITICAL();
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    snprintf(pcWriteBuffer, xWriteBufferLen, "ECC: %s\n",
+             (setting) ? "Enabled (1)" : "Disabled (0)");
+    return pdFALSE;
+}
 
 static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                   const char *pcCommandString)

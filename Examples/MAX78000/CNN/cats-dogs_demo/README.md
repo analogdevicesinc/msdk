@@ -5,7 +5,7 @@
 Description
 -----------
 
-The model trained in this demo is used to classify images of cats and dogs. 25000 images dataset is used to train the model. The dataset can be downloaded using�[https://www.kaggle.com/c/dogs-vs-cats/data](https://www.kaggle.com/c/dogs-vs-cats/data)�link. The input size is 64x64 pixels RGB which is 3x64x64 in CHW format.
+The model trained in this demo is used to classify images of cats and dogs. 25000 images dataset is used to train the model. The dataset can be downloaded using�[https://www.kaggle.com/c/dogs-vs-cats/data](https://www.kaggle.com/c/dogs-vs-cats/data)�link. The input size is 128x128 pixels RGB which is 3x128x128 in CHW format.
 
 The code uses a sampledata header (sampledata.h) file to test a pre-defined input sample. The example also supports live capture from camera module and displays the image on the TFT LCD.
 
@@ -13,11 +13,11 @@ The code uses a sampledata header (sampledata.h) file to test a pre-defined inpu
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 * This project supports output to a TFT display.  When building for the MAX78000EVKIT, the display is **enabled** by default.
     * To _disable_ the TFT display code, comment out `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
@@ -75,13 +75,13 @@ The PB1 (SW1) button is located as shown in picture bellow:
 
 ### Camera Mode
 
-This mode uses OVM7692 camera module to capture an image in RGB888 format. Since the model is trained using 64x64 pixel image, the PCIF peripheral captures 64x64 pixel image and displays it on LCD.
+This mode uses OVM7692 camera module to capture an image in RGB888 format. Since the model is trained using 128x128 pixel image, the PCIF peripheral captures 128x128 pixel image and displays it on LCD.
 
 ### Offline Mode
 
 To operate in this mode, uncomment "#define USE\_SAMPLEDATA", defined in main.c.�
 
-This mode uses a header file "sampledata.h" containing RGB image data and it should be included in the project to use it as an input to the cnn network.�
+This mode uses a header file "sampledata.h" containing RGB image data and it should be included in the project to use it as an input to the CNN network.�
 
 To create your own header file follow these steps:
 

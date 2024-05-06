@@ -1,18 +1,19 @@
 ## Description
+## Description
 
 This example demonstrates the use of the Real Time Clock (RTC) and its alarm functionality.
 
 The RTC is enabled and the sub-second alarm set to trigger every 250 ms.
 (LED0) is toggled each time the sub-second alarm triggers.  The time-of-day alarm is set to 10 seconds.  When the time-of-day alarm triggers, the rate of the sub-second alarm is switched to 500 ms.
 
-(LED1) is toggled each time the time-of-day alarm triggers. The time-of-day alarm is then rearmed for another 10 sec.  Pressing SW2 will output the current value of the RTC to the console UART.
+(LED1) is toggled each time the time-of-day alarm triggers. The time-of-day alarm is then rearmed for another 10 sec.  Pressing SW3 will output the current value of the RTC to the console UART.
 
 
 ## Software
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -39,7 +40,7 @@ triggers, the rate of the sub-second alarm is switched to 500 ms.
 
 (LED1) is toggled each time the time-of-day alarm triggers.
 
-The time-of-day alarm is then rearmed for another 10 sec.  Pressing SW1
+The time-of-day alarm is then rearmed for another 10 sec.  Pressing SW3
 will output the current value of the RTC to the console UART.
 
 RTC started

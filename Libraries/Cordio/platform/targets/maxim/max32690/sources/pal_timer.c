@@ -266,7 +266,7 @@ void PalTimerDeInit(void)
 /*************************************************************************************************/
 /*!
  *  \brief      Return scheduler timer state.
- 
+
  */
 /*************************************************************************************************/
 void PalTimerExecCallback(void)
@@ -309,6 +309,8 @@ void PalTimerStart(uint32_t expUsec)
 
     /* Convert the time based on our calibration */
     expUsec += (expUsec / PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff;
+    expUsec +=
+        ((((int32_t)expUsec % PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff) / PAL_TMR_CALIB_TIME);
 
     /* Convert the start time to ticks */
     MXC_TMR_SetCount(PAL_TMR, 0);

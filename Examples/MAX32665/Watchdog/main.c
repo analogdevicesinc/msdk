@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +69,7 @@ static mxc_gpio_cfg_t pb_pin[] = {
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdog_timeout_handler()
+void watchdog_timeout_handler(void)
 {
     //get and clear flag
     MXC_WDT_GetIntFlag(MXC_WDT0);
@@ -84,7 +83,7 @@ void WDT0_IRQHandler(void)
     watchdog_timeout_handler();
 }
 // *****************************************************************************
-void MXC_WDT_Setup()
+void MXC_WDT_Setup(void)
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_Enable(MXC_WDT0);

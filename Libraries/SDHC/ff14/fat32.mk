@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -24,7 +23,7 @@
 # project.
 ################################################################################
 
-$(warning Warning: Building with FatFS R0.14.  The MSDK will update the default FatFS version to R0.15 next release.  See https://github.com/Analog-Devices-MSDK/msdk/pull/720)
+$(warning Warning: Building with FatFS R0.14.  The MSDK will update the default FatFS version to R0.15 next release.  See https://github.com/analogdevicesinc/msdk/pull/720)
 
 ifeq "$(FAT32_DRIVER_DIR)" ""
 $(error FAT32_DRIVER_DIR must be specified")

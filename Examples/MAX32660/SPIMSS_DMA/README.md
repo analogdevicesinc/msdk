@@ -7,7 +7,7 @@ MISO (P0.10) pins.  Connect these two pins together.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -31,5 +31,5 @@ console UART shares the same pins as the SPIMSS. One DMA channel is used as tx f
 memory to SPIMSS TX FIFO and another dma channel is used for reading data from SPIMSS
 RX FIFO to memory.
 
-Test successful!
+Test successful.
 ```

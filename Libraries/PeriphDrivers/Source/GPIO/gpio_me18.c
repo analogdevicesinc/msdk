@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -257,7 +256,11 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        return GPIO4_DATAIN_MASK(mask);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_IN_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1);
+        return ((gpio40 | gpio41) & mask);
     }
 
     return MXC_GPIO_RevA_InGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -289,7 +292,11 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        return GPIO4_DATAOUT_GET_MASK(mask);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_DO_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1);
+        return ((gpio40 | gpio41) & mask);
     }
 
     return MXC_GPIO_RevA_OutGet((mxc_gpio_reva_regs_t *)port, mask);

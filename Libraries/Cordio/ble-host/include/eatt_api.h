@@ -168,7 +168,7 @@ void EattsHandleValueNtfZeroCpy(dmConnId_t connId, uint8_t priority, uint16_t ha
  *  \return None
  */
  /*************************************************************************************************/
-void EattsInit();
+void EattsInit(void);
 /**@}*/
 /*! \} */    /* STACK_ATTS_API */
 
@@ -400,7 +400,7 @@ void EattcReadMultVarLenReq(dmConnId_t connId, uint8_t priority, uint8_t numHand
  *  \return None
  */
  /*************************************************************************************************/
-void EattcInit();
+void EattcInit(void);
 /**@}*/
 /*! \} */    /* STACK_ATTC_API */
 

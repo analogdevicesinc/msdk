@@ -8,7 +8,7 @@ Connect CAN signals on header JH8 to CAN bus.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -28,6 +28,12 @@ If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect CAN signals on header J9 to CAN bus.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Connect CAN signals on header P7 to CAN bus.
 
 ## Expected Output
 The Console UART of the device will output these messages:

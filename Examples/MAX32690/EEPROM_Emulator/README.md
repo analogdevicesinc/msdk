@@ -2,7 +2,7 @@
 
 This example utilizes the MAX32690 to emulate a 64KiB EEPROM chip with an I2C interface.
 
-This "EEEPROM" can only perform read and write operations.
+This "EEPROM" can only perform read and write operations.
 
 To write data to the EEPROM emulator execute the following steps:
 ```
@@ -47,7 +47,7 @@ To help with syncronization, a "Ready Signal" is set up as an output from a GPIO
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -70,6 +70,13 @@ If using the MAX32690FTHR:
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pins SCL - P2.8 and SDA - P2.7 to the I2C Bus.
 -   Connect Ready Signal (P1.11) to the pin used for ready signal on your micro.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   Connect pins SCL - P0.31 and SDL - P0.30 to the I2C Bus.
+-   Connect Ready Signal (P0.24) to the pin used for ready signal on your micro.
 
 ## Expected Output
 

@@ -9,7 +9,7 @@ After initialization, a new reading is printed to the terminal every second.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -22,6 +22,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   For EvKit
      -   Close jumper JP1 (LED0 EN).
 -   You must connect P0.6 (SCL), P0.7 (SDA), VDD and GND to corresponding pins of MAX31889 EVKIT_A board (via J3 terminal)
+
+If using the MAX32675 RevB:
+-	Close I2C pull-up jumpers JP25 and JP26
 
 ## Expected Output
 

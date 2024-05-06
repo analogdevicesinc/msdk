@@ -36,6 +36,7 @@
 #include <string.h>
 #include "pal_flash.h"
 #include "pal_sys.h"
+#include "wsf_cs.h"
 #include "mxc_device.h"
 #include "flc.h"
 
@@ -119,7 +120,7 @@ PalFlashState_t PalNvmGetState(void)
 /*************************************************************************************************/
 uint32_t PalNvmGetTotalSize(void)
 {
-  return &__pal_nvm_db_end__ - &__pal_nvm_db_start__;
+  return (uint32_t)&__pal_nvm_db_end__ - (uint32_t)&__pal_nvm_db_start__;
 }
 
 /*************************************************************************************************/

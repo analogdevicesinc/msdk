@@ -464,7 +464,7 @@ static DSTATUS Stat = STA_NOINIT;	/* Disk status */
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
-static void init_mmc()
+static void init_mmc(void)
 {
     mxc_spi_pins_t pins;
     mxc_gpio_cfg_t gpio;

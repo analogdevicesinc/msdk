@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +72,7 @@ typedef void (*spimss_reva_callback_fn)(spimss_reva_req_t *req, int error_code);
 struct spimss_reva_req {
     uint8_t ssel; /**< Not Used*/
     uint8_t deass; /**< Not Used*/
-    const void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
+    void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
     void *rx_data; /**< Pointer to a buffer to store data received. NULL if undesired.*/
     spimss_reva_width_t width; /**< Not Used */
     unsigned len; /**< Number of transfer units to send from the \p tx_data buffer. */

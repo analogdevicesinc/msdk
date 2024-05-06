@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +62,7 @@ inline int _transmit_spi_header(uint8_t cmd, uint32_t address)
     return E_NO_ERROR;
 }
 
-int N01S830HA_init()
+int N01S830HA_init(void)
 {
     ERR_CHECK(spi_init());
     ERR_CHECK(N01S830HA_exit_quadmode()); // Protect against quad-mode lock-up
@@ -115,7 +114,7 @@ int N01S830HA_init()
     return E_NO_ERROR;
 }
 
-int N01S830HA_enter_quadmode()
+int N01S830HA_enter_quadmode(void)
 {
     uint8_t tx_data = CMD_ENABLE_QUAD_IO;
 
@@ -128,7 +127,7 @@ int N01S830HA_enter_quadmode()
     return E_NO_ERROR;
 }
 
-int N01S830HA_exit_quadmode()
+int N01S830HA_exit_quadmode(void)
 {
     uint8_t tx_data = CMD_RESET_IO;
 

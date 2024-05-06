@@ -10,7 +10,7 @@ For beginners, [learngitbranching.js.org](https://learngitbranching.js.org/) is 
 
 The MSDK follows the [GitHub contribution guidelines](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).  
 
-External contributions from outside the [Analog Devices organization](https://github.com/Analog-Devices-MSDK) should be made via a Pull Request opened from a fork.  Internal contributions should also preferrably use a fork where possible.
+External contributions from outside the [Analog Devices organization](https://github.com/analogdevicesinc) should be made via a Pull Request opened from a fork.  Internal contributions should also preferrably use a fork where possible.
 
 If a direct branch on the mainline MSDK repo is made, the following branch naming conventions should be used when possible:
 
@@ -24,7 +24,7 @@ If a direct branch on the mainline MSDK repo is made, the following branch namin
 Format: 
 `type(scope)<!>: Subject`
 
-For more information of the format, please review the [pull_request_template.md](https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/pull_request_template.md).
+For more information of the format, please review the [pull_request_template.md](https://github.com/analogdevicesinc/msdk/blob/main/Documentation/pull_request_template.md).
 
 These are the rules for the `Subject`.
 
@@ -184,11 +184,11 @@ clang-format rules are loaded from the **.clang-format** and cpplint rules are l
 
 1. First, ensure that the example project has been linted and formatted to follow the [Style Guide](#style-guide)
 
-2. Copy the example project into the [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder of the SDK for the applicable target microcontrollers.
+2. Copy the example project into the [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder of the SDK for the applicable target microcontrollers.
 
 3. `git add` and `git commit` the Example project.  **Commit your project files before running MSDKGen.**
 
-4. Run the [MSDKGen](https://github.com/Analog-Devices-MSDK/MSDKGen) utility to ensure the example project's support files are updated to the latest version.
+4. Run the [MSDKGen](https://github.com/analogdevicesinc/MSDKGen) utility to ensure the example project's support files are updated to the latest version.
 
         python msdkgen.py update-all --projects yourprojectname --overwrite
 
@@ -206,9 +206,9 @@ clang-format rules are loaded from the **.clang-format** and cpplint rules are l
 
 ## Contributing Libraries
 
-Libraries should be added to the [Libraries](Libraries) sub-folder of the MSDK.
+Libraries should be added to the `Libraries` sub-folder of the MSDK.
 
-- All libraries should include a `libraryname.mk` file that can be added to `Libraries/libs.mk` via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration).
+- All libraries should include a `libraryname.mk` file that can be added to `Libraries/libs.mk` via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required [configuration variables](https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration).
 
 - If necessary, a library may also include a "core" Makefile or set of Makefiles to build it as a standalone static library file.  The naming convention is `lib<libraryname>.a`.
 
@@ -238,13 +238,13 @@ For example:
     SRCS += libfile1.c
     SRCS += libfile2.c
 
-An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code selectively added to the build via `Libraries/Boards/MAX78000/EvKit_V1/board.mk` files.
+An example of this is `MiscDrivers`, which is a simple source-file-only library.  It gets its source code selectively added to the build via files like `Libraries/Boards/MAX78000/EvKit_V1/board.mk`.
 
 ### Advanced Libraries
 
 More advanced libraries (including those with a large number of source files) should include a rule to build as a static library file with a [recursive Make call](https://www.gnu.org/software/make/manual/make.html#Recursion).  
 
-This type of library should also set up the appropriate [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration) to include that static library to the build.
+This type of library should also set up the appropriate [configuration variables](https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration) to include that static library to the build.
 
 ## Contributing Documentation
 
@@ -256,7 +256,7 @@ DoxyGen is automatically run across the MSDK code as part of the User Guide's bu
 
 ### User Guide
 
-An MSDK User Guide is maintained in the [USERUIDE.md](USERGUIDE.md) file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.
+An MSDK User Guide is maintained in the [USERGUIDE.md](USERGUIDE.md) file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.
 
 When writing markdown links, relative paths should always be used.  Additionally, links to local files on the user's filesystem **cannot** be used, since the online copy of the docs will throw a 404 on them.  See [Writing Your Docs](https://www.mkdocs.org/user-guide/writing-your-docs/) for more details.
 

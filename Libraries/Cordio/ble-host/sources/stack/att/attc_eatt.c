@@ -810,7 +810,7 @@ void EattcReadMultVarLenReq(dmConnId_t connId, uint8_t priority, uint8_t numHand
  *  \return None
  */
  /*************************************************************************************************/
-void EattcInit()
+void EattcInit(void)
 {
   /* set up callback interface */
   attCb.pEnClient = &attcFcnIf;

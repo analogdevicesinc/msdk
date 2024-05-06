@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -25,7 +24,7 @@
 ################################################################################
 
 ifeq "$(FAT32_DRIVER_DIR)" ""
-$(error FAT32_DRIVER_DIR must be specified")
+FAT32_DRIVER_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
 
 # Specify the build directory if not defined by the project
@@ -58,9 +57,17 @@ LIBS += ${FAT32_DRIVER_BUILD_DIR}/FAT32.a
 # Add to include directory list
 IPATH += ${FAT32_DRIVER_DIR}/source
 
+# Allow overriding the default ffconf.h per-project
+FF_CONF_DIR ?= $(FAT32_DRIVER_DIR)/source/conf
+ifeq "$(wildcard $(FF_CONF_DIR)/ffconf.h)" ""
+$(error Failed to find 'ffconf.h' inside $(FF_CONF_DIR))
+endif
+FF_CONF_DIR := $(abspath $(FF_CONF_DIR))
+IPATH += $(FF_CONF_DIR)
+
 # Add rule to build the Driver Library
 ${FAT32_DRIVER_BUILD_DIR}/FAT32.a: $(PROJECTMK)
-	$(MAKE) -C ${FAT32_DRIVER_DIR} lib BUILD_DIR=${FAT32_DRIVER_BUILD_DIR} BOARD=${BOARD}
+	$(MAKE) -C ${FAT32_DRIVER_DIR} lib BUILD_DIR=${FAT32_DRIVER_BUILD_DIR} BOARD=${BOARD} FF_CONF_DIR=$(FF_CONF_DIR)
 
 distclean:
 	$(MAKE) -C ${SDHC_DRIVER_DIR} clean

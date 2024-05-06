@@ -7,8 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +56,6 @@ typedef struct {
  *
  * @return I2C_SensorDriver instance
  */
-adt7420_driver_t ADT7420_Open();
+adt7420_driver_t ADT7420_Open(void);
 
 #endif // LIBRARIES_MISCDRIVERS_TEMPSENSOR_ADT7420_ADT7420_DRIVER_H_

@@ -6,7 +6,7 @@ Simple serial port console for FCC testing.
 
 ## LEDs
 
-The red LED will indicate that an error assertion has occurred.  
+The red LED will indicate that an error assertion has occurred.
 
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
@@ -28,17 +28,22 @@ If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+
 ## Trace Serial Port
 When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
 be used to view the trace messages and interact with the application. Open a serial port terminal with
 the following settings.
 
-Baud            : 115200  
-Char size       : 8  
-Parity          : None  
-Stop bits       : 1  
-HW Flow Control : No  
-SW Flow Control : No  
+Baud            : 115200
+Char size       : 8
+Parity          : None
+Stop bits       : 1
+HW Flow Control : No
+SW Flow Control : No
 
 ### Expected Output
 
@@ -83,15 +88,15 @@ Test completed, numTx=1106
 
 On RX test start (3) and stop (e)
 ```
-Receive RF channel 39, 1M PHY, forever ..                                                                              
-### LlApi ###  LlRxTest, rfChan=39                                                                                     
-res = 0 (SUCCESS)                                                                                                      
-End test                                                                                                               
-### LlApi ###  LlEndTest                                                                                               
-Test completed, numTx=0                                                                                                
-                numRxSuccess=658                                                                                       
-                numRxCrcError=0                                                                                        
-                numRxTimeout=0                                                                                         
+Receive RF channel 39, 1M PHY, forever ..
+### LlApi ###  LlRxTest, rfChan=39
+res = 0 (SUCCESS)
+End test
+### LlApi ###  LlEndTest
+Test completed, numTx=0
+                numRxSuccess=658
+                numRxCrcError=0
+                numRxTimeout=0
 ```
 
 On TX Frequency Hop test start (9) and stop (e)

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +63,7 @@
 
 /***** Functions *****/
 
-void PWMTimer()
+void PWMTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
@@ -99,14 +98,14 @@ void PWMTimer()
 }
 
 // Toggles GPIO when continuous timer repeats
-void ContinuousTimerHandler()
+void ContinuousTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
 }
 
-void ContinuousTimer()
+void ContinuousTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

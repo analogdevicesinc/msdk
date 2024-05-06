@@ -83,6 +83,10 @@ Macros
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR2
 
+#ifndef ENABLE_SECURITY
+#define ENABLE_SECURITY 1
+#endif
+
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
@@ -148,7 +152,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    ENABLE_SECURITY/*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -572,7 +576,7 @@ static void datcScanReport(dmEvt_t *pMsg)
         /* check length and device name */
         if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'D') &&
             (pData[DM_AD_DATA_IDX + 1] == 'A') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
-            (pData[DM_AD_DATA_IDX + 3] == 'S')) {
+            (pData[DM_AD_DATA_IDX + 3] == 'Q')) {
             connect = TRUE;
         }
     }
@@ -1262,7 +1266,7 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 static bool_t btnTmrIsEnabled(mxc_tmr_regs_t *tmr)
 {
-    return (bool_t)(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B));
+    return (BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B)) ? TRUE : FALSE;
 }
 /*************************************************************************************************/
 /*!
@@ -1374,7 +1378,7 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcInitSvcHdlList()
+static void datcInitSvcHdlList(void)
 {
     uint8_t i;
 

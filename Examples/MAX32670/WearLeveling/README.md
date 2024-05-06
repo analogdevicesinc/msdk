@@ -6,8 +6,8 @@ Below is a list of the supported commands:
 * help: Prints out the list of available commands and describes how each command is used.
 * stop: Ends the example.
 * read: Reads data from a file and prints it to the terminal.
-* write: Writes data to a file and can optionally create the file to write to if it does not already exist.
-* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes occur somewhat evenly across most filesystem blocks. 
+* write: Writes a characterstring to a file
+* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes distributed somewhat evenly across most filesystem blocks. 
 	
 Enter "help" in the command line to see more details on the usage of each of the commands including what arguments/options need to be specified to successfully execute each command.
 
@@ -15,11 +15,11 @@ Enter "help" in the command line to see more details on the usage of each of the
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32670EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+* This project comes pre-configured for the MAX32670EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 ## Required Connections
 
@@ -34,54 +34,50 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-********** Wear Leveling Example **********
-Mounting the filesystem...
-C:/MaximSDK/Libraries/littlefs/lfs.c:1224:error: Corrupted dir pair at {0x0, 0x1}
+*************** Wear Leveling Example ***************
+Mounting the file system...
+littlefs/lfs.c:1224:error: Corrupted dir pair at {0x0, 0x1}
 Filesystem is invalid, formatting...
-Filesystem is mounted! Ready for commands.
+File system is mounted!
 
-cmd> help
+CLI Initialized! Enter 'help' to see a list of available commands.
 
-The available commands are:
-  * help
-       Description: Prints out list of available commands.
-       Usage: help
+$ help
+help
 
-  * stop
-       Description: Ends the example.
-       Usage: stop
+stop:
+  Usage: stop
+  Description: Ends the example
 
-  * read
-       Description: Reads data from a specific location within a file. If
-                    the read is successful, the data read is printed to the
-                    terminal.
-       Usage: read <filename> <number of bytes to read> <location>
+read:
+  Usage: read <filename> <number of bytes> <location>
+  Description: Reads data from a specific location within a file.
 
-  * write
-       Description: Writes a character string to a specific location within
-                    a file.
-       Usage: write (--create) <filename> <character string> <location>
-       Options:
-          --create: Creates file <filename> if it does not already exist.
-  * swl
-       DDescription: Stands for "show wear leveling". Writes to a file the
-                     specified number of times. Once all writes have completed,
-                     the number of times each flash page (filesystem block)
-                     was written to is printed to the terminal. This command may
-                     take a while to complete. LED0 is used as a heartbeat while
-                     the command is executing.
-       Usage: swl <number of writes>
+write:
+  Usage: write <filename> <character string> <location>
+  Description: Writes a character string to a specific location within a file.
 
+swl:
+  Usage: swl <number of writes>
+  Description: Stands for "show wear leveling." This command writes to a file
+    the specified number of times. Once all writes have completed, the number
+    of times each flash page (filesystem block) was written to is printed to
+    the terminal. (Writes should be distributed somewhat evenly across many
+    filesystem blocks.) This command may take a while to complete. LED0 is
+    used as a heartbeat while the command is executing.
 
-cmd> write --create demo_file thisisanexampledatastringtowritetodemofile 0
+$ write demo_file thisisanexampledatastringtowritetodemofile 0
+write demo_file thisisanexampledatastringtowritetodemofile 0
 42 bytes were written to demo_file in filesystem block 6.
 
-cmd> read demo_file 42 0
+$ read demo_file 42 0
+read demo_file 42 0
 42 bytes were read from demo_file in filesystem block 6.
 The following string was read from file demo_file:
 thisisanexampledatastringtowritetodemofile
 
-cmd> swl 1000
+$ swl 1000
+swl 1000
 All writes have completed. Here are the results:
 Block 0 was written to 0 times.
 Block 1 was written to 0 times.
@@ -101,8 +97,10 @@ Block 14 was written to 83 times.
 Block 15 was written to 83 times.
 
 
-cmd> stop
+$ stop
+stop
 
+$
 Filesystem resources released.
 Example complete!
 ```

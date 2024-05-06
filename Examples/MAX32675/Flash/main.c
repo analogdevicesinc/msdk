@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +39,7 @@
 #include "uart.h"
 #include "led.h"
 #include "pb.h"
+#include "ecc_regs.h"
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
@@ -60,7 +60,7 @@ volatile uint32_t isr_flags;
 //******************************************************************************
 
 int button_pressed = 0;
-void button_handler()
+void button_handler(void)
 {
     button_pressed = 1;
 }
@@ -121,7 +121,7 @@ void setup_irqs(void)
     isr_cnt = 0;
 }
 
-int write_test_pattern()
+int write_test_pattern(void)
 {
     int err;
     // A flash address must be in the erased state before writing to it, because the
@@ -163,7 +163,7 @@ int write_test_pattern()
     return err;
 }
 
-int validate_test_pattern()
+int validate_test_pattern(void)
 {
     int err = 0;
 
@@ -183,7 +183,7 @@ int validate_test_pattern()
     return err;
 }
 
-int erase_magic()
+int erase_magic(void)
 {
     /*
         To modify a location in flash that has already been written to,
@@ -229,7 +229,11 @@ int main(void)
     int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
+    printf("ECC is disabled for this example.\n");
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
+
+    // Disable ECC for this example.
+    MXC_ECC->en &= ~MXC_F_ECC_EN_FLASH;
 
     PB_RegisterCallback(0, (pb_callback)button_handler);
 

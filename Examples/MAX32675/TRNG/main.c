@@ -6,10 +6,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +30,7 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "trng.h"
+#include "gcr_regs.h"
 
 volatile int wait;
 volatile int callback_result;
@@ -91,6 +91,12 @@ void Test_TRNG(int asynchronous)
 
 int main(void)
 {
+    // TRNG is disabled for MAX32675 Revision B.
+    if ((MXC_GCR->revision & 0x00F0) == 0xB0) {
+        printf("The TRNG is disabled for the MAX32675 Rev B.\n");
+        return E_NOT_SUPPORTED;
+    }
+
     printf("\n\n********** TRNG Example **********\n");
 
     Test_TRNG(0);

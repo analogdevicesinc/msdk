@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -199,7 +198,7 @@ typedef struct {
 
 static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
-static inline void _mxc_crit_get_state()
+static inline void _mxc_crit_get_state(void)
 {
 #ifndef __riscv
     /*
@@ -417,6 +416,14 @@ void MXC_SYS_RISCVShutdown(void);
  * @brief Returns the clock rate (in Hz) of the Risc-V core.
  */
 uint32_t MXC_SYS_RiscVClockRate(void);
+
+/**
+ * @brief This function PERMANENTLY locks the Debug Access Port.
+ *
+ * @warning After executing this function you will never be able
+ *          to reprogram the target micro.
+ */
+int MXC_SYS_LockDAP_Permanent(void);
 
 #ifdef __cplusplus
 }

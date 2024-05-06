@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -18,6 +17,70 @@
  # limitations under the License.
  #
  ##############################################################################
+
+################################################################################
+# Detect whether we're working from the Github repo or not.
+# If so, attempt to update the version number files every time we build.
+
+ifeq "$(PYTHON_CMD)" ""
+# Try python
+ifneq "$(wildcard $(MAXIM_PATH)/.git)" ""
+
+PYTHON_VERSION := $(shell python --version)
+ifneq ($(.SHELLSTATUS),0)
+PYTHON_CMD := none
+else
+PYTHON_CMD := python
+endif
+
+# Try python3
+ifeq "$(PYTHON_CMD)" "none"
+PYTHON_VERSION := $(shell python3 --version)
+ifneq ($(.SHELLSTATUS),0)
+PYTHON_CMD := none
+else
+PYTHON_CMD := python
+endif
+endif
+
+# Export PYTHON_CMD so we don't check for it again unnecessarily
+export PYTHON_CMD
+endif
+
+# Run script
+ifneq "$(PYTHON_CMD)" "none"
+UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
+else
+$(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif
+endif
+
+ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
+endif
+################################################################################
+
+SUPPRESS_HELP ?= 0
+ifeq "$(SUPPRESS_HELP)" "0"
+ifneq "$(HELP_COMPLETE)" "1"
+
+$(info ****************************************************************************)
+$(info * Analog Devices MSDK)
+ifneq "$(MSDK_VERSION_STRING)" ""
+$(info * $(MSDK_VERSION_STRING))
+endif
+$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+$(info * - Get Support: https://www.analog.com/support/technical-support.html)
+$(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
+$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
+$(info ****************************************************************************)
+# export HELP_COMPLETE so that it's only printed once.
+HELP_COMPLETE = 1
+export HELP_COMPLETE
+endif
+endif
+
+################################################################################
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
@@ -264,6 +327,13 @@ ifneq "$(TARGET)" ""
 CFLAGS+=-DTARGET=$(TARGET)
 endif
 
+ifneq "$(TARGET_UC)" ""
+# Define a flag that the pre-processor can actually work with
+# (i.e. #ifdef MAX78000 ...)
+# TARGET_UC typically comes from the project core Makefile
+CFLAGS += -D$(TARGET_UC)
+endif
+
 ifneq "$(TARGET_REV)" ""
 CFLAGS+=-DTARGET_REV=$(TARGET_REV)
 endif
@@ -282,6 +352,11 @@ CXXFLAGS += \
 	-fno-rtti				\
 	-fno-exceptions			\
 	-std=c++11				\
+
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
+CFLAGS += -Wstrict-prototypes
+# ^ Add strict-prototypes after CXX_FLAGS so it's only added for C builds
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
@@ -608,19 +683,24 @@ $(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
 
-#################################################################################
-SUPPRESS_HELP ?= 0
-ifeq "$(SUPPRESS_HELP)" "0"
-ifneq "$(HELP_COMPLETE)" "1"
-$(info ****************************************************************************)
-$(info * Analog Devices MSDK)
-$(info * - User Guide: https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
-$(info * - Get Support: https://www.analog.com/support/technical-support.html)
-$(info * - Report Issues: https://github.com/Analog-Devices-MSDK/msdk/issues)
-$(info * - Contributing: https://analog-devices-msdk.github.io/msdk/CONTRIBUTING/)
-$(info ****************************************************************************)
-# export HELP_COMPLETE so that it's only printed once.
-HELP_COMPLETE = 1
-export HELP_COMPLETE
+################################################################################
+# Add a rule for querying the value of any Makefile variable.  This is useful for
+# IDEs when they need to figure out include paths, value of the target, etc. for a
+# project
+# Set QUERY_VAR to the variable to inspect.
+# The output must be parsed, since other Makefiles may print additional info strings.
+# The relevant content will be on its own line, and separated by an '=' character.
+# Ex: make query QUERY_VAR=TARGET
+# will return
+# TARGET=MAXxxxxx
+ifeq "$(MAKECMDGOALS)" "query"
+SUPPRESS_HELP := 1
 endif
+.PHONY: query
+query:
+ifneq "$(QUERY_VAR)" ""
+	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+else
+	$(MAKE) debug
 endif
+

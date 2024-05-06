@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,8 +67,6 @@ extern "C" {
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 4000000
 #endif
-
-#define BOARD_FTHR 1 /// Used in examples to control program flow.
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

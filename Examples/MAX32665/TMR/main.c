@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +72,7 @@
 
 /***** Functions *****/
 
-void PWMTimer()
+void PWMTimer(void)
 {
     // Declare variables
     mxc_gpio_cfg_t gpio_pwm; //to configure GPIO
@@ -116,14 +115,14 @@ void PWMTimer()
 }
 
 // Toggles GPIO when continuous timer repeats
-void ContinuousTimerHandler()
+void ContinuousTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     MXC_GPIO_OutToggle(led_pin[0].port, led_pin[0].mask);
 }
 
-void ContinuousTimer()
+void ContinuousTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
@@ -152,14 +151,14 @@ void ContinuousTimer()
     printf("Continuous timer started.\n\n");
 }
 
-void OneshotTimerHandler()
+void OneshotTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(OST_TIMER);
     MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
 }
 
-void OneshotTimer()
+void OneshotTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

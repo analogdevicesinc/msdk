@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -24,3 +24,6 @@ INIT_CENTRAL = 1
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
 TRACE = 1
+
+
+PROJ_CFLAGS += -DENABLE_SECURITY=0

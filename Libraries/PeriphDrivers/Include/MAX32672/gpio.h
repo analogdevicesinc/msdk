@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,12 +126,26 @@ typedef enum {
 
 /**
  * @brief   Enumeration type for drive strength on a given pin.
+ *          This represents what the two GPIO_DS[2] (Drive Strength) 
+ *          registers are set to for a given GPIO pin; NOT the
+ *          drive strength level.
+ *
+ *          For example:
+ *              MXC_GPIO_DRVSTR_0: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_1: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 1
+ *              MXC_GPIO_DRVSTR_2: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_3: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 1
+ *
+ *          Refer to the user guide and datasheet to select the
+ *          appropriate drive strength. Note: the drive strength values
+ *          are not linear, and can vary from pin-to-pin and the state
+ *          of the GPIO pin (alternate function and voltage level).
  */
 typedef enum {
-    MXC_GPIO_DRVSTR_0, ///< Drive Strength 0
-    MXC_GPIO_DRVSTR_1, ///< Drive Strength 1
-    MXC_GPIO_DRVSTR_2, ///< Drive Strength 2
-    MXC_GPIO_DRVSTR_3, ///< Drive Strength 3
+    MXC_GPIO_DRVSTR_0, ///< Drive Strength GPIO_DS[2][pin]=0b00
+    MXC_GPIO_DRVSTR_1, ///< Drive Strength GPIO_DS[2][pin]=0b01
+    MXC_GPIO_DRVSTR_2, ///< Drive Strength GPIO_DS[2][pin]=0b10
+    MXC_GPIO_DRVSTR_3, ///< Drive Strength GPIO_DS[2][pin]=0b11
 } mxc_gpio_drvstr_t;
 
 /**
@@ -285,6 +298,17 @@ void MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask);
  * @return     The requested interrupt status.
  */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port);
+
+/**
+ * @brief      Set Voltage select for pins to VDDIO or VDDIOH
+ *
+ * @param      port   The GPIO port
+ * @param[in]  vssel  VDDIO or VDDIOH to set the voltatge to
+ * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
+ * 
+ * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
+ */
+int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask);
 
 /**
  * @brief      Gets the interrupt(s) status on a GPIO port

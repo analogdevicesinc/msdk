@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,15 +72,17 @@ void i2s_dma_cb(int ch, int err)
 #endif
 
 /*****************************************************************/
-int main()
+int main(void)
 {
     int err;
     mxc_i2s_req_t req;
     printf("\nI2S Transmission Example\n");
     printf("I2S Signals may be viewed on pins P2.26-P2.29.\n");
 
-    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
+    req.wordSize = MXC_I2S_WSIZE_HALFWORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
+    req.bitsWord = 16;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_LSB_JUSTIFY;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
     req.clkdiv = 100;
