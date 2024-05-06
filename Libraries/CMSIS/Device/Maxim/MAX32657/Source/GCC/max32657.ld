@@ -185,7 +185,7 @@ SECTIONS {
      */
     .stack_dummy (COPY):
     {
-        *(.stack*)\
+        *(.stack*)
 #if SECURE_LINK
         *(.stackseal*)
 #endif
