@@ -82,7 +82,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    uint32_t channel = 0;
+
     
 
     /* Decode and consume command packet. */
@@ -215,7 +215,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     case LHCI_OPCODE_VS_GET_RSSI:
     {
         status = LL_SUCCESS;
-        channel = pBuf[0];
         evtParamLen += sizeof(int8_t);
         break;
     }
@@ -231,6 +230,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         PalBbDisable();
         break;
     }
+
 
     /* --- default --- */
     default:
@@ -262,18 +262,36 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
             /* no action */
             break;
+        
+        case LHCI_OPCODE_VS_GET_RSSI: {
+
+            int8_t rssi = INT8_MIN;
+
+            
+#if !defined(__FREERTOS__) && (defined(MAX32655) || defined(MAX32690))
+            
+            const uint8_t channel = pBuf[0];
+            bool_t captureOk = PalBbGetRssi(&rssi, channel);
+
+            if(!captureOk)
+            {
+                rssi = INT8_MIN;
+            }
+            
+#else
+    LL_TRACE_INFO0("MAX32665 RSSI by CCA not supported!!");
+#endif
+
+        
+            UINT8_TO_BSTREAM(pBuf, rssi);
+            break;
+        }
 
         case LHCI_OPCODE_VS_RESET_TEST_STATS: {
             BbBleResetTestStats();
             break;
         }
-        case LHCI_OPCODE_VS_GET_RSSI:{
-            /*
-                TODO: Needs feature in PHY
-            */
-            pBuf[0] = -10;
-            break;
-        }
+
 
         case LHCI_OPCODE_VS_SET_LOCAL_FEAT:
         case LHCI_OPCODE_VS_SET_DIAG_MODE:

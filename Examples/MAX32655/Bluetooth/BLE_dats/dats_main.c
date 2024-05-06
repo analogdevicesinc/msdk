@@ -78,6 +78,10 @@
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
 
+#ifndef ENABLE_SECURITY
+#define ENABLE_SECURITY 1
+#endif
+
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
@@ -101,6 +105,9 @@ static const appSlaveCfg_t datsSlaveCfg = {
     1, /*! Maximum connections */
 };
 
+
+
+
 /*! Configurable security parameters to set
 *   pairing and authentication requirements.
 *
@@ -121,7 +128,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    ENABLE_SECURITY /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -221,7 +228,7 @@ static const uint8_t datsScanDataDisc[] = {
     'D',
     'A',
     'T',
-    'S'
+    'Q'
 };
 
 /**************************************************************************************************
@@ -895,7 +902,19 @@ static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
                         pInfo->param.alloc.taskId, pInfo->param.alloc.len);
     }
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief     Check to see if btn timer is enabled.
+ *
+ *  \param[in] tmr  btn timer.
+ *
+ *  \return    TRUE if enabled, FALSE otherwise.
+ */
+/*************************************************************************************************/
+static bool_t btnTmrIsEnabled(mxc_tmr_regs_t *tmr)
+{
+    return (bool_t)(BTN_1_TMR->ctrl0 & (MXC_F_TMR_CTRL0_EN_A | MXC_F_TMR_CTRL0_EN_B));
+}
 /*************************************************************************************************/
 /*!
  *  \brief     Platform button press handler.
@@ -911,8 +930,15 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
     if (btnId == 1) {
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
+            /*Protect against spurious interupts in initialization*/
+            if (!btnTmrIsEnabled(BTN_1_TMR)) {
+                APP_TRACE_INFO0("Software timer is not enabled!");
+                return;
+            }
+
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
+
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {
@@ -930,7 +956,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {

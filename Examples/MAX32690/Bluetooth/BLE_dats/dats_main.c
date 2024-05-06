@@ -78,6 +78,11 @@
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
 
+
+#ifndef ENABLE_SECURITY
+#define ENABLE_SECURITY 1
+#endif
+
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
@@ -121,7 +126,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    ENABLE_SECURITY /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -927,8 +932,14 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         }
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
+            /*Protect against spurious interupts in initialization*/
+            if (!btnTmrIsEnabled(BTN_1_TMR)) {
+                APP_TRACE_INFO0("Software timer is not enabled!");
+                return;
+            }
+
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {
@@ -951,7 +962,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
-            unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
+            uint32_t btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
             if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
             } else if (btnUs < BTN_MED_MS * 1000) {

@@ -7,8 +7,6 @@
  *
  *  Copyright (c) 2019-2020 Packetcraft, Inc.
  *
- *  Portions Copyright (c) 2022-2023 Analog Devices, Inc.
- *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -24,6 +22,7 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "ll_init_api.h"
 #include "chci_tr.h"
@@ -39,8 +38,8 @@
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
+#include "pal_radio.h"
 #include "tmr.h"
-
 /**************************************************************************************************
   Definitions
 **************************************************************************************************/
@@ -49,7 +48,11 @@
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
 #define FREQ_HOP_PERIOD_US 20000
-
+typedef enum {
+    PAL_BB_CW,
+    PAL_BB_PRBS9,
+    PAL_BB_PRBS15,
+} PalBbDbbPrbsType_t;
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -64,16 +67,19 @@ static uint8_t phy = LL_PHY_LE_1M;
 static uint8_t phy_str[16];
 static uint8_t txFreqHopCh;
 
+static uint32_t numTxPowers;
+static int8_t *txPowersAvailable;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
 
 /*! \brief Physical layer functions. */
-extern void llc_api_set_txpower(int8_t power);
-extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
-extern void llc_api_tx_ldo_setup(void);
-extern void dbb_seq_tx_enable(void);
-extern void dbb_seq_tx_disable(void);
+
+extern void PalBbAfeSetTxCfg(uint8_t rfChannel, int8_t txPower);
+extern void PalBbDbbEnablePatternGen(PalBbDbbPrbsType_t prbsType);
+extern void PalBbDbbDisablePatternGen(void);
+extern bool_t PalBbAfeTxSetup(void);
+extern bool_t PalBbAfeTxDone(void);
 
 /*************************************************************************************************/
 /*!
@@ -139,6 +145,24 @@ void TMR2_IRQHandler(void)
 
 /*************************************************************************************************/
 /*!
+
+ *  \brief  Print all available TX Powers the radio is capable of.
+ *
+ *  \param  None.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void printAvailablePowers(void)
+{
+    uint8_t top = numTxPowers > 9 ? 9 : numTxPowers;
+
+    for (uint32_t i = 0; i < top; i++) {
+        APP_TRACE_INFO2("%u: %d", i, txPowersAvailable[i]);
+    }
+}
+/*************************************************************************************************/
+/*!
  *  \fn     Usage statement
  *
  *  \brief  Prints the usage statement.
@@ -183,6 +207,8 @@ static void processConsoleRX(uint8_t rxByte)
     /* Holds the state of the command and the parameter */
     static uint8_t cmd = 0;
     static uint8_t param = 0;
+    static int8_t power = INT8_MIN;
+    static uint8_t channel = UINT8_MAX;
 
     /* Determines if the incoming character is a command or a parameter */
     if (cmd == 0)
@@ -227,40 +253,29 @@ static void processConsoleRX(uint8_t rxByte)
         break;
 
     case '4':
+        PalBbEnable();
 
         if (param == 0) {
-            APP_TRACE_INFO0("Select transmit power");
-            APP_TRACE_INFO0(" 0: -10 dBm");
-            APP_TRACE_INFO0(" 1:   0 dBm");
-            APP_TRACE_INFO0(" 2: 4.5 dBm");
+            printAvailablePowers();
             break;
+        } else if (param >= '0' && param <= '0' + numTxPowers) {
+            uint8_t set_channel = channel == UINT8_MAX ? 0 : channel;
+
+            power = txPowersAvailable[param - '0'];
+            PalBbAfeSetTxCfg(set_channel, power);
+            LlSetAdvTxPower(power);
+            APP_TRACE_INFO1("Power set to %d dBm", txPowersAvailable[param - '0']);
+
+        } else if (param < '0' || param > '9') {
+            APP_TRACE_INFO0("Invalid selection");
         }
 
-        switch (param) {
-        case '0':
-            llc_api_set_txpower(-10);
-            LlSetAdvTxPower(-10);
-            APP_TRACE_INFO0("Power set to -10 dBm");
-            break;
-        case '1':
-            llc_api_set_txpower(0);
-            LlSetAdvTxPower(0);
-            APP_TRACE_INFO0("Power set to 0 dBm");
-            break;
-        case '2':
-            llc_api_set_txpower(4);
-            LlSetAdvTxPower(4);
-            APP_TRACE_INFO0("Power set to 4.5 dBm");
-            break;
-        default:
-            APP_TRACE_INFO0("Invalid selection");
-            break;
-        }
         cmd = 0;
         param = 0;
         break;
 
     case '5':
+        PalBbEnable();
         if (param == 0) {
             APP_TRACE_INFO0("Select transmit channel");
             APP_TRACE_INFO0(" 0: 0");
@@ -269,32 +284,36 @@ static void processConsoleRX(uint8_t rxByte)
             break;
         }
 
+        int8_t set_power = power == INT8_MIN ? 0 : power;
+
         switch (param) {
-        case '0':
-            dbb_seq_select_rf_channel(0);
+        case '0': {
+            channel = 0;
             APP_TRACE_INFO0("Channel set to 0");
             break;
-        case '1':
-            dbb_seq_select_rf_channel(19);
+        }
+        case '1': {
+            channel = 19;
             APP_TRACE_INFO0("Channel set to 19");
             break;
-        case '2':
-            dbb_seq_select_rf_channel(39);
+        }
+        case '2': {
+            channel = 39;
             APP_TRACE_INFO0("Channel set to 39");
             break;
+        }
         default:
             APP_TRACE_INFO0("Invalid selection");
             break;
         }
 
+        PalBbAfeSetTxCfg(channel, set_power);
+
         APP_TRACE_INFO0("Starting TX");
 
-        PalBbEnable();
-
-        llc_api_tx_ldo_setup();
-
         /* Enable constant TX */
-        dbb_seq_tx_enable();
+        PalBbAfeTxSetup();
+        PalBbDbbEnablePatternGen(PAL_BB_CW);
 
         cmd = 0;
         param = 0;
@@ -304,8 +323,9 @@ static void processConsoleRX(uint8_t rxByte)
         APP_TRACE_INFO0("Disabling TX");
 
         /* Disable constant TX */
-        dbb_seq_tx_disable();
 
+        PalBbAfeTxDone();
+        PalBbDbbDisablePatternGen();
         PalBbDisable();
 
         cmd = 0;
@@ -355,7 +375,6 @@ static void processConsoleRX(uint8_t rxByte)
         MXC_TMR_EnableInt(MXC_TMR2);
         cmd = 0;
         break;
-
     case 'E':
     case 'e':
 
@@ -390,7 +409,6 @@ static void mainLoadConfiguration(void)
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
-
     /* Set 5.1 requirements. */
     mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_0;
 
@@ -406,6 +424,23 @@ static void mainLoadConfiguration(void)
     */
     mainBbRtCfg.clkPpm = 20;
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Initialize Tx Powers Available for use
+ */
+/*************************************************************************************************/
+static void mainInitTxPowers(void)
+{
+    numTxPowers = PalRadioGetNumAvailableTxPowers();
+    txPowersAvailable = malloc(numTxPowers * sizeof(int8_t));
+
+    if (txPowersAvailable == NULL) {
+        APP_TRACE_ERR0("Failed to get number of available TX powers.");
+        APP_TRACE_ERR0("Malloc returned NULL");
+    }
+
+    numTxPowers = PalRadioGetAvailableTxPowers(txPowersAvailable, numTxPowers);
+}
 
 /*************************************************************************************************/
 /*!
@@ -420,12 +455,10 @@ static void mainWsfInit(void)
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
     const uint16_t dataBufSize =
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
-
-    /* Use single pool for data buffers. */
 #if (BT_VER > 9)
+    /* Use single pool for data buffers. */
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
 #endif
-
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
@@ -496,6 +529,7 @@ int main(void)
 
     mainLoadConfiguration();
     mainWsfInit();
+    mainInitTxPowers();
 
 #if (WSF_TRACE_ENABLED == TRUE)
     WsfCsEnter();

@@ -29,3 +29,5 @@ TRACE = 1
 # Add services directory to build
 IPATH += services
 VPATH += services
+
+PROJ_CFLAGS += -DENABLE_SECURITY=0
