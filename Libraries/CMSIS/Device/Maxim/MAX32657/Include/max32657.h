@@ -625,7 +625,11 @@ We may want to handle GET_IRQ better...
 /******************************************************************************/
 /*                                                                        DMA */
 #define MXC_DMA_CHANNELS (4)
+#if IS_SECURE_ENVIRONMENT
 #define MXC_DMA_INSTANCES (2)
+#else
+#define MXC_DMA_INSTANCES (1)
+#endif
 
 /* Non-secure Mapping */
 #define MXC_BASE_DMA0_NS ((uint32_t)0x40028000UL)
