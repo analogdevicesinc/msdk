@@ -16,6 +16,7 @@
  *
  ******************************************************************************/
 
+#include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,8 +64,11 @@ __weak void SystemCoreClockUpdate(void)
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
         base_freq = IBRO_FREQ;
         break;
-    // case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
-    //     base_freq = ERTCO_FREQ;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
+        base_freq = ERTCO_FREQ;
+        break;
+    // case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+    //     base_freq = EXTCLK_FREQ;
     //     break;
     // TODO(JC): ^^^ Uncomment when EXTCLK register definition is added
     default:
