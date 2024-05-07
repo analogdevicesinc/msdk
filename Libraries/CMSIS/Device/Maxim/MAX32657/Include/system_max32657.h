@@ -29,12 +29,6 @@ extern "C" {
   Define clocks
  *----------------------------------------------------------------------------*/
 
-/* NOTE: HIRC was previously named CRYPTO */
-#ifdef CRYPTO_FREQ
-#warning WARNING: CRYPTO_FREQ does not exist in MAX78000, replace with HIRC_FREQ!
-#define HIRC_FREQ CRYPTO_FREQ
-#endif
-
 /* NOTE: EXTCLK needs to be defined by user based on the clock they supply */
 #ifndef EXTCLK_FREQ
 #define EXTCLK_FREQ 75000000

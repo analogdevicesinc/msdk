@@ -26,8 +26,8 @@
 #ifdef __STACK_SIZE
     .equ      Stack_Size, __STACK_SIZE
 #else
-    // Default stack size (192KB)
-    .equ      Stack_Size, 0x00030000
+    // Default stack size
+    .equ      Stack_Size, 0x00001000
 #endif
     .globl    __StackTop
     .globl    __StackLimit
@@ -47,8 +47,8 @@ __StackTop:
 #ifdef __HEAP_SIZE
     .equ      Heap_Size, __HEAP_SIZE
 #else
-    // Default heap size (64KB)
-    .equ      Heap_Size, 0x00010000
+    // Default heap size
+    .equ      Heap_Size, 0x00000C00
 #endif
     .globl    __HeapBase
     .globl    __HeapLimit
