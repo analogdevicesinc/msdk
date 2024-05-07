@@ -36,7 +36,7 @@ jobs:
         with:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
           ref: ''
-          token: ${{ secrets.ZEPHYRHAL }}
+          ssh-key: ${{ secrets.MSDK_SSH_KEY }}
           # Repository name (Default will be the current repo the action is running from)
           repository: ${{ github.repository }}
           fetch-depth: 0
@@ -49,7 +49,7 @@ jobs:
         with:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
           ref: 'develop'
-          token: ${{ secrets.ZEPHYRHAL }}
+          ssh-key: ${{ secrets.MSDK_SSH_KEY }}
           # Name of different repository ('organization_name/repo_name')
           # Update the following line to point to the hal_adi repo once that repo is created.
           repository: 'analogdevicesinc/hal_adi'
@@ -64,12 +64,6 @@ jobs:
           # Using the checkout commands above, the script will start out in the same 
           # directory that contains the 'msdk' and 'hal_adi' folders.
           bash ./msdk/.github/workflows/scripts/zephyr-hal.sh
-
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.MSDK_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
 
       - name: Push changes to hal_adi repository
         run: |
