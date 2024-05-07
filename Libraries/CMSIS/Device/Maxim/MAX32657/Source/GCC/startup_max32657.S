@@ -72,7 +72,7 @@ __isr_vector:
     .long    MemManage_Handler          /* MPU Fault Handler */
     .long    BusFault_Handler           /* Bus Fault Handler */
     .long    UsageFault_Handler         /* Usage Fault Handler */
-    .long    0                          /* Reserved */
+    .long    SecureFault_Handler        /* Secure Fault Handler */
     .long    0                          /* Reserved */
     .long    0                          /* Reserved */
     .long    0                          /* Reserved */
@@ -258,6 +258,7 @@ Reset_Handler:
     def_irq_handler    MemManage_Handler
     def_irq_handler    BusFault_Handler
     def_irq_handler    UsageFault_Handler
+    def_irq_handler    SecureFault_Handler
     def_irq_handler    SVC_Handler
     def_irq_handler    DebugMon_Handler
     def_irq_handler    PendSV_Handler
