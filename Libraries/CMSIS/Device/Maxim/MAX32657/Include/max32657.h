@@ -529,9 +529,9 @@ We may want to handle GET_IRQ better...
 #define MXC_TMR2_NS ((mxc_tmr_regs_t *)MXC_BASE_TMR2_NS)
 #define MXC_BASE_TMR3_NS ((uint32_t)0x40013000UL)
 #define MXC_TMR3_NS ((mxc_tmr_regs_t *)MXC_BASE_TMR3_NS)
-#define MXC_BASE_TMR4_NS ((uint32_t)0x40080C00UL)
+#define MXC_BASE_TMR4_NS ((uint32_t)0x40014000UL)
 #define MXC_TMR4_NS ((mxc_tmr_regs_t *)MXC_BASE_TMR4_NS)
-#define MXC_BASE_TMR5_NS ((uint32_t)0x40081000UL)
+#define MXC_BASE_TMR5_NS ((uint32_t)0x40015000UL)
 #define MXC_TMR5_NS ((mxc_tmr_regs_t *)MXC_BASE_TMR5_NS)
 
 /* Secure Mapping */
@@ -543,9 +543,9 @@ We may want to handle GET_IRQ better...
 #define MXC_TMR2_S ((mxc_tmr_regs_t *)MXC_BASE_TMR2_S)
 #define MXC_BASE_TMR3_S ((uint32_t)0x50013000UL)
 #define MXC_TMR3_S ((mxc_tmr_regs_t *)MXC_BASE_TMR3_S)
-#define MXC_BASE_TMR4_S ((uint32_t)0x50080C00UL)
+#define MXC_BASE_TMR4_S ((uint32_t)0x50014000UL)
 #define MXC_TMR4_S ((mxc_tmr_regs_t *)MXC_BASE_TMR4_S)
-#define MXC_BASE_TMR5_S ((uint32_t)0x50081000UL)
+#define MXC_BASE_TMR5_S ((uint32_t)0x50015000UL)
 #define MXC_TMR5_S ((mxc_tmr_regs_t *)MXC_BASE_TMR5_S)
 
 #if IS_SECURE_ENVIRONMENT
