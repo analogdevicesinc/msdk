@@ -71,7 +71,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud)
         return retval;
     }
 
-    MXC_GPIO_Config(&gpio_cfg_uart0);
+    MXC_GPIO_Config(&gpio_cfg_uart);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART);
 
     return MXC_UART_RevA_Init((mxc_uart_reva_regs_t *)uart, baud);
@@ -117,9 +117,7 @@ int MXC_UART_SetParity(mxc_uart_regs_t *uart, mxc_uart_parity_t parity)
 
 int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
 {
-    MXC_GPIO_Config(&gpio_cfg_uart0_flow);
-
-    return MXC_UART_RevA_SetFlowCtrl((mxc_uart_reva_regs_t *)uart, flowCtrl, rtsThreshold);
+    return E_NOT_SUPPORTED;
 }
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, int usePCLK)

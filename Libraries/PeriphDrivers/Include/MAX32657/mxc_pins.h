@@ -28,82 +28,33 @@
 
 /***** Global Variables *****/
 // Predefined GPIO Configurations
-extern const mxc_gpio_cfg_t gpio_cfg_extclk;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
-extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
+extern const mxc_gpio_cfg_t gpio_cfg_i3c;
 
-extern const mxc_gpio_cfg_t gpio_cfg_uart0;
-extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
-extern const mxc_gpio_cfg_t gpio_cfg_uart3;
-
-extern const mxc_gpio_cfg_t antenna_ctrl0;
-extern const mxc_gpio_cfg_t antenna_ctrl1;
+extern const mxc_gpio_cfg_t gpio_cfg_uart;
 
 // Timers are only defined once, depending on package, each timer could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr1;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr2;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr3;
+extern const mxc_gpio_cfg_t gpio_cfg_tmr4;
+extern const mxc_gpio_cfg_t gpio_cfg_tmr5;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0b;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr1b;
-extern const mxc_gpio_cfg_t gpio_cfg_tmr1_MapB;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr2b;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr3b;
-
-extern const mxc_gpio_cfg_t gpio_cfg_i2s0;
-extern const mxc_gpio_cfg_t gpio_cfg_i2s0_clkext;
-
-extern const mxc_gpio_cfg_t gpio_cfg_owm;
-extern const mxc_gpio_cfg_t gpio_cfg_owmb;
-
-extern const mxc_gpio_cfg_t gpio_cfg_rtcsqw;
-extern const mxc_gpio_cfg_t gpio_cfg_rtcsqwb;
-
-extern const mxc_gpio_cfg_t gpio_cfg_pt0;
-extern const mxc_gpio_cfg_t gpio_cfg_pt1;
-extern const mxc_gpio_cfg_t gpio_cfg_pt2;
-extern const mxc_gpio_cfg_t gpio_cfg_pt3;
-
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain0;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain1;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain2;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain3;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain4;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain5;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
-extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
-
-extern const mxc_gpio_cfg_t gpio_cfg_rv_jtag;
-
-extern const mxc_gpio_cfg_t gpio_cfg_cmp0;
-extern const mxc_gpio_cfg_t gpio_cfg_cmp1;
-extern const mxc_gpio_cfg_t gpio_cfg_cmp2;
-extern const mxc_gpio_cfg_t gpio_cfg_cmp3;
+extern const mxc_gpio_cfg_t gpio_cfg_tmr4b;
+extern const mxc_gpio_cfg_t gpio_cfg_tmr5b;
 
 // SPI v2 Pin Definitions
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_dual;
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_quad;
-extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
-extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
-extern const mxc_gpio_cfg_t gpio_cfg_spi1_dual;
-extern const mxc_gpio_cfg_t gpio_cfg_spi1_quad;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_quad;
 
 // SPI v2 Target Selects Pin Definitions
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts1;
-extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts2;
-extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi_ts2;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_PINS_H_
