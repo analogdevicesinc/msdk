@@ -337,7 +337,7 @@
           <field derivedFrom="ERTCO_EN">
             <name>IPO_EN</name>
             <description>50MHz High Frequency Internal Reference Clock Enable.</description>
-            <bitOffset>19</bitOffset>
+            <bitOffset>18</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="ERTCO_EN">
@@ -469,38 +469,10 @@
         <addressOffset>0x18</addressOffset>
         <fields>
           <field>
-            <name>ADCFRQ</name>
-            <description>ADC clock Frequency. These bits define the ADC clock frequency. FADC = FPCLK / (ADCFRQ).</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>4</bitWidth>
-          </field>
-          <field>
-            <name>AONCLKDIV</name>
-            <description>Always-ON (AON) domain Clock Divider. These bits define the AON domain clock divider.</description>
-            <bitOffset>14</bitOffset>
-            <bitWidth>2</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>DIV4</name>
-                <description>PCLK divide by 4.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>DIV8</name>
-                <description>PCLK divide by 8.</description>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>DIV16</name>
-                <description>PCLK divide by 16.</description>
-                <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>DIV32</name>
-                <description>PCLK divide by 32.</description>
-                <value>3</value>
-              </enumeratedValue>
-            </enumeratedValues>
+            <name>CLKDIV</name>
+            <description>Clock Divide Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>

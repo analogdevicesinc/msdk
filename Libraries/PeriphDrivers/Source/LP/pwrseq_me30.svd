@@ -16,7 +16,7 @@
         <addressOffset>0x00</addressOffset>
         <fields>
           <field>
-            <name>RAMRET_EN</name>
+            <name>SRAMRET_EN</name>
             <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
             <bitOffset>0</bitOffset>
             <bitWidth>5</bitWidth>
@@ -122,6 +122,12 @@
         <description>Low Power Peripheral Wakeup Status Register.</description>
         <addressOffset>0x30</addressOffset>
         <fields>
+          <field>
+            <name>BACKUP</name>
+            <description>BACKUP Wakeful Flag.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
           <field>
             <name>RESET</name>
             <description>Reset Detected Wakeup Flag.</description>

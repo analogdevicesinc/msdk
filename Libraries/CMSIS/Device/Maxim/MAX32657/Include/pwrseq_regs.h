@@ -107,8 +107,8 @@ typedef struct {
  * @brief    Low Power Control Register.
  * @{
  */
-#define MXC_F_PWRSEQ_LPCTRL_RAMRET_EN_POS              0 /**< LPCTRL_RAMRET_EN Position */
-#define MXC_F_PWRSEQ_LPCTRL_RAMRET_EN                  ((uint32_t)(0x1FUL << MXC_F_PWRSEQ_LPCTRL_RAMRET_EN_POS)) /**< LPCTRL_RAMRET_EN Mask */
+#define MXC_F_PWRSEQ_LPCTRL_SRAMRET_EN_POS             0 /**< LPCTRL_SRAMRET_EN Position */
+#define MXC_F_PWRSEQ_LPCTRL_SRAMRET_EN                 ((uint32_t)(0x1FUL << MXC_F_PWRSEQ_LPCTRL_SRAMRET_EN_POS)) /**< LPCTRL_SRAMRET_EN Mask */
 
 #define MXC_F_PWRSEQ_LPCTRL_FAST_POS                   8 /**< LPCTRL_FAST Position */
 #define MXC_F_PWRSEQ_LPCTRL_FAST                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_FAST_POS)) /**< LPCTRL_FAST Mask */
@@ -175,6 +175,9 @@ typedef struct {
  * @brief    Low Power Peripheral Wakeup Status Register.
  * @{
  */
+#define MXC_F_PWRSEQ_LPPWST_BACKUP_POS                 16 /**< LPPWST_BACKUP Position */
+#define MXC_F_PWRSEQ_LPPWST_BACKUP                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWST_BACKUP_POS)) /**< LPPWST_BACKUP Mask */
+
 #define MXC_F_PWRSEQ_LPPWST_RESET_POS                  17 /**< LPPWST_RESET Position */
 #define MXC_F_PWRSEQ_LPPWST_RESET                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWST_RESET_POS)) /**< LPPWST_RESET Mask */
 
