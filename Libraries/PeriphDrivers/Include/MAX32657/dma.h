@@ -59,7 +59,7 @@ typedef enum {
         MXC_S_DMA_CTRL_REQUEST_MEMTOMEM, ///< Memory to Memory DMA Request Selection
     MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CTRL_REQUEST_SPI1RX, ///< SPI1 Receive DMA Request Selection
     MXC_DMA_REQUEST_SPI0RX = MXC_S_DMA_CTRL_REQUEST_SPI0RX, ///< SPI0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_UART0RX =
+    MXC_DMA_REQUEST_UARTRX =
         MXC_S_DMA_CTRL_REQUEST_UART0RX, ///< UART0 Receive DMA Request Selection
     MXC_DMA_REQUEST_UART1RX =
         MXC_S_DMA_CTRL_REQUEST_UART1RX, ///< UART1 Receive DMA Request Selection
@@ -75,7 +75,7 @@ typedef enum {
     MXC_DMA_REQUEST_I2SRX = MXC_S_DMA_CTRL_REQUEST_I2SRX, ///< I2S Receive DMA Request Selection
     MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CTRL_REQUEST_SPI1TX, ///< SPI1 Transmit DMA Request Selection
     MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CTRL_REQUEST_SPI0TX, ///< SPI0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_UART0TX =
+    MXC_DMA_REQUEST_UARTTX =
         MXC_S_DMA_CTRL_REQUEST_UART0TX, ///< UART0 Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART1TX =
         MXC_S_DMA_CTRL_REQUEST_UART1TX, ///< UART1 Transmit DMA Request Selection

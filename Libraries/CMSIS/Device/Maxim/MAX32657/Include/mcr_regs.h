@@ -130,8 +130,8 @@ typedef struct {
 #define MXC_F_MCR_CTRL_ERTCO_EN_POS                    3 /**< CTRL_ERTCO_EN Position */
 #define MXC_F_MCR_CTRL_ERTCO_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_EN_POS)) /**< CTRL_ERTCO_EN Mask */
 
-#define MXC_F_MCR_CTRL_ERTCO_IN_EN_POS                 5 /**< CTRL_ERTCO_IN_EN Position */
-#define MXC_F_MCR_CTRL_ERTCO_IN_EN                     ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_IN_EN_POS)) /**< CTRL_ERTCO_IN_EN Mask */
+#define MXC_F_MCR_CTRL_ERTCO_32KHZ_EN_POS              5 /**< CTRL_ERTCO_32KHZ_EN Position */
+#define MXC_F_MCR_CTRL_ERTCO_32KHZ_EN                  ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_32KHZ_EN_POS)) /**< CTRL_ERTCO_32KHZ_EN Mask */
 
 /**@} end of group MCR_CTRL_Register */
 

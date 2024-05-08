@@ -49,13 +49,13 @@
         <fields>
           <field>
             <name>ERTCO_EN</name>
-            <description>ERTCO Enable.</description>
+            <description>Enable ERTCO 4KHz.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ERTCO_IN_EN</name>
-            <description>Enable 32K Oscillator input.</description>
+            <name>ERTCO_32KHZ_EN</name>
+            <description>Enable ERTCO 32KHz while ERTCO_EN.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>

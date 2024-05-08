@@ -740,7 +740,7 @@ We may want to handle GET_IRQ better...
 
 #define MXC_UART_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART : 0)
 #define MXC_UART_GET_UART(i) ((i) == 0 ? MXC_UART : 0)
-#define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : 0)
+#define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART_IRQn : 0)
 #define MXC_UART_GET_IDX(p) ((p) == MXC_UART_NS ? 0 : (p) == MXC_UART_S ? 0 : -1)
 
 /******************************************************************************/

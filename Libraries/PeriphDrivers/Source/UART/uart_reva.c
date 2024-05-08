@@ -28,6 +28,8 @@
 #include "nvic_table.h"
 #endif
 
+// TODO(DMA): Fix multiple DMA instance handling.
+
 /* **** Definitions **** */
 #define MXC_UART_REVA_ERRINT_EN                                                       \
     (MXC_F_UART_REVA_INT_EN_RX_FRAME_ERROR | MXC_F_UART_REVA_INT_EN_RX_PARITY_ERROR | \
