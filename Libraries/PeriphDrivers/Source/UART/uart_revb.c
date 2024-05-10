@@ -761,6 +761,10 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
     if (flags & MXC_UART_REVB_ERRINT_FL & uart->int_en) {
         MXC_UART_AsyncStop((mxc_uart_regs_t *)uart);
         MXC_UART_AsyncCallback((mxc_uart_regs_t *)uart, E_COMM_ERR);
+       return E_INVALID;
+    }
+
+    req = (mxc_uart_req_t *)AsyncTxRequests[uart_num];
     if ((req != NULL) && (req->txLen)) {
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
