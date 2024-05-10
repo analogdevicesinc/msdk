@@ -46,7 +46,7 @@ int MXC_AES_Init(void)
     // Start with a randomly generated key.
     MXC_AES_GenerateKey();
 
-    MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES);
+    MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES, MXC_DMA);
 
     return E_NO_ERROR;
 }

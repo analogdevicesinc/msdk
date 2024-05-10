@@ -621,48 +621,18 @@
           <value>0x00</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>SPI1RX</name>
-          <description>SPI1 RX</description>
-          <value>0x01</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>UART0RX</name>
-          <description>UART0 RX</description>
+          <name>UARTRX</name>
+          <description>UART RX</description>
           <value>0x04</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>UART1RX</name>
-          <description>UART1 RX</description>
-          <value>0x05</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2C0RX</name>
-          <description>I2C0 RX</description>
+          <name>I3CRX</name>
+          <description>I3C RX</description>
           <value>0x07</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>I2C1RX</name>
-          <description>I2C1 RX</description>
-          <value>0x08</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>ADC</name>
-          <description>ADC</description>
-          <value>0x09</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2C2RX</name>
-          <description>I2C2 RX</description>
-          <value>0x0A</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>UART2RX</name>
-          <description>UART2 RX</description>
-          <value>0x0E</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>SPI0RX</name>
-          <description>SPI0 RX</description>
+          <name>SPIRX</name>
+          <description>SPI RX</description>
           <value>0x0F</value>
          </enumeratedValue>
          <enumeratedValue>
@@ -671,44 +641,14 @@
           <value>0x10</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>UART3RX</name>
-          <description>UART3 RX</description>
-          <value>0x1C</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2SRX</name>
-          <description>I2S RX</description>
-          <value>0x1E</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>SPI1TX</name>
-          <description>SPI1 TX</description>
-          <value>0x21</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>UART0TX</name>
-          <description>UART0 TX</description>
+          <name>UARTTX</name>
+          <description>UART TX</description>
           <value>0x24</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>UART1TX</name>
-          <description>UART1 TX</description>
-          <value>0x25</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2C0TX</name>
-          <description>I2C0 TX</description>
+          <name>I3CTX</name>
+          <description>I3C TX</description>
           <value>0x27</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2C1TX</name>
-          <description>I2C1 TX</description>
-          <value>0x28</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2C2TX</name>
-          <description>I2C2 TX</description>
-          <value>0x2A</value>
          </enumeratedValue>
          <enumeratedValue>
           <name>CRCTX</name>
@@ -716,29 +656,14 @@
           <value>0x2C</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>UART2TX</name>
-          <description>UART2 TX</description>
-          <value>0x2E</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>SPI0TX</name>
-          <description>SPI0 TX</description>
+          <name>SPITX</name>
+          <description>SPI TX</description>
           <value>0x2F</value>
          </enumeratedValue>
          <enumeratedValue>
           <name>AESTX</name>
           <description>AES TX</description>
           <value>0x30</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>UART3TX</name>
-          <description>UART3 TX</description>
-          <value>0x3C</value>
-         </enumeratedValue>
-         <enumeratedValue>
-          <name>I2STX</name>
-          <description>I2S TX</description>
-          <value>0x3E</value>
          </enumeratedValue>
         </enumeratedValues>
        </field>

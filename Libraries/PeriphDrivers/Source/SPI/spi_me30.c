@@ -350,11 +350,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
     if (req->txData != NULL) {
         switch (spi_num) {
         case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
-
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            reqselTx = MXC_DMA_REQUEST_SPITX;
             break;
 
         default:
@@ -365,11 +361,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
     if (req->rxData != NULL) {
         switch (spi_num) {
         case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
-
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
+            reqselRx = MXC_DMA_REQUEST_SPIRX;
             break;
 
         default:
@@ -403,11 +395,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
     if (req->txData != NULL) {
         switch (spi_num) {
         case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
-
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            reqselTx = MXC_DMA_REQUEST_SPITX;
             break;
 
         default:
@@ -419,11 +407,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
     if (req->rxData != NULL) {
         switch (spi_num) {
         case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
-
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
+            reqselRx = MXC_DMA_REQUEST_SPIRX;
             break;
 
         default:

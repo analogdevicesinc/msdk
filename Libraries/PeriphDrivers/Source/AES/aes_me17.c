@@ -42,7 +42,7 @@ int MXC_AES_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 #endif
 
-    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES);
+    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES, MXC_DMA);
 }
 
 void MXC_AES_EnableInt(uint32_t interrupt)

@@ -57,39 +57,17 @@ typedef enum {
 typedef enum {
     MXC_DMA_REQUEST_MEMTOMEM =
         MXC_S_DMA_CTRL_REQUEST_MEMTOMEM, ///< Memory to Memory DMA Request Selection
-    MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CTRL_REQUEST_SPI1RX, ///< SPI1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI0RX = MXC_S_DMA_CTRL_REQUEST_SPI0RX, ///< SPI0 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPIRX = MXC_S_DMA_CTRL_REQUEST_SPIRX, ///< SPI Receive DMA Request Selection
     MXC_DMA_REQUEST_UARTRX =
-        MXC_S_DMA_CTRL_REQUEST_UART0RX, ///< UART0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_UART1RX =
-        MXC_S_DMA_CTRL_REQUEST_UART1RX, ///< UART1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CTRL_REQUEST_I2C0RX, ///< I2C0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CTRL_REQUEST_I2C1RX, ///< I2C1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_ADC = MXC_S_DMA_CTRL_REQUEST_ADC, ///< ADC Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C2RX = MXC_S_DMA_CTRL_REQUEST_I2C2RX, ///< I2C2 Receive DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_UARTRX, ///< UART Receive DMA Request Selection
+    MXC_DMA_REQUEST_I3CRX = MXC_S_DMA_CTRL_REQUEST_I3CRX, ///< I3C Receive DMA Request Selection
     MXC_DMA_REQUEST_AESRX = MXC_S_DMA_CTRL_REQUEST_AESRX, ///< AES Receive DMA Request Selection
-    MXC_DMA_REQUEST_UART2RX =
-        MXC_S_DMA_CTRL_REQUEST_UART2RX, ///< UART2 Receive DMA Request Selection
-    MXC_DMA_REQUEST_UART3RX =
-        MXC_S_DMA_CTRL_REQUEST_UART3RX, ///< UART3 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2SRX = MXC_S_DMA_CTRL_REQUEST_I2SRX, ///< I2S Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CTRL_REQUEST_SPI1TX, ///< SPI1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CTRL_REQUEST_SPI0TX, ///< SPI0 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_SPITX = MXC_S_DMA_CTRL_REQUEST_SPITX, ///< SPI Transmit DMA Request Selection
     MXC_DMA_REQUEST_UARTTX =
-        MXC_S_DMA_CTRL_REQUEST_UART0TX, ///< UART0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_UART1TX =
-        MXC_S_DMA_CTRL_REQUEST_UART1TX, ///< UART1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2C0TX = MXC_S_DMA_CTRL_REQUEST_I2C0TX, ///< I2C0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2C1TX = MXC_S_DMA_CTRL_REQUEST_I2C1TX, ///< I2C1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2C2TX =
-        MXC_S_DMA_CTRL_REQUEST_I2C2TX, ///< I2C2 Transmit DMA Request Selection */
+        MXC_S_DMA_CTRL_REQUEST_UARTTX, ///< UART Transmit DMA Request Selection
+    MXC_DMA_REQUEST_I3CTX = MXC_S_DMA_CTRL_REQUEST_I3CTX, ///< I3C Transmit DMA Request Selection
     MXC_DMA_REQUEST_CRCTX = MXC_S_DMA_CTRL_REQUEST_CRCTX, ///< CRC Transmit DMA Request Selection */
     MXC_DMA_REQUEST_AESTX = MXC_S_DMA_CTRL_REQUEST_AESTX, ///< AES Transmit DMA Request Selection
-    MXC_DMA_REQUEST_UART2TX =
-        MXC_S_DMA_CTRL_REQUEST_UART2TX, ///< UART2 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_UART3TX =
-        MXC_S_DMA_CTRL_REQUEST_UART3TX, ///< UART3 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2STX = MXC_S_DMA_CTRL_REQUEST_I2STX, ///< I2S Transmit DMA Request Selection
 } mxc_dma_reqsel_t;
 
 /** @brief Enumeration for the DMA prescaler */

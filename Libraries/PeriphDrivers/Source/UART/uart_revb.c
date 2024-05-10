@@ -829,12 +829,7 @@ int MXC_UART_RevB_SetAutoDMAHandlers(mxc_uart_revb_regs_t *uart, bool enable)
 }
 
 
-// TODO(DMA): Replaced the DMA instance number check to the only
-//              parts affected by this. Our DMA drivers probably
-//              needs a rework to handle multiple instances because
-//              the ME14's DMA drivers are very limited with
-//              the DMA instance selection.
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
 
 void MXC_UART_RevA_DMA0_Handler(void)
 {
@@ -854,7 +849,7 @@ DMA instance.
 void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned int channel)
 {
 #ifdef __arm__
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
     NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(dma_instance, channel));
 
     /* (JC): This is not the cleanest or most scalable way to do this,
@@ -926,7 +921,7 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
 
     if (states[uart_num].auto_dma_handlers && states[uart_num].channelRx < 0) {
         /* Acquire channel if we don't have one already */
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
         channel = MXC_DMA_AcquireChannel(dma);
 #else
         channel = MXC_DMA_AcquireChannel();
@@ -955,7 +950,7 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
 
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
     MXC_DMA_EnableInt(dma, channel);
 #else
     MXC_DMA_EnableInt(channel);
@@ -984,7 +979,7 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma
 
     if (states[uart_num].auto_dma_handlers && states[uart_num].channelTx < 0) {
         /* Acquire channel if we don't have one already */
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
         channel = MXC_DMA_AcquireChannel(dma);
 #else
         channel = MXC_DMA_AcquireChannel();
@@ -1013,7 +1008,7 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
 
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
     MXC_DMA_EnableInt(dma, channel);
 #else
     MXC_DMA_EnableInt(channel);
@@ -1058,7 +1053,7 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma)
     (req->uart)->dma |= (1 << MXC_F_UART_REVB_DMA_RX_THD_VAL_POS);
     (req->uart)->dma |= (2 << MXC_F_UART_REVB_DMA_TX_THD_VAL_POS);
 
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
     MXC_DMA_Init(dma);
 #else
     MXC_DMA_Init();
@@ -1072,8 +1067,13 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma)
     if ((req->txData != NULL) && (req->txLen)) {
         /* Save TX req, the DMA handler will use this later. */
         states[uart_num].tx_req = req;
+#if (MXC_DMA_INSTANCES > 1)
         if (MXC_UART_WriteTXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->txData, req->txLen,
                                     NULL) != E_NO_ERROR) {
+#else
+        if (MXC_UART_WriteTXFIFODMA((mxc_uart_regs_t *)(req->uart), req->txData, req->txLen,
+                                    NULL) != E_NO_ERROR) {
+#endif
             return E_BAD_PARAM;
         }
     }
@@ -1081,8 +1081,13 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma)
     //rx
     if ((req->rxData != NULL) && (req->rxLen)) {
         states[uart_num].rx_req = req;
+#if (MXC_DMA_INSTANCES > 1)
         if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->rxData, req->rxLen, NULL) !=
             E_NO_ERROR) {
+#else
+        if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), req->rxData, req->rxLen, NULL) !=
+            E_NO_ERROR) {
+#endif
             return E_BAD_PARAM;
         }
     }
