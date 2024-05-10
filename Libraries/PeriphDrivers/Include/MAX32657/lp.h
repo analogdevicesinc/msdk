@@ -182,16 +182,6 @@ void MXC_LP_EnableWUTAlarmWakeup(void);
 void MXC_LP_DisableWUTAlarmWakeup(void);
 
 /**
- * @brief      Enables the LPCMP to wake up the device from any low power mode.
- */
-void MXC_LP_EnableLPCMPWakeup(mxc_lpcmp_cmpsel_t cmp);
-
-/**
- * @brief      Disables the LPCMP from waking up the device.
- */
-void MXC_LP_DisableLPCMPWakeup(mxc_lpcmp_cmpsel_t cmp);
-
-/**
  * @brief      Enables the HA0 to wake up the device from any low power mode.
  */
 void MXC_LP_EnableHA0Wakeup(void);

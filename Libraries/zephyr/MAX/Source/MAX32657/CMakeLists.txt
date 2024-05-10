@@ -55,7 +55,7 @@ zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/ICC/icc_me30.c
     ${MSDK_PERIPH_SRC_DIR}/ICC/icc_reva.c
 
-    ${MSDK_PERIPH_SRC_DIR}/LP/lp_me30.c
+    #${MSDK_PERIPH_SRC_DIR}/LP/lp_me30.c
 
     ${MSDK_PERIPH_SRC_DIR}/WUT/wut_me30.c
     ${MSDK_PERIPH_SRC_DIR}/WUT/wut_reva.c
