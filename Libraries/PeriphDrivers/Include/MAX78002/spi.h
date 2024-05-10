@@ -593,7 +593,6 @@ unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi);
 unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi);
 
 //////>>> Previous Implementation
-
 /**
  * @brief   Sets the number of bits per character
  *
