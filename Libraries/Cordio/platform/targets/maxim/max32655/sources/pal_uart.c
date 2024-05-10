@@ -84,13 +84,12 @@ static struct {
 /*************************************************************************************************/
 void UART_CommonHandler(mxc_uart_regs_t *uart)
 {
-  int32_t err = MXC_UART_AsyncHandler(uart);
+  const int32_t err = MXC_UART_AsyncHandler(uart);
 
   if(err == E_INVALID)
   {
     // If the uart is the console, we can try to recover since it is not critical
-    uint8_t uartIdx = MXC_UART_GET_IDX(uart);
-    if(uartIdx == CONSOLE_UART)
+    if(MXC_UART_GET_IDX(uart) == CONSOLE_UART)
     {
       MXC_UART_ClearRXFIFO(uart);
     }
@@ -99,11 +98,14 @@ void UART_CommonHandler(mxc_uart_regs_t *uart)
       PAL_SYS_ASSERT(err == E_NO_ERROR);
     }
   }
+  
 }
 void UART0_IRQHandler(void)
 {
+  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART0);
+
 }
 void UART1_IRQHandler(void)
 {
@@ -113,7 +115,7 @@ void UART1_IRQHandler(void)
 
 }
 void UART2_IRQHandler(void)
-{
+{  
   
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART2);
@@ -121,7 +123,7 @@ void UART2_IRQHandler(void)
 }
 void UART3_IRQHandler(void)
 {
-  
+
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART3);
 
