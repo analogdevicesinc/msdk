@@ -157,7 +157,8 @@ void MXC_DMA_Handler(mxc_dma_regs_t *dma)
     MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t *)dma);
 }
 
-int MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len, mxc_dma_complete_cb_t callback)
+int MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
+                   mxc_dma_complete_cb_t callback)
 {
     return MXC_DMA_RevA_MemCpy((mxc_dma_reva_regs_t *)dma, dest, src, len, callback);
 }

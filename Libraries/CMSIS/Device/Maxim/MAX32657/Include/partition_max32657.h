@@ -30,6 +30,7 @@
 
 #include "max32657.h"
 
+// clang-format off
 #if IS_SECURE_ENVIRONMENT
 
 /*

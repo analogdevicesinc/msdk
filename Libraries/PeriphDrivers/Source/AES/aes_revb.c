@@ -386,7 +386,8 @@ int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req,
     aes->ctrl |= MXC_F_AES_REVB_CTRL_DMA_RX_EN; //Enable AES DMA
     aes->ctrl |= MXC_F_AES_REVB_CTRL_DMA_TX_EN; //Enable AES DMA
 
-    if (MXC_AES_RevB_TXDMAConfig(dma_state.inputText, dma_state.remain, dma_state.dma) != E_NO_ERROR) {
+    if (MXC_AES_RevB_TXDMAConfig(dma_state.inputText, dma_state.remain, dma_state.dma) !=
+        E_NO_ERROR) {
         return E_BAD_PARAM;
     }
 

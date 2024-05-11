@@ -141,15 +141,15 @@ typedef enum {
 /* ==================             Processor Section              ================== */
 /* ================================================================================ */
 
-#define __CM33_REV                0x0000U /**< Cortex-M33 Core revision */
-#define __DSP_PRESENT             1U      /**< Presence of DSP  */
-#define __FPU_PRESENT             1U      /**< Presence of FPU  */
-#define __MPU_PRESENT             1U      /**< Presence of MPU  */
-#define __SAUREGION_PRESENT       1U      /**< Presence of FPU  */
-#define __TZ_PRESENT              1U      /**< Presence of TrustZone */
-#define __VTOR_PRESENT            1U      /**< Presence of VTOR register in SCB  */
-#define __NVIC_PRIO_BITS          4U      /**< NVIC interrupt priority bits */
-#define __Vendor_SysTickConfig    0U      /**< Is 1 if different SysTick counter is used */
+#define __CM33_REV 0x0000U /**< Cortex-M33 Core revision */
+#define __DSP_PRESENT 1U /**< Presence of DSP  */
+#define __FPU_PRESENT 1U /**< Presence of FPU  */
+#define __MPU_PRESENT 1U /**< Presence of MPU  */
+#define __SAUREGION_PRESENT 1U /**< Presence of FPU  */
+#define __TZ_PRESENT 1U /**< Presence of TrustZone */
+#define __VTOR_PRESENT 1U /**< Presence of VTOR register in SCB  */
+#define __NVIC_PRIO_BITS 4U /**< NVIC interrupt priority bits */
+#define __Vendor_SysTickConfig 0U /**< Is 1 if different SysTick counter is used */
 
 #include <core_cm33.h>
 #include <arm_cmse.h>
@@ -168,7 +168,7 @@ typedef enum {
 
 /* Secure Regions */
 /*  ROM is always in secure region. */
-#define MXC_ROM_MEM_BASE 0x00000000UL 
+#define MXC_ROM_MEM_BASE 0x00000000UL
 #define MXC_ROM_MEM_SIZE 0x00010000UL
 #define MXC_FLASH_S_MEM_BASE 0x11000000UL
 #define MXC_FLASH_S_PAGE_SIZE 0x00002000UL
@@ -468,7 +468,7 @@ typedef enum {
 #define MXC_BASE_GPIO0_NS ((uint32_t)0x40008000UL)
 #define MXC_GPIO0_NS ((mxc_gpio_regs_t *)MXC_BASE_GPIO0_NS)
 
-#define MXC_GPIO_NS_GET_IDX(p) ((p) == MXC_GPIO0_NS ? 0 :  -1)
+#define MXC_GPIO_NS_GET_IDX(p) ((p) == MXC_GPIO0_NS ? 0 : -1)
 #define MXC_GPIO_NS_GET_GPIO(i) ((i) == 0 ? MXC_GPIO0_NS : 0)
 
 /* Secure Mapping */
@@ -599,7 +599,7 @@ We may want to handle GET_IRQ better...
      (p) == MXC_TMR3 ? 3 : \
      (p) == MXC_TMR4 ? 4 : \
      (p) == MXC_TMR5 ? 5 : \
-                      -1)
+                       -1)
 
 /******************************************************************************/
 /*                                                                        I3C */
@@ -653,7 +653,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_DMA1 MXC_BASE_DMA1_S
 #define MXC_DMA1 MXC_DMA1_S
 
-#define MXC_DMA_CH_GET_IRQ(p, i)                \
+#define MXC_DMA_CH_GET_IRQ(p, i)                                 \
     ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
                  ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
                  ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
@@ -662,7 +662,7 @@ We may want to handle GET_IRQ better...
                  ((p) == MXC_DMA1 && (i) == 1) ? DMA1_CH1_IRQn : \
                  ((p) == MXC_DMA1 && (i) == 2) ? DMA1_CH2_IRQn : \
                  ((p) == MXC_DMA1 && (i) == 3) ? DMA1_CH3_IRQn : \
-                              0))
+                                                 0))
 
 #else
 #define MXC_BASE_DMA0 MXC_BASE_DMA0_NS
@@ -675,12 +675,12 @@ We may want to handle GET_IRQ better...
 #define MXC_DMA1 0
 
 /* DMA1 IRQs not usable in Non-Secure state. */
-#define MXC_DMA_CH_GET_IRQ(p, i)                \
+#define MXC_DMA_CH_GET_IRQ(p, i)                                 \
     ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
                  ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
                  ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
                  ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
-                              0))
+                                                 0))
 #endif // IS_SECURE_ENVIRONMENT
 
 #define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0 ? 0 : (p) == MXC_BASE_DMA1 ? 1 : -1)

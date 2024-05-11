@@ -43,8 +43,7 @@ int MXC_WDT_Shutdown(mxc_wdt_regs_t *wdt)
 {
     if (wdt == MXC_WDT) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT);
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
 

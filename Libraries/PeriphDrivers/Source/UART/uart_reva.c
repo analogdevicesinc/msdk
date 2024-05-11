@@ -539,7 +539,7 @@ void MXC_UART_RevA_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA1_Handler);
     }
 #else
-    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel)); 
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));
 
     // Only one DMA instance, we can point direct to MXC_DMA_Handler
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_DMA_Handler);

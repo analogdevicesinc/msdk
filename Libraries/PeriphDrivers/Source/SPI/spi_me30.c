@@ -71,18 +71,18 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
 #if (TARGET != MAX78000 || TARGET_NUM == 32655)
 
-        //Define pins
-        if (pins.ss1) {
-            gpio_cfg_spi.mask = MXC_GPIO_PIN_26;
-            gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
-            MXC_GPIO_Config(&gpio_cfg_spi);
-        }
+    //Define pins
+    if (pins.ss1) {
+        gpio_cfg_spi.mask = MXC_GPIO_PIN_26;
+        gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
+        MXC_GPIO_Config(&gpio_cfg_spi);
+    }
 
-        if (pins.ss2) {
-            gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
-            gpio_cfg_spi.mask = MXC_GPIO_PIN_27;
-            MXC_GPIO_Config(&gpio_cfg_spi);
-        }
+    if (pins.ss2) {
+        gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
+        gpio_cfg_spi.mask = MXC_GPIO_PIN_27;
+        MXC_GPIO_Config(&gpio_cfg_spi);
+    }
 
 #endif
     //clear mask
@@ -150,7 +150,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 
     // TODO(ME30): Validate this logic
     int sys_clk = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
-                    MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
+                  MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
     switch (sys_clk) {
     case MXC_SYS_CLOCK_IPO:
         retval = IPO_FREQ;
@@ -164,14 +164,14 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     case MXC_SYS_CLOCK_ERTCO:
         retval = ERTCO_FREQ;
         break;
-    // TODO(ME30): EXTCLK definition is missing from registers
-    // case MXC_SYS_CLOCK_EXTCLK:
-    //     retval = EXTCLK_FREQ;
-    //     break;
+        // TODO(ME30): EXTCLK definition is missing from registers
+        // case MXC_SYS_CLOCK_EXTCLK:
+        //     retval = EXTCLK_FREQ;
+        //     break;
 #if TARGET_NUM == 32655 || TARGET_NUM == 32680
-        case MXC_SYS_CLOCK_ERFO:
-            retval = ERFO_FREQ;
-            break;
+    case MXC_SYS_CLOCK_ERFO:
+        retval = ERFO_FREQ;
+        break;
 #endif
     default:
         return E_BAD_STATE;

@@ -202,8 +202,8 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, un
     return MXC_UART_RevB_ReadRXFIFO((mxc_uart_revb_regs_t *)uart, bytes, len);
 }
 
-int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes, unsigned int len,
-                           mxc_uart_dma_complete_cb_t callback)
+int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes,
+                           unsigned int len, mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
@@ -219,7 +219,8 @@ int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, unsigned 
         break;
     }
 
-    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, dma, bytes, len, callback, config);
+    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, dma, bytes, len, callback,
+                                       config);
 }
 
 unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -233,8 +234,8 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t *uart, const unsigned char *by
     return MXC_UART_RevB_WriteTXFIFO((mxc_uart_revb_regs_t *)uart, bytes, len);
 }
 
-int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, const unsigned char *bytes, unsigned int len,
-                            mxc_uart_dma_complete_cb_t callback)
+int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, const unsigned char *bytes,
+                            unsigned int len, mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
@@ -249,7 +250,8 @@ int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, mxc_dma_regs_t *dma, const un
         break;
     }
 
-    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, dma, bytes, len, callback, config);
+    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, dma, bytes, len, callback,
+                                        config);
 }
 
 unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t *uart)

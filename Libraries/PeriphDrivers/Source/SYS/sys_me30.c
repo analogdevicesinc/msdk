@@ -225,11 +225,11 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
         break;
 
-    // TODO(ME30): EXTCLK is missing from register definitions
-    // case MXC_SYS_CLOCK_EXTCLK:
-    //     // No "RDY" bit to monitor, so just configure the GPIO
-    //     return MXC_GPIO_Config(&gpio_cfg_extclk);
-    //     break;
+        // TODO(ME30): EXTCLK is missing from register definitions
+        // case MXC_SYS_CLOCK_EXTCLK:
+        //     // No "RDY" bit to monitor, so just configure the GPIO
+        //     return MXC_GPIO_Config(&gpio_cfg_extclk);
+        //     break;
 
     case MXC_SYS_CLOCK_INRO:
         // The 80k clock is always enabled
@@ -242,7 +242,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         /* Initialize kickstart circuit
            Select Kick start circuit clock source- IPO/ISO 
         */
-       // TODO(ME30): MXC_FCR missing ERFOKS definition
+        // TODO(ME30): MXC_FCR missing ERFOKS definition
         // MXC_FCR->erfoks = ((MXC_S_FCR_ERFOKS_KSCLKSEL_ISO)
         //                    /* Set Drive strengh - 0x1,0x2,0x3 */
         //                    | ((0x1) << MXC_F_FCR_ERFOKS_KSERFODRIVER_POS)
@@ -290,16 +290,16 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IBRO_EN;
         break;
 
-    // TODO(ME30): Missing EXTCLK register definition
-    // case MXC_SYS_CLOCK_EXTCLK:
-    //     /*
-    //     There's not a great way to disable the external clock.
-    //     Deinitializing the GPIO here may have unintended consequences
-    //     for application code.
-    //     Selecting a different system clock source is sufficient
-    //     to "disable" the EXT_CLK source.
-    //     */
-    //     break;
+        // TODO(ME30): Missing EXTCLK register definition
+        // case MXC_SYS_CLOCK_EXTCLK:
+        //     /*
+        //     There's not a great way to disable the external clock.
+        //     Deinitializing the GPIO here may have unintended consequences
+        //     for application code.
+        //     Selecting a different system clock source is sufficient
+        //     to "disable" the EXT_CLK source.
+        //     */
+        //     break;
 
     case MXC_SYS_CLOCK_INRO:
         // The 80k clock is always enabled
@@ -393,21 +393,21 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         break;
 
-    // TODO(ME30): Missing EXTCLK register definition
-    // case MXC_SYS_CLOCK_EXTCLK:
-    //     /*
-    //     There's not "EXT_CLK RDY" bit for the ME17, so we'll
-    //     blindly enable (configure GPIO) the external clock every time.
-    //     */
-    //     err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-    //     if (err)
-    //         return err;
+        // TODO(ME30): Missing EXTCLK register definition
+        // case MXC_SYS_CLOCK_EXTCLK:
+        //     /*
+        //     There's not "EXT_CLK RDY" bit for the ME17, so we'll
+        //     blindly enable (configure GPIO) the external clock every time.
+        //     */
+        //     err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        //     if (err)
+        //         return err;
 
-    //     // Set EXT clock as System Clock
-    //     MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-    //                  MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        //     // Set EXT clock as System Clock
+        //     MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+        //                  MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
-    //     break;
+        //     break;
 
     case MXC_SYS_CLOCK_ERFO:
 

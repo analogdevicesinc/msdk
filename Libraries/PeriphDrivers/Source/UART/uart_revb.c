@@ -828,7 +828,6 @@ int MXC_UART_RevB_SetAutoDMAHandlers(mxc_uart_revb_regs_t *uart, bool enable)
     return E_NO_ERROR;
 }
 
-
 #if (MXC_DMA_INSTANCES > 1)
 
 void MXC_UART_RevA_DMA0_Handler(void)
@@ -862,7 +861,7 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
     }
 #else
-    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel)); 
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));
 
     // Only one DMA instance, we can point direct to MXC_DMA_Handler
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_DMA_Handler);
@@ -873,7 +872,6 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
 
 #endif // __arm__
 }
-
 
 int MXC_UART_RevB_SetTXDMAChannel(mxc_uart_revb_regs_t *uart, unsigned int channel)
 {
@@ -907,7 +905,8 @@ int MXC_UART_RevB_GetRXDMAChannel(mxc_uart_revb_regs_t *uart)
     return states[n].channelRx;
 }
 
-int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma, unsigned char *bytes, unsigned int len,
+int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                unsigned char *bytes, unsigned int len,
                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
@@ -964,9 +963,9 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma, const unsigned char *bytes,
-                                 unsigned int len, mxc_uart_dma_complete_cb_t callback,
-                                 mxc_dma_config_t config)
+int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                 const unsigned char *bytes, unsigned int len,
+                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
     mxc_dma_srcdst_t srcdst;
@@ -1082,8 +1081,8 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma)
     if ((req->rxData != NULL) && (req->rxLen)) {
         states[uart_num].rx_req = req;
 #if (MXC_DMA_INSTANCES > 1)
-        if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->rxData, req->rxLen, NULL) !=
-            E_NO_ERROR) {
+        if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->rxData, req->rxLen,
+                                   NULL) != E_NO_ERROR) {
 #else
         if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), req->rxData, req->rxLen, NULL) !=
             E_NO_ERROR) {

@@ -66,42 +66,27 @@ typedef enum {
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
 typedef enum {
-    MXC_SYS_PERIPH_CLOCK_GPIO0 =
-        MXC_F_GCR_PCLKDIS0_GPIO0_POS, /**< Disable GPIO0 clock */
-    MXC_SYS_PERIPH_CLOCK_DMA0 =
-        MXC_F_GCR_PCLKDIS0_DMA0_POS, /**< Disable DMA0 clock */
-    MXC_SYS_PERIPH_CLOCK_SPI =
-        MXC_F_GCR_PCLKDIS0_SPI_POS, /**< Disable SPI clock */
-    MXC_SYS_PERIPH_CLOCK_UART =
-        MXC_F_GCR_PCLKDIS0_UART_POS, /**< Disable UART0 clock */
-    MXC_SYS_PERIPH_CLOCK_I3C =
-        MXC_F_GCR_PCLKDIS0_I3C_POS, /**< Disable I2C/I3C clock */
-    MXC_SYS_PERIPH_CLOCK_TMR0 =
-        MXC_F_GCR_PCLKDIS0_TMR0_POS, /**< Disable TMR0 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR1 =
-        MXC_F_GCR_PCLKDIS0_TMR1_POS, /**< Disable TMR1 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR2 =
-        MXC_F_GCR_PCLKDIS0_TMR2_POS, /**< Disable TMR2 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR3 =
-        MXC_F_GCR_PCLKDIS0_TMR3_POS, /**< Disable TMR3 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR4 =
-        MXC_F_GCR_PCLKDIS0_TMR4_POS, /**< Disable TMR4 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR5 =
-        MXC_F_GCR_PCLKDIS0_TMR5_POS, /**< Disable TMR4 clock */
+    MXC_SYS_PERIPH_CLOCK_GPIO0 = MXC_F_GCR_PCLKDIS0_GPIO0_POS, /**< Disable GPIO0 clock */
+    MXC_SYS_PERIPH_CLOCK_DMA0 = MXC_F_GCR_PCLKDIS0_DMA0_POS, /**< Disable DMA0 clock */
+    MXC_SYS_PERIPH_CLOCK_SPI = MXC_F_GCR_PCLKDIS0_SPI_POS, /**< Disable SPI clock */
+    MXC_SYS_PERIPH_CLOCK_UART = MXC_F_GCR_PCLKDIS0_UART_POS, /**< Disable UART0 clock */
+    MXC_SYS_PERIPH_CLOCK_I3C = MXC_F_GCR_PCLKDIS0_I3C_POS, /**< Disable I2C/I3C clock */
+    MXC_SYS_PERIPH_CLOCK_TMR0 = MXC_F_GCR_PCLKDIS0_TMR0_POS, /**< Disable TMR0 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR1 = MXC_F_GCR_PCLKDIS0_TMR1_POS, /**< Disable TMR1 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR2 = MXC_F_GCR_PCLKDIS0_TMR2_POS, /**< Disable TMR2 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR3 = MXC_F_GCR_PCLKDIS0_TMR3_POS, /**< Disable TMR3 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR4 = MXC_F_GCR_PCLKDIS0_TMR4_POS, /**< Disable TMR4 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR5 = MXC_F_GCR_PCLKDIS0_TMR5_POS, /**< Disable TMR4 clock */
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
-    MXC_SYS_PERIPH_CLOCK_TRNG =
-        (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable TRNG clock */
+    MXC_SYS_PERIPH_CLOCK_TRNG = (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable TRNG clock */
     // MXC_SYS_PERIPH_CLOCK_SMPHR =
     //     (MXC_F_GCR_PCLKDIS1_SMPHR_POS + 32), /**< Disable SMPHR clock */
-    MXC_SYS_PERIPH_CLOCK_CRC =
-        (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable CRC clock */
-    MXC_SYS_PERIPH_CLOCK_AES =
-        (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */
+    MXC_SYS_PERIPH_CLOCK_CRC = (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable CRC clock */
+    MXC_SYS_PERIPH_CLOCK_AES = (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */
     // MXC_SYS_PERIPH_CLOCK_SPI =
     //     (MXC_F_GCR_PCLKDIS1_SPI_POS + 32), /**< Disable SPI clock */
     // TODO(JC): The SPI clock disable is defined in both PCLKDIS0 and PCLKDIS1
-    MXC_SYS_PERIPH_CLOCK_WDT =
-        (MXC_F_GCR_PCLKDIS1_WDT_POS), /**< Disable WDT clock */
+    MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS), /**< Disable WDT clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
