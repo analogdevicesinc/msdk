@@ -246,8 +246,8 @@ uint8_t processEscSequence(uint8_t *seq)
  *
  *  \brief  adds latest command to command history buffer
  *
- *  \param  q pointer to the circular buffer holding command history 
- *  \param  cmd pointer to the command string to be added 
+ *  \param  q pointer to the circular buffer holding command history
+ *  \param  cmd pointer to the command string to be added
  *
  *  \return None.
  */
@@ -274,9 +274,9 @@ void cmdHistoryAdd(queue_t *q, const uint8_t *cmd)
  *  \fn     updateQueuePointer.
  *
  *  \brief  Updates an internal marker pointing to historical command to be printed, based on up/down arrow
- * 
- *  \param  q pointer to the circular buffer holding command history 
- * 
+ *
+ *  \param  q pointer to the circular buffer holding command history
+ *
  *  \param  upArrow flag used to upated the queuePoniter delimiting which command to print
  *
  *  \return None.
@@ -396,9 +396,9 @@ void prompt(void)
  *  \fn     printHint
  *
  *  \brief  Prints the help string of any command matching the current inputbuffer
- * 
+ *
  *  \param  buff pointer to the inputbuffer
- * 
+ *
  *  \return None.
  */
 /*************************************************************************************************/
@@ -695,17 +695,25 @@ void txTestTask(void *pvParameters)
         snprintf(str, sizeof(str), "%s%s", str, (const char *)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
+        //Prevent FreeRTOS from context switching until the LL is finished
+        vTaskSuspendAll();
+
         /* stat test */
         if (testConfig.testType == BLE_TX_TEST) {
             res = LlEnhancedTxTest(testConfig.channel, packetLen, packetType, phy, 0);
         } else {
             res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
         }
+        xTaskResumeAll(); //Restore scheduler
+
         APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         /* if duration value was given then let the test run that amount of time and end */
         if (testConfig.duration_ms) {
             vTaskDelay(testConfig.duration_ms);
+            //Prevent FreeRTOS from context switching until the LL is finished
+            vTaskSuspendAll();
             LlEndTest(NULL);
+            xTaskResumeAll(); //Restore scheduler
             xSemaphoreGive(rfTestMutex);
         }
         pausePrompt = false;
