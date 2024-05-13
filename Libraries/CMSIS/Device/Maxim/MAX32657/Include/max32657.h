@@ -153,7 +153,11 @@ typedef enum {
 
 #include <core_cm33.h>
 #include <arm_cmse.h>
-#define IS_SECURE_ENVIRONMENT (defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U))
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#define IS_SECURE_ENVIRONMENT 1
+#else
+#define IS_SECURE_ENVIRONMENT 0
+#endif
 
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
