@@ -447,6 +447,9 @@ typedef struct {
 #define MXC_F_GCR_PCLKDIS1_SPI_POS                     16 /**< PCLKDIS1_SPI Position */
 #define MXC_F_GCR_PCLKDIS1_SPI                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SPI_POS)) /**< PCLKDIS1_SPI Mask */
 
+#define MXC_F_GCR_PCLKDIS1_DMA1_POS                    21 /**< PCLKDIS1_DMA1 Position */
+#define MXC_F_GCR_PCLKDIS1_DMA1                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_DMA1_POS)) /**< PCLKDIS1_DMA1 Mask */
+
 #define MXC_F_GCR_PCLKDIS1_WDT_POS                     27 /**< PCLKDIS1_WDT Position */
 #define MXC_F_GCR_PCLKDIS1_WDT                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_WDT_POS)) /**< PCLKDIS1_WDT Mask */
 

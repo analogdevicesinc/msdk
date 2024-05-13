@@ -715,6 +715,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="TRNG">
+            <name>DMA1</name>
+            <description>DMA1 Clock Disable</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="TRNG">
             <name>WDT</name>
             <description>WDT Clock Disable</description>
             <bitOffset>27</bitOffset>
