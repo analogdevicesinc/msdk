@@ -249,8 +249,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_HE</name>
-            <description>Enable Interrupt For TX FIFO has half empty</description>
+            <name>TX_THD</name>
+            <description>Enable Interrupt for when TX FIFO meets or passes the threshold level.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -304,8 +304,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_HE</name>
-            <description>Flag for interrupt when TX FIFO is half empty</description>
+            <name>TX_THD</name>
+            <description>Flag for interrupt when TX FIFO meets or passes the threshold level.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
