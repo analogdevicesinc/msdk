@@ -66,8 +66,6 @@ jobs:
           ref: ble-workflow-update
           fetch-depth: 0
       
-      - name: printenv
-        run: printenv
       - name: Check MAX32655
         id: MAX32655
         env:
