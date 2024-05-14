@@ -74,14 +74,15 @@ int MXC_UART_RevB_Read(mxc_uart_revb_regs_t *uart, uint8_t *buffer, int *len);
 int MXC_UART_RevB_Write(mxc_uart_revb_regs_t *uart, const uint8_t *byte, int *len);
 unsigned int MXC_UART_RevB_ReadRXFIFO(mxc_uart_revb_regs_t *uart, unsigned char *bytes,
                                       unsigned int len);
-int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                unsigned char *bytes, unsigned int len,
                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetRXFIFOAvailable(mxc_uart_revb_regs_t *uart);
 unsigned int MXC_UART_RevB_WriteTXFIFO(mxc_uart_revb_regs_t *uart, const unsigned char *bytes,
                                        unsigned int len);
-int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, const unsigned char *bytes,
-                                 unsigned int len, mxc_uart_dma_complete_cb_t callback,
-                                 mxc_dma_config_t config);
+int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                 const unsigned char *bytes, unsigned int len,
+                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetTXFIFOAvailable(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ClearRXFIFO(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ClearTXFIFO(mxc_uart_revb_regs_t *uart);
@@ -97,7 +98,7 @@ unsigned int MXC_UART_RevB_GetStatus(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_Busy(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_Transaction(mxc_uart_revb_req_t *req);
 int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req);
-int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req);
+int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma);
 int MXC_UART_RevB_AbortAsync(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_AsyncStop(mxc_uart_revb_regs_t *uart);

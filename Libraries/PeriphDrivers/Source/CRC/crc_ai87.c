@@ -36,7 +36,7 @@ int MXC_CRC_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CRC);
 #endif
 
-    MXC_CRC_RevA_Init((mxc_crc_reva_regs_t *)MXC_CRC);
+    MXC_CRC_RevA_Init((mxc_crc_reva_regs_t *)MXC_CRC, MXC_DMA);
 
     return E_NO_ERROR;
 }
