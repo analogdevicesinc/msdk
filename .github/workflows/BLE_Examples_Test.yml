@@ -28,8 +28,6 @@ concurrency:
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  #push:
-  #  branches: [ "main" ]
   pull_request:
     branches: ["main"]
     types: [opened, reopened, synchronize, ready_for_review] # When to run the workflow on PR
@@ -48,55 +46,29 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
 env:
   LOCK_MAX32655_B2: false
   LOCK_MAX32655_B1: false
   LOCK_MAX32665_B1: false
-#----------------------------------------------------------------------------------------------
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  RESULTS_DIR: "ble_test_results"
+  
 jobs:
   BLE_Tests:
     # The type of runner that the job will run on
     runs-on: [self-hosted]
     if: github.event.pull_request.draft == false
+    
 
-    #----------------------------------------------------------------------------------------------
-    # De inits submodules and cleans repo
     steps:
-      # Clean and remove any local modifications
-      - name: Clean
-        continue-on-error: true
-        run: |
-          # Remove local modifications
-          set +e
-
-          # Attempt to clean the repo
-          git scorch
-          git clean -ffdx
-          git reset --hard
-          retval=$?
-
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
-
-          set -e
-          # give launcher script permission to execute
-          cd .github/workflows/scripts
-          chmod +x test_launcher.sh
-          chmod +x mass_erase_board.sh
-      #----------------------------------------------------------------------------------------------
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         with:
           submodules: false
+          repository: analogdevicesinc/msdk
+          ref: ble-workflow-update
           fetch-depth: 0
-
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| MAX32655 |----------------------------------------------------
-      #----------------------------------------------------------------------------------------------
+      
+    
       - name: Check MAX32655
         id: MAX32655
         env:
@@ -179,14 +151,14 @@ jobs:
               Libraries/PeriphDrivers/Source/UART/uart_common.c
               Libraries/PeriphDrivers/Source/UART/uart_common.h
               Libraries/PeriphDrivers/Source/UART/uart_me17.c
-              Libraries/PeriphDrivers/Source/UART/uart_revb_regs.h
-              Libraries/PeriphDrivers/Source/UART/uart_revb.c
-              Libraries/PeriphDrivers/Source/UART/uart_revb.h
-              # WakeUp Timer
-              Libraries/PeriphDrivers/Source/WUT/wut_me17.c
-              Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h
-              Libraries/PeriphDrivers/Source/WUT/wut_reva.c
-              Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h )
+            Libraries/PeriphDrivers/Source/UART/uart_revb_regs.h
+            Libraries/PeriphDrivers/Source/UART/uart_revb.c
+            Libraries/PeriphDrivers/Source/UART/uart_revb.h
+            # WakeUp Timer
+            Libraries/PeriphDrivers/Source/WUT/wut_me17.c
+            Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h
+            Libraries/PeriphDrivers/Source/WUT/wut_reva.c
+            Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h )
           # Directories to ignore
           declare -a ignored=(
               Libraries/Cordio/docs
@@ -271,13 +243,9 @@ jobs:
           else
             echo "no tests enabled, NOT locking anything at this step"
           fi
-
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| MAX32665 |----------------------------------------------------
-      #----------------------------------------------------------------------------------------------
-
-      # Checks if changes have been made to require a test on ME14
+    
       - name: Check MAX32665
+        if: false
         id: MAX32665
         env:
           MAX32665_BLE_FILES_CHANGED: false
@@ -451,12 +419,8 @@ jobs:
             echo "no tests enabled, NOT locking anything at this step"
           fi
 
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| MAX32690 |----------------------------------------------------
-      #----------------------------------------------------------------------------------------------
-
-      # Checks if changes have been made to require a test on ME14
       - name: Check MAX32690
+        if: false
         id: MAX32690
         env:
           MAX32690_BLE_FILES_CHANGED: false
@@ -629,354 +593,155 @@ jobs:
             echo "no tests enabled, NOT locking anything at this step"
           fi
 
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| Lock all required boards at once |-----------------------------
-      #----------------------------------------------------------------------------------------------
       - name: Lock Boards
-        if: env.LOCK_MAX32655_B1 == 'true' || env.LOCK_MAX32655_B2 == 'true' || env.LOCK_MAX32665_B1 == 'true' || env.LOCK_MAX32690_B1 == 'true'
-        id: lock_boards
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@main
+        with:
+          boards: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+            max32690_board_w1
+          lock: true
+          timeout: 3600 # Attempt to lock for an hour
+
+      - name: Init Tests
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share_multiboard.py -l -t 3600 -b max32655_board1 -b max32655_board2 -b max32665_board1 -b max32690_board_w1
-     
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| Erase all required boards at once |-----------------------------
-      #----------------------------------------------------------------------------------------------
-      - name: Erase Boards
-        if: steps.lock_boards.outcome == 'success'
-        id: erase_boards
-        run: |
-          # start with boards in known state
-          cd .github/workflows/scripts
-          echo "Erasing Main MAX32655 B1"
-          ./mass_erase_board.sh max32655 max32655_board1
-          echo "Erasing Main MAX32655 B2"
-          ./mass_erase_board.sh max32655 max32655_board2
-          echo "Erasing Main MAX32665 B1"
-          ./mass_erase_board.sh max32665 max32665_board1
-          echo "Erasing Main MAX32690"
-          ./mass_erase_board.sh max32690 max32690_board_w1
-      #----------------------------------------------------------------------------------------------
+          
+          #set advertising names
+          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_dats/dats_main.c
+          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_datc/datc_main.c
+          sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_dats/dats_main.c
+          sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_datc/datc_main.c
 
-      #----------------------------------------------------------------------------------------------
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| Test all required boards at once |-----------------------------
-      #----------------------------------------------------------------------------------------------
-           
-      - name: Test MAX32655 #name used for display purposes on github webpage
-        if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32655_B2 == 'true'
-        id: Test_MAX32655 #id used to reference this step in other parts of the yml
-        run: |
-          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])")
-          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
-          examples_to_test=(${MAX32655_EXAMPLES_TO_TEST[@]})
-          echo
-          echo
-          echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32655_RUN_ALL_TEST        : $MAX32655_RUN_ALL_TEST"
-          echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
-          echo "MAX32655_OTAS_CONNECTED_TEST  : $MAX32655_OTAS_CONNECTED_TEST"
-          echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
-          echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
+          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otas/dats_main.c
+          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otac/datc_main.c
+          sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_otas/dats_main.c
+          sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
 
-          cd .github/workflows/scripts
+      - name: Erase Boards DATS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@main
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+            max32690_board_w1
 
-          if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
-              echo "Testing all examples"
-              set +e
-              ./test_launcher.sh max32655 $dut_uart $dut_serial "all"
-              let "testResult=$?"
-              if [ "$testResult" -ne "0" ]; then
-                    # update failed test count
-                    let "numOfFailedTests+=$testResult"
-              fi
-              set -e
-          else
-              if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
-                  #------non connected tests---------
-                  for example in "${examples_to_test[@]}"; do
-                      # launch single tests
-                      echo "Running $example test on MAX32655"
-                      set +e
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial $example
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| $example"
-                      fi
-                      set -e
-                  done
+          has_two_flash_banks: |
+            true
+            true
+            true
+            true
 
-                  #------connected tests---------
-                  if [[ $MAX32655_DATS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32655_DATS_CONNECTED_TEST"
-                      set +e
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial "dats"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed_test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32655 Dats/c"
-                      fi
-                      set -e
+      - name: Flash DATS 655
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@main
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+  
+          project: |
+            BLE_dats
+            BLE_datc
+            
+          suppress_output: true
+          
+          build: true
+          distclean: true
 
-                  fi
-                  #------connected tests---------
-                  if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32655_OTAS_CONNECTED_TEST"
-                      set +e
-                      #call test here
-                      #***************** uncomment actual test here *************
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial "ota"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32655 OTAS/C"
-                      fi
-                      set -e
-                  fi
-              else
-                  echo "Skipping all tests"
-              fi
-            echo "=============================================================================="
-            echo "=============================================================================="
+      - name: DATS 655
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
+        run: | 
+          DATS_TEST_DIR=$TEST_DIR/dats     
+          DATS_BOARD_655=max32655_board1
+          DATC_BOARD_655=max32655_board2
+          
+          (cd $DATS_TEST_DIR && ls && python3 datsc_connected.py $DATS_BOARD_655 $DATC_BOARD_655)
 
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
+
+      - name: Erase Boards OTAS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@main
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+            max32690_board_w1
+      
+      - name: Flash OTAS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@main
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+  
+          project: |
+            BLE_otas
+            BLE_otac
+            BLE_otac
+          suppress_output: true
+          
+          build: true
+          distclean: true
+
+      - name: OTAS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        run: | 
+          OTAS_TEST_DIR=$TEST_DIR/otas
+          OTAS_BOARD_655=max32655_board1
+          OTAC_BOARD_655=max32655_board2
+          OTAC_BOARD_665=max32665_board1
+          OTAC_BOARD_690=max32690_board_w1
+
+
+          if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then
+            (cd $OTAS_TEST_DIR && python3 otas_connected.py $OTAS_BOARD_655 $OTAC_BOARD_655)
           fi
 
-          exit $numOfFailedTests
-      #----------------------------------------------------------------------------------------------
-      - name: Test MAX32665 #name used for display purposes on github webpage
-        if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32665_B1 == 'true'
-        id: Test_MAX32665 #id used to reference this step in other parts of the yml
+
+          # disable for now
+          # (cd $OTAS_TEST_DIR && python3 otas_connected.py $OTAS_BOARD_655 $OTAC_BOARD_665)
+          # (cd $OTAS_TEST_DIR && python3 otas_connected.py $OTAS_BOARD_690 $OTAC_BOARD_655)
+      
+      - name: Result Consolidation
+        if: failure()
         run: |
-          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])")
-          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])")
-          examples_to_test=(${MAX32665_EXAMPLES_TO_TEST[@]})
-          echo
-          echo
-          echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32665_RUN_ALL_TEST        : $MAX32665_RUN_ALL_TEST"
-          echo "MAX32665_DATS_CONNECTED_TEST : $MAX32665_DATS_CONNECTED_TEST "
-          echo "MAX32665_OTAS_CONNECTED_TEST  : $MAX32665_OTAS_CONNECTED_TEST"
-          echo "MAX32665_BLE_FILES_CHANGED   : $MAX32665_BLE_FILES_CHANGED "
-          echo "LOCK_MAX32665_B1             : $LOCK_MAX32665_B1 "
 
-          cd .github/workflows/scripts
-
-          if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
-              echo "Testing all examples"
-               set +e
-               ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
-               let "testResult=$?"
-               if [ "$testResult" -ne "0" ]; then
-                    # update failed test count
-                    let "numOfFailedTests+=$testResult"
-                fi
-                set -e
-          else
-              if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
-                  #------non connected tests---------
-                  for example in "${examples_to_test[@]}"; do
-                      # launch single tests
-                      echo "Running $example test on MAX32665"
-                      set +e
-                      ./test_launcher.sh max32665 $dut_uart $dut_serial $example
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| $example"
-                      fi
-                      set -e
-                  done
-
-                  #------connected tests---------
-                  if [[ $MAX32665_DATS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32665_DATS_CONNECTED_TEST"
-                      set +e
-                      ./test_launcher.sh max32665 $dut_uart $dut_serial "dats"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed_test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32665 Dats/c"
-                      fi
-                      set -e
-
-                  fi
-                  #------connected tests---------
-                  if [[ $MAX32665_OTAS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32665_OTAS_CONNECTED_TEST"
-                      set +e
-                      #call test here
-                      #***************** uncomment actual test here *************
-                      ./test_launcher.sh max32665 $dut_uart $dut_serial "ota"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32665 OTAS/C"
-                      fi
-                      set -e
-                  fi
-              else
-                  echo "Skipping all tests"
-              fi
-            echo "=============================================================================="
-            echo "=============================================================================="
-
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
-          fi
-          exit $numOfFailedTests
-      #----------------------------------------------------------------------------------------------
-      - name: Test MAX32690 #name used for display purposes on github webpage
-        if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32690_B1 == 'true'
-        id: Test_MAX32690 #id used to reference this step in other parts of the yml
-        run: |
-          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])")
-          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])")
-          examples_to_test=(${MAX32690_EXAMPLES_TO_TEST[@]})
-          echo
-          echo
-          echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32690_RUN_ALL_TEST        : $MAX32690_RUN_ALL_TEST"
-          echo "MAX32690_DATS_CONNECTED_TEST : $MAX32690_DATS_CONNECTED_TEST "
-          echo "MAX32690_OTAS_CONNECTED_TEST  : $MAX32690_OTAS_CONNECTED_TEST"
-          echo "MAX32690_BLE_FILES_CHANGED   : $MAX32690_BLE_FILES_CHANGED "
-          echo "LOCK_MAX32690_B1             : $LOCK_MAX32690_B1 "
-
-          cd .github/workflows/scripts
-
-          if [[ $MAX32690_RUN_ALL_TEST == 'true' ]]; then
-              echo "Testing all examples"
-              set +e
-              ./test_launcher.sh max32690 $dut_uart $dut_serial "all"
-              let "testResult=$?"
-              if [ "$testResult" -ne "0" ]; then
-                    # update failed test count
-                    let "numOfFailedTests+=$testResult"
-              fi
-              set -e
-          else
-              if [[ $MAX32690_BLE_FILES_CHANGED == 'true' ]]; then
-                  #------non connected tests---------
-                  for example in "${examples_to_test[@]}"; do
-                      # launch single tests
-                      echo "Running $example test on MAX32690"
-                      set +e
-                      ./test_launcher.sh max32690 $dut_uart $dut_serial $example
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| $example"
-                      fi
-                      set -e
-                  done
-
-                  #------connected tests---------
-                  if [[ $MAX32690_DATS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32690_DATS_CONNECTED_TEST"
-                      set +e
-                      ./test_launcher.sh max32690 $dut_uart $dut_serial "dats"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed_test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32690 Dats/c"
-                      fi
-                      set -e
-
-                  fi
-                  #------connected tests---------
-                  if [[ $MAX32690_OTAS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32690_OTAS_CONNECTED_TEST"
-                      set +e
-                      #call test here
-                      #***************** uncomment actual test here *************
-                      ./test_launcher.sh max32690 $dut_uart $dut_serial "ota"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32690 OTAS/C"
-                      fi
-                      set -e
-                  fi
-              else
-                  echo "Skipping all tests"
-              fi
-            echo "=============================================================================="
-            echo "=============================================================================="
-
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
-          fi
-
-          exit $numOfFailedTests
-      #----------------------------------------------------------------------------------------------
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| Erase & Unlock all required boards at once |-----------------------------
-      #----------------------------------------------------------------------------------------------
-      - name: Clean up
-        if: ${{ always() && steps.lock_boards.outcome == 'success'}}
-        run: |
-          git clean -ffdx
-          git reset --hard
-          # leave board in known state if workflow should end early
-          cd .github/workflows/scripts
-          echo "Erasing Main MAX32655 B1"
-          ./mass_erase_board.sh max32655 max32655_board1
-          echo "Erasing Main MAX32655 B2"
-          ./mass_erase_board.sh max32655 max32655_board2
-          echo "Erasing Main MAX32665 B1"
-          ./mass_erase_board.sh max32665 max32665_board1
-          echo "Erasing Main MAX32690"
-          ./mass_erase_board.sh max32690 max32690_board_w1
-
-
+          set +e
+          rm -rf $RESULTS_DIR
+          mkdir $RESULTS_DIR
+          mv $TEST_DIR/dats/dats_out $RESULTS_DIR
+          mv $TEST_DIR/otas/otas_out $RESULTS_DIR
+          set -e
+          
+         
       - name: Unlock Boards
-        if: ${{ always() && steps.lock_boards.outcome == 'success'}}
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share_multiboard.py -b max32655_board1 -b max32655_board2 -b max32665_board1 -b max32690_board_w1
+        if: always()
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@main
+        with:
+          boards: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+            max32690_board_w1
+          lock: false
+
       #----------------------------------------------------------------------------------------------
       # Save test reports
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
             name: failure-report
-            path: .github/workflows/ci-tests/Examples_tests/results/
+            path: ${{ env.RESULTS_DIR }}
+
+      - name: Clean up
+        if: always()
+        run: |
+          git clean -ffdx
+          git reset --hard      
+            
