@@ -278,7 +278,7 @@ ifeq "$(MSECURITY_MODE)" "SECURE"
 # https://developer.arm.com/documentation/ecm0359818/latest
 PROJ_CFLAGS += -mcmse
 
-PROJ_AFLAGS += -DIS_SECURE_ENVRIONMENT
+PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT
 
 # Tell the linker we are building a secure project.  This defines the "SECURE_LINK" symbol which the
 # linker uses to set the secure FLASH/SRAM memory address ranges.
