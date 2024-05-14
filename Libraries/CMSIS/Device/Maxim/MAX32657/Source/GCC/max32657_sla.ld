@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 MEMORY {
-    FLASH         (rx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x11000000 : 0x01000000, LENGTH = 0x00100000 /* 1MB Flash */
+    FLASH         (rx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x11000000 : 0x01000000, LENGTH = 0x00080000 /* 1MB Flash */
     FLASH_INFO_S  (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
     SRAM         (rwx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x30000000 : 0x20000000, LENGTH = 0x00040000 /* 256KB SRAM */
 }
@@ -33,6 +33,8 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
+        . = ALIGN(1024);      /* Authentication header is 1024 byte aligned. */
+        KEEP(*(.sla_header)) /* authentication header */
         *(.text*)    /* Program code */
         *(.rodata*)  /* read-only data: "const" */
 
@@ -74,7 +76,7 @@ SECTIONS {
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
-
+    
     .flash_code :
     {
         . = ALIGN(16);
@@ -181,4 +183,32 @@ SECTIONS {
 
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
+
+    /* End of flash image. */
+    /* This segment is required during the signing operation to 
+     * enforce any padding in previous FLASH segments.
+     * When using objdump -R .sig, the .sig section is excluded, but
+     * also any padding from the previous section is ignored.
+     */
+    .end_of_flash_image :
+    {
+	FILL(0xFF)
+        KEEP(*(.end_of_flash_image))
+	/* End marker. */
+        LONG(0x55AA55AA);
+	_application_end = .;
+    } > FLASH
+
+    /* ECDSA256 Signature Section. */
+    .sig :
+    {
+    	/* End of flash image. Beginning of signature. */
+        KEEP(*(.sig))
+	/* Placeholder value to be replaced after signature operation. */
+        LONG(0x55502A2A);
+        LONG(0x49532054);
+        LONG(0x45482047);
+        LONG(0x2A2A4552);
+    } > FLASH   
+
 }
