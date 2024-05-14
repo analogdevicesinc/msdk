@@ -134,7 +134,7 @@ void bbBleRegisterOp(uint8_t opType, bbBleExecOpFn_t execOpCback, bbBleExecOpFn_
 /*************************************************************************************************/
 static inline void bbBleClrIfs(void)
 {
-  /* PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_CLR, .ifsTime = 0, .pIfsChan = NULL }; */
+  /* PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_CLR, .ifsTime = LL_BLE_TIFS_US, .pIfsChan = NULL }; */
   PalBbBleOpParam_t opParams = { 0 };
   PalBbBleSetOpParams(&opParams);
 }
@@ -148,7 +148,7 @@ static inline void bbBleClrIfs(void)
 /*************************************************************************************************/
 static inline void bbBleSetTifs(void)
 {
-  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS, .ifsTime = 0, .pIfsChan = NULL };
+  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS, .ifsTime = LL_BLE_TIFS_US, .pIfsChan = NULL };
   PalBbBleSetOpParams(&opParams);
 }
 
@@ -164,7 +164,7 @@ static inline void bbBleSetTifs(void)
 /*************************************************************************************************/
 static inline void bbBleSetAbsIfs(uint32_t ifsTime, PalBbBleChan_t *pIfsChan)
 {
-  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_SAME_ABS, .ifsTime = ifsTime, .pIfsChan = pIfsChan };
+  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_SAME_ABS, .ifsTime = LL_BLE_TIFS_US, .pIfsChan = pIfsChan };
   PalBbBleSetOpParams(&opParams);
 }
 
