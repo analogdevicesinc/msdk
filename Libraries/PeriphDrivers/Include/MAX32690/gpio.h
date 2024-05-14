@@ -191,6 +191,14 @@ typedef enum {
     MXC_GPIO_INT_BOTH /**< Interrupt triggers on either edge */
 } mxc_gpio_int_pol_t;
 
+/**
+ * @brief   Enumeration type for the pin configuration lock mechanism.
+ */
+typedef enum {
+    MXC_GPIO_CONFIG_UNLOCKED = 0, /**< Allow changing pins' configuration. */
+    MXC_GPIO_CONFIG_LOCKED, /**< Ignore changes to a pin's configuration. */
+} mxc_gpio_config_lock_t;
+
 /* **** Function Prototypes **** */
 
 /**
@@ -369,6 +377,20 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
  * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
  */
 int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t drvstr, uint32_t mask);
+
+/**
+ * @brief      Enables/Disables the lock on all pins' configurations.  If 
+ *             locked, any changes to a pin's configuration made through the
+ *             MXC_GPIO_Config function will be ignored.
+ *
+ * @param      locked  Determines if changes will be allowed. */
+void MXC_GPIO_SetConfigLock(mxc_gpio_config_lock_t locked);
+
+/**
+ * @brief      Reads the current lock state on pin configuration.
+ *
+ * @returns    The lock state. */
+mxc_gpio_config_lock_t MXC_GPIO_GetConfigLock(void);
 
 /**@} end of group gpio */
 
