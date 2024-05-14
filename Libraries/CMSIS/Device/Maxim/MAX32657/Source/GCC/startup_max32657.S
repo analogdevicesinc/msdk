@@ -154,7 +154,7 @@ Reset_Handler:
 
 #if IS_SECURE_ENVIRONMENT
     /* Set limit on Main and Process SP */
-    ldr r0, =__STACK_LIMIT
+    ldr r0, =__StackLimit
     msr msplim, r0
     msr psplim, r0
 
