@@ -260,7 +260,7 @@ void advRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp
     switch (advState) {
         case ADV_SEND_SCAN_RSP:
             // DEBUG_PRINTF("--> Scan Request Received\n");
-            DEBUG_PRINTF('x');
+            DEBUG_PRINTF("x");
             advState = ADV_LISTEN_CONN_IND;
             PalBbBleTxTifsData(&scanRspBuf, 1);
             break;

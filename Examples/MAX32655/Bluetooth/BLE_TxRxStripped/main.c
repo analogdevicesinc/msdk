@@ -75,7 +75,8 @@
 #define TX_POWER            0
 #define ADV_INTERVAL_US     60000U
 #define SCAN_INTERVAL_US    160000U
-#define CHANNEL             37
+#define SCAN_WINDOW_US      150000U
+#define CHANNEL             0
 #define ADV_ADDR            0x102030405060U
 #define SCAN_ADDR           0x010203040506U
 
@@ -83,7 +84,7 @@
 #define SCAN_RSP_PLD_LEN    0x1FU
 
 /* Connection Parameters */
-#define ACCESS_ADDRESS      0x94826E8EU
+#define ACCESS_ADDRESS      0x71764129U
 #define CRC_INIT            0x555555U
 #define WIN_SIZE            0xFFU
 #define WIN_OFFSET          0x100U
@@ -111,6 +112,10 @@
 *******************************************************************************/
 volatile uint8_t procStatus;
 volatile bool_t procDone;
+volatile bool_t tstRxDone;
+volatile uint8_t tstRxStatus;
+volatile bool_t tstTxDone;
+volatile uint8_t tstTxStatus;
 uint8_t bbRxData[MAX_RX_LEN];
 static uint8_t bbTxData[] = {
     0xFF, 0xF9, 0xF8, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x7F, 0xCA, 0xAE, 0x66, 0x88, 0x9E, 0x1D,
@@ -138,8 +143,21 @@ void connRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestam
 void connTxCallback(uint8_t status);
 void setConnTxDataParams(void);
 void setConnRxDataParams(uint16_t connInterval);
+void testScan(void);
+void testTxCallback(uint8_t status);
+void testRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions);
 
 /******************************************************************************/
+void testTxCallback(uint8_t status) {
+    tstTxStatus = status;
+    tstTxDone = TRUE;
+}
+
+void testRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions) {
+    tstRxStatus = status;
+    tstRxDone = TRUE;
+}
+
 void connTxCallback(uint8_t status)
 {
     if (status != BB_STATUS_SUCCESS)
@@ -169,9 +187,62 @@ void connRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestam
 }
 
 /******************************************************************************/
+
+void testScan(void) {
+    uint8_t tstTxPktData[14] = {
+        0
+    };
+    uint8_t tstRxBuf[14];
+    PalBbBleChan_t chanParams = {
+        .opType = 0,
+        .chanIdx = CHANNEL,
+        .txPower = TX_POWER,
+        .accAddr = ACCESS_ADDRESS,
+        .crcInit = CRC_INIT,
+        .txPhy = BB_PHY,
+        .rxPhy = BB_PHY,
+        .initTxPhyOptions = BB_PHY_OPTS,
+        .tifsTxPhyOptions = BB_PHY_OPTS,
+        .peerTxStableModIdx = FALSE,
+        .peerRxStableModIdx = FALSE
+    };
+    PalBbBleSetChannelParam(&chanParams);
+    uint32_t dueTime;
+    PalBbBleOpParam_t opParams = { 0 };
+    PalBbBleSetOpParams(&opParams);
+    tstRxDone = FALSE;
+    do {
+        PalBbGetTimestamp(&dueTime);
+        dueTime += DUE_OFFSET;
+        PalBbBleDataParam_t dataParams = {
+            .txCback = testTxCallback,
+            .rxCback = testRxCallback,
+            .dueUsec = dueTime,
+            .rxTimeoutUsec = 100000
+        };
+        PalBbBleSetDataParams(&dataParams);
+        PalBbBleRxData(tstRxBuf, 14);
+        while (!tstRxDone) {}
+    } while (tstRxStatus != 0);
+    opParams.ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS;
+    
+    PalBbBleSetOpParams(&opParams);
+    PalBbBleTxBufDesc_t testTxPkt = {
+        .len = 14,
+        .pBuf = tstTxPktData
+    };
+    while (1) {
+        tstRxDone = FALSE;
+        tstTxDone = FALSE;
+        PalBbBleTxTifsData(&testTxPkt, 1);
+        while (!tstTxDone) {}
+        PalBbBleRxTifsData(tstRxBuf, 14);
+        while (!tstRxDone) {}
+    }
+}
 void enterScanLoop(void)
 {
-    uint32_t scanInterval = SCAN_INTERVAL_US;
+    uint32_t scanTime = SCAN_WINDOW_US;
     uint32_t connInterval_uS = (CONN_INTERVAL*10)/8; // Multiply by 1.25 to convert to uS.
     uint8_t advAddress[6];
     uint8_t scanAddress[6];
@@ -216,9 +287,15 @@ void enterScanLoop(void)
 
     initScanner(advAddress, scanAddress, &chanParams, &connParams);
     bool_t connEstablished;
+    uint32_t now;
+    uint32_t intervalEnd;
     do {
-        connEstablished = startScanning(scanInterval);
-        DEBUG_PRINTF("%u", connEstablished);
+        PalBbGetTimestamp(&now);
+        intervalEnd = now + SCAN_INTERVAL_US;
+        connEstablished = startScanning(scanTime);
+        printf("%u\n", connEstablished);
+        PalBbGetTimestamp(&now);
+        while (now < intervalEnd) { PalBbGetTimestamp(&now); }
     } while (!connEstablished);
     // while (!startScanning(scanInterval)) {}
     while (1) {
@@ -351,7 +428,8 @@ int main(void)
     PalBbBleEnable();
 
 #if (ROLE == SCANNING_ROLE)
-    enterScanLoop();
+    testScan();
+    // enterScanLoop();
 #endif
 #if (ROLE == ADVERTISING_ROLE)
     enterAdvLoop();

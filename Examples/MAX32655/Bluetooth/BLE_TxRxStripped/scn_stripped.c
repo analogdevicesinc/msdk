@@ -48,7 +48,7 @@
 
 #include "pal_bb.h"
 #include "pal_bb_ble.h"
-
+#include "wsf_cs.h"
 #include "pal_radio.h"
 
 #include "scn_stripped.h"
@@ -90,7 +90,7 @@ enum {
   Global Variables
 *******************************************************************************/
 uint8_t scanRxData[MAX_RX_LEN];
-uint8_t scanState;
+volatile uint8_t scanState;
 
 
 volatile bool_t scanEvtFinished;
@@ -259,7 +259,7 @@ void initConnData(uint8_t *pBuf, ConnDataParams_t *pConn) {
  *  \return     TRUE if a connection was established, else FALSE.
  */
 /*************************************************************************************************/
-bool_t startScanning(uint32_t scanInterval)
+bool_t startScanning(uint32_t scanTime)
 {
     uint32_t dueTime;
     PalBbBleOpParam_t opParams = { 0 };
@@ -273,7 +273,7 @@ bool_t startScanning(uint32_t scanInterval)
         .txCback = scanTxCallback,
         .rxCback = scanRxCallback,
         .dueUsec = dueTime,
-        .rxTimeoutUsec = scanInterval
+        .rxTimeoutUsec = scanTime
     };
     // printf("DUETIME: %lu", dueTime);
     PalBbBleSetDataParams(&dataParams);
@@ -281,6 +281,7 @@ bool_t startScanning(uint32_t scanInterval)
     while (!scanEvtFinished) {}
     if (scanEvtStatus != BB_STATUS_SUCCESS)
     {
+        
         return FALSE;
     }
     return TRUE;
@@ -289,6 +290,7 @@ bool_t startScanning(uint32_t scanInterval)
 /*************************************************************************************************/
 void scanRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions)
 {
+
     if (status != BB_STATUS_SUCCESS)
     {
         // DEBUG_PRINTF("** RX FAILED WITH STATUS %i **\n", status);
@@ -298,28 +300,29 @@ void scanRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestam
         scanEvtFinished = TRUE;
         return;
     }
+    
     uint32_t dueTime;
     switch (scanState) {
         case SCN_SEND_SCAN_REQ:
             scanState = SCN_LISTEN_SCAN_RSP;
-            PalBbGetTimestamp(&dueTime);
-            dueTime += 300;
-            // PalBbBleOpParam_t opParams = {
-            //     .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS,
-            //     .ifsTime = 0,
-            //     .pIfsChan = NULL
-            // };
-            PalBbBleDataParam_t dataParams = {
-                .txCback = scanTxCallback,
-                .rxCback = scanRxCallback,
-                .dueUsec = dueTime,
-                .rxTimeoutUsec = 10000
+            // PalBbGetTimestamp(&dueTime);
+            // dueTime += 300;
+            PalBbBleOpParam_t opParams = {
+                .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS,
+                .ifsTime = 0,
+                .pIfsChan = NULL
             };
-            // PalBbBleSetOpParams(&opParams);
-            PalBbBleSetDataParams(&dataParams);
+            // PalBbBleDataParam_t dataParams = {
+            //     .txCback = scanTxCallback,
+            //     .rxCback = scanRxCallback,
+            //     .dueUsec = dueTime,
+            //     .rxTimeoutUsec = 10000
+            // };
+            PalBbBleSetOpParams(&opParams);
+            // PalBbBleSetDataParams(&dataParams);
             // DEBUG_PRINTF("--> Advertising Indication Received\n");
-            // PalBbBleTxTifsData(&scanReqBuf, 1);
-            PalBbBleTxData(&scanReqBuf, 1);
+            PalBbBleTxTifsData(&scanReqBuf, 1);
+            // PalBbBleTxData(&scanReqBuf, 1);
             break;
         case SCN_SEND_CONN_IND:
             // DEBUG_PRINTF("--> Scan Response Received\n");
@@ -330,6 +333,7 @@ void scanRxCallback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestam
             DEBUG_PRINTF("STATE ERROR. RESTARTING.");
             scanState = SCN_LISTEN_ADV_IND;
     }
+    
 }
 
 /*************************************************************************************************/
