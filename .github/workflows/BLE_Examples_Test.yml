@@ -29,8 +29,6 @@ concurrency:
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
-    branches: ["main"]
-
     paths-ignore:
       # Any files in a docs directory anywhere in the repository.
       - "**/docs/**"
