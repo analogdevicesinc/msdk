@@ -40,8 +40,8 @@ extern "C" {
 enum PalLedReserved_id
 {
   /* System signals. */
-  PAL_LED_ID_CPU_ACTIVE     = 0,  /*!< CPU active LED ID. */
-  PAL_LED_ID_ERROR          = 1,  /*!< Error LED ID. */
+  PAL_LED_ID_ERROR          = 0,  /*!< Error LED ID. */
+  PAL_LED_ID_CPU_ACTIVE     = 1,  /*!< CPU active LED ID. */
 };
 
 /**************************************************************************************************

@@ -75,6 +75,8 @@ static struct {
 void PalLedInit(void)
 {
   LED_Init();
+  PalLedOff(0);
+  PalLedOff(1);
   palLedCb.init = TRUE;
 }
 
@@ -91,7 +93,6 @@ void PalLedDeInit(void)
   PalLedOff(1);
   palLedCb.init = FALSE;
 }
-
 
 /*************************************************************************************************/
 /*!
