@@ -33,19 +33,10 @@
 
 #include "pal_led.h"
 #include "gpio.h"
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
-
-#ifndef PAL_BB_LED_ENABLED
-#define PAL_BB_LED_ENABLED    1
-#endif
-
-#define PAL_BB_LED_TX         0x81
-#define PAL_BB_LED_RX         0x82
-#define PAL_BB_LED_RX_OK      0x84
-#define PAL_BB_LED_RX_TO      0x88
-#define PAL_BB_LED_RX_CRC     0x90
 
 /* BSP LED Driver */
 extern const unsigned int num_leds;
@@ -60,6 +51,9 @@ extern const mxc_gpio_cfg_t led_pin[];
 
 /*! \brief      Control block. */
 static struct {
+  /* Init variable allows us to disable LED function in the Cordio library without altering the
+   * functionality of the rest of the system. 
+   */
   bool_t init;
 } palLedCb;
 
@@ -67,46 +61,9 @@ static struct {
   Functions: Initialization
 **************************************************************************************************/
 
-
-
 /**************************************************************************************************
   Functions: Status and Control
 **************************************************************************************************/
-
-
-/*************************************************************************************************/
-/*!
- *  \brief      Set LED on, make sure we have enough LEDs.
- *
- *  \param      ledId           LED ID.
- *
- *  \return     None.
- */
-/*************************************************************************************************/
-static void palLedOn(uint8_t led)
-{
-  /* Make sure we have enough LEDs */
-  if(num_leds > led) {
-    LED_On(led);
-  }
-}
-
-/*************************************************************************************************/
-/*!
- *  \brief      Set LED off, make sure we have enough LEDs.
- *
- *  \param      ledId           LED ID.
- *
- *  \return     None.
- */
-/*************************************************************************************************/
-static void palLedOff(uint8_t led)
-{
-  /* Make sure we have enough LEDs */
-  if(num_leds > led) {
-    LED_Off(led);
-  }
-}
 
 /*************************************************************************************************/
 /*!
@@ -130,8 +87,8 @@ void PalLedInit(void)
 /*************************************************************************************************/
 void PalLedDeInit(void)
 {
-  palLedOff(0);
-  palLedOff(1);
+  PalLedOff(0);
+  PalLedOff(1);
   palLedCb.init = FALSE;
 }
 
@@ -147,37 +104,15 @@ void PalLedDeInit(void)
 /*************************************************************************************************/
 void PalLedOn(uint8_t ledId)
 {
-  if(!palLedCb.init) {
+  if(!palLedCb.init || (ledId > num_leds)) {
     return;
   }
 
-  switch (ledId) {
-    case PAL_LED_ID_CPU_ACTIVE:
-#ifndef __riscv
-      palLedOn(1);
-#else
-      palLedOn(0);    /* D1: red */
-#endif
-      return;
-    case PAL_LED_ID_ERROR:
-      palLedOn(0);
-      return;
-
-    default:
-      break;
-  }
-
-#if (PAL_BB_LED_ENABLED == 1)
-    if(ledId & 0x80){
-      /* Remap the mask for the BB LEDs */
-      int i;
-      for(i = 0; i < 7; i++) {
-        if(ledId & (0x1 << i)) {
-          palLedOn(2+i);
-        }
-      }
-    }
-#endif
+  #if LED_ON == 0
+    led_pin[ledId].port->out_clr = led_pin[ledId].mask;
+  #else
+    led_pin[ledId].port->out_set = led_pin[ledId].mask;
+  #endif
 }
 
 /*************************************************************************************************/
@@ -191,69 +126,13 @@ void PalLedOn(uint8_t ledId)
 /*************************************************************************************************/
 void PalLedOff(uint8_t ledId)
 {
-  if(!palLedCb.init) {
+  if(!palLedCb.init || (ledId > num_leds)) {
     return;
   }
 
-  switch (ledId) {
-    case PAL_LED_ID_CPU_ACTIVE:
-#ifndef __riscv
-      palLedOff(1);
-#else
-      palLedOff(0);   /* D1: red */
-#endif
-      return;
-    case PAL_LED_ID_ERROR:
-      palLedOff(0);
-      return;
-
-    default:
-      break;
-  }
-
-#if (PAL_BB_LED_ENABLED == 1)
-    if(ledId & 0x80){
-      /* Remap the mask for the BB LEDs */
-      int i;
-      for(i = 0; i < 7; i++) {
-        if(ledId & (0x1 << i)) {
-          palLedOff(2+i);
-        }
-      }
-    }
-#endif
-}
-/*************************************************************************************************/
-/*!
- *  \brief      Set LED On Fast as possible, by eliminating overhead.
- *
- *  \param      ledId           LED ID.
- *
- *  \return     None.
- */
-/*************************************************************************************************/
-void PalLedFastOn(uint8_t id)
-{
-    #if LED_ON == 0
-        led_pin[id].port->out_clr = led_pin[id].mask;
-    #else
-        led_pin[id].port->out_set = led_pin[id].mask;
-    #endif
-}
-/*************************************************************************************************/
-/*!
- *  \brief      Set LED Off Fast as possible, by eliminating overhead.
- *
- *  \param      ledId           LED ID.
- *
- *  \return     None.
- */
-/*************************************************************************************************/
-void PalLedFastOff(uint8_t id)
-{
   #if LED_ON == 0
-        led_pin[id].port->out_set = led_pin[id].mask;
-    #else
-        led_pin[id].port->out_clr = led_pin[id].mask;
-    #endif
+    led_pin[ledId].port->out_set = led_pin[ledId].mask;
+  #else
+    led_pin[ledId].port->out_clr = led_pin[ledId].mask;
+  #endif
 }
