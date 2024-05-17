@@ -46,6 +46,9 @@ hardfp_test_list = [
 
 def build_project(project:Path, target, board, maxim_path:Path, distclean=False, extra_args=None) -> Tuple[int, tuple]:
     clean_cmd = "make clean" if not distclean else "make distclean"
+    if "Bluetooth" in project.as_posix() or "BLE" in project.as_posix():
+        # Clean cordio lib for BLE projects
+        clean_cmd += "&& make clean.cordio"
     res = run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     # Test build

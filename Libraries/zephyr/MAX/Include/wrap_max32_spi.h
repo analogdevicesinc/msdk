@@ -75,7 +75,7 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
  */
 #elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
     (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680)
+    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
 
 #define ADI_MAX32_SPI_CTRL_MASTER_MODE MXC_F_SPI_CTRL0_MST_MODE
 

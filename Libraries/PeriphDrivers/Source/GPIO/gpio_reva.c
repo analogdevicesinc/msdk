@@ -121,6 +121,11 @@ uint32_t MXC_GPIO_RevA_GetFlags(mxc_gpio_reva_regs_t *port)
 
 int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     // Configure the vssel
     switch (vssel) {
     case MXC_GPIO_VSSEL_VDDIO:
@@ -140,6 +145,11 @@ int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t *port, mxc_gpio_vssel_t vssel, u
 
 int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     //This is required for new devices going forward.
     port->inen |= mask;
 
@@ -226,6 +236,11 @@ uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port)
 int MXC_GPIO_RevA_SetDriveStrength(mxc_gpio_reva_regs_t *port, mxc_gpio_drvstr_t drvstr,
                                    uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     // Configure the drive strength.
     switch (drvstr) {
     case MXC_GPIO_DRVSTR_0:
