@@ -67,7 +67,6 @@
   Macros
 **************************************************************************************************/
 
-
 #error "Exmaple is deprecated!"
 
 /*! \brief UART TX buffer size */
@@ -86,7 +85,6 @@ static LlRtCfg_t mainLlRtCfg;
 #endif
 
 volatile int wutTrimComplete;
-
 
 /**************************************************************************************************
   Functions
@@ -247,7 +245,6 @@ int main(void)
     APP_TRACE_INFO0("Long distance scanner demo (CODED PHY S=8)");
     APP_TRACE_INFO1("BT_VER=%d", BT_VER);
     APP_TRACE_INFO0("==========================================");
-
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();

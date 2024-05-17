@@ -34,8 +34,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
     tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
-    
-
 
     switch (cfg->clock) {
     case MXC_TMR_EXT_CLK:

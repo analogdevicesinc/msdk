@@ -240,7 +240,6 @@ int main(void)
     APP_TRACE_INFO0("Long range demo (coded-PHY s=8)");
     APP_TRACE_INFO0("===============================");
     APP_TRACE_INFO1("BT_VER: %d", BT_VER);
-    
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();
