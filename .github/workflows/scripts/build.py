@@ -190,7 +190,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
             console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
                 print(PurePath(dirpath))
-                if 'Makefile' in items and ("main.c" in items or "project.mk" in items) and PurePath(dirpath) not in project_blacklist:
+                if 'Makefile' in items and ("main.c" in items or "project.mk" in items) and PurePath(dirpath).name not in project_blacklist:
                     _projects.add(Path(dirpath))
 
         else:
