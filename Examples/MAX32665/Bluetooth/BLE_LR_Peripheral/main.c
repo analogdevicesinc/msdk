@@ -75,8 +75,7 @@
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-#error "Example is deprecated!"
-
+#warning "(ERROR): Exmaple is deprecated and non functional!"
 /*! \brief  Pool runtime configuration. */
 static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
 

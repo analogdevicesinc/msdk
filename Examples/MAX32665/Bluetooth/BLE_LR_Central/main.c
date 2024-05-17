@@ -67,7 +67,7 @@
   Macros
 **************************************************************************************************/
 
-#error "Exmaple is deprecated!"
+#warning "(ERROR): Exmaple is deprecated and non functional!"
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
