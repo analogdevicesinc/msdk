@@ -15,21 +15,6 @@ blacklist = [
     "MAX32570",
     "MAX32572",
     "MAX32657",
-
-    "MAX32520",
-    "MAX32655",
-    "MAX32660",  
-    "MAX32672",
-    "MAX32680",
-    "MAX78000",
-    "MAX32650",
-    "MAX32657",
-    "MAX32662",
-    "MAX32670",
-    "MAX32675",
-    "MAX32690",
-    "MAX78002",
-
     "MAX32665/BLE_LR_Central",
     "MAX32665/BLE_LR_Peripheral",
     "MAXREFDES178",
@@ -189,7 +174,6 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         if projects is None:
             console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
-                print(PurePath(dirpath).name)
                 if 'Makefile' in items and ("main.c" in items or "project.mk" in items) and PurePath(dirpath).name not in project_blacklist:
                     _projects.add(Path(dirpath))
 
@@ -199,18 +183,8 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
                     _projects.add(dirpath)
-
-        # assert "BLE_LR_Central" not in _projects
-
-        # blackisted_project_paths = set()
-        # for project in _projects:
-        #     project_name = PurePath(project)
-        #     if project_name in project_blacklist:
-        #         blackisted_project_paths.add(project)
-
-        # _projects = _projects - blackisted_project_paths
-
-        print(_projects)
+        
+        
         
         console.print(f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]")
         console.print(f"Detected boards: {boards}")
