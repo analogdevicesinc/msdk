@@ -13,6 +13,7 @@ import shutil
 blacklist = [
     "MAX32570",
     "MAX32572",
+    "MAX32657",
     "BLE_LR_Central",
     "BLE_LR_Peripheral",
     "MAXREFDES178",
