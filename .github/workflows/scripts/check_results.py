@@ -48,20 +48,23 @@ def PRINT(msg):
 
 
 def parse_input():
-    """get the input arguments
-    """
+    """get the input arguments"""
     global WITH_PRINT
 
     # Setup the command line description text
     descText = """
        Script used to check the PER test results.
     """
-    
+
     # Parse the command line arguments
-    parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('--csv', default='', help='The csv file of the PER test results.')
-    parser.add_argument('--limit', default=30.0, help='PER limit' )
-    parser.add_argument('--debug', action="store_true", help='display debug info')
+    parser = argparse.ArgumentParser(
+        description=descText, formatter_class=RawTextHelpFormatter
+    )
+    parser.add_argument(
+        "--csv", default="", help="The csv file of the PER test results."
+    )
+    parser.add_argument("--limit", default=30.0, help="PER limit")
+    parser.add_argument("--debug", action="store_true", help="display debug info")
 
     args = parser.parse_args()
     if args.debug:
@@ -69,7 +72,7 @@ def parse_input():
     else:
         WITH_PRINT = False
 
-    PRINT(f'Input arguments: {args}')
+    PRINT(f"Input arguments: {args}")
 
     return args
 
@@ -77,46 +80,45 @@ def parse_input():
 def check_results(res_file, limit):
     """read the result file and check the PER
 
-        return:
-            0: PASS
-            1: FAIL
+    return:
+        0: PASS
+        1: FAIL
     """
     global WITH_PRINT
 
     if not os.path.exists(res_file):
         return 1
-    
+
     with open(res_file) as file:
         while True:
             line = file.readline()
             if not line:
                 break
-            
-            #PRINT(line.strip())
-            temp = line.strip().split(',')
-            #PRINT(temp)
+
+            # PRINT(line.strip())
+            temp = line.strip().split(",")
+            # PRINT(temp)
             if len(temp) >= 2:
-                if temp[-1].replace('.', '', 1).isdigit():
-                    per = float(temp[-1])                    
+                if temp[-1].replace(".", "", 1).isdigit():
+                    per = float(temp[-1])
                     if per > limit:
-                        print(f'FAILED: {per} > {limit}')
+                        print(f"FAILED: {per} > {limit}")
                         return 2
-                if temp[-2].replace('.', '', 1).isdigit():
+                if temp[-2].replace(".", "", 1).isdigit():
                     per = float(temp[-2])
                     if per > limit:
-                        print(f'FAILED: {per} > {limit}')
+                        print(f"FAILED: {per} > {limit}")
                         return 2
 
     return 0
 
 
 input = parse_input()
-#input.csv = "/home/ying-cai/temp/simple-2023-02-09_23-08-41_max32655.csv"
-#WITH_PRINT = True
+# input.csv = "/home/ying-cai/temp/simple-2023-02-09_23-08-41_max32655.csv"
+# WITH_PRINT = True
 res = check_results(input.csv, float(input.limit))
 if res > 0:
     print("FAILED!")
     sys.exit(1)
 else:
     print("PASSED")
-

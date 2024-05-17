@@ -14,14 +14,14 @@ ERR_CODE = {
     0: "0",  # NO ERROR
     1: "INVALID ARGUMENTS",
     11: "INVALID FILE",
-    12: "EXCEPTION IN SUBPROCESS"
+    12: "EXCEPTION IN SUBPROCESS",
 }
 
 
-def run_file(file_name: str, args:dict) -> int:
+def run_file(file_name: str, args: dict) -> int:
     """run a script file
 
-        @:param
+    @:param
 
     """
     if not os.path.exists(file_name):
@@ -31,7 +31,7 @@ def run_file(file_name: str, args:dict) -> int:
     if "max32655" in args.keys():
         if args["max32655"]:
             do_max32655 = 1
-    
+
     do_max32665 = 0
     if "max32665" in args.keys():
         if args["max32665"]:
@@ -49,38 +49,54 @@ def run_file(file_name: str, args:dict) -> int:
 
     try:
         file_name = os.path.realpath(file_name)
-        p = Popen([f'{file_name} {do_max32655} {do_max32665} {do_max32690_evkit} {do_max32690_wlp} 2>&1 | tee temp.log'], 
-                    stdout=PIPE, stderr=PIPE, shell=True)
+        p = Popen(
+            [
+                f"{file_name} {do_max32655} {do_max32665} {do_max32690_evkit} {do_max32690_wlp} 2>&1 | tee temp.log"
+            ],
+            stdout=PIPE,
+            stderr=PIPE,
+            shell=True,
+        )
 
-        for line in iter(p.stdout.readline, b''):
+        for line in iter(p.stdout.readline, b""):
             print(f'{dt.now()} - {line.strip().decode("utf-8")}')
-        
+
         p.stdout.close()
         p.wait()
 
         return p.returncode
 
     except Exception as e:
-        print(f'Error: {e}')
+        print(f"Error: {e}")
         p.stdout.close()
         return 12
 
 
 def main(file_name: str, args: dict):
-    print("----------------------------------------------------------------------------------------")
+    print(
+        "----------------------------------------------------------------------------------------"
+    )
     ret = run_file(file_name, args)
 
     if ret in ERR_CODE.keys():
-        print(f'Return: {ERR_CODE[ret]}')
+        print(f"Return: {ERR_CODE[ret]}")
     else:
-        print(f'Return unknown error: {ret}.')
+        print(f"Return unknown error: {ret}.")
 
-    print("----------------------------------------------------------------------------------------")
+    print(
+        "----------------------------------------------------------------------------------------"
+    )
     print("Done!")
+
 
 if __name__ == "__main__":
     file = "local_BLE_Examples_Test.sh"
 
-    args = {"max32655": False, "max32665": False, "max32690_evkit": False, "max32690_wlp": True}
+    args = {
+        "max32655": False,
+        "max32665": False,
+        "max32690_evkit": False,
+        "max32690_wlp": True,
+    }
 
     main(file, args)
