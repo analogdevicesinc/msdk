@@ -13,6 +13,8 @@ import shutil
 blacklist = [
     "MAX32570",
     "MAX32572",
+    "BLE_LR_Central",
+    "BLE_LR_Peripheral",
     "MAXREFDES178",
     "BCB", 
     "ROM", 
