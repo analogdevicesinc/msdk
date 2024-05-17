@@ -1,20 +1,20 @@
-from pathlib import Path, PurePath
-import os
-from subprocess import run
 import argparse
-from typing import Tuple
-from rich.progress import Progress
-from rich.console import Console
-from rich.text import Text
-from rich import inspect
-import time
+import os
 import shutil
+import sys
+from pathlib import Path, PurePath
+from subprocess import run
+from typing import Tuple
+
+from rich import inspect
+from rich.console import Console
+from rich.progress import Progress
+from rich.text import Text
 
 blacklist = [
     "MAX32570",
     "MAX32572",
     "MAX32657",
-
     "MAX32520",
     "MAX32655",
     "MAX32660",
@@ -30,7 +30,6 @@ blacklist = [
     "MAX78002",
     "MAX32665/BLE_LR_Central",
     "MAX32665/BLE_LR_Peripheral",
-    
     "MAXREFDES178",
     "BCB",
     "ROM",
@@ -141,16 +140,16 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
         console.print("[yellow]Auto-searching for targets...[/yellow]")
         targets = []
 
-        for dir in os.scandir(f"{maxim_path}/Examples"):
-            if dir.name not in blacklist:
+        for directory in os.scandir(f"{maxim_path}/Examples"):
+            if directory.name not in blacklist:
                 targets.append(
-                    dir.name
+                    directory.name
                 )  # Append subdirectories of Examples to list of target micros
 
         console.print(f"Detected target microcontrollers: {targets}")
 
     else:
-        assert type(targets) is list
+        assert isinstance(targets, list)
         console.print(f"Testing {targets}")
 
     # Enforce alphabetical ordering
@@ -172,14 +171,14 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
         if boards is None:
             console.print(f"[yellow]Auto-searching for {target} BSPs...[/yellow]")
             boards = []
-            for dirpath, subdirs, items in os.walk(
+            for dirpath, _, items in os.walk(
                 maxim_path / "Libraries" / "Boards" / target
             ):
                 if "board.mk" in items and Path(dirpath).name not in blacklist:
                     boards.append(Path(dirpath).name)
 
         else:
-            assert type(boards) is list
+            assert isinstance(boards, list)
             console.print(f"Testing {boards}")
 
         boards = sorted(boards)  # Enforce alphabetical ordering
@@ -188,7 +187,7 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
         _projects = set()
         if projects is None:
             console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
-            for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
+            for dirpath, _, items in os.walk(maxim_path / "Examples" / target):
                 print(PurePath(dirpath))
                 if (
                     "Makefile" in items
@@ -198,8 +197,8 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
                     _projects.add(PurePath(dirpath).name)
 
         else:
-            assert type(projects) is list
-            for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
+            assert isinstance(projects, list)
+            for dirpath, _, items in os.walk(maxim_path / "Examples" / target):
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
                     _projects.add(dirpath)
@@ -233,9 +232,9 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
 
             # Find Hello_World and do a PeriphDriver build test first.
             hello_world = None
-            for p in _projects:
-                if p.name == "Hello_World":
-                    hello_world = p
+            for project in _projects:
+                if project == "Hello_World":
+                    hello_world = project
 
             if hello_world is None:
                 console.print(f"[red]Failed to locate Hello_World for {target}[/red]")
@@ -459,22 +458,22 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
     console.print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
     if len(warnings) > 0:
         print(f"{len(warnings)} projects with warnings:")
-        for p in warnings:
+        for project in warnings:
             console.print(
-                f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [yellow]warnings[/yellow] for [yellow]{p['board']}[/yellow]"
+                f"[bold cyan]{project['target']}[/bold cyan]: [bold]{project['project']}[/bold] [yellow]warnings[/yellow] for [yellow]{project['board']}[/yellow]"
             )
 
     if len(failed) > 0:
         print("Failed projects:")
-        for p in failed:
+        for project in failed:
             console.print(
-                f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [red]failed[/red] for [yellow]{p['board']}[/yellow]"
+                f"[bold cyan]{project['target']}[/bold cyan]: [bold]{project['project']}[/bold] [red]failed[/red] for [yellow]{project['board']}[/yellow]"
             )
 
         return -1
-    else:
-        console.print("[bold][green]Test pass.[/bold][/green]")
-        return 0
+    
+    console.print("[bold][green]Test pass.[/bold][/green]")
+    return 0
 
 
 parser = argparse.ArgumentParser("MSDK Build Test Script")
@@ -511,7 +510,7 @@ if __name__ == "__main__":
         args,
         title="Script arguments:",
     )
-    exit(
+    sys.exit(
         test(
             maxim_path=args.maxim_path,
             targets=args.targets,
