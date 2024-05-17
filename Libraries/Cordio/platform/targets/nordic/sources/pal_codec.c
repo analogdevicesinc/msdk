@@ -303,16 +303,12 @@ static uint16_t palCodecSbcEncode(cs47x_Stream_t *pStream, uint8_t *pSbcBuf, uin
     pStream->consCtr = pStream->prodCtr - AUDIO_NUM_BLOCK;
   }
 
-  PalLedOn(2);
-
   pStream->sbc.enc.pu8Packet           = pSbcBuf;
   pStream->sbc.enc.u8NumPacketToEncode = AUDIO_FRM_PER_PKT;
   pStream->sbc.enc.ps16PcmBuffer       = (SINT16 *)pStream->pcm[AUDIO_GET_IDX(pStream->consCtr)];
 
   /* Encode PCM block to SBC frame. */
   SBC_Encoder(&pStream->sbc.enc);
-
-  PalLedOff(2);
 
   return AUDIO_FRM_PER_PKT * pStream->sbc.enc.u16PacketLength;
 }
@@ -336,8 +332,6 @@ static bool_t palCodecSbcDecode(cs47x_Stream_t *pStream, const uint8_t *pSbcBuf,
     return FALSE;
   }
 
-  PalLedOn(2);
-
   for (size_t i = 0; i < AUDIO_FRM_PER_PKT; i++)
   {
     const OI_BYTE *pFrameData = pSbcBuf + (sbcPktLen * i);
@@ -354,8 +348,6 @@ static bool_t palCodecSbcDecode(cs47x_Stream_t *pStream, const uint8_t *pSbcBuf,
       AUD_TRACE_WARN2("SBC decode failed, pktCtr[15:0]=%u, status=%u", pktCtr, status);
     }
   }
-
-  PalLedOff(2);
 
   return TRUE;
 }
@@ -377,8 +369,6 @@ static bool_t palCodecSbcDecode(cs47x_Stream_t *pStream, const uint8_t *pSbcBuf,
 /*************************************************************************************************/
 static void palCodecAifInFrameComplete(void *pCtx)
 {
-  PalLedOn(3);
-
   cs47x_Stream_t *pStream = (cs47x_Stream_t *)pCtx;
 
   pStream->prodCtr++;
@@ -392,8 +382,6 @@ static void palCodecAifInFrameComplete(void *pCtx)
     /* Consume buffer */
     pStream->rdyCback(pStream->id);
   }
-
-  PalLedOff(3);
 }
 
 /*************************************************************************************************/

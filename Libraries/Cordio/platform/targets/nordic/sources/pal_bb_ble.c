@@ -165,10 +165,10 @@
 #endif
 
 #if (BB_LED_ENA == 1)
-#define BB_LED_1M_ON()        PalLedOn(0)
-#define BB_LED_2M_ON()        PalLedOn(1)
-#define BB_LED_CODED_ON()     PalLedOn(0); PalLedOn(1)
-#define BB_LED_OFF()          PalLedOff(0); PalLedOff(1)
+#define BB_LED_1M_ON()        PalLedOn(4)
+#define BB_LED_2M_ON()        PalLedOn(5)
+#define BB_LED_CODED_ON()     PalLedOn(4); PalLedOn(5)
+#define BB_LED_OFF()          PalLedOff(4); PalLedOff(5)
 #else
 #define BB_LED_1M_ON()
 #define BB_LED_2M_ON()
@@ -177,10 +177,10 @@
 #endif
 
 #if (AUDIO_CAPE == 1)
-#define BB_LED_TX_ON()        PalLedOn(6)
-#define BB_LED_TX_OFF()       PalLedOff(6)
-#define BB_LED_RX_ON()        PalLedOn(7)
-#define BB_LED_RX_OFF()       PalLedOff(7)
+#define BB_LED_TX_ON()        PalLedOn(2)
+#define BB_LED_TX_OFF()       PalLedOff(2)
+#define BB_LED_RX_ON()        PalLedOn(3)
+#define BB_LED_RX_OFF()       PalLedOff(3)
 #else
 #define BB_LED_TX_ON()
 #define BB_LED_TX_OFF()

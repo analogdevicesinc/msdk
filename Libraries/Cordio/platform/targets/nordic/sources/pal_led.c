@@ -162,10 +162,10 @@ void PalLedOn(uint8_t ledId)
   case PAL_LED_ID_ERROR:
     nrfx_gpiote_out_clear(LED_4);
     break;
-  case 0:
+  case 2:
     nrfx_gpiote_out_clear(LED_1);
     break;
-  case 1:
+  case 3:
     nrfx_gpiote_out_clear(LED_3);
     break;
   default:
@@ -226,10 +226,10 @@ void PalLedOff(uint8_t ledId)
   case PAL_LED_ID_ERROR:
     nrfx_gpiote_out_set(LED_4);
     break;
-  case 0:
+  case 2:
     nrfx_gpiote_out_set(LED_1);
     break;
-  case 1:
+  case 3:
     nrfx_gpiote_out_set(LED_3);
     break;
   default:
