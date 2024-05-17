@@ -1,3 +1,4 @@
+
 from pathlib import Path, PurePath
 import os
 from subprocess import run
@@ -17,7 +18,7 @@ blacklist = [
 
     "MAX32520",
     "MAX32655",
-    "MAX32660",
+    "MAX32660",  
     "MAX32672",
     "MAX32680",
     "MAX78000",
@@ -28,22 +29,23 @@ blacklist = [
     "MAX32675",
     "MAX32690",
     "MAX78002",
+
     "MAX32665/BLE_LR_Central",
     "MAX32665/BLE_LR_Peripheral",
-    
     "MAXREFDES178",
-    "BCB",
-    "ROM",
-    "Simulation",
-    "BCB_PBM",
-    "Emulator",
-    "Emulator_NFC",
-    "EvKit_129B",
+    "BCB", 
+    "ROM", 
+    "Simulation", 
+    "BCB_PBM", 
+    "Emulator", 
+    "Emulator_NFC", 
+    "EvKit_129B", 
     "EvKit_129C",
     "WLP_VAR",
     "WLP_DB",
     "TQFN_DB",
-    "WLP_V1",
+    "WLP_V1"
+
 ]
 project_blacklist = {
     "BLE_LR_Central",
@@ -53,15 +55,18 @@ project_blacklist = {
 known_errors = [
     "ERR_NOTSUPPORTED",
     "ERR_LIBNOTFOUND",
-    "[WARNING] - This tool does not handle keys in a PCI-PTS compliant way, only for test",
+    "[WARNING] - This tool does not handle keys in a PCI-PTS compliant way, only for test"
 ]
 
-hardfp_test_list = ["Hello_World", "BLE_periph", "BLE_datc", "BLE_dats", "BLE_FreeRTOS"]
+hardfp_test_list = [
+    "Hello_World",
+    "BLE_periph",
+    "BLE_datc",
+    "BLE_dats",
+    "BLE_FreeRTOS"
+]
 
-
-def build_project(
-    project: Path, target, board, maxim_path: Path, distclean=False, extra_args=None
-) -> Tuple[int, tuple]:
+def build_project(project:Path, target, board, maxim_path:Path, distclean=False, extra_args=None) -> Tuple[int, tuple]:
     clean_cmd = "make clean" if not distclean else "make distclean"
     if "Bluetooth" in project.as_posix() or "BLE" in project.as_posix():
         # Clean cordio lib for BLE projects
@@ -75,17 +80,17 @@ def build_project(
     res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     project_info = {
-        "target": target,
-        "project": project.name,
-        "board": board,
-        "path": project,
-        "build_cmd": build_cmd,
-        "stdout": res.stdout,
-        "stderr": res.stderr,
+        "target":target,
+        "project":project.name,
+        "board":board,
+        "path":project,
+        "build_cmd":build_cmd,
+        "stdout":res.stdout,
+        "stderr":res.stderr
     }
 
     # Error check build command
-    fail = res.returncode != 0
+    fail = (res.returncode != 0)
     warning = False
     known_error = False
     if res.stderr != None:
@@ -95,14 +100,13 @@ def build_project(
             elif err in res.stdout:
                 # This case catches the output of the SBTs, which will print a warning
                 # to stdout.  For these warnings, stderr is non-null but empty
-                if res.stderr == "":
+                if res.stderr == '':
                     known_error = True
+                    
 
-    if fail and known_error:  # build error
+    if fail and known_error: # build error
         fail = False
-    elif (
-        res.stderr != None and res.stderr != "" and not known_error
-    ):  # Build passed but with warnings
+    elif res.stderr != None and res.stderr != '' and not known_error: # Build passed but with warnings
         warning = True
 
     # Clean before returning
@@ -117,24 +121,23 @@ def build_project(
     return (return_code, project_info)
 
 
-def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
+def test(maxim_path : Path = None, targets=None, boards=None, projects=None): 
+
     console = Console(emoji=False, color_system="standard")
 
     env = os.environ.copy()
     if maxim_path is None and "MAXIM_PATH" in env.keys():
-        maxim_path = Path(env["MAXIM_PATH"]).absolute()
+        maxim_path = Path(env['MAXIM_PATH']).absolute()
         console.print(f"[green]Detected MAXIM_PATH[/green] = {maxim_path}")
     else:
         console.print("MAXIM_PATH not set.")
         return
-
+    
     env["FORCE_COLOR"] = 1
 
     # Remove the periphdrivers build directory
     console.print("Cleaning PeriphDrivers build directories...")
-    shutil.rmtree(
-        Path(maxim_path) / "Libraries" / "PeriphDrivers" / "bin", ignore_errors=True
-    )
+    shutil.rmtree(Path(maxim_path) / "Libraries" / "PeriphDrivers" / "bin", ignore_errors=True)
 
     # Get list of target micros if none is specified
     if targets is None:
@@ -143,14 +146,12 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
 
         for dir in os.scandir(f"{maxim_path}/Examples"):
             if dir.name not in blacklist:
-                targets.append(
-                    dir.name
-                )  # Append subdirectories of Examples to list of target micros
+                targets.append(dir.name) # Append subdirectories of Examples to list of target micros
 
         console.print(f"Detected target microcontrollers: {targets}")
-
+    
     else:
-        assert type(targets) is list
+        assert(type(targets) is list)
         console.print(f"Testing {targets}")
 
     # Enforce alphabetical ordering
@@ -162,6 +163,7 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
     count = 0
 
     for target in sorted(targets):
+
         console.print("====================")
         console.print(f"Testing {target}...")
 
@@ -172,33 +174,27 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
         if boards is None:
             console.print(f"[yellow]Auto-searching for {target} BSPs...[/yellow]")
             boards = []
-            for dirpath, subdirs, items in os.walk(
-                maxim_path / "Libraries" / "Boards" / target
-            ):
+            for dirpath, subdirs, items in os.walk(maxim_path / "Libraries" / "Boards" / target):
                 if "board.mk" in items and Path(dirpath).name not in blacklist:
                     boards.append(Path(dirpath).name)
 
         else:
-            assert type(boards) is list
+            assert(type(boards) is list)
             console.print(f"Testing {boards}")
 
-        boards = sorted(boards)  # Enforce alphabetical ordering
-
+        boards = sorted(boards) # Enforce alphabetical ordering
+                
         # Get list of examples for this target.
         _projects = set()
         if projects is None:
             console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
                 print(PurePath(dirpath))
-                if (
-                    "Makefile" in items
-                    and ("main.c" in items or "project.mk" in items)
-                    and PurePath(dirpath).name not in project_blacklist
-                ):
-                    _projects.add(PurePath(dirpath).name)
+                if 'Makefile' in items and ("main.c" in items or "project.mk" in items) and PurePath(dirpath) not in project_blacklist:
+                    _projects.add(Path(dirpath))
 
         else:
-            assert type(projects) is list
+            assert(type(projects) is list)
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
@@ -215,19 +211,15 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
         # _projects = _projects - blackisted_project_paths
 
         print(_projects)
-
-        console.print(
-            f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]"
-        )
+        
+        console.print(f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]")
         console.print(f"Detected boards: {boards}")
 
-        _projects = sorted(_projects)  # Enforce alphabetical ordering
+        _projects = sorted(_projects) # Enforce alphabetical ordering
+                
 
         with Progress(console=console) as progress:
-            task_build = progress.add_task(
-                description=f"{target}: PeriphDrivers",
-                total=(len(_projects) * len(boards)) + len(boards),
-            )
+            task_build = progress.add_task(description=f"{target}: PeriphDrivers", total=(len(_projects) * len(boards)) + len(boards))
 
             periph_success = True
 
@@ -236,71 +228,39 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
             for p in _projects:
                 if p.name == "Hello_World":
                     hello_world = p
-
+            
             if hello_world is None:
                 console.print(f"[red]Failed to locate Hello_World for {target}[/red]")
             else:
                 for board in boards:
-                    progress.update(
-                        task_build,
-                        description=f"[bold cyan]{target}[/bold cyan] ({board}) PeriphDriver",
-                        refresh=True,
-                    )
-                    (return_code, project_info) = build_project(
-                        hello_world, target, board, maxim_path, distclean=True
-                    )
+                    progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan] ({board}) PeriphDriver", refresh=True)
+                    (return_code, project_info) = build_project(hello_world, target, board, maxim_path, distclean=True)
                     count += 1
 
                     # Error check build command
                     if return_code == 0:
-                        progress.update(
-                            task_build,
-                            advance=1,
-                            description=f"[bold cyan]{target}[/bold cyan] ({board}): [green]PeriphDriver build pass.[/green]",
-                            refresh=True,
-                        )
+                        progress.update(task_build, advance=1, description=f"[bold cyan]{target}[/bold cyan] ({board}): [green]PeriphDriver build pass.[/green]", refresh=True)
                     elif return_code == 1:
-                        console.print(
-                            f"\n[red]{target} ({board}): PeriphDriver build failed.[/red]"
-                        )
+                        console.print(f"\n[red]{target} ({board}): PeriphDriver build failed.[/red]")
                         print(f"Build command: {project_info['build_cmd']}")
                         console.print("[bold]Errors:[/bold]")
-                        console.print(
-                            "[red]----------------------------------------[/red]"
-                        )
-                        console.print(
-                            Text.from_ansi(project_info["stderr"]), markup=False
-                        )
-                        console.print(
-                            "[red]----------------------------------------[/red]\n"
-                        )
+                        console.print("[red]----------------------------------------[/red]")
+                        console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                        console.print("[red]----------------------------------------[/red]\n")
 
                         if project_info not in failed:
                             failed.append(project_info)
                             target_fails += 1
 
                         periph_success = False
-                        progress.update(
-                            task_build,
-                            advance=1,
-                            description=f"[bold cyan]{target}[/bold cyan] ({board}): [red]PeriphDriver build fail.[/red]",
-                            refresh=True,
-                        )
+                        progress.update(task_build, advance=1, description=f"[bold cyan]{target}[/bold cyan] ({board}): [red]PeriphDriver build fail.[/red]", refresh=True)
                     elif return_code == 2:
-                        console.print(
-                            f"\n[yellow]{target} ({board}): PeriphDriver built with warnings.[/yellow]"
-                        )
+                        console.print(f"\n[yellow]{target} ({board}): PeriphDriver built with warnings.[/yellow]")
                         print(f"Build command: {project_info['build_cmd']}")
                         console.print("[bold]Warnings:[/bold]")
-                        console.print(
-                            "[yellow]----------------------------------------[/yellow]"
-                        )
-                        console.print(
-                            Text.from_ansi(project_info["stderr"]), markup=False
-                        )
-                        console.print(
-                            "[yellow]----------------------------------------[/yellow]\n"
-                        )
+                        console.print("[yellow]----------------------------------------[/yellow]")
+                        console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                        console.print("[yellow]----------------------------------------[/yellow]\n")
 
                         if project_info not in warnings:
                             warnings.append(project_info)
@@ -312,53 +272,30 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
                     project_name = project.name
 
                     for board in boards:
-                        progress.update(
-                            task_build,
-                            advance=1,
-                            description=f"{target} ({board}): {project_name}",
-                            refresh=True,
-                        )
+                        progress.update(task_build, advance=1, description=f"{target} ({board}): {project_name}", refresh=True)
 
-                        (return_code, project_info) = build_project(
-                            project, target, board, maxim_path, distclean=False
-                        )
+                        (return_code, project_info) = build_project(project, target, board, maxim_path, distclean=False)
 
                         # Error check build command
-                        if return_code == 1:
-                            console.print(
-                                f"\n[red]{target} ({board}): {project_name} failed.[/red]"
-                            )
+                        if return_code == 1:                            
+                            console.print(f"\n[red]{target} ({board}): {project_name} failed.[/red]")
                             print(f"Build command: {project_info['build_cmd']}")
                             console.print("[bold]Errors:[/bold]")
-                            console.print(
-                                "[red]----------------------------------------[/red]"
-                            )
-                            console.print(
-                                Text.from_ansi(project_info["stderr"]), markup=False
-                            )
-                            console.print(
-                                "[red]----------------------------------------[/red]\n"
-                            )
+                            console.print("[red]----------------------------------------[/red]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[red]----------------------------------------[/red]\n")
 
                             if project_info not in failed:
                                 failed.append(project_info)
                                 target_fails += 1
 
                         elif return_code == 2:
-                            console.print(
-                                f"\n[yellow]{target} ({board}): {project_name} built with warnings.[/yellow]"
-                            )
+                            console.print(f"\n[yellow]{target} ({board}): {project_name} built with warnings.[/yellow]")
                             print(f"Build command: {project_info['build_cmd']}")
                             console.print("[bold]Warnings:[/bold]")
-                            console.print(
-                                "[yellow]----------------------------------------[/yellow]"
-                            )
-                            console.print(
-                                Text.from_ansi(project_info["stderr"]), markup=False
-                            )
-                            console.print(
-                                "[yellow]----------------------------------------[/yellow]\n"
-                            )
+                            console.print("[yellow]----------------------------------------[/yellow]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[yellow]----------------------------------------[/yellow]\n")
 
                             if project_info not in warnings:
                                 warnings.append(project_info)
@@ -367,155 +304,81 @@ def test(maxim_path: Path = None, targets=None, boards=None, projects=None):
                         count += 1
 
                     if project_name in hardfp_test_list:
-                        console.print(
-                            f"[yellow]{target}: {project_name} found in hardfp test whitelist.[/yellow]"
-                        )
-                        progress.update(
-                            task_build,
-                            advance=1,
-                            description=f"{target} (hardfp): {project_name}",
-                            refresh=True,
-                        )
-                        (return_code, project_info) = build_project(
-                            project,
-                            target,
-                            board,
-                            maxim_path,
-                            distclean=False,
-                            extra_args="MFLOAT_ABI=hard",
-                        )
-                        project_info[
-                            "project"
-                        ] += " [italic](hardfp)[/italic]"  # Add a string to differentiate this test
+                        console.print(f"[yellow]{target}: {project_name} found in hardfp test whitelist.[/yellow]")
+                        progress.update(task_build, advance=1, description=f"{target} (hardfp): {project_name}", refresh=True)
+                        (return_code, project_info) = build_project(project, target, board, maxim_path, distclean=False, extra_args="MFLOAT_ABI=hard")
+                        project_info['project'] += " [italic](hardfp)[/italic]" # Add a string to differentiate this test
 
                         # Error check hardfp builds
                         if return_code == 1:
-                            console.print(
-                                f"\n[red]{target}: {project_name} failed to build with hardware floating-point acceleration enabled.[/red]"
-                            )
+                            console.print(f"\n[red]{target}: {project_name} failed to build with hardware floating-point acceleration enabled.[/red]")
                             print(f"Build command: {project_info['build_cmd']}")
                             console.print("[bold]Errors:[/bold]")
-                            console.print(
-                                "[red]----------------------------------------[/red]"
-                            )
-                            console.print(
-                                Text.from_ansi(project_info["stderr"]), markup=False
-                            )
-                            console.print(
-                                "[red]----------------------------------------[/red]\n"
-                            )
+                            console.print("[red]----------------------------------------[/red]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[red]----------------------------------------[/red]\n")
 
                             if project_info not in failed:
                                 failed.append(project_info)
                                 target_fails += 1
 
                         elif return_code == 2:
-                            console.print(
-                                f"\n[yellow]{target}: {project_name} built for hardware floating point acceleration, but with warnings.[/yellow]"
-                            )
+                            console.print(f"\n[yellow]{target}: {project_name} built for hardware floating point acceleration, but with warnings.[/yellow]")
                             print(f"Build command: {project_info['build_cmd']}")
                             console.print("[bold]Warnings:[/bold]")
-                            console.print(
-                                "[yellow]----------------------------------------[/yellow]"
-                            )
-                            console.print(
-                                Text.from_ansi(project_info["stderr"]), markup=False
-                            )
-                            console.print(
-                                "[yellow]----------------------------------------[/yellow]\n"
-                            )
+                            console.print("[yellow]----------------------------------------[/yellow]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[yellow]----------------------------------------[/yellow]\n")
 
                             if project_info not in warnings:
                                 warnings.append(project_info)
                                 target_warnings += 1
 
+
+
             if target_warnings != 0:
-                console.print(
-                    f"[bold cyan]{target}[/bold cyan]: [yellow]{target_warnings} projects built with warnings.[/yellow]"
-                )
+                console.print(f"[bold cyan]{target}[/bold cyan]: [yellow]{target_warnings} projects built with warnings.[/yellow]")
 
             if target_fails == 0:
-                progress.update(
-                    task_build,
-                    description=f"[bold cyan]{target}[/bold cyan]: [green]Pass.[/green]",
-                    refresh=True,
-                )
+                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [green]Pass.[/green]", refresh=True)
             elif not periph_success:
-                progress.update(
-                    task_build,
-                    description=f"[bold cyan]{target}[/bold cyan]: [red]PeriphDriver build failed.[/red]",
-                    refresh=True,
-                )
+                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]PeriphDriver build failed.[/red]", refresh=True)
             else:
-                progress.update(
-                    task_build,
-                    description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(_projects)} projects[/red]",
-                    refresh=True,
-                )
+                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(_projects)} projects[/red]", refresh=True)            
 
-        boards = None  # Reset boards list
-        _projects = None  # Reset projects list
+        boards = None # Reset boards list
+        _projects = None # Reset projects list
 
     console.print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
-    if len(warnings) > 0:
+    if (len(warnings) > 0):
         print(f"{len(warnings)} projects with warnings:")
         for p in warnings:
-            console.print(
-                f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [yellow]warnings[/yellow] for [yellow]{p['board']}[/yellow]"
-            )
-
-    if len(failed) > 0:
+            console.print(f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [yellow]warnings[/yellow] for [yellow]{p['board']}[/yellow]")
+    
+    if (len(failed) > 0):
         print("Failed projects:")
         for p in failed:
-            console.print(
-                f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [red]failed[/red] for [yellow]{p['board']}[/yellow]"
-            )
+            console.print(f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [red]failed[/red] for [yellow]{p['board']}[/yellow]")
 
         return -1
     else:
         console.print("[bold][green]Test pass.[/bold][/green]")
         return 0
 
-
 parser = argparse.ArgumentParser("MSDK Build Test Script")
-parser.add_argument(
-    "--maxim_path",
-    type=str,
-    help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.",
-)
-parser.add_argument(
-    "--targets",
-    type=str,
-    nargs="+",
-    required=False,
-    help="Target microcontrollers to test.",
-)
-parser.add_argument(
-    "--boards",
-    type=str,
-    nargs="+",
-    required=False,
-    help="Boards to test.  Should match the BSP folder-name exactly.",
-)
-parser.add_argument(
-    "--projects",
-    type=str,
-    nargs="+",
-    required=False,
-    help="Examples to populate.  Should match the example's folder name.",
-)
+parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
+parser.add_argument("--targets", type=str, nargs="+", required=False, help="Target microcontrollers to test.")
+parser.add_argument("--boards", type=str, nargs="+", required=False, help="Boards to test.  Should match the BSP folder-name exactly.")
+parser.add_argument("--projects", type=str, nargs="+", required=False, help="Examples to populate.  Should match the example's folder name.")
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    inspect(
-        args,
-        title="Script arguments:",
-    )
+    inspect(args, title="Script arguments:", )
     exit(
         test(
             maxim_path=args.maxim_path,
             targets=args.targets,
             boards=args.boards,
-            projects=args.projects,
+            projects=args.projects
         )
     )
