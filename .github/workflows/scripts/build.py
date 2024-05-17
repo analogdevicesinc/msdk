@@ -29,8 +29,8 @@ blacklist = [
     "MAX32690",
     "MAX78002",
 
-    "BLE_LR_Central",
-    "BLE_LR_Peripheral",
+    "MAX32665/BLE_LR_Central",
+    "MAX32665/BLE_LR_Peripheral",
     "MAXREFDES178",
     "BCB", 
     "ROM", 
