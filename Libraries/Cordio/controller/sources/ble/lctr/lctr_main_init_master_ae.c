@@ -564,14 +564,8 @@ void LctrMstExtInitDefaults(void)
 
   lmgrCb.numExtScanPhys = 1;
 
-  if (APP_CODED_PHY_DEMO == 0)
-  {
-    lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_1M;
-  }
-  else
-  {
-    lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_CODED;
-  }
+  lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_1M;
+
 }
 
 /*************************************************************************************************/

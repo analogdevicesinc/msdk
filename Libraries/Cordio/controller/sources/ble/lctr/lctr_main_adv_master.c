@@ -613,11 +613,7 @@ void lctrAdvRptGenerateExtHash(uint64_t *pHash, uint8_t addrType, uint64_t addr,
 /*************************************************************************************************/
 bool_t lctrAdvRptCheckDuplicate(lctrAdvRptFilt_t *pAdvFilt, uint64_t hash)
 {
-  if (APP_CODED_PHY_DEMO)
-  {
-    pAdvFilt->addToFiltTbl = TRUE;
-    return TRUE;
-  }
+
 
   if (!pAdvFilt->enable)
   {

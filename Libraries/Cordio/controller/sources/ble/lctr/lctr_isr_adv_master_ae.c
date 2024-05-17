@@ -365,7 +365,7 @@ static bool_t lctrExtAdvRptPend(lctrExtScanCtx_t *pExtScanCtx, LlExtAdvReportInd
   uint64_t hash;
   lctrAdvRptGenerateExtHash(&hash, pRpt->addrType, BstreamToBda64(pRpt->addr),
                             pRpt->eventType, pRpt->advSID, pExtScanCtx->extAdvHdr.did);
-  if (lctrAdvRptCheckDuplicate(&lctrMstExtScan.advFilt, hash) && (APP_CODED_PHY_DEMO == 0))
+  if (lctrAdvRptCheckDuplicate(&lctrMstExtScan.advFilt, hash))
   {
     /* Duplicate found, just exit. */
     return FALSE;
