@@ -176,6 +176,8 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
                     _projects.append(dirpath)
+
+        assert "BLE_LR_Central" not in _projects
         
         console.print(f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]")
         console.print(f"Detected boards: {boards}")
