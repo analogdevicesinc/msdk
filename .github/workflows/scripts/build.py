@@ -185,12 +185,12 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         boards = sorted(boards) # Enforce alphabetical ordering
                 
         # Get list of examples for this target.
-        _projects:set = {}
+        _projects = set()
         if projects is None:
             console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
-                print(dirpath.name)
-                if 'Makefile' in items and ("main.c" in items or "project.mk" in items):
+                print(PurePath(dirpath))
+                if 'Makefile' in items and ("main.c" in items or "project.mk" in items) and PurePath(dirpath) not in project_blacklist:
                     _projects.add(Path(dirpath))
 
         else:
@@ -200,15 +200,15 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                 if dirpath.name in projects:
                     _projects.add(dirpath)
 
-        assert "BLE_LR_Central" not in _projects
+        # assert "BLE_LR_Central" not in _projects
 
-        blackisted_project_paths = set()
-        for project in _projects:
-            project_name = PurePath(project)
-            if project_name in project_blacklist:
-                blackisted_project_paths.add(project)
+        # blackisted_project_paths = set()
+        # for project in _projects:
+        #     project_name = PurePath(project)
+        #     if project_name in project_blacklist:
+        #         blackisted_project_paths.add(project)
 
-        _projects = _projects - blackisted_project_paths
+        # _projects = _projects - blackisted_project_paths
 
         print(_projects)
         
