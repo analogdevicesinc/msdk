@@ -60,8 +60,6 @@ lctrExtScanCtx_t lctrMstExtInitTbl[LCTR_SCAN_PHY_TOTAL];
 /*! \brief      Extended initiator control block. */
 lctrExtInitCtrlBlk_t lctrMstExtInit;
 
-extern uint8_t appCodedPhyDemo;
-
 /*************************************************************************************************/
 /*!
  *  \brief      Master initiate reset handler.
@@ -564,14 +562,7 @@ void LctrMstExtInitDefaults(void)
 
   lmgrCb.numExtScanPhys = 1;
 
-  if (appCodedPhyDemo == 0)
-  {
-    lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_1M;
-  }
-  else
-  {
-    lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_CODED;
-  }
+  lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_1M;
 }
 
 /*************************************************************************************************/

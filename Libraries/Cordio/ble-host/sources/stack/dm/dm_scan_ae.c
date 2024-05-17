@@ -37,7 +37,6 @@
   Global Variables
 **************************************************************************************************/
 extern lmgrCtrlBlk_t lmgrCb;
-extern uint8_t appCodedPhyDemo;
 
 /**************************************************************************************************
   Local Variables
@@ -273,11 +272,6 @@ void dmExtScanReset(void)
 /*************************************************************************************************/
 void dmExtScanHciHandler(hciEvt_t *pEvent)
 {
-  if (appCodedPhyDemo == 0)
-  {
-    DM_TRACE_INFO2("dmExtScanHciHandler: event: %d state: %d", pEvent->hdr.event, dmScanCb.scanState);
-  }
-
   if (pEvent->hdr.event == HCI_LE_EXT_ADV_REPORT_CBACK_EVT)
   {
     dmExtScanActHciReport(pEvent);

@@ -94,7 +94,6 @@ typedef struct
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-extern uint8_t appCodedPhyDemo;
 
 /**************************************************************************************************
   Local Variables
@@ -170,15 +169,9 @@ static void dmExtAdvCbInit(uint8_t advHandle)
   /* initialize advertising set */
   dmExtAdvCb[advHandle].advType = DM_ADV_NONE;
 
-  if (appCodedPhyDemo) {
-    dmExtAdvCb[advHandle].useLegacyPdu = FALSE;
-    dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_CODED;
-    dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_CODED;
-  } else {
-    dmExtAdvCb[advHandle].useLegacyPdu = TRUE;
-    dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_1M;
-    dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_1M;
-  }
+  dmExtAdvCb[advHandle].useLegacyPdu = TRUE;
+  dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_1M;
+  dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_1M;
 
   dmExtAdvCb[advHandle].omitAdvAddr = FALSE;
   dmExtAdvCb[advHandle].incTxPwr = FALSE;
