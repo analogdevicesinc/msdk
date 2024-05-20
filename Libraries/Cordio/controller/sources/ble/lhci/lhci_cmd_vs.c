@@ -82,8 +82,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    uint32_t channel = 0;
-    
+    uint8_t channel = 0;
 
     /* Decode and consume command packet. */
 
