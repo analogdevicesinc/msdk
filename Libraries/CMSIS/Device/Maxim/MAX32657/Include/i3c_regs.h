@@ -144,7 +144,7 @@ typedef struct {
     __I  uint32_t targ_groupdef;        /**< <tt>\b 0x114:</tt> I3C TARG_GROUPDEF Register */
     __R  uint32_t rsv_0x118;
     __IO uint32_t targ_mapctrl;         /**< <tt>\b 0x11C:</tt> I3C TARG_MAPCTRL Register */
-    __IO uint32_t targ_mapctrl[8];      /**< <tt>\b 0x120:</tt> I3C TARG_MAPCTRL Register */
+    __R  uint32_t rsv_0x120_0x13f[8];
     __IO uint32_t targ_extibi0;         /**< <tt>\b 0x140:</tt> I3C TARG_EXTIBI0 Register */
     __IO uint32_t targ_extibi1;         /**< <tt>\b 0x144:</tt> I3C TARG_EXTIBI1 Register */
     __R  uint32_t rsv_0x148_0x14f[2];
@@ -220,7 +220,6 @@ typedef struct {
 #define MXC_R_I3C_TARG_HDRCMD              ((uint32_t)0x00000108UL) /**< Offset from I3C Base Address: <tt> 0x0108</tt> */
 #define MXC_R_I3C_TARG_GROUPDEF            ((uint32_t)0x00000114UL) /**< Offset from I3C Base Address: <tt> 0x0114</tt> */
 #define MXC_R_I3C_TARG_MAPCTRL             ((uint32_t)0x0000011CUL) /**< Offset from I3C Base Address: <tt> 0x011C</tt> */
-#define MXC_R_I3C_TARG_MAPCTRL             ((uint32_t)0x00000120UL) /**< Offset from I3C Base Address: <tt> 0x0120</tt> */
 #define MXC_R_I3C_TARG_EXTIBI0             ((uint32_t)0x00000140UL) /**< Offset from I3C Base Address: <tt> 0x0140</tt> */
 #define MXC_R_I3C_TARG_EXTIBI1             ((uint32_t)0x00000144UL) /**< Offset from I3C Base Address: <tt> 0x0144</tt> */
 #define MXC_R_I3C_TARG_TXFIFO32            ((uint32_t)0x00000150UL) /**< Offset from I3C Base Address: <tt> 0x0150</tt> */
@@ -1828,38 +1827,6 @@ typedef struct {
 
 #define MXC_F_I3C_TARG_MAPCTRL_CAUSE_POS               8 /**< TARG_MAPCTRL_CAUSE Position */
 #define MXC_F_I3C_TARG_MAPCTRL_CAUSE                   ((uint32_t)(0x7UL << MXC_F_I3C_TARG_MAPCTRL_CAUSE_POS)) /**< TARG_MAPCTRL_CAUSE Mask */
-
-/**@} end of group I3C_TARG_MAPCTRL_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_MAPCTRL I3C_TARG_MAPCTRL
- * @brief    Target Map Control Registers.
- * @{
- */
-#define MXC_F_I3C_TARG_MAPCTRL_DYNADDR_EN_POS          0 /**< TARG_MAPCTRL_DYNADDR_EN Position */
-#define MXC_F_I3C_TARG_MAPCTRL_DYNADDR_EN              ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL_DYNADDR_EN_POS)) /**< TARG_MAPCTRL_DYNADDR_EN Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_ADDR_POS                1 /**< TARG_MAPCTRL_ADDR Position */
-#define MXC_F_I3C_TARG_MAPCTRL_ADDR                    ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_MAPCTRL_ADDR_POS)) /**< TARG_MAPCTRL_ADDR Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_STATADDR_EN_POS         8 /**< TARG_MAPCTRL_STATADDR_EN Position */
-#define MXC_F_I3C_TARG_MAPCTRL_STATADDR_EN             ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL_STATADDR_EN_POS)) /**< TARG_MAPCTRL_STATADDR_EN Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_10B_STATADDR_POS        9 /**< TARG_MAPCTRL_10B_STATADDR Position */
-#define MXC_F_I3C_TARG_MAPCTRL_10B_STATADDR            ((uint32_t)(0x7UL << MXC_F_I3C_TARG_MAPCTRL_10B_STATADDR_POS)) /**< TARG_MAPCTRL_10B_STATADDR Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_NACK_POS                12 /**< TARG_MAPCTRL_NACK Position */
-#define MXC_F_I3C_TARG_MAPCTRL_NACK                    ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL_NACK_POS)) /**< TARG_MAPCTRL_NACK Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_AUTO_POS                13 /**< TARG_MAPCTRL_AUTO Position */
-#define MXC_F_I3C_TARG_MAPCTRL_AUTO                    ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL_AUTO_POS)) /**< TARG_MAPCTRL_AUTO Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_PID_POS                 14 /**< TARG_MAPCTRL_PID Position */
-#define MXC_F_I3C_TARG_MAPCTRL_PID                     ((uint32_t)(0x3FFUL << MXC_F_I3C_TARG_MAPCTRL_PID_POS)) /**< TARG_MAPCTRL_PID Mask */
-
-#define MXC_F_I3C_TARG_MAPCTRL_DEVCHAR_PID_POS         24 /**< TARG_MAPCTRL_DEVCHAR_PID Position */
-#define MXC_F_I3C_TARG_MAPCTRL_DEVCHAR_PID             ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_MAPCTRL_DEVCHAR_PID_POS)) /**< TARG_MAPCTRL_DEVCHAR_PID Mask */
 
 /**@} end of group I3C_TARG_MAPCTRL_Register */
 

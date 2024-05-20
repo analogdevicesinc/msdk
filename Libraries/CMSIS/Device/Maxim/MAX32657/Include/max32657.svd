@@ -6046,57 +6046,6 @@
      </fields>
     </register>
     <register>
-     <dim>8</dim>
-     <dimIncrement>4</dimIncrement>
-     <name>TARG_MAPCTRL[%s]</name>
-     <description>Target Map Control Registers.</description>
-     <addressOffset>0x120</addressOffset>
-     <size>32</size>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>DYNADDR_EN</name>
-       <description>Dynamic address is enabled.</description>
-       <bitRange>[0:0]</bitRange>
-      </field>
-      <field>
-       <name>ADDR</name>
-       <description>Static or dynamic address.</description>
-       <bitRange>[7:1]</bitRange>
-      </field>
-      <field>
-       <name>STATADDR_EN</name>
-       <description>Static Address.</description>
-       <bitRange>[8:8]</bitRange>
-      </field>
-      <field>
-       <name>10B_STATADDR</name>
-       <description>The upper 3 bits of a 10 bit static address.</description>
-       <bitRange>[11:9]</bitRange>
-      </field>
-      <field>
-       <name>NACK</name>
-       <description>NACK incoming addresses that match this mapped address.</description>
-       <bitRange>[12:12]</bitRange>
-      </field>
-      <field>
-       <name>AUTO</name>
-       <description>Enable slot for automatic dynamic address assignment using ENTDAA CCC.</description>
-       <bitRange>[13:13]</bitRange>
-      </field>
-      <field>
-       <name>PID</name>
-       <description>Slot-specific PID replacement bits.</description>
-       <bitRange>[23:14]</bitRange>
-      </field>
-      <field>
-       <name>DEVCHAR_PID</name>
-       <description>Usage depends on HW configuration.</description>
-       <bitRange>[31:24]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>TARG_EXTIBI0</name>
      <description>Target Extended IBI Data Register 0.</description>
      <addressOffset>0x140</addressOffset>

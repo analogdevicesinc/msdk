@@ -607,15 +607,15 @@ We may want to handle GET_IRQ better...
 
 /******************************************************************************/
 /*                                                                        I3C */
-#define MXC_I3C_FIFO_DEPTH (8) // TODO(ME30): Confirm this is correct.
+#define MXC_I3C_FIFO_DEPTH (8)
 
 /* Non-secure Mapping */
-#define MXC_BASE_I3C_NS ((uint32_t)0x4001D000UL)
-#define MXC_I3C_NS ((mxc_i2c_regs_t *)MXC_BASE_I3C_NS)
+#define MXC_BASE_I3C_NS ((uint32_t)0x40018000UL)
+#define MXC_I3C_NS ((mxc_i3c_regs_t *)MXC_BASE_I3C_NS)
 
 /* Secure Mapping */
-#define MXC_BASE_I3C_S ((uint32_t)0x5001D000UL)
-#define MXC_I3C_S ((mxc_i2c_regs_t *)MXC_BASE_I3C_S)
+#define MXC_BASE_I3C_S ((uint32_t)0x50018000UL)
+#define MXC_I3C_S ((mxc_i3c_regs_t *)MXC_BASE_I3C_S)
 
 #if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_I3C MXC_BASE_I3C_S
