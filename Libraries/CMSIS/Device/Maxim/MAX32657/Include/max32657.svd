@@ -6023,7 +6023,7 @@
      </fields>
     </register>
     <register>
-     <name>TARG_MAPCTRL</name>
+     <name>TARG_MAPCTRL0</name>
      <description>Target Primary Map Control Register.</description>
      <addressOffset>0x11C</addressOffset>
      <access>read-write</access>
