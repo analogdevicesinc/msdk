@@ -58,6 +58,7 @@ endif
 # Cordio (Disabled by default)
 # ************************
 LIB_CORDIO ?= 0
+CODED_PHY_DEMO ?= 0
 ifeq ($(LIB_CORDIO), 1)
 # Include the Cordio Library
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
@@ -71,6 +72,12 @@ LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
 endif
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
+endif
+
+ifeq ($(CODED_PHY_DEMO),1)
+PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=1
+else
+PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=0
 endif
 
 endif

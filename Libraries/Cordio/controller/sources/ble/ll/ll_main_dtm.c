@@ -496,7 +496,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
 
     if (llTestCb.state == LL_TEST_STATE_IDLE) {
         /* Init test state. */
-        memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt));
+        memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt));
     }
 
     /* Handle non-packet test mode. */
@@ -1073,7 +1073,7 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
     LL_TRACE_INFO1("                numRxCrcError=%u", llTestCb.rpt.numRxCrcError);
     LL_TRACE_INFO1("                numRxTimeout=%u", llTestCb.rpt.numRxTimeout);
 
-    memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
+    memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
 
     return LL_SUCCESS;
 }
@@ -1105,7 +1105,7 @@ uint8_t LlSetTxTestErrorPattern(uint32_t pattern)
 /*************************************************************************************************/
 static void llTestResetHandler(void)
 {
-    memset(&llTestCb, 0, sizeof(llTestCb));
+    memset((void*)&llTestCb, 0, sizeof(llTestCb));
     llTestCb.tx.errPattern = 0xFFFFFFFF;
 
     llTestCb.packetsFreed = TRUE;

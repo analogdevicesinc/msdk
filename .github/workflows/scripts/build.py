@@ -1,4 +1,5 @@
-from pathlib import Path
+
+from pathlib import Path, PurePath
 import os
 from subprocess import run
 import argparse
@@ -13,6 +14,9 @@ import shutil
 blacklist = [
     "MAX32570",
     "MAX32572",
+    "MAX32657",
+    "MAX32665/BLE_LR_Central",
+    "MAX32665/BLE_LR_Peripheral",
     "MAXREFDES178",
     "BCB", 
     "ROM", 
@@ -26,7 +30,12 @@ blacklist = [
     "WLP_DB",
     "TQFN_DB",
     "WLP_V1"
+
 ]
+project_blacklist = {
+    "BLE_LR_Central",
+    "BLE_LR_Peripheral",
+}
 
 known_errors = [
     "ERR_NOTSUPPORTED",
@@ -158,19 +167,21 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         boards = sorted(boards) # Enforce alphabetical ordering
                 
         # Get list of examples for this target.
-        _projects = []
+        _projects = set()
         if projects is None:
             console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
-                if 'Makefile' in items and ("main.c" in items or "project.mk" in items):
-                    _projects.append(Path(dirpath))
+                if 'Makefile' in items and ("main.c" in items or "project.mk" in items) and PurePath(dirpath).name not in project_blacklist:
+                    _projects.add(Path(dirpath))
 
         else:
             assert(type(projects) is list)
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
-                    _projects.append(dirpath)
+                    _projects.add(dirpath)
+        
+        
         
         console.print(f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]")
         console.print(f"Detected boards: {boards}")
