@@ -62,6 +62,7 @@ typedef enum {
     /* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */
     MXC_SYS_RESET1_CRC = (MXC_F_GCR_RST1_CRC_POS + 32), /**< Reset CRC */
     MXC_SYS_RESET1_AES = (MXC_F_GCR_RST1_AES_POS + 32), /**< Reset AES */
+    MXC_SYS_RESET1_AUTOCAL = (MXC_F_GCR_RST1_AUTOCAL_POS + 32), /**< Reset AUTOCAL */
 } mxc_sys_reset_t;
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
@@ -79,13 +80,10 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_TMR5 = MXC_F_GCR_PCLKDIS0_TMR5_POS, /**< Disable TMR4 clock */
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
     MXC_SYS_PERIPH_CLOCK_TRNG = (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable TRNG clock */
-    // MXC_SYS_PERIPH_CLOCK_SMPHR =
-    //     (MXC_F_GCR_PCLKDIS1_SMPHR_POS + 32), /**< Disable SMPHR clock */
     MXC_SYS_PERIPH_CLOCK_CRC = (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable CRC clock */
     MXC_SYS_PERIPH_CLOCK_AES = (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */
-    // MXC_SYS_PERIPH_CLOCK_SPI =
-    //     (MXC_F_GCR_PCLKDIS1_SPI_POS + 32), /**< Disable SPI clock */
-    // TODO(JC): The SPI clock disable is defined in both PCLKDIS0 and PCLKDIS1
+    // MXC_SYS_PERIPH_CLOCK_SPI = (MXC_F_GCR_PCLKDIS1_SPI_POS + 32), /**< Disable SPI clock */
+    MXC_SYS_PERIPH_CLOCK_DMA1 = (MXC_F_GCR_PCLKDIS1_DMA1_POS + 32), /**< Disable DMA1 clock */
     MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS), /**< Disable WDT clock */
 } mxc_sys_periph_clock_t;
 

@@ -671,6 +671,12 @@
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field derivedFrom="CRC">
+            <name>AUTOCAL</name>
+            <description>Auto calibration Reset.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>

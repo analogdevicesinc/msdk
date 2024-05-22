@@ -427,6 +427,9 @@ typedef struct {
 #define MXC_F_GCR_RST1_AES_POS                         10 /**< RST1_AES Position */
 #define MXC_F_GCR_RST1_AES                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AES_POS)) /**< RST1_AES Mask */
 
+#define MXC_F_GCR_RST1_AUTOCAL_POS                     12 /**< RST1_AUTOCAL Position */
+#define MXC_F_GCR_RST1_AUTOCAL                         ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AUTOCAL_POS)) /**< RST1_AUTOCAL Mask */
+
 /**@} end of group GCR_RST1_Register */
 
 /**
