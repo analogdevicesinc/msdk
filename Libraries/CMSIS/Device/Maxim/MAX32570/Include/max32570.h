@@ -646,7 +646,7 @@ typedef enum {
 /******************************************************************************/
 /*                                                      Instruction Cache XIP */
 #define MXC_BASE_SFCC ((uint32_t)0x4002F000UL)
-#define MXC_SFCC ((mxc_icc_regs_t *)MXC_BASE_SFCC)
+#define MXC_SFCC ((mxc_sfcc_regs_t *)MXC_BASE_SFCC)
 
 /******************************************************************************/
 /*                                                                        CLCD */
