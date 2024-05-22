@@ -82,7 +82,6 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_TRNG = (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable TRNG clock */
     MXC_SYS_PERIPH_CLOCK_CRC = (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable CRC clock */
     MXC_SYS_PERIPH_CLOCK_AES = (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */
-    // MXC_SYS_PERIPH_CLOCK_SPI = (MXC_F_GCR_PCLKDIS1_SPI_POS + 32), /**< Disable SPI clock */
     MXC_SYS_PERIPH_CLOCK_DMA1 = (MXC_F_GCR_PCLKDIS1_DMA1_POS + 32), /**< Disable DMA1 clock */
     MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS), /**< Disable WDT clock */
 } mxc_sys_periph_clock_t;

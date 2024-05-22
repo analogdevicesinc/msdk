@@ -715,12 +715,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="TRNG">
-            <name>SPI</name>
-            <description>SPI Clock Disable</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="TRNG">
             <name>DMA1</name>
             <description>DMA1 Clock Disable</description>
             <bitOffset>21</bitOffset>
