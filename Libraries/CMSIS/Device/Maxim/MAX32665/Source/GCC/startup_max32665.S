@@ -24,16 +24,6 @@
     .section .stack
     .align 3
 
-    /* Symbols for memory segments */
-    .equ      _FLASH_SIZE, FLASH_SIZE
-    .globl    _FLASH_SIZE
-    .equ      _FLASH_ORIGIN, FLASH_ORIGIN
-    .globl    _FLASH_ORIGIN
-    .equ      _SRAM_SIZE, SRAM_SIZE
-    .globl    _SRAM_SIZE
-    .equ      _SRAM_ORIGIN, SRAM_ORIGIN
-    .globl    _SRAM_ORIGIN
-
     /* Default SRAM size is 560kB, use 448kB if ECC enabled */
     .globl  SRAM_SIZE
 #ifdef __SRAM_SIZE
