@@ -33,7 +33,7 @@ __StackTop_Core1:
     .size __StackTop_Core1, . - __StackTop_Core1
 
 /* Stack limit setup for Core 1 done in Linker file */
-/* Use Heap setup from Core 1 */
+/* Use Heap setup from Core 0 */
 
     .section .isr_vector_core1
     .align 2
