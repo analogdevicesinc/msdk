@@ -500,16 +500,16 @@ ecc_init_exit:
     def_irq_handler    WDT2_IRQHandler               /* 0x61  0x0184  97: Watchdog Timer 2 */
     def_irq_handler    ECC_IRQHandler                /* 0x62  0x0188  98: Error Correction */
     def_irq_handler    DVS_IRQHandler                /* 0x63  0x018C  99: DVS Controller */
-    def_irq_handler    SIMO_IRQHandler               /* 0x64 0x0190  100: SIMO Controller */
-    def_irq_handler    SCA_IRQHandler                /* 0x65  0x0194  101: SCA */ /* @TODO: Is this correct? */
-    def_irq_handler    AUDIO_IRQHandler              /* 0x66  0x0198  102: Audio subsystem */
-    def_irq_handler    FLC1_IRQHandler               /* 0x67  0x019C  103: Flash Control 1 */
-    def_irq_handler    RSV88_IRQHandler              /* 0x68  0x01A0  104: Reserved */
-    def_irq_handler    RSV89_IRQHandler              /* 0x69  0x01A4  105: Reserved */
-    def_irq_handler    RSV90_IRQHandler              /* 0x6A  0x01A8  106: Reserved */
-    def_irq_handler    RSV91_IRQHandler              /* 0x6B  0x01AC  107: Reserved */
-    def_irq_handler    RSV92_IRQHandler              /* 0x6C  0x01B0  108: Reserved */ 
-    def_irq_handler    HTMR0_IRQHandler              /* 0x6D  0x01B4  109: HTmr */
-    def_irq_handler    HTMR1_IRQHandler              /* 0x6E  0x01B8  110: HTmr */
+    def_irq_handler    SIMO_IRQHandler               /* 0x64  0x0190 100: SIMO Controller */
+    def_irq_handler    SCA_IRQHandler                /* 0x65  0x0194 101: SCA */ /* @TODO: Is this correct? */
+    def_irq_handler    AUDIO_IRQHandler              /* 0x66  0x0198 102: Audio subsystem */
+    def_irq_handler    FLC1_IRQHandler               /* 0x67  0x019C 103: Flash Control 1 */
+    def_irq_handler    RSV88_IRQHandler              /* 0x68  0x01A0 104: Reserved */
+    def_irq_handler    RSV89_IRQHandler              /* 0x69  0x01A4 105: Reserved */
+    def_irq_handler    RSV90_IRQHandler              /* 0x6A  0x01A8 106: Reserved */
+    def_irq_handler    RSV91_IRQHandler              /* 0x6B  0x01AC 107: Reserved */
+    def_irq_handler    RSV92_IRQHandler              /* 0x6C  0x01B0 108: Reserved */ 
+    def_irq_handler    HTMR0_IRQHandler              /* 0x6D  0x01B4 109: HTmr */
+    def_irq_handler    HTMR1_IRQHandler              /* 0x6E  0x01B8 110: HTmr */
 
     .end
