@@ -69,9 +69,9 @@ int main(void)
 
     MXC_TMR_Start(MXC_TMR2);
 
-    while(1) {
+    while (1) {
         // Wait for Core 1 to update count and release the semaphore
-        while(MXC_SEMA_CheckSema(0) == E_BUSY) {}
+        while (MXC_SEMA_CheckSema(0) == E_BUSY) {}
         MXC_SEMA_GetSema(0);
 
         printf("Core 0: Pong: %d\n", count0);

@@ -49,7 +49,7 @@ int main_core1(void)
     printf("Core 1: enter while loop.\n");
     while (1) {
         // Wait for Core 0 to release the semaphore
-        while(MXC_SEMA_GetSema(1) == E_BUSY) {}
+        while (MXC_SEMA_GetSema(1) == E_BUSY) {}
 
         // Print the updated value from Core 0
         printf("Core 1: Ping: %d\n", count1);
