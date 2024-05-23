@@ -65,7 +65,8 @@ SECTIONS {
     .text :
     {
         _text = .;
-        KEEP(*(.isr_vector))
+        KEEP(*(.isr_vector)) /* Core 0 vector table */
+        *(.isr_vector_core1) /* Core 1 vector table */
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
         
@@ -209,7 +210,7 @@ SECTIONS {
         _ebss = ALIGN(., 4);
     } > SRAM
 
-    /* Setup the stack for Core 1, it will only be used if the user code
+    /* Setup the stack for Core 1, it will only be used if the project build
      * includes a definition of Stack_Size_Core1, which defines the space
      * reserved above the main core's stack for core 1's stack */
 
