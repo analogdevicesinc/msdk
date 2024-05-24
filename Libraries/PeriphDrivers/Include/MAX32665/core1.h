@@ -42,8 +42,7 @@ extern "C" {
  *        Core1 code beings executing from Core1_Main()
  */
 #if defined(__GNUC__)
-inline __attribute__((
-    deprecated("Use Start_Core1(); instead."))) void Core1_Start(void)
+inline __attribute__((deprecated("Use Start_Core1(); instead."))) void Core1_Start(void)
 {
     Start_Core1();
 }
@@ -53,8 +52,7 @@ inline __attribute__((
  * @brief Stops code executing in Core 1
  */
 #if defined(__GNUC__)
-inline __attribute__((
-    deprecated("Use Stop_Core1(); instead."))) void Core1_Stop(void)
+inline __attribute__(( deprecated("Use Stop_Core1(); instead."))) void Core1_Stop(void)
 {
     Stop_Core1();
 }
@@ -66,8 +64,9 @@ inline __attribute__((
  *        in their application code
  */
 #if defined(__GNUC__)
-inline __attribute__((
-    deprecated("Use `int main_core1(void)` instead - main_core1 is Core 1's entry point where code starts, not Core1_Main."))) int Core1_Main(void);
+inline __attribute__((deprecated(
+    "Use `int main_core1(void)` instead - main_core1 is Core 1's entry point where code starts, not Core1_Main."))) int
+Core1_Main(void);
 #endif
 
 // void PreInit_Core1(void) is now located in system_core_max32665.h
