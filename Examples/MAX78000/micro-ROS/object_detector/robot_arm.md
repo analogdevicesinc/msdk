@@ -87,6 +87,8 @@ Each component requires some assembly and associated hardware connections.  Addi
 
 ![Img 16](res/16.jpg)
 
+![Img 27](res/27.jpg)
+
 15. Now, locate the OpenCR1.0 board.  Ensure the main power switch is set to the OFF position, then connect its power supply to the barrel jack.
 
 ![Img 17](res/17.jpg)
