@@ -78,6 +78,14 @@ enum PalBbPhy_op {
     BB_PHY_OPTIONS_BLE_S8 = 2 /*!< Always use S=8 coding when transmitting on LE Coded PHY. */
 };
 
+/*! \brief      Package options. */
+typedef enum {
+    BB_PKG_UNKNOWN = 0x0, /*!< Package type is unknown. */
+    BB_PKG_TQFN    = 0x1, /*!< Package type is TQFN. */
+    BB_PKG_BGA     = 0x2, /*!< Package type is BGA. */
+    BB_PKG_WLP     = 0x3, /*!< Package type is WLP. */
+} PalBbPkg_t;
+
 #ifndef BB_CLK_RATE_HZ
 /*! \brief      BB clock rate in hertz. */
 #define BB_CLK_RATE_HZ 1000000
@@ -281,6 +289,7 @@ const PalBbPhyVersion_t *PalBbGetPhyVersion(void);
  */
 /*************************************************************************************************/
 bool_t PalBbGetRssi(int8_t*rssi , uint8_t rfChannel);
+
 /*************************************************************************************************/
 /*!
  *  \brief      Check whether baseband is enabled
@@ -289,6 +298,27 @@ bool_t PalBbGetRssi(int8_t*rssi , uint8_t rfChannel);
  */
 /*************************************************************************************************/
 bool_t PalBbIsEnabled(void);
+
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Get the package type.
+ *
+ *  \return     PalBbPkg_t package type.
+ */
+/*************************************************************************************************/
+PalBbPkg_t PalBbGetPackage(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Set the package type.
+ * 
+ *  \details    Set the package type at run-time. 
+ *
+ *  \return     none.
+ */
+/*************************************************************************************************/
+void PalBbSetPackage(PalBbPkg_t newPkg);
 
 /*! \} */ /* PAL_BB */
 
