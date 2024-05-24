@@ -81,8 +81,7 @@ typedef struct {
     __I  uint32_t targ_intfl;           /**< <tt>\b 0x018:</tt> I3C TARG_INTFL Register */
     __IO uint32_t targ_errwarn;         /**< <tt>\b 0x01C:</tt> I3C TARG_ERRWARN Register */
     __IO uint32_t targ_dmactrl;         /**< <tt>\b 0x020:</tt> I3C TARG_DMACTRL Register */
-    __IO uint32_t targ_hdrbtctrl;       /**< <tt>\b 0x024:</tt> I3C TARG_HDRBTCTRL Register */
-    __I  uint32_t targ_hdrbtlast;       /**< <tt>\b 0x028:</tt> I3C TARG_HDRBTLAST Register */
+    __R  uint32_t rsv_0x24_0x2b[2];
     __IO uint32_t targ_fifoctrl;        /**< <tt>\b 0x02C:</tt> I3C TARG_FIFOCTRL Register */
     __O  uint32_t targ_txfifo8;         /**< <tt>\b 0x030:</tt> I3C TARG_TXFIFO8 Register */
     __O  uint32_t targ_txfifo8e;        /**< <tt>\b 0x034:</tt> I3C TARG_TXFIFO8E Register */
@@ -98,10 +97,9 @@ typedef struct {
     __I  uint32_t targ_cap1;            /**< <tt>\b 0x060:</tt> I3C TARG_CAP1 Register */
     __IO uint32_t targ_dynaddr;         /**< <tt>\b 0x064:</tt> I3C TARG_DYNADDR Register */
     __IO uint32_t targ_maxlimits;       /**< <tt>\b 0x068:</tt> I3C TARG_MAXLIMITS Register */
-    __IO uint32_t targ_partnum;         /**< <tt>\b 0x06C:</tt> I3C TARG_PARTNUM Register */
+    __R  uint32_t rsv_0x6c;
     __IO uint32_t targ_idext;           /**< <tt>\b 0x070:</tt> I3C TARG_IDEXT Register */
-    __IO uint32_t targ_vendorid;        /**< <tt>\b 0x074:</tt> I3C TARG_VENDORID Register */
-    __IO uint32_t targ_clkctrl;         /**< <tt>\b 0x078:</tt> I3C TARG_CLKCTRL Register */
+    __R  uint32_t rsv_0x74_0x7b[2];
     __I  uint32_t targ_msglast;         /**< <tt>\b 0x07C:</tt> I3C TARG_MSGLAST Register */
     __R  uint32_t rsv_0x80;
     __IO uint32_t cont_ctrl1;           /**< <tt>\b 0x084:</tt> I3C CONT_CTRL1 Register */
@@ -112,8 +110,7 @@ typedef struct {
     __I  uint32_t cont_intfl;           /**< <tt>\b 0x098:</tt> I3C CONT_INTFL Register */
     __IO uint32_t cont_errwarn;         /**< <tt>\b 0x09C:</tt> I3C CONT_ERRWARN Register */
     __IO uint32_t cont_dmactrl;         /**< <tt>\b 0x0A0:</tt> I3C CONT_DMACTRL Register */
-    __IO uint32_t cont_hdrbtctrl;       /**< <tt>\b 0x0A4:</tt> I3C CONT_HDRBTCTRL Register */
-    __I  uint32_t cont_hdrbtlast;       /**< <tt>\b 0x0A8:</tt> I3C CONT_HDRBTLAST Register */
+    __R  uint32_t rsv_0xa4_0xab[2];
     __IO uint32_t cont_fifoctrl;        /**< <tt>\b 0x0AC:</tt> I3C CONT_FIFOCTRL Register */
     __O  uint32_t cont_txfifo8;         /**< <tt>\b 0x0B0:</tt> I3C CONT_TXFIFO8 Register */
     __O  uint32_t cont_txfifo8e;        /**< <tt>\b 0x0B4:</tt> I3C CONT_TXFIFO8E Register */
@@ -132,27 +129,12 @@ typedef struct {
     __I  uint32_t cont_rxddr16;         /**< <tt>\b 0x0DC:</tt> I3C CONT_RXDDR16 Register */
     __R  uint32_t rsv_0xe0;
     __IO uint32_t cont_dynaddr;         /**< <tt>\b 0x0E4:</tt> I3C CONT_DYNADDR Register */
-    __R  uint32_t rsv_0xe8_0xef[2];
-    __O  uint32_t cont_txfifo32;        /**< <tt>\b 0x0F0:</tt> I3C CONT_TXFIFO32 Register */
-    __R  uint32_t rsv_0xf4;
-    __I  uint32_t cont_rxfifo32;        /**< <tt>\b 0x0F8:</tt> I3C CONT_RXFIFO32 Register */
-    __R  uint32_t rsv_0xfc;
-    __IO uint32_t targ_rstrectim;       /**< <tt>\b 0x100:</tt> I3C TARG_RSTRECTIM Register */
-    __R  uint32_t rsv_0x104;
-    __I  uint32_t targ_hdrcmd;          /**< <tt>\b 0x108:</tt> I3C TARG_HDRCMD Register */
-    __R  uint32_t rsv_0x10c_0x113[2];
+    __R  uint32_t rsv_0xe8_0x113[11];
     __I  uint32_t targ_groupdef;        /**< <tt>\b 0x114:</tt> I3C TARG_GROUPDEF Register */
     __R  uint32_t rsv_0x118;
     __IO uint32_t targ_mapctrl0;        /**< <tt>\b 0x11C:</tt> I3C TARG_MAPCTRL0 Register */
-    __R  uint32_t rsv_0x120_0x13f[8];
-    __IO uint32_t targ_extibi0;         /**< <tt>\b 0x140:</tt> I3C TARG_EXTIBI0 Register */
-    __IO uint32_t targ_extibi1;         /**< <tt>\b 0x144:</tt> I3C TARG_EXTIBI1 Register */
-    __R  uint32_t rsv_0x148_0x14f[2];
-    __O  uint32_t targ_txfifo32;        /**< <tt>\b 0x150:</tt> I3C TARG_TXFIFO32 Register */
-    __R  uint32_t rsv_0x154;
-    __I  uint32_t targ_rxfifo32;        /**< <tt>\b 0x158:</tt> I3C TARG_RXFIFO32 Register */
-    __R  uint32_t rsv_0x15c_0xffb[936];
-    __I  uint32_t targ_blockid;         /**< <tt>\b 0xFFC:</tt> I3C TARG_BLOCKID Register */
+    __IO uint32_t targ_mapctrl1;        /**< <tt>\b 0x120:</tt> I3C TARG_MAPCTRL1 Register */
+    __IO uint32_t targ_mapctrl2;        /**< <tt>\b 0x124:</tt> I3C TARG_MAPCTRL2 Register */
 } mxc_i3c_regs_t;
 
 /* Register offsets for module I3C */
@@ -171,8 +153,6 @@ typedef struct {
 #define MXC_R_I3C_TARG_INTFL               ((uint32_t)0x00000018UL) /**< Offset from I3C Base Address: <tt> 0x0018</tt> */
 #define MXC_R_I3C_TARG_ERRWARN             ((uint32_t)0x0000001CUL) /**< Offset from I3C Base Address: <tt> 0x001C</tt> */
 #define MXC_R_I3C_TARG_DMACTRL             ((uint32_t)0x00000020UL) /**< Offset from I3C Base Address: <tt> 0x0020</tt> */
-#define MXC_R_I3C_TARG_HDRBTCTRL           ((uint32_t)0x00000024UL) /**< Offset from I3C Base Address: <tt> 0x0024</tt> */
-#define MXC_R_I3C_TARG_HDRBTLAST           ((uint32_t)0x00000028UL) /**< Offset from I3C Base Address: <tt> 0x0028</tt> */
 #define MXC_R_I3C_TARG_FIFOCTRL            ((uint32_t)0x0000002CUL) /**< Offset from I3C Base Address: <tt> 0x002C</tt> */
 #define MXC_R_I3C_TARG_TXFIFO8             ((uint32_t)0x00000030UL) /**< Offset from I3C Base Address: <tt> 0x0030</tt> */
 #define MXC_R_I3C_TARG_TXFIFO8E            ((uint32_t)0x00000034UL) /**< Offset from I3C Base Address: <tt> 0x0034</tt> */
@@ -185,10 +165,7 @@ typedef struct {
 #define MXC_R_I3C_TARG_CAP1                ((uint32_t)0x00000060UL) /**< Offset from I3C Base Address: <tt> 0x0060</tt> */
 #define MXC_R_I3C_TARG_DYNADDR             ((uint32_t)0x00000064UL) /**< Offset from I3C Base Address: <tt> 0x0064</tt> */
 #define MXC_R_I3C_TARG_MAXLIMITS           ((uint32_t)0x00000068UL) /**< Offset from I3C Base Address: <tt> 0x0068</tt> */
-#define MXC_R_I3C_TARG_PARTNUM             ((uint32_t)0x0000006CUL) /**< Offset from I3C Base Address: <tt> 0x006C</tt> */
 #define MXC_R_I3C_TARG_IDEXT               ((uint32_t)0x00000070UL) /**< Offset from I3C Base Address: <tt> 0x0070</tt> */
-#define MXC_R_I3C_TARG_VENDORID            ((uint32_t)0x00000074UL) /**< Offset from I3C Base Address: <tt> 0x0074</tt> */
-#define MXC_R_I3C_TARG_CLKCTRL             ((uint32_t)0x00000078UL) /**< Offset from I3C Base Address: <tt> 0x0078</tt> */
 #define MXC_R_I3C_TARG_MSGLAST             ((uint32_t)0x0000007CUL) /**< Offset from I3C Base Address: <tt> 0x007C</tt> */
 #define MXC_R_I3C_CONT_CTRL1               ((uint32_t)0x00000084UL) /**< Offset from I3C Base Address: <tt> 0x0084</tt> */
 #define MXC_R_I3C_CONT_STATUS              ((uint32_t)0x00000088UL) /**< Offset from I3C Base Address: <tt> 0x0088</tt> */
@@ -198,8 +175,6 @@ typedef struct {
 #define MXC_R_I3C_CONT_INTFL               ((uint32_t)0x00000098UL) /**< Offset from I3C Base Address: <tt> 0x0098</tt> */
 #define MXC_R_I3C_CONT_ERRWARN             ((uint32_t)0x0000009CUL) /**< Offset from I3C Base Address: <tt> 0x009C</tt> */
 #define MXC_R_I3C_CONT_DMACTRL             ((uint32_t)0x000000A0UL) /**< Offset from I3C Base Address: <tt> 0x00A0</tt> */
-#define MXC_R_I3C_CONT_HDRBTCTRL           ((uint32_t)0x000000A4UL) /**< Offset from I3C Base Address: <tt> 0x00A4</tt> */
-#define MXC_R_I3C_CONT_HDRBTLAST           ((uint32_t)0x000000A8UL) /**< Offset from I3C Base Address: <tt> 0x00A8</tt> */
 #define MXC_R_I3C_CONT_FIFOCTRL            ((uint32_t)0x000000ACUL) /**< Offset from I3C Base Address: <tt> 0x00AC</tt> */
 #define MXC_R_I3C_CONT_TXFIFO8             ((uint32_t)0x000000B0UL) /**< Offset from I3C Base Address: <tt> 0x00B0</tt> */
 #define MXC_R_I3C_CONT_TXFIFO8E            ((uint32_t)0x000000B4UL) /**< Offset from I3C Base Address: <tt> 0x00B4</tt> */
@@ -214,17 +189,10 @@ typedef struct {
 #define MXC_R_I3C_CONT_TXDDRMSG            ((uint32_t)0x000000D8UL) /**< Offset from I3C Base Address: <tt> 0x00D8</tt> */
 #define MXC_R_I3C_CONT_RXDDR16             ((uint32_t)0x000000DCUL) /**< Offset from I3C Base Address: <tt> 0x00DC</tt> */
 #define MXC_R_I3C_CONT_DYNADDR             ((uint32_t)0x000000E4UL) /**< Offset from I3C Base Address: <tt> 0x00E4</tt> */
-#define MXC_R_I3C_CONT_TXFIFO32            ((uint32_t)0x000000F0UL) /**< Offset from I3C Base Address: <tt> 0x00F0</tt> */
-#define MXC_R_I3C_CONT_RXFIFO32            ((uint32_t)0x000000F8UL) /**< Offset from I3C Base Address: <tt> 0x00F8</tt> */
-#define MXC_R_I3C_TARG_RSTRECTIM           ((uint32_t)0x00000100UL) /**< Offset from I3C Base Address: <tt> 0x0100</tt> */
-#define MXC_R_I3C_TARG_HDRCMD              ((uint32_t)0x00000108UL) /**< Offset from I3C Base Address: <tt> 0x0108</tt> */
 #define MXC_R_I3C_TARG_GROUPDEF            ((uint32_t)0x00000114UL) /**< Offset from I3C Base Address: <tt> 0x0114</tt> */
 #define MXC_R_I3C_TARG_MAPCTRL0            ((uint32_t)0x0000011CUL) /**< Offset from I3C Base Address: <tt> 0x011C</tt> */
-#define MXC_R_I3C_TARG_EXTIBI0             ((uint32_t)0x00000140UL) /**< Offset from I3C Base Address: <tt> 0x0140</tt> */
-#define MXC_R_I3C_TARG_EXTIBI1             ((uint32_t)0x00000144UL) /**< Offset from I3C Base Address: <tt> 0x0144</tt> */
-#define MXC_R_I3C_TARG_TXFIFO32            ((uint32_t)0x00000150UL) /**< Offset from I3C Base Address: <tt> 0x0150</tt> */
-#define MXC_R_I3C_TARG_RXFIFO32            ((uint32_t)0x00000158UL) /**< Offset from I3C Base Address: <tt> 0x0158</tt> */
-#define MXC_R_I3C_TARG_BLOCKID             ((uint32_t)0x00000FFCUL) /**< Offset from I3C Base Address: <tt> 0x0FFC</tt> */
+#define MXC_R_I3C_TARG_MAPCTRL1            ((uint32_t)0x00000120UL) /**< Offset from I3C Base Address: <tt> 0x0120</tt> */
+#define MXC_R_I3C_TARG_MAPCTRL2            ((uint32_t)0x00000124UL) /**< Offset from I3C Base Address: <tt> 0x0124</tt> */
 /**@} end of group i3c_registers */
 
 /**
@@ -358,35 +326,8 @@ typedef struct {
 #define MXC_F_I3C_TARG_CTRL0_TO_IGN_POS                3 /**< TARG_CTRL0_TO_IGN Position */
 #define MXC_F_I3C_TARG_CTRL0_TO_IGN                    ((uint32_t)(0x1UL << MXC_F_I3C_TARG_CTRL0_TO_IGN_POS)) /**< TARG_CTRL0_TO_IGN Mask */
 
-#define MXC_F_I3C_TARG_CTRL0_HDRBT_LANES_POS           5 /**< TARG_CTRL0_HDRBT_LANES Position */
-#define MXC_F_I3C_TARG_CTRL0_HDRBT_LANES               ((uint32_t)(0x3UL << MXC_F_I3C_TARG_CTRL0_HDRBT_LANES_POS)) /**< TARG_CTRL0_HDRBT_LANES Mask */
-#define MXC_V_I3C_TARG_CTRL0_HDRBT_LANES_SING_ONLY     ((uint32_t)0x0UL) /**< TARG_CTRL0_HDRBT_LANES_SING_ONLY Value */
-#define MXC_S_I3C_TARG_CTRL0_HDRBT_LANES_SING_ONLY     (MXC_V_I3C_TARG_CTRL0_HDRBT_LANES_SING_ONLY << MXC_F_I3C_TARG_CTRL0_HDRBT_LANES_POS) /**< TARG_CTRL0_HDRBT_LANES_SING_ONLY Setting */
-#define MXC_V_I3C_TARG_CTRL0_HDRBT_LANES_SING_DUAL     ((uint32_t)0x1UL) /**< TARG_CTRL0_HDRBT_LANES_SING_DUAL Value */
-#define MXC_S_I3C_TARG_CTRL0_HDRBT_LANES_SING_DUAL     (MXC_V_I3C_TARG_CTRL0_HDRBT_LANES_SING_DUAL << MXC_F_I3C_TARG_CTRL0_HDRBT_LANES_POS) /**< TARG_CTRL0_HDRBT_LANES_SING_DUAL Setting */
-#define MXC_V_I3C_TARG_CTRL0_HDRBT_LANES_SING_DUAL_QUAD ((uint32_t)0x3UL) /**< TARG_CTRL0_HDRBT_LANES_SING_DUAL_QUAD Value */
-#define MXC_S_I3C_TARG_CTRL0_HDRBT_LANES_SING_DUAL_QUAD (MXC_V_I3C_TARG_CTRL0_HDRBT_LANES_SING_DUAL_QUAD << MXC_F_I3C_TARG_CTRL0_HDRBT_LANES_POS) /**< TARG_CTRL0_HDRBT_LANES_SING_DUAL_QUAD Setting */
-
-#define MXC_F_I3C_TARG_CTRL0_ID_RAND_POS               8 /**< TARG_CTRL0_ID_RAND Position */
-#define MXC_F_I3C_TARG_CTRL0_ID_RAND                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_CTRL0_ID_RAND_POS)) /**< TARG_CTRL0_ID_RAND Mask */
-
 #define MXC_F_I3C_TARG_CTRL0_OFFLINE_POS               9 /**< TARG_CTRL0_OFFLINE Position */
 #define MXC_F_I3C_TARG_CTRL0_OFFLINE                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_CTRL0_OFFLINE_POS)) /**< TARG_CTRL0_OFFLINE Mask */
-
-#define MXC_F_I3C_TARG_CTRL0_CMD8_DST_POS              10 /**< TARG_CTRL0_CMD8_DST Position */
-#define MXC_F_I3C_TARG_CTRL0_CMD8_DST                  ((uint32_t)(0x3UL << MXC_F_I3C_TARG_CTRL0_CMD8_DST_POS)) /**< TARG_CTRL0_CMD8_DST Mask */
-#define MXC_V_I3C_TARG_CTRL0_CMD8_DST_RXFIFO           ((uint32_t)0x0UL) /**< TARG_CTRL0_CMD8_DST_RXFIFO Value */
-#define MXC_S_I3C_TARG_CTRL0_CMD8_DST_RXFIFO           (MXC_V_I3C_TARG_CTRL0_CMD8_DST_RXFIFO << MXC_F_I3C_TARG_CTRL0_CMD8_DST_POS) /**< TARG_CTRL0_CMD8_DST_RXFIFO Setting */
-#define MXC_V_I3C_TARG_CTRL0_CMD8_DST_HDRCMD           ((uint32_t)0x1UL) /**< TARG_CTRL0_CMD8_DST_HDRCMD Value */
-#define MXC_S_I3C_TARG_CTRL0_CMD8_DST_HDRCMD           (MXC_V_I3C_TARG_CTRL0_CMD8_DST_HDRCMD << MXC_F_I3C_TARG_CTRL0_CMD8_DST_POS) /**< TARG_CTRL0_CMD8_DST_HDRCMD Setting */
-#define MXC_V_I3C_TARG_CTRL0_CMD8_DST_BOTH             ((uint32_t)0x2UL) /**< TARG_CTRL0_CMD8_DST_BOTH Value */
-#define MXC_S_I3C_TARG_CTRL0_CMD8_DST_BOTH             (MXC_V_I3C_TARG_CTRL0_CMD8_DST_BOTH << MXC_F_I3C_TARG_CTRL0_CMD8_DST_POS) /**< TARG_CTRL0_CMD8_DST_BOTH Setting */
-
-#define MXC_F_I3C_TARG_CTRL0_BAMATCH_POS               16 /**< TARG_CTRL0_BAMATCH Position */
-#define MXC_F_I3C_TARG_CTRL0_BAMATCH                   ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_CTRL0_BAMATCH_POS)) /**< TARG_CTRL0_BAMATCH Mask */
-
-#define MXC_F_I3C_TARG_CTRL0_STATADDR_POS              25 /**< TARG_CTRL0_STATADDR Position */
-#define MXC_F_I3C_TARG_CTRL0_STATADDR                  ((uint32_t)(0x7UL << MXC_F_I3C_TARG_CTRL0_STATADDR_POS)) /**< TARG_CTRL0_STATADDR Mask */
 
 /**@} end of group I3C_TARG_CTRL0_Register */
 
@@ -440,9 +381,6 @@ typedef struct {
 
 #define MXC_F_I3C_TARG_STATUS_ERRWARN_POS              15 /**< TARG_STATUS_ERRWARN Position */
 #define MXC_F_I3C_TARG_STATUS_ERRWARN                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_STATUS_ERRWARN_POS)) /**< TARG_STATUS_ERRWARN Mask */
-
-#define MXC_F_I3C_TARG_STATUS_HDRMATCH_POS             16 /**< TARG_STATUS_HDRMATCH Position */
-#define MXC_F_I3C_TARG_STATUS_HDRMATCH                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_STATUS_HDRMATCH_POS)) /**< TARG_STATUS_HDRMATCH Mask */
 
 #define MXC_F_I3C_TARG_STATUS_CCCH_DONE_POS            17 /**< TARG_STATUS_CCCH_DONE Position */
 #define MXC_F_I3C_TARG_STATUS_CCCH_DONE                ((uint32_t)(0x1UL << MXC_F_I3C_TARG_STATUS_CCCH_DONE_POS)) /**< TARG_STATUS_CCCH_DONE Mask */
@@ -523,15 +461,6 @@ typedef struct {
 #define MXC_F_I3C_TARG_CTRL1_IBIDATA_POS               8 /**< TARG_CTRL1_IBIDATA Position */
 #define MXC_F_I3C_TARG_CTRL1_IBIDATA                   ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_CTRL1_IBIDATA_POS)) /**< TARG_CTRL1_IBIDATA Mask */
 
-#define MXC_F_I3C_TARG_CTRL1_PENDINTR_POS              16 /**< TARG_CTRL1_PENDINTR Position */
-#define MXC_F_I3C_TARG_CTRL1_PENDINTR                  ((uint32_t)(0xFUL << MXC_F_I3C_TARG_CTRL1_PENDINTR_POS)) /**< TARG_CTRL1_PENDINTR Mask */
-
-#define MXC_F_I3C_TARG_CTRL1_ACTSTATE_POS              20 /**< TARG_CTRL1_ACTSTATE Position */
-#define MXC_F_I3C_TARG_CTRL1_ACTSTATE                  ((uint32_t)(0x3UL << MXC_F_I3C_TARG_CTRL1_ACTSTATE_POS)) /**< TARG_CTRL1_ACTSTATE Mask */
-
-#define MXC_F_I3C_TARG_CTRL1_VENDINFO_POS              24 /**< TARG_CTRL1_VENDINFO Position */
-#define MXC_F_I3C_TARG_CTRL1_VENDINFO                  ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_CTRL1_VENDINFO_POS)) /**< TARG_CTRL1_VENDINFO Mask */
-
 /**@} end of group I3C_TARG_CTRL1_Register */
 
 /**
@@ -563,9 +492,6 @@ typedef struct {
 
 #define MXC_F_I3C_TARG_INTEN_ERRWARN_POS               15 /**< TARG_INTEN_ERRWARN Position */
 #define MXC_F_I3C_TARG_INTEN_ERRWARN                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTEN_ERRWARN_POS)) /**< TARG_INTEN_ERRWARN Mask */
-
-#define MXC_F_I3C_TARG_INTEN_HDRMATCH_POS              16 /**< TARG_INTEN_HDRMATCH Position */
-#define MXC_F_I3C_TARG_INTEN_HDRMATCH                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTEN_HDRMATCH_POS)) /**< TARG_INTEN_HDRMATCH Mask */
 
 #define MXC_F_I3C_TARG_INTEN_CCCH_DONE_POS             17 /**< TARG_INTEN_CCCH_DONE Position */
 #define MXC_F_I3C_TARG_INTEN_CCCH_DONE                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTEN_CCCH_DONE_POS)) /**< TARG_INTEN_CCCH_DONE Mask */
@@ -608,9 +534,6 @@ typedef struct {
 #define MXC_F_I3C_TARG_INTCLR_ERRWARN_POS              15 /**< TARG_INTCLR_ERRWARN Position */
 #define MXC_F_I3C_TARG_INTCLR_ERRWARN                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTCLR_ERRWARN_POS)) /**< TARG_INTCLR_ERRWARN Mask */
 
-#define MXC_F_I3C_TARG_INTCLR_HDRMATCH_POS             16 /**< TARG_INTCLR_HDRMATCH Position */
-#define MXC_F_I3C_TARG_INTCLR_HDRMATCH                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTCLR_HDRMATCH_POS)) /**< TARG_INTCLR_HDRMATCH Mask */
-
 #define MXC_F_I3C_TARG_INTCLR_CCCH_DONE_POS            17 /**< TARG_INTCLR_CCCH_DONE Position */
 #define MXC_F_I3C_TARG_INTCLR_CCCH_DONE                ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTCLR_CCCH_DONE_POS)) /**< TARG_INTCLR_CCCH_DONE Mask */
 
@@ -652,9 +575,6 @@ typedef struct {
 #define MXC_F_I3C_TARG_INTFL_ERRWARN_POS               15 /**< TARG_INTFL_ERRWARN Position */
 #define MXC_F_I3C_TARG_INTFL_ERRWARN                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTFL_ERRWARN_POS)) /**< TARG_INTFL_ERRWARN Mask */
 
-#define MXC_F_I3C_TARG_INTFL_HDRMATCH_POS              16 /**< TARG_INTFL_HDRMATCH Position */
-#define MXC_F_I3C_TARG_INTFL_HDRMATCH                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTFL_HDRMATCH_POS)) /**< TARG_INTFL_HDRMATCH Mask */
-
 #define MXC_F_I3C_TARG_INTFL_CCCH_DONE_POS             17 /**< TARG_INTFL_CCCH_DONE Position */
 #define MXC_F_I3C_TARG_INTFL_CCCH_DONE                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_INTFL_CCCH_DONE_POS)) /**< TARG_INTFL_CCCH_DONE Mask */
 
@@ -690,29 +610,14 @@ typedef struct {
 #define MXC_F_I3C_TARG_ERRWARN_SDR_PAR_POS             8 /**< TARG_ERRWARN_SDR_PAR Position */
 #define MXC_F_I3C_TARG_ERRWARN_SDR_PAR                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_SDR_PAR_POS)) /**< TARG_ERRWARN_SDR_PAR Mask */
 
-#define MXC_F_I3C_TARG_ERRWARN_HDR_PAR_POS             9 /**< TARG_ERRWARN_HDR_PAR Position */
-#define MXC_F_I3C_TARG_ERRWARN_HDR_PAR                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_HDR_PAR_POS)) /**< TARG_ERRWARN_HDR_PAR Mask */
-
-#define MXC_F_I3C_TARG_ERRWARN_HDR_CRC_POS             10 /**< TARG_ERRWARN_HDR_CRC Position */
-#define MXC_F_I3C_TARG_ERRWARN_HDR_CRC                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_HDR_CRC_POS)) /**< TARG_ERRWARN_HDR_CRC Mask */
-
 #define MXC_F_I3C_TARG_ERRWARN_TO_POS                  11 /**< TARG_ERRWARN_TO Position */
 #define MXC_F_I3C_TARG_ERRWARN_TO                      ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_TO_POS)) /**< TARG_ERRWARN_TO Mask */
-
-#define MXC_F_I3C_TARG_ERRWARN_NO_VER_POS              12 /**< TARG_ERRWARN_NO_VER Position */
-#define MXC_F_I3C_TARG_ERRWARN_NO_VER                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_NO_VER_POS)) /**< TARG_ERRWARN_NO_VER Mask */
-
-#define MXC_F_I3C_TARG_ERRWARN_INV_REQ_POS             13 /**< TARG_ERRWARN_INV_REQ Position */
-#define MXC_F_I3C_TARG_ERRWARN_INV_REQ                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_INV_REQ_POS)) /**< TARG_ERRWARN_INV_REQ Mask */
 
 #define MXC_F_I3C_TARG_ERRWARN_RX_UNR_POS              16 /**< TARG_ERRWARN_RX_UNR Position */
 #define MXC_F_I3C_TARG_ERRWARN_RX_UNR                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_RX_UNR_POS)) /**< TARG_ERRWARN_RX_UNR Mask */
 
 #define MXC_F_I3C_TARG_ERRWARN_TX_OVR_POS              17 /**< TARG_ERRWARN_TX_OVR Position */
 #define MXC_F_I3C_TARG_ERRWARN_TX_OVR                  ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_TX_OVR_POS)) /**< TARG_ERRWARN_TX_OVR Mask */
-
-#define MXC_F_I3C_TARG_ERRWARN_WRONG_SZ_POS            21 /**< TARG_ERRWARN_WRONG_SZ Position */
-#define MXC_F_I3C_TARG_ERRWARN_WRONG_SZ                ((uint32_t)(0x1UL << MXC_F_I3C_TARG_ERRWARN_WRONG_SZ_POS)) /**< TARG_ERRWARN_WRONG_SZ Mask */
 
 /**@} end of group I3C_TARG_ERRWARN_Register */
 
@@ -748,34 +653,6 @@ typedef struct {
 #define MXC_S_I3C_TARG_DMACTRL_WIDTH_HALFWORD          (MXC_V_I3C_TARG_DMACTRL_WIDTH_HALFWORD << MXC_F_I3C_TARG_DMACTRL_WIDTH_POS) /**< TARG_DMACTRL_WIDTH_HALFWORD Setting */
 
 /**@} end of group I3C_TARG_DMACTRL_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_HDRBTCTRL I3C_TARG_HDRBTCTRL
- * @brief    Target HDR-BT Control Register.
- * @{
- */
-#define MXC_F_I3C_TARG_HDRBTCTRL_CRC32_POS             2 /**< TARG_HDRBTCTRL_CRC32 Position */
-#define MXC_F_I3C_TARG_HDRBTCTRL_CRC32                 ((uint32_t)(0x1UL << MXC_F_I3C_TARG_HDRBTCTRL_CRC32_POS)) /**< TARG_HDRBTCTRL_CRC32 Mask */
-
-#define MXC_F_I3C_TARG_HDRBTCTRL_TX_MAX_DATALEN_POS    4 /**< TARG_HDRBTCTRL_TX_MAX_DATALEN Position */
-#define MXC_F_I3C_TARG_HDRBTCTRL_TX_MAX_DATALEN        ((uint32_t)(0xFFFUL << MXC_F_I3C_TARG_HDRBTCTRL_TX_MAX_DATALEN_POS)) /**< TARG_HDRBTCTRL_TX_MAX_DATALEN Mask */
-
-#define MXC_F_I3C_TARG_HDRBTCTRL_RX_DATALEN_POS        16 /**< TARG_HDRBTCTRL_RX_DATALEN Position */
-#define MXC_F_I3C_TARG_HDRBTCTRL_RX_DATALEN            ((uint32_t)(0xFFFFUL << MXC_F_I3C_TARG_HDRBTCTRL_RX_DATALEN_POS)) /**< TARG_HDRBTCTRL_RX_DATALEN Mask */
-
-/**@} end of group I3C_TARG_HDRBTCTRL_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_HDRBTLAST I3C_TARG_HDRBTLAST
- * @brief    Target HDR-BT Last Data Length Register.
- * @{
- */
-#define MXC_F_I3C_TARG_HDRBTLAST_DATALEN_POS           16 /**< TARG_HDRBTLAST_DATALEN Position */
-#define MXC_F_I3C_TARG_HDRBTLAST_DATALEN               ((uint32_t)(0xFFFFUL << MXC_F_I3C_TARG_HDRBTLAST_DATALEN_POS)) /**< TARG_HDRBTLAST_DATALEN Mask */
-
-/**@} end of group I3C_TARG_HDRBTLAST_Register */
 
 /**
  * @ingroup  i3c_registers
@@ -1044,30 +921,10 @@ typedef struct {
 
 /**
  * @ingroup  i3c_registers
- * @defgroup I3C_TARG_PARTNUM I3C_TARG_PARTNUM
- * @brief    Part Number Register.
- * @{
- */
-#define MXC_F_I3C_TARG_PARTNUM_VENDDEF_POS             0 /**< TARG_PARTNUM_VENDDEF Position */
-#define MXC_F_I3C_TARG_PARTNUM_VENDDEF                 ((uint32_t)(0xFFFUL << MXC_F_I3C_TARG_PARTNUM_VENDDEF_POS)) /**< TARG_PARTNUM_VENDDEF Mask */
-
-#define MXC_F_I3C_TARG_PARTNUM_INSTID_POS              12 /**< TARG_PARTNUM_INSTID Position */
-#define MXC_F_I3C_TARG_PARTNUM_INSTID                  ((uint32_t)(0xFUL << MXC_F_I3C_TARG_PARTNUM_INSTID_POS)) /**< TARG_PARTNUM_INSTID Mask */
-
-#define MXC_F_I3C_TARG_PARTNUM_PARTID_POS              16 /**< TARG_PARTNUM_PARTID Position */
-#define MXC_F_I3C_TARG_PARTNUM_PARTID                  ((uint32_t)(0xFFFFUL << MXC_F_I3C_TARG_PARTNUM_PARTID_POS)) /**< TARG_PARTNUM_PARTID Mask */
-
-/**@} end of group I3C_TARG_PARTNUM_Register */
-
-/**
- * @ingroup  i3c_registers
  * @defgroup I3C_TARG_IDEXT I3C_TARG_IDEXT
  * @brief    ID Extension Register.
  * @{
  */
-#define MXC_F_I3C_TARG_IDEXT_INST_POS                  0 /**< TARG_IDEXT_INST Position */
-#define MXC_F_I3C_TARG_IDEXT_INST                      ((uint32_t)(0xFUL << MXC_F_I3C_TARG_IDEXT_INST_POS)) /**< TARG_IDEXT_INST Mask */
-
 #define MXC_F_I3C_TARG_IDEXT_DEVCHAR_POS               8 /**< TARG_IDEXT_DEVCHAR Position */
 #define MXC_F_I3C_TARG_IDEXT_DEVCHAR                   ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_IDEXT_DEVCHAR_POS)) /**< TARG_IDEXT_DEVCHAR Mask */
 
@@ -1075,31 +932,6 @@ typedef struct {
 #define MXC_F_I3C_TARG_IDEXT_BUSCHAR                   ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_IDEXT_BUSCHAR_POS)) /**< TARG_IDEXT_BUSCHAR Mask */
 
 /**@} end of group I3C_TARG_IDEXT_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_VENDORID I3C_TARG_VENDORID
- * @brief    Vendor ID Register.
- * @{
- */
-#define MXC_F_I3C_TARG_VENDORID_VID_POS                0 /**< TARG_VENDORID_VID Position */
-#define MXC_F_I3C_TARG_VENDORID_VID                    ((uint32_t)(0x7FFFUL << MXC_F_I3C_TARG_VENDORID_VID_POS)) /**< TARG_VENDORID_VID Mask */
-
-/**@} end of group I3C_TARG_VENDORID_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_CLKCTRL I3C_TARG_CLKCTRL
- * @brief    Target Timing Control Clock Register.
- * @{
- */
-#define MXC_F_I3C_TARG_CLKCTRL_ACCURACY_POS            0 /**< TARG_CLKCTRL_ACCURACY Position */
-#define MXC_F_I3C_TARG_CLKCTRL_ACCURACY                ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_CLKCTRL_ACCURACY_POS)) /**< TARG_CLKCTRL_ACCURACY Mask */
-
-#define MXC_F_I3C_TARG_CLKCTRL_FREQ_POS                8 /**< TARG_CLKCTRL_FREQ Position */
-#define MXC_F_I3C_TARG_CLKCTRL_FREQ                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_CLKCTRL_FREQ_POS)) /**< TARG_CLKCTRL_FREQ Mask */
-
-/**@} end of group I3C_TARG_CLKCTRL_Register */
 
 /**
  * @ingroup  i3c_registers
@@ -1399,9 +1231,6 @@ typedef struct {
  * @brief    Controller Error and Warning Register.
  * @{
  */
-#define MXC_F_I3C_CONT_ERRWARN_TX_UNR_POS              1 /**< CONT_ERRWARN_TX_UNR Position */
-#define MXC_F_I3C_CONT_ERRWARN_TX_UNR                  ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_TX_UNR_POS)) /**< CONT_ERRWARN_TX_UNR Mask */
-
 #define MXC_F_I3C_CONT_ERRWARN_NACK_POS                2 /**< CONT_ERRWARN_NACK Position */
 #define MXC_F_I3C_CONT_ERRWARN_NACK                    ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_NACK_POS)) /**< CONT_ERRWARN_NACK Mask */
 
@@ -1417,9 +1246,6 @@ typedef struct {
 #define MXC_F_I3C_CONT_ERRWARN_HDR_CRC_POS             10 /**< CONT_ERRWARN_HDR_CRC Position */
 #define MXC_F_I3C_CONT_ERRWARN_HDR_CRC                 ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_HDR_CRC_POS)) /**< CONT_ERRWARN_HDR_CRC Mask */
 
-#define MXC_F_I3C_CONT_ERRWARN_NO_VER_POS              12 /**< CONT_ERRWARN_NO_VER Position */
-#define MXC_F_I3C_CONT_ERRWARN_NO_VER                  ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_NO_VER_POS)) /**< CONT_ERRWARN_NO_VER Mask */
-
 #define MXC_F_I3C_CONT_ERRWARN_RX_UNR_POS              16 /**< CONT_ERRWARN_RX_UNR Position */
 #define MXC_F_I3C_CONT_ERRWARN_RX_UNR                  ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_RX_UNR_POS)) /**< CONT_ERRWARN_RX_UNR Mask */
 
@@ -1434,9 +1260,6 @@ typedef struct {
 
 #define MXC_F_I3C_CONT_ERRWARN_TO_POS                  20 /**< CONT_ERRWARN_TO Position */
 #define MXC_F_I3C_CONT_ERRWARN_TO                      ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_TO_POS)) /**< CONT_ERRWARN_TO Mask */
-
-#define MXC_F_I3C_CONT_ERRWARN_WRONG_SZ_POS            21 /**< CONT_ERRWARN_WRONG_SZ Position */
-#define MXC_F_I3C_CONT_ERRWARN_WRONG_SZ                ((uint32_t)(0x1UL << MXC_F_I3C_CONT_ERRWARN_WRONG_SZ_POS)) /**< CONT_ERRWARN_WRONG_SZ Mask */
 
 /**@} end of group I3C_CONT_ERRWARN_Register */
 
@@ -1472,49 +1295,6 @@ typedef struct {
 #define MXC_S_I3C_CONT_DMACTRL_WIDTH_HALFWORD          (MXC_V_I3C_CONT_DMACTRL_WIDTH_HALFWORD << MXC_F_I3C_CONT_DMACTRL_WIDTH_POS) /**< CONT_DMACTRL_WIDTH_HALFWORD Setting */
 
 /**@} end of group I3C_CONT_DMACTRL_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_CONT_HDRBTCTRL I3C_CONT_HDRBTCTRL
- * @brief    Controller HDR-BT Control Register.
- * @{
- */
-#define MXC_F_I3C_CONT_HDRBTCTRL_HDR_LANES_POS         0 /**< CONT_HDRBTCTRL_HDR_LANES Position */
-#define MXC_F_I3C_CONT_HDRBTCTRL_HDR_LANES             ((uint32_t)(0x3UL << MXC_F_I3C_CONT_HDRBTCTRL_HDR_LANES_POS)) /**< CONT_HDRBTCTRL_HDR_LANES Mask */
-#define MXC_V_I3C_CONT_HDRBTCTRL_HDR_LANES_SINGLE      ((uint32_t)0x0UL) /**< CONT_HDRBTCTRL_HDR_LANES_SINGLE Value */
-#define MXC_S_I3C_CONT_HDRBTCTRL_HDR_LANES_SINGLE      (MXC_V_I3C_CONT_HDRBTCTRL_HDR_LANES_SINGLE << MXC_F_I3C_CONT_HDRBTCTRL_HDR_LANES_POS) /**< CONT_HDRBTCTRL_HDR_LANES_SINGLE Setting */
-#define MXC_V_I3C_CONT_HDRBTCTRL_HDR_LANES_DUAL        ((uint32_t)0x1UL) /**< CONT_HDRBTCTRL_HDR_LANES_DUAL Value */
-#define MXC_S_I3C_CONT_HDRBTCTRL_HDR_LANES_DUAL        (MXC_V_I3C_CONT_HDRBTCTRL_HDR_LANES_DUAL << MXC_F_I3C_CONT_HDRBTCTRL_HDR_LANES_POS) /**< CONT_HDRBTCTRL_HDR_LANES_DUAL Setting */
-#define MXC_V_I3C_CONT_HDRBTCTRL_HDR_LANES_QUAD        ((uint32_t)0x3UL) /**< CONT_HDRBTCTRL_HDR_LANES_QUAD Value */
-#define MXC_S_I3C_CONT_HDRBTCTRL_HDR_LANES_QUAD        (MXC_V_I3C_CONT_HDRBTCTRL_HDR_LANES_QUAD << MXC_F_I3C_CONT_HDRBTCTRL_HDR_LANES_POS) /**< CONT_HDRBTCTRL_HDR_LANES_QUAD Setting */
-
-#define MXC_F_I3C_CONT_HDRBTCTRL_DAT_LANES_POS         2 /**< CONT_HDRBTCTRL_DAT_LANES Position */
-#define MXC_F_I3C_CONT_HDRBTCTRL_DAT_LANES             ((uint32_t)(0x3UL << MXC_F_I3C_CONT_HDRBTCTRL_DAT_LANES_POS)) /**< CONT_HDRBTCTRL_DAT_LANES Mask */
-#define MXC_V_I3C_CONT_HDRBTCTRL_DAT_LANES_SINGLE      ((uint32_t)0x0UL) /**< CONT_HDRBTCTRL_DAT_LANES_SINGLE Value */
-#define MXC_S_I3C_CONT_HDRBTCTRL_DAT_LANES_SINGLE      (MXC_V_I3C_CONT_HDRBTCTRL_DAT_LANES_SINGLE << MXC_F_I3C_CONT_HDRBTCTRL_DAT_LANES_POS) /**< CONT_HDRBTCTRL_DAT_LANES_SINGLE Setting */
-#define MXC_V_I3C_CONT_HDRBTCTRL_DAT_LANES_DUAL        ((uint32_t)0x1UL) /**< CONT_HDRBTCTRL_DAT_LANES_DUAL Value */
-#define MXC_S_I3C_CONT_HDRBTCTRL_DAT_LANES_DUAL        (MXC_V_I3C_CONT_HDRBTCTRL_DAT_LANES_DUAL << MXC_F_I3C_CONT_HDRBTCTRL_DAT_LANES_POS) /**< CONT_HDRBTCTRL_DAT_LANES_DUAL Setting */
-#define MXC_V_I3C_CONT_HDRBTCTRL_DAT_LANES_QUAD        ((uint32_t)0x3UL) /**< CONT_HDRBTCTRL_DAT_LANES_QUAD Value */
-#define MXC_S_I3C_CONT_HDRBTCTRL_DAT_LANES_QUAD        (MXC_V_I3C_CONT_HDRBTCTRL_DAT_LANES_QUAD << MXC_F_I3C_CONT_HDRBTCTRL_DAT_LANES_POS) /**< CONT_HDRBTCTRL_DAT_LANES_QUAD Setting */
-
-#define MXC_F_I3C_CONT_HDRBTCTRL_CRC32_POS             4 /**< CONT_HDRBTCTRL_CRC32 Position */
-#define MXC_F_I3C_CONT_HDRBTCTRL_CRC32                 ((uint32_t)(0x1UL << MXC_F_I3C_CONT_HDRBTCTRL_CRC32_POS)) /**< CONT_HDRBTCTRL_CRC32 Mask */
-
-#define MXC_F_I3C_CONT_HDRBTCTRL_DATALEN_POS           16 /**< CONT_HDRBTCTRL_DATALEN Position */
-#define MXC_F_I3C_CONT_HDRBTCTRL_DATALEN               ((uint32_t)(0xFFFFUL << MXC_F_I3C_CONT_HDRBTCTRL_DATALEN_POS)) /**< CONT_HDRBTCTRL_DATALEN Mask */
-
-/**@} end of group I3C_CONT_HDRBTCTRL_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_CONT_HDRBTLAST I3C_CONT_HDRBTLAST
- * @brief    Controller HDR-BT Last Data Length Register.
- * @{
- */
-#define MXC_F_I3C_CONT_HDRBTLAST_DATALEN_POS           16 /**< CONT_HDRBTLAST_DATALEN Position */
-#define MXC_F_I3C_CONT_HDRBTLAST_DATALEN               ((uint32_t)(0xFFFFUL << MXC_F_I3C_CONT_HDRBTLAST_DATALEN_POS)) /**< CONT_HDRBTLAST_DATALEN Mask */
-
-/**@} end of group I3C_CONT_HDRBTLAST_Register */
 
 /**
  * @ingroup  i3c_registers
@@ -1736,80 +1516,15 @@ typedef struct {
 
 /**
  * @ingroup  i3c_registers
- * @defgroup I3C_CONT_TXFIFO32 I3C_CONT_TXFIFO32
- * @brief    Controller Write Word Data Register.
- * @{
- */
-#define MXC_F_I3C_CONT_TXFIFO32_DATA_POS               0 /**< CONT_TXFIFO32_DATA Position */
-#define MXC_F_I3C_CONT_TXFIFO32_DATA                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_I3C_CONT_TXFIFO32_DATA_POS)) /**< CONT_TXFIFO32_DATA Mask */
-
-/**@} end of group I3C_CONT_TXFIFO32_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_CONT_RXFIFO32 I3C_CONT_RXFIFO32
- * @brief    Controller Read Word Data Register.
- * @{
- */
-#define MXC_F_I3C_CONT_RXFIFO32_DATA_POS               0 /**< CONT_RXFIFO32_DATA Position */
-#define MXC_F_I3C_CONT_RXFIFO32_DATA                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_I3C_CONT_RXFIFO32_DATA_POS)) /**< CONT_RXFIFO32_DATA Mask */
-
-/**@} end of group I3C_CONT_RXFIFO32_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_RSTRECTIM I3C_TARG_RSTRECTIM
- * @brief    Target Reset Recovery Time Register.
- * @{
- */
-#define MXC_F_I3C_TARG_RSTRECTIM_SYS_POS               0 /**< TARG_RSTRECTIM_SYS Position */
-#define MXC_F_I3C_TARG_RSTRECTIM_SYS                   ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_RSTRECTIM_SYS_POS)) /**< TARG_RSTRECTIM_SYS Mask */
-
-#define MXC_F_I3C_TARG_RSTRECTIM_PERIPH_POS            8 /**< TARG_RSTRECTIM_PERIPH Position */
-#define MXC_F_I3C_TARG_RSTRECTIM_PERIPH                ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_RSTRECTIM_PERIPH_POS)) /**< TARG_RSTRECTIM_PERIPH Mask */
-
-/**@} end of group I3C_TARG_RSTRECTIM_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_HDRCMD I3C_TARG_HDRCMD
- * @brief    Target HDR Command Byte Register.
- * @{
- */
-#define MXC_F_I3C_TARG_HDRCMD_LASTCMD_POS              0 /**< TARG_HDRCMD_LASTCMD Position */
-#define MXC_F_I3C_TARG_HDRCMD_LASTCMD                  ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_HDRCMD_LASTCMD_POS)) /**< TARG_HDRCMD_LASTCMD Mask */
-
-#define MXC_F_I3C_TARG_HDRCMD_RX_OV_POS                30 /**< TARG_HDRCMD_RX_OV Position */
-#define MXC_F_I3C_TARG_HDRCMD_RX_OV                    ((uint32_t)(0x1UL << MXC_F_I3C_TARG_HDRCMD_RX_OV_POS)) /**< TARG_HDRCMD_RX_OV Mask */
-
-#define MXC_F_I3C_TARG_HDRCMD_NEWCMD_POS               31 /**< TARG_HDRCMD_NEWCMD Position */
-#define MXC_F_I3C_TARG_HDRCMD_NEWCMD                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_HDRCMD_NEWCMD_POS)) /**< TARG_HDRCMD_NEWCMD Mask */
-
-/**@} end of group I3C_TARG_HDRCMD_Register */
-
-/**
- * @ingroup  i3c_registers
  * @defgroup I3C_TARG_GROUPDEF I3C_TARG_GROUPDEF
  * @brief    Target Group Definition Register.
  * @{
  */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR0_EN_POS           0 /**< TARG_GROUPDEF_ADDR0_EN Position */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR0_EN               ((uint32_t)(0x1UL << MXC_F_I3C_TARG_GROUPDEF_ADDR0_EN_POS)) /**< TARG_GROUPDEF_ADDR0_EN Mask */
+#define MXC_F_I3C_TARG_GROUPDEF_ADDR_EN_POS            0 /**< TARG_GROUPDEF_ADDR_EN Position */
+#define MXC_F_I3C_TARG_GROUPDEF_ADDR_EN                ((uint32_t)(0x1UL << MXC_F_I3C_TARG_GROUPDEF_ADDR_EN_POS)) /**< TARG_GROUPDEF_ADDR_EN Mask */
 
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR0_POS              1 /**< TARG_GROUPDEF_ADDR0 Position */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR0                  ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_GROUPDEF_ADDR0_POS)) /**< TARG_GROUPDEF_ADDR0 Mask */
-
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR1_EN_POS           8 /**< TARG_GROUPDEF_ADDR1_EN Position */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR1_EN               ((uint32_t)(0x1UL << MXC_F_I3C_TARG_GROUPDEF_ADDR1_EN_POS)) /**< TARG_GROUPDEF_ADDR1_EN Mask */
-
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR1_POS              9 /**< TARG_GROUPDEF_ADDR1 Position */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR1                  ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_GROUPDEF_ADDR1_POS)) /**< TARG_GROUPDEF_ADDR1 Mask */
-
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR2_EN_POS           16 /**< TARG_GROUPDEF_ADDR2_EN Position */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR2_EN               ((uint32_t)(0x1UL << MXC_F_I3C_TARG_GROUPDEF_ADDR2_EN_POS)) /**< TARG_GROUPDEF_ADDR2_EN Mask */
-
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR2_POS              17 /**< TARG_GROUPDEF_ADDR2 Position */
-#define MXC_F_I3C_TARG_GROUPDEF_ADDR2                  ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_GROUPDEF_ADDR2_POS)) /**< TARG_GROUPDEF_ADDR2 Mask */
+#define MXC_F_I3C_TARG_GROUPDEF_ADDR_POS               1 /**< TARG_GROUPDEF_ADDR Position */
+#define MXC_F_I3C_TARG_GROUPDEF_ADDR                   ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_GROUPDEF_ADDR_POS)) /**< TARG_GROUPDEF_ADDR Mask */
 
 /**@} end of group I3C_TARG_GROUPDEF_Register */
 
@@ -1832,79 +1547,52 @@ typedef struct {
 
 /**
  * @ingroup  i3c_registers
- * @defgroup I3C_TARG_EXTIBI0 I3C_TARG_EXTIBI0
- * @brief    Target Extended IBI Data Register 0.
+ * @defgroup I3C_TARG_MAPCTRL1 I3C_TARG_MAPCTRL1
+ * @brief    Target Map Control 1 Register.
  * @{
  */
-#define MXC_F_I3C_TARG_EXTIBI0_CNT_POS                 0 /**< TARG_EXTIBI0_CNT Position */
-#define MXC_F_I3C_TARG_EXTIBI0_CNT                     ((uint32_t)(0x7UL << MXC_F_I3C_TARG_EXTIBI0_CNT_POS)) /**< TARG_EXTIBI0_CNT Mask */
+#define MXC_F_I3C_TARG_MAPCTRL1_EN_POS                 0 /**< TARG_MAPCTRL1_EN Position */
+#define MXC_F_I3C_TARG_MAPCTRL1_EN                     ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL1_EN_POS)) /**< TARG_MAPCTRL1_EN Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI0_MAX_POS                 4 /**< TARG_EXTIBI0_MAX Position */
-#define MXC_F_I3C_TARG_EXTIBI0_MAX                     ((uint32_t)(0x7UL << MXC_F_I3C_TARG_EXTIBI0_MAX_POS)) /**< TARG_EXTIBI0_MAX Mask */
+#define MXC_F_I3C_TARG_MAPCTRL1_ADDR_POS               1 /**< TARG_MAPCTRL1_ADDR Position */
+#define MXC_F_I3C_TARG_MAPCTRL1_ADDR                   ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_MAPCTRL1_ADDR_POS)) /**< TARG_MAPCTRL1_ADDR Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI0_EXT1_POS                8 /**< TARG_EXTIBI0_EXT1 Position */
-#define MXC_F_I3C_TARG_EXTIBI0_EXT1                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI0_EXT1_POS)) /**< TARG_EXTIBI0_EXT1 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL1_STATADDR_EN_POS        8 /**< TARG_MAPCTRL1_STATADDR_EN Position */
+#define MXC_F_I3C_TARG_MAPCTRL1_STATADDR_EN            ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL1_STATADDR_EN_POS)) /**< TARG_MAPCTRL1_STATADDR_EN Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI0_EXT2_POS                16 /**< TARG_EXTIBI0_EXT2 Position */
-#define MXC_F_I3C_TARG_EXTIBI0_EXT2                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI0_EXT2_POS)) /**< TARG_EXTIBI0_EXT2 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL1_STATADDR_10B_POS       9 /**< TARG_MAPCTRL1_STATADDR_10B Position */
+#define MXC_F_I3C_TARG_MAPCTRL1_STATADDR_10B           ((uint32_t)(0x7UL << MXC_F_I3C_TARG_MAPCTRL1_STATADDR_10B_POS)) /**< TARG_MAPCTRL1_STATADDR_10B Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI0_EXT3_POS                24 /**< TARG_EXTIBI0_EXT3 Position */
-#define MXC_F_I3C_TARG_EXTIBI0_EXT3                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI0_EXT3_POS)) /**< TARG_EXTIBI0_EXT3 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL1_NACK_POS               12 /**< TARG_MAPCTRL1_NACK Position */
+#define MXC_F_I3C_TARG_MAPCTRL1_NACK                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL1_NACK_POS)) /**< TARG_MAPCTRL1_NACK Mask */
 
-/**@} end of group I3C_TARG_EXTIBI0_Register */
+/**@} end of group I3C_TARG_MAPCTRL1_Register */
 
 /**
  * @ingroup  i3c_registers
- * @defgroup I3C_TARG_EXTIBI1 I3C_TARG_EXTIBI1
- * @brief    Target Extended IBI Data Register 1.
+ * @defgroup I3C_TARG_MAPCTRL2 I3C_TARG_MAPCTRL2
+ * @brief    Target Map Control 2 Register.
  * @{
  */
-#define MXC_F_I3C_TARG_EXTIBI1_EXT4_POS                0 /**< TARG_EXTIBI1_EXT4 Position */
-#define MXC_F_I3C_TARG_EXTIBI1_EXT4                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI1_EXT4_POS)) /**< TARG_EXTIBI1_EXT4 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL2_EN_POS                 0 /**< TARG_MAPCTRL2_EN Position */
+#define MXC_F_I3C_TARG_MAPCTRL2_EN                     ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL2_EN_POS)) /**< TARG_MAPCTRL2_EN Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI1_EXT5_POS                8 /**< TARG_EXTIBI1_EXT5 Position */
-#define MXC_F_I3C_TARG_EXTIBI1_EXT5                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI1_EXT5_POS)) /**< TARG_EXTIBI1_EXT5 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL2_ADDR_POS               1 /**< TARG_MAPCTRL2_ADDR Position */
+#define MXC_F_I3C_TARG_MAPCTRL2_ADDR                   ((uint32_t)(0x7FUL << MXC_F_I3C_TARG_MAPCTRL2_ADDR_POS)) /**< TARG_MAPCTRL2_ADDR Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI1_EXT6_POS                16 /**< TARG_EXTIBI1_EXT6 Position */
-#define MXC_F_I3C_TARG_EXTIBI1_EXT6                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI1_EXT6_POS)) /**< TARG_EXTIBI1_EXT6 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL2_STATADDR_EN_POS        8 /**< TARG_MAPCTRL2_STATADDR_EN Position */
+#define MXC_F_I3C_TARG_MAPCTRL2_STATADDR_EN            ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL2_STATADDR_EN_POS)) /**< TARG_MAPCTRL2_STATADDR_EN Mask */
 
-#define MXC_F_I3C_TARG_EXTIBI1_EXT7_POS                24 /**< TARG_EXTIBI1_EXT7 Position */
-#define MXC_F_I3C_TARG_EXTIBI1_EXT7                    ((uint32_t)(0xFFUL << MXC_F_I3C_TARG_EXTIBI1_EXT7_POS)) /**< TARG_EXTIBI1_EXT7 Mask */
+#define MXC_F_I3C_TARG_MAPCTRL2_NACK_POS               12 /**< TARG_MAPCTRL2_NACK Position */
+#define MXC_F_I3C_TARG_MAPCTRL2_NACK                   ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL2_NACK_POS)) /**< TARG_MAPCTRL2_NACK Mask */
 
-/**@} end of group I3C_TARG_EXTIBI1_Register */
+#define MXC_F_I3C_TARG_MAPCTRL2_AUTO_EN_POS            13 /**< TARG_MAPCTRL2_AUTO_EN Position */
+#define MXC_F_I3C_TARG_MAPCTRL2_AUTO_EN                ((uint32_t)(0x1UL << MXC_F_I3C_TARG_MAPCTRL2_AUTO_EN_POS)) /**< TARG_MAPCTRL2_AUTO_EN Mask */
 
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_TXFIFO32 I3C_TARG_TXFIFO32
- * @brief    Target Write Word Data Register.
- * @{
- */
-#define MXC_F_I3C_TARG_TXFIFO32_DATA_POS               0 /**< TARG_TXFIFO32_DATA Position */
-#define MXC_F_I3C_TARG_TXFIFO32_DATA                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_I3C_TARG_TXFIFO32_DATA_POS)) /**< TARG_TXFIFO32_DATA Mask */
+#define MXC_F_I3C_TARG_MAPCTRL2_PID_POS                14 /**< TARG_MAPCTRL2_PID Position */
+#define MXC_F_I3C_TARG_MAPCTRL2_PID                    ((uint32_t)(0x3FFFFUL << MXC_F_I3C_TARG_MAPCTRL2_PID_POS)) /**< TARG_MAPCTRL2_PID Mask */
 
-/**@} end of group I3C_TARG_TXFIFO32_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_RXFIFO32 I3C_TARG_RXFIFO32
- * @brief    Target Read Word Data Register.
- * @{
- */
-#define MXC_F_I3C_TARG_RXFIFO32_DATA_POS               0 /**< TARG_RXFIFO32_DATA Position */
-#define MXC_F_I3C_TARG_RXFIFO32_DATA                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_I3C_TARG_RXFIFO32_DATA_POS)) /**< TARG_RXFIFO32_DATA Mask */
-
-/**@} end of group I3C_TARG_RXFIFO32_Register */
-
-/**
- * @ingroup  i3c_registers
- * @defgroup I3C_TARG_BLOCKID I3C_TARG_BLOCKID
- * @brief    Block ID Register.
- * @{
- */
-#define MXC_F_I3C_TARG_BLOCKID_ID_POS                  0 /**< TARG_BLOCKID_ID Position */
-#define MXC_F_I3C_TARG_BLOCKID_ID                      ((uint32_t)(0xFFFFFFFFUL << MXC_F_I3C_TARG_BLOCKID_ID_POS)) /**< TARG_BLOCKID_ID Mask */
-
-/**@} end of group I3C_TARG_BLOCKID_Register */
+/**@} end of group I3C_TARG_MAPCTRL2_Register */
 
 #ifdef __cplusplus
 }

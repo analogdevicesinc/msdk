@@ -3627,73 +3627,9 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>HDRBT_LANES</name>
-       <description>Specifies the number of SDA lanes to support for HDR-BT mode transfers.</description>
-       <bitRange>[6:5]</bitRange>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>SING_ONLY</name>
-         <description>Single-lane only.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>SING_DUAL</name>
-         <description>Single or Dual lane.</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>SING_DUAL_QUAD</name>
-         <description>Single, dual, or quad lane.</description>
-         <value>3</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>ID_RAND</name>
-       <description>Indicates whether the provisioned ID is a Vendor Fixed or Random value.</description>
-       <bitRange>[8:8]</bitRange>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>OFFLINE</name>
        <description>Rejoin I3C bus with existing dynamic address.</description>
        <bitRange>[9:9]</bitRange>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>CMD8_DST</name>
-       <description>Number of PP_BAUD periods minus 1 to make one SCL low period for I3C open-dran periods.</description>
-       <bitRange>[11:10]</bitRange>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>RXFIFO</name>
-         <description>Messages in RXFIFO register.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>HDRCMD</name>
-         <description>Messages in HDRCMD register.</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BOTH</name>
-         <description>Read message is in HDRCMD register, write message is in RXFIFO register.</description>
-         <value>2</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>BAMATCH</name>
-       <description>Bus Available Match register.</description>
-       <bitRange>[23:16]</bitRange>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>STATADDR</name>
-       <description>Contains the 7-bit I2C-style static address written by the application.</description>
-       <bitRange>[27:25]</bitRange>
        <access>read-write</access>
       </field>
      </fields>
@@ -3790,12 +3726,6 @@
        <description>An error or warning has occurred.</description>
        <bitRange>[15:15]</bitRange>
        <access>read-only</access>
-      </field>
-      <field>
-       <name>HDRMATCH</name>
-       <description>HDR mode address match.</description>
-       <bitRange>[16:16]</bitRange>
-       <access>read-write</access>
       </field>
       <field>
        <name>CCCH_DONE</name>
@@ -3970,24 +3900,6 @@
        <bitRange>[15:8]</bitRange>
        <access>read-write</access>
       </field>
-      <field>
-       <name>PENDINTR</name>
-       <description>Contains the value to be returned in the Pending Interrupt field of the GETSTATUS CCC.</description>
-       <bitRange>[19:16]</bitRange>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>ACTSTATE</name>
-       <description>Contains the value to be returned in the Activity Mode field of a GETSTATUS CCC.</description>
-       <bitRange>[21:20]</bitRange>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>VENDINFO</name>
-       <description>Contains the value to be returened in the Vendor Reserved field of a GETSTATUS CCC.</description>
-       <bitRange>[31:24]</bitRange>
-       <access>read-write</access>
-      </field>
      </fields>
     </register>
     <register>
@@ -4035,11 +3947,6 @@
        <name>ERRWARN</name>
        <description>Error or warning interrupt.</description>
        <bitRange>[15:15]</bitRange>
-      </field>
-      <field>
-       <name>HDRMATCH</name>
-       <description>HDR address match interrupt.</description>
-       <bitRange>[16:16]</bitRange>
       </field>
       <field>
        <name>CCCH_DONE</name>
@@ -4105,11 +4012,6 @@
        <bitRange>[15:15]</bitRange>
       </field>
       <field>
-       <name>HDRMATCH</name>
-       <description>HDR address match interrupt.</description>
-       <bitRange>[16:16]</bitRange>
-      </field>
-      <field>
        <name>CCCH_DONE</name>
        <description>CCC Handled Interrupt.</description>
        <bitRange>[17:17]</bitRange>
@@ -4173,11 +4075,6 @@
        <bitRange>[15:15]</bitRange>
       </field>
       <field>
-       <name>HDRMATCH</name>
-       <description>HDR address match interrupt.</description>
-       <bitRange>[16:16]</bitRange>
-      </field>
-      <field>
        <name>CCCH_DONE</name>
        <description>CCC Handled Interrupt.</description>
        <bitRange>[17:17]</bitRange>
@@ -4231,29 +4128,9 @@
        <bitRange>[8:8]</bitRange>
       </field>
       <field>
-       <name>HDR_PAR</name>
-       <description>HDR Parity Error.</description>
-       <bitRange>[9:9]</bitRange>
-      </field>
-      <field>
-       <name>HDR_CRC</name>
-       <description>HDR CRC Error.</description>
-       <bitRange>[10:10]</bitRange>
-      </field>
-      <field>
        <name>TO</name>
        <description>Timeout Error.</description>
        <bitRange>[11:11]</bitRange>
-      </field>
-      <field>
-       <name>NO_VER</name>
-       <description>Target did not verify an HDR-BT write.</description>
-       <bitRange>[12:12]</bitRange>
-      </field>
-      <field>
-       <name>INV_REQ</name>
-       <description>Invalid use of request from CTRL register.</description>
-       <bitRange>[13:13]</bitRange>
       </field>
       <field>
        <name>RX_UNR</name>
@@ -4264,11 +4141,6 @@
        <name>TX_OVR</name>
        <description>Write data overrun.</description>
        <bitRange>[17:17]</bitRange>
-      </field>
-      <field>
-       <name>WRONG_SZ</name>
-       <description>Wrong data register size used for transfer mode.</description>
-       <bitRange>[21:21]</bitRange>
       </field>
      </fields>
     </register>
@@ -4338,42 +4210,6 @@
          <value>2</value>
         </enumeratedValue>
        </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_HDRBTCTRL</name>
-     <description>Target HDR-BT Control Register.</description>
-     <addressOffset>0x024</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>CRC32</name>
-       <description>CRC Size.</description>
-       <bitRange>[2:2]</bitRange>
-      </field>
-      <field>
-       <name>TX_MAX_DATALEN</name>
-       <description>Maximum data length for HDR-BT mode write.</description>
-       <bitRange>[15:4]</bitRange>
-      </field>
-      <field>
-       <name>RX_DATALEN</name>
-       <description>Data length for HDR-BT mode read.</description>
-       <bitRange>[31:16]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_HDRBTLAST</name>
-     <description>Target HDR-BT Last Data Length Register.</description>
-     <addressOffset>0x028</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>DATALEN</name>
-       <description>Data length for most recent HDR-BT mode transfer.</description>
-       <bitRange>[31:16]</bitRange>
       </field>
      </fields>
     </register>
@@ -4781,39 +4617,11 @@
      </fields>
     </register>
     <register>
-     <name>TARG_PARTNUM</name>
-     <description>Part Number Register.</description>
-     <addressOffset>0x06C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>VENDDEF</name>
-       <description>Vendor-defined field of Provisioned ID.</description>
-       <bitRange>[11:0]</bitRange>
-      </field>
-      <field>
-       <name>INSTID</name>
-       <description>Instance ID field of Provisioned ID.</description>
-       <bitRange>[15:12]</bitRange>
-      </field>
-      <field>
-       <name>PARTID</name>
-       <description>Part ID field of Provisioned ID.</description>
-       <bitRange>[31:16]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>TARG_IDEXT</name>
      <description>ID Extension Register.</description>
      <addressOffset>0x070</addressOffset>
      <access>read-write</access>
      <fields>
-      <field>
-       <name>INST</name>
-       <description>Vendor-defined field of Provisioned ID.</description>
-       <bitRange>[3:0]</bitRange>
-      </field>
       <field>
        <name>DEVCHAR</name>
        <description>Device Characteristics Register.</description>
@@ -4823,37 +4631,6 @@
        <name>BUSCHAR</name>
        <description>Bus Characteristics Register.</description>
        <bitRange>[23:16]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_VENDORID</name>
-     <description>Vendor ID Register.</description>
-     <addressOffset>0x074</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>VID</name>
-       <description>Vendor ID.</description>
-       <bitRange>[14:0]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_CLKCTRL</name>
-     <description>Target Timing Control Clock Register.</description>
-     <addressOffset>0x078</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>ACCURACY</name>
-       <description>Maximum variation of the Timing Control Clock Source.</description>
-       <bitRange>[7:0]</bitRange>
-      </field>
-      <field>
-       <name>FREQ</name>
-       <description>Frequency of the Timing Control clock source.</description>
-       <bitRange>[15:8]</bitRange>
       </field>
      </fields>
     </register>
@@ -5393,11 +5170,6 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_UNR</name>
-       <description>TX FIFO underrun flag.</description>
-       <bitRange>[1:1]</bitRange>
-      </field>
-      <field>
        <name>NACK</name>
        <description>I3C or I2C mode address emitted by the IP was NACKed by the targets.</description>
        <bitRange>[2:2]</bitRange>
@@ -5423,11 +5195,6 @@
        <bitRange>[10:10]</bitRange>
       </field>
       <field>
-       <name>NO_VER</name>
-       <description>Target did not verify an HDR-BT write.</description>
-       <bitRange>[12:12]</bitRange>
-      </field>
-      <field>
        <name>RX_UNR</name>
        <description>Read data underrun.</description>
        <bitRange>[16:16]</bitRange>
@@ -5451,11 +5218,6 @@
        <name>TO</name>
        <description>Timeout error.</description>
        <bitRange>[20:20]</bitRange>
-      </field>
-      <field>
-       <name>WRONG_SZ</name>
-       <description>Wrong data register size used for transfer mode.</description>
-       <bitRange>[21:21]</bitRange>
       </field>
      </fields>
     </register>
@@ -5525,81 +5287,6 @@
          <value>2</value>
         </enumeratedValue>
        </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>CONT_HDRBTCTRL</name>
-     <description>Controller HDR-BT Control Register.</description>
-     <addressOffset>0x0A4</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>HDR_LANES</name>
-       <description>Number of lanes to use for the header segment of an HDR-BT mode transfer.</description>
-       <bitRange>[1:0]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>SINGLE</name>
-         <description>Single lane.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>DUAL</name>
-         <description>Dual lane.</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>QUAD</name>
-         <description>Quad lane.</description>
-         <value>3</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DAT_LANES</name>
-       <description>Receive FIFO Flush. This bit is automatically cleared to 0 after the operation. Setting this bit to 1 will affect RX_FIFO status.</description>
-       <bitRange>[3:2]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>SINGLE</name>
-         <description>Single lane.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>DUAL</name>
-         <description>Dual lane.</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>QUAD</name>
-         <description>Quad lane.</description>
-         <value>3</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>CRC32</name>
-       <description>CRC Size.</description>
-       <bitRange>[4:4]</bitRange>
-      </field>
-      <field>
-       <name>DATALEN</name>
-       <description>Data length for HDR-BT mode transfer.</description>
-       <bitRange>[31:16]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>CONT_HDRBTLAST</name>
-     <description>Controller HDR-BT Last Data Length Register.</description>
-     <addressOffset>0x0A8</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>DATALEN</name>
-       <description>Data length for most recent HDR-BT mode transfer.</description>
-       <bitRange>[31:16]</bitRange>
       </field>
      </fields>
     </register>
@@ -5918,107 +5605,20 @@
      </fields>
     </register>
     <register>
-     <name>CONT_TXFIFO32</name>
-     <description>Controller Write Word Data Register.</description>
-     <addressOffset>0x0F0</addressOffset>
-     <access>write-only</access>
-     <fields>
-      <field>
-       <name>DATA</name>
-       <description>Data to be transmitted in HDR-BT mode. LSB is transmitted first.</description>
-       <bitRange>[31:0]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>CONT_RXFIFO32</name>
-     <description>Controller Read Word Data Register.</description>
-     <addressOffset>0x0F8</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>DATA</name>
-       <description>Read data from receive FIFO.</description>
-       <bitRange>[31:0]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_RSTRECTIM</name>
-     <description>Target Reset Recovery Time Register.</description>
-     <addressOffset>0x100</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>SYS</name>
-       <description>System Reset Time.</description>
-       <bitRange>[7:0]</bitRange>
-      </field>
-      <field>
-       <name>PERIPH</name>
-       <description>Peripheral Eeset time.</description>
-       <bitRange>[15:8]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_HDRCMD</name>
-     <description>Target HDR Command Byte Register.</description>
-     <addressOffset>0x108</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>LASTCMD</name>
-       <description>The HDR-DDR mode command byte from the most recently received HDR-DDR mode message.</description>
-       <bitRange>[7:0]</bitRange>
-      </field>
-      <field>
-       <name>RX_OV</name>
-       <description>Command byte overflow.</description>
-       <bitRange>[30:30]</bitRange>
-      </field>
-      <field>
-       <name>NEWCMD</name>
-       <description>New command byte was stored since last time LASTCMD was read.</description>
-       <bitRange>[31:31]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>TARG_GROUPDEF</name>
      <description>Target Group Definition Register.</description>
      <addressOffset>0x114</addressOffset>
      <access>read-only</access>
      <fields>
       <field>
-       <name>ADDR0_EN</name>
-       <description>Group Address 0 enable.</description>
+       <name>ADDR_EN</name>
+       <description>Group Address enable.</description>
        <bitRange>[0:0]</bitRange>
       </field>
       <field>
-       <name>ADDR0</name>
-       <description>Group Address 0.</description>
+       <name>ADDR</name>
+       <description>Group Address .</description>
        <bitRange>[7:1]</bitRange>
-      </field>
-      <field>
-       <name>ADDR1_EN</name>
-       <description>Group Address 1 enable.</description>
-       <bitRange>[8:8]</bitRange>
-      </field>
-      <field>
-       <name>ADDR1</name>
-       <description>Group Address 1.</description>
-       <bitRange>[15:9]</bitRange>
-      </field>
-      <field>
-       <name>ADDR2_EN</name>
-       <description>Group Address 2 enable.</description>
-       <bitRange>[16:16]</bitRange>
-      </field>
-      <field>
-       <name>ADDR2</name>
-       <description>Group Address 2.</description>
-       <bitRange>[23:17]</bitRange>
       </field>
      </fields>
     </register>
@@ -6046,102 +5646,73 @@
      </fields>
     </register>
     <register>
-     <name>TARG_EXTIBI0</name>
-     <description>Target Extended IBI Data Register 0.</description>
-     <addressOffset>0x140</addressOffset>
+     <name>TARG_MAPCTRL1</name>
+     <description>Target Map Control 1 Register.</description>
+     <addressOffset>0x120</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>CNT</name>
-       <description>The number of extended IBI data bytes.</description>
-       <bitRange>[2:0]</bitRange>
+       <name>EN</name>
+       <description>Mapped address slot is enabled.</description>
+       <bitRange>[0:0]</bitRange>
       </field>
       <field>
-       <name>MAX</name>
-       <description>The maximum number of extended IBI data bytes that can be sent using the EXTIBI registers.</description>
-       <bitRange>[6:4]</bitRange>
+       <name>ADDR</name>
+       <description>Static or Dynamic address.</description>
+       <bitRange>[7:1]</bitRange>
       </field>
       <field>
-       <name>EXT1</name>
-       <description>First extended IBI data byte.</description>
-       <bitRange>[15:8]</bitRange>
+       <name>STATADDR_EN</name>
+       <description>ADDR field contains the I2C static address if enabled.</description>
+       <bitRange>[8:8]</bitRange>
       </field>
       <field>
-       <name>EXT2</name>
-       <description>Second extended IBI data byte.</description>
-       <bitRange>[23:16]</bitRange>
+       <name>STATADDR_10B</name>
+       <description>Contains the upper 3 bits of a 10-bit I2C Static Address.</description>
+       <bitRange>[11:9]</bitRange>
       </field>
       <field>
-       <name>EXT3</name>
-       <description>Third extended IBI data byte.</description>
-       <bitRange>[31:24]</bitRange>
+       <name>NACK</name>
+       <description>Indicates how the last primary dynamic address value change occurred.</description>
+       <bitRange>[12:12]</bitRange>
       </field>
      </fields>
     </register>
     <register>
-     <name>TARG_EXTIBI1</name>
-     <description>Target Extended IBI Data Register 1.</description>
-     <addressOffset>0x144</addressOffset>
+     <name>TARG_MAPCTRL2</name>
+     <description>Target Map Control 2 Register.</description>
+     <addressOffset>0x124</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>EXT4</name>
-       <description>Fourth extended IBI data byte.</description>
-       <bitRange>[7:0]</bitRange>
+       <name>EN</name>
+       <description>Mapped address slot is enabled.</description>
+       <bitRange>[0:0]</bitRange>
       </field>
       <field>
-       <name>EXT5</name>
-       <description>Fifth extended IBI data byte.</description>
-       <bitRange>[15:8]</bitRange>
+       <name>ADDR</name>
+       <description>Static or Dynamic address.</description>
+       <bitRange>[7:1]</bitRange>
       </field>
       <field>
-       <name>EXT6</name>
-       <description>Sixth extended IBI data byte.</description>
-       <bitRange>[23:16]</bitRange>
+       <name>STATADDR_EN</name>
+       <description>ADDR field contains the I2C static address if enabled.</description>
+       <bitRange>[8:8]</bitRange>
       </field>
       <field>
-       <name>EXT7</name>
-       <description>Seventh extended IBI data byte.</description>
-       <bitRange>[31:24]</bitRange>
+       <name>NACK</name>
+       <description>Indicates how the last primary dynamic address value change occurred.</description>
+       <bitRange>[12:12]</bitRange>
       </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_TXFIFO32</name>
-     <description>Target Write Word Data Register.</description>
-     <addressOffset>0x150</addressOffset>
-     <access>write-only</access>
-     <fields>
       <field>
-       <name>DATA</name>
-       <description>Data to be transmitted in HDR-BT mode.</description>
-       <bitRange>[31:0]</bitRange>
+       <name>AUTO_EN</name>
+       <description>Enable slot for automatic dynamic address assignment.</description>
+       <bitRange>[13:13]</bitRange>
       </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_RXFIFO32</name>
-     <description>Target Read Word Data Register.</description>
-     <addressOffset>0x158</addressOffset>
-     <access>read-only</access>
-     <fields>
       <field>
-       <name>DATA</name>
-       <description>Read data from RX FIFO.</description>
-       <bitRange>[31:0]</bitRange>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>TARG_BLOCKID</name>
-     <description>Block ID Register.</description>
-     <addressOffset>0xFFC</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ID</name>
-       <description>Vendor-specific information set by hardware configuration parameter BLOCK_ID.</description>
-       <bitRange>[31:0]</bitRange>
+       <name>PID</name>
+       <description>Indicates how the last primary dynamic address value change occurred.</description>
+       <bitRange>[31:14]</bitRange>
       </field>
      </fields>
     </register>
