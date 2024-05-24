@@ -52,7 +52,7 @@ inline __attribute__((deprecated("Use Start_Core1(); instead."))) void Core1_Sta
  * @brief Stops code executing in Core 1
  */
 #if defined(__GNUC__)
-inline __attribute__(( deprecated("Use Stop_Core1(); instead."))) void Core1_Stop(void)
+inline __attribute__((deprecated("Use Stop_Core1(); instead."))) void Core1_Stop(void)
 {
     Stop_Core1();
 }
