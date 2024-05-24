@@ -97,8 +97,10 @@ SECTIONS {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
     
-    /* This section will keep the SPIX data until loaded into the external device */
-    /* Upon initialization of SPIX (user code needs to do this) */
+    /**
+     * This section will keep the SPIX data until loaded into the external device.
+     * Upon initialization of SPIX (user code needs to do this).
+     */
     .xip_section :
     {
         KEEP(*(.xip_section*))
@@ -120,7 +122,7 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         *(vtable)
-        *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
         *(.flashprog*)      /* Flash program */
         
@@ -161,28 +163,28 @@ SECTIONS {
     .otp (NOLOAD) :
     {
         _otp = ALIGN(., 4);
-        *(.otp*)           /*Copy of OTP memory*/
+        *(.otp*)           /* Copy of OTP memory */
         _eotp = ALIGN(., 4);
     } > OTP
 
     .arm_shared (NOLOAD) :
     {
         _arm_shared = ALIGN(., 4);
-        *(.arm_shared*)           /*Shared memory section*/
+        *(.arm_shared*)           /* Shared memory section */
         _earm_shared = ALIGN(., 4);
     } > ARM_SHARED
 
     .sdma_shared (NOLOAD) :
     {
         _sdma_shared = ALIGN(., 4);
-        *(.sdma_shared*)           /*Shared memory section*/
+        *(.sdma_shared*)           /* Shared memory section */
         _esdma_shared = ALIGN(., 4);
     } > SDMA_SHARED
 
     .sdma_code :
     {
         _sdma_code = ALIGN(., 4);
-        *(.sdma_code*)           /*SDMA Code*/
+        *(.sdma_code*)           /* SDMA Code */
         _esdma_code = ALIGN(., 4);
     } > SDMA_CODE AT>FLASH
     __load_sdma_code = LOADADDR(.sdma_code);
@@ -190,7 +192,7 @@ SECTIONS {
     .sdma_data :
     {
         _sdma_data = ALIGN(., 4);
-        *(.sdma_data*)           /*SDMA Data*/
+        *(.sdma_data*)           /* SDMA Data */
         _esdma_data = ALIGN(., 4);
     } > SDMA_DATA AT>FLASH
     __load_sdma_data = LOADADDR(.sdma_data);
@@ -199,7 +201,7 @@ SECTIONS {
     {
         . = ALIGN(4);
         _bss = .;
-        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
+        *(.bss*)     /* read-write zero-initialized data: uninitialized global variable */
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
@@ -207,7 +209,7 @@ SECTIONS {
     /**
      * Setup the stack for Core 1, it will only be used if the project build
      * includes a definition of Stack_Size_Core1, which defines the space
-     * reserved above the main core's stack for core 1's stack .
+     * reserved above the main core's stack for core 1's stack.
      */
     __StackTop_Core1 = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit_Core1 = DEFINED(Stack_Size_Core1) ? __StackTop_Core1 - Stack_Size_Core1 : __StackTop_Core1;
