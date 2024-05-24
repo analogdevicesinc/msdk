@@ -14,6 +14,8 @@ There are 3 primary components to the demo:
 
 Each component requires some assembly and associated hardware connections.  Additionally, each component requires software and firmware to link them together into the complete demo.  The components are discussed briefly in more detail here to provide a high-level overview, followed by a detailed setup guide for the entire demo.
 
+![Block Diagram](res/Asimov-Block-Diagram.png)
+
 ## Hardware Setup
 
 **(!) Begin all assembly with components powered off and disconnected from power supplies until otherwise noted.**
