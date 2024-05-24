@@ -308,6 +308,9 @@ $(warning MFLOAT_FLAGS has been deprecated!  Please use MFLOAT_ABI instead.)
 MFLOAT_ABI = $(MFLOAT_FLAGS) # Copy over to new option for backwards compatability
 endif
 
+# Export MFLOAT_ABI to libPeriphDriver.mk.
+export MFLOAT_ABI
+
 # Option for setting the FPU to use
 MFPU ?= fpv4-sp-d16
 
