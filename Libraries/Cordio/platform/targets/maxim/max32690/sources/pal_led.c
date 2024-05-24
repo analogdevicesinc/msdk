@@ -137,7 +137,7 @@ void PalLedOff(uint8_t ledId)
     led_pin[ledId].port->out_clr = led_pin[ledId].mask;
   #endif
 }
-*************************************************************************************************/
+/*************************************************************************************************/
 /*!
  *  \brief      Set LED On Fast as possible, by eliminating overhead.
  *
