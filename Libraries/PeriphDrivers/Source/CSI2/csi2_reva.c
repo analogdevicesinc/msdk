@@ -372,7 +372,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
             return E_NO_RESPONSE;
         }
     }
-    MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+    MXC_TMR_SW_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
 
     if (!csi2_state.capture_stats.success)
         return E_FAIL;
