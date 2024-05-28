@@ -924,6 +924,7 @@
             <name>TX_THD_LVL</name>
             <description>TX FIFO trigger level.</description>
             <bitRange>[5:4]</bitRange>
+            <access>read-write</access>
             <enumeratedValues>
               <enumeratedValue>
                 <name>EMPTY</name>
@@ -938,15 +939,14 @@
               <enumeratedValue>
                 <name>HALF_FULL</name>
                 <description>Trigger when half full or less.</description>
-                <value>0</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>ALMOST_FULL</name>
                 <description>Trigger when almost full or less.</description>
-                <value>1</value>
+                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
-            <access>read-write</access>
           </field>
           <field>
             <name>RX_THD_LVL</name>
@@ -967,12 +967,12 @@
               <enumeratedValue>
                 <name>HALF_FULL</name>
                 <description>Trigger when half full or less.</description>
-                <value>0</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>3_QUARTER_FULL</name>
                 <description>Trigger when 3 quarters full or less.</description>
-                <value>1</value>
+                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
@@ -2001,6 +2001,7 @@
             <name>TX_THD_LVL</name>
             <description>TX FIFO trigger level.</description>
             <bitRange>[5:4]</bitRange>
+            <access>read-write</access>
             <enumeratedValues>
               <enumeratedValue>
                 <name>EMPTY</name>
@@ -2015,15 +2016,14 @@
               <enumeratedValue>
                 <name>HALF_FULL</name>
                 <description>Trigger when half full or less.</description>
-                <value>0</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>ALMOST_FULL</name>
                 <description>Trigger when almost full or less.</description>
-                <value>1</value>
+                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
-            <access>read-write</access>
           </field>
           <field>
             <name>RX_THD_LVL</name>
@@ -2044,12 +2044,12 @@
               <enumeratedValue>
                 <name>HALF_FULL</name>
                 <description>Trigger when half full or less.</description>
-                <value>0</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>3_QUARTER_FULL</name>
                 <description>Trigger when 3 quarters full or less.</description>
-                <value>1</value>
+                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
