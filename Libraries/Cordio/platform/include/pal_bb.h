@@ -166,6 +166,7 @@ typedef struct {
     uint8_t major;
     uint8_t minor;
     uint8_t patch;
+    uint32_t commit;
     char *buildDate;
 } PalBbPhyVersion_t;
 /**************************************************************************************************
