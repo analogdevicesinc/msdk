@@ -198,13 +198,21 @@ for src_file in periphdrivers_src_files:
         # Isolate revision version. 
         revision = src_file.split("_rev")[-1]
         index_to_first_underscore = revision.find("_")
-        revision_id = "_rev" + revision[:index_to_first_underscore]
+        revision_id = "_rev" + revision[:index_to_first_underscore-1]
 
-        rev_files = [f for f in os.listdir(periphdrivers_source_src + "/" + parent_periph_dir) if os.path.isfile(f) and (revision_id in f)]
+        rev_files = [file for file in os.listdir(periphdrivers_source_src + "/" + parent_periph_dir) if revision_id in file and ".svd" not in file]
+
+        # Account fo rev revisions (_reva1 and _reva2 files share the same _reva register file)
+        # _revX is 5 characters long
+        if len(revision_id) > 5:
+            # Grab register file
+            rev_files.append(parent_periph_dir.lower() + revision_id[:-1] + "_regs.h")
+
         for file in rev_files:
-            src_file = os.path.join(periphdrivers_source_src, "/" + parent_periph_dir + "/" + file)
-            dst_file = os.path.join(periphdrivers_source_dst, "/" + parent_periph_dir + "/" + file)
-            shutil.copy(src_file, dst_file)
+            src_file = periphdrivers_source_src + "/" + parent_periph_dir + "/" + file
+            dst_file = periphdrivers_source_dst + "/" + parent_periph_dir + "/" + file
+            if os.path.isfile(src_file):
+                shutil.copy(src_file, dst_file)
 
 
     if "_common" in src_file:
