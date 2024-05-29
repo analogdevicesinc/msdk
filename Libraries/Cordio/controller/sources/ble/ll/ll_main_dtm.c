@@ -328,6 +328,8 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
         
         BbStop(BB_PROT_BLE_DTM);
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+        LmgrDecResetRefCount();
+
 
         if (llTestCb.state == LL_TEST_STATE_RESET) {
             lctrMsgHdr_t *pMsg;
@@ -344,7 +346,7 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
             /* Terminate immediately. */
             llTestCb.state = LL_TEST_STATE_IDLE;
             lmgrCb.testEnabled = FALSE;
-            LmgrDecResetRefCount();
+            // LmgrDecResetRefCount();
         }
     }
 }
@@ -564,6 +566,8 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
     }
 
+    
+
     WsfArenaCreate((WsfArena_t*)&llTestCb.arena, arenaSize);
 
     pOp = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, sizeof(BbOpDesc_t));
@@ -735,6 +739,7 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
         llTestCb.packetsFreed = TRUE;
 
         BbStop(BB_PROT_BLE_DTM);
+        LmgrDecResetRefCount();
 
         
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
@@ -860,6 +865,8 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     {
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
     }
+
+
 
     uint16_t allocLen = WSF_MAX(WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN), BB_FIXED_DATA_PKT_LEN);
     WsfArenaCreate((WsfArena_t*)&llTestCb.arena, sizeof(BbOpDesc_t) + sizeof(BbBleData_t) + allocLen);
@@ -1014,7 +1021,7 @@ uint8_t LlRxTest(uint8_t rfChan, uint16_t numPkt)
 /*************************************************************************************************/
 uint8_t LlEndTest(LlTestReport_t *pRpt)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlEndTesdfsdfsdst");
+    LL_TRACE_INFO0("### LlApi ###  LlEndTest");
     if ((llTestCb.state == LL_TEST_STATE_TX) && (llTestCb.tx.pktType == LL_TEST_PKT_TYPE_PRBS15)) {
         BbStop(BB_PROT_PRBS15);
         llTestCb.state = LL_TEST_STATE_IDLE;
@@ -1024,7 +1031,10 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
         return LL_SUCCESS;
     }
 
+    LmgrDecResetRefCount();
+
     if (llTestCb.state == LL_TEST_STATE_TX) {
+
         /* Signal termination. */
         llTestCb.state = LL_TEST_STATE_TERM;
     } else if (llTestCb.state == LL_TEST_STATE_RX) {
