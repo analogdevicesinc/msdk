@@ -38,6 +38,7 @@
 #include "wsf_trace.h"
 #include <string.h>
 
+
 /* Access internal definitions. */
 #include "../lctr/lctr_int.h"
 
@@ -98,6 +99,8 @@ static volatile struct {
         uint32_t errPattern; /*!< Error pattern. */
         uint32_t errBit; /*!< Error bit. */
     } tx; /*!< Transmit parameters. */
+
+    WsfArena_t arena;
 } llTestCb;
 
 static void llTestResetHandler(void);
@@ -279,9 +282,7 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
         SchInsertNextAvailable(pOp);
 
     } else {
-        WsfBufFree(pTx->pTxBuf);
-        WsfBufFree(pBle);
-        WsfBufFree(pOp);
+        WsfArenaFree(&llTestCb.arena);
     }
 }
 /*************************************************************************************************/
@@ -326,9 +327,9 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
         /* Reschedule transmit. */
         SchInsertNextAvailable(pOp);
     } else {
-        WsfBufFree(pTx->pTxBuf);
-        WsfBufFree(pBle);
-        WsfBufFree(pOp);
+        
+
+        WsfArenaFree(&llTestCb.arena);
 
         BbStop(BB_PROT_BLE_DTM);
 
@@ -547,13 +548,16 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     if (llTestCb.state == LL_TEST_STATE_TX) {
         return LL_SUCCESS;
     }
+    
+    const uint32_t arenaSize = WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN) + sizeof(BbOpDesc_t) + sizeof(BbBleData_t);
+    WsfArenaCreate(&llTestCb.arena, arenaSize);
 
-    if ((pOp = WsfBufAlloc(sizeof(BbOpDesc_t))) == NULL) {
+    if ((pOp = WsfArenaAlloc(&llTestCb.arena, sizeof(BbOpDesc_t))) == NULL) {
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
-    if ((pBle = WsfBufAlloc(sizeof(BbBleData_t))) == NULL) {
-        WsfBufFree(pOp);
+    if ((pBle = WsfArenaAlloc(&llTestCb.arena, sizeof(BbBleData_t))) == NULL) {
+        WsfArenaFree(&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -595,9 +599,9 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     pTx->pktInterUsec =
         llCalcPacketInterval(llTestCb.tx.pduLen, pBle->chan.txPhy, pBle->chan.initTxPhyOptions);
 
-    if ((pTx->pTxBuf = WsfBufAlloc(pTx->txLen)) == NULL) {
-        WsfBufFree(pBle);
-        WsfBufFree(pOp);
+    if ((pTx->pTxBuf = WsfArenaAlloc(&llTestCb.arena, pTx->txLen)) == NULL) {
+
+        WsfArenaFree(&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -682,9 +686,7 @@ static void llTestRxAbortCback(BbOpDesc_t *pOp)
     if (llTestCb.state == LL_TEST_STATE_RX) {
         SchInsertNextAvailable(pOp);
     } else {
-        WsfBufFree(pBle);
-        WsfBufFree(pRx->pRxBuf);
-        WsfBufFree(pOp);
+        WsfArenaFree(&llTestCb.arena);
         llTestCb.packetsFreed = TRUE;
     }
 }
@@ -715,9 +717,8 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
         /* Reschedule receive. */
         SchInsertNextAvailable(pOp);
     } else {
-        WsfBufFree(pRx->pRxBuf);
-        WsfBufFree(pBle);
-        WsfBufFree(pOp);
+        WsfArenaFree(&llTestCb.arena);
+
 
         llTestCb.packetsFreed = TRUE;
 
@@ -834,16 +835,18 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
         }
         break;
     }
+    uint16_t allocLen = WSF_MAX(WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN), BB_FIXED_DATA_PKT_LEN);
+    WsfArenaCreate(&llTestCb.arena, sizeof(BbOpDesc_t) + sizeof(BbBleData_t) + allocLen);
 
     BbOpDesc_t *pOp;
     BbBleData_t *pBle;
 
-    if ((pOp = WsfBufAlloc(sizeof(BbOpDesc_t))) == NULL) {
+    if ((pOp = WsfArenaAlloc(&llTestCb.arena, sizeof(BbOpDesc_t))) == NULL) {
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
-    if ((pBle = WsfBufAlloc(sizeof(BbBleData_t))) == NULL) {
-        WsfBufFree(pOp);
+    if ((pBle = WsfArenaAlloc(&llTestCb.arena, sizeof(BbBleData_t))) == NULL) {
+        WsfArenaFree(&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -890,11 +893,11 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     pRx->rxSyncDelayUsec = pLctrRtCfg->dtmRxSyncMs * 1000;
     pRx->rxLen = WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN);
     pRx->testCback = llTestRxComplete;
-
-    uint16_t allocLen = WSF_MAX(pRx->rxLen, BB_FIXED_DATA_PKT_LEN);
-    if ((pRx->pRxBuf = WsfBufAlloc(allocLen)) == NULL) {
-        WsfBufFree(pBle);
-        WsfBufFree(pOp);
+    
+    
+    if ((pRx->pRxBuf = WsfArenaAlloc(&llTestCb.arena, allocLen)) == NULL) {
+        
+        WsfArenaFree(&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 

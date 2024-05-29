@@ -423,7 +423,42 @@ void WsfBufFree(void *pBuf)
 
   return;
 }
+bool_t WsfArenaCreate(WsfArena_t *arena, uint32_t arena_size)
+{
+    arena->start = WsfBufAlloc(arena_size);
+    arena->idx = 0;
+    arena->size = arena_size;
 
+    return arena->start != NULL ? TRUE : 0;
+}
+void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
+{
+
+    WsfCsEnter();
+
+    if (arena->idx >= arena->size)
+    {
+      WsfCsExit();
+        
+      return NULL;
+    }
+
+    void *mem = arena->start + arena->idx;
+
+    arena->idx += size;
+
+    WsfCsExit();
+    
+    return mem;
+}
+void WsfArenaFree(WsfArena_t *arena)
+{
+    WsfCsEnter(); 
+    WsfBufFree(arena->start);
+    arena->start = NULL;
+    WsfCsExit(); 
+
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Diagnostic function to get the buffer allocation statistics.
