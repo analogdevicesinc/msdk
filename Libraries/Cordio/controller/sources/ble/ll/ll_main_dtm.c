@@ -280,6 +280,7 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
         SchInsertNextAvailable(pOp);
 
     } else {
+        lmgrCb.testEnabled = FALSE;
         LmgrDecResetRefCount();
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
     }
@@ -712,6 +713,7 @@ static void llTestRxAbortCback(BbOpDesc_t *pOp)
     } else {
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
         LmgrDecResetRefCount();
+        lmgrCb.testEnabled = FALSE;
 
         llTestCb.packetsFreed = TRUE;
     }
