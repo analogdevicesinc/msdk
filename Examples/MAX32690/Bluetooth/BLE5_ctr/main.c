@@ -130,7 +130,7 @@ static void mainWsfInit(void)
         { 128, mainLlRtCfg.maxAdvReports },
         { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
         { dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
-                           mainLlRtCfg.numIsoRxBuf }
+                           mainLlRtCfg.numIsoRxBuf },
         {DTM_POOL_SIZE, 1}
     };
 
