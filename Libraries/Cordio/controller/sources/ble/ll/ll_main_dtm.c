@@ -565,6 +565,8 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     if(llTestCb.arena.start != NULL)
     {
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+        LmgrDecResetRefCount();
+
     }
 
     
@@ -577,6 +579,8 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     if(pOp == NULL || pBle == NULL)
     {
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+        LmgrDecResetRefCount();
+
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -623,6 +627,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     if ((pTx->pTxBuf = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, pTx->txLen)) == NULL) {
 
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+        LmgrDecResetRefCount();
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -763,7 +768,7 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
             /* Terminate immediately. */
             llTestCb.state = LL_TEST_STATE_IDLE;
             lmgrCb.testEnabled = FALSE;
-            // LmgrDecResetRefCount();
+            LmgrDecResetRefCount();
         }
     }
 }
@@ -866,6 +871,8 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     if(llTestCb.arena.start != NULL)
     {
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+        LmgrDecResetRefCount();
+
     }
 
 
@@ -882,6 +889,8 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
 
     if ((pBle = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, sizeof(BbBleData_t))) == NULL) {
         WsfArenaFree((void*)&llTestCb.arena);
+        LmgrDecResetRefCount();
+
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -933,6 +942,8 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     if ((pRx->pRxBuf = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, allocLen)) == NULL) {
         
         WsfArenaFree((void*)&llTestCb.arena);
+        LmgrDecResetRefCount();
+
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
