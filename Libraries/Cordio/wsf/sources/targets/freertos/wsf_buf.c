@@ -69,6 +69,7 @@ typedef struct {
 
 /* Number of pools. */
 uint8_t wsfBufNumPools;
+uint8_t wsfNumArenas;
 
 /* Memory used for pools. */
 wsfBufMem_t *wsfBufMem = NULL;
@@ -389,7 +390,88 @@ void WsfBufFree(void *pBuf)
 
   return;
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Create an arena.
+ *
+ *  \param  arena    Arena.
+ *  \param  size    Arena total size.
+ * 
+ */
+/*************************************************************************************************/
+bool_t WsfArenaCreate(WsfArena_t *arena, uint32_t arena_size)
+{
+    arena->start = WsfBufAlloc(arena_size);
+    arena->idx = 0;
+    arena->size = arena_size;
 
+    if(arena->start != NULL)
+    {
+      wsfNumArenas++;
+      return TRUE;
+    }
+    
+    #if WSF_BUF_FREE_CHECK_ASSERT == TRUE
+      WSF_ASSERT(arena->start != NULL);
+    #endif
+
+    return FALSE;
+
+}
+/*************************************************************************************************/
+/*!
+ *  \brief  Allocat a buffer within an arena
+ *
+ *  \param  arena    Arena to allocate within.
+ *  \param  size     Size to allocate in arena
+ */
+/*************************************************************************************************/
+void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
+{
+
+    WsfCsEnter();
+
+    if (arena->idx >= arena->size)
+    {
+      WsfCsExit();
+    #if WSF_BUF_FREE_CHECK_ASSERT == TRUE
+      WSF_ASSERT(arena->idx < arena->size);
+    #endif
+      return NULL;
+    }
+
+    void *mem = arena->start + arena->idx;
+
+    arena->idx += size;
+
+    WsfCsExit();
+    
+    return mem;
+}
+/*************************************************************************************************/
+/*!
+ *  \brief  Free an arena.
+ *
+ *  \param  pBuf    Arena to free.
+ */
+/*************************************************************************************************/
+void WsfArenaFree(WsfArena_t *arena)
+{
+
+  WsfCsEnter(); 
+  
+  
+  if(arena->start != NULL)
+  {
+    
+    WsfBufFree(arena->start);
+    arena->start = NULL;
+    wsfNumArenas--;
+
+  }
+  WsfCsExit(); 
+
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Diagnostic function to get the buffer allocation statistics.

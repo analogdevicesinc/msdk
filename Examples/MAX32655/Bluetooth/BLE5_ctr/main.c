@@ -50,6 +50,8 @@
 
 #define DEFAULT_TX_POWER 0 /* dBm */
 
+
+#define DTM_POOL_SIZE 512u
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -123,14 +125,15 @@ static void mainWsfInit(void)
 
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
-
+    
     wsfBufPoolDesc_t poolDesc[] = {
         { 16, 8 },
         { 32, 4 },
         { 128, mainLlRtCfg.maxAdvReports },
         { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
         { dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
-                           mainLlRtCfg.numIsoRxBuf }
+                           mainLlRtCfg.numIsoRxBuf },
+        { DTM_POOL_SIZE, 1}
     };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
@@ -259,6 +262,7 @@ int main(void)
     WsfCsExit();
 #endif
 
+
     WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
@@ -272,7 +276,9 @@ int main(void)
     WsfHeapAlloc(memUsed);
     WsfCsExit();
 
+
     bdAddr_t bdAddr;
+
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
     LlSetBdAddr((uint8_t *)&bdAddr);

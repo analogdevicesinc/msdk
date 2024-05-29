@@ -49,7 +49,7 @@
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
 #define DEFAULT_TX_POWER 0 /* dBm */
-
+#define DTM_POOL_SIZE 512u
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -131,6 +131,7 @@ static void mainWsfInit(void)
         { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
         { dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
                            mainLlRtCfg.numIsoRxBuf }
+        {DTM_POOL_SIZE, 1}
     };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);

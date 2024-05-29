@@ -43,12 +43,14 @@
 #include "board.h"
 #include "pal_timer.h"
 
+
 #define MAX_PRIORITY ((0x1 << __NVIC_PRIO_BITS) - 1)
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
 #define DEFAULT_TX_POWER 0 /* dBm */
+#define DTM_POOL_SIZE 512u
 
 /**************************************************************************************************
   Global Variables
@@ -130,7 +132,9 @@ static void mainWsfInit(void)
         { 128, mainLlRtCfg.maxAdvReports },
         { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
         { dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
-                           mainLlRtCfg.numIsoRxBuf }
+                           mainLlRtCfg.numIsoRxBuf },
+        { DTM_POOL_SIZE, 1}
+        
     };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
@@ -290,6 +294,10 @@ int main(void)
     WsfHeapAlloc(memUsed);
     WsfCsExit();
 
+
+
+
+
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
@@ -300,6 +308,8 @@ int main(void)
     WsfOsRegisterSleepCheckFunc(ChciTrService);
     setInterruptPriority();
     WsfOsEnterMainLoop();
+
+
 
     /* Does not return. */
     return 0;

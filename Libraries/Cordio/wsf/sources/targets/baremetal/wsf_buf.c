@@ -426,6 +426,15 @@ void WsfBufFree(void *pBuf)
 
   return;
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Create an arena.
+ *
+ *  \param  arena    Arena.
+ *  \param  size    Arena total size.
+ * 
+ */
+/*************************************************************************************************/
 bool_t WsfArenaCreate(WsfArena_t *arena, uint32_t arena_size)
 {
     arena->start = WsfBufAlloc(arena_size);
@@ -437,10 +446,22 @@ bool_t WsfArenaCreate(WsfArena_t *arena, uint32_t arena_size)
       wsfNumArenas++;
       return TRUE;
     }
+    
+    #if WSF_BUF_FREE_CHECK_ASSERT == TRUE
+      WSF_ASSERT(arena->start != NULL);
+    #endif
 
     return FALSE;
 
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Allocat a buffer within an arena
+ *
+ *  \param  arena    Arena to allocate within.
+ *  \param  size     Size to allocate in arena
+ */
+/*************************************************************************************************/
 void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
 {
 
@@ -449,7 +470,9 @@ void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
     if (arena->idx >= arena->size)
     {
       WsfCsExit();
-        
+    #if WSF_BUF_FREE_CHECK_ASSERT == TRUE
+      WSF_ASSERT(arena->idx < arena->size);
+    #endif
       return NULL;
     }
 
@@ -461,6 +484,13 @@ void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
     
     return mem;
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Free an arena.
+ *
+ *  \param  pBuf    Arena to free.
+ */
+/*************************************************************************************************/
 void WsfArenaFree(WsfArena_t *arena)
 {
 
