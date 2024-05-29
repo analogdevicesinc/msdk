@@ -760,7 +760,7 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
             /* Terminate immediately. */
             llTestCb.state = LL_TEST_STATE_IDLE;
             lmgrCb.testEnabled = FALSE;
-            LmgrDecResetRefCount();
+            // LmgrDecResetRefCount();
         }
     }
 }
