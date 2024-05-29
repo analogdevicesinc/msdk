@@ -739,7 +739,6 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
         llTestCb.packetsFreed = TRUE;
 
         BbStop(BB_PROT_BLE_DTM);
-        LmgrDecResetRefCount();
 
         
         WsfArenaFree((WsfArena_t*)&llTestCb.arena);
