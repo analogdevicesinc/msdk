@@ -72,6 +72,8 @@ typedef struct
 /* Number of pools. */
 uint8_t wsfBufNumPools;
 
+uint8_t wsfNumArenas;
+
 /* Memory used for pools. */
 wsfBufMem_t *wsfBufMem = NULL;
 
@@ -375,6 +377,7 @@ void WsfBufFree(void *pBuf)
 {
   wsfBufPool_t  *pPool;
   wsfBufMem_t   *p = pBuf;
+  
 
   WSF_CS_INIT(cs);
 
@@ -429,7 +432,14 @@ bool_t WsfArenaCreate(WsfArena_t *arena, uint32_t arena_size)
     arena->idx = 0;
     arena->size = arena_size;
 
-    return arena->start != NULL ? TRUE : 0;
+    if(arena->start != NULL)
+    {
+      wsfNumArenas++;
+      return TRUE;
+    }
+
+    return FALSE;
+
 }
 void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
 {
@@ -453,10 +463,19 @@ void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size)
 }
 void WsfArenaFree(WsfArena_t *arena)
 {
-    WsfCsEnter(); 
+
+  WsfCsEnter(); 
+  
+  
+  if(arena->start != NULL)
+  {
+    
     WsfBufFree(arena->start);
     arena->start = NULL;
-    WsfCsExit(); 
+    wsfNumArenas--;
+
+  }
+  WsfCsExit(); 
 
 }
 /*************************************************************************************************/

@@ -275,14 +275,12 @@ static void llBuildTxPkt(uint8_t len, uint8_t pktType, uint8_t *pBuf)
 }
 static void llTestTxAbortCback(BbOpDesc_t *pOp)
 {
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
     if (llTestCb.state == LL_TEST_STATE_TX) {
         SchInsertNextAvailable(pOp);
 
     } else {
-        WsfArenaFree(&llTestCb.arena);
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
     }
 }
 /*************************************************************************************************/
@@ -328,10 +326,8 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
         SchInsertNextAvailable(pOp);
     } else {
         
-
-        WsfArenaFree(&llTestCb.arena);
-
         BbStop(BB_PROT_BLE_DTM);
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
 
         if (llTestCb.state == LL_TEST_STATE_RESET) {
             lctrMsgHdr_t *pMsg;
@@ -365,6 +361,9 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
 /*************************************************************************************************/
 static bool_t llTestTxComplete(BbOpDesc_t *pOp, uint8_t status)
 {
+    
+    
+    
     BbBleData_t *const pBle = pOp->prot.pBle;
     BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
@@ -372,12 +371,14 @@ static bool_t llTestTxComplete(BbOpDesc_t *pOp, uint8_t status)
 
     /* All of the requested packets have been sent. */
     if ((llTestCb.numPkt > 0) && (llTestCb.numPkt <= llTestCb.rpt.numTx)) {
+        
         return FALSE;
     }
 
     if (status != BB_STATUS_SUCCESS) {
         LL_TRACE_ERR2("Terminating Tx test mode due to failure, status=%u, numTx=%u", status,
                       llTestCb.rpt.numTx);
+        
         return FALSE;
     }
 
@@ -386,6 +387,8 @@ static bool_t llTestTxComplete(BbOpDesc_t *pOp, uint8_t status)
         if ((llTestCb.tx.chanIdx != pBle->chan.chanIdx) ||
             (llTestCb.tx.pktType != pTx->pTxBuf[0]) || (llTestCb.tx.pduLen != pTx->pTxBuf[1]) ||
             (llTestCb.tx.phy != pBle->chan.txPhy)) {
+            
+
             return FALSE;
         }
 
@@ -397,9 +400,12 @@ static bool_t llTestTxComplete(BbOpDesc_t *pOp, uint8_t status)
         pBle->chan.crcInitTx = pBle->chan.crcInit ^ llTesterCb.dataCrcInitTx;
 #endif
     } else {
+        
+
         /* DTM has ended. */
         return FALSE;
     }
+
 
     /* Continue transmitting next packet. */
     return TRUE;
@@ -549,17 +555,27 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
         return LL_SUCCESS;
     }
     
-    const uint32_t arenaSize = WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN) + sizeof(BbOpDesc_t) + sizeof(BbBleData_t);
-    WsfArenaCreate(&llTestCb.arena, arenaSize);
+    const uint32_t arenaSize = WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN) +
+     sizeof(BbOpDesc_t) + sizeof(BbBleData_t);
 
-    if ((pOp = WsfArenaAlloc(&llTestCb.arena, sizeof(BbOpDesc_t))) == NULL) {
+    
+    if(llTestCb.arena.start != NULL)
+    {
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+    }
+
+    WsfArenaCreate((WsfArena_t*)&llTestCb.arena, arenaSize);
+
+    pOp = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, sizeof(BbOpDesc_t));
+    pBle = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, sizeof(BbBleData_t));
+
+    if(pOp == NULL || pBle == NULL)
+    {
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
-    if ((pBle = WsfArenaAlloc(&llTestCb.arena, sizeof(BbBleData_t))) == NULL) {
-        WsfArenaFree(&llTestCb.arena);
-        return LL_ERROR_CODE_UNSPECIFIED_ERROR;
-    }
+
 
     BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
@@ -599,9 +615,9 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     pTx->pktInterUsec =
         llCalcPacketInterval(llTestCb.tx.pduLen, pBle->chan.txPhy, pBle->chan.initTxPhyOptions);
 
-    if ((pTx->pTxBuf = WsfArenaAlloc(&llTestCb.arena, pTx->txLen)) == NULL) {
+    if ((pTx->pTxBuf = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, pTx->txLen)) == NULL) {
 
-        WsfArenaFree(&llTestCb.arena);
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -680,13 +696,11 @@ uint8_t LlTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint16_t numPkt)
 
 static void llTestRxAbortCback(BbOpDesc_t *pOp)
 {
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
     if (llTestCb.state == LL_TEST_STATE_RX) {
         SchInsertNextAvailable(pOp);
     } else {
-        WsfArenaFree(&llTestCb.arena);
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
         llTestCb.packetsFreed = TRUE;
     }
 }
@@ -699,9 +713,7 @@ static void llTestRxAbortCback(BbOpDesc_t *pOp)
 /*************************************************************************************************/
 static void llTestRxOpEndCback(BbOpDesc_t *pOp)
 {
-    BbBleData_t *const pBle = pOp->prot.pBle;
 
-    BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
     if (llTestCb.numPkt > 0) {
         uint32_t attempts =
@@ -717,12 +729,17 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
         /* Reschedule receive. */
         SchInsertNextAvailable(pOp);
     } else {
-        WsfArenaFree(&llTestCb.arena);
+        
 
 
         llTestCb.packetsFreed = TRUE;
 
         BbStop(BB_PROT_BLE_DTM);
+
+        
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+        
+
 
         if (llTestCb.state == LL_TEST_STATE_RESET) {
             lctrMsgHdr_t *pMsg;
@@ -756,6 +773,7 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
 /*************************************************************************************************/
 static bool_t llTestRxComplete(BbOpDesc_t *pBod, uint8_t status)
 {
+
     switch (status) {
     case BB_STATUS_SUCCESS:
         llTestCb.rpt.numRxSuccess++;
@@ -835,18 +853,26 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
         }
         break;
     }
+
+    
+    
+    if(llTestCb.arena.start != NULL)
+    {
+        WsfArenaFree((WsfArena_t*)&llTestCb.arena);
+    }
+
     uint16_t allocLen = WSF_MAX(WSF_MAX(LL_DTM_MAX_PDU_LEN, LL_ADVB_MAX_LEN), BB_FIXED_DATA_PKT_LEN);
-    WsfArenaCreate(&llTestCb.arena, sizeof(BbOpDesc_t) + sizeof(BbBleData_t) + allocLen);
+    WsfArenaCreate((WsfArena_t*)&llTestCb.arena, sizeof(BbOpDesc_t) + sizeof(BbBleData_t) + allocLen);
 
     BbOpDesc_t *pOp;
     BbBleData_t *pBle;
 
-    if ((pOp = WsfArenaAlloc(&llTestCb.arena, sizeof(BbOpDesc_t))) == NULL) {
+    if ((pOp = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, sizeof(BbOpDesc_t))) == NULL) {
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
-    if ((pBle = WsfArenaAlloc(&llTestCb.arena, sizeof(BbBleData_t))) == NULL) {
-        WsfArenaFree(&llTestCb.arena);
+    if ((pBle = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, sizeof(BbBleData_t))) == NULL) {
+        WsfArenaFree((void*)&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
@@ -895,9 +921,9 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     pRx->testCback = llTestRxComplete;
     
     
-    if ((pRx->pRxBuf = WsfArenaAlloc(&llTestCb.arena, allocLen)) == NULL) {
+    if ((pRx->pRxBuf = WsfArenaAlloc((WsfArena_t*)&llTestCb.arena, allocLen)) == NULL) {
         
-        WsfArenaFree(&llTestCb.arena);
+        WsfArenaFree((void*)&llTestCb.arena);
         return LL_ERROR_CODE_UNSPECIFIED_ERROR;
     }
 
