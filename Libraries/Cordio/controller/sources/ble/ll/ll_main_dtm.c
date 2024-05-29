@@ -38,6 +38,7 @@
 #include "wsf_trace.h"
 #include <string.h>
 
+#include "wsf_arena.h"
 
 /* Access internal definitions. */
 #include "../lctr/lctr_int.h"
@@ -46,9 +47,6 @@
 #include "ll_tester_api.h"
 #endif
 
-// #if LL_DTM_MAX_CHAN_IDX != 40
-// #error "Must be 40"
-// #endif
 
 /**************************************************************************************************
   Macros

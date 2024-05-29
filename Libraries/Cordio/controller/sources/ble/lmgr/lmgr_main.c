@@ -111,13 +111,9 @@ void LmgrDecResetRefCount(void)
 {
 
   WSF_ASSERT(lmgrCb.resetDelayRefCnt);
-  // if(lmgrCb.resetDelayRefCnt)
-  // {
-    lmgrCb.resetDelayRefCnt--;
-  // }
+  
+  lmgrCb.resetDelayRefCnt--;
 
-
-  // return lmgrCb.resetDelayRefCnt;
 }
 
 /*************************************************************************************************/
