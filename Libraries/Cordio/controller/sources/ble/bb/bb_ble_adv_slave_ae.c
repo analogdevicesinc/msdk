@@ -37,7 +37,7 @@
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-extern lmgrCtrlBlk_t lmgrCb;
+
 
 BbBleAuxAdvPktStats_t bbAuxAdvStats; /*!< Auxiliary advertising packet statistics. */
 

@@ -1030,7 +1030,6 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
         return LL_SUCCESS;
     }
 
-    LmgrDecResetRefCount();
 
     if (llTestCb.state == LL_TEST_STATE_TX) {
 

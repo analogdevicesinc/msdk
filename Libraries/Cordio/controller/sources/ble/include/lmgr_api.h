@@ -154,7 +154,7 @@ typedef struct
 **************************************************************************************************/
 
 extern lmgrPersistCtrlBlk_t lmgrPersistCb;
-extern lmgrCtrlBlk_t lmgrCb;
+extern volatile lmgrCtrlBlk_t lmgrCb;
 
 /**************************************************************************************************
   Function Declarations

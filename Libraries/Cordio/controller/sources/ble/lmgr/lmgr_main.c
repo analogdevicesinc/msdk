@@ -37,7 +37,7 @@
 lmgrPersistCtrlBlk_t lmgrPersistCb;
 
 /*! \brief      Link layer manager control block (clears with resets). */
-lmgrCtrlBlk_t lmgrCb;
+volatile lmgrCtrlBlk_t lmgrCb;
 
 /*************************************************************************************************/
 /*!
@@ -109,8 +109,13 @@ void LmgrIncResetRefCount(void)
 /*************************************************************************************************/
 void LmgrDecResetRefCount(void)
 {
-  WSF_ASSERT(lmgrCb.resetDelayRefCnt);
-  lmgrCb.resetDelayRefCnt--;
+  if(lmgrCb.resetDelayRefCnt)
+  {
+    lmgrCb.resetDelayRefCnt--;
+  }
+
+
+  // return lmgrCb.resetDelayRefCnt;
 }
 
 /*************************************************************************************************/
