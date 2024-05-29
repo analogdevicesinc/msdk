@@ -84,12 +84,6 @@ typedef struct
   uint8_t    num;                  /*!< \brief Number of buffers in pool */
 } wsfBufPoolDesc_t;
 
-typedef struct
-{
-    void *start;
-    uint32_t idx;
-    uint32_t size;
-} WsfArena_t;
 
 /*! \brief Pool statistics */
 typedef struct
@@ -180,34 +174,6 @@ void *WsfBufAlloc(uint16_t len);
  */
 /*************************************************************************************************/
 void WsfBufFree(void *pBuf);
-/*************************************************************************************************/
-/*!
- *  \brief  Create an arena.
- *
- *  \param  arena    Arena.
- *  \param  size    Arena total size.
- * 
- */
-/*************************************************************************************************/
-bool_t WsfArenaCreate(WsfArena_t *arena, uint32_t arena_size);
-
-/*************************************************************************************************/
-/*!
- *  \brief  Allocat a buffer within an arena
- *
- *  \param  arena    Arena to allocate within.
- *  \param  size     Size to allocate in arena
- */
-/*************************************************************************************************/
-void *WsfArenaAlloc(WsfArena_t *arena, uint32_t size);
-/*************************************************************************************************/
-/*!
- *  \brief  Free an arena.
- *
- *  \param  pBuf    Arena to free.
- */
-/*************************************************************************************************/
-void WsfArenaFree(WsfArena_t *arena);
 
 /*************************************************************************************************/
 /*!
