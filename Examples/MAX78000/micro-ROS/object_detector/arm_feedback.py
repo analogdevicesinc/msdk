@@ -520,12 +520,12 @@ class PolygonSubscriber(Node):
                 self.state = 0
 
             elif self.state == 4: # Grab Pos
-                if self.grabbability > 0.65:
-                    temp_path_time = path_time
-                    path_time = 3.0
-                    if self.grab_reposition():
-                        self.state = 5
-                        path_time = temp_path_time
+                #if self.grabbability > 0.65:
+                temp_path_time = path_time
+                path_time = 3.0
+                if self.grab_reposition():
+                    self.state = 5
+                    path_time = temp_path_time
 
             elif self.state == 5:  # Close grabber
                 temp_path_time = path_time
