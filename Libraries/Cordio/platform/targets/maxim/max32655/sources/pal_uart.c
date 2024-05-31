@@ -39,9 +39,10 @@
 
 #include "uart.h"
 #include "sema.h"
+#include "dma.h"
 
 #include <string.h>
-
+#include "nvic_table.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -71,6 +72,8 @@ static struct {
   PalUartCompCback_t wrCback;
 } palUartCb[PAL_UARTS];
 
+
+static bool_t txPending = FALSE; 
 /**************************************************************************************************
   Local Functions
 **************************************************************************************************/
@@ -171,17 +174,20 @@ void RISCV_IRQHandler(void)
  *  \return     None.
  */
 /*************************************************************************************************/
+#if 1
 void palUartCallback(mxc_uart_req_t* req, int error)
 {
 
 
   int i;
   for(i = 0; i < PAL_UARTS; i++) {
+
     /* Find the corresponding rqeuest and call the callback */
     if(req == &palUartCb[i].readReq) {
       if(palUartCb[i].rdCback != NULL) {
         palUartCb[i].rdCback();
       }
+      // palUartCb[i].state = PAL_UART_STATE_READY;  
       return;
     }
 
@@ -194,7 +200,50 @@ void palUartCallback(mxc_uart_req_t* req, int error)
     }
   }
 }
+#else
+void palUartRxCallback(mxc_uart_req_t* req, int error)
+{
 
+
+
+  for(int i = 0; i < PAL_UARTS; i++) {
+    /* Find the corresponding rqeuest and call the callback */
+    palUartCb[i].state = PAL_UART_STATE_READY;
+    if(req == &palUartCb[i].readReq) {
+      
+      if(!txPending)
+      {
+        palUartCb[i].state = PAL_UART_STATE_READY;
+      }
+
+      if(palUartCb[i].rdCback != NULL) {
+        palUartCb[i].rdCback();
+      }
+      return;
+    }
+    // if(palUartCb[i].writeReq.txCnt == palUartCb[i].writeReq.txLen)
+    // {
+    // }
+  }
+
+}
+void palUartTxCallback(mxc_uart_req_t* req, int error)
+{
+  txPending = FALSE;
+
+  for(int i = 0; i < PAL_UARTS; i++) {
+    /* Find the corresponding rqeuest and call the callback */
+    if(req == &palUartCb[i].writeReq) {
+      palUartCb[i].state = PAL_UART_STATE_READY;
+      if(palUartCb[i].wrCback != NULL) {
+        palUartCb[i].wrCback();
+      }
+      return;
+    }
+  }
+}
+
+#endif
 /*************************************************************************************************/
 /*!
  *  \brief      Get UART instance number from UART ID.
@@ -270,6 +319,11 @@ static void PalMailInit(const PalUartConfig_t *pCfg)
 /**************************************************************************************************
   Global Functions
 **************************************************************************************************/
+void DMA_Handler(void)
+{
+    MXC_DMA_Handler();
+    // DMA_FLAG = 0;
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Initialize UART.
@@ -320,6 +374,9 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   }
 
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
+
+  MXC_UART_SetAutoDMAHandlers(MXC_UART_GET_UART(uartNum), true);
+
 }
 
 /*************************************************************************************************/
@@ -400,15 +457,15 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
   palUartCb[uartNum].readReq.txLen      = 0;
   palUartCb[uartNum].readReq.callback   = palUartCallback;
 
-  NVIC_DisableIRQ(irqn);
+  // NVIC_DisableIRQ(irqn);
 
   /* Start the read */
-  result = MXC_UART_TransactionAsync(&palUartCb[uartNum].readReq);
+  result = MXC_UART_TransactionDMA(&palUartCb[uartNum].readReq);
   (void)result;
   PAL_SYS_ASSERT(result == E_SUCCESS);
 
-  /* Enable the interrupt */
-  NVIC_EnableIRQ(irqn);
+  // /* Enable the interrupt */
+  // NVIC_EnableIRQ(irqn);
 }
 
 /*************************************************************************************************/
@@ -428,8 +485,6 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 {
   uint8_t uartNum;
   uint32_t irqn;
-  int result;
-
 
 #if defined(HCI_TR_MAIL) && (HCI_TR_MAIL != 0)
   if(id == PAL_UART_ID_CHCI) {
@@ -441,7 +496,7 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
   uartNum = palUartGetNum(id);
   irqn = MXC_UART_GET_IRQ(uartNum);
 
-  NVIC_DisableIRQ(irqn);
+  // NVIC_DisableIRQ(irqn);
 
   palUartCb[uartNum].state = PAL_UART_STATE_BUSY;
 
@@ -452,10 +507,21 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
   palUartCb[uartNum].writeReq.callback   = palUartCallback;
 
   /* Start the write */
-  result = MXC_UART_TransactionAsync(&palUartCb[uartNum].writeReq);
+  txPending = TRUE;
+  int result = MXC_UART_TransactionDMA(&palUartCb[uartNum].writeReq);
+
   (void)result;
   PAL_SYS_ASSERT(result == E_SUCCESS);
 
+  if(result != E_SUCCESS)
+  {
+    txPending = FALSE;
+  }
+
+  if(palUartCb[uartNum].writeReq.txCnt == palUartCb[uartNum].writeReq.txLen)
+  {
+    palUartCb[uartNum].state = PAL_UART_STATE_READY;
+  }
   /* Enable the interrupt */
-  NVIC_EnableIRQ(irqn);
+  // NVIC_EnableIRQ(irqn);
 }
