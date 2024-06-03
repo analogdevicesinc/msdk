@@ -32,8 +32,7 @@
 
 extern void (*const __isr_vector[])(void);
 
-uint32_t SystemCoreClock __attribute__((section(".shared")));
-volatile uint32_t mailbox __attribute__((section(".mailbox")));
+uint32_t SystemCoreClock = HIRC_FREQ;
 
 /*
 The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
