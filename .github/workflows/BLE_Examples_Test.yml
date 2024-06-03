@@ -63,7 +63,7 @@ jobs:
         with:
           submodules: false
           repository: analogdevicesinc/msdk
-          ref: ble-workflow-update
+          ref: main
           fetch-depth: 0
       
       - name: Check MAX32655
