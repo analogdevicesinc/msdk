@@ -256,6 +256,20 @@ endif
 MCPU ?= cortex-m4
 
 ifeq "$(MCPU)" "cortex-m33"
+
+# Build a project with TrustZone.
+# Acceptable values are
+# - 0 (default) : The project builds as a Secure-only project (development similar to Cortex-M4 examples).
+# - 1 		    : The project builds with both Secure and Non-Secure context.
+#
+# When "0" is selected, the project will build as a Secure-only project with no TrustZone features enabled.
+# Development is similar to other Cortex-M4 examples.
+# 
+# When "1" is selected, the build system will build a Secure and Non-Secure project separately, then link
+# the two images into one combined image.
+TRUSTZONE ?= 0
+
+ifeq ($(TRUSTZONE),1)
 # Security mode for the target processor.
 # Acceptable values are
 # - SECURE
@@ -272,6 +286,15 @@ ifeq "$(MCPU)" "cortex-m33"
 # at compile time.
 MSECURITY_MODE ?= SECURE
 
+# Select whether the CMSE importlib object file is generated.
+# - 0 (default) : Do no generate object file.
+# - 1			: Generate object file.
+#
+# The Secure project needs to generate the object file with empty definitions of
+# secure symbols at the right locations. The Non-Secure project needs to be linked
+# with the generated object file.
+GEN_CMSE_IMPLIB_OBJ ?= 0
+
 ifeq "$(MSECURITY_MODE)" "SECURE"
 # Tell the compiler we are building a secure project.  This is required to satisfy the requirements
 # defined in "Armv8-M Security Extension: Requirements on Developments Tools"
@@ -280,11 +303,14 @@ PROJ_CFLAGS += -mcmse
 
 PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT
 
-# Tell the linker we are building a secure project.  This defines the "SECURE_LINK" symbol which the
-# linker uses to set the secure FLASH/SRAM memory address ranges.
-PROJ_LDFLAGS += -Xlinker --defsym=SECURE_LINK=1
-endif
-endif
+# Generate an object file with empty definitions of the secure image symbols at the correct locations.
+# The object file needs to be linked with the non-secure image.
+ifeq ($(GEN_CMSE_IMPLIB_OBJ),1)
+PROJ_LDFLAGS := -Xlinker --cmse-implib -Xlinker --out-implib=$(CURDIR)/build/build_s/secure_implib.o
+endif # GEN_CMSE_IMPLIB_OBJ
+endif # MSECUIRTY_MODE
+endif # TRUSTZONE
+endif # MCPU
 
 # Float ABI options:
 # See https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html (-mfloat-abi)

@@ -136,7 +136,7 @@
             <name>APBPPC</name>
             <description>Interrupt Status of APB PPC for targets on APB bus. Each bit ties to an individual PPC in the system.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitWidth>4</bitWidth>
           </field>
         </fields>
       </register>
@@ -150,7 +150,7 @@
             <name>APBPPC</name>
             <description>Interrupt Clear of APB PPC for targets on the APB bus. Each bit ties to an individual PPC in the system.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitWidth>4</bitWidth>
           </field>
         </fields>
       </register>
@@ -163,7 +163,7 @@
             <name>APBPPC</name>
             <description>Interrupt Enable for APB PPC for targets on the APB bus. Each bit ties to an individual PPC in the system.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitWidth>4</bitWidth>
           </field>
         </fields>
       </register>
@@ -262,6 +262,19 @@
         </fields>
       </register>
       <register>
+        <name>AHBMPRIV</name>
+        <description>AHB Privileged/Non-privileged Secure DMA Access.</description>
+        <addressOffset>0x0170</addressOffset>
+        <fields>
+          <field>
+            <name>DMA</name>
+            <description>Controls access of transactions coming from the Secure DMA.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>GPIO0</name>
         <description>Secure GPIO0 Configuration Register.</description>
         <addressOffset>0x0180</addressOffset>
@@ -270,20 +283,7 @@
             <name>PINS</name>
             <description>Each bit configures a GPIO pin as secore or non-secure on GPIO Port 0. Secure GPIO pins prevent software from reading GPIO Data In pin states.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>12</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>GPIO1</name>
-        <description>Secure GPIO1 Configuration Register.</description>
-        <addressOffset>0x0184</addressOffset>
-        <fields>
-          <field>
-            <name>PINS</name>
-            <description>Each bit configures a GPIO pin as secore or non-secure on GPIO Port 0. Secure GPIO pins prevent software from reading GPIO Data In pin states.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitWidth>14</bitWidth>
           </field>
         </fields>
       </register>

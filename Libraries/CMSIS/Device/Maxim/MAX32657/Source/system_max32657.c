@@ -23,8 +23,12 @@
 #include "mxc_sys.h"
 #include "max32657.h"
 #include "system_max32657.h"
-#include "partition_max32657.h"
 #include "gcr_regs.h"
+
+
+#if IS_SECURE_ENVIRONMENT
+#include "partition_max32657.h"
+#endif
 
 extern void (*const __isr_vector[])(void);
 
@@ -35,12 +39,12 @@ uint32_t SystemCoreClock = IPO_FREQ; // Part defaults to IPO on startup
     There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
     we implement stub functions that return an error code to resolve linker warnings.
 */
-int _getpid(void)
+__weak int _getpid(void)
 {
     return E_NOT_SUPPORTED;
 }
 
-int _kill(void)
+__weak int _kill(void)
 {
     return E_NOT_SUPPORTED;
 }

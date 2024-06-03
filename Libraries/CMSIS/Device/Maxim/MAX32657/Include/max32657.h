@@ -123,7 +123,7 @@ typedef enum {
     BTLE_RX_AES_IRQn,       /* 0x3B  0x00EC  59: BTLE RX AES Done */
     BTLE_INV_APB_ADDR_IRQn, /* 0x3C  0x00F0  60: BTLE Invalid APB Address */
     BTLE_IQ_DATA_VALID_IRQn, /* 0x3D  0x00F4  61:BTLE IQ Data Valid */
-    BTLE_XXXX_IRQn,         /* 0x3E  0x00F8  62: BTLE XXXX TODO(ME30): Verify BTLE IRQs */
+    BTLE_RX_CRC_IRQn,       /* 0x3E  0x00F8  62: BTLE RX CRC */
     RSV47_IRQn,             /* 0x3F  0x00FC  63: Reserved */
     MPC_IRQn,               /* 0x40  0x0100  64: MPC Combined (Secure) */
     PPC_IRQn,               /* 0x41  0x0104  65: PPC Combined (Secure) */
@@ -152,11 +152,22 @@ typedef enum {
 #define __Vendor_SysTickConfig 0U /**< Is 1 if different SysTick counter is used */
 
 #include <core_cm33.h>
+#include <cmsis_gcc.h>
 #include <arm_cmse.h>
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 #define IS_SECURE_ENVIRONMENT 1
 #else
 #define IS_SECURE_ENVIRONMENT 0
+#endif
+
+#if defined(__GNUC__)
+#if IS_SECURE_ENVIRONMENT
+// Type used for secure code to call non-secure code.
+#define __ns_call __attribute((cmse_nonsecure_call))
+typedef void __ns_call (*mxc_ns_call_t) (void); 
+// Type used for non-secure code to call secure code.
+#define __ns_entry __attribute((cmse_nonsecure_entry))
+#endif
 #endif
 
 /* ================================================================================ */

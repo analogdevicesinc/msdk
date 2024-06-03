@@ -23,6 +23,19 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>AHBMPRIV</name>
+        <description>AHB Privileged/Non-Privileged Non-Secure DMA Access Register.</description>
+        <addressOffset>0x0170</addressOffset>
+        <fields>
+          <field>
+            <name>DMA</name>
+            <description>Control access for transactions coming from the Non-Secure DMA.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
   <!--NSPC: Non-Secure Privilege Controller-->

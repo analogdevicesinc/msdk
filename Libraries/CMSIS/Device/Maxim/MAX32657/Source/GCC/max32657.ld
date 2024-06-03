@@ -17,16 +17,10 @@
  ******************************************************************************/
 
 MEMORY {
-    FLASH         (rx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x11000000 : 0x01000000, LENGTH = 0x00100000 /* 1MB Flash */
+    FLASH         (rx) : ORIGIN = 0x11000000, LENGTH = 0x00100000 /* 1MB Flash */
     FLASH_INFO_S  (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
-    SRAM         (rwx) : ORIGIN = DEFINED(SECURE_LINK) ? 0x30000000 : 0x20000000, LENGTH = 0x00040000 /* 256KB SRAM */
+    SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00040000 /* 256KB SRAM */
 }
-/* Note(JC): "SECURE_LINK" is a symbol defined at link-time by Libraries/CMSIS/Device/Maxim/GCC/gcc.mk
- * It's only defined for when building secure binaries (which is the default).
- * When it's defined, the FLASH and SRAM memory addresses will use the secure ranges.  Otherwise, the
- * non-secure ranges will be used.  This mechanism allows secure and non-secure binaries to be linked
- * without having to maintain a separate copy of the linkerfile.
- */
 
 SECTIONS {
     .text :
@@ -58,18 +52,6 @@ SECTIONS {
         _etext = .;
     } > FLASH
 
-
-    /*
-     * Secure Gatway (SG) veneers.
-     *  All SG veneers are placed in the special output section .gnu.sgstubs.
-     */
-    .gnu.sgstubs :
-    {
-        _sg_veneers = .;
-        *(.gnu.sgstubs*)
-        _esg_veneers = .;
-    } > FLASH
-
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
@@ -78,17 +60,17 @@ SECTIONS {
     .flash_code :
     {
         . = ALIGN(16);
-        _sran_code = .;
+        _flash_code = .;
         *(.flash_code_section)
-        _esran_code = .;
+        _eflash_code = .;
     } > FLASH
 
     .sram_code :
     {
         . = ALIGN(16);
-        _sran_code = .;
+        _sram_code = .;
         *(.sram_code_section)
-        _esran_code = .;
+        _esram_code = .;
     } > SRAM
 
     /* it's used for C++ exception handling      */
@@ -141,18 +123,6 @@ SECTIONS {
     } > SRAM
 
     /**
-     *  Stack Seal section is required for secure builds. Stack sealing protects
-     *  secure stack from illegal access by non-secure code.
-     */
-    .stackseal (COPY):
-    {
-        . = ALIGN(8);
-        __StackSeal = .;
-        . = . + 8;
-        . = ALIGN(8);
-    } > SRAM
-
-    /**
      *   Set stack top to end of RAM, and stack limit move down by
      *      size of stack_dummy section.
      */
@@ -167,7 +137,6 @@ SECTIONS {
     .stack_dummy (COPY):
     {
         KEEP(*(.stack*))
-        *(.stackseal*)
     } > SRAM
 
     .heap (COPY):
