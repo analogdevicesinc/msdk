@@ -41,12 +41,12 @@ The libc implementation from GCC 11+ depends on _getpid and _kill in some places
 There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
 we implement stub functions that return an error code to resolve linker warnings.
 */
-int _getpid(void)
+__weak int _getpid(void)
 {
     return E_NOT_SUPPORTED;
 }
 
-int _kill(void)
+__weak int _kill(void)
 {
     return E_NOT_SUPPORTED;
 }
