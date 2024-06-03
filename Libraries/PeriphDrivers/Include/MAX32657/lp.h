@@ -50,15 +50,6 @@ extern "C" {
 typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
 
 /**
- * @brief   Enumeration type for PM Mode
- *
- */
-typedef enum {
-    MXC_LP_IPO = MXC_F_GCR_PM_IPO_PD,
-    MXC_LP_IBRO = MXC_F_GCR_PM_IBRO_PD,
-} mxc_lp_cfg_ds_pd_t;
-
-/**
  * @brief      Places the device into SLEEP mode.  This function returns once an RTC or external interrupt occur.
  */
 void MXC_LP_EnterSleepMode(void);
