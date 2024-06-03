@@ -47,11 +47,9 @@ int main(void)
 
     printf("Hello World!\n");
 
-
     // This still works but gets stuck with no output on failures
     TEST_ASSERT_EQUAL(7, simple_add(3, 4));
     TEST_ASSERT_EQUAL(8, simple_add(3, 4));
-
 
     while (1) {
         LED_On(LED_RED);
