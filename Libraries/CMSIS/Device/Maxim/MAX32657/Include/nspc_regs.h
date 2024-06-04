@@ -74,6 +74,8 @@ extern "C" {
 typedef struct {
     __R  uint32_t rsv_0x0_0x15f[88];
     __IO uint32_t apbpriv;              /**< <tt>\b 0x0160:</tt> NSPC APBPRIV Register */
+    __R  uint32_t rsv_0x164_0x16f[3];
+    __IO uint32_t ahbmpriv;             /**< <tt>\b 0x0170:</tt> NSPC AHBMPRIV Register */
 } mxc_nspc_regs_t;
 
 /* Register offsets for module NSPC */
@@ -84,6 +86,7 @@ typedef struct {
  * @{
  */
 #define MXC_R_NSPC_APBPRIV                 ((uint32_t)0x00000160UL) /**< Offset from NSPC Base Address: <tt> 0x0160</tt> */
+#define MXC_R_NSPC_AHBMPRIV                ((uint32_t)0x00000170UL) /**< Offset from NSPC Base Address: <tt> 0x0170</tt> */
 /**@} end of group nspc_registers */
 
 /**
@@ -96,6 +99,17 @@ typedef struct {
 #define MXC_F_NSPC_APBPRIV_PERIPH                      ((uint32_t)(0xFFFFFFFFUL << MXC_F_NSPC_APBPRIV_PERIPH_POS)) /**< APBPRIV_PERIPH Mask */
 
 /**@} end of group NSPC_APBPRIV_Register */
+
+/**
+ * @ingroup  nspc_registers
+ * @defgroup NSPC_AHBMPRIV NSPC_AHBMPRIV
+ * @brief    AHB Privileged/Non-Privileged Non-Secure DMA Access Register.
+ * @{
+ */
+#define MXC_F_NSPC_AHBMPRIV_DMA_POS                    1 /**< AHBMPRIV_DMA Position */
+#define MXC_F_NSPC_AHBMPRIV_DMA                        ((uint32_t)(0x1UL << MXC_F_NSPC_AHBMPRIV_DMA_POS)) /**< AHBMPRIV_DMA Mask */
+
+/**@} end of group NSPC_AHBMPRIV_Register */
 
 #ifdef __cplusplus
 }

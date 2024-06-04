@@ -25,7 +25,7 @@
   <peripheral>
    <name>AESKEYS</name>
    <description>AES Key Registers.</description>
-   <baseAddress>0x40007800</baseAddress>
+   <baseAddress>0x50007800</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -86,7 +86,7 @@
   <peripheral>
    <name>AES</name>
    <description>AES Keys.</description>
-   <baseAddress>0x40007400</baseAddress>
+   <baseAddress>0x50007400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -296,7 +296,7 @@
   <peripheral>
    <name>CRC</name>
    <description>CRC Registers.</description>
-   <baseAddress>0x4000F000</baseAddress>
+   <baseAddress>0x5000F000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -424,7 +424,7 @@
   <peripheral>
    <name>DMA</name>
    <description>DMA Controller Fully programmable, chaining capable DMA channels.</description>
-   <baseAddress>0x40028000</baseAddress>
+   <baseAddress>0x50028000</baseAddress>
    <size>32</size>
    <addressBlock>
     <offset>0x00</offset>
@@ -432,20 +432,20 @@
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
-    <name>DMA0</name>
-    <value>28</value>
+    <name>DMA0_CH0</name>
+    <value>32</value>
    </interrupt>
    <interrupt>
-    <name>DMA1</name>
-    <value>29</value>
+    <name>DMA0_CH1</name>
+    <value>33</value>
    </interrupt>
    <interrupt>
-    <name>DMA2</name>
-    <value>30</value>
+    <name>DMA0_CH2</name>
+    <value>34</value>
    </interrupt>
    <interrupt>
-    <name>DMA3</name>
-    <value>31</value>
+    <name>DMA0_CH4</name>
+    <value>35</value>
    </interrupt>
    <registers>
     <register>
@@ -1058,10 +1058,36 @@
    </registers>
   </peripheral>
 
+  <peripheral derivedFrom="DMA">
+   <name>DMA1</name>
+   <description>DMA Controller Fully programmable, chaining capable DMA channels. 1</description>
+   <baseAddress>0x50035000</baseAddress>
+   <interrupt>
+    <name>DMA1_CH0</name>
+    <description>DMA1_CH0</description>
+    <value>36</value>
+   </interrupt>
+   <interrupt>
+    <name>DMA1_CH1</name>
+    <description>DMA1_CH1</description>
+    <value>37</value>
+   </interrupt>
+   <interrupt>
+    <name>DMA1_CH2</name>
+    <description>DMA1_CH2</description>
+    <value>38</value>
+   </interrupt>
+   <interrupt>
+    <name>DMA1_CH3</name>
+    <description>DMA1_CH3</description>
+    <value>39</value>
+   </interrupt>
+  </peripheral>
+
   <peripheral>
    <name>FCR</name>
    <description>Function Control Register.</description>
-   <baseAddress>0x40000800</baseAddress>
+   <baseAddress>0x50000800</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -1313,7 +1339,7 @@
    <name>FLC</name>
    <description>Flash Memory Control.</description>
    <prependToName>FLSH_</prependToName>
-   <baseAddress>0x40029000</baseAddress>
+   <baseAddress>0x50029000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -1630,7 +1656,7 @@
   <peripheral>
    <name>GCR</name>
    <description>Global Control Registers.</description>
-   <baseAddress>0x40000000</baseAddress>
+   <baseAddress>0x50000000</baseAddress>
    <addressBlock>
     <offset>0</offset>
     <size>0x400</size>
@@ -2611,7 +2637,7 @@
    <name>GPIO0</name>
    <description>Individual I/O for each GPIO</description>
    <groupName>GPIO</groupName>
-   <baseAddress>0x40008000</baseAddress>
+   <baseAddress>0x50008000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -3320,7 +3346,7 @@
    <name>I3C0</name>
    <description>Improved Inter-Integrated Circuit.</description>
    <groupName>I3C</groupName>
-   <baseAddress>0x40018000</baseAddress>
+   <baseAddress>0x50018000</baseAddress>
    <size>32</size>
    <addressBlock>
     <offset>0x00</offset>
@@ -5722,7 +5748,7 @@
   <peripheral>
    <name>ICC</name>
    <description>Instruction Cache Controller Registers</description>
-   <baseAddress>0x4002A000</baseAddress>
+   <baseAddress>0x5002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x800</size>
@@ -5950,7 +5976,7 @@
   <peripheral>
    <name>MCR</name>
    <description>Misc Control.</description>
-   <baseAddress>0x40006C00</baseAddress>
+   <baseAddress>0x50006C00</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -6088,7 +6114,7 @@
   <peripheral>
    <name>PWRSEQ</name>
    <description>Power Sequencer / Low Power Control Register.</description>
-   <baseAddress>0x40006800</baseAddress>
+   <baseAddress>0x50006800</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -6235,9 +6261,285 @@
   </peripheral>
 
   <peripheral>
+   <name>MPC</name>
+   <description>Memory Protection Controller.</description>
+   <baseAddress>0x50091000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x1000</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>CTRL</name>
+     <description>Control Register.</description>
+     <addressOffset>0x0000</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>SEC_ERR</name>
+       <description>Security Error Response COnfiguration.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DATAIF_REQ</name>
+       <description>Data interface gating request.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DATAIF_ACK</name>
+       <description>Data interface gating acknowledged.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AUTO_INC</name>
+       <description>Auto-increment.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SEC_LOCKDOWN</name>
+       <description>Security Lockdown.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BLKMAX</name>
+     <description>Maximum value of block-based index register.</description>
+     <addressOffset>0x0010</addressOffset>
+     <size>32</size>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>VAL</name>
+       <description>Maximum value of block-based index register.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BLKCTRL</name>
+     <description>Block Control Register.</description>
+     <addressOffset>0x0014</addressOffset>
+     <size>32</size>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>SIZE</name>
+       <description>Block Size.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>INIT_ST</name>
+       <description>Initialization in progress.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BLKIDX</name>
+     <description>Block Index Register.</description>
+     <addressOffset>0x0018</addressOffset>
+     <fields>
+      <field>
+       <name>IDX</name>
+       <description>Index value for accessing block-based lookup table.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BLKLUT</name>
+     <description>Block-based gating Look Up Table Register.</description>
+     <addressOffset>0x001C</addressOffset>
+     <fields>
+      <field>
+       <name>ACCESS</name>
+       <description>Each bit indicates one block, based on the index pointed by the BLKIDX register.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTFL</name>
+     <description>Interrupt Flag Register.</description>
+     <addressOffset>0x0020</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>MPC</name>
+       <description>MPC IRQ triggered.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTCLR</name>
+     <description>Interrupt Clear Register.</description>
+     <addressOffset>0x0024</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>MPC</name>
+       <description>MPC IRQ Clear.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTEN</name>
+     <description>Interrupt Enable Register.</description>
+     <addressOffset>0x0028</addressOffset>
+     <fields>
+      <field>
+       <name>MPC</name>
+       <description>MPC IRQ Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTINFO0</name>
+     <description>Interrupt Info 0 Register.</description>
+     <addressOffset>0x002C</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>HADDR</name>
+       <description>AHB bus signals: Address bus.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTINFO1</name>
+     <description>Interrupt Info 1 Register.</description>
+     <addressOffset>0x0030</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>HMASTER</name>
+       <description>AHB bus signals: Master Select.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+      <field>
+       <name>HNONSEC</name>
+       <description>AHB bus signals: Indicates the current transfer is either a Non-Secure or Secure transfer.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CFG_NS</name>
+       <description>Security state.</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTSET</name>
+     <description>Interrupt Set Debug Register.</description>
+     <addressOffset>0x0034</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>MPC</name>
+       <description>MPC IRQ Set.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PERIPHID4</name>
+     <description>Peripheral ID 4 Register.</description>
+     <addressOffset>0x0FD0</addressOffset>
+     <access>read-only</access>
+    </register>
+    <register>
+     <name>PERIPHID0</name>
+     <description>Peripheral ID 0 Register.</description>
+     <addressOffset>0x0FE0</addressOffset>
+     <access>read-only</access>
+    </register>
+    <register>
+     <name>PERIPHID1</name>
+     <description>Peripheral ID 1 Register.</description>
+     <addressOffset>0x0FE4</addressOffset>
+     <access>read-only</access>
+    </register>
+    <register>
+     <name>PERIPHID2</name>
+     <description>Peripheral ID 2 Register.</description>
+     <addressOffset>0x0FE8</addressOffset>
+     <access>read-only</access>
+    </register>
+    <register>
+     <name>PERIPHID3</name>
+     <description>Peripheral ID 3 Register.</description>
+     <addressOffset>0x0FEC</addressOffset>
+     <access>read-only</access>
+    </register>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>COMPID[%s]</name>
+     <description>Component ID register.</description>
+     <addressOffset>0x0FF0</addressOffset>
+     <access>read-only</access>
+    </register>
+   </registers>
+  </peripheral>
+
+  <peripheral derivedFrom="MPC">
+   <name>MPC1</name>
+   <description>Memory Protection Controller. 1</description>
+   <baseAddress>0x50092000</baseAddress>
+  </peripheral>
+
+  <peripheral derivedFrom="MPC">
+   <name>MPC2</name>
+   <description>Memory Protection Controller. 2</description>
+   <baseAddress>0x50093000</baseAddress>
+  </peripheral>
+
+  <peripheral derivedFrom="MPC">
+   <name>MPC3</name>
+   <description>Memory Protection Controller. 3</description>
+   <baseAddress>0x50094000</baseAddress>
+  </peripheral>
+
+  <peripheral derivedFrom="MPC">
+   <name>MPC4</name>
+   <description>Memory Protection Controller. 4</description>
+   <baseAddress>0x50095000</baseAddress>
+  </peripheral>
+
+  <peripheral derivedFrom="MPC">
+   <name>MPC5</name>
+   <description>Memory Protection Controller. 5</description>
+   <baseAddress>0x50096000</baseAddress>
+  </peripheral>
+
+  <peripheral>
    <name>RTC</name>
    <description>Real Time Clock and Alarm.</description>
-   <baseAddress>0x40006000</baseAddress>
+   <baseAddress>0x50006000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -6648,7 +6950,7 @@
                                      architect to decide how and when the semaphores are used and how they are allocated. Existing hardware does not have to be
                                      
                                      modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.</description>
-   <baseAddress>0x4003E000</baseAddress>
+   <baseAddress>0x5003E000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -6786,7 +7088,7 @@
   <peripheral>
    <name>SIMO</name>
    <description>Single Inductor Multiple Output Switching Converter</description>
-   <baseAddress>0x40004400</baseAddress>
+   <baseAddress>0x50004400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -7193,7 +7495,7 @@
   <peripheral>
    <name>SIR</name>
    <description>System Initialization Registers.</description>
-   <baseAddress>0x40000400</baseAddress>
+   <baseAddress>0x50000400</baseAddress>
    <access>read-only</access>
    <addressBlock>
     <offset>0x00</offset>
@@ -7421,7 +7723,7 @@
        <name>APBPPC</name>
        <description>Interrupt Status of APB PPC for targets on APB bus. Each bit ties to an individual PPC in the system.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>2</bitWidth>
+       <bitWidth>4</bitWidth>
       </field>
      </fields>
     </register>
@@ -7435,7 +7737,7 @@
        <name>APBPPC</name>
        <description>Interrupt Clear of APB PPC for targets on the APB bus. Each bit ties to an individual PPC in the system.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>2</bitWidth>
+       <bitWidth>4</bitWidth>
       </field>
      </fields>
     </register>
@@ -7448,7 +7750,7 @@
        <name>APBPPC</name>
        <description>Interrupt Enable for APB PPC for targets on the APB bus. Each bit ties to an individual PPC in the system.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>2</bitWidth>
+       <bitWidth>4</bitWidth>
       </field>
      </fields>
     </register>
@@ -7547,6 +7849,19 @@
      </fields>
     </register>
     <register>
+     <name>AHBMPRIV</name>
+     <description>AHB Privileged/Non-privileged Secure DMA Access.</description>
+     <addressOffset>0x0170</addressOffset>
+     <fields>
+      <field>
+       <name>DMA</name>
+       <description>Controls access of transactions coming from the Secure DMA.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
      <name>GPIO0</name>
      <description>Secure GPIO0 Configuration Register.</description>
      <addressOffset>0x0180</addressOffset>
@@ -7555,20 +7870,7 @@
        <name>PINS</name>
        <description>Each bit configures a GPIO pin as secore or non-secure on GPIO Port 0. Secure GPIO pins prevent software from reading GPIO Data In pin states.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>12</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>GPIO1</name>
-     <description>Secure GPIO1 Configuration Register.</description>
-     <addressOffset>0x0184</addressOffset>
-     <fields>
-      <field>
-       <name>PINS</name>
-       <description>Each bit configures a GPIO pin as secore or non-secure on GPIO Port 0. Secure GPIO pins prevent software from reading GPIO Data In pin states.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>2</bitWidth>
+       <bitWidth>14</bitWidth>
       </field>
      </fields>
     </register>
@@ -7598,13 +7900,26 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>AHBMPRIV</name>
+     <description>AHB Privileged/Non-Privileged Non-Secure DMA Access Register.</description>
+     <addressOffset>0x0170</addressOffset>
+     <fields>
+      <field>
+       <name>DMA</name>
+       <description>Control access for transactions coming from the Non-Secure DMA.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 
   <peripheral>
    <name>SPI</name>
    <description>SPI peripheral.</description>
-   <baseAddress>0x400BE000</baseAddress>
+   <baseAddress>0x500BE000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -8838,7 +9153,7 @@
   <peripheral>
    <name>TMR</name>
    <description>Low-Power Configurable Timer</description>
-   <baseAddress>0x40010000</baseAddress>
+   <baseAddress>0x50010000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -9495,7 +9810,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR1</name>
    <description>Low-Power Configurable Timer 1</description>
-   <baseAddress>0x40011000</baseAddress>
+   <baseAddress>0x50011000</baseAddress>
    <interrupt>
     <name>TMR1</name>
     <description>TMR1 IRQ</description>
@@ -9506,7 +9821,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR2</name>
    <description>Low-Power Configurable Timer 2</description>
-   <baseAddress>0x40012000</baseAddress>
+   <baseAddress>0x50012000</baseAddress>
    <interrupt>
     <name>TMR2</name>
     <description>TMR2 IRQ</description>
@@ -9517,7 +9832,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR3</name>
    <description>Low-Power Configurable Timer 3</description>
-   <baseAddress>0x40013000</baseAddress>
+   <baseAddress>0x50013000</baseAddress>
    <interrupt>
     <name>TMR3</name>
     <description>TMR3 IRQ</description>
@@ -9528,7 +9843,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR4</name>
    <description>Low-Power Configurable Timer 4</description>
-   <baseAddress>0x40080C00</baseAddress>
+   <baseAddress>0x50080C00</baseAddress>
    <interrupt>
     <name>TMR4</name>
     <description>TMR4 IRQ</description>
@@ -9539,7 +9854,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR5</name>
    <description>Low-Power Configurable Timer 5</description>
-   <baseAddress>0x40081000</baseAddress>
+   <baseAddress>0x50081000</baseAddress>
    <interrupt>
     <name>TMR5</name>
     <description>TMR5 IRQ</description>
@@ -9550,7 +9865,7 @@
   <peripheral>
    <name>TRIMSIR</name>
    <description>Trim System Initilazation Registers</description>
-   <baseAddress>0x40005400</baseAddress>
+   <baseAddress>0x50005400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -9728,7 +10043,7 @@
   <peripheral>
    <name>TRNG</name>
    <description>Random Number Generator.</description>
-   <baseAddress>0x4004D000</baseAddress>
+   <baseAddress>0x5004D000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -10074,7 +10389,7 @@
   <peripheral>
    <name>UART</name>
    <description>UART Low Power Registers</description>
-   <baseAddress>0x40042000</baseAddress>
+   <baseAddress>0x50042000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
@@ -10553,7 +10868,7 @@
   <peripheral>
    <name>WDT</name>
    <description>Windowed Watchdog Timer</description>
-   <baseAddress>0x40003000</baseAddress>
+   <baseAddress>0x50003000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x0400</size>
@@ -11144,7 +11459,7 @@
   <peripheral>
    <name>WUT</name>
    <description>32-bit reloadable timer that can be used for timing and wakeup.</description>
-   <baseAddress>0x40006400</baseAddress>
+   <baseAddress>0x50006400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>

@@ -830,39 +830,39 @@ We may want to handle GET_IRQ better...
 
 /* Secure Mapping Only */
 #define MXC_BASE_SPC ((uint32_t)0x50090000UL)
-#define MXC_SPC // TODO(ME30): Does this have registers?
-#define MXC_SPC_S // TODO(ME30): Does this have registers?
+#define MXC_SPC ((mxc_spc_regs_t *)MXC_BASE_SPC)
+#define MXC_SPC_S MXC_SPC
 
 /******************************************************************************/
 /*                                                                        MPC */
 
 /* Secure Mapping Only */
 #define MXC_BASE_MPC_SRAM0 ((uint32_t)0x50091000UL)
-#define MXC_MPC_SRAM0 // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM0 ((mxc_mpc_regs_t *)MXC_BASE_MPC_SRAM0)
 #define MXC_BASE_MPC_SRAM1 ((uint32_t)0x50092000UL)
-#define MXC_MPC_SRAM1 // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM1 ((mxc_mpc_regs_t *)MXC_BASE_MPC_SRAM1)
 #define MXC_BASE_MPC_SRAM2 ((uint32_t)0x50093000UL)
-#define MXC_MPC_SRAM2 // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM2 ((mxc_mpc_regs_t *)MXC_BASE_MPC_SRAM2)
 #define MXC_BASE_MPC_SRAM3 ((uint32_t)0x50094000UL)
-#define MXC_MPC_SRAM3 // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM3 ((mxc_mpc_regs_t *)MXC_BASE_MPC_SRAM3)
 #define MXC_BASE_MPC_SRAM4 ((uint32_t)0x50095000UL)
-#define MXC_MPC_SRAM4 // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM4 ((mxc_mpc_regs_t *)MXC_BASE_MPC_SRAM4)
 #define MXC_BASE_MPC_FLASH ((uint32_t)0x50096000UL)
-#define MXC_MPC_FLASH // TODO(ME30): Does this have registers?
+#define MXC_MPC_FLASH ((mxc_mpc_regs_t *)MXC_BASE_MPC_FLASH)
 
 /* Added for consistency and explicitness */
 #define MXC_BASE_MPC_SRAM0_S MXC_BASE_MPC_SRAM0
-#define MXC_MPC_SRAM0_S // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM0_S MXC_MPC_SRAM0
 #define MXC_BASE_MPC_SRAM1_S MXC_BASE_MPC_SRAM1
-#define MXC_MPC_SRAM1_S // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM1_S MXC_MPC_SRAM1
 #define MXC_BASE_MPC_SRAM2_S MXC_BASE_MPC_SRAM2
-#define MXC_MPC_SRAM2_S // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM2_S MXC_MPC_SRAM2
 #define MXC_BASE_MPC_SRAM3_S MXC_BASE_MPC_SRAM3
-#define MXC_MPC_SRAM3_S // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM3_S MXC_MPC_SRAM3
 #define MXC_BASE_MPC_SRAM4_S MXC_BASE_MPC_SRAM4
-#define MXC_MPC_SRAM4_S // TODO(ME30): Does this have registers?
+#define MXC_MPC_SRAM4_S MXC_MPC_SRAM4
 #define MXC_BASE_MPC_FLASH_S MXC_BASE_MPC_FLASH
-#define MXC_MPC_FLASH_S // TODO(ME30): Does this have registers?
+#define MXC_MPC_FLASH_S MXC_MPC_FLASH
 
 /******************************************************************************/
 /*                                                               Bit Shifting */

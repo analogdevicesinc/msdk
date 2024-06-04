@@ -289,5 +289,5 @@
       </register>
     </registers>
   </peripheral>
-  <!--SDC: Secure Privilege Controller-->
+  <!--SPC: Secure Privilege Controller-->
 </device>

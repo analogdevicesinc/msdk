@@ -91,9 +91,10 @@ typedef struct {
     __IO uint32_t apbsec;               /**< <tt>\b 0x0120:</tt> SPC APBSEC Register */
     __R  uint32_t rsv_0x124_0x15f[15];
     __IO uint32_t apbpriv;              /**< <tt>\b 0x0160:</tt> SPC APBPRIV Register */
-    __R  uint32_t rsv_0x164_0x17f[7];
+    __R  uint32_t rsv_0x164_0x16f[3];
+    __IO uint32_t ahbmpriv;             /**< <tt>\b 0x0170:</tt> SPC AHBMPRIV Register */
+    __R  uint32_t rsv_0x174_0x17f[3];
     __IO uint32_t gpio0;                /**< <tt>\b 0x0180:</tt> SPC GPIO0 Register */
-    __IO uint32_t gpio1;                /**< <tt>\b 0x0184:</tt> SPC GPIO1 Register */
 } mxc_spc_regs_t;
 
 /* Register offsets for module SPC */
@@ -114,8 +115,8 @@ typedef struct {
 #define MXC_R_SPC_M33LOCK                  ((uint32_t)0x00000090UL) /**< Offset from SPC Base Address: <tt> 0x0090</tt> */
 #define MXC_R_SPC_APBSEC                   ((uint32_t)0x00000120UL) /**< Offset from SPC Base Address: <tt> 0x0120</tt> */
 #define MXC_R_SPC_APBPRIV                  ((uint32_t)0x00000160UL) /**< Offset from SPC Base Address: <tt> 0x0160</tt> */
+#define MXC_R_SPC_AHBMPRIV                 ((uint32_t)0x00000170UL) /**< Offset from SPC Base Address: <tt> 0x0170</tt> */
 #define MXC_R_SPC_GPIO0                    ((uint32_t)0x00000180UL) /**< Offset from SPC Base Address: <tt> 0x0180</tt> */
-#define MXC_R_SPC_GPIO1                    ((uint32_t)0x00000184UL) /**< Offset from SPC Base Address: <tt> 0x0184</tt> */
 /**@} end of group spc_registers */
 
 /**
@@ -199,7 +200,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_PPC_STATUS_APBPPC_POS                0 /**< PPC_STATUS_APBPPC Position */
-#define MXC_F_SPC_PPC_STATUS_APBPPC                    ((uint32_t)(0x3UL << MXC_F_SPC_PPC_STATUS_APBPPC_POS)) /**< PPC_STATUS_APBPPC Mask */
+#define MXC_F_SPC_PPC_STATUS_APBPPC                    ((uint32_t)(0xFUL << MXC_F_SPC_PPC_STATUS_APBPPC_POS)) /**< PPC_STATUS_APBPPC Mask */
 
 /**@} end of group SPC_PPC_STATUS_Register */
 
@@ -210,7 +211,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_PPC_INTCLR_APBPPC_POS                0 /**< PPC_INTCLR_APBPPC Position */
-#define MXC_F_SPC_PPC_INTCLR_APBPPC                    ((uint32_t)(0x3UL << MXC_F_SPC_PPC_INTCLR_APBPPC_POS)) /**< PPC_INTCLR_APBPPC Mask */
+#define MXC_F_SPC_PPC_INTCLR_APBPPC                    ((uint32_t)(0xFUL << MXC_F_SPC_PPC_INTCLR_APBPPC_POS)) /**< PPC_INTCLR_APBPPC Mask */
 
 /**@} end of group SPC_PPC_INTCLR_Register */
 
@@ -221,7 +222,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_PPC_INTEN_APBPPC_POS                 0 /**< PPC_INTEN_APBPPC Position */
-#define MXC_F_SPC_PPC_INTEN_APBPPC                     ((uint32_t)(0x3UL << MXC_F_SPC_PPC_INTEN_APBPPC_POS)) /**< PPC_INTEN_APBPPC Mask */
+#define MXC_F_SPC_PPC_INTEN_APBPPC                     ((uint32_t)(0xFUL << MXC_F_SPC_PPC_INTEN_APBPPC_POS)) /**< PPC_INTEN_APBPPC Mask */
 
 /**@} end of group SPC_PPC_INTEN_Register */
 
@@ -286,25 +287,25 @@ typedef struct {
 
 /**
  * @ingroup  spc_registers
+ * @defgroup SPC_AHBMPRIV SPC_AHBMPRIV
+ * @brief    AHB Privileged/Non-privileged Secure DMA Access.
+ * @{
+ */
+#define MXC_F_SPC_AHBMPRIV_DMA_POS                     0 /**< AHBMPRIV_DMA Position */
+#define MXC_F_SPC_AHBMPRIV_DMA                         ((uint32_t)(0x1UL << MXC_F_SPC_AHBMPRIV_DMA_POS)) /**< AHBMPRIV_DMA Mask */
+
+/**@} end of group SPC_AHBMPRIV_Register */
+
+/**
+ * @ingroup  spc_registers
  * @defgroup SPC_GPIO0 SPC_GPIO0
  * @brief    Secure GPIO0 Configuration Register.
  * @{
  */
 #define MXC_F_SPC_GPIO0_PINS_POS                       0 /**< GPIO0_PINS Position */
-#define MXC_F_SPC_GPIO0_PINS                           ((uint32_t)(0xFFFUL << MXC_F_SPC_GPIO0_PINS_POS)) /**< GPIO0_PINS Mask */
+#define MXC_F_SPC_GPIO0_PINS                           ((uint32_t)(0x3FFFUL << MXC_F_SPC_GPIO0_PINS_POS)) /**< GPIO0_PINS Mask */
 
 /**@} end of group SPC_GPIO0_Register */
-
-/**
- * @ingroup  spc_registers
- * @defgroup SPC_GPIO1 SPC_GPIO1
- * @brief    Secure GPIO1 Configuration Register.
- * @{
- */
-#define MXC_F_SPC_GPIO1_PINS_POS                       0 /**< GPIO1_PINS Position */
-#define MXC_F_SPC_GPIO1_PINS                           ((uint32_t)(0x3UL << MXC_F_SPC_GPIO1_PINS_POS)) /**< GPIO1_PINS Mask */
-
-/**@} end of group SPC_GPIO1_Register */
 
 #ifdef __cplusplus
 }

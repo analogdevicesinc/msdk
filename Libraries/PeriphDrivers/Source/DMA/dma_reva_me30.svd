@@ -11,20 +11,20 @@
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
-      <name>DMA0</name>
-      <value>28</value>
+      <name>DMA0_CH0</name>
+      <value>32</value>
     </interrupt>
     <interrupt>
-      <name>DMA1</name>
-      <value>29</value>
+      <name>DMA0_CH1</name>
+      <value>33</value>
     </interrupt>
     <interrupt>
-      <name>DMA2</name>
-      <value>30</value>
+      <name>DMA0_CH2</name>
+      <value>34</value>
     </interrupt>
     <interrupt>
-      <name>DMA3</name>
-      <value>31</value>
+      <name>DMA0_CH4</name>
+      <value>35</value>
     </interrupt>
     <registers>
       <register>
