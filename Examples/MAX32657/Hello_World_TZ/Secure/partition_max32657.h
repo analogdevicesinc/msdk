@@ -105,7 +105,7 @@
  *          Secure SRAM (0-2)       (128KB): 0x3000.0000 - 0x3001.FFFF
  *          Non-Secure SRAM (3-4)   (128KB): 0x2002.0000 - 0x2003.FFFF
  */
-#define SAU_REGIONS_MAX     5                 /* Max. number of SAU regions */
+#define SAU_REGIONS_MAX     4                 /* Max. number of SAU regions */
 
 /*
 //   <e>Initialize SAU Region 0 (Secure Flash)
@@ -121,7 +121,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0x1107DFFF      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x1107FFFF      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is
@@ -134,7 +134,7 @@
 */
 
 /*
-//   <e>Initialize SAU Region 1 (Non-Secure Callable Flash)
+//   <e>Initialize SAU Region 1 (Non-Secure Flash)
 //   <i> Setup SAU Region 1 memory attributes
 */
 #define SAU_INIT_REGION1    1
@@ -142,25 +142,25 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START1     0x1107E000
+#define SAU_INIT_START1     0x01080000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END1       0x1107FFFF
+#define SAU_INIT_END1       0x010FFFFF
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC1       1
+#define SAU_INIT_NSC1       0
 /*
 //   </e>
 */
 
 /*
-//   <e>Initialize SAU Region 2 (Non-Secure Flash)
+//   <e>Initialize SAU Region 2 (Secure SRAM (0-2))
 //   <i> Setup SAU Region 2 memory attributes
 */
 #define SAU_INIT_REGION2    1
@@ -168,25 +168,25 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START2     0x01080000
+#define SAU_INIT_START2     0x30000000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END2       0x010FFFFF
+#define SAU_INIT_END2       0x3001FFFF
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC2       0
+#define SAU_INIT_NSC2       1
 /*
 //   </e>
 */
 
 /*
-//   <e>Initialize SAU Region 3 (Secure SRAM)
+//   <e>Initialize SAU Region 3 (Non-Secure SRAM (3-4))
 //   <i> Setup SAU Region 3 memory attributes
 */
 #define SAU_INIT_REGION3    1
@@ -194,19 +194,19 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START3     0x30000000
+#define SAU_INIT_START3     0x20020000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END3       0x3001FFFF
+#define SAU_INIT_END3       0x2003FFFF
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC3       1
+#define SAU_INIT_NSC3       0
 /*
 //   </e>
 */
@@ -215,17 +215,17 @@
 //   <e>Initialize SAU Region 4 (Non-Secure SRAM)
 //   <i> Setup SAU Region 4 memory attributes
 */
-#define SAU_INIT_REGION4    1
+#define SAU_INIT_REGION4    0
 
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START4     0x20020000      /* start address of SAU region 4 */
+#define SAU_INIT_START4     0x00000000      /* start address of SAU region 4 */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END4       0x2003FFFF      /* end address of SAU region 4 */
+#define SAU_INIT_END4       0x00000000      /* end address of SAU region 4 */
 
 /*
 //     <o>Region is
