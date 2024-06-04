@@ -97,11 +97,13 @@ Each component requires some assembly and associated hardware connections.  Addi
 
 ![Img 18](res/18.jpg)
 
-17. Attach the female end of the MAX78000CAM02 supply cable to the 3.3V supply pins of the OpenCR1.0 controller.  Keep the OpenCR1.0 powered off.
+17. Attach the female end of the MAX78000CAM02 supply cable to the 3.3V supply pins of the Raspberry Pi's GPIO header.
 
-![Img 19](res/19.jpg)
+![Img 29](res/29.jpg)
 
-18. Check the supply pins again from step 17.  Getting the orientation backwards will fry the MAX78000CAM02.
+![Img 28](res/28.jpg)
+
+18. Check the supply pins again from step 17.  Getting the orientation backwards will destroy the MAX78000CAM02.
 
 19. Ensure the USB-C power supply switch is set to OFF, then connect it to the Raspberry Pi.
 
