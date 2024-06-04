@@ -6309,7 +6309,7 @@
      </fields>
     </register>
     <register>
-     <name>BLKMAX</name>
+     <name>BLK_MAX</name>
      <description>Maximum value of block-based index register.</description>
      <addressOffset>0x0010</addressOffset>
      <size>32</size>
@@ -6324,7 +6324,7 @@
      </fields>
     </register>
     <register>
-     <name>BLKCTRL</name>
+     <name>BLK_CFG</name>
      <description>Block Control Register.</description>
      <addressOffset>0x0014</addressOffset>
      <size>32</size>
@@ -6345,7 +6345,7 @@
      </fields>
     </register>
     <register>
-     <name>BLKIDX</name>
+     <name>BLK_IDX</name>
      <description>Block Index Register.</description>
      <addressOffset>0x0018</addressOffset>
      <fields>
@@ -6358,7 +6358,7 @@
      </fields>
     </register>
     <register>
-     <name>BLKLUT</name>
+     <name>BLK_LUT</name>
      <description>Block-based gating Look Up Table Register.</description>
      <addressOffset>0x001C</addressOffset>
      <fields>
@@ -6371,13 +6371,13 @@
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
+     <name>INT_STAT</name>
      <description>Interrupt Flag Register.</description>
      <addressOffset>0x0020</addressOffset>
      <access>read-only</access>
      <fields>
       <field>
-       <name>MPC</name>
+       <name>MPC_IRQ</name>
        <description>MPC IRQ triggered.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6385,13 +6385,13 @@
      </fields>
     </register>
     <register>
-     <name>INTCLR</name>
+     <name>INT_CLEAR</name>
      <description>Interrupt Clear Register.</description>
      <addressOffset>0x0024</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
-       <name>MPC</name>
+       <name>MPC_IRQ</name>
        <description>MPC IRQ Clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6399,12 +6399,12 @@
      </fields>
     </register>
     <register>
-     <name>INTEN</name>
+     <name>INT_EN</name>
      <description>Interrupt Enable Register.</description>
      <addressOffset>0x0028</addressOffset>
      <fields>
       <field>
-       <name>MPC</name>
+       <name>MPC_IRQ</name>
        <description>MPC IRQ Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6412,8 +6412,8 @@
      </fields>
     </register>
     <register>
-     <name>INTINFO0</name>
-     <description>Interrupt Info 0 Register.</description>
+     <name>INT_INFO1</name>
+     <description>Interrupt Info 1 Register.</description>
      <addressOffset>0x002C</addressOffset>
      <access>read-only</access>
      <fields>
@@ -6426,8 +6426,8 @@
      </fields>
     </register>
     <register>
-     <name>INTINFO1</name>
-     <description>Interrupt Info 1 Register.</description>
+     <name>INT_INFO2</name>
+     <description>Interrupt Info 2 Register.</description>
      <addressOffset>0x0030</addressOffset>
      <access>read-only</access>
      <fields>
@@ -6452,45 +6452,45 @@
      </fields>
     </register>
     <register>
-     <name>INTSET</name>
+     <name>INT_SET</name>
      <description>Interrupt Set Debug Register.</description>
      <addressOffset>0x0034</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
-       <name>MPC</name>
+       <name>MPC_IRQ</name>
        <description>MPC IRQ Set.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>16</bitWidth>
+       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>
     <register>
-     <name>PERIPHID4</name>
+     <name>PIDR4</name>
      <description>Peripheral ID 4 Register.</description>
      <addressOffset>0x0FD0</addressOffset>
      <access>read-only</access>
     </register>
     <register>
-     <name>PERIPHID0</name>
+     <name>PIDR0</name>
      <description>Peripheral ID 0 Register.</description>
      <addressOffset>0x0FE0</addressOffset>
      <access>read-only</access>
     </register>
     <register>
-     <name>PERIPHID1</name>
+     <name>PIDR1</name>
      <description>Peripheral ID 1 Register.</description>
      <addressOffset>0x0FE4</addressOffset>
      <access>read-only</access>
     </register>
     <register>
-     <name>PERIPHID2</name>
+     <name>PIDR2</name>
      <description>Peripheral ID 2 Register.</description>
      <addressOffset>0x0FE8</addressOffset>
      <access>read-only</access>
     </register>
     <register>
-     <name>PERIPHID3</name>
+     <name>PIDR3</name>
      <description>Peripheral ID 3 Register.</description>
      <addressOffset>0x0FEC</addressOffset>
      <access>read-only</access>
@@ -6498,7 +6498,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>4</dimIncrement>
-     <name>COMPID[%s]</name>
+     <name>CIDR[%s]</name>
      <description>Component ID register.</description>
      <addressOffset>0x0FF0</addressOffset>
      <access>read-only</access>
