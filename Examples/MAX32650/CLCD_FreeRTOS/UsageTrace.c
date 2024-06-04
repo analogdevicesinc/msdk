@@ -45,9 +45,4 @@ void UsageTraceInit()
     MXC_TMR_Init(USAGE_TMR_INST, &tmrCfg);
     MXC_TMR_Start(USAGE_TMR_INST);
 #endif
-
-#ifdef USAGE_DWT
-    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    DWT->CYCCNT = 0;
-#endif
 }

@@ -28,7 +28,6 @@
  *
  *  - USAGE_TMR - Measure time in a code block using a timer peripheral
  *  - USAGE_GPIO_OUT - Set a GPIO high while the block is executing
- *  - USAGE_DWT - Measure cycles with the CM4 cycle counter
  *  - USAGE_NO_IRQ - Disable interrupts while this block is running
 */
 
@@ -44,7 +43,7 @@
 #endif
 
 /* Enum used for notifying the source during the hook*/
-typedef enum { USAGE_SRC_TMR, USAGE_SRC_DWT } usage_src_t;
+typedef enum { USAGE_SRC_TMR } usage_src_t;
 
 /**
  * Initializes the UsageTrace functionality. Needs to be called before Start and
@@ -75,11 +74,6 @@ static inline void _UsageTraceStart(void)
     USAGE_TMR_INST->cnt = 0;
 #endif
 
-#ifdef USAGE_DWT
-    DWT->CYCCNT = 0;
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-#endif
-
 #ifdef USAGE_GPIO_OUT
     USAGE_GPIO_PORT->out_set = USAGE_GPIO_PIN;
 #endif
@@ -96,11 +90,6 @@ static inline void _UsageTraceEnd(void)
     USAGE_GPIO_PORT->out_clr = USAGE_GPIO_PIN;
 #endif
 
-#ifdef USAGE_DWT
-    uint32_t countDwt;
-    countDwt = DWT->CYCCNT;
-#endif
-
 #ifdef USAGE_TMR
     uint32_t countTmr;
     countTmr = USAGE_TMR_INST->cnt;
@@ -115,10 +104,6 @@ static inline void _UsageTraceEnd(void)
 //hook
 #ifdef USAGE_TMR
     UsageTraceUserHook(countTmr, USAGE_SRC_TMR);
-#endif
-
-#ifdef USAGE_DWT
-    UsageTraceUserHook(countDwt, USAGE_SRC_DWT);
 #endif
 }
 

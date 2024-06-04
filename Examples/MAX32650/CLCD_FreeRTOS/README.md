@@ -112,7 +112,6 @@ file.
 | `USAGE_NO_IRQ` | Disables interrupts when tracing usage. | Y |
 | `USAGE_GPIO_OUT` | Enables GPIO toggling for usage tracing. | Y |
 | `USAGE_TMR` | Enables Timer counts for usage tracing. | Y |
-| `USAGE_DWT` | Enables the CM4 cycle counter for usage tracing. | |
 
 ## Required Connections
 
