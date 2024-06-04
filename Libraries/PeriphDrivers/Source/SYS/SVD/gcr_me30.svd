@@ -806,6 +806,19 @@
         </fields>
       </register>
       <register>
+        <name>ECCCED</name>
+        <description>ECC Correctable Error Detect Register.</description>
+        <addressOffset>0x68</addressOffset>
+        <fields>
+          <field>
+            <name>FLASH</name>
+            <description>ECC Correctable Error Detect Flag for Flash. Write 1 to clear.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>ECCINTEN</name>
         <description>ECC Interrupt Enable Register</description>
         <addressOffset>0x6C</addressOffset>

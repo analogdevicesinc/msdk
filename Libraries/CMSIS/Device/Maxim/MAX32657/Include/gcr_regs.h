@@ -91,7 +91,7 @@ typedef struct {
     __IO uint32_t sysinten;             /**< <tt>\b 0x54:</tt> GCR SYSINTEN Register */
     __R  uint32_t rsv_0x58_0x63[3];
     __IO uint32_t eccerr;               /**< <tt>\b 0x64:</tt> GCR ECCERR Register */
-    __R  uint32_t rsv_0x68;
+    __IO uint32_t eccced;               /**< <tt>\b 0x68:</tt> GCR ECCCED Register */
     __IO uint32_t eccinten;             /**< <tt>\b 0x6C:</tt> GCR ECCINTEN Register */
     __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
     __IO uint32_t btleldoctrl;          /**< <tt>\b 0x74:</tt> GCR BTLELDOCTRL Register */
@@ -120,6 +120,7 @@ typedef struct {
 #define MXC_R_GCR_REVISION                 ((uint32_t)0x00000050UL) /**< Offset from GCR Base Address: <tt> 0x0050</tt> */
 #define MXC_R_GCR_SYSINTEN                 ((uint32_t)0x00000054UL) /**< Offset from GCR Base Address: <tt> 0x0054</tt> */
 #define MXC_R_GCR_ECCERR                   ((uint32_t)0x00000064UL) /**< Offset from GCR Base Address: <tt> 0x0064</tt> */
+#define MXC_R_GCR_ECCCED                   ((uint32_t)0x00000068UL) /**< Offset from GCR Base Address: <tt> 0x0068</tt> */
 #define MXC_R_GCR_ECCINTEN                 ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */
 #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
 #define MXC_R_GCR_BTLELDOCTRL              ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */
@@ -504,6 +505,17 @@ typedef struct {
 #define MXC_F_GCR_ECCERR_FLASH                         ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_FLASH_POS)) /**< ECCERR_FLASH Mask */
 
 /**@} end of group GCR_ECCERR_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_ECCCED GCR_ECCCED
+ * @brief    ECC Correctable Error Detect Register.
+ * @{
+ */
+#define MXC_F_GCR_ECCCED_FLASH_POS                     0 /**< ECCCED_FLASH Position */
+#define MXC_F_GCR_ECCCED_FLASH                         ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_FLASH_POS)) /**< ECCCED_FLASH Mask */
+
+/**@} end of group GCR_ECCCED_Register */
 
 /**
  * @ingroup  gcr_registers
