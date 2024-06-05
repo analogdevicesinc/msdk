@@ -100,11 +100,11 @@ typedef struct {
  * @brief    Register 0.
  * @{
  */
-#define MXC_F_FCR_FCTRL0_BTLELDO_TX_POS                0 /**< FCTRL0_BTLELDO_TX Position */
-#define MXC_F_FCR_FCTRL0_BTLELDO_TX                    ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDO_TX_POS)) /**< FCTRL0_BTLELDO_TX Mask */
+#define MXC_F_FCR_FCTRL0_BTLELDO_RF_POS                0 /**< FCTRL0_BTLELDO_RF Position */
+#define MXC_F_FCR_FCTRL0_BTLELDO_RF                    ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDO_RF_POS)) /**< FCTRL0_BTLELDO_RF Mask */
 
-#define MXC_F_FCR_FCTRL0_BTLELDO_RX_POS                8 /**< FCTRL0_BTLELDO_RX Position */
-#define MXC_F_FCR_FCTRL0_BTLELDO_RX                    ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDO_RX_POS)) /**< FCTRL0_BTLELDO_RX Mask */
+#define MXC_F_FCR_FCTRL0_BTLELDO_BB_POS                8 /**< FCTRL0_BTLELDO_BB Position */
+#define MXC_F_FCR_FCTRL0_BTLELDO_BB                    ((uint32_t)(0x1FUL << MXC_F_FCR_FCTRL0_BTLELDO_BB_POS)) /**< FCTRL0_BTLELDO_BB Mask */
 
 #define MXC_F_FCR_FCTRL0_I3CDGEN0_POS                  20 /**< FCTRL0_I3CDGEN0 Position */
 #define MXC_F_FCR_FCTRL0_I3CDGEN0                      ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL0_I3CDGEN0_POS)) /**< FCTRL0_I3CDGEN0 Mask */

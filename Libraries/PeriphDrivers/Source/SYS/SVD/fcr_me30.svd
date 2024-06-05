@@ -17,14 +17,14 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>BTLELDO_TX</name>
-            <description>BTLE LDO TX Trim.</description>
+            <name>BTLELDO_RF</name>
+            <description>BTLE LDO RF Trim.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
           <field>
-            <name>BTLELDO_RX</name>
-            <description>BTLE LDO RX Trim.</description>
+            <name>BTLELDO_BB</name>
+            <description>BTLE LDO BB Trim.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>5</bitWidth>
           </field>

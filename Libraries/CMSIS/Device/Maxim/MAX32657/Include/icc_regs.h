@@ -84,7 +84,7 @@ typedef struct {
     __R  uint32_t rsv_0x104_0x1ff[63];
     __IO uint32_t way;                  /**< <tt>\b 0x0200:</tt> ICC WAY Register */
     __IO uint32_t regctrl;              /**< <tt>\b 0x0204:</tt> ICC REGCTRL Register */
-    __IO mxc_icc_reg_regs_t region[4]; /**< <tt>\b 0x0208:</tt> ICC REGION Register */
+    __IO mxc_icc_reg_regs_t region[4];  /**< <tt>\b 0x0208:</tt> ICC REGION Register */
     __R  uint32_t rsv_0x218_0x2ff[58];
     __IO uint32_t pfmctrl;              /**< <tt>\b 0x0300:</tt> ICC PFMCTRL Register */
     __IO uint32_t pfmcnt;               /**< <tt>\b 0x0304:</tt> ICC PFMCNT Register */

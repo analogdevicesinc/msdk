@@ -1101,14 +1101,14 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>BTLELDO_TX</name>
-       <description>BTLE LDO TX Trim.</description>
+       <name>BTLELDO_RF</name>
+       <description>BTLE LDO RF Trim.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
       <field>
-       <name>BTLELDO_RX</name>
-       <description>BTLE LDO RX Trim.</description>
+       <name>BTLELDO_BB</name>
+       <description>BTLE LDO BB Trim.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
@@ -2533,86 +2533,86 @@
      <addressOffset>0x74</addressOffset>
      <fields>
       <field>
-       <name>TX_EN</name>
-       <description>LDOTX enable.</description>
+       <name>RF_EN</name>
+       <description>LDO RF enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TX_PD_EN</name>
-       <description>LDOTX Pull Down.</description>
+       <name>RF_PD_EN</name>
+       <description>LDO RF Pull Down.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TX_VSEL</name>
-       <description>Voltage Selection for NFC LDO</description>
+       <name>RF_VSEL</name>
+       <description>Voltage Selection for RF LDO</description>
        <bitOffset>2</bitOffset>
        <bitWidth>2</bitWidth>
       </field>
       <field>
-       <name>RX_EN</name>
-       <description>LDORX enable.</description>
+       <name>BB_EN</name>
+       <description>LDOBB enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RX_PD_EN</name>
-       <description>LDORX Pull DOwn.</description>
+       <name>BB_PD_EN</name>
+       <description>LDO BB Pull DOwn.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RX_VSEL</name>
-       <description>LDORX Voltage Setting.</description>
+       <name>BB_VSEL</name>
+       <description>LDO BB Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
       </field>
       <field>
-       <name>RX_BP_EN</name>
-       <description>LDORX Bypass Enable.</description>
+       <name>BB_BP_EN</name>
+       <description>LDO BB Bypass Enable.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RX_DISCH</name>
-       <description>LDORX Discharge.</description>
+       <name>BB_DISCH</name>
+       <description>LDO BB Discharge.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TX_BP_EN</name>
-       <description>LDOTX Bypass Enable.</description>
+       <name>RF_BP_EN</name>
+       <description>LDO RF Bypass Enable.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TX_DISCH</name>
-       <description>LDOTX Discharge.</description>
+       <name>RF_DISCH</name>
+       <description>LDO RF Discharge.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TX_EN_DLY</name>
-       <description>LDOTX Enable Delay.</description>
+       <name>RF_EN_DLY</name>
+       <description>LDO RF Enable Delay.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RX_EN_DLY</name>
-       <description>LDORX Enable Delay.</description>
+       <name>BB_EN_DLY</name>
+       <description>LDO BB Enable Delay.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RX_BP_EN_DLY</name>
-       <description>LDORX Bypass Enable Delay.</description>
+       <name>BB_BP_EN_DLY</name>
+       <description>LDO BB Bypass Enable Delay.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TX_BP_EN_DLY</name>
-       <description>LDOTX Bypass Enable Delay.</description>
+       <name>RF_BP_EN_DLY</name>
+       <description>LDO RF Bypass Enable Delay.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -2630,14 +2630,14 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>RX_CNT</name>
-       <description>RX delay count.</description>
+       <name>BB_CNT</name>
+       <description>BB delay count.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>9</bitWidth>
       </field>
       <field>
-       <name>TX_CNT</name>
-       <description>TX delay count.</description>
+       <name>RF_CNT</name>
+       <description>RF delay count.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>9</bitWidth>
       </field>
@@ -5910,7 +5910,7 @@
     </register>
     <cluster>
      <dim>4</dim>
-     <dimIncrement>0x20</dimIncrement>
+     <dimIncrement>8</dimIncrement>
      <name>REGION[%s]</name>
      <description>Regional Low and High Bound Registers.</description>
      <headerStructName>icc_reg</headerStructName>
