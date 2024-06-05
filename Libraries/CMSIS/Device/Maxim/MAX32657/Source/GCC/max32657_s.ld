@@ -38,6 +38,15 @@ MEMORY {
 }
 
 SECTIONS {
+    /**
+     *  The locations for the sections must be in order or the compiler
+     *  will disregard the section.
+     */
+    .nonsecure_flash :
+    {
+        KEEP(*nonsecure.o) /* Non-Secure program code */
+    } > FLASH_NS
+
     .text :
     {
         _text = .;
@@ -149,11 +158,6 @@ SECTIONS {
         *(.bss*)     /* read-write zero initialized data: uninitialzed global variable */
         _ebss = ALIGN(., 4);
     } > SRAM
-
-    .nonsecure_flash :
-    {
-        KEEP(*nonsecure.o) /* Non-Secure program code */
-    } > FLASH_NS
 
     /**
      *  Stack Seal section is required for secure builds. Stack sealing protects
