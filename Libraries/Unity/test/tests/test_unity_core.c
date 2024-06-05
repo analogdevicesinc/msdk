@@ -21,14 +21,12 @@ void setUp(void)
 void tearDown(void)
 {
     endPutcharSpy(); /* Stop suppressing test output */
-    if (SetToOneToFailInTearDown == 1)
-    {
+    if (SetToOneToFailInTearDown == 1) {
         /* These will be skipped internally if already failed/ignored */
         TEST_FAIL_MESSAGE("<= Failed in tearDown");
         TEST_IGNORE_MESSAGE("<= Ignored in tearDown");
     }
-    if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0))
-    {
+    if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0)) {
         UnityPrint(": [[[[ Test Should Have Passed But Did Not ]]]]");
         UNITY_OUTPUT_CHAR('\n');
     }
@@ -39,15 +37,15 @@ void testUnitySizeInitializationReminder(void)
     /* This test ensures that sizeof(struct UNITY_STORAGE_T) doesn't change. If this
      * test breaks, go look at the initialization of the Unity global variable
      * in unity.c and make sure we're filling in the proper fields. */
-    const char* message = "Unexpected size for UNITY_STORAGE_T struct. Please check that "
-                     "the initialization of the Unity symbol in unity.c is "
-                     "still correct.";
+    const char *message = "Unexpected size for UNITY_STORAGE_T struct. Please check that "
+                          "the initialization of the Unity symbol in unity.c is "
+                          "still correct.";
 
     /* Define a structure with all the same fields as `struct UNITY_STORAGE_T`. */
 #ifdef UNITY_EXCLUDE_DETAILS
     struct {
-        const char* TestFile;
-        const char* CurrentTestName;
+        const char *TestFile;
+        const char *CurrentTestName;
         UNITY_LINE_TYPE CurrentTestLineNumber;
         UNITY_COUNTER_TYPE NumberOfTests;
         UNITY_COUNTER_TYPE TestFailures;
@@ -64,10 +62,10 @@ void testUnitySizeInitializationReminder(void)
     } _Expected_Unity;
 #else
     struct {
-        const char* TestFile;
-        const char* CurrentTestName;
-        const char* CurrentDetails1;
-        const char* CurrentDetails2;
+        const char *TestFile;
+        const char *CurrentTestName;
+        const char *CurrentDetails1;
+        const char *CurrentDetails2;
         UNITY_LINE_TYPE CurrentTestLineNumber;
         UNITY_COUNTER_TYPE NumberOfTests;
         UNITY_COUNTER_TYPE TestFailures;
@@ -136,11 +134,10 @@ void testFalse(void)
 
 void testSingleStatement(void)
 {
-    for(int i = 0; i < 2; i++)
-    {
+    for (int i = 0; i < 2; i++) {
         /* TEST_ASSERT_TRUE should expand to a single C statement, minus
          * the semicolon. This if-else will fail to compile otherwise. */
-        if(i > 0)
+        if (i > 0)
             TEST_ASSERT_TRUE(i);
         else
             TEST_ASSERT_FALSE(i);
@@ -196,8 +193,8 @@ void testFail(void)
 
 void testIsNull(void)
 {
-    char* ptr1 = NULL;
-    const char* ptr2 = "hello";
+    char *ptr1 = NULL;
+    const char *ptr2 = "hello";
 
     TEST_ASSERT_NULL(ptr1);
     TEST_ASSERT_NOT_NULL(ptr2);
@@ -205,7 +202,7 @@ void testIsNull(void)
 
 void testIsNullShouldFailIfNot(void)
 {
-    const char* ptr1 = "hello";
+    const char *ptr1 = "hello";
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_NULL(ptr1);
@@ -214,7 +211,7 @@ void testIsNullShouldFailIfNot(void)
 
 void testNotNullShouldFailIfNULL(void)
 {
-    char* ptr1 = NULL;
+    char *ptr1 = NULL;
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_NOT_NULL(ptr1);
@@ -223,8 +220,8 @@ void testNotNullShouldFailIfNULL(void)
 
 void testIsEmpty(void)
 {
-    const char* ptr1 = "\0";
-    const char* ptr2 = "hello";
+    const char *ptr1 = "\0";
+    const char *ptr2 = "hello";
 
     TEST_ASSERT_EMPTY(ptr1);
     TEST_ASSERT_NOT_EMPTY(ptr2);
@@ -232,7 +229,7 @@ void testIsEmpty(void)
 
 void testIsEmptyShouldFailIfNot(void)
 {
-    const char* ptr1 = "hello";
+    const char *ptr1 = "hello";
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EMPTY(ptr1);
@@ -241,7 +238,7 @@ void testIsEmptyShouldFailIfNot(void)
 
 void testNotEmptyShouldFailIfEmpty(void)
 {
-    const char* ptr1 = "\0";
+    const char *ptr1 = "\0";
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_NOT_EMPTY(ptr1);
@@ -268,13 +265,10 @@ void testProtection(void)
 {
     volatile int mask = 0;
 
-    if (TEST_PROTECT())
-    {
+    if (TEST_PROTECT()) {
         mask |= 1;
         TEST_ABORT();
-    }
-    else
-    {
+    } else {
         Unity.CurrentTestFailed = 0;
         mask |= 2;
     }
@@ -338,7 +332,7 @@ void testThatDetailsCanHandleTestFail(void)
 #ifdef UNITY_EXCLUDE_DETAILS
     TEST_IGNORE();
 #else
-    UNITY_SET_DETAILS("Detail1","Detail2");
+    UNITY_SET_DETAILS("Detail1", "Detail2");
 
     EXPECT_ABORT_BEGIN
     TEST_FAIL_MESSAGE("Should Fail And Say Detail1 and Detail2");
@@ -351,7 +345,7 @@ void testThatDetailsCanBeHandleTwoDetails(void)
 #ifdef UNITY_EXCLUDE_DETAILS
     TEST_IGNORE();
 #else
-    UNITY_SET_DETAILS("Detail1","Detail2");
+    UNITY_SET_DETAILS("Detail1", "Detail2");
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_HEX8_MESSAGE(7, 8, "Should Fail And Say Detail1 and Detail2");
@@ -364,7 +358,7 @@ void testThatDetailsCanBeHandleSingleDetailClearingTwoDetails(void)
 #ifdef UNITY_EXCLUDE_DETAILS
     TEST_IGNORE();
 #else
-    UNITY_SET_DETAILS("Detail1","Detail2");
+    UNITY_SET_DETAILS("Detail1", "Detail2");
     UNITY_SET_DETAIL("DetailNew");
 
     EXPECT_ABORT_BEGIN

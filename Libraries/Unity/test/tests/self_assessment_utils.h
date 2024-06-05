@@ -24,44 +24,42 @@ static const UNITY_DOUBLE d_zero = 0.0;
 /* Macros for Catching An Expected Failure or Ignore */
 #define EXPECT_ABORT_BEGIN \
     startPutcharSpy();     \
-    if (TEST_PROTECT())    \
-    {
-
+    if (TEST_PROTECT()) {
 #define VERIFY_FAILS_END                                                       \
     }                                                                          \
     endPutcharSpy(); /* start/end Spy to suppress output of failure message */ \
     Unity.CurrentTestFailed = (Unity.CurrentTestFailed == 1) ? 0 : 1;          \
     if (Unity.CurrentTestFailed == 1) {                                        \
-      SetToOneMeanWeAlreadyCheckedThisGuy = 1;                                 \
-      UnityPrintNumberUnsigned(Unity.CurrentTestLineNumber);                   \
-      UNITY_OUTPUT_CHAR(':');                                                  \
-      UnityPrint(Unity.CurrentTestName);                                       \
-      UnityPrint(":FAIL: [[[[ Test Should Have Failed But Did Not ]]]]");      \
-      UNITY_OUTPUT_CHAR('\n');                                                 \
+        SetToOneMeanWeAlreadyCheckedThisGuy = 1;                               \
+        UnityPrintNumberUnsigned(Unity.CurrentTestLineNumber);                 \
+        UNITY_OUTPUT_CHAR(':');                                                \
+        UnityPrint(Unity.CurrentTestName);                                     \
+        UnityPrint(":FAIL: [[[[ Test Should Have Failed But Did Not ]]]]");    \
+        UNITY_OUTPUT_CHAR('\n');                                               \
     }
 
-#define VERIFY_IGNORES_END                                                     \
-    }                                                                          \
-    endPutcharSpy(); /* start/end Spy to suppress output of ignore message */  \
-    Unity.CurrentTestFailed = (Unity.CurrentTestIgnored == 1) ? 0 : 1;         \
-    Unity.CurrentTestIgnored = 0;                                              \
-    if (Unity.CurrentTestFailed == 1) {                                        \
-      SetToOneMeanWeAlreadyCheckedThisGuy = 1;                                 \
-      UnityPrintNumberUnsigned(Unity.CurrentTestLineNumber);                   \
-      UNITY_OUTPUT_CHAR(':');                                                  \
-      UnityPrint(Unity.CurrentTestName);                                       \
-      UnityPrint(":FAIL: [[[[ Test Should Have Ignored But Did Not ]]]]");     \
-      UNITY_OUTPUT_CHAR('\n');                                                 \
+#define VERIFY_IGNORES_END                                                    \
+    }                                                                         \
+    endPutcharSpy(); /* start/end Spy to suppress output of ignore message */ \
+    Unity.CurrentTestFailed = (Unity.CurrentTestIgnored == 1) ? 0 : 1;        \
+    Unity.CurrentTestIgnored = 0;                                             \
+    if (Unity.CurrentTestFailed == 1) {                                       \
+        SetToOneMeanWeAlreadyCheckedThisGuy = 1;                              \
+        UnityPrintNumberUnsigned(Unity.CurrentTestLineNumber);                \
+        UNITY_OUTPUT_CHAR(':');                                               \
+        UnityPrint(Unity.CurrentTestName);                                    \
+        UnityPrint(":FAIL: [[[[ Test Should Have Ignored But Did Not ]]]]");  \
+        UNITY_OUTPUT_CHAR('\n');                                              \
     }
 
 /* Tricky series of macros to set USING_OUTPUT_SPY */
-#define USING_SPY_AS(a)           EXPAND_AND_USE_2ND(ASSIGN_VALUE(a), 0)
-#define ASSIGN_VALUE(a)           VAL_##a
-#define VAL_putcharSpy            0, 1
-#define EXPAND_AND_USE_2ND(a, b)  SECOND_PARAM(a, b, throwaway)
-#define SECOND_PARAM(a, b, ...)   b
+#define USING_SPY_AS(a) EXPAND_AND_USE_2ND(ASSIGN_VALUE(a), 0)
+#define ASSIGN_VALUE(a) VAL_##a
+#define VAL_putcharSpy 0, 1
+#define EXPAND_AND_USE_2ND(a, b) SECOND_PARAM(a, b, throwaway)
+#define SECOND_PARAM(a, b, ...) b
 #if USING_SPY_AS(UNITY_OUTPUT_CHAR)
-  #define USING_OUTPUT_SPY /* true only if UNITY_OUTPUT_CHAR = putcharSpy */
+#define USING_OUTPUT_SPY /* true only if UNITY_OUTPUT_CHAR = putcharSpy */
 #endif
 
 #ifdef USING_OUTPUT_SPY
@@ -83,7 +81,7 @@ void endPutcharSpy(void)
     putcharSpyEnabled = 0;
 }
 
-char* getBufferPutcharSpy(void)
+char *getBufferPutcharSpy(void)
 {
 #ifdef USING_OUTPUT_SPY
     putcharSpyBuffer[indexSpyBuffer] = '\0';
@@ -96,8 +94,7 @@ char* getBufferPutcharSpy(void)
 void putcharSpy(int c)
 {
 #ifdef USING_OUTPUT_SPY
-    if (putcharSpyEnabled)
-    {
+    if (putcharSpyEnabled) {
         if (indexSpyBuffer < SPY_BUFFER_MAX - 1)
             putcharSpyBuffer[indexSpyBuffer++] = (char)c;
     } else
@@ -130,22 +127,33 @@ int getFlushSpyCalls(void)
 
 void flushSpy(void)
 {
-    if (flushSpyEnabled){ flushSpyCalls++; }
+    if (flushSpyEnabled) {
+        flushSpyCalls++;
+    }
 }
 
-#define TEST_ASSERT_EQUAL_PRINT_NUMBERS(expected, actual) {             \
-        startPutcharSpy(); UnityPrintNumber((actual)); endPutcharSpy(); \
-        TEST_ASSERT_EQUAL_STRING((expected), getBufferPutcharSpy());    \
-        }
+#define TEST_ASSERT_EQUAL_PRINT_NUMBERS(expected, actual)            \
+    {                                                                \
+        startPutcharSpy();                                           \
+        UnityPrintNumber((actual));                                  \
+        endPutcharSpy();                                             \
+        TEST_ASSERT_EQUAL_STRING((expected), getBufferPutcharSpy()); \
+    }
 
-#define TEST_ASSERT_EQUAL_PRINT_UNSIGNED_NUMBERS(expected, actual) {            \
-        startPutcharSpy(); UnityPrintNumberUnsigned((actual)); endPutcharSpy(); \
-        TEST_ASSERT_EQUAL_STRING((expected), getBufferPutcharSpy());            \
-        }
+#define TEST_ASSERT_EQUAL_PRINT_UNSIGNED_NUMBERS(expected, actual)   \
+    {                                                                \
+        startPutcharSpy();                                           \
+        UnityPrintNumberUnsigned((actual));                          \
+        endPutcharSpy();                                             \
+        TEST_ASSERT_EQUAL_STRING((expected), getBufferPutcharSpy()); \
+    }
 
-#define TEST_ASSERT_EQUAL_PRINT_FLOATING(expected, actual) {            \
-        startPutcharSpy(); UnityPrintFloat((actual)); endPutcharSpy();  \
-        TEST_ASSERT_EQUAL_STRING((expected), getBufferPutcharSpy());    \
-        }
+#define TEST_ASSERT_EQUAL_PRINT_FLOATING(expected, actual)           \
+    {                                                                \
+        startPutcharSpy();                                           \
+        UnityPrintFloat((actual));                                   \
+        endPutcharSpy();                                             \
+        TEST_ASSERT_EQUAL_STRING((expected), getBufferPutcharSpy()); \
+    }
 
 #endif

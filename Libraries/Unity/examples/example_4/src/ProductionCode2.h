@@ -5,5 +5,4 @@
     SPDX-License-Identifier: MIT
 ========================================================================= */
 
-
-char* ThisFunctionHasNotBeenTested(int Poor, char* LittleFunction);
+char *ThisFunctionHasNotBeenTested(int Poor, char *LittleFunction);

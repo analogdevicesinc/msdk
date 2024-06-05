@@ -21,14 +21,12 @@ void setUp(void)
 void tearDown(void)
 {
     endPutcharSpy(); /* Stop suppressing test output */
-    if (SetToOneToFailInTearDown == 1)
-    {
+    if (SetToOneToFailInTearDown == 1) {
         /* These will be skipped internally if already failed/ignored */
         TEST_FAIL_MESSAGE("<= Failed in tearDown");
         TEST_IGNORE_MESSAGE("<= Ignored in tearDown");
     }
-    if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0))
-    {
+    if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0)) {
         UnityPrint(": [[[[ Test Should Have Passed But Did Not ]]]]");
         UNITY_OUTPUT_CHAR('\n');
     }
@@ -62,7 +60,6 @@ void testDoublesNotWithinDelta(void)
     VERIFY_FAILS_END
 #endif
 }
-
 
 void testDoublesEqual(void)
 {
@@ -861,10 +858,10 @@ void testEqualDoubleArrays(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, -8.0,  25.4, -0.123};
-    double p1[] = {1.0, -8.0,  25.4, -0.123};
-    double p2[] = {1.0, -8.0,  25.4, -0.2};
-    double p3[] = {1.0, -23.0, 25.0, -0.26};
+    double p0[] = { 1.0, -8.0, 25.4, -0.123 };
+    double p1[] = { 1.0, -8.0, 25.4, -0.123 };
+    double p2[] = { 1.0, -8.0, 25.4, -0.2 };
+    double p3[] = { 1.0, -23.0, 25.0, -0.26 };
 
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p0, 1);
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p0, 4);
@@ -880,8 +877,8 @@ void testNotEqualDoubleArraysExpectedNull(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double* p0 = NULL;
-    double p1[] = {1.0, 8.0, 25.4, 0.252};
+    double *p0 = NULL;
+    double p1[] = { 1.0, 8.0, 25.4, 0.252 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -894,8 +891,8 @@ void testNotEqualDoubleArraysActualNull(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 8.0, 25.4, 0.253};
-    double* p1 = NULL;
+    double p0[] = { 1.0, 8.0, 25.4, 0.253 };
+    double *p1 = NULL;
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -908,8 +905,8 @@ void testNotEqualDoubleArrays1(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 8.0, 25.4, 0.25666666667};
-    double p1[] = {1.0, 8.0, 25.4, 0.25666666666};
+    double p0[] = { 1.0, 8.0, 25.4, 0.25666666667 };
+    double p1[] = { 1.0, 8.0, 25.4, 0.25666666666 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -922,8 +919,8 @@ void testNotEqualDoubleArrays2(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 8.0, 25.4, 0.253};
-    double p1[] = {2.0, 8.0, 25.4, 0.253};
+    double p0[] = { 1.0, 8.0, 25.4, 0.253 };
+    double p1[] = { 2.0, 8.0, 25.4, 0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -936,8 +933,8 @@ void testNotEqualDoubleArrays3(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 8.0, 25.4, 0.253};
-    double p1[] = {1.0, 8.0, 25.5, 0.253};
+    double p0[] = { 1.0, 8.0, 25.4, 0.253 };
+    double p1[] = { 1.0, 8.0, 25.5, 0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -950,8 +947,8 @@ void testNotEqualDoubleArraysNegative1(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-1.0, -8.0, -25.4, -0.2566666667};
-    double p1[] = {-1.0, -8.0, -25.4, -0.2566666666};
+    double p0[] = { -1.0, -8.0, -25.4, -0.2566666667 };
+    double p1[] = { -1.0, -8.0, -25.4, -0.2566666666 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -964,8 +961,8 @@ void testNotEqualDoubleArraysNegative2(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-1.0, -8.0, -25.4, -0.253};
-    double p1[] = {-2.0, -8.0, -25.4, -0.253};
+    double p0[] = { -1.0, -8.0, -25.4, -0.253 };
+    double p1[] = { -2.0, -8.0, -25.4, -0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -978,8 +975,8 @@ void testNotEqualDoubleArraysNegative3(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-1.0, -8.0, -25.4, -0.253};
-    double p1[] = {-1.0, -8.0, -25.5, -0.253};
+    double p0[] = { -1.0, -8.0, -25.4, -0.253 };
+    double p1[] = { -1.0, -8.0, -25.5, -0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
@@ -992,8 +989,8 @@ void testEqualDoubleArraysNaN(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 0.0 / d_zero, 25.4, 0.253};
-    double p1[] = {1.0, 0.0 / d_zero, 25.4, 0.253};
+    double p0[] = { 1.0, 0.0 / d_zero, 25.4, 0.253 };
+    double p1[] = { 1.0, 0.0 / d_zero, 25.4, 0.253 };
 
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
 #endif
@@ -1004,8 +1001,8 @@ void testEqualDoubleArraysInf(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 1.0 / d_zero, 25.4, 0.253};
-    double p1[] = {1.0, 1.0 / d_zero, 25.4, 0.253};
+    double p0[] = { 1.0, 1.0 / d_zero, 25.4, 0.253 };
+    double p1[] = { 1.0, 1.0 / d_zero, 25.4, 0.253 };
 
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 4);
 #endif
@@ -1016,8 +1013,8 @@ void testNotEqualDoubleArraysLengthZero(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[1] = {0.0};
-    double p1[1] = {0.0};
+    double p0[1] = { 0.0 };
+    double p1[1] = { 0.0 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EQUAL_DOUBLE_ARRAY(p0, p1, 0);
@@ -1030,12 +1027,12 @@ void testDoubleArraysWithin(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, -8.0,  25.4, -0.123};
-    double p1[] = {1.0, -8.0,  25.4, -0.123};
-    double p2[] = {1.0, -8.0,  25.4, -0.2};
-    double p3[] = {1.0, -23.0, 25.0, -0.26};
-    double p4[] = {2.0, -9.0,  26.2, 0.26};
-    double p5[] = {-1.0, -7.0, 29.0, 2.6};
+    double p0[] = { 1.0, -8.0, 25.4, -0.123 };
+    double p1[] = { 1.0, -8.0, 25.4, -0.123 };
+    double p2[] = { 1.0, -8.0, 25.4, -0.2 };
+    double p3[] = { 1.0, -23.0, 25.0, -0.26 };
+    double p4[] = { 2.0, -9.0, 26.2, 0.26 };
+    double p5[] = { -1.0, -7.0, 29.0, 2.6 };
 
     TEST_ASSERT_DOUBLE_ARRAY_WITHIN(1.0, p0, p0, 1);
     TEST_ASSERT_DOUBLE_ARRAY_WITHIN(1.0, p0, p0, 4);
@@ -1055,8 +1052,8 @@ void testDoubleArraysWithinUnusualDelta(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-INFINITY, -8.0, 25.4, -0.123};
-    double p1[] = {INFINITY, 10.1};
+    double p0[] = { -INFINITY, -8.0, 25.4, -0.123 };
+    double p1[] = { INFINITY, 10.1 };
 
     TEST_ASSERT_DOUBLE_ARRAY_WITHIN(INFINITY, p0, p1, 2);
 
@@ -1071,10 +1068,10 @@ void testEqualDoubleEachEqual(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 1.0, 1.0, 1.0};
-    double p1[] = {-0.123, -0.123, -0.123, -0.123};
-    double p2[] = {25.4, 25.4, 25.4, -0.2};
-    double p3[] = {1.0, -23.0, 25.0, -0.26};
+    double p0[] = { 1.0, 1.0, 1.0, 1.0 };
+    double p1[] = { -0.123, -0.123, -0.123, -0.123 };
+    double p2[] = { 25.4, 25.4, 25.4, -0.2 };
+    double p3[] = { 1.0, -23.0, 25.0, -0.26 };
 
     TEST_ASSERT_EACH_EQUAL_DOUBLE(1.0, p0, 1);
     TEST_ASSERT_EACH_EQUAL_DOUBLE(1.0, p0, 4);
@@ -1089,7 +1086,7 @@ void testNotEqualDoubleEachEqualActualNull(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double* p0 = NULL;
+    double *p0 = NULL;
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(5, p0, 4);
@@ -1102,7 +1099,7 @@ void testNotEqualDoubleEachEqual1(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {0.253, 8.0, 0.253, 0.253};
+    double p0[] = { 0.253, 8.0, 0.253, 0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(0.253, p0, 4);
@@ -1115,7 +1112,7 @@ void testNotEqualDoubleEachEqual2(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {8.0, 8.0, 8.0, 0.253};
+    double p0[] = { 8.0, 8.0, 8.0, 0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(8.0, p0, 4);
@@ -1128,7 +1125,7 @@ void testNotEqualDoubleEachEqual3(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0, 1.0, 1.0, 0.253};
+    double p0[] = { 1.0, 1.0, 1.0, 0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(1.0, p0, 4);
@@ -1141,7 +1138,7 @@ void testNotEqualDoubleEachEqualNegative1(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-1.0, -0.253, -0.253, -0.253};
+    double p0[] = { -1.0, -0.253, -0.253, -0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(-0.253, p0, 4);
@@ -1154,7 +1151,7 @@ void testNotEqualDoubleEachEqualNegative2(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-25.4, -8.0, -25.4, -25.4};
+    double p0[] = { -25.4, -8.0, -25.4, -25.4 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(-25.4, p0, 4);
@@ -1167,7 +1164,7 @@ void testNotEqualDoubleEachEqualNegative3(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {-8.0, -8.0, -8.0, -0.253};
+    double p0[] = { -8.0, -8.0, -8.0, -0.253 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(-8.0, p0, 4);
@@ -1180,7 +1177,7 @@ void testEqualDoubleEachEqualNaN(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {0.0 / d_zero, 0.0 / d_zero, 0.0 / d_zero, 0.0 / d_zero};
+    double p0[] = { 0.0 / d_zero, 0.0 / d_zero, 0.0 / d_zero, 0.0 / d_zero };
 
     TEST_ASSERT_EACH_EQUAL_DOUBLE(0.0 / d_zero, p0, 4);
 #endif
@@ -1191,7 +1188,7 @@ void testEqualDoubleEachEqualInf(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[] = {1.0 / d_zero, 1.0 / d_zero, 25.4, 0.253};
+    double p0[] = { 1.0 / d_zero, 1.0 / d_zero, 25.4, 0.253 };
 
     TEST_ASSERT_EACH_EQUAL_DOUBLE(1.0 / d_zero, p0, 2);
 #endif
@@ -1202,7 +1199,7 @@ void testNotEqualDoubleEachEqualLengthZero(void)
 #ifdef UNITY_EXCLUDE_DOUBLE
     TEST_IGNORE();
 #else
-    double p0[1] = {0.0};
+    double p0[1] = { 0.0 };
 
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_EACH_EQUAL_DOUBLE(0.0, p0, 0);
@@ -1212,74 +1209,77 @@ void testNotEqualDoubleEachEqualLengthZero(void)
 
 void testDoublePrinting(void)
 {
-#if defined(UNITY_EXCLUDE_FLOAT_PRINT) || defined(UNITY_EXCLUDE_DOUBLE) || !defined(USING_OUTPUT_SPY)
+#if defined(UNITY_EXCLUDE_FLOAT_PRINT) || defined(UNITY_EXCLUDE_DOUBLE) || \
+    !defined(USING_OUTPUT_SPY)
     TEST_IGNORE();
 #else
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("0",             0.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("4.99e-07",      0.000000499);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("0", 0.0);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("4.99e-07", 0.000000499);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("5.0000005e-07", 0.00000050000005);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("0.100469499",   0.100469499);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("1",             0.9999999995); /*Rounding to int place*/
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("1",             1.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("1.25",          1.25);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("7.99999999",    7.99999999); /*Not rounding*/
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("16.0000002",    16.0000002);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("16.0000004",    16.0000004);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("16.0000006",    16.0000006);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("999999999",     999999999.0); /*Last full print integer*/
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("0.100469499", 0.100469499);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("1", 0.9999999995); /*Rounding to int place*/
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("1", 1.0);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("1.25", 1.25);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("7.99999999", 7.99999999); /*Not rounding*/
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("16.0000002", 16.0000002);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("16.0000004", 16.0000004);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("16.0000006", 16.0000006);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("999999999", 999999999.0); /*Last full print integer*/
 
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("0",              -0.0); /* -0 no supported on all targets */
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-4.99e-07",      -0.000000499);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("0", -0.0); /* -0 no supported on all targets */
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-4.99e-07", -0.000000499);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("-5.0000005e-07", -0.00000050000005);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-0.100469499",   -0.100469499);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-1",             -0.9999999995); /*Rounding to int place*/
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-1",             -1.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-1.25",          -1.25);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-7.99999999",    -7.99999999); /*Not rounding*/
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-16.0000002",    -16.0000002);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-16.0000004",    -16.0000004);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-16.0000006",    -16.0000006);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-999999999",     -999999999.0); /*Last full print integer*/
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-0.100469499", -0.100469499);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-1", -0.9999999995); /*Rounding to int place*/
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-1", -1.0);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-1.25", -1.25);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-7.99999999", -7.99999999); /*Not rounding*/
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-16.0000002", -16.0000002);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-16.0000004", -16.0000004);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-16.0000006", -16.0000006);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-999999999", -999999999.0); /*Last full print integer*/
 
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("0.1004695",       0.10046949999999999);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("4.2949673e+09",   4294967295.9);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("4.2949673e+09",   4294967296.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("1e+10",           9999999995.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("9.00719925e+15",  9007199254740990.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("7e+100",          7.0e+100);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("3e+200",          3.0e+200);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("0.1004695", 0.10046949999999999);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("4.2949673e+09", 4294967295.9);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("4.2949673e+09", 4294967296.0);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("1e+10", 9999999995.0);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("9.00719925e+15", 9007199254740990.0);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("7e+100", 7.0e+100);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("3e+200", 3.0e+200);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("9.23456789e+300", 9.23456789e+300);
 
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-0.1004695",     -0.10046949999999999);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-0.1004695", -0.10046949999999999);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("-4.2949673e+09", -4294967295.9);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("-4.2949673e+09", -4294967296.0);
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("-7e+100",        -7.0e+100);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("-7e+100", -7.0e+100);
 #endif
 }
 
 void testDoublePrintingRoundTiesToEven(void)
 {
-#if defined(UNITY_EXCLUDE_FLOAT_PRINT) || defined(UNITY_EXCLUDE_DOUBLE) || !defined(USING_OUTPUT_SPY)
+#if defined(UNITY_EXCLUDE_FLOAT_PRINT) || defined(UNITY_EXCLUDE_DOUBLE) || \
+    !defined(USING_OUTPUT_SPY)
     TEST_IGNORE();
 #else
-  #ifdef UNITY_ROUND_TIES_AWAY_FROM_ZERO
+#ifdef UNITY_ROUND_TIES_AWAY_FROM_ZERO
     TEST_ASSERT_EQUAL_PRINT_FLOATING("1.00000001e+10", 10000000050.0);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("9.00719925e+15", 9007199245000000.0);
-  #else /* Default to Round ties to even */
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("1e+10",          10000000050.0);
+#else /* Default to Round ties to even */
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("1e+10", 10000000050.0);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("9.00719924e+15", 9007199245000000.0);
-  #endif
+#endif
 #endif
 }
 
 void testDoublePrintingInfinityAndNaN(void)
 {
-#if defined(UNITY_EXCLUDE_FLOAT_PRINT) || defined(UNITY_EXCLUDE_DOUBLE) || !defined(USING_OUTPUT_SPY)
+#if defined(UNITY_EXCLUDE_FLOAT_PRINT) || defined(UNITY_EXCLUDE_DOUBLE) || \
+    !defined(USING_OUTPUT_SPY)
     TEST_IGNORE();
 #else
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("inf",   1.0 / d_zero);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("inf", 1.0 / d_zero);
     TEST_ASSERT_EQUAL_PRINT_FLOATING("-inf", -1.0 / d_zero);
 
-    TEST_ASSERT_EQUAL_PRINT_FLOATING("nan",   0.0 / d_zero);
+    TEST_ASSERT_EQUAL_PRINT_FLOATING("nan", 0.0 / d_zero);
 #endif
 }

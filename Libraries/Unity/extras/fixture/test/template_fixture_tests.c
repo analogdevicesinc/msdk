@@ -5,7 +5,6 @@
     SPDX-License-Identifier: MIT
 ========================================================================= */
 
-
 #include "unity_fixture.h"
 
 static int data = -1;

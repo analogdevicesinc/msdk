@@ -21,14 +21,12 @@ void setUp(void)
 void tearDown(void)
 {
     endPutcharSpy(); /* Stop suppressing test output */
-    if (SetToOneToFailInTearDown == 1)
-    {
+    if (SetToOneToFailInTearDown == 1) {
         /* These will be skipped internally if already failed/ignored */
         TEST_FAIL_MESSAGE("<= Failed in tearDown");
         TEST_IGNORE_MESSAGE("<= Ignored in tearDown");
     }
-    if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0))
-    {
+    if ((SetToOneMeanWeAlreadyCheckedThisGuy == 0) && (Unity.CurrentTestFailed > 0)) {
         UnityPrint(": [[[[ Test Should Have Passed But Did Not ]]]]");
         UNITY_OUTPUT_CHAR('\n');
     }
@@ -239,8 +237,8 @@ void testEqualInt8s(void)
 
 void testEqualInt8sWhenThereAreDifferencesOutside8Bits(void)
 {
-    TEST_ASSERT_EQUAL_INT8(0x321,0x421);
-    TEST_ASSERT_EQUAL_INT8(0xFF21,0x0021);
+    TEST_ASSERT_EQUAL_INT8(0x321, 0x421);
+    TEST_ASSERT_EQUAL_INT8(0xFF21, 0x0021);
 }
 
 void testEqualChars(void)
@@ -264,10 +262,9 @@ void testEqualChars(void)
 
 void testEqualCharsWhenThereAreDifferencesOutside8Bits(void)
 {
-    TEST_ASSERT_EQUAL_CHAR(0x321,0x421);
-    TEST_ASSERT_EQUAL_CHAR(0xFF21,0x0021);
+    TEST_ASSERT_EQUAL_CHAR(0x321, 0x421);
+    TEST_ASSERT_EQUAL_CHAR(0xFF21, 0x0021);
 }
-
 
 void testEqualInt16s(void)
 {
@@ -309,8 +306,8 @@ void testEqualInt16sNegatives(void)
 
 void testEqualInt16sWhenThereAreDifferencesOutside16Bits(void)
 {
-    TEST_ASSERT_EQUAL_INT16(0x54321,0x64321);
-    TEST_ASSERT_EQUAL_INT16(0xFFFF4321,0x00004321);
+    TEST_ASSERT_EQUAL_INT16(0x54321, 0x64321);
+    TEST_ASSERT_EQUAL_INT16(0xFFFF4321, 0x00004321);
 }
 
 void testEqualInt32s(void)
@@ -351,7 +348,6 @@ void testEqualInt32sNegatives(void)
     TEST_ASSERT_EQUAL_INT32(*p0, -123456789);
 }
 
-
 void testEqualUints(void)
 {
     unsigned int v0, v1;
@@ -371,7 +367,6 @@ void testEqualUints(void)
     TEST_ASSERT_EQUAL_UINT(*p0, 19467);
     TEST_ASSERT_EQUAL_UINT(60872u, 60872u);
 }
-
 
 void testEqualUint8s(void)
 {
@@ -394,8 +389,8 @@ void testEqualUint8s(void)
 
 void testEqualUint8sWhenThereAreDifferencesOutside8Bits(void)
 {
-    TEST_ASSERT_EQUAL_UINT8(0x321,0x421);
-    TEST_ASSERT_EQUAL_UINT8(0xFF21,0x0021);
+    TEST_ASSERT_EQUAL_UINT8(0x321, 0x421);
+    TEST_ASSERT_EQUAL_UINT8(0xFF21, 0x0021);
 }
 
 void testEqualUint16s(void)
@@ -419,8 +414,8 @@ void testEqualUint16s(void)
 
 void testEqualUint16sWhenThereAreDifferencesOutside16Bits(void)
 {
-    TEST_ASSERT_EQUAL_UINT16(0x54321,0x64321);
-    TEST_ASSERT_EQUAL_UINT16(0xFFFF4321,0x00004321);
+    TEST_ASSERT_EQUAL_UINT16(0x54321, 0x64321);
+    TEST_ASSERT_EQUAL_UINT16(0xFFFF4321, 0x00004321);
 }
 
 void testEqualUint32s(void)
@@ -474,8 +469,8 @@ void testEqualHex8s(void)
 
 void testEqualHex8sWhenThereAreDifferencesOutside8Bits(void)
 {
-    TEST_ASSERT_EQUAL_HEX8(0x321,0x421);
-    TEST_ASSERT_EQUAL_HEX8(0xFF21,0x0021);
+    TEST_ASSERT_EQUAL_HEX8(0x321, 0x421);
+    TEST_ASSERT_EQUAL_HEX8(0xFF21, 0x0021);
 }
 
 void testEqualHex8sNegatives(void)
@@ -518,8 +513,8 @@ void testEqualHex16s(void)
 
 void testEqualHex16sWhenThereAreDifferencesOutside16Bits(void)
 {
-    TEST_ASSERT_EQUAL_HEX16(0x54321,0x64321);
-    TEST_ASSERT_EQUAL_HEX16(0xFFFF4321,0x00004321);
+    TEST_ASSERT_EQUAL_HEX16(0x54321, 0x64321);
+    TEST_ASSERT_EQUAL_HEX16(0xFFFF4321, 0x00004321);
 }
 
 void testEqualHex32s(void)
@@ -583,7 +578,6 @@ void testNotEqualBitsHigh(void)
     EXPECT_ABORT_BEGIN
     TEST_ASSERT_BITS_HIGH(v0, v1);
     VERIFY_FAILS_END
-
 }
 
 void testNotEqualBitsLow(void)
@@ -595,7 +589,6 @@ void testNotEqualBitsLow(void)
     TEST_ASSERT_BITS_LOW(v0, v1);
     VERIFY_FAILS_END
 }
-
 
 void testEqualShorts(void)
 {
@@ -2830,7 +2823,7 @@ void testHexPrintsUpToMaxNumberOfNibbles(void)
 #ifdef UNITY_SUPPORT_64
     TEST_ASSERT_EQUAL_INT(16, strlen(getBufferPutcharSpy()));
 #else
-    TEST_ASSERT_EQUAL_INT( 8, strlen(getBufferPutcharSpy()));
+    TEST_ASSERT_EQUAL_INT(8, strlen(getBufferPutcharSpy()));
 #endif
 #endif
 }
@@ -2845,7 +2838,7 @@ void testPrintNumbers32(void)
     TEST_ASSERT_EQUAL_PRINT_NUMBERS("-1", -1);
     TEST_ASSERT_EQUAL_PRINT_NUMBERS("2000000000", 2000000000);
     TEST_ASSERT_EQUAL_PRINT_NUMBERS("-2147483648", (UNITY_INT32)0x80000000);
-    TEST_ASSERT_EQUAL_PRINT_NUMBERS("-1",          (UNITY_INT32)0xFFFFFFFF);
+    TEST_ASSERT_EQUAL_PRINT_NUMBERS("-1", (UNITY_INT32)0xFFFFFFFF);
 #endif
 }
 

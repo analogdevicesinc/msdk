@@ -9,8 +9,7 @@
 #define UNITY_MEMORY_OVERRIDES_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include <stddef.h>
@@ -21,9 +20,9 @@ extern "C"
  * This internal unity_malloc() provides allocated memory deterministically from
  * the end of an array only, unity_free() only releases from end-of-array,
  * blocks are not coalesced, and memory not freed in LIFO order is stranded. */
-    #ifndef UNITY_INTERNAL_HEAP_SIZE_BYTES
-    #define UNITY_INTERNAL_HEAP_SIZE_BYTES 256
-    #endif
+#ifndef UNITY_INTERNAL_HEAP_SIZE_BYTES
+#define UNITY_INTERNAL_HEAP_SIZE_BYTES 256
+#endif
 #endif
 
 /* These functions are used by Unity to allocate and release memory
@@ -31,23 +30,23 @@ extern "C"
  * For example, when using FreeRTOS UNITY_MALLOC becomes pvPortMalloc()
  * and UNITY_FREE becomes vPortFree(). */
 #if !defined(UNITY_MALLOC) || !defined(UNITY_FREE)
-    #include <stdlib.h>
-    #define UNITY_MALLOC(size) malloc(size)
-    #define UNITY_FREE(ptr)    free(ptr)
+#include <stdlib.h>
+#define UNITY_MALLOC(size) malloc(size)
+#define UNITY_FREE(ptr) free(ptr)
 #else
-    extern void* UNITY_MALLOC(size_t size);
-    extern void UNITY_FREE(void* ptr);
+extern void *UNITY_MALLOC(size_t size);
+extern void UNITY_FREE(void *ptr);
 #endif
 
-#define malloc  unity_malloc
-#define calloc  unity_calloc
+#define malloc unity_malloc
+#define calloc unity_calloc
 #define realloc unity_realloc
-#define free    unity_free
+#define free unity_free
 
-void* unity_malloc(size_t size);
-void* unity_calloc(size_t num, size_t size);
-void* unity_realloc(void * oldMem, size_t size);
-void unity_free(void * mem);
+void *unity_malloc(size_t size);
+void *unity_calloc(size_t num, size_t size);
+void *unity_realloc(void *oldMem, size_t size);
+void unity_free(void *mem);
 
 /* You must compile with malloc replacement, as defined in unity_fixture_malloc_overrides.h */
 void UnityMalloc_StartTest(void);
@@ -58,4 +57,4 @@ void UnityMalloc_MakeMallocFailAfterCount(int countdown);
 }
 #endif
 
-#endif 
+#endif

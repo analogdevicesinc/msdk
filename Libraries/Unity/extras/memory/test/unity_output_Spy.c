@@ -14,7 +14,7 @@
 
 static int size;
 static int count;
-static char* buffer;
+static char *buffer;
 static int spy_enable;
 
 void UnityOutputCharSpy_Create(int s)
@@ -35,18 +35,15 @@ void UnityOutputCharSpy_Destroy(void)
 
 void UnityOutputCharSpy_OutputChar(int c)
 {
-    if (spy_enable)
-    {
-        if (count < (size-1))
+    if (spy_enable) {
+        if (count < (size - 1))
             buffer[count++] = (char)c;
-    }
-    else
-    {
+    } else {
         putchar(c);
     }
 }
 
-const char * UnityOutputCharSpy_Get(void)
+const char *UnityOutputCharSpy_Get(void)
 {
     return buffer;
 }

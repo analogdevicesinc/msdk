@@ -5,24 +5,19 @@
     SPDX-License-Identifier: MIT
 ========================================================================= */
 
-
 #include "unity_fixture.h"
 #include <stdlib.h>
 #include <string.h>
 
 TEST_GROUP(UnityFixture);
 
-TEST_SETUP(UnityFixture)
-{
-}
+TEST_SETUP(UnityFixture) {}
 
-TEST_TEAR_DOWN(UnityFixture)
-{
-}
+TEST_TEAR_DOWN(UnityFixture) {}
 
-static int* pointer1 = 0;
-static int* pointer2 = (int*)2;
-static int* pointer3 = (int*)3;
+static int *pointer1 = 0;
+static int *pointer2 = (int *)2;
+static int *pointer3 = (int *)3;
 static int int1;
 static int int2;
 static int int3;
@@ -40,8 +35,8 @@ TEST(UnityFixture, PointerSetting)
     UT_PTR_SET(pointer1, &int4);
     UnityPointer_UndoAllSets();
     TEST_ASSERT_POINTERS_EQUAL(pointer1, 0);
-    TEST_ASSERT_POINTERS_EQUAL(pointer2, (int*)2);
-    TEST_ASSERT_POINTERS_EQUAL(pointer3, (int*)3);
+    TEST_ASSERT_POINTERS_EQUAL(pointer2, (int *)2);
+    TEST_ASSERT_POINTERS_EQUAL(pointer3, (int *)3);
 }
 
 static char *p1;
@@ -91,8 +86,8 @@ TEST_GROUP(UnityCommandOptions);
 
 static int savedVerbose;
 static unsigned int savedRepeat;
-static const char* savedName;
-static const char* savedGroup;
+static const char *savedName;
+static const char *savedGroup;
 
 TEST_SETUP(UnityCommandOptions)
 {
@@ -105,15 +100,12 @@ TEST_SETUP(UnityCommandOptions)
 TEST_TEAR_DOWN(UnityCommandOptions)
 {
     UnityFixture.Verbose = savedVerbose;
-    UnityFixture.RepeatCount= savedRepeat;
+    UnityFixture.RepeatCount = savedRepeat;
     UnityFixture.NameFilter = savedName;
     UnityFixture.GroupFilter = savedGroup;
 }
 
-
-static const char* noOptions[] = {
-        "testrunner.exe"
-};
+static const char *noOptions[] = { "testrunner.exe" };
 
 TEST(UnityCommandOptions, DefaultOptions)
 {
@@ -124,10 +116,7 @@ TEST(UnityCommandOptions, DefaultOptions)
     TEST_ASSERT_EQUAL(1, UnityFixture.RepeatCount);
 }
 
-static const char* verbose[] = {
-        "testrunner.exe",
-        "-v"
-};
+static const char *verbose[] = { "testrunner.exe", "-v" };
 
 TEST(UnityCommandOptions, OptionVerbose)
 {
@@ -135,10 +124,7 @@ TEST(UnityCommandOptions, OptionVerbose)
     TEST_ASSERT_EQUAL(1, UnityFixture.Verbose);
 }
 
-static const char* group[] = {
-        "testrunner.exe",
-        "-g", "groupname"
-};
+static const char *group[] = { "testrunner.exe", "-g", "groupname" };
 
 TEST(UnityCommandOptions, OptionSelectTestByGroup)
 {
@@ -146,10 +132,7 @@ TEST(UnityCommandOptions, OptionSelectTestByGroup)
     STRCMP_EQUAL("groupname", UnityFixture.GroupFilter);
 }
 
-static const char* name[] = {
-        "testrunner.exe",
-        "-n", "testname"
-};
+static const char *name[] = { "testrunner.exe", "-n", "testname" };
 
 TEST(UnityCommandOptions, OptionSelectTestByName)
 {
@@ -157,10 +140,7 @@ TEST(UnityCommandOptions, OptionSelectTestByName)
     STRCMP_EQUAL("testname", UnityFixture.NameFilter);
 }
 
-static const char* repeat[] = {
-        "testrunner.exe",
-        "-r", "99"
-};
+static const char *repeat[] = { "testrunner.exe", "-r", "99" };
 
 TEST(UnityCommandOptions, OptionSelectRepeatTestsDefaultCount)
 {
@@ -174,13 +154,8 @@ TEST(UnityCommandOptions, OptionSelectRepeatTestsSpecificCount)
     TEST_ASSERT_EQUAL(99, UnityFixture.RepeatCount);
 }
 
-static const char* multiple[] = {
-        "testrunner.exe",
-        "-v",
-        "-g", "groupname",
-        "-n", "testname",
-        "-r", "98"
-};
+static const char *multiple[] = { "testrunner.exe", "-v", "-g", "groupname", "-n",
+                                  "testname",       "-r", "98" };
 
 TEST(UnityCommandOptions, MultipleOptions)
 {
@@ -191,12 +166,8 @@ TEST(UnityCommandOptions, MultipleOptions)
     TEST_ASSERT_EQUAL(98, UnityFixture.RepeatCount);
 }
 
-static const char* dashRNotLast[] = {
-        "testrunner.exe",
-        "-v",
-        "-g", "gggg",
-        "-r",
-        "-n", "tttt",
+static const char *dashRNotLast[] = {
+    "testrunner.exe", "-v", "-g", "gggg", "-r", "-n", "tttt",
 };
 
 TEST(UnityCommandOptions, MultipleOptionsDashRNotLastAndNoValueSpecified)
@@ -208,14 +179,8 @@ TEST(UnityCommandOptions, MultipleOptionsDashRNotLastAndNoValueSpecified)
     TEST_ASSERT_EQUAL(2, UnityFixture.RepeatCount);
 }
 
-static const char* unknownCommand[] = {
-        "testrunner.exe",
-        "-v",
-        "-g", "groupname",
-        "-n", "testname",
-        "-r", "98",
-        "-z"
-};
+static const char *unknownCommand[] = { "testrunner.exe", "-v", "-g", "groupname", "-n",
+                                        "testname",       "-r", "98", "-z" };
 TEST(UnityCommandOptions, UnknownCommandIsIgnored)
 {
     TEST_ASSERT_EQUAL(0, UnityGetCommandLineOptions(9, unknownCommand));

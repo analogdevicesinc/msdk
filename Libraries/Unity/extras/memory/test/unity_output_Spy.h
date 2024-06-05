@@ -11,7 +11,7 @@
 void UnityOutputCharSpy_Create(int s);
 void UnityOutputCharSpy_Destroy(void);
 void UnityOutputCharSpy_OutputChar(int c);
-const char * UnityOutputCharSpy_Get(void);
+const char *UnityOutputCharSpy_Get(void);
 void UnityOutputCharSpy_Enable(int enable);
 
 #endif

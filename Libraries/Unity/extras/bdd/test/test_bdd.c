@@ -8,7 +8,8 @@
 #include "unity.h"
 #include "unity_bdd.h"
 
-void test_bdd_logic_test(void) {
+void test_bdd_logic_test(void)
+{
     GIVEN("a valid statement is passed")
     {
         // Set up the context
@@ -18,7 +19,7 @@ void test_bdd_logic_test(void) {
         {
             // Perform the login action
             bool whenExecuted = true;
-            
+
             THEN("we validate everything was worked")
             {
                 // Check the expected outcome
@@ -32,7 +33,8 @@ void test_bdd_logic_test(void) {
     }
 } // end of case
 
-void test_bdd_user_account(void) {
+void test_bdd_user_account(void)
+{
     GIVEN("a user's account with sufficient balance")
     {
         // Set up the context
@@ -42,8 +44,7 @@ void test_bdd_user_account(void) {
         WHEN("the user requests a withdrawal of $200")
         {
             // Perform the withdrawal action
-            if (accountBalance >= withdrawalAmount)
-            {
+            if (accountBalance >= withdrawalAmount) {
                 accountBalance -= withdrawalAmount;
             } // end if
             THEN("the withdrawal amount should be deducted from the account balance")
@@ -58,7 +59,8 @@ void test_bdd_user_account(void) {
     }
 } // end of case
 
-void test_bdd_empty_cart(void) {
+void test_bdd_empty_cart(void)
+{
     GIVEN("a user with an empty shopping cart")
     {
         // Set up the context
@@ -79,18 +81,19 @@ void test_bdd_empty_cart(void) {
     }
 } // end of case
 
-void test_bdd_valid_login(void) {
+void test_bdd_valid_login(void)
+{
     GIVEN("a registered user with valid credentials")
     {
         // Set up the context
-        const char* validUsername = "user123";
-        const char* validPassword = "pass456";
+        const char *validUsername = "user123";
+        const char *validPassword = "pass456";
 
         WHEN("the user provides correct username and password")
         {
             // Perform the action of user login
-            const char* inputUsername = "user123";
-            const char* inputPassword = "pass456";
+            const char *inputUsername = "user123";
+            const char *inputPassword = "pass456";
 
             THEN("the login should be successful")
             {
@@ -104,8 +107,8 @@ void test_bdd_valid_login(void) {
         WHEN("the user provides incorrect password")
         {
             // Perform the action of user login
-            const char* inputUsername = "user123";
-            const char* inputPassword = "wrongpass";
+            const char *inputUsername = "user123";
+            const char *inputPassword = "wrongpass";
 
             THEN("the login should fail with an error message")
             {

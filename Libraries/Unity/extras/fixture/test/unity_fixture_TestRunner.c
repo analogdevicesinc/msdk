@@ -5,7 +5,6 @@
     SPDX-License-Identifier: MIT
 ========================================================================= */
 
-
 #include "unity_fixture.h"
 
 TEST_GROUP_RUNNER(UnityFixture)

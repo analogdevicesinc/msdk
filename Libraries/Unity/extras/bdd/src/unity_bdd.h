@@ -9,8 +9,7 @@
 #define UNITY_BDD_TEST_H_
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include <stdio.h>
@@ -22,18 +21,18 @@ extern "C"
  * test scenario in a BDD-style format. However, they don't have functional behavior by themselves
  * and are used for descriptive purposes.
  */
-#define GIVEN(description) \
-    if (0) { \
+#define GIVEN(description)                 \
+    if (0) {                               \
         printf("Given %s\n", description); \
     } else
 
-#define WHEN(description) \
-    if (0) { \
+#define WHEN(description)                 \
+    if (0) {                              \
         printf("When %s\n", description); \
     } else
 
-#define THEN(description) \
-    if (0) { \
+#define THEN(description)                 \
+    if (0) {                              \
         printf("Then %s\n", description); \
     } else
 
@@ -41,4 +40,4 @@ extern "C"
 }
 #endif
 
-#endif 
+#endif
