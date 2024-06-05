@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 /**
- * @file mxc_sys.c
+ * @file       mxc_sys.c
  * @brief      System layer driver.
  * @details    This driver is used to control the system layer of the device.
  */
@@ -237,7 +237,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERFO:
-        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_TX_EN | MXC_F_GCR_BTLELDOCTRL_RX_EN;
+        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_RF_EN | MXC_F_GCR_BTLELDOCTRL_BB_EN;
 
         /* Initialize kickstart circuit
            Select Kick start circuit clock source- IPO/ISO 
