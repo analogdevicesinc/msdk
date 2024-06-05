@@ -168,6 +168,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 // Type used for non-secure code to call secure code.
 #define __ns_entry __attribute((cmse_nonsecure_entry))
 #endif
+#endif
 
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
@@ -801,6 +802,27 @@ We may want to handle GET_IRQ better...
 #else
 #define MXC_BASE_TRNG MXC_BASE_TRNG_NS
 #define MXC_TRNG MXC_TRNG_NS
+#endif
+
+/******************************************************************************/
+/*                                                                       BTLE */
+// TODO(ME30): Verify with bluetooth team. This section does not exist in our prev
+//              bluetooth-supported parts.
+/* Non-secure Mapping */
+#define MXC_BASE_BTLE_NS ((uint32_t)0x40050000UL)
+#define MXC_BTLE_NS // TODO(ME30): Add BTLE related registers? This section doesn't exist for ME17.
+
+/* Secure Mapping */
+#define MXC_BASE_BTLE_S ((uint32_t)0x50050000UL)
+#define MXC_BTLE_S // TODO(ME30): Add BTLE related registers? This section doesn't exist for ME17.
+
+#if IS_SECURE_ENVIRONMENT
+// TODO(ME30): Does this have registers?
+#define MXC_BASE_BTLE MXC_BASE_BTLE_S
+#define MXC_BTLE MXC_BTLE_S
+#else
+#define MXC_BASE_BTLE MXC_BASE_BTLE_NS
+#define MXC_BTLE MXC_BTLE_NS
 #endif
 
 /******************************************************************************/
