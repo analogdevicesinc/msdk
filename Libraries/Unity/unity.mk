@@ -28,7 +28,7 @@ ifeq "$(LIB_UNITY_DIR)" ""
 LIB_UNITY_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
 
-IPATH += ${LIB_UNITY_DIR}/inc
+IPATH += ${LIB_UNITY_DIR}/src
 VPATH += ${LIB_UNITY_DIR}/src
 SRCS += unity.c
 
