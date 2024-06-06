@@ -40,10 +40,6 @@ extern "C" {
  */
 void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d7fba1807d03d92956ca8c5db6d29180c0f739ee
 /**
  * @brief Copy NVIC vector table to RAM and set NVIC to RAM based table.
  *
@@ -60,11 +56,6 @@ void NVIC_SetRAM(void);
  */
 uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> d7fba1807d03d92956ca8c5db6d29180c0f739ee
 #ifdef __cplusplus
 }
 #endif
