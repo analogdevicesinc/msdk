@@ -27,6 +27,8 @@
 #include "bb_int.h"
 #include "pal_bb.h"
 
+#include "wdt.h"
+
 /**************************************************************************************************
   Globals
 **************************************************************************************************/
@@ -34,9 +36,180 @@
 BbCtrlBlk_t bbCb;                       /*!< BB control block. */
 const BbRtCfg_t *pBbRtCfg = NULL;       /*!< Runtime configuration. */
 
+uint32_t u32WdTmr0Cnt = 0;
+
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! Local Function Prototypes
+//!
+void WDT0_IRQHandler(void);
+void ZioHalWatchdog0_HandlerC (uint32_t stackPointer[]);
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Clear the interrupt flag.
+void
+ZioHalWatchdog0_InterruptFlagClear(void)
+{
+    //@?ZIO_WATCHDOG_TIMER_0->ctrl &= ~(MXC_F_WDT_CTRL_INT_FLAG);
+    MXC_WDT_ClearIntFlag(MXC_WDT0);
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Watchdog0 Interrupt Handler: attempts to log debug info ahead of watchdog reset
+//! \note   This assembly code needs to be added as a separate assembly function,
+//!         as the RVDS compiler cannot do inline assembly of thumb instructions required for Cortex-M3.
+//!         More information on exception stack frames and their use in watchdog debugging can be found here:
+//!         https://interrupt.memfault.com/blog/firmware-watchdog-best-practices#c-code-example
+#pragma cstat_suppress="MISRAC2004-8.10" // IRQ Handler is ok to have only one external linkage
+void WDT0_IRQHandler(void)
+{
+    // Our bare metal architecture only ever uses msp
+    // Revisit this assembly code using the above link if we start using threads/rtos
+      __asm volatile(
+      "mrs r0, msp \n"                  // Move to ARM register from system coprocessor register - copies the main stack pointer into r0 so it can be passed as an argument 
+      "b ZioHalWatchdog0_HandlerC \n"   // Branch instruction - calls ZioHalWatchdog0_HandlerC
+                                );
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  C helper exception handler for watchdog interrupts
+//! \note   Uses a function pointer for the logger routine to preserve hierarchy
+//!         This will be set by ZioWatchdog0.c
+//!         Using this instead of an external symbol to simplify the assembly code
+//! \param  stackPointer   watchdog_args Stack frame location
+#pragma cstat_suppress="MISRAC2004-8.10" // IRQ Handler is ok to have only one external linkage
+void ZioHalWatchdog0_HandlerC (uint32_t stackPointer[])
+{
+    ZioHalWatchdog0_InterruptFlagClear();
+    //@?mpWatchdogIntLogger(stackPointer);
+
+    MXC_WDT_ResetTimer(MXC_WDT0);
+    
+    u32WdTmr0Cnt++;
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Initialize the appropriate watchdog settings.
+//! \note   ZioResetCause_Determine() uses WDT0->ctrl to detect various reset scenarios. Ensure that this routine is
+//!         only called after ZioResetCause_Determine(), or when knowing the reset cause is no longer required.
+void
+ZioWatchdog_Init(void)
+{
+    //@?ZioHalWatchdog0_ClockEnable(eZioBool_TRUE);
+    MXC_WDT_Init(MXC_WDT0);
+    // Clear the watchdog interrupt at initialization time in case it was left over across a reset.
+    ZioHalWatchdog0_InterruptFlagClear();
+    //@?ZioHalWatchdog0_InterruptPeriodSet(ZIO_WATCHDOG_INT_PERIOD);
+    MXC_WDT_SetIntPeriod(MXC_WDT0, MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW28);    // 5.5925 seconds @ 96 Mhz SYSCLK (must be shorter than RST period)
+    //@?ZioHalWatchdog0_ResetPeriodSet(ZIO_WATCHDOG_RST_PERIOD);
+    MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW29);  // 11.185 seconds @ 96 Mhz SYSCLK
+    //@?ZioHalWatchdog0_IntLoggerSet(ZioWatchdog_IntLogger);
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Reset the watchdog timer.
+void
+ZioHalWatchdog0_Pet(void)
+{
+    // this sequence is defined in the user guide to cause watchdog timer pet/kick/feed/reset
+    //@?ZIO_WATCHDOG_TIMER_0->rst = ZIO_WATCHDOG_RESET_VALUE_0;
+    //@?ZIO_WATCHDOG_TIMER_0->rst = ZIO_WATCHDOG_RESET_VALUE_1;
+    MXC_WDT_ResetTimer(MXC_WDT0);
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Pet (kick, feed) the watchdog. Analogous to resetting the countdown.
+void
+ZioWatchdog_Pet(void)
+{
+    ZioHalWatchdog0_Pet();
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Enable the watchdog timer.
+//! \note   ensure that the watchdog clock has been enabled prior to enabling the watchdog
+//!         (via ZioHalWatchdog0_ClockEnable)
+//! \param  enable eZioBool_TRUE to enable, eZioBool_FALSE to disable
+void
+ZioHalWatchdog0_Enable(int enable)
+{
+    if (TRUE == enable)
+    {
+        //@?ZIO_WATCHDOG_TIMER_0->ctrl |= MXC_F_WDT_CTRL_WDT_EN;
+        MXC_WDT_Enable(MXC_WDT0);
+    }
+    else
+    {
+        //@?ZIO_WATCHDOG_TIMER_0->ctrl &= ~(MXC_F_WDT_CTRL_WDT_EN);
+        MXC_WDT_Disable(MXC_WDT0);
+    }
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Enable the watchdog interrupt.
+//! \param  enable eZioBool_TRUE to enable, eZioBool_FALSE to disable
+void
+ZioHalWatchdog0_InterruptEnable(int enable)
+{
+    if (TRUE == enable)
+    {
+        //@?ZIO_WATCHDOG_TIMER_0->ctrl |= MXC_F_WDT_CTRL_INT_EN;
+        MXC_WDT_EnableInt(MXC_WDT0);
+    }
+    else
+    {
+        //@?ZIO_WATCHDOG_TIMER_0->ctrl &= ~(MXC_F_WDT_CTRL_INT_EN);
+        MXC_WDT_DisableInt(MXC_WDT0);
+    }
+
+    // Enable the interrupt vector
+    NVIC_ClearPendingIRQ(WDT0_IRQn);
+    NVIC_DisableIRQ(WDT0_IRQn);
+    //@?NVIC_SetPriority(WDT0_IRQn, ZIO_IRQ_PRIORITY_WDT0);
+    NVIC_SetPriority(WDT0_IRQn, 0);
+    NVIC_EnableIRQ(WDT0_IRQn);
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Enable the watchdog reset.
+//! \param  enable eZioBool_TRUE to enable, eZioBool_FALSE to disable
+void
+ZioHalWatchdog0_ResetEnable(uint8_t enable)
+{
+    if (TRUE == enable)
+    {
+        MXC_WDT_EnableReset(MXC_WDT0);
+    }
+    else
+    {
+        MXC_WDT_DisableReset(MXC_WDT0);
+    }
+}
+
+//! -------------------------------------------------------------------------------------------------------------------
+//! \brief  Enable the watchdog
+//! \note   This behavior is subject to conditional compilation based on our debug state
+void
+ZioWatchdog_Enable(void)
+{
+    ZioHalWatchdog0_Pet();
+    ZioHalWatchdog0_Enable(TRUE);
+
+#if defined(ZIO_DEBUG_ALLOW_BREAKPOINTS) // Disable interrupts and resets if we're enabling breakpoints
+    ZioHalWatchdog0_InterruptEnable(eZioBool_FALSE);
+    ZioHalWatchdog0_ResetEnable(eZioBool_FALSE);
+#elif defined(ZIO_DEBUG_DISABLE_WATCHDOG_RESETS) // Only enable interrupts so we can log and debug watchdog resets
+    ZioHalWatchdog0_InterruptEnable(eZioBool_TRUE);
+    ZioHalWatchdog0_ResetEnable(eZioBool_FALSE);
+#else // Normal flow with both resets and interrupts enabled
+    ZioHalWatchdog0_InterruptEnable(TRUE);
+    ZioHalWatchdog0_ResetEnable(TRUE);
+#endif
+}
+
 
 /*************************************************************************************************/
 /*!
@@ -73,6 +246,9 @@ void BbInitRunTimeCfg(const BbRtCfg_t *pCfg)
 void BbInit(void)
 {
   WSF_ASSERT(pBbRtCfg);
+
+  ZioWatchdog_Init();
+  ZioWatchdog_Enable();
 
   PalBbInit();
 
@@ -516,3 +692,5 @@ void BbRegisterProtLowPower(PalBbProt_t protId, BbLowPowerCback_t lowPowerOpCbac
   WSF_ASSERT(lowPowerOpCback != NULL);
   bbCb.prot[protId].lowPowerOpCback    = lowPowerOpCback;
 }
+
+
