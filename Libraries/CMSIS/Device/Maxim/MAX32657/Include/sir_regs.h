@@ -75,9 +75,9 @@ typedef struct {
     __I  uint32_t sistat;               /**< <tt>\b 0x000:</tt> SIR SISTAT Register */
     __I  uint32_t addr;                 /**< <tt>\b 0x004:</tt> SIR ADDR Register */
     __R  uint32_t rsv_0x8_0x1b[5];
-    __IO uint32_t btleldotrim0;         /**< <tt>\b 0x01C:</tt> SIR BTLELDOTRIM0 Register */
+    __IO uint32_t btleldo_bb;           /**< <tt>\b 0x01C:</tt> SIR BTLELDO_BB Register */
     __R  uint32_t rsv_0x20_0x2b[3];
-    __IO uint32_t btleldotrim1;         /**< <tt>\b 0x002C:</tt> SIR BTLELDOTRIM1 Register */
+    __IO uint32_t btleldo_rf;           /**< <tt>\b 0x002C:</tt> SIR BTLELDO_RF Register */
     __R  uint32_t rsv_0x30_0x103[53];
     __I  uint32_t sfstat;               /**< <tt>\b 0x104:</tt> SIR SFSTAT Register */
 } mxc_sir_regs_t;
@@ -91,8 +91,8 @@ typedef struct {
  */
 #define MXC_R_SIR_SISTAT                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_SIR_ADDR                     ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */
-#define MXC_R_SIR_BTLELDOTRIM0             ((uint32_t)0x0000001CUL) /**< Offset from SIR Base Address: <tt> 0x001C</tt> */
-#define MXC_R_SIR_BTLELDOTRIM1             ((uint32_t)0x0000002CUL) /**< Offset from SIR Base Address: <tt> 0x002C</tt> */
+#define MXC_R_SIR_BTLELDO_BB               ((uint32_t)0x0000001CUL) /**< Offset from SIR Base Address: <tt> 0x001C</tt> */
+#define MXC_R_SIR_BTLELDO_RF               ((uint32_t)0x0000002CUL) /**< Offset from SIR Base Address: <tt> 0x002C</tt> */
 #define MXC_R_SIR_SFSTAT                   ((uint32_t)0x00000104UL) /**< Offset from SIR Base Address: <tt> 0x0104</tt> */
 /**@} end of group sir_registers */
 
@@ -125,25 +125,25 @@ typedef struct {
 
 /**
  * @ingroup  sir_registers
- * @defgroup SIR_BTLELDOTRIM0 SIR_BTLELDOTRIM0
+ * @defgroup SIR_BTLELDO_BB SIR_BTLELDO_BB
  * @brief    BTLE LDO TRIM BB Register.
  * @{
  */
-#define MXC_F_SIR_BTLELDOTRIM0_VDDA_BB_POS             0 /**< BTLELDOTRIM0_VDDA_BB Position */
-#define MXC_F_SIR_BTLELDOTRIM0_VDDA_BB                 ((uint32_t)(0x1FUL << MXC_F_SIR_BTLELDOTRIM0_VDDA_BB_POS)) /**< BTLELDOTRIM0_VDDA_BB Mask */
+#define MXC_F_SIR_BTLELDO_BB_TRIM_POS                  0 /**< BTLELDO_BB_TRIM Position */
+#define MXC_F_SIR_BTLELDO_BB_TRIM                      ((uint32_t)(0x1FUL << MXC_F_SIR_BTLELDO_BB_TRIM_POS)) /**< BTLELDO_BB_TRIM Mask */
 
-/**@} end of group SIR_BTLELDOTRIM0_Register */
+/**@} end of group SIR_BTLELDO_BB_Register */
 
 /**
  * @ingroup  sir_registers
- * @defgroup SIR_BTLELDOTRIM1 SIR_BTLELDOTRIM1
+ * @defgroup SIR_BTLELDO_RF SIR_BTLELDO_RF
  * @brief    BTLE LDO TRIM RF Register.
  * @{
  */
-#define MXC_F_SIR_BTLELDOTRIM1_VDDA_RF_POS             0 /**< BTLELDOTRIM1_VDDA_RF Position */
-#define MXC_F_SIR_BTLELDOTRIM1_VDDA_RF                 ((uint32_t)(0x1FUL << MXC_F_SIR_BTLELDOTRIM1_VDDA_RF_POS)) /**< BTLELDOTRIM1_VDDA_RF Mask */
+#define MXC_F_SIR_BTLELDO_RF_TRIM_POS                  0 /**< BTLELDO_RF_TRIM Position */
+#define MXC_F_SIR_BTLELDO_RF_TRIM                      ((uint32_t)(0x1FUL << MXC_F_SIR_BTLELDO_RF_TRIM_POS)) /**< BTLELDO_RF_TRIM Mask */
 
-/**@} end of group SIR_BTLELDOTRIM1_Register */
+/**@} end of group SIR_BTLELDO_RF_Register */
 
 /**
  * @ingroup  sir_registers

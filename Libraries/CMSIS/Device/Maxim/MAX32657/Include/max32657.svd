@@ -7589,12 +7589,12 @@
      </fields>
     </register>
     <register>
-     <name>BTLELDOTRIM0</name>
+     <name>BTLELDO_BB</name>
      <description>BTLE LDO TRIM BB Register.</description>
      <addressOffset>0x01C</addressOffset>
      <fields>
       <field>
-       <name>VDDA_BB</name>
+       <name>TRIM</name>
        <description>Target 0.9V. VDDA BB Voltage Trim.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
@@ -7602,12 +7602,12 @@
      </fields>
     </register>
     <register>
-     <name>BTLELDOTRIM1</name>
+     <name>BTLELDO_RF</name>
      <description>BTLE LDO TRIM RF Register.</description>
      <addressOffset>0x002C</addressOffset>
      <fields>
       <field>
-       <name>VDDA_RF</name>
+       <name>TRIM</name>
        <description>Target 0.9V. VDDA RF Voltage Trim.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
