@@ -41,7 +41,8 @@ extern "C" {
 void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 
 #if defined(__GNUC__)
-#if __CM33_CMSIS_VERSION_MAIN == 0x03
+#if __CM4_CMSIS_VERSION_MAIN == 0x03
+
 // NVIC_SetVector was custom-implemented in the PeriphDrivers library for
 // CMSIS version 3.  Newer versions of CMSIS provide an implementation of
 // NVIC_SetVector with different functionality, so the Maxim implementation
@@ -78,7 +79,7 @@ void NVIC_SetRAM(void);
 uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 
 #if defined(__GNUC__)
-#if __CM33_CMSIS_VERSION_MAIN == 0x03
+#if __CM4_CMSIS_VERSION_MAIN == 0x03
 // NVIC_GetVector was custom-implemented in the PeriphDrivers library for
 // CMSIS version 3.  Newer versions of CMSIS provide an implementation of
 // NVIC_GetVector with different functionality, so the Maxim implementation
