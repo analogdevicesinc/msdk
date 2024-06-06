@@ -41,7 +41,12 @@ extern "C" {
 void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 
 #if defined(__GNUC__)
+<<<<<<< HEAD
 #if __CM33_CMSIS_VERSION_MAIN == 0x03
+=======
+#if __CM4_CMSIS_VERSION_MAIN == 0x03
+
+>>>>>>> 115d02d24871bf8c1f1ff54f3604bd0a068eb82e
 // NVIC_SetVector was custom-implemented in the PeriphDrivers library for
 // CMSIS version 3.  Newer versions of CMSIS provide an implementation of
 // NVIC_SetVector with different functionality, so the Maxim implementation
