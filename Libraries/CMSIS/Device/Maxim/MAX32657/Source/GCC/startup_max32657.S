@@ -29,7 +29,7 @@
 #endif
     .globl    __StackTop
     .globl    __StackLimit
-#if IS_SECURE_ENVIRONMENT
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     // __StackSeal defined in linker script
     .equ      __STACK_SEAL,  __StackSeal
     .globl    __StackSeal
@@ -58,7 +58,6 @@ __HeapBase:
 __HeapLimit:
     .size __HeapLimit, . - __HeapLimit
 
-    # TODO: Validate arch-specific handler layout
     .section .isr_vector
     .align 9 /* must be aligned to 512 byte boundary. VTOR requirement */
     .globl __isr_vector
@@ -152,7 +151,7 @@ Reset_Handler:
     ldr r0, =__StackTop
     mov sp, r0
 
-#if IS_SECURE_ENVIRONMENT
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     /* Set limit on Main and Process SP */
     ldr r0, =__StackLimit
     msr msplim, r0

@@ -154,14 +154,9 @@ typedef enum {
 #include <core_cm33.h>
 #include <cmsis_gcc.h>
 #include <arm_cmse.h>
-#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-#define IS_SECURE_ENVIRONMENT 1
-#else
-#define IS_SECURE_ENVIRONMENT 0
-#endif
 
 #if defined(__GNUC__)
-#if IS_SECURE_ENVIRONMENT
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 // Type used for secure code to call non-secure code.
 #define __ns_call __attribute((cmse_nonsecure_call))
 typedef void __ns_call (*mxc_ns_call_t) (void); 

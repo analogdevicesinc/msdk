@@ -269,22 +269,35 @@ ifeq "$(MCPU)" "cortex-m33"
 # the two images into one combined image.
 TRUSTZONE ?= 0
 
-ifeq ($(TRUSTZONE),1)
+PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT
+
 # Security mode for the target processor.
 # Acceptable values are
 # - SECURE
 # - NONSECURE
 #
+# The core, by default, starts up in Secure mode.
+#
 # When "SECURE" is selected, the build system will link the program binary into the secure
 # memory sections and map peripheral instances onto their corresponding secure
 # address aliases.  "MSECURITY_MODE_SECURE" will be defined at compile time.
 #
-# When "NONSCURE" is selected, the program binary will be linked into the non-secure memory
+# When "NONSECURE" is selected, the program binary will be linked into the non-secure memory
 # sections and peripherals will be mapped onto the non-secure address aliases.
 # It should be noted that the M33 will boot into secure mode by default, which has access to
 # both the secure and non-secure addresses and aliases.  "MSECURITY_MODE_NONSECURE" will be defined
 # at compile time.
 MSECURITY_MODE ?= SECURE
+
+ifeq "$(MSECURITY_MODE)" "SECURE"
+PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=1
+PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=1
+else
+PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=0
+PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=0
+endif
+
+ifeq ($(TRUSTZONE),1)
 
 # Select whether the CMSE importlib object file is generated.
 # - 0 (default) : Do no generate object file.
@@ -300,8 +313,6 @@ ifeq "$(MSECURITY_MODE)" "SECURE"
 # defined in "Armv8-M Security Extension: Requirements on Developments Tools"
 # https://developer.arm.com/documentation/ecm0359818/latest
 PROJ_CFLAGS += -mcmse
-
-PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT
 
 # Generate an object file with empty definitions of the secure image symbols at the correct locations.
 # The object file needs to be linked with the non-secure image.

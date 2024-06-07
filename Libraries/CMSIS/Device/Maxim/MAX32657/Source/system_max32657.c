@@ -26,7 +26,7 @@
 #include "gcr_regs.h"
 
 
-#if IS_SECURE_ENVIRONMENT
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 #include "partition_max32657.h"
 #endif
 
@@ -150,7 +150,7 @@ __weak void SystemInit(void)
 #endif
 
     /* Security Extension Features */
-#if IS_SECURE_ENVIRONMENT
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     /* Settings for TrustZone SAU setup are defined in partitions_max32657.h */
     TZ_SAU_Setup();
 #endif /* TrustZone */
