@@ -523,7 +523,7 @@ typedef struct {
  * @brief    ECC Interrupt Enable Register
  * @{
  */
-#define MXC_F_GCR_ECCINTEN_FLASH_POS                   11 /**< ECCINTEN_FLASH Position */
+#define MXC_F_GCR_ECCINTEN_FLASH_POS                   0 /**< ECCINTEN_FLASH Position */
 #define MXC_F_GCR_ECCINTEN_FLASH                       ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_FLASH_POS)) /**< ECCINTEN_FLASH Mask */
 
 /**@} end of group GCR_ECCINTEN_Register */

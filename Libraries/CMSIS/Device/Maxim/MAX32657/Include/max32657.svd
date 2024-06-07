@@ -2479,7 +2479,7 @@
       <field>
        <name>FLASH</name>
        <description>ECC Flash0 Interrupt Enable.</description>
-       <bitOffset>11</bitOffset>
+       <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
