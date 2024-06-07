@@ -383,6 +383,7 @@ wsfTimer_t *WsfTimerServiceExpired(wsfTaskId_t taskId)
 /*************************************************************************************************/
 void WsfTimerSleep(void)
 {
+  return;
   wsfTimerTicks_t nextExpiration;
 
   /* If PAL system is busy, no need to sleep. */
