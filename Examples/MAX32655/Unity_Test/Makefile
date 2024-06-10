@@ -184,6 +184,13 @@ SRCS := $(SRCS)
 # The default value creates a file named after the target micro.  Ex: MAX78000.elf
 PROJECT ?= $(TARGET_LC)
 
+
+# Test Options
+TEST_CC?=gcc
+TEST_TARGET_OUT?=build/testbench
+TEST_SRC+=$(LIBS_DIR)/Unity/src/unity.c
+TEST_CFLAGS += -I$(LIBS_DIR)/Unity/src
+
 # *******************************************************************************
 # Compiler options
 
@@ -371,12 +378,21 @@ endif
 all:
 # 	Extend the functionality of the "all" recipe here
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+	$(MAKE) test
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
 	
 clean: 
+	@rm $(TEST_TARGET_OUT)
 #	Extend the functionality of the "clean" recipe here
 
 # The rule to clean out all the build products.
 distclean: clean libclean
+
+test:
+	@mkdir -p build
+	$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRC) -o $(TEST_TARGET_OUT) 
+	- ./$(TEST_TARGET_OUT)
+
+.PHONY: test

@@ -25,6 +25,7 @@
 
 ifeq "$(LIB_UNITY_DIR)" ""
 # If UNITY_DIR is not specified, this Makefile will locate itself.
+
 LIB_UNITY_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
 
