@@ -269,8 +269,6 @@ ifeq "$(MCPU)" "cortex-m33"
 # the two images into one combined image.
 TRUSTZONE ?= 0
 
-PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT
-
 # Security mode for the target processor.
 # Acceptable values are
 # - SECURE
