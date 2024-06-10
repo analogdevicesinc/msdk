@@ -394,7 +394,7 @@ distclean: clean libclean
 
 test:
 	@mkdir -p build
-	@$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRCS) -o build/testbench 
-	@- ./build/testbench
+	@$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRCS) -o build/$(TARGET_LC)_unittest 
+	@- ./build/$(TARGET_LC)_unittest
 
 .PHONY: test
