@@ -4865,11 +4865,60 @@
        <name>CCCH</name>
        <description>CCC Handled by IP.</description>
        <bitRange>[15:12]</bitRange>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BASIC</name>
+         <description>Basic CCCs.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>LIMITS</name>
+         <description>CCCs related to maximum transfer lengths and speed.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>INTACT</name>
+         <description>Pending Interrupt and Activity Mode fields of GETSTATUS CCC.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>VENDOR</name>
+         <description>Vendor Reserved field of GETSTATUS CCC.</description>
+         <value>8</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>IBI_EVENTS</name>
        <description>Supported IBI events.</description>
        <bitRange>[20:16]</bitRange>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>IBI</name>
+         <description>IBI support.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAYLOAD</name>
+         <description>IBI has payload.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>CONTREQ</name>
+         <description>Controller request support.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>HJ</name>
+         <description>Hot-Join support.</description>
+         <value>8</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BAMATCH</name>
+         <description>Use BAMATCH field of CONFIG register to measure 1us Bus Available timing.</description>
+         <value>16</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>TIMECTRL</name>
@@ -5234,12 +5283,12 @@
         <enumeratedValue>
          <name>CONT_REQ</name>
          <description>Controller request.</description>
-         <value>1</value>
+         <value>2</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>HOTJOIN_REQ</name>
          <description>Hot-Join request.</description>
-         <value>1</value>
+         <value>3</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
