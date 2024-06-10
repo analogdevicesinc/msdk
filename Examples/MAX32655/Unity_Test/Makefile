@@ -188,7 +188,8 @@ PROJECT ?= $(TARGET_LC)
 # Test Options
 TEST_CC?=gcc
 TEST_TARGET_OUT?=build/testbench
-TEST_SRC+=$(LIBS_DIR)/Unity/src/unity.c
+TEST_SRCS+=$(LIBS_DIR)/Unity/src/unity.c
+TEST_SRCS+=$(sort $(wildcard test/*.c))
 TEST_CFLAGS += -I$(LIBS_DIR)/Unity/src
 
 # *******************************************************************************
@@ -378,21 +379,22 @@ endif
 all:
 # 	Extend the functionality of the "all" recipe here
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
-	$(MAKE) test
+	echo "TEST"
+	@$(MAKE) test
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
 	
 clean: 
-	@rm $(TEST_TARGET_OUT)
 #	Extend the functionality of the "clean" recipe here
+	
 
 # The rule to clean out all the build products.
 distclean: clean libclean
 
 test:
 	@mkdir -p build
-	$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRC) -o $(TEST_TARGET_OUT) 
-	- ./$(TEST_TARGET_OUT)
+	@$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRCS) -o build/testbench 
+	@- ./build/testbench
 
 .PHONY: test

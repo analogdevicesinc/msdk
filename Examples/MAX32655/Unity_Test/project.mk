@@ -10,11 +10,7 @@
 # Add your config here!
 LIB_UNITY=1
 
-TEST_SRC+=test/test_runner.c
-TEST_SRC+=test/test_functions.c
-TEST_SRC+=simple_code.c
-
+TEST_SRCS+=simple_code.c
 
 # TEST_CC=gcc
-# TEST_TARGET_OUT=build/testbench
 # TEST_CFLAGS=-Werror
