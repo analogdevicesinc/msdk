@@ -142,13 +142,9 @@ SECURE_IMPLIB_OBJ := $(SECURE_BUILD_DIR)/secure_implib.o
 # Add the Non-Secure project object to the build.  This is the critical
 # line that will get the linker to bring it into the .elf file.
 PROJ_OBJS = ${NONSECURE_CODE_OBJ}
-# PROJ_OBJS = ${SECURE_IMPLIB_OBJ}
 
-.PHONY: nonsecurecode
-nonsecurecode: $(NONSECURE_CODE_BIN)
-
-$(NONSECURE_CODE_BIN):
-# Run linker to generate 
+.PHONY: secure_implib_obj
+secure_implib_obj:
 	@echo ""
 	@echo "****************************************************************************"
 	@echo "* Building Secure Code and generating a CMSE importlib object file"
@@ -159,6 +155,9 @@ $(NONSECURE_CODE_BIN):
 	@echo "****************************************************************************"
 	$(MAKE) -C ${SECURE_CODE_DIR} BUILD_DIR=$(SECURE_BUILD_DIR) PROJECT=secure GEN_CMSE_IMPLIB_OBJ=1
 
+# Build non-secure code when secure code is updated (dependent on generated
+# CMSE implib.o file).
+$(NONSECURE_CODE_BIN): secure_implib_obj
 	@echo ""
 	@echo "****************************************************************************"
 	@echo "* Building Non-Secure Code with generated CMSE importlib object file."
@@ -169,9 +168,6 @@ $(NONSECURE_CODE_BIN):
 	@echo "****************************************************************************"
 	@echo "* Linking Secure and Non-Secure images together."
 	@echo "****************************************************************************"
-
-.PHONY: nsobj
-nsobj: $(NONSECURE_CODE_OBJ)
 
 ${NONSECURE_CODE_OBJ}: $(LOADER_SCRIPT) ${NONSECURE_CODE_BIN}
 	@${CC} ${AFLAGS} -o ${@} -c $(LOADER_SCRIPT)
