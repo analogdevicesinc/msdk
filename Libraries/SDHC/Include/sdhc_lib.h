@@ -56,6 +56,7 @@
 typedef enum {
     MXC_SDHC_LIB_SINGLE_DATA = 1,
     MXC_SDHC_LIB_QUAD_DATA,
+    MXC_SDHC_LIB_DEFAULT_DATA,
 } mxc_sdhc_data_width;
 
 typedef enum {
