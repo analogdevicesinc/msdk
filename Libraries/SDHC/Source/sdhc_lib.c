@@ -92,7 +92,7 @@ int card_rca;
 mxc_sdhc_lib_card_type card_type = CARD_NONE;
 mxc_sdhc_csd_regs_t g_csd;
 bool g_csd_is_cached = false;
-static mxc_sdhc_data_width default_data_width = MXC_SDHC_LIB_QUAD_DATA;
+static mxc_sdhc_data_width default_data_width = MXC_SDHC_LIB_SINGLE_DATA;
 
 /* **** Functions **** */
 
