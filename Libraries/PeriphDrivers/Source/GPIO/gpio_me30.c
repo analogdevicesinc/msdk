@@ -87,12 +87,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return E_NO_ERROR;
     }
 
-    // Configure the vssel
-    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
     if (error != E_NO_ERROR) {
@@ -224,7 +218,7 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 /* ************************************************************************** */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
-    return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
+    return E_NOT_SUPPORTED;
 }
 
 /* ************************************************************************** */
