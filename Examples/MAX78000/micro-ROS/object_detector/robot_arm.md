@@ -144,7 +144,7 @@ After completing hardware setup, follow these instructions to setup the software
 
 4. Open a terminal.
 
-5. Navigate the MSDK repository.  It's located in the `adi-user` home directory at `/home/adi-user/repos/msdk`.
+5. Navigate the MSDK repository.  It's located in the shared `adi` home directory at `/home/adi/repos/msdk`.
 
     Note the `ranger` command can be used to easily navigate around.  
 
