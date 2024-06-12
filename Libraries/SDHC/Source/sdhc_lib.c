@@ -237,7 +237,7 @@ int MXC_SDHC_Lib_SetBusWidth(mxc_sdhc_data_width bus_width)
     uint32_t card_status;
     int result;
 
-    bus_width = bus_width == MXC_SDHC_LIB_DEFAULT_DATA ? MXC_SDHC_Get_Default_DataWidth() : bus_width;
+    
 
     cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
     cmd_cfg.callback = NULL;
@@ -448,7 +448,7 @@ int MXC_SDHC_Lib_Prepare_Trans(mxc_sdhc_data_width width)
     mxc_sdhc_cmd_cfg_t cmd_cfg;
     int result;
 
-    width = width == MXC_SDHC_LIB_DEFAULT_DATA ? MXC_SDHC_Get_Default_DataWidth() : width;
+    
 
 
     cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
@@ -505,7 +505,7 @@ int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt, 
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
-    width = width == MXC_SDHC_LIB_DEFAULT_DATA ? MXC_SDHC_Get_Default_DataWidth() : width;
+    
 
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
@@ -535,7 +535,7 @@ int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt, m
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
-    width = width == MXC_SDHC_LIB_DEFAULT_DATA ? MXC_SDHC_Get_Default_DataWidth() : width;
+    
 
 
     result = MXC_SDHC_Lib_Prepare_Trans(width);
@@ -566,7 +566,6 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
-    width = width == MXC_SDHC_LIB_DEFAULT_DATA ? MXC_SDHC_Get_Default_DataWidth() : width;
 
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
@@ -599,7 +598,7 @@ int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int c
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
-    width = width == MXC_SDHC_LIB_DEFAULT_DATA ? MXC_SDHC_Get_Default_DataWidth() : width;
+    
 
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
