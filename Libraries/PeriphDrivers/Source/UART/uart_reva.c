@@ -50,6 +50,7 @@ typedef struct {
     bool auto_dma_handlers;
 } uart_reva_req_state_t;
 
+// clang-format off
 uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
     [0 ... MXC_UART_INSTANCES - 1] = {
         .tx_req = NULL,
@@ -59,6 +60,7 @@ uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
         .auto_dma_handlers = false
     }
 };
+// clang-format on
 
 /* **** Function Prototypes **** */
 
