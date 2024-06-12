@@ -213,6 +213,15 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
 
 #endif // defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655)
 
+static inline unsigned int Wrap_MXC_UART_GetRegINTEN(mxc_uart_regs_t *uart)
+{
+#if defined(CONFIG_SOC_MAX32662)
+    return uart->inten;
+#else
+    return uart->int_en;
+#endif
+}
+
 #ifdef __cplusplus
 }
 #endif
