@@ -51,27 +51,17 @@ typedef struct {
     bool auto_dma_handlers;
 } uart_reva_req_state_t;
 
-uart_reva_req_state_t states[MXC_UART_INSTANCES];
-
-#define DEFAULT_UART_REVA_REQ_STATE                                       \
-    {                                                                     \
-        .tx_req = NULL, .rx_req = NULL, .channelTx = -1, .channelRx = -1, \
-        .auto_dma_handlers = false                                        \
+uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
+    [0 ... MXC_UART_INSTANCES - 1] = {
+        .tx_req = NULL,
+        .rx_req = NULL,
+        .channelTx = -1,
+        .channelRx = -1,
+        .auto_dma_handlers = false
     }
-
-bool g_is_state_initialized = false;
+};
 
 /* **** Function Prototypes **** */
-
-/* Internal function for initializing the internal state array. */
-void MXC_UART_RevB_Init_State(void)
-{
-    uart_reva_req_state_t default_state = DEFAULT_UART_REVA_REQ_STATE;
-    for (int i = 0; i < MXC_UART_INSTANCES; i++) {
-        states[i] = default_state;
-    }
-    g_is_state_initialized = true;
-}
 
 /* ************************************************************************* */
 /* Control/Configuration functions                                           */
@@ -81,14 +71,6 @@ int MXC_UART_RevA_Init(mxc_uart_reva_regs_t *uart, unsigned int baud)
     int err;
 
     MXC_ASSERT(MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) >= 0)
-
-    if (!g_is_state_initialized) {
-        // The first UART instance that is initialized will be responsible for
-        // initializing the global state array.  We do this at run-time because
-        // the number of UART instances is variable, which makes it difficult for
-        // the pre-processor to handle at compile-time.
-        MXC_UART_RevB_Init_State();
-    }
 
     // Initialize UART
     // Set RX threshold to 1 byte
