@@ -19,7 +19,6 @@
  ******************************************************************************/
 
 #include <stdio.h>
-#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "uart.h"
