@@ -27,12 +27,8 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
-#include "mxc_device.h"
-#include "led.h"
-#include "pb.h"
-#include "board.h"
-#include "mxc_delay.h"
 #include "unity.h"
+
 /***** Definitions *****/
 
 /***** Globals *****/
@@ -43,19 +39,8 @@ extern uint8_t simple_add(uint8_t x, uint8_t y);
 // *****************************************************************************
 int main(void)
 {
-    int count = 0;
-
-    printf("Hello World!\n");
-
-    // This still works but gets stuck with no output on failures
+    puts("\nRunning Tests");
     TEST_ASSERT_EQUAL(7, simple_add(3, 4));
     TEST_ASSERT_EQUAL(8, simple_add(3, 4));
-
-    while (1) {
-        LED_On(LED_RED);
-        MXC_Delay(500000);
-        LED_Off(LED_RED);
-        MXC_Delay(500000);
-        printf("count = %d\n", count++);
-    }
+    while (1) {}
 }

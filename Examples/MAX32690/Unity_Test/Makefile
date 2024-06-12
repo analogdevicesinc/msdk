@@ -47,9 +47,9 @@
 
 ifeq "$(TARGET)" ""
 # Default target microcontroller
-TARGET := MAX32655
-TARGET_UC := MAX32655
-TARGET_LC := max32655
+TARGET := MAX32690
+TARGET_UC := MAX32690
+TARGET_LC := max32690
 else
 # "TARGET" has been overridden in the environment or on the command-line.
 # We need to calculate an upper and lowercase version of the part number,
@@ -183,14 +183,6 @@ SRCS := $(SRCS)
 
 # The default value creates a file named after the target micro.  Ex: MAX78000.elf
 PROJECT ?= $(TARGET_LC)
-
-
-# Test Options
-TEST_CC?=gcc
-TEST_TARGET_OUT?=build/testbench
-TEST_SRCS+=$(LIBS_DIR)/Unity/src/unity.c
-TEST_SRCS+=$(sort $(wildcard test/*.c))
-TEST_CFLAGS += -I$(LIBS_DIR)/Unity/src
 
 # *******************************************************************************
 # Compiler options
@@ -379,15 +371,12 @@ endif
 all:
 # 	Extend the functionality of the "all" recipe here
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
-	echo "TEST"
-	@$(MAKE) test
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
 	
 clean: 
 #	Extend the functionality of the "clean" recipe here
-	
 
 # The rule to clean out all the build products.
 distclean: clean libclean

@@ -1,11 +1,12 @@
 ## Description
 
-A basic getting started program.
-
-This version of Hello_World prints an incrementing count to the console UART and toggles a LED0 every 500 ms.
-
+A basic example showing unit testing.
 
 ## Software
+
+Unity is configure to work both on target and your local PC.
+By running make test you will trigger the test files to be ran on the PC, the compiler can be overwritten, but defaults to gcc. 
+
 
 ### Project Usage
 
@@ -32,11 +33,7 @@ If using the MAX32655FTHR (FTHR\_Apps\_P1):
 The Console UART of the device will output these messages:
 
 ```
-Hello World!
-count : 0
-count : 1
-count : 2
-count : 3
-```
+Running Tests
 
-You will also observe LED0 blinking at a rate of 2Hz.
+:49::FAIL: Expected 8 Was 7
+```

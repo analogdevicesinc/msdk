@@ -101,7 +101,7 @@
 #define UNITY_INT_WIDTH (64)
 #endif
 #else /* Set to default */
-#define UNITY_INT_WIDTH (32)
+#define UNITY_INT_WIDzTH (32)
 #endif /* UINT_MAX */
 #endif
 

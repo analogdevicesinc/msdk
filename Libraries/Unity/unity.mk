@@ -33,6 +33,14 @@ IPATH += ${LIB_UNITY_DIR}/src
 VPATH += ${LIB_UNITY_DIR}/src
 SRCS += unity.c
 
+# Test Options
+TEST_CC?=gcc
+TEST_TARGET_OUT?=build/testbench
+TEST_SRCS+=$(LIBS_DIR)/Unity/src/unity.c
+TEST_SRCS+=$(sort $(wildcard test/*.c))
+TEST_CFLAGS += -I$(LIBS_DIR)/Unity/src
+
+
 
 
 # Use absolute paths if building within eclipse environment.
