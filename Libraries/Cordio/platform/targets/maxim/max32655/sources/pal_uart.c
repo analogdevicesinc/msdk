@@ -315,9 +315,9 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   MXC_UART_SetDataSize(MXC_UART_GET_UART(uartNum), 8);
   MXC_UART_SetStopBits(MXC_UART_GET_UART(uartNum), MXC_UART_STOP_1);
   MXC_UART_SetParity(MXC_UART_GET_UART(uartNum), MXC_UART_PARITY_DISABLE);
-  if(pCfg->hwFlow) {
-    MXC_UART_SetFlowCtrl(MXC_UART_GET_UART(uartNum), MXC_UART_FLOW_EN, 1);
-  }
+  MXC_UART_SetFlowCtrl(MXC_UART_GET_UART(uartNum), MXC_UART_FLOW_EN, 1);
+  // if(pCfg->hwFlow) {
+  // }
 
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
 }
