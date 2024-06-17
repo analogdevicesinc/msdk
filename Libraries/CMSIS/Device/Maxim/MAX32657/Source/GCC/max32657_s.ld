@@ -30,28 +30,25 @@
  */
 
 MEMORY {
-    FLASH         (rx) : ORIGIN = 0x11000000, LENGTH = 0x0007E000 /* 504KB Flash */
-    FLASH_INFO    (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
-    SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00020000 /* 128KB SRAM */
+    FLASH         (rx) : ORIGIN = 0x11000000, LENGTH = 0x0007E000 /* 504KB Secure Flash */
     FLASH_NSC     (rx) : ORIGIN = 0x1107E000, LENGTH = 0x00002000 /* 8KB Non-Secure Callable Region */
-    FLASH_NS      (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* 504KB Flash */
+    FLASH_NS      (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* 512KB Non-Secure Flash */
+    SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00020000 /* 128KB SRAM */
 }
 
 SECTIONS {
-    /**
-     *  The locations for the sections must be in order or the compiler
-     *  will disregard the section.
-     */
     .nonsecure_flash :
     {
+        /* Align Non-Secure Code to beginning of Flash Block (32KB) */
+        _nonsecure_start = ALIGN(., 0x8000);
         KEEP(*nonsecure.o) /* Non-Secure program code */
+        _nonsecure_end = ALIGN(., 0x8000);
     } > FLASH_NS
 
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
-        /* *(EXCLUDE_FILE(*nonsecure.o).text.*)*/    /* program code, exclude Non-Secure code */
         *(.text*)    /* Program code */
         *(.rodata*)  /* read-only data: "const" */
 

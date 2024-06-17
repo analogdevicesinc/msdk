@@ -34,13 +34,9 @@
 
 /***** Definitions *****/
 
-// Starting address of the Non-Secure Vector Table.
-//  Confirm by checking the Non-Secure {project}.map file and finding the
-//  Reset_Handler address then "- 4" (Top of Stack).
-#define VECTOR_TABLE_START_ADDR_NS (0x010803A8)
-#define Reset_Handler_ADDR_NS  (*((uint32_t *)(VECTOR_TABLE_START_ADDR_NS + 4)))
-
 /***** Globals *****/
+
+extern uint32_t _nonsecure_start;
 
 /***** Functions *****/
 
@@ -49,14 +45,14 @@ void NonSecure_Init(void)
     mxc_ns_call_t Reset_Handler_NS;
 
     // Setup Non-Secure vector table.
-    SCB_NS->VTOR = VECTOR_TABLE_START_ADDR_NS;
+    SCB_NS->VTOR = (_nonsecure_start);
 
     // Setup Non-Secure Main Stack Pointer (MSP_NS).
     //  Start of vector table contains top of stack value.
-    __TZ_set_MSP_NS((*(uint32_t *)VECTOR_TABLE_START_ADDR_NS));
+    __TZ_set_MSP_NS((*(uint32_t *)(_nonsecure_start)));
 
     // Get Non-Secure Reset_Handler.
-    Reset_Handler_NS = (mxc_ns_call_t)Reset_Handler_ADDR_NS;
+    Reset_Handler_NS = (mxc_ns_call_t)(_nonsecure_start + 4);
 
     // Start Non-Secure code.
     Reset_Handler_NS();
@@ -66,7 +62,7 @@ void NonSecure_Init(void)
 }
 
 /**
- * Note: Increment counter in Secure context.
+ * Brief: Increment counter in Secure context from Non-Secure world.
  * 
  * Warning: Prevent leaks by checking pointers passed into
  *  Secure functions before dereferencing them, or the Non-Secure
@@ -102,14 +98,14 @@ int main(void)
 
     printf("Now transitioning to the non-secure world.\n");
 
+    // Set security state of memory (MPC) and peripherals (SPC) for Secure vs
+    //  Non-Secure access.
+
     // Transition to Non-Secure world.
     NonSecure_Init();
 
     // Should never reach here.
     printf("Error: Code should not reach here.\n");
-
-    // Enable Red LED.
-    LED_On(1);
 
     while (1) {}
 }
