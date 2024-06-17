@@ -36,7 +36,7 @@
 
 /***** Globals *****/
 
-extern uint32_t _nonsecure_start;
+extern void *_nonsecure_start;
 
 /***** Functions *****/
 
@@ -45,7 +45,7 @@ void NonSecure_Init(void)
     mxc_ns_call_t Reset_Handler_NS;
 
     // Setup Non-Secure vector table.
-    SCB_NS->VTOR = (_nonsecure_start);
+    SCB_NS->VTOR = (uint32_t)(_nonsecure_start);
 
     // Setup Non-Secure Main Stack Pointer (MSP_NS).
     //  Start of vector table contains top of stack value.
