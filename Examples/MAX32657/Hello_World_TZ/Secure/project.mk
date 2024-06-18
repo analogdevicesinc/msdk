@@ -17,3 +17,4 @@ MSECURITY_MODE=SECURE
 
 # Add path to Non-Secure project.
 NONSECURE_CODE_DIR=../NonSecure
+SECURE_CODE_DIR=.
