@@ -37,3 +37,5 @@ node_modules
 package-lock.json
 package.json
 .python-version
+mxc_version.h
+mxc_version.mk
