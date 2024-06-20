@@ -310,22 +310,22 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #endif
 
 /******************************************************************************/
-/*                                                             SVM Controller */
+/*                                                            RSTZ Controller */
 
 /* Non-secure Mapping */
-#define MXC_BASE_SVM_NS ((uint32_t)0x40004800UL)
-#define MXC_SVM_NS 0 //TODO(ME30): Add SVM controller registers.
+#define MXC_BASE_RSTZ_NS ((uint32_t)0x40004800UL)
+#define MXC_RSTZ_NS ((mxc_rstz_regs_t *)MXC_BASE_RSTZ_S)
 
 /* Secure Mapping */
-#define MXC_BASE_SVM_S ((uint32_t)0x50004800UL)
-#define MXC_SVM_S 0 //TODO(ME30): Add SVM controller registers.
+#define MXC_BASE_RSTZ_S ((uint32_t)0x50004800UL)
+#define MXC_RSTZ_S ((mxc_rstz_regs_t *)MXC_BASE_RSTZ_S)
 
 #if IS_SECURE_ENVIRONMENT
-#define MXC_BASE_SVM MXC_BASE_SVM_S
-#define MXC_SVM MXC_SVM_S //TODO(ME30): Add SVM controller registers
+#define MXC_BASE_RSTZ MXC_BASE_RSTZ_S
+#define MXC_RSTZ MXC_RSTZ_S //TODO(ME30): Add SVM controller registers
 #else
-#define MXC_BASE_SVM MXC_BASE_SVM_NS
-#define MXC_SVM MXC_SVM_NS
+#define MXC_BASE_RSTZ MXC_BASE_RSTZ_NS
+#define MXC_RSTZ MXC_RSTZ_NS
 #endif
 
 /******************************************************************************/
@@ -333,11 +333,11 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 
 /* Non-secure Mapping */
 #define MXC_BASE_BOOST_NS ((uint32_t)0x40004C00UL)
-#define MXC_BOOST_NS 0 //TODO(ME30): Add Boost controller registers.
+#define MXC_BOOST_NS ((mxc_boost_regs_t *)MXC_BASE_BOOST_NS)
 
 /* Secure Mapping */
 #define MXC_BASE_BOOST_S ((uint32_t)0x50004C00UL)
-#define MXC_BOOST_S 0 //TODO(ME30): Add Boost controller registers.
+#define MXC_BOOST_S ((mxc_boost_regs_t *)MXC_BASE_BOOST_S)
 
 #if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_BOOST MXC_BASE_BOOST_S
