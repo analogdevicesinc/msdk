@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>NSPC</name>
+    <description>Non-Secure Privilege Controller.</description>
+    <baseAddress>0x40090000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>APBPRIV</name>
+        <description>APB Tartet Privileged/Non-privileged PPC Access Register.</description>
+        <addressOffset>0x0160</addressOffset>
+        <fields>
+          <field>
+            <name>PERIPH</name>
+            <description>Each bit configures the APB PPC to enforce the security access allowed for an individual peripheral.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>GCR</name>
+                <description>Security Access for GCR.</description>
+                <value>0x01</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SIR</name>
+                <description>Security Access for SIR.</description>
+                <value>0x02</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FCR</name>
+                <description>Security Access for FCR.</description>
+                <value>0x04</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>WDT</name>
+                <description>Security Access for WDT.</description>
+                <value>0x08</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>AES</name>
+                <description>Security Access for AES.</description>
+                <value>0x010</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>AESKEYS</name>
+                <description>Security Access for AESKEYS.</description>
+                <value>0x020</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>GPIO0</name>
+                <description>Security Access for GPIO0.</description>
+                <value>0x040</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CRC</name>
+                <description>Security Access for CRC.</description>
+                <value>0x080</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TMR0</name>
+                <description>Security Access for TMR0.</description>
+                <value>0x0100</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TMR1</name>
+                <description>Security Access for TMR1.</description>
+                <value>0x0200</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TMR2</name>
+                <description>Security Access for TMR2.</description>
+                <value>0x0400</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TMR3</name>
+                <description>Security Access for TMR3.</description>
+                <value>0x0800</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TMR4</name>
+                <description>Security Access for TMR4.</description>
+                <value>0x01000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TMR5</name>
+                <description>Security Access for TMR5.</description>
+                <value>0x02000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>I3C</name>
+                <description>Security Access for I3C.</description>
+                <value>0x04000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>UART</name>
+                <description>Security Access for UART.</description>
+                <value>0x08000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SPI</name>
+                <description>Security Access for SPI.</description>
+                <value>0x010000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TRNG</name>
+                <description>Security Access for TRNG.</description>
+                <value>0x020000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>BTLE_DBB</name>
+                <description>Security Access for BTLE DBB.</description>
+                <value>0x040000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>BTLE_RFFE</name>
+                <description>Security Access for BTLE RFFE.</description>
+                <value>0x080000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RSTZ</name>
+                <description>Security Access for RSTZ.</description>
+                <value>0x0100000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>BOOST</name>
+                <description>Security Access for Boost Controller.</description>
+                <value>0x0200000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TRIMSIR</name>
+                <description>Security Access for TRIMSIR.</description>
+                <value>0x0400000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RTC</name>
+                <description>Security Access for RTC.</description>
+                <value>0x01000000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>WUT0</name>
+                <description>Security Access for WUT0.</description>
+                <value>0x02000000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>WUT1</name>
+                <description>Security Access for WUT1.</description>
+                <value>0x04000000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PWRSEQ</name>
+                <description>Security Access for Power Sequencer.</description>
+                <value>0x08000000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>MCR</name>
+                <description>Security Access for MCR.</description>
+                <value>0x10000000</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ALL</name>
+                <description>Security Access for MCR.</description>
+                <value>0x1F7FFFFF</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AHBMPRIV</name>
+        <description>AHB Privileged/Non-Privileged Non-Secure DMA Access Register.</description>
+        <addressOffset>0x0170</addressOffset>
+        <fields>
+          <field>
+            <name>DMA</name>
+            <description>Control access for transactions coming from the Non-Secure DMA.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--NSPC: Non-Secure Privilege Controller-->
+</device>

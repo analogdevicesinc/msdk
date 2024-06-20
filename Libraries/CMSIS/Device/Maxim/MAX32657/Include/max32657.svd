@@ -294,6 +294,133 @@
   </peripheral>
 
   <peripheral>
+   <name>BOOST</name>
+   <description>Boost Controller</description>
+   <baseAddress>0x50004C00</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>BOOST</name>
+    <value>46</value>
+   </interrupt>
+   <registers>
+    <register>
+     <name>DISABLE</name>
+     <description>Boost Disable Register.</description>
+     <addressOffset>0x000</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>DIS</name>
+       <description>This bit allows softwaree to disable the boost regulator for the VDD18 supply.</description>
+       <bitRange>[0:0]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>VREGCTRL</name>
+     <description>Boost Voltage Regulator Control Register.</description>
+     <addressOffset>0x004</addressOffset>
+     <fields>
+      <field>
+       <name>SET</name>
+       <description>Sets the target voltage for the boost regulator output.</description>
+       <bitRange>[4:0]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>IPEAK</name>
+     <description>Low Side FET Peak Current Register.</description>
+     <addressOffset>0x008</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>SET</name>
+       <description>Sets the peak current threshold for the regulator.</description>
+       <bitRange>[2:0]</bitRange>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>MAXTON</name>
+     <description>Maximum Low Side FET Time-On Register.</description>
+     <addressOffset>0x00C</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>THD</name>
+       <description>Sets a threshold for when time-on out toggles.</description>
+       <bitRange>[3:0]</bitRange>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ILOAD</name>
+     <description>Boost Cycle Count Register.</description>
+     <addressOffset>0x010</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>CNT</name>
+       <description>Indicates the last load cycle count value.</description>
+       <bitRange>[7:0]</bitRange>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ALERT</name>
+     <description>Boost Cycle Count Alert Register.</description>
+     <addressOffset>0x014</addressOffset>
+     <fields>
+      <field>
+       <name>THD</name>
+       <description>Determines the threshold for when the boost alert interruptis fired.</description>
+       <bitRange>[7:0]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RDY</name>
+     <description>Boost Output Ready Register.</description>
+     <addressOffset>0x018</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>OUT</name>
+       <description>Indicates ready out status for boost regulator.</description>
+       <bitRange>[0:0]</bitRange>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ZXCAL</name>
+     <description>Zero Cross Calibration Register.</description>
+     <addressOffset>0x01C</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>VAL</name>
+       <description>Read back of auto-calibration values.</description>
+       <bitRange>[4:0]</bitRange>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+
+  <peripheral>
    <name>CRC</name>
    <description>CRC Registers.</description>
    <baseAddress>0x5000F000</baseAddress>
@@ -6561,6 +6688,327 @@
   </peripheral>
 
   <peripheral>
+   <name>NSPC</name>
+   <description>Non-Secure Privilege Controller.</description>
+   <baseAddress>0x40090000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x1000</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>APBPRIV</name>
+     <description>APB Tartet Privileged/Non-privileged PPC Access Register.</description>
+     <addressOffset>0x0160</addressOffset>
+     <fields>
+      <field>
+       <name>PERIPH</name>
+       <description>Each bit configures the APB PPC to enforce the security access allowed for an individual peripheral.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>GCR</name>
+         <description>Security Access for GCR.</description>
+         <value>0x01</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>SIR</name>
+         <description>Security Access for SIR.</description>
+         <value>0x02</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FCR</name>
+         <description>Security Access for FCR.</description>
+         <value>0x04</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WDT</name>
+         <description>Security Access for WDT.</description>
+         <value>0x08</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>AES</name>
+         <description>Security Access for AES.</description>
+         <value>0x010</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>AESKEYS</name>
+         <description>Security Access for AESKEYS.</description>
+         <value>0x020</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>GPIO0</name>
+         <description>Security Access for GPIO0.</description>
+         <value>0x040</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>CRC</name>
+         <description>Security Access for CRC.</description>
+         <value>0x080</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR0</name>
+         <description>Security Access for TMR0.</description>
+         <value>0x0100</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR1</name>
+         <description>Security Access for TMR1.</description>
+         <value>0x0200</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR2</name>
+         <description>Security Access for TMR2.</description>
+         <value>0x0400</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR3</name>
+         <description>Security Access for TMR3.</description>
+         <value>0x0800</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR4</name>
+         <description>Security Access for TMR4.</description>
+         <value>0x01000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR5</name>
+         <description>Security Access for TMR5.</description>
+         <value>0x02000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>I3C</name>
+         <description>Security Access for I3C.</description>
+         <value>0x04000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>UART</name>
+         <description>Security Access for UART.</description>
+         <value>0x08000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>SPI</name>
+         <description>Security Access for SPI.</description>
+         <value>0x010000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TRNG</name>
+         <description>Security Access for TRNG.</description>
+         <value>0x020000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BTLE_DBB</name>
+         <description>Security Access for BTLE DBB.</description>
+         <value>0x040000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BTLE_RFFE</name>
+         <description>Security Access for BTLE RFFE.</description>
+         <value>0x080000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RSTZ</name>
+         <description>Security Access for RSTZ.</description>
+         <value>0x0100000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BOOST</name>
+         <description>Security Access for Boost Controller.</description>
+         <value>0x0200000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TRIMSIR</name>
+         <description>Security Access for TRIMSIR.</description>
+         <value>0x0400000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RTC</name>
+         <description>Security Access for RTC.</description>
+         <value>0x01000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WUT0</name>
+         <description>Security Access for WUT0.</description>
+         <value>0x02000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WUT1</name>
+         <description>Security Access for WUT1.</description>
+         <value>0x04000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PWRSEQ</name>
+         <description>Security Access for Power Sequencer.</description>
+         <value>0x08000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>MCR</name>
+         <description>Security Access for MCR.</description>
+         <value>0x10000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>ALL</name>
+         <description>Security Access for MCR.</description>
+         <value>0x1F7FFFFF</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>AHBMPRIV</name>
+     <description>AHB Privileged/Non-Privileged Non-Secure DMA Access Register.</description>
+     <addressOffset>0x0170</addressOffset>
+     <fields>
+      <field>
+       <name>DMA</name>
+       <description>Control access for transactions coming from the Non-Secure DMA.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+
+  <peripheral>
+   <name>RSTZ</name>
+   <description>RSTZ Controller</description>
+   <baseAddress>0x50004800</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>CTRL</name>
+     <description>RSTZ Control Register.</description>
+     <addressOffset>0x000</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Enable channels.</description>
+       <bitRange>[0:0]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>SVC_EN</name>
+       <description>Enable the SVC.</description>
+       <bitRange>[1:1]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>CH_SEL</name>
+       <description>Channel Select.</description>
+       <bitRange>[4:2]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>CAL_EN</name>
+       <description>Calibration mode enable.</description>
+       <bitRange>[5:5]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>DMEASURE_EN</name>
+       <description>Direct Measure mode enable.</description>
+       <bitRange>[6:6]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>OFFTR_P</name>
+       <description>Offset Trim for positive comparator.</description>
+       <bitRange>[11:7]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>OFFTR_N</name>
+       <description>Offset Trim for negative comparator.</description>
+       <bitRange>[16:12]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>DOUT</name>
+       <description>Comparator Result.</description>
+       <bitRange>[17:17]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>CAL_DOUT_POL</name>
+       <description>Calibration DOUT Polarity.</description>
+       <bitRange>[18:18]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>NUM_SAMP</name>
+       <description>Number of captures per sample.</description>
+       <bitRange>[27:24]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>TRIP_TOL</name>
+       <description>Number of failed DOUT captures (tolerance) before corresponding RSTZ signal is tripped.</description>
+       <bitRange>[31:28]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BOOST_CLKCTRL</name>
+     <description>Boost Clock Control Register.</description>
+     <addressOffset>0x004</addressOffset>
+     <fields>
+      <field>
+       <name>EXIT_NUM_SAMP</name>
+       <description>Defines how many samples needed of boost output channel to perform when exiting low-power mode before returning to normal active operation.</description>
+       <bitRange>[1:0]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>CH_SEL</name>
+       <description>Select when channel the output of the boost converter is monitored on.</description>
+       <bitRange>[4:2]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <dim>8</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>STATUS_CH[%s]</name>
+     <description>Channel X Status Register.</description>
+     <addressOffset>0x028</addressOffset>
+     <size>32</size>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>RSTZ</name>
+       <description>Result of most recent sample result.</description>
+       <bitRange>[0:0]</bitRange>
+       <access>read-only</access>
+      </field>
+      <field>
+       <name>DOUT</name>
+       <description>Store the most recent DOUT capture for a given channel.</description>
+       <bitRange>[1:1]</bitRange>
+       <access>read-only</access>
+      </field>
+      <field>
+       <name>RSTZ_FL</name>
+       <description>RSTZ Flag indicates the RSTZ was tripped at some point since the last time being cleared.</description>
+       <bitRange>[31:31]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+
+  <peripheral>
    <name>RTC</name>
    <description>Real Time Clock and Alarm.</description>
    <baseAddress>0x50006000</baseAddress>
@@ -7857,18 +8305,6 @@
        <description>Lock Security Attribution Unit (SAU).</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>DIS</name>
-         <description>TX DMA requests are disabled, andy pending DMA requests are cleared.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>TX DMA requests are enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -7882,6 +8318,153 @@
        <description>Each bit configures the APB PPC to enforce the security access allowed for an individual peripheral.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>GCR</name>
+         <description>Security Access for GCR.</description>
+         <value>0x01</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>SIR</name>
+         <description>Security Access for SIR.</description>
+         <value>0x02</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FCR</name>
+         <description>Security Access for FCR.</description>
+         <value>0x04</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WDT</name>
+         <description>Security Access for WDT.</description>
+         <value>0x08</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>AES</name>
+         <description>Security Access for AES.</description>
+         <value>0x010</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>AESKEYS</name>
+         <description>Security Access for AESKEYS.</description>
+         <value>0x020</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>GPIO0</name>
+         <description>Security Access for GPIO0.</description>
+         <value>0x040</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>CRC</name>
+         <description>Security Access for CRC.</description>
+         <value>0x080</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR0</name>
+         <description>Security Access for TMR0.</description>
+         <value>0x0100</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR1</name>
+         <description>Security Access for TMR1.</description>
+         <value>0x0200</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR2</name>
+         <description>Security Access for TMR2.</description>
+         <value>0x0400</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR3</name>
+         <description>Security Access for TMR3.</description>
+         <value>0x0800</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR4</name>
+         <description>Security Access for TMR4.</description>
+         <value>0x01000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR5</name>
+         <description>Security Access for TMR5.</description>
+         <value>0x02000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>I3C</name>
+         <description>Security Access for I3C.</description>
+         <value>0x04000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>UART</name>
+         <description>Security Access for UART.</description>
+         <value>0x08000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>SPI</name>
+         <description>Security Access for SPI.</description>
+         <value>0x010000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TRNG</name>
+         <description>Security Access for TRNG.</description>
+         <value>0x020000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BTLE_DBB</name>
+         <description>Security Access for BTLE DBB.</description>
+         <value>0x040000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BTLE_RFFE</name>
+         <description>Security Access for BTLE RFFE.</description>
+         <value>0x080000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RSTZ</name>
+         <description>Security Access for RSTZ.</description>
+         <value>0x0100000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BOOST</name>
+         <description>Security Access for Boost Controller.</description>
+         <value>0x0200000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TRIMSIR</name>
+         <description>Security Access for TRIMSIR.</description>
+         <value>0x0400000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RTC</name>
+         <description>Security Access for RTC.</description>
+         <value>0x01000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WUT0</name>
+         <description>Security Access for WUT0.</description>
+         <value>0x02000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WUT1</name>
+         <description>Security Access for WUT1.</description>
+         <value>0x04000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PWRSEQ</name>
+         <description>Security Access for Power Sequencer.</description>
+         <value>0x08000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>MCR</name>
+         <description>Security Access for MCR.</description>
+         <value>0x10000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>ALL</name>
+         <description>Security Access for MCR.</description>
+         <value>0x1F7FFFFF</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -7895,6 +8478,153 @@
        <description>Each bit configures the APB PPC to enforce the security access allowed for an individual peripheral.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>GCR</name>
+         <description>Security Access for GCR.</description>
+         <value>0x01</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>SIR</name>
+         <description>Security Access for SIR.</description>
+         <value>0x02</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FCR</name>
+         <description>Security Access for FCR.</description>
+         <value>0x04</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WDT</name>
+         <description>Security Access for WDT.</description>
+         <value>0x08</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>AES</name>
+         <description>Security Access for AES.</description>
+         <value>0x010</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>AESKEYS</name>
+         <description>Security Access for AESKEYS.</description>
+         <value>0x020</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>GPIO0</name>
+         <description>Security Access for GPIO0.</description>
+         <value>0x040</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>CRC</name>
+         <description>Security Access for CRC.</description>
+         <value>0x080</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR0</name>
+         <description>Security Access for TMR0.</description>
+         <value>0x0100</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR1</name>
+         <description>Security Access for TMR1.</description>
+         <value>0x0200</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR2</name>
+         <description>Security Access for TMR2.</description>
+         <value>0x0400</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR3</name>
+         <description>Security Access for TMR3.</description>
+         <value>0x0800</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR4</name>
+         <description>Security Access for TMR4.</description>
+         <value>0x01000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TMR5</name>
+         <description>Security Access for TMR5.</description>
+         <value>0x02000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>I3C</name>
+         <description>Security Access for I3C.</description>
+         <value>0x04000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>UART</name>
+         <description>Security Access for UART.</description>
+         <value>0x08000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>SPI</name>
+         <description>Security Access for SPI.</description>
+         <value>0x010000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TRNG</name>
+         <description>Security Access for TRNG.</description>
+         <value>0x020000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BTLE_DBB</name>
+         <description>Security Access for BTLE DBB.</description>
+         <value>0x040000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BTLE_RFFE</name>
+         <description>Security Access for BTLE RFFE.</description>
+         <value>0x080000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RSTZ</name>
+         <description>Security Access for RSTZ.</description>
+         <value>0x0100000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BOOST</name>
+         <description>Security Access for Boost Controller.</description>
+         <value>0x0200000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>TRIMSIR</name>
+         <description>Security Access for TRIMSIR.</description>
+         <value>0x0400000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RTC</name>
+         <description>Security Access for RTC.</description>
+         <value>0x01000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WUT0</name>
+         <description>Security Access for WUT0.</description>
+         <value>0x02000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>WUT1</name>
+         <description>Security Access for WUT1.</description>
+         <value>0x04000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PWRSEQ</name>
+         <description>Security Access for Power Sequencer.</description>
+         <value>0x08000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>MCR</name>
+         <description>Security Access for MCR.</description>
+         <value>0x10000000</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>ALL</name>
+         <description>Security Access for MCR.</description>
+         <value>0x1F7FFFFF</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -7918,48 +8648,9 @@
      <fields>
       <field>
        <name>PINS</name>
-       <description>Each bit configures a GPIO pin as secore or non-secure on GPIO Port 0. Secure GPIO pins prevent software from reading GPIO Data In pin states.</description>
+       <description>Each bit configures a GPIO pin as secure or non-secure on GPIO Port 0. Secure GPIO pins prevent software from reading GPIO Data In pin states.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>14</bitWidth>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-
-  <peripheral>
-   <name>NSPC</name>
-   <description>Non-Secure Privilege Controller.</description>
-   <baseAddress>0x40090000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x1000</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>APBPRIV</name>
-     <description>APB Tartet Privileged/Non-privileged PPC Access Register.</description>
-     <addressOffset>0x0160</addressOffset>
-     <fields>
-      <field>
-       <name>PERIPH</name>
-       <description>Each bit configures the APB PPC to enforce the security access allowed for an individual peripheral.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>AHBMPRIV</name>
-     <description>AHB Privileged/Non-Privileged Non-Secure DMA Access Register.</description>
-     <addressOffset>0x0170</addressOffset>
-     <fields>
-      <field>
-       <name>DMA</name>
-       <description>Control access for transactions coming from the Non-Secure DMA.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>
