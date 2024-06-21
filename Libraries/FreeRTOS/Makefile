@@ -67,6 +67,8 @@ else ifeq ($(FREERTOS_HEAP_TYPE), 4)
 SRCS += heap_4.c
 else ifeq ($(FREERTOS_HEAP_TYPE), 5)  
 SRCS += heap_5.c
+else 
+$(error FREERTOS_HEAP_TYPE must be between 1-5. Default: 4)
 endif
 
 # Where to find source files for this project
