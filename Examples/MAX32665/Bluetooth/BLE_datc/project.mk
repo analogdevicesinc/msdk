@@ -24,3 +24,22 @@ INIT_CENTRAL = 1
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
 TRACE = 1
+
+# set ADVTISEMENT name you want to connect
+PROJ_CFLAGS += -DADV_NAME=\"DATS\"
+
+### CONFIGURE security
+# /*! Authentication and bonding flags */
+#PROJ_CFLAGS += -DAUTH_BOND='DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG'
+
+# /*! Initiator key distribution flags */
+#PROJ_CFLAGS += -DINIT_KEY_DIST='DM_KEY_DIST_IRK'
+
+# /*! Responder key distribution flags */
+#PROJ_CFLAGS += -DRESP_KEY_DIST='DM_KEY_DIST_LTK | DM_KEY_DIST_IRK'
+
+# /*! TRUE if Out-of band pairing data is present */
+#PROJ_CFLAGS += -DOUT_OF_BAND=FALSE
+
+# /*! TRUE to initiate security upon connection*/
+PROJ_CFLAGS += -DINIT_SECURITY=TRUE

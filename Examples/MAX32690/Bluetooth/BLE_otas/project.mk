@@ -63,7 +63,8 @@ endif
 
 
 # SET advertising name
-PROJ_CFLAGS += -DADV_NAME=\"This\ is\ the\ real\ world\"
+#PROJ_CFLAGS += -DADV_NAME=\"This\ is\ the\ real\ world\"
+PROJ_CFLAGS += -DADV_NAME=\"DATS\"
 
 
 ### CONFIGURE security
