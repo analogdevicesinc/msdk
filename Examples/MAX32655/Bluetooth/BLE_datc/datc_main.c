@@ -570,10 +570,10 @@ static void datcScanReport(dmEvt_t *pMsg)
                                            pMsg->scanReport.pData)) != NULL)) {
         /* check length and device name */
         char advName[] = ADV_NAME;
-		if (pData[DM_AD_LEN_IDX] == sizeof(advName)
-				&& !strncmp(advName, (char*)&(pData[DM_AD_DATA_IDX]), sizeof(advName))){
+        if (pData[DM_AD_LEN_IDX] == sizeof(advName) &&
+            !strncmp(advName, (char *)&(pData[DM_AD_DATA_IDX]), sizeof(advName))) {
             connect = TRUE;
-		}
+        }
     }
 
     if (connect) {
