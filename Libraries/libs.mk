@@ -72,13 +72,13 @@ ifeq ($(CHIP_REVISION),a)
 ifeq ($(RISCV_CORE),)
 
 ifeq ($(MFLOAT_ABI),hard)
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_hard.a
 else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1.a
 endif
 
 else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_riscv.a
 endif
 
 #*********************************************************************
