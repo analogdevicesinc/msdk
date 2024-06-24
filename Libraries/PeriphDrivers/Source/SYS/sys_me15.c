@@ -110,10 +110,13 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         // Set NULL Key
         MXC_AES_SetExtKey((const void *)aes_key, MXC_AES_128BITS);
 
+        uint8_t usn_copy[MXC_SYS_USN_LEN] = { 0 };
+        memcpy(usn_copy, usn, MXC_SYS_USN_LEN);
+
         // Compute Checksum
         mxc_aes_req_t aes_req;
         aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
-        aes_req.inputData = (uint32_t *)usn;
+        aes_req.inputData = (uint32_t *)usn_copy;
         aes_req.resultData = (uint32_t *)check_csum;
         aes_req.keySize = MXC_AES_128BITS;
         aes_req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
