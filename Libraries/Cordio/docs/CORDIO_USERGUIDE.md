@@ -1,6 +1,6 @@
 # Cordio Bluetooth LE User Guide
 
-This library implements the Bluetooth Low Energy stack, forked from [Packetcraft](https://github.com/packetcraft-inc/stacks). It depends on additional libraries within the msdk repository. All applications utilizing this library can be found in the `Examples` directory of an MSDK installation.
+This library implements the Bluetooth Low Energy stack, forked from [Packetcraft](https://githubom/packetcraft-inc/stacks). It depends on additional libraries within the msdk repository. All applications utilizing this library can be found in the `Examples` directory of an MSDK installation.
 
 ## Supported Features
 
@@ -13,7 +13,7 @@ This library implements the Bluetooth Low Energy stack, forked from [Packetcraft
 * **LE Secure Connections:** LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.
 * **Data Length Extension:** Extend the maximum data length supported in a connection.
 * **LE Power Control:** Dynamic TX power control.
-* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smartphone app, and [BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex) for details.
+* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smartphone app, and [BLE-PyDex](https://githubom/EdwinFairchild/BLE-PyDex) for details.
 
 ### Features in Development
 
@@ -63,7 +63,7 @@ TRACE = 1
 
 ### References
 
-The Bluetooth Special Interest Group (SIG) has documentation available on its [website](https://www.bluetooth.com/). For the latest core specification, refer to the [documentation](https://www.bluetooth.com/specifications/specs/) page. This will be your best resource for learning the details of Bluetooth Low Energy.
+The Bluetooth Special Interest Group (SIG) has documentation available on its [website](https://www.bluetoothom/). For the latest core specification, refer to the [documentation](https://www.bluetoothom/specifications/specs/) page. This will be your best resource for learning the details of Bluetooth Low Energy.
 
 These books are also excellent references for developers.
 
@@ -145,6 +145,36 @@ The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, an
 
 The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system-level functions such as sleep and memory management. 
 
+_MAX32655:_
+
+| **Peripheral** | **Use** | **Configurable** |
+| ---------------|---------|------------------ |
+| GPIO0         | pal_btn |   yes|
+| GPIO1         | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
+| TIMER0-1        | pal_sys pal_timer|   yes|
+| UART0-3         | pal_sys pal_uart|   yes|
+
+
+_MAX32665:_
+
+| **Peripheral** | **Use** | **Configurable** |
+| ---------------|---------|------------------ |
+| GPIO0     | pal_btn |   yes|
+| GPIO1     | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
+| TIMER0-1    | pal_sys pal_timer|   yes|
+| UART0-2     | pal_sys pal_uart|   yes|
+| DMA0-8       | pal_sys pal_uart|   yes|
+
+_MAX32690:_
+
+| **Peripheral** | **Use** | **Configurable** |
+| ---------------|---------|------------------ |
+| GPIO0     | pal_btn |   yes|
+| GPIO1     | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
+| TIMER0-1    | pal_sys pal_timer|   yes|
+| UART0-3         | pal_sys pal_uart|   yes|
+
+
 ### Attribute Protocol
 
 The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and the attribute protocol server (ATTS).
@@ -209,7 +239,7 @@ ADI Attach is a smartphone application that can be used for Bluetooth debugging 
 
 BLE-PyDex is a hardware-agnostic Bluetooth device explorer designed to aid in the development and debugging of Bluetooth applications.
 
-[https://github.com/EdwinFairchild/BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex)
+[https://githubom/EdwinFairchild/BLE-PyDex](https://githubom/EdwinFairchild/BLE-PyDex)
 
 ## Frequently asked questions
 
@@ -290,7 +320,7 @@ Unfortunately, there is no Bluetooth SIG-defined standard for this protocol. Thi
 
 ## Additional Documentation
 
-Documentation for Python tools used for Bluetooth development and debugging can be found [here](https://github.com/analogdevicesinc/msdk/tree/main/Tools/Bluetooth).
+Documentation for Python tools used for Bluetooth development and debugging can be found [here](https://githubom/analogdevicesinc/msdk/tree/main/Tools/Bluetooth).
 
 Documentation for each of the supporting applications can be found below:
 
@@ -2490,22 +2520,22 @@ Returns a status byte
 
 Bluetooth LE Mesh solution implementing the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications
 
-* [QDID 116593](https://launchstudio.bluetooth.com/ListingDetails/66212)
+* [QDID 116593](https://launchstudio.bluetoothom/ListingDetails/66212)
 
 Bluetooth LE Host protocol stack implementing Bluetooth Core 5.2 specification
 
-* [QDID 146344](https://launchstudio.bluetooth.com/ListingDetails/103670)
+* [QDID 146344](https://launchstudio.bluetoothom/ListingDetails/103670)
 
 Bluetooth LE Link Layer protocol stack implementing Bluetooth 5.2 specification
 
-* [QDID 146281](https://launchstudio.bluetooth.com/ListingDetails/103599)
+* [QDID 146281](https://launchstudio.bluetoothom/ListingDetails/103599)
 
 MAX32655 controller subsystem
 
-* [QDID 159701](https://launchstudio.bluetooth.com/ListingDetails/119468)
+* [QDID 159701](https://launchstudio.bluetoothom/ListingDetails/119468)
 
 MAX32665 controller subsystem
 
-* [QDID 142345](https://launchstudio.bluetooth.com/ListingDetails/98880)
+* [QDID 142345](https://launchstudio.bluetoothom/ListingDetails/98880)
 
-Consult the [Bluetooth Qualification Process](https://www.bluetooth.com/develop-with-bluetooth/qualification-listing) for further details regarding certification.
+Consult the [Bluetooth Qualification Process](https://www.bluetoothom/develop-with-bluetooth/qualification-listing) for further details regarding certification.
