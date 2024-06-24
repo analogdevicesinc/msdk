@@ -23,3 +23,24 @@ TRACE = 1
 # Add services directory to build
 IPATH += services
 VPATH += services
+
+# SET advertising name
+#PROJ_CFLAGS += -DADV_NAME=\"This\ is\ the\ real\ world\"
+PROJ_CFLAGS += -DADV_NAME=\"DATS\"
+
+
+### CONFIGURE security
+# /*! Authentication and bonding flags */
+#PROJ_CFLAGS += -DAUTH_BOND='DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG'
+
+# /*! Initiator key distribution flags */
+#PROJ_CFLAGS += -DINIT_KEY_DIST='DM_KEY_DIST_IRK'
+
+# /*! Responder key distribution flags */
+#PROJ_CFLAGS += -DRESP_KEY_DIST='DM_KEY_DIST_LTK | DM_KEY_DIST_IRK'
+
+# /*! TRUE if Out-of band pairing data is present */
+#PROJ_CFLAGS += -DOUT_OF_BAND=FALSE
+
+# /*! TRUE to initiate security upon connection*/
+PROJ_CFLAGS += -DINIT_SECURITY=FALSE
