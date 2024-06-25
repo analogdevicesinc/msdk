@@ -384,17 +384,6 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
         switch (spi_num) {
         case 0:
             reqselTx = MXC_DMA_REQUEST_SPITX;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-            break;
-        }
-    }
-
-    if (req->rxData != NULL) {
-        switch (spi_num) {
-        case 0:
             reqselRx = MXC_DMA_REQUEST_SPIRX;
             break;
 

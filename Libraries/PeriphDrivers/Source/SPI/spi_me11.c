@@ -292,22 +292,11 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
     switch (spi_num) {
     case 0:
         reqselTx = MXC_DMA_REQUEST_SPI0TX;
-        break;
-
-    case 1:
-        reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    switch (spi_num) {
-    case 0:
         reqselRx = MXC_DMA_REQUEST_SPI0RX;
         break;
 
     case 1:
+        reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
         reqselRx = MXC_DMA_REQUEST_SPIMSSRX;
         break;
 
