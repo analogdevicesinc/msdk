@@ -643,7 +643,12 @@ jobs:
             BLE_datc
             
           suppress_output: true
-          
+          build_flags: |
+            ADV_NAME=DAT?
+            ADV_NAME=DAT?
+            ADV_NAME=DAT!
+            ADV_NAME=DAT!
+
           build: true
           distclean: true
 
@@ -680,8 +685,12 @@ jobs:
             BLE_otas
             BLE_otac
             BLE_otac
-          suppress_output: true
-          
+          suppress_output: true     
+          build_flags: |
+            ADV_NAME=DAT?
+            ADV_NAME=DAT?
+            ADV_NAME=DAT!
+            ADV_NAME=DAT!
           build: true
           distclean: true
 
