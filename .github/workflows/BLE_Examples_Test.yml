@@ -604,15 +604,15 @@ jobs:
         run: |
           
           #set advertising names
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_dats/dats_main.c
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_datc/datc_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_dats/dats_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_datc/datc_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_dats/dats_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_datc/datc_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_dats/dats_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_datc/datc_main.c
 
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otas/dats_main.c
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otac/datc_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_otas/dats_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otas/dats_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otac/datc_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_otas/dats_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
 
       - name: Erase Boards DATS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
@@ -643,7 +643,12 @@ jobs:
             BLE_datc
             
           suppress_output: true
-          
+          build_flags: |
+            ADV_NAME=DAT?
+            ADV_NAME=DAT?
+            # ADV_NAME=DAT!
+            # ADV_NAME=DAT!
+
           build: true
           distclean: true
 
@@ -675,7 +680,12 @@ jobs:
             max32655_board1
             max32655_board2
             max32665_board1
-  
+          build_flags: |
+            ADV_NAME=OTA?
+            ADV_NAME=OTA?
+            ADV_NAME=OTA!
+            ADV_NAME=OTA!
+
           project: |
             BLE_otas
             BLE_otac
