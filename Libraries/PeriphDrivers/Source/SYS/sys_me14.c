@@ -64,7 +64,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    memset(usn, 0, MXC_SYS_USN_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;

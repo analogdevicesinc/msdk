@@ -185,8 +185,8 @@ void palCfgLoadLlParams(uint8_t *pConfig)
 /*************************************************************************************************/
 void palCfgLoadBdAddress(uint8_t *pDevAddr)
 {
-  uint8_t id[MXC_SYS_USN_CHECKSUM_LEN];
-  uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
+  uint8_t id[MXC_SYS_USN_LEN] = {0};
+  uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN] = {0};
 
   if(MXC_SYS_GetUSN(id, checksum) != E_NO_ERROR) {
     PalSysAssertTrap();	
