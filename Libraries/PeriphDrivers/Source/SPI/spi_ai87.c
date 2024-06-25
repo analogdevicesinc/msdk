@@ -453,36 +453,32 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
     spi_num = MXC_SPI_GET_IDX(req->spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (req->txData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+    switch (spi_num) {
+    case 0:
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+    case 1:
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
-        }
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
-    if (req->rxData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
+    switch (spi_num) {
+    case 0:
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        break;
 
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
+    case 1:
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
-        }
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
     return MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,
