@@ -350,14 +350,6 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req, mxc_dma_regs_t *dma)
     switch (spi_num) {
     case 0:
         reqselTx = MXC_DMA_REQUEST_SPITX;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    switch (spi_num) {
-    case 0:
         reqselRx = MXC_DMA_REQUEST_SPIRX;
         break;
 
