@@ -258,7 +258,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 
     case 1:
         reqselTx = MXC_DMA_REQUEST_SPIMSSTX;
-        reqselTx = MXC_DMA_REQUEST_SPIMSSRX;
+        reqselRx = MXC_DMA_REQUEST_SPIMSSRX;
         break;
 
     default:
