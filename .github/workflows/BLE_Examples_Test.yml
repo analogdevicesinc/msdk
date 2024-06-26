@@ -616,48 +616,17 @@ jobs:
         if: env.LOCK_MAX32655_B1 == 'true' || env.LOCK_MAX32655_B2 == 'true' || env.LOCK_MAX32665_B1 == 'true' || env.LOCK_MAX32690_B1 == 'true'
         id: lock_boards
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share_multiboard.py -l -t 3600 -b max32655_board1 -b max32655_board2 -b max32665_board1 -b max32690_board_w1
-     
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| Erase all required boards at once |-----------------------------
-      #----------------------------------------------------------------------------------------------
-      - name: Erase Boards
-        if: steps.lock_boards.outcome == 'success'
-        id: erase_boards
-        run: |
-          # start with boards in known state
-          cd .github/workflows/scripts
-          echo "Erasing Main MAX32655 B1"
-          ./mass_erase_board.sh max32655 max32655_board1
-          echo "Erasing Main MAX32655 B2"
-          ./mass_erase_board.sh max32655 max32655_board2
-          echo "Erasing Main MAX32665 B1"
-          ./mass_erase_board.sh max32665 max32665_board1
-          echo "Erasing Main MAX32690"
-          ./mass_erase_board.sh max32690 max32690_board_w1
-      #----------------------------------------------------------------------------------------------
+          
+          #set advertising names
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_dats/dats_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_datc/datc_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_dats/dats_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_datc/datc_main.c
 
-      #----------------------------------------------------------------------------------------------
-      #----------------------------------------------------------------------------------------------
-      #------------------------------| Test all required boards at once |-----------------------------
-      #----------------------------------------------------------------------------------------------
-           
-      - name: Test MAX32655 #name used for display purposes on github webpage
-        if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32655_B2 == 'true'
-        id: Test_MAX32655 #id used to reference this step in other parts of the yml
-        run: |
-          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])")
-          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
-          examples_to_test=(${MAX32655_EXAMPLES_TO_TEST[@]})
-          echo
-          echo
-          echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32655_RUN_ALL_TEST        : $MAX32655_RUN_ALL_TEST"
-          echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
-          echo "MAX32655_OTAS_CONNECTED_TEST  : $MAX32655_OTAS_CONNECTED_TEST"
-          echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
-          echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otas/dats_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otac/datc_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_otas/dats_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
 
           cd .github/workflows/scripts
 
@@ -688,19 +657,26 @@ jobs:
                       set -e
                   done
 
-                  #------connected tests---------
-                  if [[ $MAX32655_DATS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32655_DATS_CONNECTED_TEST"
-                      set +e
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial "dats"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed_test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32655 Dats/c"
-                      fi
-                      set -e
+      - name: Flash DATS 655
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+  
+          project: |
+            BLE_dats
+            BLE_datc
+            
+          suppress_output: true
+          build_flags: |
+            ADV_NAME=DAT?
+            ADV_NAME=DAT?
+
+
+          build: true
+          distclean: true
 
                   fi
                   #------connected tests---------
@@ -725,15 +701,52 @@ jobs:
             echo "=============================================================================="
             echo "=============================================================================="
 
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
+
+      - name: Erase Boards OTAS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+            max32690_board_w1
+      
+      - name: Flash OTAS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
+        with:
+          board: |
+            max32655_board1
+            max32655_board2
+            max32665_board1
+          build_flags: |
+            ADV_NAME=OTA?
+            ADV_NAME=OTA?
+            ADV_NAME=OTA!
+            ADV_NAME=OTA!
+
+          project: |
+            BLE_otas
+            BLE_otac
+            BLE_otac
+          suppress_output: true
+          
+          build: true
+          distclean: true
+
+      - name: OTAS
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        run: | 
+          OTAS_TEST_DIR=$TEST_DIR/otas
+          OTAS_BOARD_655=max32655_board1
+          OTAC_BOARD_655=max32655_board2
+          OTAC_BOARD_665=max32665_board1
+          OTAC_BOARD_690=max32690_board_w1
+
+
+          if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then
+            (cd $OTAS_TEST_DIR && python3 otas_connected.py $OTAS_BOARD_655 $OTAC_BOARD_655)
           fi
 
           exit $numOfFailedTests
