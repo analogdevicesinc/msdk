@@ -1460,48 +1460,8 @@
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
-     <description>Miscellaneous Interrupt Flag Register.</description>
-     <addressOffset>0x20</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>ERTCO_RDY</name>
-       <description>ERTCO 32K Ready Interrupt Flag.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>OSCCAL</name>
-       <description>Oscillator Calibration Interrupt Flag.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INTEN</name>
-     <description>Miscellaneous Interrupt Enable Register</description>
-     <addressOffset>0x24</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>ERTCO_RDY</name>
-       <description>ERTCO 32K Ready Interrupt Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>OSCCAL</name>
-       <description>Oscillator Calibration Interrupt Enable.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>OSCCALCTRL</name>
-     <description>Oscilltor Calibration Control Register.</description>
+     <name>FRQCNTCTRL</name>
+     <description>Frequency Counter Control Register.</description>
      <addressOffset>0x28</addressOffset>
      <access>read-write</access>
      <fields>
@@ -1537,16 +1497,16 @@
      </fields>
     </register>
     <register>
-     <name>OSCCALCMP</name>
-     <description>Oscillator Calibration Compared Target Register.</description>
+     <name>FRQCNTCMP</name>
+     <description>Frequency Counter Compared Target Register.</description>
      <addressOffset>0x2C</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
        <name>TARGET</name>
-       <description>Kick Start ERFO Counter.</description>
+       <description>Compared Clock Target.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>7</bitWidth>
+       <bitWidth>14</bitWidth>
       </field>
      </fields>
     </register>

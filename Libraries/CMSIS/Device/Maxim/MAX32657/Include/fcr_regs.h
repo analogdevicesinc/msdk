@@ -78,11 +78,9 @@ typedef struct {
     __IO uint32_t autocal2;             /**< <tt>\b 0x0C:</tt> FCR AUTOCAL2 Register */
     __R  uint32_t rsv_0x10_0x17[2];
     __IO uint32_t erfoks;               /**< <tt>\b 0x18:</tt> FCR ERFOKS Register */
-    __R  uint32_t rsv_0x1c;
-    __IO uint32_t intfl;                /**< <tt>\b 0x20:</tt> FCR INTFL Register */
-    __IO uint32_t inten;                /**< <tt>\b 0x24:</tt> FCR INTEN Register */
-    __IO uint32_t osccalctrl;           /**< <tt>\b 0x28:</tt> FCR OSCCALCTRL Register */
-    __IO uint32_t osccalcmp;            /**< <tt>\b 0x2C:</tt> FCR OSCCALCMP Register */
+    __R  uint32_t rsv_0x1c_0x27[3];
+    __IO uint32_t frqcntctrl;           /**< <tt>\b 0x28:</tt> FCR FRQCNTCTRL Register */
+    __IO uint32_t frqcntcmp;            /**< <tt>\b 0x2C:</tt> FCR FRQCNTCMP Register */
     __I  uint32_t refclk;               /**< <tt>\b 0x30:</tt> FCR REFCLK Register */
     __I  uint32_t cmpclk;               /**< <tt>\b 0x34:</tt> FCR CMPCLK Register */
 } mxc_fcr_regs_t;
@@ -99,10 +97,8 @@ typedef struct {
 #define MXC_R_FCR_AUTOCAL1                 ((uint32_t)0x00000008UL) /**< Offset from FCR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_FCR_AUTOCAL2                 ((uint32_t)0x0000000CUL) /**< Offset from FCR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000018UL) /**< Offset from FCR Base Address: <tt> 0x0018</tt> */
-#define MXC_R_FCR_INTFL                    ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
-#define MXC_R_FCR_INTEN                    ((uint32_t)0x00000024UL) /**< Offset from FCR Base Address: <tt> 0x0024</tt> */
-#define MXC_R_FCR_OSCCALCTRL               ((uint32_t)0x00000028UL) /**< Offset from FCR Base Address: <tt> 0x0028</tt> */
-#define MXC_R_FCR_OSCCALCMP                ((uint32_t)0x0000002CUL) /**< Offset from FCR Base Address: <tt> 0x002C</tt> */
+#define MXC_R_FCR_FRQCNTCTRL               ((uint32_t)0x00000028UL) /**< Offset from FCR Base Address: <tt> 0x0028</tt> */
+#define MXC_R_FCR_FRQCNTCMP                ((uint32_t)0x0000002CUL) /**< Offset from FCR Base Address: <tt> 0x002C</tt> */
 #define MXC_R_FCR_REFCLK                   ((uint32_t)0x00000030UL) /**< Offset from FCR Base Address: <tt> 0x0030</tt> */
 #define MXC_R_FCR_CMPCLK                   ((uint32_t)0x00000034UL) /**< Offset from FCR Base Address: <tt> 0x0034</tt> */
 /**@} end of group fcr_registers */
@@ -210,62 +206,34 @@ typedef struct {
 
 /**
  * @ingroup  fcr_registers
- * @defgroup FCR_INTFL FCR_INTFL
- * @brief    Miscellaneous Interrupt Flag Register.
+ * @defgroup FCR_FRQCNTCTRL FCR_FRQCNTCTRL
+ * @brief    Frequency Counter Control Register.
  * @{
  */
-#define MXC_F_FCR_INTFL_ERTCO_RDY_POS                  0 /**< INTFL_ERTCO_RDY Position */
-#define MXC_F_FCR_INTFL_ERTCO_RDY                      ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_ERTCO_RDY_POS)) /**< INTFL_ERTCO_RDY Mask */
+#define MXC_F_FCR_FRQCNTCTRL_START_POS                 0 /**< FRQCNTCTRL_START Position */
+#define MXC_F_FCR_FRQCNTCTRL_START                     ((uint32_t)(0x1UL << MXC_F_FCR_FRQCNTCTRL_START_POS)) /**< FRQCNTCTRL_START Mask */
 
-#define MXC_F_FCR_INTFL_OSCCAL_POS                     1 /**< INTFL_OSCCAL Position */
-#define MXC_F_FCR_INTFL_OSCCAL                         ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_OSCCAL_POS)) /**< INTFL_OSCCAL Mask */
+#define MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS            1 /**< FRQCNTCTRL_CMP_CLKSEL Position */
+#define MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL                ((uint32_t)(0x3UL << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS)) /**< FRQCNTCTRL_CMP_CLKSEL Mask */
+#define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC            ((uint32_t)0x0UL) /**< FRQCNTCTRL_CMP_CLKSEL_RTC Value */
+#define MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC            (MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS) /**< FRQCNTCTRL_CMP_CLKSEL_RTC Setting */
+#define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO       ((uint32_t)0x2UL) /**< FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO Value */
+#define MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO       (MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS) /**< FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO Setting */
+#define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_INRO           ((uint32_t)0x3UL) /**< FRQCNTCTRL_CMP_CLKSEL_INRO Value */
+#define MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_INRO           (MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_INRO << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS) /**< FRQCNTCTRL_CMP_CLKSEL_INRO Setting */
 
-/**@} end of group FCR_INTFL_Register */
+/**@} end of group FCR_FRQCNTCTRL_Register */
 
 /**
  * @ingroup  fcr_registers
- * @defgroup FCR_INTEN FCR_INTEN
- * @brief    Miscellaneous Interrupt Enable Register
+ * @defgroup FCR_FRQCNTCMP FCR_FRQCNTCMP
+ * @brief    Frequency Counter Compared Target Register.
  * @{
  */
-#define MXC_F_FCR_INTEN_ERTCO_RDY_POS                  0 /**< INTEN_ERTCO_RDY Position */
-#define MXC_F_FCR_INTEN_ERTCO_RDY                      ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_ERTCO_RDY_POS)) /**< INTEN_ERTCO_RDY Mask */
+#define MXC_F_FCR_FRQCNTCMP_TARGET_POS                 0 /**< FRQCNTCMP_TARGET Position */
+#define MXC_F_FCR_FRQCNTCMP_TARGET                     ((uint32_t)(0x3FFFUL << MXC_F_FCR_FRQCNTCMP_TARGET_POS)) /**< FRQCNTCMP_TARGET Mask */
 
-#define MXC_F_FCR_INTEN_OSCCAL_POS                     1 /**< INTEN_OSCCAL Position */
-#define MXC_F_FCR_INTEN_OSCCAL                         ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_OSCCAL_POS)) /**< INTEN_OSCCAL Mask */
-
-/**@} end of group FCR_INTEN_Register */
-
-/**
- * @ingroup  fcr_registers
- * @defgroup FCR_OSCCALCTRL FCR_OSCCALCTRL
- * @brief    Oscilltor Calibration Control Register.
- * @{
- */
-#define MXC_F_FCR_OSCCALCTRL_START_POS                 0 /**< OSCCALCTRL_START Position */
-#define MXC_F_FCR_OSCCALCTRL_START                     ((uint32_t)(0x1UL << MXC_F_FCR_OSCCALCTRL_START_POS)) /**< OSCCALCTRL_START Mask */
-
-#define MXC_F_FCR_OSCCALCTRL_CMP_CLKSEL_POS            1 /**< OSCCALCTRL_CMP_CLKSEL Position */
-#define MXC_F_FCR_OSCCALCTRL_CMP_CLKSEL                ((uint32_t)(0x3UL << MXC_F_FCR_OSCCALCTRL_CMP_CLKSEL_POS)) /**< OSCCALCTRL_CMP_CLKSEL Mask */
-#define MXC_V_FCR_OSCCALCTRL_CMP_CLKSEL_RTC            ((uint32_t)0x0UL) /**< OSCCALCTRL_CMP_CLKSEL_RTC Value */
-#define MXC_S_FCR_OSCCALCTRL_CMP_CLKSEL_RTC            (MXC_V_FCR_OSCCALCTRL_CMP_CLKSEL_RTC << MXC_F_FCR_OSCCALCTRL_CMP_CLKSEL_POS) /**< OSCCALCTRL_CMP_CLKSEL_RTC Setting */
-#define MXC_V_FCR_OSCCALCTRL_CMP_CLKSEL_EXT_GPIO       ((uint32_t)0x2UL) /**< OSCCALCTRL_CMP_CLKSEL_EXT_GPIO Value */
-#define MXC_S_FCR_OSCCALCTRL_CMP_CLKSEL_EXT_GPIO       (MXC_V_FCR_OSCCALCTRL_CMP_CLKSEL_EXT_GPIO << MXC_F_FCR_OSCCALCTRL_CMP_CLKSEL_POS) /**< OSCCALCTRL_CMP_CLKSEL_EXT_GPIO Setting */
-#define MXC_V_FCR_OSCCALCTRL_CMP_CLKSEL_INRO           ((uint32_t)0x3UL) /**< OSCCALCTRL_CMP_CLKSEL_INRO Value */
-#define MXC_S_FCR_OSCCALCTRL_CMP_CLKSEL_INRO           (MXC_V_FCR_OSCCALCTRL_CMP_CLKSEL_INRO << MXC_F_FCR_OSCCALCTRL_CMP_CLKSEL_POS) /**< OSCCALCTRL_CMP_CLKSEL_INRO Setting */
-
-/**@} end of group FCR_OSCCALCTRL_Register */
-
-/**
- * @ingroup  fcr_registers
- * @defgroup FCR_OSCCALCMP FCR_OSCCALCMP
- * @brief    Oscillator Calibration Compared Target Register.
- * @{
- */
-#define MXC_F_FCR_OSCCALCMP_TARGET_POS                 0 /**< OSCCALCMP_TARGET Position */
-#define MXC_F_FCR_OSCCALCMP_TARGET                     ((uint32_t)(0x7FUL << MXC_F_FCR_OSCCALCMP_TARGET_POS)) /**< OSCCALCMP_TARGET Mask */
-
-/**@} end of group FCR_OSCCALCMP_Register */
+/**@} end of group FCR_FRQCNTCMP_Register */
 
 /**
  * @ingroup  fcr_registers
