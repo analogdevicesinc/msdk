@@ -1222,8 +1222,8 @@
    </addressBlock>
    <registers>
     <register>
-     <name>FCTRL0</name>
-     <description>Register 0.</description>
+     <name>CTRL</name>
+     <description>Function Control 0 Register.</description>
      <addressOffset>0x00</addressOffset>
      <access>read-write</access>
      <fields>
@@ -1278,13 +1278,13 @@
      </fields>
     </register>
     <register>
-     <name>FCTRL1</name>
-     <description>Register 1.</description>
+     <name>AUTOCAL0</name>
+     <description>Automatic Calibration 0 Register.</description>
      <addressOffset>0x04</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>AC_EN</name>
+       <name>EN</name>
        <description>Auto-calibration Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -1302,7 +1302,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AC_RUN</name>
+       <name>RUN</name>
        <description>Autocalibration Run.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -1368,7 +1368,7 @@
        <bitWidth>12</bitWidth>
       </field>
       <field>
-       <name>AC_TRIM_OUT</name>
+       <name>TRIM_OUT</name>
        <description>IPO Auto Calibration Trim</description>
        <bitOffset>23</bitOffset>
        <bitWidth>9</bitWidth>
@@ -1376,13 +1376,13 @@
      </fields>
     </register>
     <register>
-     <name>FCTRL2</name>
-     <description>Register 2.</description>
+     <name>AUTOCAL1</name>
+     <description>Automatic Calibration 1 Register.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>AC_INIT_TRIM</name>
+       <name>INIT_TRIM</name>
        <description>IPO Trim Automatic Calibration Initial Trim.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>9</bitWidth>
@@ -1390,19 +1390,19 @@
      </fields>
     </register>
     <register>
-     <name>FCTRL3</name>
-     <description>Register 3.</description>
+     <name>AUTOCAL2</name>
+     <description>Automatic Calibration 2 Register.</description>
      <addressOffset>0x0C</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>AC_RUNTIME</name>
+       <name>RUNTIME</name>
        <description>IPO Trim Autocal Run Time</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>AC_DIV</name>
+       <name>DIV</name>
        <description>IPO Trim Automatic Calibration Divide Factor.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>13</bitWidth>
@@ -1456,6 +1456,125 @@
          <value>3</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTFL</name>
+     <description>Miscellaneous Interrupt Flag Register.</description>
+     <addressOffset>0x20</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>ERTCO_RDY</name>
+       <description>ERTCO 32K Ready Interrupt Flag.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OSCCAL</name>
+       <description>Oscillator Calibration Interrupt Flag.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTEN</name>
+     <description>Miscellaneous Interrupt Enable Register</description>
+     <addressOffset>0x24</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>ERTCO_RDY</name>
+       <description>ERTCO 32K Ready Interrupt Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OSCCAL</name>
+       <description>Oscillator Calibration Interrupt Enable.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>OSCCALCTRL</name>
+     <description>Oscilltor Calibration Control Register.</description>
+     <addressOffset>0x28</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>START</name>
+       <description>Start Compare.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CMP_CLKSEL</name>
+       <description>Compared Clock Select.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>RTC</name>
+         <description>RTC.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>EXT_GPIO</name>
+         <description>External GPIO.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>INRO</name>
+         <description>INRO.</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>OSCCALCMP</name>
+     <description>Oscillator Calibration Compared Target Register.</description>
+     <addressOffset>0x2C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>TARGET</name>
+       <description>Kick Start ERFO Counter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>REFCLK</name>
+     <description>Reference Clock Result Register.</description>
+     <addressOffset>0x30</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RESULT</name>
+       <description>Reference Clock Result.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>20</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CMPCLK</name>
+     <description>Compared Clock Result Register.</description>
+     <addressOffset>0x34</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RESULT</name>
+       <description>Compared Clock Result.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>14</bitWidth>
       </field>
      </fields>
     </register>
@@ -2769,6 +2888,11 @@
        <bitWidth>9</bitWidth>
       </field>
      </fields>
+    </register>
+    <register>
+     <name>GPR</name>
+     <description>General Purpose Register 0.</description>
+     <addressOffset>0x80</addressOffset>
     </register>
    </registers>
   </peripheral>
@@ -7409,555 +7533,6 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-
-  <peripheral>
-   <name>SEMA</name>
-   <description>The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
-                                     The peripheral contains eight semaphores that can be atomically set and cleared. It is left to the discretion of the software
-                                     architect to decide how and when the semaphores are used and how they are allocated. Existing hardware does not have to be
-                                     
-                                     modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.</description>
-   <baseAddress>0x5003E000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x1000</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <dim>8</dim>
-     <dimIncrement>4</dimIncrement>
-     <name>SEMAPHORES[%s]</name>
-     <description>Read to test and set, returns prior value. Write 0 to clear semaphore.</description>
-     <addressOffset>0x00</addressOffset>
-     <size>32</size>
-     <fields>
-      <field>
-       <name>sema</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>irq0</name>
-     <description>Semaphore IRQ0 register.</description>
-     <addressOffset>0x40</addressOffset>
-     <size>32</size>
-     <fields>
-      <field>
-       <name>en</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>cm4_irq</name>
-       <bitOffset>16</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>mail0</name>
-     <description>Semaphore Mailbox 0 register.</description>
-     <addressOffset>0x44</addressOffset>
-     <size>32</size>
-     <fields>
-      <field>
-       <name>data</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>irq1</name>
-     <description>Semaphore IRQ1 register.</description>
-     <addressOffset>0x48</addressOffset>
-     <size>32</size>
-     <fields>
-      <field>
-       <name>en</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>rv32_irq</name>
-       <bitOffset>16</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>mail1</name>
-     <description>Semaphore Mailbox 1 register.</description>
-     <addressOffset>0x4C</addressOffset>
-     <size>32</size>
-     <fields>
-      <field>
-       <name>data</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>status</name>
-     <description>Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.</description>
-     <addressOffset>0x100</addressOffset>
-     <size>32</size>
-     <fields>
-      <field>
-       <name>status0</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status1</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status2</name>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status3</name>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status4</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status5</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status6</name>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>status7</name>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-
-  <peripheral>
-   <name>SIMO</name>
-   <description>Single Inductor Multiple Output Switching Converter</description>
-   <baseAddress>0x50004400</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x400</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>VREGO_A</name>
-     <description>Buck Voltage Regulator A Control Register</description>
-     <addressOffset>0x0004</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>VSETA</name>
-       <description>Regulator Output Voltage Setting</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>7</bitWidth>
-      </field>
-      <field>
-       <name>RANGEA</name>
-       <description>Regulator Output Range Set</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>low</name>
-         <description>Low output voltage range</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>high</name>
-         <description>High output voltage range</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>VREGO_B</name>
-     <description>Buck Voltage Regulator B Control Register</description>
-     <addressOffset>0x0008</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>VSETB</name>
-       <description>Regulator Output Voltage Setting</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>7</bitWidth>
-      </field>
-      <field>
-       <name>RANGEB</name>
-       <description>Regulator Output Range Set</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>low</name>
-         <description>Low output voltage range</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>high</name>
-         <description>High output voltage range</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>VREGO_C</name>
-     <description>Buck Voltage Regulator C Control Register</description>
-     <addressOffset>0x000C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>VSETC</name>
-       <description>Regulator Output Voltage Setting</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>7</bitWidth>
-      </field>
-      <field>
-       <name>RANGEC</name>
-       <description>Regulator Output Range Set</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>low</name>
-         <description>Low output voltage range</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>high</name>
-         <description>High output voltage range</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>VREGO_D</name>
-     <description>Buck Voltage Regulator D Control Register</description>
-     <addressOffset>0x0010</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>VSETD</name>
-       <description>Regulator Output Voltage Setting</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>7</bitWidth>
-      </field>
-      <field>
-       <name>RANGED</name>
-       <description>Regulator Output Range Set</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>low</name>
-         <description>Low output voltage range</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>high</name>
-         <description>High output voltage range</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>IPKA</name>
-     <description>High Side FET Peak Current VREGO_A/VREGO_B Register</description>
-     <addressOffset>0x0014</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>IPKSETA</name>
-       <description>Voltage Regulator Peak Current Setting</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-      <field>
-       <name>IPKSETB</name>
-       <description>Voltage Regulator Peak Current Setting</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>IPKB</name>
-     <description>High Side FET Peak Current VREGO_C/VREGO_D Register</description>
-     <addressOffset>0x0018</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>IPKSETC</name>
-       <description>Voltage Regulator Peak Current Setting</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-      <field>
-       <name>IPKSETD</name>
-       <description>Voltage Regulator Peak Current Setting</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>MAXTON</name>
-     <description>Maximum High Side FET Time On Register</description>
-     <addressOffset>0x001C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>TONSET</name>
-       <description>Sets the maximum on time for the high side FET, each increment represents 500ns</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ILOAD_A</name>
-     <description>Buck Cycle Count VREGO_A Register</description>
-     <addressOffset>0x0020</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ILOADA</name>
-       <description>Number of buck cycles that occur within the cycle clock</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ILOAD_B</name>
-     <description>Buck Cycle Count VREGO_B Register</description>
-     <addressOffset>0x0024</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ILOADB</name>
-       <description>Number of buck cycles that occur within the cycle clock</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ILOAD_C</name>
-     <description>Buck Cycle Count VREGO_C Register</description>
-     <addressOffset>0x0028</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ILOADC</name>
-       <description>Number of buck cycles that occur within the cycle clock</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ILOAD_D</name>
-     <description>Buck Cycle Count VREGO_D Register</description>
-     <addressOffset>0x002C</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ILOADD</name>
-       <description>Number of buck cycles that occur within the cycle clock</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>BUCK_ALERT_THR_A</name>
-     <description>Buck Cycle Count Alert VERGO_A Register</description>
-     <addressOffset>0x0030</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>BUCKTHRA</name>
-       <description>Threshold for ILOADA to generate the BUCK_ALERT</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>BUCK_ALERT_THR_B</name>
-     <description>Buck Cycle Count Alert VERGO_B Register</description>
-     <addressOffset>0x0034</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>BUCKTHRB</name>
-       <description>Threshold for ILOADB to generate the BUCK_ALERT</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>BUCK_ALERT_THR_C</name>
-     <description>Buck Cycle Count Alert VERGO_C Register</description>
-     <addressOffset>0x0038</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>BUCKTHRC</name>
-       <description>Threshold for ILOADC to generate the BUCK_ALERT</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>BUCK_ALERT_THR_D</name>
-     <description>Buck Cycle Count Alert VERGO_D Register</description>
-     <addressOffset>0x003C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>BUCKTHRD</name>
-       <description>Threshold for ILOADD to generate the BUCK_ALERT</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>BUCK_OUT_READY</name>
-     <description>Buck Regulator Output Ready Register</description>
-     <addressOffset>0x0040</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>BUCKOUTRDYA</name>
-       <description>When set, indicates that the output voltage has reached its regulated value</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>notrdy</name>
-         <description>Output voltage not in range</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>rdy</name>
-         <description>Output voltage in range</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field derivedFrom="BUCKOUTRDYA">
-       <name>BUCKOUTRDYB</name>
-       <description>When set, indicates that the output voltage has reached its regulated value</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="BUCKOUTRDYA">
-       <name>BUCKOUTRDYC</name>
-       <description>When set, indicates that the output voltage has reached its regulated value</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="BUCKOUTRDYA">
-       <name>BUCKOUTRDYD</name>
-       <description>When set, indicates that the output voltage has reached its regulated value</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ZERO_CROSS_CAL_A</name>
-     <description>Zero Cross Calibration VERGO_A Register</description>
-     <addressOffset>0x0044</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ZXCALA</name>
-       <description>Zero Cross Calibrartion Value VREGO_A</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ZERO_CROSS_CAL_B</name>
-     <description>Zero Cross Calibration VERGO_B Register</description>
-     <addressOffset>0x0048</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ZXCALB</name>
-       <description>Zero Cross Calibrartion Value VREGO_B</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ZERO_CROSS_CAL_C</name>
-     <description>Zero Cross Calibration VERGO_C Register</description>
-     <addressOffset>0x004C</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ZXCALC</name>
-       <description>Zero Cross Calibrartion Value VREGO_C</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ZERO_CROSS_CAL_D</name>
-     <description>Zero Cross Calibration VERGO_D Register</description>
-     <addressOffset>0x0050</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>ZXCALD</name>
-       <description>Zero Cross Calibrartion Value VREGO_D</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>4</bitWidth>
       </field>
      </fields>
     </register>

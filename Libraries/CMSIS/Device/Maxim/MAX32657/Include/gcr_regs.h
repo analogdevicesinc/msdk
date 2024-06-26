@@ -96,6 +96,8 @@ typedef struct {
     __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
     __IO uint32_t btleldoctrl;          /**< <tt>\b 0x74:</tt> GCR BTLELDOCTRL Register */
     __IO uint32_t btleldodly;           /**< <tt>\b 0x78:</tt> GCR BTLELDODLY Register */
+    __R  uint32_t rsv_0x7c;
+    __IO uint32_t gpr;                  /**< <tt>\b 0x80:</tt> GCR GPR Register */
 } mxc_gcr_regs_t;
 
 /* Register offsets for module GCR */
@@ -125,6 +127,7 @@ typedef struct {
 #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
 #define MXC_R_GCR_BTLELDOCTRL              ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */
 #define MXC_R_GCR_BTLELDODLY               ((uint32_t)0x00000078UL) /**< Offset from GCR Base Address: <tt> 0x0078</tt> */
+#define MXC_R_GCR_GPR                      ((uint32_t)0x00000080UL) /**< Offset from GCR Base Address: <tt> 0x0080</tt> */
 /**@} end of group gcr_registers */
 
 /**

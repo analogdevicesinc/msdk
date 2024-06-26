@@ -990,6 +990,11 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>GPR</name>
+        <description>General Purpose Register 0.</description>
+        <addressOffset>0x80</addressOffset>
+      </register>
     </registers>
   </peripheral>
 </device>

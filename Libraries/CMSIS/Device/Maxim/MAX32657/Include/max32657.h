@@ -189,9 +189,20 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_PHY_SRAM4_MEM_BASE 0x20030000UL
 #define MXC_PHY_SRAM4_MEM_SIZE 0x00010000UL // 64KB
 
+
+#if IS_SECURE_ENVIRONMENT
+
+/* Symbols defined in secure linker file. */
+extern uint32_t __FLASH_S_BASE;
+extern uint32_t __FLASH_S_SIZE;
+extern uint32_t __FLASH_NS_BASE;
+extern uint32_t __FLASH_NS_SIZE;
+extern uint32_t __FLASH_NSC_BASE;
+extern uint32_t __FLASH_NSC_SIZE;
+
 /* Non-secure Regions */
 #define MXC_FLASH_NS_MEM_BASE 0x01000000UL
-#define MXC_FLASH_NS_PAGE_SIZE 0x00002000UL
+#define MXC_FLASH_NS_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
 #define MXC_FLASH_NS_MEM_SIZE 0x00100000UL
 #define MXC_SRAM_NS_MEM_BASE 0x20000000UL
 #define MXC_SRAM_NS_MEM_SIZE 0x00040000UL
@@ -201,7 +212,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_ROM_MEM_BASE 0x00000000UL
 #define MXC_ROM_MEM_SIZE 0x00010000UL
 #define MXC_FLASH_S_MEM_BASE 0x11000000UL
-#define MXC_FLASH_S_PAGE_SIZE 0x00002000UL
+#define MXC_FLASH_S_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
 #define MXC_FLASH_S_MEM_SIZE 0x00100000UL
 /* Flash info is always in secure region */
 #define MXC_INFO_S_MEM_BASE 0x12000000UL
@@ -209,16 +220,26 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_SRAM_S_MEM_BASE 0x30000000UL
 #define MXC_SRAM_S_MEM_SIZE 0x00040000UL
 
+/* Non-Secure Callable Regions */
+/*  Could be in Flash or SRAM. */
+#if (__FLASH_NSC_BASE != 0)
+#define MXC_NSC_MEM_BASE __FLASH_NSC_BASE
+#define MXC_NSC_MEM_SIZE __FLASH_NSC_SIZE
+#else
+#define MXC_NSC_MEM_BASE __SRAM_NSC_BASE
+#define MXC_NSC_MEM_SIZE __SRAM_NSC_SIZE
+#endif
+
 #define MXC_INFO_MEM_BASE MXC_INFO_S_MEM_BASE
 #define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
 
-#if IS_SECURE_ENVIRONMENT
 #define MXC_FLASH_MEM_BASE MXC_FLASH_S_MEM_BASE
 #define MXC_FLASH_PAGE_SIZE MXC_FLASH_S_PAGE_SIZE
 #define MXC_FLASH_MEM_SIZE MXC_FLASH_S_MEM_SIZE
 #define MXC_SRAM_MEM_BASE MXC_SRAM_S_MEM_BASE
 #define MXC_SRAM_MEM_SIZE MXC_SRAM_S_MEM_SIZE
 #else
+/* Non-Secure world should not have knowledge of Secure world. */
 #define MXC_FLASH_MEM_BASE MXC_FLASH_NS_MEM_BASE
 #define MXC_FLASH_PAGE_SIZE MXC_FLASH_NS_PAGE_SIZE
 #define MXC_FLASH_MEM_SIZE MXC_FLASH_NS_MEM_SIZE
@@ -661,61 +682,59 @@ We may want to handle GET_IRQ better...
 #endif
 
 /* Non-secure Mapping */
+/* DMA0 Security Attribution hardwired to Non-Secure and not configurable via SPC. */
 #define MXC_BASE_DMA0_NS ((uint32_t)0x40028000UL)
 #define MXC_DMA0_NS ((mxc_dma_regs_t *)MXC_BASE_DMA0_NS)
 
 /* Secure Mapping */
-// TODO(ME30): Is there actuall a secure mapping for DMA0?
-//             -Yes, DMA0 can be accessed from secure mode. Realizing this, I think
-//                  we would still have to define two DMA instances.
-//                  DMA0 can only access the non-secure mappings of the peripherals,
-//                  but DMA0 can be accessed in both Non-secure and Secure code.
-//                  DMA1 can access both secure and non-secure addresses of the peripherals,
-//                  but DMA1 can Only be accessed in Secure code.
-#define MXC_BASE_DMA0_S ((uint32_t)0x50028000UL)
-#define MXC_DMA0_S ((mxc_dma_regs_t *)MXC_BASE_DMA0_S)
+/* DMA1 Security Attribution hardwired to Secure and not configurable via SPC. */
 #define MXC_BASE_DMA1_S ((uint32_t)0x50035000UL)
 #define MXC_DMA1_S ((mxc_dma_regs_t *)MXC_BASE_DMA1_S)
 
 #if IS_SECURE_ENVIRONMENT
-#define MXC_BASE_DMA0 MXC_BASE_DMA0_S
-#define MXC_DMA0 MXC_DMA0_S
 #define MXC_BASE_DMA1 MXC_BASE_DMA1_S
 #define MXC_DMA1 MXC_DMA1_S
+/**
+ * MXC_DMA0 is not defined because DMA0 has no Secure mapping.
+ * Following ARM naming convention: if Secure world wants to access Non-Secure DMA (DMAO),
+ *  then use MXC_DMA0_NS. Similar to how the Secure world accesses the Non-Secure MSP
+ *  and VTOR registers using 'MSP_NS' and 'VTOR_NS', respectively.
+ */
+#ifdef MXC_DMA0
+#warning "Non-Secure DMA (DMA0) has no secure mapping. Please use MXC_DMA0_NS from Secure world."
+#endif
 
 #define MXC_DMA_CH_GET_IRQ(p, i)                                 \
-    ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
-                 ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
-                 ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
-                 ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
-                 ((p) == MXC_DMA1 && (i) == 0) ? DMA1_CH0_IRQn : \
-                 ((p) == MXC_DMA1 && (i) == 1) ? DMA1_CH1_IRQn : \
-                 ((p) == MXC_DMA1 && (i) == 2) ? DMA1_CH2_IRQn : \
-                 ((p) == MXC_DMA1 && (i) == 3) ? DMA1_CH3_IRQn : \
+    ((IRQn_Type)(((p) == MXC_DMA0_NS && (i) == 0) ? DMA0_CH0_IRQn : \
+                 ((p) == MXC_DMA0_NS && (i) == 1) ? DMA0_CH1_IRQn : \
+                 ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
+                 ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 0) ? DMA1_CH0_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 1) ? DMA1_CH1_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 2) ? DMA1_CH2_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 3) ? DMA1_CH3_IRQn : \
                                                  0))
 
 #else
 #define MXC_BASE_DMA0 MXC_BASE_DMA0_NS
 #define MXC_DMA0 MXC_DMA0_NS
-// TODO(DMA1): Not entirely show how to handle access to MXC_DMA1 in non-secure mode.
-//                  A secure fault should be generated when non-secure code accesses
-//                  a secure peripheral mapping, so it'd be best if a build time warning
-//                  or error was thrown when using MXCX_DMA1.
-#define MXC_BASE_DMA1 0
-#define MXC_DMA1 0
+/* MXC_DMA1 is not defined because Non-Secure Code can only access DMA0. */
+#if MXC_DMA1
+#warning "Secure DMA (DMA1) is not accessible from Non-Secure world."
+#endif
 
 /* DMA1 IRQs not usable in Non-Secure state. */
 #define MXC_DMA_CH_GET_IRQ(p, i)                                 \
-    ((IRQn_Type)(((p) == MXC_DMA0 && (i) == 0) ? DMA0_CH0_IRQn : \
-                 ((p) == MXC_DMA0 && (i) == 1) ? DMA0_CH1_IRQn : \
-                 ((p) == MXC_DMA0 && (i) == 2) ? DMA0_CH2_IRQn : \
-                 ((p) == MXC_DMA0 && (i) == 3) ? DMA0_CH3_IRQn : \
+    ((IRQn_Type)(((p) == MXC_DMA0_NS && (i) == 0) ? DMA0_CH0_IRQn : \
+                 ((p) == MXC_DMA0_NS && (i) == 1) ? DMA0_CH1_IRQn : \
+                 ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
+                 ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
                                                  0))
 #endif // IS_SECURE_ENVIRONMENT
 
-#define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0 ? 0 : (p) == MXC_BASE_DMA1 ? 1 : -1)
+#define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0_NS ? 0 : (p) == MXC_BASE_DMA1_S ? 1 : -1)
 
-#define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0 ? 0 : (p) == MXC_DMA1 ? 1 : -1)
+#define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0_NS ? 0 : (p) == MXC_DMA1_S ? 1 : -1)
 
 /******************************************************************************/
 /*                                                           Flash Controller */
@@ -820,12 +839,23 @@ We may want to handle GET_IRQ better...
 #endif
 
 /******************************************************************************/
-/*                                          Secure Privilege Control (SPC TZ) */
+/*                   Non-Secure and Secure Privilege Controller (NSPC/SPC TZ) */
+
+#if IS_SECURE_ENVIRONMENT
 
 /* Secure Mapping Only */
 #define MXC_BASE_SPC ((uint32_t)0x50090000UL)
 #define MXC_SPC ((mxc_spc_regs_t *)MXC_BASE_SPC)
 #define MXC_SPC_S MXC_SPC
+
+#else
+
+/* Non-Secure Mapping Only */
+#define MXC_BASE_NSPC ((uint32_t)0x40090000UL)
+#define MXC_NSPC ((mxc_nspc_regs_t *)MXC_BASE_NSPC)
+#define MXC_NSPC_NS MXC_NSPC
+
+#endif
 
 /******************************************************************************/
 /*                                                                        MPC */
@@ -857,6 +887,44 @@ We may want to handle GET_IRQ better...
 #define MXC_MPC_SRAM4_S MXC_MPC_SRAM4
 #define MXC_BASE_MPC_FLASH_S MXC_BASE_MPC_FLASH
 #define MXC_MPC_FLASH_S MXC_MPC_FLASH
+
+/* Grab the index associated with each memory region. */
+#define MXC_MPC_GET_PHY_MEM_BASE(p)                  \
+    ((p) == MXC_MPC_FLASH ? MXC_PHY_FLASH_MEM_BASE : \
+     (p) == MXC_MPC_SRAM0 ? MXC_PHY_SRAM0_MEM_BASE : \
+     (p) == MXC_MPC_SRAM1 ? MXC_PHY_SRAM1_MEM_BASE : \
+     (p) == MXC_MPC_SRAM2 ? MXC_PHY_SRAM2_MEM_BASE : \
+     (p) == MXC_MPC_SRAM3 ? MXC_PHY_SRAM3_MEM_BASE : \
+     (p) == MXC_MPC_SRAM4 ? MXC_PHY_SRAM4_MEM_BASE : \
+                0)
+
+#define MXC_MPC_GET_PHY_MEM_SIZE(p)                  \
+    ((p) == MXC_MPC_FLASH ? MXC_PHY_FLASH_MEM_SIZE : \
+     (p) == MXC_MPC_SRAM0 ? MXC_PHY_SRAM0_MEM_SIZE : \
+     (p) == MXC_MPC_SRAM1 ? MXC_PHY_SRAM1_MEM_SIZE : \
+     (p) == MXC_MPC_SRAM2 ? MXC_PHY_SRAM2_MEM_SIZE : \
+     (p) == MXC_MPC_SRAM3 ? MXC_PHY_SRAM3_MEM_SIZE : \
+     (p) == MXC_MPC_SRAM4 ? MXC_PHY_SRAM4_MEM_SIZE : \
+                0)
+
+#define MXC_MPC_GET_IDX(p)      \
+    ((p) == MXC_MPC_FLASH ? 0 : \
+     (p) == MXC_MPC_SRAM0 ? 0 : \
+     (p) == MXC_MPC_SRAM1 ? 1 : \
+     (p) == MXC_MPC_SRAM2 ? 2 : \
+     (p) == MXC_MPC_SRAM3 ? 3 : \
+     (p) == MXC_MPC_SRAM4 ? 4 : \
+                -1)
+
+#define MXC_MPC_FLASH_GET_BASE(i) ((i) == 0 ? MXC_MPC_FLASH : 0)
+
+#define MXC_MPC_SRAM_GET_BASE(i) \
+    ((i) == 0 ? MXC_MPC_SRAM0 : \
+     (i) == 1 ? MXC_MPC_SRAM1 : \
+     (i) == 2 ? MXC_MPC_SRAM2 : \
+     (i) == 3 ? MXC_MPC_SRAM3 : \
+     (i) == 4 ? MXC_MPC_SRAM4 : \
+                0)
 
 /******************************************************************************/
 /*                                                               Bit Shifting */
