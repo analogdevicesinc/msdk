@@ -148,7 +148,7 @@ typedef enum {
 #define __SAUREGION_PRESENT 1U /**< Presence of FPU  */
 #define __TZ_PRESENT 1U /**< Presence of TrustZone */
 #define __VTOR_PRESENT 1U /**< Presence of VTOR register in SCB  */
-#define __NVIC_PRIO_BITS 4U /**< NVIC interrupt priority bits */
+#define __NVIC_PRIO_BITS 3U /**< NVIC interrupt priority bits */
 #define __Vendor_SysTickConfig 0U /**< Is 1 if different SysTick counter is used */
 
 #include <core_cm33.h>
