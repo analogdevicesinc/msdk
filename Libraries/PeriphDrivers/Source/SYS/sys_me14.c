@@ -82,7 +82,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     // Compute the checksum
     if (checksum != NULL) {
-        uint8_t usn_copy[MXC_SYS_USN_CHECKSUM_LEN] = {0}; 
+        uint8_t usn_copy[MXC_SYS_USN_CHECKSUM_LEN] = { 0 };
         uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
         uint8_t key[MXC_SYS_USN_CHECKSUM_LEN];
 
