@@ -212,6 +212,24 @@
         <access>read-only</access>
       </register>
       <register>
+        <name>PIDR5</name>
+        <description>Peripheral ID 5 Register.</description>
+        <addressOffset>0x0FD4</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR6</name>
+        <description>Peripheral ID 6 Register.</description>
+        <addressOffset>0x0FD8</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR7</name>
+        <description>Peripheral ID 6 Register.</description>
+        <addressOffset>0x0FDC</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
         <name>PIDR0</name>
         <description>Peripheral ID 0 Register.</description>
         <addressOffset>0x0FE0</addressOffset>
@@ -236,11 +254,27 @@
         <access>read-only</access>
       </register>
       <register>
-        <dim>4</dim>
-        <dimIncrement>4</dimIncrement>
-        <name>CIDR[%s]</name>
+        <name>CIDR0</name>
         <description>Component ID register.</description>
         <addressOffset>0x0FF0</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR1</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FF4</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR2</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FF8</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR3</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FFC</addressOffset>
         <access>read-only</access>
       </register>
     </registers>

@@ -86,12 +86,17 @@ typedef struct {
     __O  uint32_t int_set;              /**< <tt>\b 0x0034:</tt> MPC INT_SET Register */
     __R  uint32_t rsv_0x38_0xfcf[998];
     __I  uint32_t pidr4;                /**< <tt>\b 0x0FD0:</tt> MPC PIDR4 Register */
-    __R  uint32_t rsv_0xfd4_0xfdf[3];
+    __I  uint32_t pidr5;                /**< <tt>\b 0x0FD4:</tt> MPC PIDR5 Register */
+    __I  uint32_t pidr6;                /**< <tt>\b 0x0FD8:</tt> MPC PIDR6 Register */
+    __I  uint32_t pidr7;                /**< <tt>\b 0x0FDC:</tt> MPC PIDR7 Register */
     __I  uint32_t pidr0;                /**< <tt>\b 0x0FE0:</tt> MPC PIDR0 Register */
     __I  uint32_t pidr1;                /**< <tt>\b 0x0FE4:</tt> MPC PIDR1 Register */
     __I  uint32_t pidr2;                /**< <tt>\b 0x0FE8:</tt> MPC PIDR2 Register */
     __I  uint32_t pidr3;                /**< <tt>\b 0x0FEC:</tt> MPC PIDR3 Register */
-    __I  uint32_t cidr[4];              /**< <tt>\b 0x0FF0:</tt> MPC CIDR Register */
+    __I  uint32_t cidr0;                /**< <tt>\b 0x0FF0:</tt> MPC CIDR0 Register */
+    __I  uint32_t cidr1;                /**< <tt>\b 0x0FF4:</tt> MPC CIDR1 Register */
+    __I  uint32_t cidr2;                /**< <tt>\b 0x0FF8:</tt> MPC CIDR2 Register */
+    __I  uint32_t cidr3;                /**< <tt>\b 0x0FFC:</tt> MPC CIDR3 Register */
 } mxc_mpc_regs_t;
 
 /* Register offsets for module MPC */
@@ -113,11 +118,17 @@ typedef struct {
 #define MXC_R_MPC_INT_INFO2                ((uint32_t)0x00000030UL) /**< Offset from MPC Base Address: <tt> 0x0030</tt> */
 #define MXC_R_MPC_INT_SET                  ((uint32_t)0x00000034UL) /**< Offset from MPC Base Address: <tt> 0x0034</tt> */
 #define MXC_R_MPC_PIDR4                    ((uint32_t)0x00000FD0UL) /**< Offset from MPC Base Address: <tt> 0x0FD0</tt> */
+#define MXC_R_MPC_PIDR5                    ((uint32_t)0x00000FD4UL) /**< Offset from MPC Base Address: <tt> 0x0FD4</tt> */
+#define MXC_R_MPC_PIDR6                    ((uint32_t)0x00000FD8UL) /**< Offset from MPC Base Address: <tt> 0x0FD8</tt> */
+#define MXC_R_MPC_PIDR7                    ((uint32_t)0x00000FDCUL) /**< Offset from MPC Base Address: <tt> 0x0FDC</tt> */
 #define MXC_R_MPC_PIDR0                    ((uint32_t)0x00000FE0UL) /**< Offset from MPC Base Address: <tt> 0x0FE0</tt> */
 #define MXC_R_MPC_PIDR1                    ((uint32_t)0x00000FE4UL) /**< Offset from MPC Base Address: <tt> 0x0FE4</tt> */
 #define MXC_R_MPC_PIDR2                    ((uint32_t)0x00000FE8UL) /**< Offset from MPC Base Address: <tt> 0x0FE8</tt> */
 #define MXC_R_MPC_PIDR3                    ((uint32_t)0x00000FECUL) /**< Offset from MPC Base Address: <tt> 0x0FEC</tt> */
-#define MXC_R_MPC_CIDR                     ((uint32_t)0x00000FF0UL) /**< Offset from MPC Base Address: <tt> 0x0FF0</tt> */
+#define MXC_R_MPC_CIDR0                    ((uint32_t)0x00000FF0UL) /**< Offset from MPC Base Address: <tt> 0x0FF0</tt> */
+#define MXC_R_MPC_CIDR1                    ((uint32_t)0x00000FF4UL) /**< Offset from MPC Base Address: <tt> 0x0FF4</tt> */
+#define MXC_R_MPC_CIDR2                    ((uint32_t)0x00000FF8UL) /**< Offset from MPC Base Address: <tt> 0x0FF8</tt> */
+#define MXC_R_MPC_CIDR3                    ((uint32_t)0x00000FFCUL) /**< Offset from MPC Base Address: <tt> 0x0FFC</tt> */
 /**@} end of group mpc_registers */
 
 /**
