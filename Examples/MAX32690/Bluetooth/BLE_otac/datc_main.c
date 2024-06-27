@@ -56,6 +56,7 @@
 #include "pal_btn.h"
 #include "tmr.h"
 
+
 /**************************************************************************************************
 Macros
 **************************************************************************************************/
@@ -498,7 +499,7 @@ static void datcScanReport(dmEvt_t *pMsg)
         if (pData[DM_AD_LEN_IDX] == sizeof(advName) &&
             !strncmp(advName, (char *)&(pData[DM_AD_DATA_IDX]), sizeof(advName))) {
             connect = TRUE;
-        }
+		}
     }
 
     if (connect) {

@@ -54,6 +54,8 @@
 #include "tmr.h"
 #include "svc_sds.h"
 
+
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -117,13 +119,16 @@ static const appSlaveCfg_t datsSlaveCfg = {
 *       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
 */
 
+
 static const appSecCfg_t datsSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
+	DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
     INIT_SECURITY /*! TRUE to initiate security upon connection */
 };
+
+
 
 /* OOB UART parameters */
 #define OOB_BAUD 115200

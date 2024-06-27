@@ -13,3 +13,7 @@
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
+
+
+METHOD ?= MASTERSYNC
+PROJ_CFLAGS += -D$(METHOD)
