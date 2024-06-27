@@ -104,23 +104,6 @@ endif
 
 #*********************************************************************
 
-# for CHIP_REVISION b ***************************************************
-else ifeq ($(CHIP_REVISION),b)
-
-ifeq ($(RISCV_CORE),)
-
-ifeq ($(MFLOAT_ABI),hard)
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
-else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
-endif
-
-else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
-endif
-#**************************************************************************
-endif
-
 
 ifeq ($(CODED_PHY_DEMO),1)
 PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=1
