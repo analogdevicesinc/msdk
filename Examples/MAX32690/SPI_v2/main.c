@@ -37,18 +37,11 @@
 #include "led.h"
 
 /***** Preprocessors *****/
-#define CONTROLLER_SYNC 1
-#define CONTROLLER_ASYNC 0
-#define CONTROLLER_DMA 0
-
-// Preprocessor Error Checking
-#if (!(CONTROLLER_SYNC || CONTROLLER_ASYNC || CONTROLLER_DMA))
-#error "You must set either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA to 1."
-#endif
-#if ((CONTROLLER_SYNC && CONTROLLER_ASYNC) || (CONTROLLER_ASYNC && CONTROLLER_DMA) || \
-     (CONTROLLER_DMA && CONTROLLER_SYNC))
-#error "You must select either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA, not all 3."
-#endif
+//#define CONTROLLER_SYNC
+//#define CONTROLLER_ASYNC
+//#define CONTROLLER_DMA
+// define three METHOD above in project.mk
+// CONTROLLER_SYNC is default
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
