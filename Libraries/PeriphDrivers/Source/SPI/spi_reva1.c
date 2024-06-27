@@ -1007,7 +1007,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     //tx
-    if (req->txData != NULL && !tx_is_complete) {
+    if (req->txData != NULL && req->txLen && !tx_is_complete) {
         MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
 
 #if (TARGET_NUM == 32657)
@@ -1053,7 +1053,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     // rx
-    if (req->rxData != NULL && !rx_is_complete) {
+    if (req->rxData != NULL && req->rxLen && !rx_is_complete) {
         MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
 
 #if (TARGET_NUM == 32657)
@@ -1107,11 +1107,11 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     // Manually run TX/RX callbacks if the FIFO pre-load already completed that portion of the transaction
-    if (tx_is_complete) {
+    if (req->txData != NULL && req->txLen && tx_is_complete) {
         MXC_SPI_RevA1_DMACallback(states[spi_num].channelTx, E_NO_ERROR);
     }
 
-    if (rx_is_complete) {
+    if (req->rxData != NULL && req->rxLen && rx_is_complete) {
         MXC_SPI_RevA1_DMACallback(states[spi_num].channelRx, E_NO_ERROR);
     }
 
