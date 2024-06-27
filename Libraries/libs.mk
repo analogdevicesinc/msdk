@@ -86,6 +86,7 @@ endif
 # for CHIP_REVISION b ***************************************************
 else ifeq ($(CHIP_REVISION),b)
 
+
 ifeq ($(RISCV_CORE),)
 
 ifeq ($(MFLOAT_ABI),hard)

@@ -35,10 +35,10 @@
 #include "fcr_regs.h"
 #include "led.h"
 #include "tmr.h"
-
+#include "nvic_table.h"
 /***** Definitions *****/
 
-#define POLLING // Uncomment to perform ADC conversions using blocking/polling method
+//#define POLLING // Uncomment to perform ADC conversions using blocking/polling method
 // #define INTERRUPT    // Uncomment to perform ADC conversions using interrupt driven method
 // #define DMA          // Uncomment to perform ADC conversions using DMA driven method.
 
