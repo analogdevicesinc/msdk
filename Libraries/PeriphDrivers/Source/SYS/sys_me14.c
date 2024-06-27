@@ -82,9 +82,11 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     // Compute the checksum
     if (checksum != NULL) {
+        uint8_t usn_copy[MXC_SYS_USN_CHECKSUM_LEN] = { 0 };
         uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
         uint8_t key[MXC_SYS_USN_CHECKSUM_LEN];
 
+        memcpy(usn_copy, usn, MXC_SYS_USN_LEN);
         /* Initialize the remainder of the USN and key */
         memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
         memset(checksum, 0, MXC_SYS_USN_CSUM_FIELD_LEN);
@@ -94,7 +96,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         checksum[0] = ((infoblock[4] & 0x007F8000) >> 15);
 
         MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES128);
-        MXC_TPU_Cipher_AES_Encrypt((const char *)usn, NULL, (const char *)key,
+        MXC_TPU_Cipher_AES_Encrypt((const char *)usn_copy, NULL, (const char *)key,
                                    MXC_TPU_CIPHER_AES128, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN,
                                    (char *)check_csum);
 
