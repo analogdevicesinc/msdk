@@ -125,7 +125,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-	INIT_SECURITY /*! TRUE to initiate security upon connection */
+    INIT_SECURITY /*! TRUE to initiate security upon connection */
 };
 
 
@@ -221,7 +221,7 @@ static const uint8_t datsAdvDataDisc[] = {
 
 /*! scan data, discoverable mode */
 static const uint8_t deviceName[] = ADV_NAME;
-static uint8_t datsScanDataDisc[sizeof(deviceName)+2];
+static uint8_t datsScanDataDisc[sizeof(deviceName) + 2];
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
@@ -537,9 +537,9 @@ static void datsSetup(dmEvt_t *pMsg)
 {
     /* Initialize control information */
     datsCb.restoringResList = FALSE;
-	memcpy(&datsScanDataDisc[2], deviceName,sizeof(deviceName));
-	datsScanDataDisc[0] = sizeof(deviceName);
-	datsScanDataDisc[1] = DM_ADV_TYPE_LOCAL_NAME;
+    memcpy(&datsScanDataDisc[2], deviceName, sizeof(deviceName));
+    datsScanDataDisc[0] = sizeof(deviceName);
+    datsScanDataDisc[1] = DM_ADV_TYPE_LOCAL_NAME;
     /* set advertising and scan response data for discoverable mode */
     AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
     AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc),

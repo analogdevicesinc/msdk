@@ -156,7 +156,7 @@ DRESULT disk_read (
 	switch(pdrv){
 		case DEV_SD:
 
-    		if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    		if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_Get_Default_DataWidth()) != E_NO_ERROR) {
 				status = RES_ERROR;
     		} else {
 				status = RES_OK;
@@ -196,7 +196,7 @@ DRESULT disk_write (
 	switch(pdrv){
 		case DEV_SD:
 
-    		if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    		if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_Get_Default_DataWidth()) != E_NO_ERROR) {
 				status = RES_ERROR;
     		} else {
 				status = RES_OK;

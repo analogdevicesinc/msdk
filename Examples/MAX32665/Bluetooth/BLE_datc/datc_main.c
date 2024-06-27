@@ -568,13 +568,12 @@ static void datcScanReport(dmEvt_t *pMsg)
     /* find device name */
     if (!connect && ((pData = DmFindAdType(DM_ADV_TYPE_LOCAL_NAME, pMsg->scanReport.len,
                                            pMsg->scanReport.pData)) != NULL)) {
-       /* check length and device name */
-		char advName[] = ADV_NAME;
-        /*if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'D') &&
-            (pData[DM_AD_DATA_IDX + 1] == 'A') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
-            (pData[DM_AD_DATA_IDX + 3] == 'S')) */
-		if (pData[DM_AD_LEN_IDX] == sizeof(advName)
-				&& !strncmp(advName, (char*)&(pData[DM_AD_DATA_IDX]), sizeof(advName))){
+
+        /* check length and device name */
+        char advName[] = ADV_NAME;
+        if (pData[DM_AD_LEN_IDX] == sizeof(advName) &&
+            !strncmp(advName, (char *)&(pData[DM_AD_DATA_IDX]), sizeof(advName))) {
+
             connect = TRUE;
 		}
     }
