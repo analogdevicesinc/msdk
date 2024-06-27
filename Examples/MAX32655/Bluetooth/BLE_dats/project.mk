@@ -23,3 +23,12 @@ TRACE = 1
 # Add services directory to build
 IPATH += services
 VPATH += services
+
+# SET advertising name
+ADV_NAME?=DATS
+PROJ_CFLAGS += -DADV_NAME=\"$(ADV_NAME)\"
+
+
+### CONFIGURE security
+# /*! TRUE to initiate security upon connection*/
+PROJ_CFLAGS += -DINIT_SECURITY=FALSE

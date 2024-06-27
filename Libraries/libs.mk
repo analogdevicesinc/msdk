@@ -72,6 +72,23 @@ ifeq ($(CHIP_REVISION),a)
 ifeq ($(RISCV_CORE),)
 
 ifeq ($(MFLOAT_ABI),hard)
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_hard.a
+else
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1.a
+endif
+
+else
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_riscv.a
+endif
+
+#*********************************************************************
+
+# for CHIP_REVISION b ***************************************************
+else ifeq ($(CHIP_REVISION),b)
+
+ifeq ($(RISCV_CORE),)
+
+ifeq ($(MFLOAT_ABI),hard)
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
@@ -80,6 +97,9 @@ endif
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
 endif
+#**************************************************************************
+endif
+
 
 #*********************************************************************
 
