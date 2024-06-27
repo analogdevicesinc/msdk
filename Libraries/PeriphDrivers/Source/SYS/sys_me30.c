@@ -57,6 +57,7 @@ extern uint32_t _binary_riscv_bin_start;
 /* **** Functions **** */
 
 /* ************************************************************************** */
+#if IS_SECURE_ENVIRONMENT
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     int err = E_NO_ERROR;
@@ -93,9 +94,8 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
 
-        // Info block only accessible for secure code.
+        // Info block only accessible from secure code.
         //  Use Secure DMA1.
-        // TODO(DMA): Figure out access to "secure" functions when in non-secure code.
         err = MXC_AES_Init(MXC_DMA1);
         if (err) {
             MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
@@ -137,6 +137,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     return err;
 }
+#endif
 
 /* ************************************************************************** */
 int MXC_SYS_GetRevision(void)
