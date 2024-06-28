@@ -1296,22 +1296,25 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
 void MXC_SPI_RevA1_DMACallback(int ch, int error)
 {
     mxc_spi_reva_req_t *temp_req;
+    uint8_t req_done;
 
     for (int i = 0; i < MXC_SPI_INSTANCES; i++) {
         if (states[i].req != NULL) {
             if (states[i].channelTx == ch) {
-                states[i].req_done++;
+                req_done = states[i].req_done++;
             } else if (states[i].channelRx == ch) {
-                states[i].req_done++;
+                req_done = states[i].req_done++;
                 //save the request
                 temp_req = states[i].req;
 
                 if (MXC_SPI_GetDataSize((mxc_spi_regs_t *)temp_req->spi) > 8) {
                     MXC_SPI_RevA1_SwapByte(temp_req->rxData, temp_req->rxLen);
                 }
+            } else {
+                continue;
             }
 
-            if (!states[i].txrx_req || (states[i].txrx_req && states[i].req_done == 2)) {
+            if (!states[i].txrx_req || (states[i].txrx_req && req_done == 1)) {
                 //save the request
                 temp_req = states[i].req;
                 MXC_FreeLock((uint32_t *)&states[i].req);
