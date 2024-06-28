@@ -488,3 +488,36 @@ function main() {
 }
 
 main
+if [[ $result_UART_INTERRUPT = "fail" || $result_UART_DMA = "fail" || $result_HelloWorld = "fail" ]];
+		then
+			make -C $Path/$testName METHOD=$2
+		else
+			make -C $Path/$testName
+		fi
+
+
+if [[ $result_UART_INTERRUPT = "fail" || 
+	$result_UART_DMA = "fail" ||
+	$result_HelloWorld = "fail" ||
+    $result_HelloWorld_Cpp = "fail" ||
+    $result_TRNG = "fail" ||
+    $result_I2C = "fail" ||
+ 	$result_SPI_POLLING = "fail" ||
+    $result_SPI_INTERRUPT = "fail" ||
+    $result_SPI_DMA = "fail" ||
+    $result_SPI_V2_POLLING = "fail" ||   # Only for max32690
+    $result_SPI_V2_INTERRUPT = "fail" || # Only for max32690
+    $result_SPI_V2_DMA = "fail" ||       # Only for max32690
+    $result_ICC = "fail" ||
+    $result_Hash = "fail" ||
+    $result_DMA = "fail" ||
+    $result_CRC = "fail" ||
+    $result_ADC_POLLING = "fail" ||
+    $result_ADC_INTERRUPT = "fail" ||
+    $result_ADC_DMA = "fail" ||
+    $result_Lib_Gen = "fail" ||
+    $result_Lib_Use = "fail" ]]; then
+	exit 2
+	else
+	exit 0
+fi
