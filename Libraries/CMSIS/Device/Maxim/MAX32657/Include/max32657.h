@@ -197,6 +197,9 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_SRAM_NS_MEM_BASE 0x20000000UL
 #define MXC_SRAM_NS_MEM_SIZE 0x00040000UL
 
+#define MXC_INFO_MEM_BASE MXC_INFO_S_MEM_BASE
+#define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
+
 #if IS_SECURE_ENVIRONMENT
 
 /* Symbols defined in secure linker file. */
@@ -229,9 +232,6 @@ extern uint32_t __FLASH_NSC_SIZE;
 #define MXC_NSC_MEM_BASE __SRAM_NSC_BASE
 #define MXC_NSC_MEM_SIZE __SRAM_NSC_SIZE
 #endif
-
-#define MXC_INFO_MEM_BASE MXC_INFO_S_MEM_BASE
-#define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
 
 #define MXC_FLASH_MEM_BASE MXC_FLASH_S_MEM_BASE
 #define MXC_FLASH_PAGE_SIZE MXC_FLASH_S_PAGE_SIZE
