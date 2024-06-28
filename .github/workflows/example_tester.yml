@@ -48,7 +48,7 @@ on:
   
   
 env:
-  MAXIM_PATH: .
+  MAXIM_PATH: ''
   
 jobs:
   Example_Tests:
@@ -58,13 +58,15 @@ jobs:
     
 
     steps:
+
       - uses: actions/checkout@v4
         with:
           submodules: false
           repository: analogdevicesinc/msdk
           fetch-depth: 0
       
-     
+      - name: Set MAXIM_PATH
+        run: echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
 
       - name: run_example_test
         run: |
