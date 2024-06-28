@@ -52,7 +52,7 @@ on:
 jobs:
   Example_Tests:
     # The type of runner that the job will run on
-    runs-on: ubuntu-18.04
+    runs-on: [self-hosted]
     if: github.event.pull_request.draft == false
     
 
@@ -67,7 +67,7 @@ jobs:
 
       - name: run_example_test
         run: |
-          bash .github/workflows/scripts/example_tester.sh max32690-1
+          bash .github/workflows/scripts/example_tester.sh max32690_board_ex
           
          
 
