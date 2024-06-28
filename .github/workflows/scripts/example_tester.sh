@@ -488,14 +488,6 @@ function main() {
 }
 
 main
-if [[ $result_UART_INTERRUPT = "fail" || $result_UART_DMA = "fail" || $result_HelloWorld = "fail" ]];
-		then
-			make -C $Path/$testName METHOD=$2
-		else
-			make -C $Path/$testName
-		fi
-
-
 if [[ $result_UART_INTERRUPT = "fail" || 
 	$result_UART_DMA = "fail" ||
 	$result_HelloWorld = "fail" ||
