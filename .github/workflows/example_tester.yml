@@ -47,7 +47,8 @@ on:
   workflow_dispatch:
   
   
-
+env:
+  MAXIM_PATH: .
   
 jobs:
   Example_Tests:
@@ -67,6 +68,7 @@ jobs:
 
       - name: run_example_test
         run: |
+          pwd
           bash .github/workflows/scripts/example_tester.sh max32690_board_ex
           
          

@@ -20,7 +20,7 @@ boardVersion=max32690
 boardName=$1
 uartPort=$(resource_manager -g $boardName.console_port)
 target_uc=$(resource_manager -g $boardName.target)
-MAXIM_PATH=/home/jcai/Workspace/msdk
+#MAXIM_PATH=/home/jcai/Workspace/msdk
 Path=$MAXIM_PATH/Examples/$target_uc
 
 # variable for testing purpose
