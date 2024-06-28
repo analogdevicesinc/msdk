@@ -80,6 +80,8 @@ typedef struct {
     __IO uint32_t alert;                /**< <tt>\b 0x014:</tt> BOOST ALERT Register */
     __I  uint32_t rdy;                  /**< <tt>\b 0x018:</tt> BOOST RDY Register */
     __I  uint32_t zxcal;                /**< <tt>\b 0x01C:</tt> BOOST ZXCAL Register */
+    __IO uint32_t inten;                /**< <tt>\b 0x020:</tt> BOOST INTEN Register */
+    __IO uint32_t intfl;                /**< <tt>\b 0x024:</tt> BOOST INTFL Register */
 } mxc_boost_regs_t;
 
 /* Register offsets for module BOOST */
@@ -97,6 +99,8 @@ typedef struct {
 #define MXC_R_BOOST_ALERT                  ((uint32_t)0x00000014UL) /**< Offset from BOOST Base Address: <tt> 0x0014</tt> */
 #define MXC_R_BOOST_RDY                    ((uint32_t)0x00000018UL) /**< Offset from BOOST Base Address: <tt> 0x0018</tt> */
 #define MXC_R_BOOST_ZXCAL                  ((uint32_t)0x0000001CUL) /**< Offset from BOOST Base Address: <tt> 0x001C</tt> */
+#define MXC_R_BOOST_INTEN                  ((uint32_t)0x00000020UL) /**< Offset from BOOST Base Address: <tt> 0x0020</tt> */
+#define MXC_R_BOOST_INTFL                  ((uint32_t)0x00000024UL) /**< Offset from BOOST Base Address: <tt> 0x0024</tt> */
 /**@} end of group boost_registers */
 
 /**
@@ -186,6 +190,28 @@ typedef struct {
 #define MXC_F_BOOST_ZXCAL_VAL                          ((uint32_t)(0x1FUL << MXC_F_BOOST_ZXCAL_VAL_POS)) /**< ZXCAL_VAL Mask */
 
 /**@} end of group BOOST_ZXCAL_Register */
+
+/**
+ * @ingroup  boost_registers
+ * @defgroup BOOST_INTEN BOOST_INTEN
+ * @brief    Boost Alert Interrupt Enable Register.
+ * @{
+ */
+#define MXC_F_BOOST_INTEN_ALERT_POS                    0 /**< INTEN_ALERT Position */
+#define MXC_F_BOOST_INTEN_ALERT                        ((uint32_t)(0x1UL << MXC_F_BOOST_INTEN_ALERT_POS)) /**< INTEN_ALERT Mask */
+
+/**@} end of group BOOST_INTEN_Register */
+
+/**
+ * @ingroup  boost_registers
+ * @defgroup BOOST_INTFL BOOST_INTFL
+ * @brief    Boost Alert Interrupt Status Register.
+ * @{
+ */
+#define MXC_F_BOOST_INTFL_ALERT_POS                    0 /**< INTFL_ALERT Position */
+#define MXC_F_BOOST_INTFL_ALERT                        ((uint32_t)(0x1UL << MXC_F_BOOST_INTFL_ALERT_POS)) /**< INTFL_ALERT Mask */
+
+/**@} end of group BOOST_INTFL_Register */
 
 #ifdef __cplusplus
 }

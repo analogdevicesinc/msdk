@@ -417,6 +417,34 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>INTEN</name>
+     <description>Boost Alert Interrupt Enable Register.</description>
+     <addressOffset>0x020</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>ALERT</name>
+       <description>Boost alert enable/</description>
+       <bitRange>[0:0]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTFL</name>
+     <description>Boost Alert Interrupt Status Register.</description>
+     <addressOffset>0x024</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>ALERT</name>
+       <description>Boost alert has occurred.</description>
+       <bitRange>[0:0]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 
