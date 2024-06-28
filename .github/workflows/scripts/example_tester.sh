@@ -127,7 +127,7 @@ function test_UART() {
 	fi
 	
 	printf "Test result for UART_INTERRUPT: $result_UART_INTERRUPT\n"
-<<"TEMPDISABLE"
+: '
 	init UART DMA
 
 	# start testing the output
@@ -140,7 +140,7 @@ function test_UART() {
 	fi
 	
 	printf "Test result for UART_DMA: $result_UART_DMA\n"
-TEMPDISABLE	
+'
 }
 
 function test_TRNG() {
