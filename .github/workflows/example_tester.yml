@@ -70,11 +70,24 @@ jobs:
           echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
           printenv
 
+      - name: Lock Boards
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          boards: |
+            max32690_board_ex
+          lock: true
+          timeout: 900 # Attempt to lock for an hour
+
       - name: run_example_test
         run: |
           bash .github/workflows/scripts/example_tester.sh max32690_board_ex
           
-         
+      - name: Unlock Boards
+        if: always()
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          lock: false
+          all_owned: true
 
   
 
