@@ -69,6 +69,7 @@ jobs:
       - name: run_example_test
         run: |
           pwd
+          ls
           bash .github/workflows/scripts/example_tester.sh max32690_board_ex
           
          
