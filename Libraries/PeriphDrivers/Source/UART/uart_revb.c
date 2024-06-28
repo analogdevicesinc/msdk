@@ -303,6 +303,11 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
     return E_NO_ERROR;
 }
 
+unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart)
+{
+    return ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) >> MXC_F_UART_CTRL_BCLKSRC_POS);
+}
+
 int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCtrl,
                               int rtsThreshold)
 {

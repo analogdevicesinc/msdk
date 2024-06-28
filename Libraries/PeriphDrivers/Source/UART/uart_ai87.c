@@ -27,6 +27,10 @@
 #include "lpgcr_regs.h"
 #include "dma.h"
 
+bool g_clock_source_locked[MXC_UART_INSTANCES] = {
+    [0 ... MXC_UART_INSTANCES - 1] = false
+};
+
 void MXC_UART_DMACallback(int ch, int error)
 {
     MXC_UART_RevB_DMACallback(ch, error);
@@ -42,34 +46,33 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
     return MXC_UART_RevB_AsyncStop((mxc_uart_revb_regs_t *)uart);
 }
 
-int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
+void MXC_UART_LockClockSource(mxc_uart_regs_t *uart)
 {
-    int retval;
+    g_clock_source_locked[MXC_UART_GET_IDX(uart)] = true;
+}
 
-    retval = MXC_UART_Shutdown(uart);
+void MXC_UART_UnlockClockSource(mxc_uart_regs_t *uart)
+{
+    g_clock_source_locked[MXC_UART_GET_IDX(uart)] = false;
+}
 
-    if (retval) {
-        return retval;
-    }
-
+int MXC_UART_Enable(mxc_uart_regs_t *uart)
+{
+    int err = E_NO_ERROR;
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
-        MXC_GPIO_Config(&gpio_cfg_uart0);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
         break;
 
     case 1:
-        MXC_GPIO_Config(&gpio_cfg_uart1);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
         break;
 
     case 2:
-        MXC_GPIO_Config(&gpio_cfg_uart2);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
         break;
 
     case 3:
-        MXC_GPIO_Config(&gpio_cfg_uart3);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
         break;
 
@@ -77,9 +80,47 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         return E_BAD_PARAM;
     }
 
-    MXC_UART_SetClockSource(uart, clock);
+    return err;
+}
 
-    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
+int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
+{
+    int err;
+
+    err = MXC_UART_Shutdown(uart);
+
+    if (err) {
+        return err;
+    }
+
+    err = MXC_UART_Enable(uart);
+    if (err) return err;
+
+    err = MXC_UART_SetClockSource(uart, clock);
+    if (err) return err;
+
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+        MXC_GPIO_Config(&gpio_cfg_uart0);
+        break;
+
+    case 1:
+        MXC_GPIO_Config(&gpio_cfg_uart1);
+        break;
+
+    case 2:
+        MXC_GPIO_Config(&gpio_cfg_uart2);
+        break;
+
+    case 3:
+        MXC_GPIO_Config(&gpio_cfg_uart3);
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+
+    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
 
 int MXC_UART_Shutdown(mxc_uart_regs_t *uart)
@@ -239,6 +280,10 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
     int err = E_NO_ERROR;
 
+    if (g_clock_source_locked[MXC_UART_GET_IDX(uart)]) {
+        return E_NO_ERROR; // Clock source locked, return silently.
+    }
+
     // The following interprets table 12-1 from the MAX78002 UG.
     switch(MXC_UART_GET_IDX(uart)) {
     case 0:
@@ -279,6 +324,37 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
     }
 
     return err;
+}
+
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
+{
+    unsigned int clock_option = MXC_UART_RevB_GetClockSource((mxc_uart_revb_regs_t*)uart);
+    switch(MXC_UART_GET_IDX(uart)) {
+        case 0:
+        case 1:
+        case 2:
+            switch (clock_option) {
+                case 0:
+                    return MXC_UART_APB_CLK;
+                case 2:
+                    return MXC_UART_IBRO_CLK;
+                default:
+                    return E_BAD_STATE;
+            }
+            break;
+        case 3:
+            switch (clock_option) {
+                case 0:
+                    return MXC_UART_IBRO_CLK;
+                case 1:
+                    return MXC_UART_ERTCO_CLK;
+                default:
+                    return E_BAD_STATE;
+            }
+            break;
+        default:
+            return E_BAD_PARAM;
+    }
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)

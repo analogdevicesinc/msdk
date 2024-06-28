@@ -131,6 +131,14 @@ struct _mxc_uart_req_t {
 /* ************************************************************************* */
 
 /**
+ * @brief   Enable (but do not initialize) a UART peripheral.  This enables the peripheral
+ *          clock only, "powering on" the peripheral.
+
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_UART_Enable(mxc_uart_regs_t *uart);
+
+/**
  * @brief   Initialize and enable UART peripheral.
  * 
  * This function initializes everything necessary to call a UART transaction function.
@@ -244,10 +252,29 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   clock        Clock source
  *
- * @return  Actual baud rate if successful, otherwise see \ref MXC_Error_Codes 
- *          for a list of return codes.
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock);
+
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart);
+
+/**
+ * @brief   Locks the clock source for the baud rate generator.
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+void MXC_UART_LockClockSource(mxc_uart_regs_t *uart);
+
+/**
+ * @brief   Unlocks the clock source for the baud rate generator.
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+void MXC_UART_UnlockClockSource(mxc_uart_regs_t *uart);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */
