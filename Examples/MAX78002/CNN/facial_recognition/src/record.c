@@ -655,7 +655,7 @@ int add_person(Person *p)
             if (face_detected) {
                 printf("Box width: %d\n", box[2] - box[0]);
                 printf("Box height: %d\n", box[3] - box[1]);
-                if ((box[2] - box[0]) < 90 || (box[3] - box[1]) < 130) {
+                if ((box[2] - box[0]) < 70 || (box[3] - box[1]) < 110) {
                     face_detected = 0;
 
                     if (!init_come_closer) {

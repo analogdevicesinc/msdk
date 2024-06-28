@@ -21,12 +21,13 @@
 """
 Script to generate Face Id embeddings
 """
+import torch
 import argparse
 import numpy as np
 import os
 import os.path as path
 from ai85.ai85_adapter import AI85SimulatorAdapter
-from hawk_eyes.face import RetinaFace
+from batch_face import RetinaFace
 
 from utils import append_db_file_from_path, create_weights_include_file, create_embeddings_include_file, create_baseaddr_include_file
 
@@ -41,8 +42,11 @@ def create_db_from_folder(args):
 
 
     ai85_adapter = AI85SimulatorAdapter(MODEL_PATH)
-    face_detector = RetinaFace(model_name='retina_l', conf=0.1)
-    
+
+    if torch.cuda.is_available():
+        face_detector = RetinaFace(gpu_id=torch.cuda.current_device(), network="resnet50")
+    else:
+        face_detector = RetinaFace(gpu_id=-1, network="resnet50")
     os.makedirs(args.db, exist_ok=True)
 
     emb_array, recorded_subject = append_db_file_from_path(args.db, face_detector, ai85_adapter)
