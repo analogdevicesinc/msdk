@@ -162,12 +162,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA0">
-            <name>BTLE</name>
-            <description>BTLE Reset.</description>
-            <bitOffset>18</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="DMA0">
             <name>TRNG</name>
             <description>TRNG Reset.</description>
             <bitOffset>24</bitOffset>
@@ -675,6 +669,12 @@
             <name>AUTOCAL</name>
             <description>Auto calibration Reset.</description>
             <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CRC">
+            <name>BTLE</name>
+            <description>BTLE Reset.</description>
+            <bitOffset>18</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

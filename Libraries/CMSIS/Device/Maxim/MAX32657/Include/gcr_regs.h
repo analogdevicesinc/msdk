@@ -195,9 +195,6 @@ typedef struct {
 #define MXC_F_GCR_RST0_RTC_POS                         17 /**< RST0_RTC Position */
 #define MXC_F_GCR_RST0_RTC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_RTC_POS)) /**< RST0_RTC Mask */
 
-#define MXC_F_GCR_RST0_BTLE_POS                        18 /**< RST0_BTLE Position */
-#define MXC_F_GCR_RST0_BTLE                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_BTLE_POS)) /**< RST0_BTLE Mask */
-
 #define MXC_F_GCR_RST0_TRNG_POS                        24 /**< RST0_TRNG Position */
 #define MXC_F_GCR_RST0_TRNG                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_TRNG_POS)) /**< RST0_TRNG Mask */
 
@@ -433,6 +430,9 @@ typedef struct {
 
 #define MXC_F_GCR_RST1_AUTOCAL_POS                     12 /**< RST1_AUTOCAL Position */
 #define MXC_F_GCR_RST1_AUTOCAL                         ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AUTOCAL_POS)) /**< RST1_AUTOCAL Mask */
+
+#define MXC_F_GCR_RST1_BTLE_POS                        18 /**< RST1_BTLE Position */
+#define MXC_F_GCR_RST1_BTLE                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_BTLE_POS)) /**< RST1_BTLE Mask */
 
 /**@} end of group GCR_RST1_Register */
 
