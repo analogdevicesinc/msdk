@@ -190,6 +190,13 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_PHY_SRAM4_MEM_SIZE 0x00010000UL // 64KB
 
 
+/* Non-secure Regions */
+#define MXC_FLASH_NS_MEM_BASE 0x01000000UL
+#define MXC_FLASH_NS_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
+#define MXC_FLASH_NS_MEM_SIZE 0x00100000UL
+#define MXC_SRAM_NS_MEM_BASE 0x20000000UL
+#define MXC_SRAM_NS_MEM_SIZE 0x00040000UL
+
 #if IS_SECURE_ENVIRONMENT
 
 /* Symbols defined in secure linker file. */
@@ -199,13 +206,6 @@ extern uint32_t __FLASH_NS_BASE;
 extern uint32_t __FLASH_NS_SIZE;
 extern uint32_t __FLASH_NSC_BASE;
 extern uint32_t __FLASH_NSC_SIZE;
-
-/* Non-secure Regions */
-#define MXC_FLASH_NS_MEM_BASE 0x01000000UL
-#define MXC_FLASH_NS_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
-#define MXC_FLASH_NS_MEM_SIZE 0x00100000UL
-#define MXC_SRAM_NS_MEM_BASE 0x20000000UL
-#define MXC_SRAM_NS_MEM_SIZE 0x00040000UL
 
 /* Secure Regions */
 /*  ROM is always in secure region. */
