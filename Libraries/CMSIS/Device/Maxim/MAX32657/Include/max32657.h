@@ -831,14 +831,12 @@ We may want to handle GET_IRQ better...
 #define MXC_SPC ((mxc_spc_regs_t *)MXC_BASE_SPC)
 #define MXC_SPC_S MXC_SPC
 
-#else
+#endif
 
 /* Non-Secure Mapping Only */
 #define MXC_BASE_NSPC ((uint32_t)0x40090000UL)
 #define MXC_NSPC ((mxc_nspc_regs_t *)MXC_BASE_NSPC)
 #define MXC_NSPC_NS MXC_NSPC
-
-#endif
 
 /******************************************************************************/
 /*                                                                        MPC */
