@@ -66,7 +66,9 @@ jobs:
           fetch-depth: 0
       
       - name: Set MAXIM_PATH
-        run: echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
+        run: |
+          echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
+          printenv
 
       - name: run_example_test
         run: |
