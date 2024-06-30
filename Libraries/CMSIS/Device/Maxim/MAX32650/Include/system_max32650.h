@@ -46,8 +46,8 @@ extern "C" {
 #define NANORING_FREQ 8000
 #endif
 
-#ifndef HIRC120_FREQ
-#define HIRC120_FREQ 120000000
+#ifndef HIRC96_FREQ
+#define HIRC96_FREQ 120000000
 #endif
 
 #ifndef HIRC8_FREQ
