@@ -2212,6 +2212,12 @@ Once enabled, the following [build configuration variables](#build-configuration
 
 FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example application.
 
+#### FreeRTOS Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `FREERTOS_HEAP_TYPE`            | Specify the method of heap allocation to use for the FreeRTOS API | FreeRTOS provides options for the heap management alogirthms to optimize for memory size, speed, and risk of heap fragmentation. For more details, visit the [FreeRTOS MemMang Docs](https://www.freertos.org/a00111.html).  Acceptable values are `1`, `2`, `3`, `4`, or `5`. The default value is `4` for heap_4. |
+
 #### FreeRTOS-Plus
 
 [FreeRTOS-Plus](https://www.freertos.org/FreeRTOS-Plus/index.html) is an additional library that implements addon functionality for the FreeRTOS kernel.  The MSDK maintains support for some, but not all, available addons.
