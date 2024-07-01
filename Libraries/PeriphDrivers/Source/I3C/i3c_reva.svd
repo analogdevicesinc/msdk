@@ -1590,12 +1590,12 @@
               <enumeratedValue>
                 <name>CONT_REQ</name>
                 <description>Controller request.</description>
-                <value>1</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>HOTJOIN_REQ</name>
                 <description>Hot-Join request.</description>
-                <value>1</value>
+                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
