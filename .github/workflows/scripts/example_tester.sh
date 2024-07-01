@@ -468,7 +468,7 @@ function main() {
 	test_Hello_World
 	test_Hello_World_Cpp
 	test_TRNG
-	#test_I2C
+	test_I2C
 	test_SPI
 	if [[ $boardVersion = max32690 ]]
 	then
