@@ -101,14 +101,14 @@ __isr_vector:
     .long FLC_IRQHandler                /* 0x1D  0x0074  29: FLC */
     .long GPIO0_IRQHandler              /* 0x1E  0x0078  30: GPIO0 */
     .long RSV15_IRQHandler              /* 0x1F  0x007C  31: Reserved */
-    .long DMA0_CH0_IRQHandler           /* 0x20  0x0080  32: DMA0 Channel 0 */
-    .long DMA0_CH1_IRQHandler           /* 0x21  0x0084  33: DMA0 Channel 1 */
-    .long DMA0_CH2_IRQHandler           /* 0x22  0x0088  34: DMA0 Channel 2 */
-    .long DMA0_CH3_IRQHandler           /* 0x23  0x008C  35: DMA0 Channel 3 */
-    .long DMA1_CH0_IRQHandler           /* 0x24  0x0090  36: DMA1 Channel 0 */
-    .long DMA1_CH1_IRQHandler           /* 0x25  0x0094  37: DMA1 Channel 1 */
-    .long DMA1_CH2_IRQHandler           /* 0x26  0x0098  38: DMA1 Channel 2 */
-    .long DMA1_CH3_IRQHandler           /* 0x27  0x009C  39: DMA1 Channel 3 */
+    .long DMA0_CH0_IRQHandler           /* 0x20  0x0080  32: DMA0 Channel 0 (Non-Secure) */
+    .long DMA0_CH1_IRQHandler           /* 0x21  0x0084  33: DMA0 Channel 1 (Non-Secure) */
+    .long DMA0_CH2_IRQHandler           /* 0x22  0x0088  34: DMA0 Channel 2 (Non-Secure) */
+    .long DMA0_CH3_IRQHandler           /* 0x23  0x008C  35: DMA0 Channel 3 (Non-Secure) */
+    .long DMA1_CH0_IRQHandler           /* 0x24  0x0090  36: DMA1 Channel 0 (Secure) */
+    .long DMA1_CH1_IRQHandler           /* 0x25  0x0094  37: DMA1 Channel 1 (Secure) */
+    .long DMA1_CH2_IRQHandler           /* 0x26  0x0098  38: DMA1 Channel 2 (Secure) */
+    .long DMA1_CH3_IRQHandler           /* 0x27  0x009C  39: DMA1 Channel 3 (Secure) */
     .long WUT0_IRQHandler               /* 0x28  0x00A0  40: Wakeup Timer 0 */
     .long WUT1_IRQHandler               /* 0x29  0x00A4  41: Wakeup Timer 1 */
     .long GPIOWAKE_IRQHandler           /* 0x2A  0x00A8  42: GPIO Wakeup */
@@ -117,22 +117,21 @@ __isr_vector:
     .long ERFO_IRQHandler               /* 0x2D  0x00B4  45: ERFO Ready */
     .long BOOST_IRQHandler              /* 0x2E  0x00B8  46: Boost Controller */
     .long ECC_IRQHandler                /* 0x2F  0x00BC  47: ECC */
-/* TODO(Bluetooth): Confirm BTLE IRQ Handler Names */
-    .long BTLE_XXXX0_IRQHandler         /* 0x30  0x00C0  48: BTLE XXXX0 */
-    .long BTLE_XXXX1_IRQHandler         /* 0x31  0x00C4  49: BTLE XXXX1 */
-    .long BTLE_XXXX2_IRQHandler         /* 0x32  0x00C8  50: BTLE XXXX2 */
-    .long BTLE_XXXX3_IRQHandler         /* 0x33  0x00CC  51: BTLE XXXX3 */
-    .long BTLE_XXXX4_IRQHandler         /* 0x34  0x00D0  52: BTLE XXXX4 */
-    .long BTLE_XXXX5_IRQHandler         /* 0x35  0x00D4  53: BTLE XXXX5 */
-    .long BTLE_XXXX6_IRQHandler         /* 0x36  0x00D8  54: BTLE XXXX6 */
-    .long BTLE_XXXX7_IRQHandler         /* 0x37  0x00DC  55: BTLE XXXX7 */
-    .long BTLE_XXXX8_IRQHandler         /* 0x38  0x00E0  56: BTLE XXXX8 */
-    .long BTLE_XXXX9_IRQHandler         /* 0x39  0x00E4  57: BTLE XXXX9 */
-    .long BTLE_XXXXA_IRQHandler         /* 0x3A  0x00E8  58: BTLE XXXXA */
-    .long BTLE_XXXXB_IRQHandler         /* 0x3B  0x00EC  59: BTLE XXXXB */
-    .long BTLE_XXXXC_IRQHandler         /* 0x3C  0x00F0  60: BTLE XXXXC */
-    .long BTLE_XXXXD_IRQHandler         /* 0x3D  0x00F4  61: BTLE XXXXD */
-    .long BTLE_XXXXE_IRQHandler         /* 0x3E  0x00F8  62: BTLE XXXXE */
+    .long BTLE_TX_DONE_IRQHandler       /* 0x30  0x00C0  48: BTLE TX Done */
+    .long BTLE_RX_RCVD_IRQHandler       /* 0x31  0x00C4  49: BTLE RX Received */
+    .long BTLE_RX_ENG_DET_IRQHandler    /* 0x32  0x00C8  50: BTLE RX Energy Detected */
+    .long BTLE_SFD_DET_IRQHandler       /* 0x33  0x00CC  51: BTLE SFD Detected */
+    .long BTLE_SFD_TO_IRQHandler        /* 0x34  0x00D0  52: BTLE SFD Timeout */
+    .long BTLE_GP_EVENT_IRQHandler      /* 0x35  0x00D4  53: BTLE Timestamp */
+    .long BTLE_CFO_IRQHandler           /* 0x36  0x00D8  54: BTLE CFO Done */
+    .long BTLE_SIG_DET_IRQHandler       /* 0x37  0x00DC  55: BTLE Signal Detected */
+    .long BTLE_AGC_EVENT_IRQHandler     /* 0x38  0x00E0  56: BTLE AGC Event */
+    .long BTLE_RFFE_SPIM_IRQHandler     /* 0x39  0x00E4  57: BTLE RFFE SPIM Done */
+    .long BTLE_TX_AES_IRQHandler        /* 0x3A  0x00E8  58: BTLE TX AES Done */
+    .long BTLE_RX_AES_IRQHandler        /* 0x3B  0x00EC  59: BTLE RX AES Done */
+    .long BTLE_INV_APB_ADDR_IRQHandler  /* 0x3C  0x00F0  60: BTLE Invalid APB Address */
+    .long BTLE_IQ_DATA_VALID_IRQHandler /* 0x3D  0x00F4  61: BTLE IQ Data Valid */
+    .long BTLE_RX_CRC_IRQHandler        /* 0x3E  0x00F8  62: BTLE RX CRC */
     .long RSV47_IRQHandler              /* 0x3F  0x00FC  63: Reserved */
     .long MPC_IRQHandler                /* 0x40  0x0100  64: MPC Combined (Secure) */
     .long PPC_IRQHandler                /* 0x44  0x0104  65: PPC Combined (Secure) */
@@ -284,14 +283,14 @@ Reset_Handler:
     def_irq_handler FLC_IRQHandler                /* 0x1D  0x0074  29: FLC */
     def_irq_handler GPIO0_IRQHandler              /* 0x1E  0x0078  30: GPIO0 */
     def_irq_handler RSV15_IRQHandler              /* 0x1F  0x007C  31: Reserved */
-    def_irq_handler DMA0_CH0_IRQHandler           /* 0x20  0x0080  32: DMA0 Channel 0 */
-    def_irq_handler DMA0_CH1_IRQHandler           /* 0x21  0x0084  33: DMA0 Channel 1 */
-    def_irq_handler DMA0_CH2_IRQHandler           /* 0x22  0x0088  34: DMA0 Channel 2 */
-    def_irq_handler DMA0_CH3_IRQHandler           /* 0x23  0x008C  35: DMA0 Channel 3 */
-    def_irq_handler DMA1_CH0_IRQHandler           /* 0x24  0x0090  36: DMA1 Channel 0 */
-    def_irq_handler DMA1_CH1_IRQHandler           /* 0x25  0x0094  37: DMA1 Channel 1 */
-    def_irq_handler DMA1_CH2_IRQHandler           /* 0x26  0x0098  38: DMA1 Channel 2 */
-    def_irq_handler DMA1_CH3_IRQHandler           /* 0x27  0x009C  39: DMA1 Channel 3 */
+    def_irq_handler DMA0_CH0_IRQHandler           /* 0x20  0x0080  32: DMA0 Channel 0 (Non-Secure) */
+    def_irq_handler DMA0_CH1_IRQHandler           /* 0x21  0x0084  33: DMA0 Channel 1 (Non-Secure) */
+    def_irq_handler DMA0_CH2_IRQHandler           /* 0x22  0x0088  34: DMA0 Channel 2 (Non-Secure) */
+    def_irq_handler DMA0_CH3_IRQHandler           /* 0x23  0x008C  35: DMA0 Channel 3 (Non-Secure) */
+    def_irq_handler DMA1_CH0_IRQHandler           /* 0x24  0x0090  36: DMA1 Channel 0 (Secure) */
+    def_irq_handler DMA1_CH1_IRQHandler           /* 0x25  0x0094  37: DMA1 Channel 1 (Secure) */
+    def_irq_handler DMA1_CH2_IRQHandler           /* 0x26  0x0098  38: DMA1 Channel 2 (Secure) */
+    def_irq_handler DMA1_CH3_IRQHandler           /* 0x27  0x009C  39: DMA1 Channel 3 (Secure) */
     def_irq_handler WUT0_IRQHandler               /* 0x28  0x00A0  40: Wakeup Timer 0 */
     def_irq_handler WUT1_IRQHandler               /* 0x29  0x00A4  41: Wakeup Timer 1 */
     def_irq_handler GPIOWAKE_IRQHandler           /* 0x2A  0x00A8  42: GPIO Wakeup */
@@ -300,22 +299,21 @@ Reset_Handler:
     def_irq_handler ERFO_IRQHandler               /* 0x2D  0x00B4  45: ERFO Ready */
     def_irq_handler BOOST_IRQHandler              /* 0x2E  0x00B8  46: Boost Controller */
     def_irq_handler ECC_IRQHandler                /* 0x2F  0x00BC  47: ECC */
-/* TODO(Bluetooth): Confirm BTLE IRQ Handler Names */
-    def_irq_handler BTLE_XXXX0_IRQHandler         /* 0x30  0x00C0  48: BTLE XXXX0 */
-    def_irq_handler BTLE_XXXX1_IRQHandler         /* 0x31  0x00C4  49: BTLE XXXX1 */
-    def_irq_handler BTLE_XXXX2_IRQHandler         /* 0x32  0x00C8  50: BTLE XXXX2 */
-    def_irq_handler BTLE_XXXX3_IRQHandler         /* 0x33  0x00CC  51: BTLE XXXX3 */
-    def_irq_handler BTLE_XXXX4_IRQHandler         /* 0x34  0x00D0  52: BTLE XXXX4 */
-    def_irq_handler BTLE_XXXX5_IRQHandler         /* 0x35  0x00D4  53: BTLE XXXX5 */
-    def_irq_handler BTLE_XXXX6_IRQHandler         /* 0x36  0x00D8  54: BTLE XXXX6 */
-    def_irq_handler BTLE_XXXX7_IRQHandler         /* 0x37  0x00DC  55: BTLE XXXX7 */
-    def_irq_handler BTLE_XXXX8_IRQHandler         /* 0x38  0x00E0  56: BTLE XXXX8 */
-    def_irq_handler BTLE_XXXX9_IRQHandler         /* 0x39  0x00E4  57: BTLE XXXX9 */
-    def_irq_handler BTLE_XXXXA_IRQHandler         /* 0x3A  0x00E8  58: BTLE XXXXA */
-    def_irq_handler BTLE_XXXXB_IRQHandler         /* 0x3B  0x00EC  59: BTLE XXXXB */
-    def_irq_handler BTLE_XXXXC_IRQHandler         /* 0x3C  0x00F0  60: BTLE XXXXC */
-    def_irq_handler BTLE_XXXXD_IRQHandler         /* 0x3D  0x00F4  61: BTLE XXXXD */
-    def_irq_handler BTLE_XXXXE_IRQHandler         /* 0x3E  0x00F8  62: BTLE XXXXE */
+    def_irq_handler BTLE_TX_DONE_IRQHandler       /* 0x30  0x00C0  48: BTLE TX Done */
+    def_irq_handler BTLE_RX_RCVD_IRQHandler       /* 0x31  0x00C4  49: BTLE RX Received */
+    def_irq_handler BTLE_RX_ENG_DET_IRQHandler    /* 0x32  0x00C8  50: BTLE RX Energy Detected */
+    def_irq_handler BTLE_SFD_DET_IRQHandler       /* 0x33  0x00CC  51: BTLE SFD Detected */
+    def_irq_handler BTLE_SFD_TO_IRQHandler        /* 0x34  0x00D0  52: BTLE SFD Timeout */
+    def_irq_handler BTLE_GP_EVENT_IRQHandler      /* 0x35  0x00D4  53: BTLE Timestamp */
+    def_irq_handler BTLE_CFO_IRQHandler           /* 0x36  0x00D8  54: BTLE CFO Done */
+    def_irq_handler BTLE_SIG_DET_IRQHandler       /* 0x37  0x00DC  55: BTLE Signal Detected */
+    def_irq_handler BTLE_AGC_EVENT_IRQHandler     /* 0x38  0x00E0  56: BTLE AGC Event */
+    def_irq_handler BTLE_RFFE_SPIM_IRQHandler     /* 0x39  0x00E4  57: BTLE RFFE SPIM Done */
+    def_irq_handler BTLE_TX_AES_IRQHandler        /* 0x3A  0x00E8  58: BTLE TX AES Done */
+    def_irq_handler BTLE_RX_AES_IRQHandler        /* 0x3B  0x00EC  59: BTLE RX AES Done */
+    def_irq_handler BTLE_INV_APB_ADDR_IRQHandler  /* 0x3C  0x00F0  60: BTLE Invalid APB Address */
+    def_irq_handler BTLE_IQ_DATA_VALID_IRQHandler /* 0x3D  0x00F4  61: BTLE IQ Data Valid */
+    def_irq_handler BTLE_RX_CRC_IRQHandler        /* 0x3E  0x00F8  62: BTLE RX CRC */
     def_irq_handler RSV47_IRQHandler              /* 0x3F  0x00FC  63: Reserved */
     def_irq_handler MPC_IRQHandler                /* 0x40  0x0100  64: MPC Combined (Secure) */
     def_irq_handler PPC_IRQHandler                /* 0x44  0x0104  65: PPC Combined (Secure) */

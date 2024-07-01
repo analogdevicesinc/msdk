@@ -98,11 +98,24 @@ endif
 ifeq "$(LINKERFILE)" ""
 
 ifeq ($(TRUSTZONE),1)
+
+ifeq ($(USE_CUSTOM_MEMORY_SETTINGS),1)
+
+ifeq "$(MSECURITY_MODE)" "SECURE"
+LINKERFILE=$(abspath ${SECURE_CODE_DIR})/$(TARGET_LC)_s.ld
+else # MSECURITY_MODE=NONSECURE
+LINKERFILE=$(abspath ${NONSECURE_CODE_DIR})/$(TARGET_LC)_ns.ld
+endif # MSECURITY_MODE
+
+else # USE_CUSTOM_MEMORY_SETTINGS=0
+
 ifeq "$(MSECURITY_MODE)" "SECURE"
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_s.ld
 else # MSECURITY_MODE=NONSECURE
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_ns.ld
 endif # MSECURITY_MODE
+
+endif # USE_CUSTOM_MEMORY_SETTINGS
 
 else # TRUSTZONE=0
 
@@ -112,6 +125,7 @@ LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
 endif # TRUSTZONE
 endif # LINKERFILE
 
+################################################################################
 # Compile both Secure and Non-Secure projects and link them into a combined
 # image.
 # Configuration Variables:
@@ -119,14 +133,16 @@ endif # LINKERFILE
 # - MSECURITY_MODE : Set the security context of the project.
 ################################################################################
 ifeq ($(TRUSTZONE),1)
+
+# Project-owner must set these variables in project.mk
+#	Absolute paths will be used when these are used.
+NONSECURE_CODE_DIR ?= $(CMSIS_ROOT)/../../Examples/$(TARGET_UC)/Hello_World_TZ/NonSecure
+SECURE_CODE_DIR ?= $(CMSIS_ROOT)/../../Examples/$(TARGET_UC)/Hello_World_TZ/Secure
+
 ifeq "$(MSECURITY_MODE)" "SECURE"
 ifeq "$(GEN_CMSE_IMPLIB_OBJ)" ""
 
-LOADER_SCRIPT := $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/nonsecure_load.S
-
-# Directory for Non-Secure code, defaults to Hello_World_TZ/NonSecure
-NONSECURE_CODE_DIR ?= $(CMSIS_ROOT)/../../Examples/$(TARGET_UC)/Hello_World_TZ/NonSecure
-SECURE_CODE_DIR ?= $(CMSIS_ROOT)/../../Examples/$(TARGET_UC)/Hello_World_TZ/Secure
+LOADER_ASM := $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/nonsecure_load.S
 
 # Build the Secure and Non-Secure project inside of the Secure project so that
 # "make clean" will catch it automatically.
@@ -137,6 +153,8 @@ SECURE_BUILD_DIR := $(CURDIR)/build/build_s
 NONSECURE_CODE_BIN = $(NONSECURE_BUILD_DIR)/nonsecure.bin
 NONSECURE_CODE_OBJ = $(NONSECURE_BUILD_DIR)/nonsecure.o
 
+# CMSE object file needed for non-secure builds - contains the Non-Secure Callable
+#	symbols with empty definitions at right locations
 SECURE_IMPLIB_OBJ := $(SECURE_BUILD_DIR)/secure_implib.o
 
 # Add the Non-Secure project object to the build.  This is the critical
@@ -147,8 +165,8 @@ PROJ_OBJS = ${NONSECURE_CODE_OBJ}
 secure_implib_obj:
 	@echo ""
 	@echo "****************************************************************************"
-	@echo "* Building Secure Code and generating a CMSE importlib object file"
-	@echo "* with empty definitions of Secure symbols at the right locations."
+	@echo "* Generate the CMSE importlib object file with empty definitions of"
+	@echo "* Secure symbols at the correct locations."
 	@echo "*"
 	@echo "* The generated CMSE importlib object file needs to be linked with"
 	@echo "* Non-Secure Code image."
@@ -162,15 +180,15 @@ $(NONSECURE_CODE_BIN): secure_implib_obj
 	@echo "****************************************************************************"
 	@echo "* Building Non-Secure Code with generated CMSE importlib object file."
 	@echo "****************************************************************************"
-	$(MAKE) -C ${NONSECURE_CODE_DIR} BUILD_DIR=$(NONSECURE_BUILD_DIR) PROJECT=nonsecure
+	$(MAKE) -C ${NONSECURE_CODE_DIR} BUILD_DIR=$(NONSECURE_BUILD_DIR) PROJECT=nonsecure NS_FLASH_START=$(NS_FLASH_START) NS_FLASH_SIZE=$(NS_FLASH_SIZE) NS_SRAM_START=$(NS_SRAM_START) NS_SRAM_SIZE=$(NS_SRAM_SIZE)
 	$(MAKE) -C ${NONSECURE_CODE_DIR} BUILD_DIR=$(NONSECURE_BUILD_DIR) $(NONSECURE_CODE_BIN)
 	@echo ""
 	@echo "****************************************************************************"
 	@echo "* Linking Secure and Non-Secure images together."
 	@echo "****************************************************************************"
 
-${NONSECURE_CODE_OBJ}: $(LOADER_SCRIPT) ${NONSECURE_CODE_BIN}
-	@${CC} ${AFLAGS} -o ${@} -c $(LOADER_SCRIPT)
+${NONSECURE_CODE_OBJ}: $(LOADER_ASM) ${NONSECURE_CODE_BIN}
+	@${CC} ${AFLAGS} -o ${@} -c $(LOADER_ASM)
 
 endif # GEN_CMSE_IMPLIB_OBJ
 endif
@@ -210,6 +228,9 @@ MFPU := fpv5-sp-d16
 
 # Include the rules and goals for building
 include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
+
+# Include memory definitions
+include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_memory.mk
 
 # Include rules for flashing
 include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk

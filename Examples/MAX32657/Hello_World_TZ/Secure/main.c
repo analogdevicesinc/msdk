@@ -18,48 +18,33 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Hello World - Secure.
+ * @details This TrustZone-enabled exampled splits Hello_World into two partitions.
+ *          The Secure world setups the transition to the Non-Secure world, and
+ *          increments the counter. The Non-Secure world prints the count,
+ *          and toggles the LED.
  */
 
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_delay.h"
 #include "led.h"
 #include "pb.h"
 #include "board.h"
-#include "mxc_delay.h"
+#include "spc.h"
 
 /***** Definitions *****/
 
 /***** Globals *****/
 
-extern void *_nonsecure_start;
+// Defined in linker script.
+extern uint32_t _nonsecure_start, _nonsecure_end;
 
 /***** Functions *****/
-
-void NonSecure_Init(void)
-{
-    mxc_ns_call_t Reset_Handler_NS;
-
-    // Setup Non-Secure vector table.
-    SCB_NS->VTOR = (uint32_t)(_nonsecure_start);
-
-    // Setup Non-Secure Main Stack Pointer (MSP_NS).
-    //  Start of vector table contains top of stack value.
-    __TZ_set_MSP_NS((*(uint32_t *)(_nonsecure_start)));
-
-    // Get Non-Secure Reset_Handler.
-    Reset_Handler_NS = (mxc_ns_call_t)(_nonsecure_start + 4);
-
-    // Start Non-Secure code.
-    Reset_Handler_NS();
-
-    // The code should never reach this state.
-    printf("Error: The core never reached the non-secure world.\n");
-}
 
 /**
  * Brief: Increment counter in Secure context from Non-Secure world.
@@ -96,16 +81,25 @@ int main(void)
     // Add any Secure World software initialization and routines here
     //  before NonSecure_Init();
 
-    printf("Now transitioning to the non-secure world.\n");
+    printf("Beginning transition to the non-secure world.\n");
 
-    // Set security state of memory (MPC) and peripherals (SPC) for Secure vs
-    //  Non-Secure access.
+    // Set UART (serial console) and GPIO (LED) peripheral to Non-Secure.
+    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_UART);
+    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_GPIO0);
+
+    // Set LED pins to be accessible in Non-Secure code.
+    MXC_SPC_GPIO_SetNonSecure(MXC_GPIO0, led_pin[0].mask);
+
+    // Set Flash (Code region) as Non-Secure Callable for the IncrementCount_S function.
+    MXC_SPC_SetCode_NSC(true);
 
     // Transition to Non-Secure world.
+    //  Defined in system_max32657.c as a weak function.
+    printf("Transitioning to non-secure world.\n");
     NonSecure_Init();
 
     // Should never reach here.
-    printf("Error: Code should not reach here.\n");
+    printf("Error: Code should not reach here. Transition not successful.\n");
 
     while (1) {}
 }

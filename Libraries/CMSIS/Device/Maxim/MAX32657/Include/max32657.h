@@ -189,46 +189,38 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_PHY_SRAM4_MEM_BASE 0x20030000UL
 #define MXC_PHY_SRAM4_MEM_SIZE 0x00010000UL // 64KB
 
-/* Non-secure Regions */
-#define MXC_FLASH_NS_MEM_BASE 0x01000000UL
+/**
+ * Memory settings are defined accordingly by build system: max32657_memory.mk
+ * 
+ * Definitions that start with the '__' are defined by the build system.
+ *  For example, '__MXC_FLASH_MEM_BASE'
+ */
+
+#if IS_SECURE_ENVIRONMENT
+/* Non-secure Regions that secure code knows about. */
+#define MXC_FLASH_NS_MEM_BASE __MXC_FLASH_NS_MEM_BASE
 #define MXC_FLASH_NS_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
-#define MXC_FLASH_NS_MEM_SIZE 0x00100000UL
-#define MXC_SRAM_NS_MEM_BASE 0x20000000UL
-#define MXC_SRAM_NS_MEM_SIZE 0x00040000UL
+#define MXC_FLASH_NS_MEM_SIZE __MXC_FLASH_NS_MEM_SIZE
+#define MXC_SRAM_NS_MEM_BASE __MXC_SRAM_NS_MEM_BASE
+#define MXC_SRAM_NS_MEM_SIZE __MXC_SRAM_NS_MEM_SIZE
 
 /* Secure Regions */
 /*  ROM is always in secure region. */
 #define MXC_ROM_MEM_BASE 0x00000000UL
 #define MXC_ROM_MEM_SIZE 0x00010000UL
-#define MXC_FLASH_S_MEM_BASE 0x11000000UL
-#define MXC_FLASH_S_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
-#define MXC_FLASH_S_MEM_SIZE 0x00100000UL
 /* Flash info is always in secure region */
 #define MXC_INFO_S_MEM_BASE 0x12000000UL
 #define MXC_INFO_S_MEM_SIZE 0x00004000UL
-#define MXC_SRAM_S_MEM_BASE 0x30000000UL
-#define MXC_SRAM_S_MEM_SIZE 0x00040000UL
 
 #define MXC_INFO_MEM_BASE MXC_INFO_S_MEM_BASE
 #define MXC_INFO_MEM_SIZE MXC_INFO_S_MEM_SIZE
-
-/* Non-Secure Callable Regions */
-
-#if IS_SECURE_ENVIRONMENT
-
-#define MXC_FLASH_MEM_BASE MXC_FLASH_S_MEM_BASE
-#define MXC_FLASH_PAGE_SIZE MXC_FLASH_S_PAGE_SIZE
-#define MXC_FLASH_MEM_SIZE MXC_FLASH_S_MEM_SIZE
-#define MXC_SRAM_MEM_BASE MXC_SRAM_S_MEM_BASE
-#define MXC_SRAM_MEM_SIZE MXC_SRAM_S_MEM_SIZE
-#else
-/* Non-Secure world should not have knowledge of Secure world. */
-#define MXC_FLASH_MEM_BASE MXC_FLASH_NS_MEM_BASE
-#define MXC_FLASH_PAGE_SIZE MXC_FLASH_NS_PAGE_SIZE
-#define MXC_FLASH_MEM_SIZE MXC_FLASH_NS_MEM_SIZE
-#define MXC_SRAM_MEM_BASE MXC_SRAM_NS_MEM_BASE
-#define MXC_SRAM_MEM_SIZE MXC_SRAM_NS_MEM_SIZE
 #endif
+
+#define MXC_FLASH_MEM_BASE __MXC_FLASH_MEM_BASE
+#define MXC_FLASH_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
+#define MXC_FLASH_MEM_SIZE __MXC_FLASH_MEM_SIZE
+#define MXC_SRAM_MEM_BASE __MXC_SRAM_MEM_BASE
+#define MXC_SRAM_MEM_SIZE __MXC_SRAM_MEM_SIZE
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */

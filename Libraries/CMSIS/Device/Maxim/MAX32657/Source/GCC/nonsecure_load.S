@@ -18,7 +18,7 @@
 
 .section .nonsecure_flash
 
-/* Include the fw_update binary file, include global symbols we can use at link time */
+/* Include the non-secure binary file, include global symbols we can use at link time */
 _binary_nonsecure_bin_start:
 .incbin "build/build_ns/nonsecure.bin"
 _binary_nonsecure_bin_end:

@@ -287,6 +287,9 @@ TRUSTZONE ?= 0
 # at compile time.
 MSECURITY_MODE ?= SECURE
 
+# Not accessible in {device}_files.mk without this.
+export MSECURITY_MODE
+
 ifeq "$(MSECURITY_MODE)" "SECURE"
 PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=1
 PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=1

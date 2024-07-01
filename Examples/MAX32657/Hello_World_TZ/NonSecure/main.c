@@ -18,8 +18,11 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Hello World - Non-Secure.
+ * @details This TrustZone-enabled exampled splits Hello_World into two partitions.
+ *          The Secure world setups the transition to the Non-Secure world, and
+ *          increments the counter. The Non-Secure world prints the count,
+ *          and toggles the LED.
  */
 
 /***** Includes *****/

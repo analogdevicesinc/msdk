@@ -25,8 +25,8 @@
  * limitations under the License.
  */
 
-#ifndef EXAMPLES_MAX32657_HELLO_WORLD_TZ_SECURE_PARTITION_MAX32657_H_
-#define EXAMPLES_MAX32657_HELLO_WORLD_TZ_SECURE_PARTITION_MAX32657_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_SOURCE_TEMPLATE_PARTITION_MAX32657_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_SOURCE_TEMPLATE_PARTITION_MAX32657_H_
 
 #include "mxc_device.h"
 
@@ -121,7 +121,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0x1107FFFF      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x11077fff      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is
@@ -147,7 +147,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END1       0x010FFFFF
+#define SAU_INIT_END1       0x010fffff
 
 /*
 //     <o>Region is
@@ -173,7 +173,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END2       0x3001FFFF
+#define SAU_INIT_END2       0x30031fff
 
 /*
 //     <o>Region is
@@ -194,12 +194,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START3     0x20020000
+#define SAU_INIT_START3     0x20032000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END3       0x2003FFFF
+#define SAU_INIT_END3       0x2003ffff
 
 /*
 //     <o>Region is
@@ -1295,4 +1295,4 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
 
 #endif // IS_SECURE_EVIRONMENT
 
-#endif // EXAMPLES_MAX32657_HELLO_WORLD_TZ_SECURE_PARTITION_MAX32657_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_SOURCE_TEMPLATE_PARTITION_MAX32657_H_
