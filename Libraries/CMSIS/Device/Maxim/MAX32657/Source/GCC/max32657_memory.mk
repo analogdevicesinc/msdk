@@ -226,6 +226,14 @@ PROJ_CFLAGS += -D__MXC_SRAM_NS_MEM_BASE=$(__MXC_SRAM_NS_MEM_BASE)
 PROJ_CFLAGS += -D__MXC_SRAM_NS_MEM_SIZE=$(__MXC_SRAM_NS_MEM_SIZE)
 
 else # MSECURITY_MODE=NONSECURE
+
+# Formatting to hex for readability sake.
+NS_FLASH_START := $(shell printf "0x%x" $(NS_FLASH_START))
+NS_FLASH_SIZE := $(shell printf "0x%x" $(NS_FLASH_SIZE))
+
+NS_SRAM_START := $(shell printf "0x%x" $(NS_SRAM_START))
+NS_SRAM_SIZE := $(shell printf "0x%x" $(NS_SRAM_SIZE))
+
 # Check max32657.mk
 # When non-secure project builds, the "host" secure project passes in these
 #	variables (NS_*_START and NS_*_SIZE).
@@ -244,10 +252,12 @@ else # TRUSTZONE disabled
 #	1: Secure
 # Default, startup state is Secure
 __MXC_FLASH_MEM_BASE := $(shell echo $$(( $(PHY_FLASH_START) | (1<<28) )))
-__MXC_FLASH_MEM_SIZE := $(PHY_FLASH_SIZE)
+__MXC_FLASH_MEM_BASE := $(shell printf "0x%x" $(__MXC_FLASH_MEM_BASE))
+__MXC_FLASH_MEM_SIZE := $(shell printf "0x%x" $(PHY_FLASH_SIZE))
 
 __MXC_SRAM_MEM_BASE := $(shell echo $$(( $(PHY_SRAM_START) | (1<<28) )))
-__MXC_SRAM_MEM_SIZE := $(PHY_SRAM_SIZE)
+__MXC_SRAM_MEM_BASE := $(shell printf "0x%x" $(__MXC_SRAM_MEM_BASE))
+__MXC_SRAM_MEM_SIZE := $(shell printf "0x%x" $(PHY_SRAM_SIZE))
 
 endif
 
