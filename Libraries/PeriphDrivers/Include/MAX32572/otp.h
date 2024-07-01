@@ -73,6 +73,13 @@ typedef enum { MXC_OTP_READ_OP, MXC_OTP_WRITE_OP } mxc_otp_op_t;
 int MXC_OTP_Init(mxc_otp_clkdiv_t pclkdiv);
 
 /**
+ * @brief      Power down the OTP Controller.
+ * 
+ * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
+ */
+int MXC_OTP_PowerDown(void);
+
+/**
  * @brief      Checks whether the OTP user block is locked/unlocked.
  * 
  * @return     (0) for Unlocked, (1) for Locked.
