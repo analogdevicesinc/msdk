@@ -68,9 +68,9 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
 unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
 {
     if (MXC_GCR->pckdiv & MXC_F_GCR_PCKDIV_SDHCFRQ) {
-        return SystemCoreClock >> 2; // Div by 4
+        return HIRC96_FREQ >> 2; // Div by 4
     } else {
-        return SystemCoreClock >> 1; // Div by 2
+        return HIRC96_FREQ >> 1; // Div by 2
     }
 }
 
