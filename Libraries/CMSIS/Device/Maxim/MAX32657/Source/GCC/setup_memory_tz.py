@@ -655,10 +655,12 @@ try:
         regex_replace[r'$MEM_ORIGIN_NSC$'] = f"0x{FLASH.nsc_start:08x}"
         regex_replace[r'$MEM_SIZE_NSC$'] = f"0x{FLASH.nsc_start:08x}"
         regex_replace[r'$perm$'] = f" (rx)"
+        regex_replace[r'$FLASH_END_S$'] = f"0x{(FLASH.s_start + FLASH.s_size + FLASH.nsc_size - 1):08x}"
     elif SRAM.is_nonsecurecall_present:
         regex_replace[r'$MEM_ORIGIN_NSC$'] = f"0x{SRAM.nsc_start:08x}"
         regex_replace[r'$MEM_SIZE_NSC$'] = f"0x{SRAM.nsc_start:08x}"
         regex_replace[r'$perm$'] = f"(rwx)"
+        regex_replace[r'$SRAM_END_S$'] = f"0x{SRAM.s_start + SRAM.s_size + SRAM.nsc_size - 1:08x}"
     else:
         raise ValueError("Unexpected problem with updating NSC regions in linker scripts.")
 

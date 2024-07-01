@@ -121,7 +121,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0x11077fff      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x1107ffff      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is
