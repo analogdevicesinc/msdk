@@ -173,7 +173,7 @@
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END2       0x30031fff
+#define SAU_INIT_END2       0x3001ffff
 
 /*
 //     <o>Region is
@@ -194,7 +194,7 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START3     0x20032000
+#define SAU_INIT_START3     0x20020000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>

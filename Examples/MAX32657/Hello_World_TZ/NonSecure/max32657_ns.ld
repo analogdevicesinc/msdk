@@ -30,7 +30,7 @@ ENTRY(Reset_Handler)
 
 MEMORY {
     FLASH         (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* User-selected Non-Secure Flash settings */
-    SRAM         (rwx) : ORIGIN = 0x20032000, LENGTH = 0x0000e000 /* User-selected Non-Secure SRAM settings */
+    SRAM         (rwx) : ORIGIN = 0x20020000, LENGTH = 0x00020000 /* User-selected Non-Secure SRAM settings */
 }
 
 SECTIONS {
