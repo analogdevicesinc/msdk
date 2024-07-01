@@ -42,7 +42,7 @@ SECTIONS {
         /* Align Non-Secure Code to beginning of Flash Block (32KB) */
         _nonsecure_start = ALIGN(., 0x8000);
         KEEP(*nonsecure.o) /* Non-Secure program code */
-        _nonsecure_end = ALIGN(., 0x8000);
+        _nonsecure_end = ALIGN(., 0x8000) - 1; /* -1 for last accessible address, not start of next block.
     } > FLASH_NS
 
     .text :
