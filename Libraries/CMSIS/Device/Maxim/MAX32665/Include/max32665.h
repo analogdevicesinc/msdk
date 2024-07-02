@@ -21,6 +21,8 @@
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_
 
+// clang-format off
+
 #ifndef TARGET_NUM
 #define TARGET_NUM 32665
 #endif
@@ -178,15 +180,16 @@ typedef enum {
 /* ================================================================================ */
 
 /* ----------------------  Configuration of the Cortex-M Processor and Core Peripherals  ---------------------- */
-#define __CM4_REV 0x0100 /*!< Cortex-M4 Core Revision                                */
-#define __MPU_PRESENT 1 /*!< MPU present or not                                     */
-#define __NVIC_PRIO_BITS 3 /*!< Number of Bits used for Priority Levels                */
-#define __Vendor_SysTickConfig 0 /*!< Set to 1 if different SysTick Config is used           */
-#define __FPU_PRESENT 1 /*!< FPU present or not                                     */
+#define __CM4_REV 0x0100            /*!< Cortex-M4 Core Revision                                */
+#define __MPU_PRESENT 1             /*!< MPU present or not                                     */
+#define __NVIC_PRIO_BITS 3          /*!< Number of Bits used for Priority Levels                */
+#define __Vendor_SysTickConfig 0    /*!< Set to 1 if different SysTick Config is used           */
+#define __FPU_PRESENT 1             /*!< FPU present or not                                     */
 
-#include <core_cm4.h> /*!< Cortex-M4 processor and core peripherals               */
+#include <core_cm4.h>               /*!< Cortex-M4 processor and core peripherals               */
 
-#include "system_max32665.h" /*!< System Header                                          */
+#include "system_max32665.h"        /*!< System Header                                          */
+#include "system_core1_max32665.h"  /*!< System Header for Core 1                               */
 
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */

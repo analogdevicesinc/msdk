@@ -9,10 +9,12 @@
 
 # Add your config here!
 
-# If you have secure version of MCU (MAX32666), set SBT=1 to generate signed binary
-# For more information on how sing process works, see
-# https://www.analog.com/en/education/education-library/videos/6313214207112.html
-SBT=0
-
-# Build the Core1 startup/system files.
+# Build with the necessary Core1 startup/system files.
 ARM_DUALCORE=1
+
+# Separate directories for Core 0 and Core 1 code.
+VPATH += Core0
+VPATH += Core1
+
+IPATH += Core0
+IPATH += Core1

@@ -60,6 +60,16 @@ SRCS += heap.c
 SRCS += system_max32665.c
 endif
 
+# Add Core 1 CMSIS source files
+# This prevents the linker script from allocating memory for the Core 1
+#	stack and vector table when Core 1 is not in use.
+# Ex:  "make ARM_DUALCORE=1"
+ARM_DUALCORE ?= 0
+ifeq ($(ARM_DUALCORE),1)
+SRCS += system_core1_max32665.c
+SRCS += startup_core1_max32665.S
+endif
+
 # Add target specific CMSIS source directories
 VPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Source/GCC
 VPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Source
