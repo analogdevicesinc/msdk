@@ -450,7 +450,7 @@ static void datsSetup(dmEvt_t *pMsg)
 {
     /* Initialize control information */
     datsCb.restoringResList = FALSE;
-    
+
     memcpy(&datsScanDataDisc[2], deviceName, sizeof(deviceName));
     datsScanDataDisc[0] = sizeof(deviceName);
     datsScanDataDisc[1] = DM_ADV_TYPE_LOCAL_NAME;
