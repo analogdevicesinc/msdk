@@ -31,6 +31,9 @@ SRCS += pb.c
 SRCS += tft_st7735.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_MX25
+# Define "MAX32690GTK_PACKAGE_TQFN", which some drivers use to work around MAX32690 Rev A2 Errata #16:
+# https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf
+PROJ_CFLAGS += -DMAX32690GTK_PACKAGE_TQFN
 
 MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
