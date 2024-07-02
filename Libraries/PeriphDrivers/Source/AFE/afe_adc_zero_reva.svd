@@ -278,7 +278,7 @@
             <bitWidth>3</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>REF0P_AND_REF0N</name>
+                <name>AIN0P_AND_AIN1N</name>
                 <description>Description not included</description>
                 <value>0</value>
               </enumeratedValue>
@@ -288,27 +288,27 @@
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>REF2P_AND_REF2N</name>
+                <name>REF0P_AND_REF0N</name>
                 <description>Description not included</description>
                 <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>AVDD_AND_AGND</name>
+                <name>VDDA_AND_VSSA</name>
                 <description>Description not included</description>
                 <value>3</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>REF0P_AND_AGND</name>
+                <name>AIN0P_AND_VSSA</name>
                 <description>Description not included</description>
                 <value>4</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>REF1P_AND_AGND</name>
+                <name>REF1P_AND_VSSA</name>
                 <description>Description not included</description>
                 <value>5</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>REF2P_AND_AGND</name>
+                <name>REF0P_AND_VSSA</name>
                 <description>Description not included</description>
                 <value>6</value>
               </enumeratedValue>
