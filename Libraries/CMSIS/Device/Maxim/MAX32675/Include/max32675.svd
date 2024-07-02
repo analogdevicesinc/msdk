@@ -361,7 +361,9 @@
      </fields>
     </register>
     <register>
-     <name>DATAIN16</name>
+     <dim>2</dim>
+     <dimIncrement>2</dimIncrement>
+     <name>DATAIN16[%s]</name>
      <description>CRC Data Input</description>
      <addressOffset>0x0004</addressOffset>
      <size>16</size>
@@ -377,7 +379,9 @@
      </fields>
     </register>
     <register>
-     <name>DATAIN8</name>
+     <dim>4</dim>
+     <dimIncrement>1</dimIncrement>
+     <name>DATAIN8[%s]</name>
      <description>CRC Data Input</description>
      <addressOffset>0x0004</addressOffset>
      <size>8</size>

@@ -7,7 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,7 +88,7 @@ typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x000:</tt> DMA INTEN Register */
     __I  uint32_t intfl;                /**< <tt>\b 0x004:</tt> DMA INTFL Register */
     __R  uint32_t rsv_0x8_0xff[62];
-    __IO mxc_dma_ch_regs_t ch[4];       /**< <tt>\b 0x100:</tt> DMA CH Register */
+    __IO mxc_dma_ch_regs_t    ch[4];    /**< <tt>\b 0x100:</tt> DMA CH Register */
 } mxc_dma_regs_t;
 
 /* Register offsets for module DMA */
