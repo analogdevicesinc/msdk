@@ -18,6 +18,7 @@
  *
  ******************************************************************************/
 
+#include <stdatomic.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -43,7 +44,7 @@ typedef struct {
     int mtMode;
     int mtFirstTrans;
     bool txrx_req;
-    uint8_t req_done;
+    atomic_uint_fast8_t req_done;
     uint8_t async;
     bool hw_ss_control;
 } spi_req_reva_state_t;
@@ -1007,7 +1008,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     //tx
-    if (req->txData != NULL && !tx_is_complete) {
+    if (req->txData != NULL && req->txLen && !tx_is_complete) {
         MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
 
 #if (TARGET_NUM == 32657)
@@ -1053,7 +1054,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     // rx
-    if (req->rxData != NULL && !rx_is_complete) {
+    if (req->rxData != NULL && req->rxLen && !rx_is_complete) {
         MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
 
 #if (TARGET_NUM == 32657)
@@ -1107,11 +1108,11 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     // Manually run TX/RX callbacks if the FIFO pre-load already completed that portion of the transaction
-    if (tx_is_complete) {
+    if (req->txData != NULL && req->txLen && tx_is_complete) {
         MXC_SPI_RevA1_DMACallback(states[spi_num].channelTx, E_NO_ERROR);
     }
 
-    if (rx_is_complete) {
+    if (req->rxData != NULL && req->rxLen && rx_is_complete) {
         MXC_SPI_RevA1_DMACallback(states[spi_num].channelRx, E_NO_ERROR);
     }
 
@@ -1296,22 +1297,25 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
 void MXC_SPI_RevA1_DMACallback(int ch, int error)
 {
     mxc_spi_reva_req_t *temp_req;
+    uint8_t req_done;
 
     for (int i = 0; i < MXC_SPI_INSTANCES; i++) {
         if (states[i].req != NULL) {
             if (states[i].channelTx == ch) {
-                states[i].req_done++;
+                req_done = atomic_fetch_add(&states[i].req_done, 1);
             } else if (states[i].channelRx == ch) {
-                states[i].req_done++;
+                req_done = atomic_fetch_add(&states[i].req_done, 1);
                 //save the request
                 temp_req = states[i].req;
 
                 if (MXC_SPI_GetDataSize((mxc_spi_regs_t *)temp_req->spi) > 8) {
                     MXC_SPI_RevA1_SwapByte(temp_req->rxData, temp_req->rxLen);
                 }
+            } else {
+                continue;
             }
 
-            if (!states[i].txrx_req || (states[i].txrx_req && states[i].req_done == 2)) {
+            if (!states[i].txrx_req || (states[i].txrx_req && req_done == 1)) {
                 //save the request
                 temp_req = states[i].req;
                 MXC_FreeLock((uint32_t *)&states[i].req);
