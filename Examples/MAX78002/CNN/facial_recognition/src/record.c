@@ -40,8 +40,6 @@
 #include "utils.h"
 #include "camera.h"
 #include "faceID.h"
-#include "record.h"
-#include "utils.h"
 #include "MAXCAM_Debug.h"
 #include "cnn_1.h"
 #include "cnn_2.h"
@@ -49,10 +47,8 @@
 #include "led.h"
 #include "lp.h"
 #include "uart.h"
-#include "math.h"
 #include "post_process.h"
 #include "flc.h"
-#include "faceID.h"
 #include "facedetection.h"
 #include "weights_3.h"
 #include "baseaddr.h"
@@ -655,7 +651,7 @@ int add_person(Person *p)
             if (face_detected) {
                 printf("Box width: %d\n", box[2] - box[0]);
                 printf("Box height: %d\n", box[3] - box[1]);
-                if ((box[2] - box[0]) < 90 || (box[3] - box[1]) < 130) {
+                if ((box[2] - box[0]) < 70 || (box[3] - box[1]) < 110) {
                     face_detected = 0;
 
                     if (!init_come_closer) {

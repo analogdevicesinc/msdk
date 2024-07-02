@@ -68,9 +68,9 @@ unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
 {
     // TODO(JC): Confirm this is the scheme used by ME13
     if (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_SDHCFRQ) {
-        return SystemCoreClock >> 2; // Div by 4
+        return IPO_FREQ >> 2; // Div by 4
     } else {
-        return SystemCoreClock >> 1; // Div by 2
+        return IPO_FREQ >> 1; // Div by 2
     }
 }
 

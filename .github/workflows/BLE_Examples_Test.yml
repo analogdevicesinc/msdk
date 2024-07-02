@@ -43,7 +43,7 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  push:
+  
   
 env:
   LOCK_MAX32655_B2: false
@@ -63,7 +63,6 @@ jobs:
         with:
           submodules: false
           repository: analogdevicesinc/msdk
-          ref: ble-workflow-update
           fetch-depth: 0
       
       - name: Check MAX32655
@@ -591,7 +590,7 @@ jobs:
           fi
 
       - name: Lock Boards
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
         with:
           boards: |
             max32655_board1
@@ -605,19 +604,19 @@ jobs:
         run: |
           
           #set advertising names
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_dats/dats_main.c
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_datc/datc_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_dats/dats_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_datc/datc_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_dats/dats_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_datc/datc_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_dats/dats_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_datc/datc_main.c
 
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otas/dats_main.c
-          sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otac/datc_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_otas/dats_main.c
-          sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otas/dats_main.c
+          # sed -i "s/'S'/'?'/g" Examples/MAX32655/Bluetooth/BLE_otac/datc_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32665/Bluetooth/BLE_otas/dats_main.c
+          # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
 
       - name: Erase Boards DATS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
         with:
           board: |
             max32655_board1
@@ -633,7 +632,7 @@ jobs:
 
       - name: Flash DATS 655
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
         with:
           board: |
             max32655_board1
@@ -644,7 +643,11 @@ jobs:
             BLE_datc
             
           suppress_output: true
-          
+          build_flags: |
+            ADV_NAME=DAT?
+            ADV_NAME=DAT?
+
+
           build: true
           distclean: true
 
@@ -660,7 +663,7 @@ jobs:
 
       - name: Erase Boards OTAS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
         with:
           board: |
             max32655_board1
@@ -670,13 +673,18 @@ jobs:
       
       - name: Flash OTAS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
         with:
           board: |
             max32655_board1
             max32655_board2
             max32665_board1
-  
+          build_flags: |
+            ADV_NAME=OTA?
+            ADV_NAME=OTA?
+            ADV_NAME=OTA!
+            ADV_NAME=OTA!
+
           project: |
             BLE_otas
             BLE_otac
@@ -719,7 +727,7 @@ jobs:
          
       - name: Unlock Boards
         if: always()
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
         with:
           lock: false
           all_owned: true

@@ -37,7 +37,8 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-// #define DMA
+// to enable DMA, define in project.mk
+// INTERRUPT is default in project.mk
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024

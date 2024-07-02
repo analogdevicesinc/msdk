@@ -48,11 +48,28 @@ SRCS  = list.c
 SRCS += queue.c
 SRCS += tasks.c
 SRCS += port.c
-SRCS += heap_2.c
 SRCS += timers.c
 SRCS += croutine.c
 SRCS += event_groups.c
 SRCS += stream_buffer.c
+
+# Setup a default heap allocation mechanism
+# Default val is 4, which is recommended to best avoid heap fragmentation 
+FREERTOS_HEAP_TYPE ?= 4
+
+ifeq ($(FREERTOS_HEAP_TYPE), 1) 
+SRCS += heap_1.c
+else ifeq ($(FREERTOS_HEAP_TYPE), 2) 
+SRCS += heap_2.c
+else ifeq ($(FREERTOS_HEAP_TYPE), 3)  
+SRCS += heap_3.c
+else ifeq ($(FREERTOS_HEAP_TYPE), 4)  
+SRCS += heap_4.c
+else ifeq ($(FREERTOS_HEAP_TYPE), 5)  
+SRCS += heap_5.c
+else 
+$(error FREERTOS_HEAP_TYPE must be between 1-5. Default: 4)
+endif
 
 # Where to find source files for this project
 VPATH  = Source/portable/GCC/ARM_CM4F
