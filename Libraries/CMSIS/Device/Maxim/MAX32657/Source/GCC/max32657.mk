@@ -191,7 +191,8 @@ ${NONSECURE_CODE_OBJ}: $(LOADER_ASM) ${NONSECURE_CODE_BIN}
 	@${CC} ${AFLAGS} -o ${@} -c $(LOADER_ASM)
 
 endif # GEN_CMSE_IMPLIB_OBJ
-endif
+endif # MSECURITY_MODE
+
 ifeq "$(MSECURITY_MODE)" "NONSECURE"
 SECURE_BUILD_DIR := $(CURDIR)/../Secure/build/build_s
 SECURE_IMPLIB_OBJ := $(SECURE_BUILD_DIR)/secure_implib.o

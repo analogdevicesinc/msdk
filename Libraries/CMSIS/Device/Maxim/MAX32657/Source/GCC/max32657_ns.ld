@@ -19,21 +19,18 @@
 /**
  * 1MB Total Physical Flash Size
  * 256KB Total Physical SRAM Size
- *
- * Flash: 
- *      - Secure code occupies first half of Flash (512KB)
- *      - Non-Secure code occupies second half of Flash (512KB)
- *
- * SRAM:
- *      - Secure code occupies SRAM0-SRAM2 (32KB + 32KB + 64KB = 128KB)
- *      - Non-Secure code occupies SRAM3-SRAM4 (64KB + 64KB = 128KB)
+ *      - SRAM0 (32KB)
+ *      - SRAM1 (32KB)
+ *      - SRAM2 (64KB)
+ *      - SRAM3 (64KB)
+ *      - SRAM4 (64KB)
  */
 
 ENTRY(Reset_Handler)
 
 MEMORY {
-    FLASH         (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* 512KB Flash */
-    SRAM         (rwx) : ORIGIN = 0x20020000, LENGTH = 0x00020000 /* 128KB SRAM */
+    FLASH         (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* User-selected Non-Secure Flash settings */
+    SRAM         (rwx) : ORIGIN = 0x20020000, LENGTH = 0x00020000 /* User-selected Non-Secure SRAM settings */
 }
 
 SECTIONS {

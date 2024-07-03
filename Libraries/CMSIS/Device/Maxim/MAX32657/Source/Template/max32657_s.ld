@@ -29,7 +29,7 @@
 MEMORY {
     FLASH         (rx) : ORIGIN = $FLASH_ORIGIN_S$, LENGTH = $FLASH_SIZE_S$ /* User-selected Secure Flash */
     FLASH_NS      (rx) : ORIGIN = $FLASH_ORIGIN_NS$, LENGTH = $FLASH_SIZE_NS$ /* User-selected Non-Secure Flash */
-    SRAM         (rwx) : ORIGIN = $SRAM_ORIGIN_S$, LENGTH = $SRAM_ORIGIN_S$ /* User-selected Secure SRAM */
+    SRAM         (rwx) : ORIGIN = $SRAM_ORIGIN_S$, LENGTH = $SRAM_SIZE_S$ /* User-selected Secure SRAM */
     SRAM_NS      (rwx) : ORIGIN = $SRAM_ORIGIN_NS$, LENGTH = $SRAM_SIZE_NS$ /* User-selected Non-Secure SRAM */
 
     NSC_REGION   $perm$ : ORIGIN = $MEM_ORIGIN_NSC$, LENGTH = $MEM_SIZE_NSC$ /* User-selected Non-Secure Callable Region */

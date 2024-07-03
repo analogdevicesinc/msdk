@@ -19,30 +19,29 @@
 /**
  * 1MB Total Physical Flash Size
  * 256KB Total Physical SRAM Size
- *
- * Flash: 
- *      - Secure code occupies first half of Flash (512KB)
- *      - Non-Secure code occupies second half of Flash (512KB)
- *
- * SRAM:
- *      - Secure code occupies SRAM0-SRAM2 (32KB + 32KB + 64KB = 128KB)
- *      - Non-Secure code occupies SRAM3-SRAM4 (64KB + 64KB = 128KB)
+ *      - SRAM0 (32KB)
+ *      - SRAM1 (32KB)
+ *      - SRAM2 (64KB)
+ *      - SRAM3 (64KB)
+ *      - SRAM4 (64KB)
  */
 
 MEMORY {
-    FLASH         (rx) : ORIGIN = 0x11000000, LENGTH = 0x0007E000 /* 504KB Secure Flash */
-    FLASH_NSC     (rx) : ORIGIN = 0x1107E000, LENGTH = 0x00002000 /* 8KB Non-Secure Callable Region */
-    FLASH_NS      (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* 512KB Non-Secure Flash */
-    SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00020000 /* 128KB SRAM */
+    FLASH         (rx) : ORIGIN = 0x11000000, LENGTH = 0x00078000 /* User-selected Secure Flash */
+    FLASH_NS      (rx) : ORIGIN = 0x01080000, LENGTH = 0x00080000 /* User-selected Non-Secure Flash */
+    SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00020000 /* User-selected Secure SRAM */
+    SRAM_NS      (rwx) : ORIGIN = 0x20020000, LENGTH = 0x00020000 /* User-selected Non-Secure SRAM */
+
+    NSC_REGION    (rx) : ORIGIN = 0x11078000, LENGTH = 0x11078000 /* User-selected Non-Secure Callable Region */
 }
 
 SECTIONS {
     .nonsecure_flash :
     {
-        /* Align Non-Secure Code to beginning of Flash Block (32KB) */
+        /* Non-Secure Code must be aligned with this memory's block size. */
         _nonsecure_start = ALIGN(., 0x8000);
         KEEP(*nonsecure.o) /* Non-Secure program code */
-        _nonsecure_end = ALIGN(., 0x8000) - 1; /* -1 for last accessible address, not start of next block.
+        _nonsecure_end = ALIGN(., 0x8000) - 1; /* -1 for last accessible address, not start of next block */
     } > FLASH_NS
 
     .text :
@@ -84,7 +83,7 @@ SECTIONS {
         _sg_veneers = .;
         *(.gnu.sgstubs*)
         _esg_veneers = .;
-    } > FLASH
+    } > NSC_REGION
 
     .ARM.extab :
     {
