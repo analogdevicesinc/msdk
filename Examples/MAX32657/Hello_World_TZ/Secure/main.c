@@ -54,6 +54,9 @@ extern uint32_t _nonsecure_start, _nonsecure_end;
  *  world can access all of Secure memory. Secure code must also
  *  handle non-secure memory as volatile.
  * 
+ * By design, illegal accesses would trigger a hardfault unless
+ *  handled by the MPC/PPC.
+ * 
  * Param:   *count    Pointer of counter value to increment.
  * Return:  Error code.
  */
