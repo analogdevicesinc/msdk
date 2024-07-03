@@ -249,6 +249,46 @@
         </fields>
       </register>
       <register>
+        <name>INTFL</name>
+        <description>Interrupt Flag Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ERTOC_RDY</name>
+            <description>ERTCO 32K Ready.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FRQCNT</name>
+            <description>Frequency Counter Interrupt Flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ERTOC_RDY</name>
+            <description>ERTCO 32K Ready Interrupt Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FRQCNT</name>
+            <description>Frequency Counter Interrupt Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>FRQCNTCTRL</name>
         <description>Frequency Counter Control Register.</description>
         <addressOffset>0x28</addressOffset>

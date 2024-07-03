@@ -78,7 +78,9 @@ typedef struct {
     __IO uint32_t autocal2;             /**< <tt>\b 0x0C:</tt> FCR AUTOCAL2 Register */
     __R  uint32_t rsv_0x10_0x17[2];
     __IO uint32_t erfoks;               /**< <tt>\b 0x18:</tt> FCR ERFOKS Register */
-    __R  uint32_t rsv_0x1c_0x27[3];
+    __IO uint32_t intfl;                /**< <tt>\b 0x1C:</tt> FCR INTFL Register */
+    __IO uint32_t inten;                /**< <tt>\b 0x20:</tt> FCR INTEN Register */
+    __R  uint32_t rsv_0x24;
     __IO uint32_t frqcntctrl;           /**< <tt>\b 0x28:</tt> FCR FRQCNTCTRL Register */
     __IO uint32_t frqcntcmp;            /**< <tt>\b 0x2C:</tt> FCR FRQCNTCMP Register */
     __I  uint32_t refclk;               /**< <tt>\b 0x30:</tt> FCR REFCLK Register */
@@ -97,6 +99,8 @@ typedef struct {
 #define MXC_R_FCR_AUTOCAL1                 ((uint32_t)0x00000008UL) /**< Offset from FCR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_FCR_AUTOCAL2                 ((uint32_t)0x0000000CUL) /**< Offset from FCR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000018UL) /**< Offset from FCR Base Address: <tt> 0x0018</tt> */
+#define MXC_R_FCR_INTFL                    ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */
+#define MXC_R_FCR_INTEN                    ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
 #define MXC_R_FCR_FRQCNTCTRL               ((uint32_t)0x00000028UL) /**< Offset from FCR Base Address: <tt> 0x0028</tt> */
 #define MXC_R_FCR_FRQCNTCMP                ((uint32_t)0x0000002CUL) /**< Offset from FCR Base Address: <tt> 0x002C</tt> */
 #define MXC_R_FCR_REFCLK                   ((uint32_t)0x00000030UL) /**< Offset from FCR Base Address: <tt> 0x0030</tt> */
@@ -203,6 +207,34 @@ typedef struct {
 #define MXC_S_FCR_ERFOKS_CLKSEL_IPO                    (MXC_V_FCR_ERFOKS_CLKSEL_IPO << MXC_F_FCR_ERFOKS_CLKSEL_POS) /**< ERFOKS_CLKSEL_IPO Setting */
 
 /**@} end of group FCR_ERFOKS_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_INTFL FCR_INTFL
+ * @brief    Interrupt Flag Register.
+ * @{
+ */
+#define MXC_F_FCR_INTFL_ERTOC_RDY_POS                  0 /**< INTFL_ERTOC_RDY Position */
+#define MXC_F_FCR_INTFL_ERTOC_RDY                      ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_ERTOC_RDY_POS)) /**< INTFL_ERTOC_RDY Mask */
+
+#define MXC_F_FCR_INTFL_FRQCNT_POS                     1 /**< INTFL_FRQCNT Position */
+#define MXC_F_FCR_INTFL_FRQCNT                         ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_FRQCNT_POS)) /**< INTFL_FRQCNT Mask */
+
+/**@} end of group FCR_INTFL_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_INTEN FCR_INTEN
+ * @brief    Interrupt Enable Register.
+ * @{
+ */
+#define MXC_F_FCR_INTEN_ERTOC_RDY_POS                  0 /**< INTEN_ERTOC_RDY Position */
+#define MXC_F_FCR_INTEN_ERTOC_RDY                      ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_ERTOC_RDY_POS)) /**< INTEN_ERTOC_RDY Mask */
+
+#define MXC_F_FCR_INTEN_FRQCNT_POS                     1 /**< INTEN_FRQCNT Position */
+#define MXC_F_FCR_INTEN_FRQCNT                         ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_FRQCNT_POS)) /**< INTEN_FRQCNT Mask */
+
+/**@} end of group FCR_INTEN_Register */
 
 /**
  * @ingroup  fcr_registers
