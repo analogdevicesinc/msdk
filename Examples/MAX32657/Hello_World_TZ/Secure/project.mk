@@ -20,14 +20,20 @@ NONSECURE_CODE_DIR=../NonSecure
 SECURE_CODE_DIR=.
 
 # Set up custom memory settings if enabled
-USE_CUSTOM_MEMORY_SETTINGS = 1
+#	1 - enabled, 0 - disabled.
+USE_CUSTOM_MEMORY_SETTINGS = 0
+
+################################################################################
+#
+#	If 'USE_CUSTOM_MEMORY_SETTINGS = 1':
+#
 
 # Select which type of memory the main code will execute from.
 #	Possible options: FLASH or SRAM
 EXECUTE_CODE_MEM=FLASH
 
 # *_SIZE required if USE_CUSTOM_MEMORY_SETTINGS=1
-# Total size of Flash and SRAM regions must equal physical size constraints.
+# Total of *_FLASH_SIZE and *_SRAM_SIZE regions must equal their respective physical size constraints.
 #	FLASH: 1MB = 0x00100000
 #	SRAM: 256KB = 0x00040000
 S_FLASH_SIZE=0x00080000
@@ -40,9 +46,9 @@ NS_SRAM_SIZE=0x00020000
 # This sets the size of that region.
 NSC_SIZE=0x00008000 # Not required.
 
-# Optional, but all *_START must be set if used.
+# Optional for finer grain control, but all *_START variables must be set if provided.
 # Note: bit 28 of the starting address indicates the security state of the region.
-#	Default settings, the secure regions start in first half of memory, and the non-
+#	If not provided, by default, the secure regions start in first half of memory, and the non-
 #	secure regions start in the second half.
 # S_FLASH_START=0x11000000
 # NS_FLASH_START=0x01080000

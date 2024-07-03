@@ -205,6 +205,12 @@ __weak int NonSecure_Init(void)
     int error;
     mxc_ns_call_t Reset_Handler_NS;
 
+    // Secure world must enable FPU for non-secure world. (Turned off by default).
+#if (__FPU_PRESENT == 1U)
+    /* Enable FPU - coprocessor slots 10 & 11 full access */
+    SCB_NS->CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
+#endif /* __FPU_PRESENT check */
+
     // Setup Non-Secure vector table.
     //  Global symbols defined in Libraries/CMSIS/Device/Maxim/MAX32657/Source/GCC/nonsecure_load.S
     //  indicates the beginning of the nonsecure image, which starts at the vector table.
