@@ -183,7 +183,7 @@ NS_FLASH_START := $(shell echo $$(( $(PHY_FLASH_START) + $(S_FLASH_SIZE) )))
 NS_FLASH_SIZE := $(shell echo $$(( $(PHY_FLASH_SIZE) / 2 )))
 
 S_SRAM_START := $(shell echo $$(( $(PHY_SRAM_START) | (1<<28) )))
-S_FLASH_START := $(shell printf "0x%x" $(S_SRAM_START))
+S_SRAM_START := $(shell printf "0x%x" $(S_SRAM_START))
 S_SRAM_SIZE := $(shell echo $$(( $(PHY_SRAM_SIZE) / 2 )))
 
 NS_SRAM_START := $(shell echo $$(( $(PHY_SRAM_START) + $(S_SRAM_SIZE) )))
