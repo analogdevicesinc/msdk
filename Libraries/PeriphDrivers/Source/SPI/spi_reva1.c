@@ -18,7 +18,6 @@
  *
  ******************************************************************************/
 
-#include <stdatomic.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -44,7 +43,7 @@ typedef struct {
     int mtMode;
     int mtFirstTrans;
     bool txrx_req;
-    atomic_uint_fast8_t req_done;
+    uint8_t req_done;
     uint8_t async;
     bool hw_ss_control;
 } spi_req_reva_state_t;
@@ -1302,9 +1301,9 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error)
     for (int i = 0; i < MXC_SPI_INSTANCES; i++) {
         if (states[i].req != NULL) {
             if (states[i].channelTx == ch) {
-                req_done = atomic_fetch_add(&states[i].req_done, 1);
+                req_done = states[i].req_done++;
             } else if (states[i].channelRx == ch) {
-                req_done = atomic_fetch_add(&states[i].req_done, 1);
+                req_done = states[i].req_done++;
                 //save the request
                 temp_req = states[i].req;
 
