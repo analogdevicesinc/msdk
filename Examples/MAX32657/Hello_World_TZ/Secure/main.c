@@ -41,9 +41,6 @@
 
 /***** Globals *****/
 
-// Defined in linker script.
-extern uint32_t _nonsecure_start, _nonsecure_end;
-
 /***** Functions *****/
 
 /**
