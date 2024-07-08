@@ -224,6 +224,8 @@ jobs:
 
           grep -r "== == == == =" Examples/MAX32690
 
+          git rev-parse HEAD
+
           python .github/workflows/scripts/build.py
 
   Regression_Test_Make_3_81:
