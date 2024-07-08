@@ -35,7 +35,8 @@ PHY_SRAM_START ?= 0x20000000
 PHY_SRAM_SIZE ?= 0x00040000 # 256KiB
 
 ###############################################################################
-# Required arguments that user must set in project.mk
+# Required arguments that user must set in project.mk if they choose to
+# use their own memory settings.
 #
 
 USE_CUSTOM_MEMORY_SETTINGS ?= 0
