@@ -297,7 +297,7 @@ typedef struct {
 #define MXC_F_GCR_PM_MODE                              ((uint32_t)(0xFUL << MXC_F_GCR_PM_MODE_POS)) /**< PM_MODE Mask */
 #define MXC_V_GCR_PM_MODE_ACTIVE                       ((uint32_t)0x0UL) /**< PM_MODE_ACTIVE Value */
 #define MXC_S_GCR_PM_MODE_ACTIVE                       (MXC_V_GCR_PM_MODE_ACTIVE << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_ACTIVE Setting */
-#define MXC_V_GCR_PM_MODE_BACKUP                       ((uint32_t)0x9UL) /**< PM_MODE_BACKUP Value */
+#define MXC_V_GCR_PM_MODE_BACKUP                       ((uint32_t)0x4UL) /**< PM_MODE_BACKUP Value */
 #define MXC_S_GCR_PM_MODE_BACKUP                       (MXC_V_GCR_PM_MODE_BACKUP << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_BACKUP Setting */
 #define MXC_V_GCR_PM_MODE_PDM                          ((uint32_t)0xAUL) /**< PM_MODE_PDM Value */
 #define MXC_S_GCR_PM_MODE_PDM                          (MXC_V_GCR_PM_MODE_PDM << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_PDM Setting */

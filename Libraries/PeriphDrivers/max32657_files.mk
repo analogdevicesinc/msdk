@@ -102,9 +102,10 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/TZ
 ifeq "$(MSECURITY_MODE)" "SECURE"
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TZ/mpc_me30.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TZ/spc_me30.c
-else
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TZ/nspc_me30.c
 endif
+# NSPC is technically accessible from secure world, but there's no reason
+#	to use the NSPC when the SPC is available for secure world.
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TZ/nspc_me30.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/UART
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/UART/uart_common.c

@@ -403,14 +403,14 @@
             <bitWidth>4</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>active</name>
+                <name>ACTIVE</name>
                 <description>Active Mode.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>backup</name>
+                <name>BACKUP</name>
                 <description>Backup Mode.</description>
-                <value>9</value>
+                <value>4</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>PDM</name>

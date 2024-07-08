@@ -23,148 +23,153 @@
             <enumeratedValues>
               <enumeratedValue>
                 <name>GCR</name>
-                <description>Security Access for GCR.</description>
+                <description>Privilege setting for GCR.</description>
                 <value>0x01</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>SIR</name>
-                <description>Security Access for SIR.</description>
+                <description>Privilege setting for SIR.</description>
                 <value>0x02</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>FCR</name>
-                <description>Security Access for FCR.</description>
+                <description>Privilege setting for FCR.</description>
                 <value>0x04</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>WDT</name>
-                <description>Security Access for WDT.</description>
+                <description>Privilege setting for WDT.</description>
                 <value>0x08</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>AES</name>
-                <description>Security Access for AES.</description>
+                <description>Privilege setting for AES.</description>
                 <value>0x010</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>AESKEYS</name>
-                <description>Security Access for AESKEYS.</description>
+                <description>Privilege setting for AESKEYS.</description>
                 <value>0x020</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>GPIO0</name>
-                <description>Security Access for GPIO0.</description>
+                <description>Privilege setting for GPIO0.</description>
                 <value>0x040</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>CRC</name>
-                <description>Security Access for CRC.</description>
+                <description>Privilege setting for CRC.</description>
                 <value>0x080</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TMR0</name>
-                <description>Security Access for TMR0.</description>
+                <description>Privilege setting for TMR0.</description>
                 <value>0x0100</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TMR1</name>
-                <description>Security Access for TMR1.</description>
+                <description>Privilege setting for TMR1.</description>
                 <value>0x0200</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TMR2</name>
-                <description>Security Access for TMR2.</description>
+                <description>Privilege setting for TMR2.</description>
                 <value>0x0400</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TMR3</name>
-                <description>Security Access for TMR3.</description>
+                <description>Privilege setting for TMR3.</description>
                 <value>0x0800</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TMR4</name>
-                <description>Security Access for TMR4.</description>
+                <description>Privilege setting for TMR4.</description>
                 <value>0x01000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TMR5</name>
-                <description>Security Access for TMR5.</description>
+                <description>Privilege setting for TMR5.</description>
                 <value>0x02000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>I3C</name>
-                <description>Security Access for I3C.</description>
+                <description>Privilege setting for I3C.</description>
                 <value>0x04000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>UART</name>
-                <description>Security Access for UART.</description>
+                <description>Privilege setting for UART.</description>
                 <value>0x08000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>SPI</name>
-                <description>Security Access for SPI.</description>
+                <description>Privilege setting for SPI.</description>
                 <value>0x010000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TRNG</name>
-                <description>Security Access for TRNG.</description>
+                <description>Privilege setting for TRNG.</description>
                 <value>0x020000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>BTLE_DBB</name>
-                <description>Security Access for BTLE DBB.</description>
+                <description>Privilege setting for BTLE DBB.</description>
                 <value>0x040000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>BTLE_RFFE</name>
-                <description>Security Access for BTLE RFFE.</description>
+                <description>Privilege setting for BTLE RFFE.</description>
                 <value>0x080000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>RSTZ</name>
-                <description>Security Access for RSTZ.</description>
+                <description>Privilege setting for RSTZ.</description>
                 <value>0x0100000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>BOOST</name>
-                <description>Security Access for Boost Controller.</description>
+                <description>Privilege setting for Boost Controller.</description>
                 <value>0x0200000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>TRIMSIR</name>
-                <description>Security Access for TRIMSIR.</description>
+                <description>Privilege setting for TRIMSIR.</description>
                 <value>0x0400000</value>
               </enumeratedValue>
               <enumeratedValue>
+                <name>BBFCR</name>
+                <description>Privilege setting for BBFCR.</description>
+                <value>0x0800000</value>
+              </enumeratedValue>
+              <enumeratedValue>
                 <name>RTC</name>
-                <description>Security Access for RTC.</description>
+                <description>Privilege setting for RTC.</description>
                 <value>0x01000000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>WUT0</name>
-                <description>Security Access for WUT0.</description>
+                <description>Privilege setting for WUT0.</description>
                 <value>0x02000000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>WUT1</name>
-                <description>Security Access for WUT1.</description>
+                <description>Privilege setting for WUT1.</description>
                 <value>0x04000000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>PWRSEQ</name>
-                <description>Security Access for Power Sequencer.</description>
+                <description>Privilege setting for Power Sequencer.</description>
                 <value>0x08000000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>MCR</name>
-                <description>Security Access for MCR.</description>
+                <description>Privilege setting for MCR.</description>
                 <value>0x10000000</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>ALL</name>
-                <description>Security Access for MCR.</description>
-                <value>0x1F7FFFFF</value>
+                <description>Privilege setting for all peripherals.</description>
+                <value>0x1FFFFFFF</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
