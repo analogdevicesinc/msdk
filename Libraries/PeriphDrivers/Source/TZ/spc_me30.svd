@@ -265,13 +265,13 @@
                 <value>0x020</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>GPIO0</name>
-                <description>Security Access for GPIO0.</description>
+                <name>CRC</name>
+                <description>Security Access for CRC.</description>
                 <value>0x040</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>CRC</name>
-                <description>Security Access for CRC.</description>
+                <name>GPIO0</name>
+                <description>Security Access for GPIO0.</description>
                 <value>0x080</value>
               </enumeratedValue>
               <enumeratedValue>
@@ -430,13 +430,13 @@
                 <value>0x020</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>GPIO0</name>
-                <description>Privilege setting for GPIO0.</description>
+                <name>CRC</name>
+                <description>Privilege setting for CRC.</description>
                 <value>0x040</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>CRC</name>
-                <description>Privilege setting for CRC.</description>
+                <name>GPIO0</name>
+                <description>Privilege setting for GPIO0.</description>
                 <value>0x080</value>
               </enumeratedValue>
               <enumeratedValue>

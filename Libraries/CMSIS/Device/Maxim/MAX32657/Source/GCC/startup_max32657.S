@@ -135,7 +135,7 @@ __isr_vector:
     .long RSV47_IRQHandler              /* 0x3F  0x00FC  63: Reserved */
     .long MPC_IRQHandler                /* 0x40  0x0100  64: MPC Combined (Secure) */
     .long PPC_IRQHandler                /* 0x44  0x0104  65: PPC Combined (Secure) */
-    .long RSV50_IRQHandler              /* 0x48  0x0108  66: Reserved */
+    .long FRQCNT_IRQHandler             /* 0x48  0x0108  66: Frequency Counter */
     .long RSV51_IRQHandler              /* 0x49  0x010C  67: Reserved */
     .long RSV52_IRQHandler              /* 0x4A  0x0110  68: Reserved */
     .long RSV53_IRQHandler              /* 0x4B  0x0114  69: Reserved */
@@ -317,7 +317,7 @@ Reset_Handler:
     def_irq_handler RSV47_IRQHandler              /* 0x3F  0x00FC  63: Reserved */
     def_irq_handler MPC_IRQHandler                /* 0x40  0x0100  64: MPC Combined (Secure) */
     def_irq_handler PPC_IRQHandler                /* 0x44  0x0104  65: PPC Combined (Secure) */
-    def_irq_handler RSV50_IRQHandler              /* 0x48  0x0108  66: Reserved */
+    def_irq_handler FRQCNT_IRQHandler             /* 0x48  0x0108  66: Frequency Counter */
     def_irq_handler RSV51_IRQHandler              /* 0x49  0x010C  67: Reserved */
     def_irq_handler RSV52_IRQHandler              /* 0x4A  0x0110  68: Reserved */
     def_irq_handler RSV53_IRQHandler              /* 0x4B  0x0114  69: Reserved */

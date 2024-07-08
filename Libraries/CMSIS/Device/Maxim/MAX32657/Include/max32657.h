@@ -127,7 +127,7 @@ typedef enum {
     RSV47_IRQn,             /* 0x3F  0x00FC  63: Reserved */
     MPC_IRQn,               /* 0x40  0x0100  64: MPC Combined (Secure) */
     PPC_IRQn,               /* 0x41  0x0104  65: PPC Combined (Secure) */
-    RSV50_IRQn,             /* 0x42  0x0108  66: Reserved  */
+    FRQCNT_IRQn,            /* 0x42  0x0108  66: Frequency Counter */
     RSV51_IRQn,             /* 0x43  0x010C  67: Reserved */
     RSV52_IRQn,             /* 0x44  0x0110  68: Reserved */
     RSV53_IRQn,             /* 0x45  0x0114  69: Reserved */
