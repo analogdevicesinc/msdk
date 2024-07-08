@@ -863,7 +863,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             else
                 TFT_Print(buff, 20, 30, font_2,
                           snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
-                                   (double)100.0 * max / 32768.0));
+                                   (double)(100.0 * max / 32768.0)));
             //TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
             /* uncomment to show the next 4 top classes */
