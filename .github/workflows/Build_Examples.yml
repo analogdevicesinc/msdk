@@ -222,7 +222,7 @@ jobs:
           # Set MAXIM_PATH to limit warnings
           export MAXIM_PATH=$(pwd)
 
-          git pull
+          grep -r "== == == == =" Examples/MAX32690
 
           python .github/workflows/scripts/build.py
 
