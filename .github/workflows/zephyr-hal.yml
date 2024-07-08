@@ -29,6 +29,7 @@ jobs:
     permissions:
       # This will depend on permissions set by repo and org (separate levels of permissions)
       contents: write
+      pull-requests: write
 
     steps:
       # Checkout msdk repository
