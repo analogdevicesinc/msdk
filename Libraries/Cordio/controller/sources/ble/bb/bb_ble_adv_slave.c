@@ -465,3 +465,7 @@ void BbBleGetAdvStats(BbBleAdvPktStats_t *pStats)
 {
   *pStats = bbAdvStats;
 }
+void BbBleResetAdvStats(void)
+{
+  memset(&bbAdvStats, 0, sizeof(BbBleAdvPktStats_t));
+}

@@ -123,7 +123,10 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
 
 /* ************************************************************************** */
 int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
-
+/* ************************************************************************** */
+void MXC_SDHC_Set_Default_DataWidth(mxc_sdhc_data_width width);
+/* ************************************************************************** */
+mxc_sdhc_data_width MXC_SDHC_Get_Default_DataWidth(void);
 
 /**@} end of group sdhc */
 

@@ -68,17 +68,17 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
 unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
 {
     // Figure 4-1 of the preliminary AI85 UG (04/01/2022) shows the SDHC hardware block
-    // connected directly to the SYS_CLK node.  This is most likely inaccurate, but the
+    // connected directly to the IPO Clock node.  This is most likely inaccurate, but the
     // register description for MXC_GCR->pclkdiv marks the usual SDHC divider as reserved.
     // We will follow figure 4-1 for now.
 
     if (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIS1_SDHC) {
-        return SystemCoreClock >> 2; // Div by 4
+        return IPO_FREQ >> 2; // Div by 4
     } else {
-        return SystemCoreClock >> 1; // Div by 2
+        return IPO_FREQ >> 1; // Div by 2
     }
 
-    return SystemCoreClock;
+    return IPO_FREQ;
 }
 
 /* ************************************************************************** */

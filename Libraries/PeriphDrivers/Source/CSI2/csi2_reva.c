@@ -37,6 +37,7 @@
 #include "dma.h"
 #include "dma_reva.h"
 #include "mcr_regs.h"
+#include "tmr.h"
 
 /* **** Definitions **** */
 
@@ -66,6 +67,8 @@
                  ((x) == 1) ? DMA1_IRQn : \
                  ((x) == 2) ? DMA2_IRQn : \
                               DMA3_IRQn))
+
+#define MAX_G_FRAME_COMPLETE_US 1500000 // 1.5 seconds
 
 /* **** Globals **** */
 
@@ -361,7 +364,15 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     interrupt handler. (MXC_CSI2_RevA_Handler)
     */
 
-    while (!g_frame_complete) {}
+    MXC_TMR_SW_Start(MXC_TMR0); // runs in microseconds
+
+    while (!g_frame_complete) {
+        if (MXC_TMR_TO_Elapsed(MXC_TMR0) > MAX_G_FRAME_COMPLETE_US) {
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            return E_NO_RESPONSE;
+        }
+    }
+    MXC_TMR_SW_Stop(MXC_TMR0);
 
     if (!csi2_state.capture_stats.success)
         return E_FAIL;

@@ -141,9 +141,226 @@ The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, an
 * Trace and assert diagnostic services.
 * Security interfaces for encryption and random number generation.
 
-#### Platform Adaption Layer
+#### WSF_ASSERT:
+
+1. First thing is to set the MACRO:
+```c
+#define WSF_ASSERT_ENABLED TRUE
+```
+2. Call WSF_ASSERT
+```c
+WSF_ASSERT(exp);
+```
+If exp != true, perform an assert action.
+
+#### WSF_CS:
+Put WsfCsEnter() and WsfCsExit() around the critical section: 
+```c
+WsfCsEnter();
+/*************critical section*************/
+memUsed = WsfBufInit(numPools, poolDesc);
+WsfHeapAlloc(memUsed);
+/*******************************************/
+WsfCsExit();
+```
+Inside the critial section, all IRQ Interrupts will be disabled. No other codes will be executed inside critial section. 
+
+
+#### WSF_BUF:
+1. Initialize and validate the Buf memory
+
+Note: it should be surrounded by critical section to prevent any interrupt corrupting the allocate process
+```c
+/* Initial buffer configuration. */
+WsfCsEnter();
+memUsed = WsfBufInit(numPools, poolDesc);
+WsfHeapAlloc(memUsed);
+WsfCsExit();
+```
+
+2. Allocate the memory with size
+```c
+pointer = WsfBufAlloc(size);
+
+// initialize the data pointed by pointer to zero
+memset(pointer, 0, size);
+```
+pointer: Pointer to allocated buffer or NULL if allocation fails.
+size: Length of buffer to allocate. 
+
+3. Free the buffer memory
+```c
+WsfBufFree(pointer)
+```
+pBuf: Buffer to free.
+
+#### WSF_MSG:
+1. Allocate a data message buffer to be sent with WsfMsgSend()
+```c
+char* pMsg = MsgWsfMsgDataAlloc(uint16_t len, uint8_t tailroom);
+```
+len: Message length in bytes.
+
+tailroom: Tailroom length in bytes.
+
+2. Set up the event handler
+```c
+//this is the callback to the timer
+void wsfEventHandler_t(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    //do stuff
+
+}
+
+wsfHandlerId_t handlerId;
+handlerId = WsfOsSetNextHandler(wsfEventHandler_t);
+```
+
+3. Send a message to an event handler
+```c
+
+WsfMsgSend(handlerId, pMsg);
+```
+handlerId: Event handler ID.
+
+pMsg: Pointer to message buffer.
+
+4. Free a message buffer allocated with MsgWsfMsgDataAlloc().
+```c
+WsfMsgFree(pMsg)
+```
+
+#### WSF_TIMER:
+
+1. Define a timer globally
+```c
+wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
+```
+
+
+2. Define callback to timer
+```c
+
+//this is the callback to the timer
+void myTimerHandlerCB(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    uint32_t delayStart_ms = 500;
+    //do stuff
+    //kick off timer again
+     WsfTimerStartMs(&myTimer, delayStart_ms);
+
+}
+```
+3. Initialize timer handler and start timer
+```c
+
+//some where you have to set up the timer
+/* Setup the erase handler */
+myTimerHandlerId = WsfOsSetNextHandler(myTimerHandlerCB);
+myTimer.handlerId = myTimerHandlerId;
+
+// somewhere you have to start the timer
+WsfTimerStartMs(&myTimer, 100);
+```
+
+#### WSF_TRACE:
+1. First thing is to set the WSF_TRACE_ENABLED or WSF_TOKEN_ENABLED MACRO:
+```c
+// set one of the following below depending on your need
+WSF_TRACE_ENABLED=TRUE
+WSF_TOKEN_ENABLED=TRUE
+```
+2. Call the corresponding Macro
+```c
+WSF_TRACE_INFO0("print the message you want");
+APP_TRACE_INFO0("print the message you want");
+```
+
+#### WSF_NVM:
+1. Initialize the WSF NVM
+```c
+WsfNvmInit(void);
+```
+2. Setup callback function
+```c
+
+// setup different callback function depending on your need
+void callBack(bool status)
+{
+    // doing stuffs
+}
+```
+3. Call read/write/erase functions: 
+```c
+
+// read data
+uint8_t pDataR[10];
+status = WsfNvmReadData(id, pDataR,10, callBack);
+
+// write data
+const uint8_t pDataW[10] = {0};
+status = WsfNvmWriteData(id, pDataW, 10, callBack);
+
+// erase data
+status WsfNvmEraseData(id, callBack);
+
+// erase all data
+WsfNvmEraseDataAll(callBack);
+```
+
+status(bool): TRUE if NVM operation is successful, FALSE otherwise.
+
+
+4. After reading, writing, and deleting data, there will be fragment inside the memory. We can call WsfNvmDefragment() function to defragment the NVM:
+Only used when:
+- Storage is full
+- A record has been deleted
+
+Note: copyBuf must be at least the size of WSF NVM allocated flash.
+```c
+// copyBuf must be at least the size of WSF NVM allocated flash.
+if ( WsfNvmIsFull() )
+{
+    status =  WsfNvmDefragment(copyBuf, size);
+}
+
+```
+
+
+### Platform Adaption Layer
 
 The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system-level functions such as sleep and memory management. 
+
+_MAX32655:_
+
+| **Peripheral** | **Use** | **Configurable** |
+| ---------------|---------|------------------ |
+| GPIO0         | pal_btn |   yes|
+| GPIO1         | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
+| TIMER0-1        | pal_sys pal_timer|   yes|
+| UART0-3         | pal_sys pal_uart|   yes|
+
+
+_MAX32665:_
+
+| **Peripheral** | **Use** | **Configurable** |
+| ---------------|---------|------------------ |
+| GPIO0     | pal_btn |   yes|
+| GPIO1     | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
+| TIMER0-1    | pal_sys pal_timer|   yes|
+| UART0-2     | pal_sys pal_uart|   yes|
+| DMA0-8       | pal_sys pal_uart|   yes|
+
+_MAX32690:_
+
+| **Peripheral** | **Use** | **Configurable** |
+| ---------------|---------|------------------ |
+| GPIO0     | pal_btn |   yes|
+| GPIO1     | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
+| TIMER0-1    | pal_sys pal_timer|   yes|
+| UART0-3         | pal_sys pal_uart|   yes|
+
 
 ### Attribute Protocol
 

@@ -11,3 +11,7 @@
 
 # Build SPI v2 library for example.
 MXC_SPI_VERSION = v2
+
+
+METHOD ?= CONTROLLER_SYNC
+PROJ_CFLAGS += -D$(METHOD)

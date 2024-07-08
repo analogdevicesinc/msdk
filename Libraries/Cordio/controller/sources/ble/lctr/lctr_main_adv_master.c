@@ -43,7 +43,7 @@
 /*! \brief      Scan operational context. */
 lctrMstScanCtx_t lctrMstScan;
 
-extern uint8_t appCodedPhyDemo;
+
 
 /*************************************************************************************************/
 /*!
@@ -613,11 +613,7 @@ void lctrAdvRptGenerateExtHash(uint64_t *pHash, uint8_t addrType, uint64_t addr,
 /*************************************************************************************************/
 bool_t lctrAdvRptCheckDuplicate(lctrAdvRptFilt_t *pAdvFilt, uint64_t hash)
 {
-  if (appCodedPhyDemo)
-  {
-    pAdvFilt->addToFiltTbl = TRUE;
-    return TRUE;
-  }
+
 
   if (!pAdvFilt->enable)
   {

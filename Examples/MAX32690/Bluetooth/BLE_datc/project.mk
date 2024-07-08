@@ -24,3 +24,14 @@ INIT_CENTRAL = 1
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
 TRACE = 1
+
+# set ADVTISEMENT name you want to connect
+ADV_NAME?=DATS
+PROJ_CFLAGS += -DADV_NAME=\"$(ADV_NAME)\"
+
+### CONFIGURE security
+# /*! TRUE to initiate security upon connection*/
+PROJ_CFLAGS += -DINIT_SECURITY=TRUE
+
+
+

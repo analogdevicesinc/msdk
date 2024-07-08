@@ -92,6 +92,7 @@ int card_rca;
 mxc_sdhc_lib_card_type card_type = CARD_NONE;
 mxc_sdhc_csd_regs_t g_csd;
 bool g_csd_is_cached = false;
+static mxc_sdhc_data_width default_data_width = MXC_SDHC_LIB_SINGLE_DATA;
 
 /* **** Functions **** */
 
@@ -235,6 +236,8 @@ int MXC_SDHC_Lib_SetBusWidth(mxc_sdhc_data_width bus_width)
     mxc_sdhc_cmd_cfg_t cmd_cfg;
     uint32_t card_status;
     int result;
+
+    
 
     cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
     cmd_cfg.callback = NULL;
@@ -445,6 +448,9 @@ int MXC_SDHC_Lib_Prepare_Trans(mxc_sdhc_data_width width)
     mxc_sdhc_cmd_cfg_t cmd_cfg;
     int result;
 
+    
+
+
     cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
     cmd_cfg.arg_1 = 0;
     cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
@@ -499,6 +505,8 @@ int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt, 
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
+    
+
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
     return result;
@@ -527,6 +535,9 @@ int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt, m
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
+    
+
+
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
     return result;
@@ -554,6 +565,7 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
 {
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
+
 
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
@@ -586,6 +598,8 @@ int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int c
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
+    
+
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
         return E_BUSY;
@@ -610,4 +624,15 @@ int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int c
 
     return MXC_SDHC_SendCommandAsync(&cmd_cfg);
 }
+void MXC_SDHC_Set_Default_DataWidth(mxc_sdhc_data_width width)
+{
+    MXC_ASSERT(width == MXC_SDHC_LIB_SINGLE_DATA || width == MXC_SDHC_LIB_QUAD_DATA);
+    default_data_width = width;
+}
+
+mxc_sdhc_data_width MXC_SDHC_Get_Default_DataWidth(void)
+{
+    return default_data_width;
+}
+
 /**@} end of group sdhc */

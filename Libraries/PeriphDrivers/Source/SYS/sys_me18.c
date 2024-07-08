@@ -71,7 +71,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    memset(usn, 0, MXC_SYS_USN_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -97,9 +97,9 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         /* Initialize key and plaintext */
         memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
         memset(pt32, 0, MXC_SYS_USN_CHECKSUM_LEN);
-        memcpy(pt32, usn, MXC_SYS_USN_CHECKSUM_LEN);
+        memcpy(pt32, usn, MXC_SYS_USN_LEN);
 
-        /* Read the checksum from the info block */
+        /* Read the checksum from the inspfo block */
         checksum[1] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[0] = ((infoblock[4] & 0x007F8000) >> 15);
 
