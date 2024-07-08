@@ -29,6 +29,7 @@ SRCS += led.c
 SRCS += mx25.c
 SRCS += pb.c
 SRCS += tft_st7735.c
+SRCS += max9867.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_MX25
 # Define "MAX32690GTK_PACKAGE_TQFN", which some drivers use to work around MAX32690 Rev A2 Errata #16:
@@ -44,6 +45,7 @@ VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/CODEC
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
@@ -52,5 +54,6 @@ IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/CODEC
 
 include $(MISC_DRIVERS_DIR)/Display/fonts/fonts.mk
