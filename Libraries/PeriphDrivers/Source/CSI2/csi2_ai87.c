@@ -87,12 +87,12 @@ int MXC_CSI2_Stop(void)
     return MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
 }
 
-int MXC_CSI2_CaptureFrame(int num_data_lanes)
+int MXC_CSI2_CaptureFrame(void)
 {
-    return MXC_CSI2_RevA_CaptureFrameDMA(num_data_lanes);
+    return MXC_CSI2_RevA_CaptureFrameDMA();
 }
 
-int MXC_CSI2_CaptureFrameDMA()
+int MXC_CSI2_CaptureFrameDMA(void)
 {
     return MXC_CSI2_RevA_CaptureFrameDMA();
 }
