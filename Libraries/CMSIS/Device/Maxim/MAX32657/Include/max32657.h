@@ -196,7 +196,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
  *  For example, '__MXC_FLASH_MEM_BASE'
  */
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 /* Non-secure Regions that secure code knows about. */
 #define MXC_FLASH_NS_MEM_BASE __MXC_FLASH_NS_MEM_BASE
 #define MXC_FLASH_NS_PAGE_SIZE MXC_PHY_FLASH_PAGE_SIZE
@@ -241,7 +241,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_GCR_S ((uint32_t)0x50000000UL)
 #define MXC_GCR_S ((mxc_gcr_regs_t *)MXC_BASE_GCR_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_GCR MXC_GCR_S
 #else
 #define MXC_GCR MXC_GCR_NS
@@ -258,7 +258,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_SIR_S ((uint32_t)0x50000400UL)
 #define MXC_SIR_S ((mxc_sir_regs_t *)MXC_BASE_SIR_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_SIR MXC_BASE_SIR_S
 #define MXC_SIR MXC_SIR_S
 #else
@@ -277,7 +277,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_FCR_S ((uint32_t)0x50000800UL)
 #define MXC_FCR_S ((mxc_fcr_regs_t *)MXC_BASE_FCR_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_FCR MXC_BASE_FCR_S
 #define MXC_FCR MXC_FCR_S
 #else
@@ -297,7 +297,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_WDT_S ((uint32_t)0x50003000UL)
 #define MXC_WDT_S ((mxc_wdt_regs_t *)MXC_BASE_WDT_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_WDT MXC_BASE_WDT_S
 #define MXC_WDT MXC_WDT_S
 #else
@@ -316,7 +316,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_RSTZ_S ((uint32_t)0x50004800UL)
 #define MXC_RSTZ_S ((mxc_rstz_regs_t *)MXC_BASE_RSTZ_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_RSTZ MXC_BASE_RSTZ_S
 #define MXC_RSTZ MXC_RSTZ_S //TODO(ME30): Add SVM controller registers
 #else
@@ -335,7 +335,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_BOOST_S ((uint32_t)0x50004C00UL)
 #define MXC_BOOST_S ((mxc_boost_regs_t *)MXC_BASE_BOOST_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_BOOST MXC_BASE_BOOST_S
 #define MXC_BOOST MXC_BOOST_S
 #else
@@ -354,7 +354,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_TRIMSIR_S ((uint32_t)0x50005400UL)
 #define MXC_TRIMSIR_S ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_TRIMSIR MXC_BASE_TRIMSIR_S
 #define MXC_TRIMSIR MXC_TRIMSIR_S
 #else
@@ -373,7 +373,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_RTC_S ((uint32_t)0x50006000UL)
 #define MXC_RTC_S ((mxc_rtc_regs_t *)MXC_BASE_RTC_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_RTC MXC_BASE_RTC_S
 #define MXC_RTC MXC_RTC_S
 #else
@@ -397,7 +397,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_WUT1_S ((uint32_t)0x50006600UL)
 #define MXC_WUT1_S ((mxc_wut_regs_t *)MXC_BASE_WUT1_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_WUT0 MXC_BASE_WUT0_S
 #define MXC_WUT0 MXC_WUT0_S
 #define MXC_BASE_WUT1 MXC_BASE_WUT1_S
@@ -420,7 +420,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_PWRSEQ_S ((uint32_t)0x50006800UL)
 #define MXC_PWRSEQ_S ((mxc_pwrseq_regs_t *)MXC_BASE_PWRSEQ_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_PWRSEQ MXC_BASE_PWRSEQ_S
 #define MXC_PWRSEQ MXC_PWRSEQ_S
 #else
@@ -439,7 +439,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_MCR_S ((uint32_t)0x50006C00UL)
 #define MXC_MCR_S ((mxc_mcr_regs_t *)MXC_BASE_MCR_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_MCR MXC_BASE_MCR_S
 #define MXC_MCR MXC_MCR_S
 #else
@@ -458,7 +458,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_AES_S ((uint32_t)0x50007400UL)
 #define MXC_AES_S ((mxc_aes_regs_t *)MXC_BASE_AES_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_AES MXC_BASE_AES_S
 #define MXC_AES MXC_AES_S
 #else
@@ -477,7 +477,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_AESKEYS_S ((uint32_t)0x50007800UL)
 #define MXC_AESKEYS_S ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_AESKEYS MXC_BASE_AESKEYS_S
 #define MXC_AESKEYS MXC_AESKEYS_S
 #else
@@ -501,7 +501,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 #define MXC_BASE_GPIO0_S ((uint32_t)0x50008000UL)
 #define MXC_GPIO0_S ((mxc_gpio_regs_t *)MXC_BASE_GPIO0_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_GPIO0 MXC_BASE_GPIO0_S
 #define MXC_GPIO0 MXC_GPIO0_S
 #else
@@ -531,7 +531,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_CRC_S ((uint32_t)0x5000F000UL)
 #define MXC_CRC_S ((mxc_crc_regs_t *)MXC_BASE_CRC_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_CRC MXC_BASE_CRC_S
 #define MXC_CRC MXC_CRC_S
 #else
@@ -575,7 +575,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_TMR5_S ((uint32_t)0x50015000UL)
 #define MXC_TMR5_S ((mxc_tmr_regs_t *)MXC_BASE_TMR5_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_TMR0 MXC_TMR0_S
 #define MXC_TMR1 MXC_TMR1_S
 #define MXC_TMR2 MXC_TMR2_S
@@ -639,7 +639,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_I3C_S ((uint32_t)0x50018000UL)
 #define MXC_I3C_S ((mxc_i3c_regs_t *)MXC_BASE_I3C_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_I3C MXC_BASE_I3C_S
 #define MXC_I3C MXC_I3C_S
 #else
@@ -650,7 +650,7 @@ We may want to handle GET_IRQ better...
 /******************************************************************************/
 /*                                                                        DMA */
 #define MXC_DMA_CHANNELS (4)
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_DMA_INSTANCES (2)
 #else
 #define MXC_DMA_INSTANCES (1)
@@ -666,7 +666,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_DMA1_S ((uint32_t)0x50035000UL)
 #define MXC_DMA1_S ((mxc_dma_regs_t *)MXC_BASE_DMA1_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_DMA1 MXC_BASE_DMA1_S
 #define MXC_DMA1 MXC_DMA1_S
 /**
@@ -705,7 +705,7 @@ We may want to handle GET_IRQ better...
                  ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
                                                  0))
-#endif // IS_SECURE_ENVIRONMENT
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
 
 #define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0_NS ? 0 : (p) == MXC_BASE_DMA1_S ? 1 : -1)
 
@@ -754,7 +754,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_UART_S ((uint32_t)0x50042000UL)
 #define MXC_UART_S ((mxc_uart_regs_t *)MXC_BASE_UART_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_UART MXC_BASE_UART_S
 #define MXC_UART MXC_UART_S
 #else
@@ -781,7 +781,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_SPI_S ((uint32_t)0x50046000UL)
 #define MXC_SPI_S ((mxc_spi_regs_t *)MXC_BASE_SPI_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_SPI MXC_BASE_SPI_S
 #define MXC_SPI MXC_SPI_S
 #else
@@ -805,7 +805,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_TRNG_S ((uint32_t)0x5004D000UL)
 #define MXC_TRNG_S ((mxc_trng_regs_t *)MXC_BASE_TRNG_S)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #define MXC_BASE_TRNG MXC_BASE_TRNG_S
 #define MXC_TRNG MXC_TRNG_S
 #else
@@ -816,7 +816,7 @@ We may want to handle GET_IRQ better...
 /******************************************************************************/
 /*                   Non-Secure and Secure Privilege Controller (NSPC/SPC TZ) */
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 
 /* Secure Mapping Only */
 #define MXC_BASE_SPC ((uint32_t)0x50090000UL)

@@ -38,7 +38,7 @@
 #define MXC_UART_REVB_ERRINT_FL \
     (MXC_F_UART_REVB_INT_FL_RX_FERR | MXC_F_UART_REVB_INT_FL_RX_PAR | MXC_F_UART_REVB_INT_FL_RX_OV)
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 #ifndef MXC_DMA0
 // TrustZone support to keep up with naming convention.
 //  For ME30, non-secure DMA (DMA0) is accessible from Secure code using non-secure mapping.
@@ -55,7 +55,7 @@
 // Placing this here to limit scope of this definition to this file.
 #define MXC_DMA1 NULL
 #endif
-#endif // IS_SECURE_ENVIRONMENT
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
 
 /* **** Variable Declaration **** */
 static void *AsyncTxRequests[MXC_UART_INSTANCES];
@@ -864,7 +864,7 @@ void MXC_UART_RevA_DMA0_Handler(void)
     MXC_DMA_Handler(MXC_DMA0);
 }
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 void MXC_UART_RevA_DMA1_Handler(void)
 {
     MXC_DMA_Handler(MXC_DMA1);
@@ -889,11 +889,11 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
     if (dma_instance == MXC_DMA0) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA0_Handler);
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
     // Only secure code has access to Secure DMA (DMA1).
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
-#endif // IS_SECURE_ENVIRONMENT
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
     }
 #else
     NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));

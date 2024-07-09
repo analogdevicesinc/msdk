@@ -57,7 +57,7 @@ extern uint32_t _binary_riscv_bin_start;
 /* **** Functions **** */
 
 /* ************************************************************************** */
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     int err = E_NO_ERROR;

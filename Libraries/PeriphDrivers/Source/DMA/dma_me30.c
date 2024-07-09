@@ -38,12 +38,12 @@ int MXC_DMA_Init(mxc_dma_regs_t *dma)
     if (dma == MXC_DMA0_NS && !MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA0)) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA0);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA0);
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
     // DMA1 is only accessible from Secure world.
     } else if (dma == MXC_DMA1_S && !MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA1)) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA1);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA1);
-#endif // IS_SECURE_ENVIRONMENT
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
     }
 #endif // MSDK_NO_GPIO_CLK_INIT
 

@@ -28,7 +28,7 @@
 /**
  *  The MPC is only accessible from Secure World.
  */
-#if IS_SECURE_ENVIRONMENT == 1
+#if CONFIG_TRUSTED_EXECUTION_SECURE == 1
 
 /**** Includes ****/
 

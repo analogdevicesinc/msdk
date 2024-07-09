@@ -407,7 +407,7 @@ int MXC_FLC_RevA_ClearFlags(uint32_t mask)
 //******************************************************************************
 int MXC_FLC_RevA_UnlockInfoBlock(mxc_flc_reva_regs_t *flc, uint32_t address)
 {
-#if !defined(IS_SECURE_ENVIRONMENT) || (IS_SECURE_ENVIRONMENT != 0) || (TARGET_NUM != 32657) 
+#if !defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0) || (TARGET_NUM != 32657) 
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
@@ -428,7 +428,7 @@ int MXC_FLC_RevA_UnlockInfoBlock(mxc_flc_reva_regs_t *flc, uint32_t address)
 //******************************************************************************
 int MXC_FLC_RevA_LockInfoBlock(mxc_flc_reva_regs_t *flc, uint32_t address)
 {
-#if !defined(IS_SECURE_ENVIRONMENT) || (IS_SECURE_ENVIRONMENT != 0) || (TARGET_NUM != 32657) 
+#if !defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0) || (TARGET_NUM != 32657) 
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;

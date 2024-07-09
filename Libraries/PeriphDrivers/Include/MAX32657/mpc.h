@@ -28,7 +28,7 @@
 extern "C" {
 #endif
 
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 
 /**** Includes ****/
 #include <stdint.h>

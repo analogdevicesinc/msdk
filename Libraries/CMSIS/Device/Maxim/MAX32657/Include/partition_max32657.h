@@ -31,7 +31,7 @@
 #include "max32657.h"
 
 // clang-format off
-#if IS_SECURE_ENVIRONMENT
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
@@ -1281,6 +1281,6 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
 
 }
 
-#endif // IS_SECURE_EVIRONMENT
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
 
 #endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32657_INCLUDE_PARTITION_MAX32657_H_

@@ -28,7 +28,7 @@
 /**
  * NSPC can only be accessed from the non-secure world.
  */
-#if IS_SECURE_ENVIRONMENT == 0
+#if CONFIG_TRUSTED_EXECUTION_SECURE == 0
 
 /**** Includes ****/
 #include <stdbool.h>

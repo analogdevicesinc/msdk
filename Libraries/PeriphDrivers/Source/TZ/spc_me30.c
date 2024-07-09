@@ -28,7 +28,7 @@
 /**
  * SPC can only be accessed from the secure world.
  */
-#if IS_SECURE_ENVIRONMENT == 1
+#if CONFIG_TRUSTED_EXECUTION_SECURE == 1
 
 /**** Includes ****/
 #include <stdbool.h>
