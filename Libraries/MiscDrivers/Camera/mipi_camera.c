@@ -310,7 +310,7 @@ int mipi_camera_sleep(int sleep)
     return camera.sleep(sleep);
 }
 
-int mipi_camera_capture()
+int mipi_camera_capture(void)
 {
     return MXC_CSI2_CaptureFrameDMA();
 }

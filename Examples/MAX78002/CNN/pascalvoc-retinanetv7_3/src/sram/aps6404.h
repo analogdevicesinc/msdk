@@ -34,13 +34,13 @@ typedef struct {
     int EID;
 } ram_id_t;
 
-int ram_init();
+int ram_init(void);
 
-int ram_reset();
+int ram_reset(void);
 
-int ram_enter_quadmode();
+int ram_enter_quadmode(void);
 
-int ram_exit_quadmode();
+int ram_exit_quadmode(void);
 
 int ram_read_id(ram_id_t *out);
 

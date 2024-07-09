@@ -107,7 +107,7 @@ void processSPI(void)
     }
 }
 
-void SPI_IRQHandler()
+void SPI_IRQHandler(void)
 {
     uint32_t status = SPI->intfl;
 
@@ -133,7 +133,7 @@ void SPI_IRQHandler()
     }
 }
 
-int dma_init()
+int dma_init(void)
 {
     if (g_dma_initialized)
         return E_NO_ERROR;

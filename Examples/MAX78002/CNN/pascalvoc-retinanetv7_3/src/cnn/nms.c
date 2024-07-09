@@ -96,16 +96,6 @@ uint32_t utils_get_time_ms(void)
     return ms;
 }
 
-static uint8_t signed_to_unsigned(int8_t val)
-{
-    uint8_t value;
-    if (val < 0) {
-        value = ~val + 1;
-        return (128 - value);
-    }
-    return val + 128;
-}
-
 int get_prior_idx(int os_idx, int ar_idx, int scale_idx, int rel_idx)
 {
     int prior_idx = 0;
@@ -170,7 +160,7 @@ void calc_softmax(int32_t *prior_cls_vals, int prior_idx)
 
     for (ch = 0; ch < (NUM_CLASSES); ++ch) {
         prior_cls_softmax[prior_idx * NUM_CLASSES + ch] =
-            (uint8_t)(256. * exp(prior_cls_vals[ch] / fp_scale) / sum);
+            (uint8_t)((double)256. * exp(prior_cls_vals[ch] / fp_scale) / sum);
     }
 }
 
@@ -318,8 +308,8 @@ void get_cxcy(float *cxcy, int prior_idx)
     cx = rel_idx % dims_x[scale_idx];
     cxcy[0] = (float)((float)(cx + 0.5) / dims_x[scale_idx]);
     cxcy[1] = (float)((float)(cy + 0.5) / dims_y[scale_idx]);
-    cxcy[2] = obj_scales[os_idx] * scales[scale_idx] * sqrt(ars[ar_idx]);
-    cxcy[3] = obj_scales[os_idx] * scales[scale_idx] / sqrt(ars[ar_idx]);
+    cxcy[2] = obj_scales[os_idx] * scales[scale_idx] * (float)sqrt(ars[ar_idx]);
+    cxcy[3] = obj_scales[os_idx] * scales[scale_idx] / (float)sqrt(ars[ar_idx]);
 
     for (i = 0; i < 4; ++i) {
         cxcy[i] = MAX(0.0, cxcy[i]);
@@ -336,8 +326,8 @@ void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy)
 
     cxcy[0] = priors_cxcy[0] + gcxgcy[0] * priors_cxcy[2] / 10;
     cxcy[1] = priors_cxcy[1] + gcxgcy[1] * priors_cxcy[3] / 10;
-    cxcy[2] = exp(gcxgcy[2] / 5) * priors_cxcy[2];
-    cxcy[3] = exp(gcxgcy[3] / 5) * priors_cxcy[3];
+    cxcy[2] = (float)exp(gcxgcy[2] / 5) * priors_cxcy[2];
+    cxcy[3] = (float)exp(gcxgcy[3] / 5) * priors_cxcy[3];
 }
 
 void cxcy_to_xy(float *xy, float *cxcy)

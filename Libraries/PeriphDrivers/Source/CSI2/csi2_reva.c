@@ -106,7 +106,7 @@ void _free_line_buffer(void)
     }
 }
 
-int _init_line_buffer()
+int _init_line_buffer(void)
 {
     _free_line_buffer();
 
@@ -120,7 +120,7 @@ int _init_line_buffer()
     return E_NO_ERROR;
 }
 
-void _swap_line_buffer()
+void _swap_line_buffer(void)
 {
     uint8_t *temp = lb.active;
     lb.active = lb.inactive;
@@ -277,7 +277,7 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_CaptureFrameDMA()
+int MXC_CSI2_RevA_CaptureFrameDMA(void)
 {
     int i;
     int error;
@@ -417,7 +417,7 @@ void MXC_CSI2_RevA_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h)
     *h = csi2_state.req->lines_per_frame;
 }
 
-void MXC_CSI2_RevA_Handler()
+void MXC_CSI2_RevA_Handler(void)
 {
     uint32_t ctrl_flags, vfifo_flags, ppi_flags;
 
@@ -1054,12 +1054,12 @@ bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
     return g_frame_complete;
 }
 
-mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats()
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats(void)
 {
     return csi2_state.capture_stats;
 }
 
-void MXC_CSI2_RevA_DMA_Handler()
+void MXC_CSI2_RevA_DMA_Handler(void)
 {
     // Clear CTZ Status Flag
     if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
