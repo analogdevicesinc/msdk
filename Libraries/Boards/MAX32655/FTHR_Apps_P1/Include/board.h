@@ -27,6 +27,8 @@
 #define LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_
 
 #include <stdio.h>
+#include <spi_regs.h>
+#include <gpio_regs.h>
 #include "led.h"
 #include "pb.h"
 

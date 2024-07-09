@@ -18,8 +18,8 @@
  * limitations under the License.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
-#define EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
+#ifndef EXAMPLES_MAX32655_SDHC_FTHR_INCLUDE_SDHC_H_
+#define EXAMPLES_MAX32655_SDHC_FTHR_INCLUDE_SDHC_H_
 
 /***** Includes *****/
 #include <stdio.h>
@@ -68,4 +68,4 @@ int example();
 
 void waitCardInserted();
 
-#endif // EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
+#endif // EXAMPLES_MAX32655_SDHC_FTHR_INCLUDE_SDHC_H_
