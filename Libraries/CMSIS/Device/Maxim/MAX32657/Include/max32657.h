@@ -456,7 +456,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 
 /* Secure Mapping */
 #define MXC_BASE_AES_S ((uint32_t)0x50007400UL)
-#define MXC_AES_S ((mxc_aes_regs_t *)MXC_BASE_AES_NS)
+#define MXC_AES_S ((mxc_aes_regs_t *)MXC_BASE_AES_S)
 
 #if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_AES MXC_BASE_AES_S
