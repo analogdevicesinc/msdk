@@ -186,6 +186,7 @@ int SD_Power(int on);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssPin);
+
 #ifdef __cplusplus
 }
 #endif
