@@ -424,11 +424,11 @@ int SD_Power(int on)
     sd_power_pin.pad = MXC_GPIO_PAD_NONE;
     sd_power_pin.vssel = MXC_GPIO_VSSEL_VDDIO;
 
-    if((err = MXC_GPIO_Config(&sd_power_pin)) != E_NO_ERROR) {
+    if ((err = MXC_GPIO_Config(&sd_power_pin)) != E_NO_ERROR) {
         return err;
     }
 
-    if(on) {
+    if (on) {
         MXC_GPIO_OutSet(sd_power_pin.port, sd_power_pin.mask);
     } else {
         MXC_GPIO_OutClr(sd_power_pin.port, sd_power_pin.mask);
