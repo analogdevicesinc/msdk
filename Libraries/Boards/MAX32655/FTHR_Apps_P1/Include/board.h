@@ -165,7 +165,25 @@ int Microphone_Power(int on);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int Camera_Power(int on);
+/**
+ * \brief   SD card power control.
+ *
+ * \param   on          1 for ON, 0 for OFF
+ *
+ * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int SD_Power(int on);
 
+/**
+ * \brief   Informs the caller which SPI connections are used for SD card communication
+ *
+ * \param   spi 		The SPI instance used
+ * \param   ssPort      The GPIO port used for the SD card's SSEL pin
+ * \param   ssPin       The GPIO pin number used for the SD card's SSEL pin
+ *
+ * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssPin);
 #ifdef __cplusplus
 }
 #endif

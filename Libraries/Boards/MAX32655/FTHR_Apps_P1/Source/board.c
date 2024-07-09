@@ -411,3 +411,22 @@ int Microphone_Power(int on)
 
     return max20303_mic_power(on);
 }
+/******************************************************************************/
+int SD_Power(int on)
+{
+    mxc_gpio_cfg_t SDPower = { MXC_GPIO0, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                               MXC_GPIO_VSSEL_VDDIO };
+ 
+    MXC_GPIO_Config(&SDPower);
+    MXC_GPIO_OutSet(MXC_GPIO0, MXC_GPIO_PIN_15);
+    return E_NO_ERROR;
+}
+/******************************************************************************/
+#ifdef MXC_SPI0
+void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssPin)
+{
+    *spi = MXC_SPI0;
+    *ssPort = MXC_GPIO0;
+    *ssPin = 4;
+}
+#endif
