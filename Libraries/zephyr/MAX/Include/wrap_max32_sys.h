@@ -69,8 +69,6 @@ static inline void Wrap_MXC_SYS_SetClockDiv(int div)
 #define ADI_MAX32_CLK_ISO MXC_SYS_CLOCK_ISO
 #endif
 
-#if !defined(CONFIG_SOC_MAX32690)
-
 #define z_sysclk_prescaler(v) MXC_SYS_CLOCK_DIV_##v
 #define sysclk_prescaler(v) z_sysclk_prescaler(v)
 
@@ -78,8 +76,6 @@ static inline void Wrap_MXC_SYS_SetClockDiv(int div)
 {
     MXC_SYS_SetClockDiv((mxc_sys_system_clock_div_t)div);
 }
-
-#endif // !defined(CONFIG_SOC_MAX32690)
 
 #endif // part number
 
