@@ -310,7 +310,7 @@ typedef void __ns_call (*mxc_ns_call_t) (void);
 
 /* Non-secure Mapping */
 #define MXC_BASE_RSTZ_NS ((uint32_t)0x40004800UL)
-#define MXC_RSTZ_NS ((mxc_rstz_regs_t *)MXC_BASE_RSTZ_S)
+#define MXC_RSTZ_NS ((mxc_rstz_regs_t *)MXC_BASE_RSTZ_NS)
 
 /* Secure Mapping */
 #define MXC_BASE_RSTZ_S ((uint32_t)0x50004800UL)
