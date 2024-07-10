@@ -116,24 +116,14 @@
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>Peripheral_Clock</name>
-                <description>apb clock</description>
+                <name>PERIPHERAL_CLOCK</name>
+                <description>APB Clock.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>External_Clock</name>
-                <description>Clock 1</description>
+                <name>CLK1</name>
+                <description>IBRO clock.</description>
                 <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>CLK2</name>
-                <description>Clock 2</description>
-                <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>CLK3</name>
-                <description>Clock 3</description>
-                <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
