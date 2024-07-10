@@ -22,12 +22,6 @@ if(NOT TARGET_REV)
   zephyr_compile_definitions(-DTARGET_REV=0x4131)
 endif()
 
-if(CONFIG_TRUSTED_EXECUTION_SECURE)
-  zephyr_compile_definitions(-DIS_SECURE_ENVIRONMENT=1)
-else()
-  zephyr_compile_definitions(-DIS_SECURE_ENVIRONMENT=0)
-endif()
-
 zephyr_include_directories(
     ${MSDK_PERIPH_SRC_DIR}/SYS
     ${MSDK_PERIPH_SRC_DIR}/AES
