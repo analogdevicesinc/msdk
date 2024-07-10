@@ -93,7 +93,7 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
 
     curr_addr = phy_start_addr;
     for (i = MXC_MPC_GET_IDX(start_mpc); i <= MXC_MPC_GET_IDX(end_mpc); i++) {
-        // Get current MPC, whether it's located in Flash or SRAM.
+        // Get current MPC, whether in Flash or SRAM.
         curr_mpc = MXC_MPC_SRAM_GET_BASE(i);
         if (curr_mpc == NULL) {
             curr_mpc = MXC_MPC_FLASH_GET_BASE(i);
@@ -102,15 +102,14 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
         // Get the address range of the current MPC region.
         start_mpc_region_addr = curr_addr;
         
-        // If in last MPC region, the ending address might not be at the end of the MPC region,
-        //  and could be somwhere in the middle of the region.
-        // NOTE: Project Owner/Developer must be aware the memory settings for Secure and Non-Secure
-        //  boundaries does not share an MPC block. The MPC block can only be set to one security
+        // NOTE: Project Owner/Developer must be aware of the memory settings for Secure and Non-Secure
+        //  boundaries do not share an MPC block. An MPC block can only be set to one security
         //  policy (Secure or Non-Secure).
         if (i == MXC_MPC_GET_IDX(end_mpc)) {
+            // The physical ending address is within the final MPC region - stop there.
             end_mpc_region_addr = phy_end_addr;
         } else {
-            // -1 to get last address of the current region.
+            // -1 to get the last address of the current region.
             end_mpc_region_addr = MXC_MPC_GET_PHY_MEM_BASE(curr_mpc) + MXC_MPC_GET_PHY_MEM_SIZE(curr_mpc) - 1;
         }
 
@@ -137,7 +136,7 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
             }
         }
 
-        // Update curr_addr to start at beginning of next region for the next iteration of this for loop.
+        // Update curr_addr to start at the beginning of the next MPC region for the next iteration of this for loop.
         curr_addr = MXC_MPC_GET_PHY_MEM_BASE(curr_mpc) + MXC_MPC_GET_PHY_MEM_SIZE(curr_mpc);
     }
 
@@ -149,7 +148,7 @@ int MXC_MPC_CheckPhyBoundaries(uint32_t start_addr, uint32_t end_addr)
     uint32_t phy_start_addr, phy_end_addr;
 
     // Get physical addresses from virtual secure/nonsecure addresses
-    //  by clearing bit 28 - indicates the security state of address.
+    //  by clearing bit 28 - indicates the security state of the address.
     phy_start_addr = start_addr & ~(1 << 28);
     phy_end_addr = end_addr & ~(1 << 28);
 
@@ -172,7 +171,7 @@ mxc_mpc_regs_t *MXC_MPC_GetInstance(uint32_t addr)
     uint32_t phy_addr;
 
     // Get physical addresses from virtual secure/nonsecure addresses
-    //  by clearing bit 28 - indicates the security state of address.
+    //  by clearing bit 28 - indicates the security state of the address.
     phy_addr = addr & ~(1 << 28);
 
     if ((phy_addr >= MXC_PHY_FLASH_MEM_BASE) && (phy_addr < MXC_PHY_FLASH_MEM_BASE + MXC_PHY_FLASH_MEM_SIZE)) {
@@ -188,7 +187,7 @@ mxc_mpc_regs_t *MXC_MPC_GetInstance(uint32_t addr)
     } else if ((phy_addr >= MXC_PHY_SRAM4_MEM_BASE) && (phy_addr < MXC_PHY_SRAM4_MEM_BASE + MXC_PHY_SRAM4_MEM_SIZE)) {
         return MXC_MPC_SRAM4;
     } else {
-        // Addresses are located outside of memory spaces that doesn't have an
+        // Addresses are located outside of memory spaces that don't have an
         //  associated MPC.
         return NULL;
     }
@@ -208,7 +207,7 @@ int MXC_MPC_GetBlockIdx(mxc_mpc_regs_t *mpc, uint32_t addr)
     start_mpc_region_addr = MXC_MPC_GET_PHY_MEM_BASE(mpc);
     mpc_region_size = MXC_MPC_GET_PHY_MEM_SIZE(mpc);
     if (!((addr >= start_mpc_region_addr) && (addr < start_mpc_region_addr + mpc_region_size))) {
-        // Given address is not within MPC region.
+        // Given address is not within the MPC region.
         return E_BAD_PARAM;
     }
 
@@ -222,7 +221,7 @@ int MXC_MPC_GetBlockIdx(mxc_mpc_regs_t *mpc, uint32_t addr)
     block = base / block_size;
     remainder = base % block_size;
 
-    // Get current block if address does not start at beginning of a whole block.
+    // Get the current block if the address does not start at the beginning of a whole block.
     if (remainder != 0) {
         block += 1;
     }
