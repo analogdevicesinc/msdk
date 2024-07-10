@@ -33,6 +33,7 @@
 #include "pb.h"
 #include "board.h"
 #include "mxc_delay.h"
+#include "mxc_sys.h"
 
 /***** Definitions *****/
 
@@ -59,4 +60,6 @@ int main(void)
         IncrementCount_S(&count);
         printf("count = %d\n", count);
     }
+
+    MXC_SYS_LockDAP_Permanent();
 }

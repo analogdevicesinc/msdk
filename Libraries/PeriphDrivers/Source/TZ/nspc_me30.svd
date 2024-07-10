@@ -137,11 +137,6 @@
                 <value>0x0400000</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>BBFCR</name>
-                <description>Privilege setting for BBFCR.</description>
-                <value>0x0800000</value>
-              </enumeratedValue>
-              <enumeratedValue>
                 <name>RTC</name>
                 <description>Privilege setting for RTC.</description>
                 <value>0x01000000</value>
@@ -169,7 +164,7 @@
               <enumeratedValue>
                 <name>ALL</name>
                 <description>Privilege setting for all peripherals.</description>
-                <value>0x1FFFFFFF</value>
+                <value>0x1F7FFFFF</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
