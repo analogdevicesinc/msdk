@@ -105,7 +105,7 @@ int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
     (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
     (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
 
-#if defined(CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32675)
+#if defined(CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32675) || (CONFIG_SOC_MAX32657)
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 #elif defined(CONFIG_SOC_MAX32662)
