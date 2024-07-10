@@ -629,6 +629,7 @@ We may want to handle GET_IRQ better...
 
 /******************************************************************************/
 /*                                                                        I3C */
+#define MXC_CFG_I3C_INSTANCES (1)
 #define MXC_I3C_FIFO_DEPTH (8)
 
 /* Non-secure Mapping */
@@ -646,6 +647,11 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_I3C MXC_BASE_I3C_NS
 #define MXC_I3C MXC_I3C_NS
 #endif
+
+#define MXC_I3C_GET_BASE(i) ((i) == 0 ? MXC_BASE_I3C : 0)
+#define MXC_I3C_GET_I3C(i) ((i) == 0 ? MXC_I3C : 0)
+#define MXC_I3C_GET_IRQ(i) (IRQn_Type)((i) == 0 ? I3C_IRQn : 0)
+#define MXC_I3C_GET_IDX(p) ((p) == MXC_I3C_NS ? 0 : (p) == MXC_I3C_S ? 0 : -1)
 
 /******************************************************************************/
 /*                                                                        DMA */
