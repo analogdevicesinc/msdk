@@ -123,9 +123,12 @@ APP_BUILD_C_FILES += ${ROOT_DIR}/controller/sources/ble/init/init.c
 endif
 
 # Remove these files from the library build, board level dependencies. Will have to be
-# re-built for each application
+# re-built for each application. Remove files that have interrupt handlers.
+# This will prevent weak handlers from being overwritten by the weak handlers in the startup file.
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_uart.c
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_sys.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_rtc.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_timer.c
 
 # This will let us enable/disable trace messaging by application
 APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c
