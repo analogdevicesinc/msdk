@@ -81,14 +81,6 @@ typedef struct {
     __IO uint32_t eccdata;              /**< <tt>\b 0x2C:</tt> FLC ECCDATA Register */
     __IO uint32_t data[4];              /**< <tt>\b 0x30:</tt> FLC DATA Register */
     __O  uint32_t actrl;                /**< <tt>\b 0x40:</tt> FLC ACTRL Register */
-    __R  uint32_t rsv_0x44_0x7f[15];
-    __IO uint32_t welr0;                /**< <tt>\b 0x80:</tt> FLC WELR0 Register */
-    __R  uint32_t rsv_0x84;
-    __IO uint32_t welr1;                /**< <tt>\b 0x88:</tt> FLC WELR1 Register */
-    __R  uint32_t rsv_0x8c;
-    __IO uint32_t rlr0;                 /**< <tt>\b 0x90:</tt> FLC RLR0 Register */
-    __R  uint32_t rsv_0x94;
-    __IO uint32_t rlr1;                 /**< <tt>\b 0x98:</tt> FLC RLR1 Register */
 } mxc_flc_regs_t;
 
 /* Register offsets for module FLC */
@@ -105,10 +97,6 @@ typedef struct {
 #define MXC_R_FLC_ECCDATA                  ((uint32_t)0x0000002CUL) /**< Offset from FLC Base Address: <tt> 0x002C</tt> */
 #define MXC_R_FLC_DATA                     ((uint32_t)0x00000030UL) /**< Offset from FLC Base Address: <tt> 0x0030</tt> */
 #define MXC_R_FLC_ACTRL                    ((uint32_t)0x00000040UL) /**< Offset from FLC Base Address: <tt> 0x0040</tt> */
-#define MXC_R_FLC_WELR0                    ((uint32_t)0x00000080UL) /**< Offset from FLC Base Address: <tt> 0x0080</tt> */
-#define MXC_R_FLC_WELR1                    ((uint32_t)0x00000088UL) /**< Offset from FLC Base Address: <tt> 0x0088</tt> */
-#define MXC_R_FLC_RLR0                     ((uint32_t)0x00000090UL) /**< Offset from FLC Base Address: <tt> 0x0090</tt> */
-#define MXC_R_FLC_RLR1                     ((uint32_t)0x00000098UL) /**< Offset from FLC Base Address: <tt> 0x0098</tt> */
 /**@} end of group flc_registers */
 
 /**
@@ -232,50 +220,6 @@ typedef struct {
 #define MXC_F_FLC_ACTRL_ACTRL                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_ACTRL_ACTRL_POS)) /**< ACTRL_ACTRL Mask */
 
 /**@} end of group FLC_ACTRL_Register */
-
-/**
- * @ingroup  flc_registers
- * @defgroup FLC_WELR0 FLC_WELR0
- * @brief    WELR0
- * @{
- */
-#define MXC_F_FLC_WELR0_WELR0_POS                      0 /**< WELR0_WELR0 Position */
-#define MXC_F_FLC_WELR0_WELR0                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_WELR0_WELR0_POS)) /**< WELR0_WELR0 Mask */
-
-/**@} end of group FLC_WELR0_Register */
-
-/**
- * @ingroup  flc_registers
- * @defgroup FLC_WELR1 FLC_WELR1
- * @brief    WELR1
- * @{
- */
-#define MXC_F_FLC_WELR1_WELR1_POS                      0 /**< WELR1_WELR1 Position */
-#define MXC_F_FLC_WELR1_WELR1                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_WELR1_WELR1_POS)) /**< WELR1_WELR1 Mask */
-
-/**@} end of group FLC_WELR1_Register */
-
-/**
- * @ingroup  flc_registers
- * @defgroup FLC_RLR0 FLC_RLR0
- * @brief    RLR0
- * @{
- */
-#define MXC_F_FLC_RLR0_RLR0_POS                        0 /**< RLR0_RLR0 Position */
-#define MXC_F_FLC_RLR0_RLR0                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_RLR0_RLR0_POS)) /**< RLR0_RLR0 Mask */
-
-/**@} end of group FLC_RLR0_Register */
-
-/**
- * @ingroup  flc_registers
- * @defgroup FLC_RLR1 FLC_RLR1
- * @brief    RLR1
- * @{
- */
-#define MXC_F_FLC_RLR1_RLR1_POS                        0 /**< RLR1_RLR1 Position */
-#define MXC_F_FLC_RLR1_RLR1                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_RLR1_RLR1_POS)) /**< RLR1_RLR1 Mask */
-
-/**@} end of group FLC_RLR1_Register */
 
 #ifdef __cplusplus
 }
