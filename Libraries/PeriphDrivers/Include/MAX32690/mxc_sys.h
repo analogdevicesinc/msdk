@@ -26,6 +26,7 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_MXC_SYS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_MXC_SYS_H_
 
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "lpgcr_regs.h"
 #include "gcr_regs.h"
@@ -428,6 +429,18 @@ uint32_t MXC_SYS_RiscVClockRate(void);
  *          to reprogram the target micro.
  */
 int MXC_SYS_LockDAP_Permanent(void);
+
+/**
+ * @brief Bypass the crystal oscillator driver circuit for the specified clock.  Some clock sources
+ *        support this option, allowing an external square wave input signal to be fed directly to the
+ *        clock's input pin.  Refer to the microcontroller's User Guide for more details.
+ *
+ * @param   clock The clock source target
+ * @param   bypass Bypass the oscillator circuit or not.  Set to true to bypass, false to disable the bypass
+ * 
+ * @return @ref MXC_Error_Codes
+ */
+int MXC_SYS_SetBypass(mxc_sys_system_clock_t clock, bool bypass);
 
 #ifdef __cplusplus
 }

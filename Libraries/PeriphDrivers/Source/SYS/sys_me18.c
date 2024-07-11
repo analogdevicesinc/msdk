@@ -36,6 +36,7 @@
 #include "fcr_regs.h"
 #include "mcr_regs.h"
 #include "pwrseq_regs.h"
+#include "rtc_regs.h"
 #include "flc.h"
 #include "ctb.h"
 
@@ -552,6 +553,20 @@ int MXC_SYS_LockDAP_Permanent(void)
 
     return err;
 #endif
+}
+
+int MXC_SYS_SetBypass(mxc_sys_system_clock_t clock, bool bypass)
+{
+    // Only ERFO and ERTCO support this option.
+    if (clock == MXC_SYS_CLOCK_ERFO) {
+        MXC_SETFIELD(MXC_GCR->pm, MXC_F_GCR_PM_ERFO_BP, bypass << MXC_F_GCR_PM_ERFO_BP_POS);
+    } else if (clock == MXC_SYS_CLOCK_ERTCO) {
+        MXC_SETFIELD(MXC_RTC->oscctrl, MXC_F_RTC_OSCCTRL_BYPASS, bypass << MXC_F_RTC_OSCCTRL_BYPASS_POS);
+    } else {
+        return E_BAD_PARAM;
+    }
+
+    return E_NO_ERROR;
 }
 
 /**@} end of mxc_sys */
