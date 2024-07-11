@@ -26,6 +26,7 @@
 #include "mxc_errors.h"
 #include "mxc_sys.h"
 #include "usbhs_regs.h"
+#include "fcr_regs.h"
 #include "usb.h"
 
 #define USBHS_M31_CLOCK_RECOVERY
@@ -171,6 +172,27 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     MXC_USBHS->m31_phy_ponrst = 1;
 
     return 0;
+}
+
+int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source)
+{
+    // The USB peripheral's clock source is set in the FCR register bank.
+    // The actual clock source selected by each field value may vary between 
+    // microcontrollers, so it is the responsibility of the implementer to define
+    // mxc_usb_clock_t correctly in the top-level "max32xxx.h" file.  The enum values
+    // should match the field values when type-casted to an unsigned int.
+    if ((unsigned int)clock_source < 0 || (unsigned int)clock_source >= 3) {
+        return E_BAD_PARAM;
+    }
+
+    mxc_sys_system_clock_t current_sys_clk = (mxc_sys_system_clock_t)(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
+    if (current_sys_clk != MXC_SYS_CLOCK_IPO && clock_source == MXC_USB_CLOCK_SYS_DIV_10) {
+        return E_BAD_STATE; // System clock must be set to the IPO for the USB PHY to use the internal clock
+    }
+
+    MXC_SETFIELD(MXC_FCR->fctrl0, MXC_F_FCR_FCTRL0_USBCLKSEL, ((unsigned int)clock_source) << MXC_F_FCR_FCTRL0_USBCLKSEL_POS);
+
+    return E_NO_ERROR;
 }
 
 int MXC_USB_Shutdown(void)
