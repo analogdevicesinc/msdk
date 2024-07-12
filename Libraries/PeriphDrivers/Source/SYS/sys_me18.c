@@ -339,6 +339,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 /* ************************************************************************** */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
+#ifdef __arm__
     uint32_t current_clock;
 
     // Save the current system clock
@@ -437,6 +438,21 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         return E_TIME_OUT;
     }
+#else
+#ifdef __riscv
+    switch(clock) {
+        case MXC_SYS_CLOCK_PCLK:
+            MXC_PWRSEQ &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+            break;
+        case MXC_SYS_CLOCK_ISO:
+            MXC_SYS_Clock_Enable(MXC_SYS_CLOCK_ISO);
+            MXC_PWRSEQ |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+            break;
+        default:
+            return E_BAD_PARAM;
+    }
+#endif
+#endif
 
     // Update the system core clock
     SystemCoreClockUpdate();
