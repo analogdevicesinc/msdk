@@ -62,6 +62,9 @@ uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
     }
 };
 // clang-format on
+bool g_is_clock_locked[MXC_UART_INSTANCES] = {
+    [0 ... MXC_UART_INSTANCES - 1] = false
+};
 
 /* **** Function Prototypes **** */
 
@@ -283,6 +286,10 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
 {
     MXC_ASSERT(clock_option >= 0 && clock_option <= 3);
 
+    if (g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)]) {
+        return E_NO_ERROR; // Return with no error so Init doesn't error out if clock config is locked
+    }
+
     bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_CTRL_BCLKEN) != 0;
     
     if (is_bclk_enabled) {
@@ -306,6 +313,11 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
 unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart)
 {
     return ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) >> MXC_F_UART_CTRL_BCLKSRC_POS);
+}
+
+void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock)
+{
+    g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)] = lock;
 }
 
 int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCtrl,

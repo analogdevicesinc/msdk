@@ -259,6 +259,16 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
  */
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock);
 
+/**
+ * @brief   Lock the clock source for the baud rate generator.  It must be unlocked before
+ *          it can be set again.
+ * 
+ * @param   uart    Pointer to UART registers (selects the UART block used.)
+ * @param   lock    Set to true to lock the clock source, false to unlock the clock source.
+ *
+ */
+void MXC_UART_LockClockSource(mxc_uart_regs_t *uart, bool lock);
+
 /* ************************************************************************* */
 /* Low-level functions                                                       */
 /* ************************************************************************* */
