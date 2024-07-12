@@ -82,14 +82,23 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
+void palUartFlush(uint8_t uartId)
+{
+
+  
+
+
+
+}
 void UART_CommonHandler(mxc_uart_regs_t *uart)
 {
   const int32_t err = MXC_UART_AsyncHandler(uart);
 
   if(err == E_INVALID)
   {
-    // If the uart is the console, we can try to recover since it is not critical
-    if(MXC_UART_GET_IDX(uart) == CONSOLE_UART)
+    const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
+    
+    if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
     {
       MXC_UART_ClearRXFIFO(uart);
     }
@@ -164,6 +173,12 @@ void RISCV_IRQHandler(void)
 #endif
 #endif
 
+typedef enum{
+  UART_READ_CALLBACK,
+  UART_WRITE_CALLBACK,
+  UART_FLUSH
+}palUartAction_t;
+
 /*************************************************************************************************/
 /*!
  *  \brief      Callback from the UART driver.
@@ -174,13 +189,18 @@ void RISCV_IRQHandler(void)
 void palUartCallback(mxc_uart_req_t* req, int error)
 {
 
-
-  int i;
-  for(i = 0; i < PAL_UARTS; i++) {
+ 
+  
+  for(int i = 0; i < PAL_UARTS; i++) {
     /* Find the corresponding rqeuest and call the callback */
     if(req == &palUartCb[i].readReq) {
       if(palUartCb[i].rdCback != NULL) {
-        palUartCb[i].rdCback();
+
+        // if(error != E_NO_ERROR)
+        // {
+          palUartCb[i].rdCback();
+        // }
+
       }
       return;
     }
@@ -188,7 +208,11 @@ void palUartCallback(mxc_uart_req_t* req, int error)
     if(req == &palUartCb[i].writeReq) {
       palUartCb[i].state = PAL_UART_STATE_READY;
       if(palUartCb[i].wrCback != NULL) {
-        palUartCb[i].wrCback();
+
+        // if(error != E_NO_ERROR)
+        // {
+          palUartCb[i].wrCback();
+        // }
       }
       return;
     }
