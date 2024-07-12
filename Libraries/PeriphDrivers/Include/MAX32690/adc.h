@@ -98,10 +98,16 @@ typedef enum {
  * @brief       Clock settings
  */
 typedef enum {
-    MXC_ADC_HCLK = 0, ///< HCLK CLock
-    MXC_ADC_CLK_ADC0, ///< ADC0 Clock
-    MXC_ADC_CLK_ADC1, ///< ADC1 Clock
-    MXC_ADC_CLK_ADC2, ///< ADC2 Clock
+    MXC_ADC_CLK_SYS_OSC = 0,
+    MXC_ADC_CLK_EXT = 1,
+    MXC_ADC_CLK_IBRO = 2,
+    MXC_ADC_CLK_ERFO = 3,
+
+    // Legacy names
+    MXC_ADC_HCLK = MXC_ADC_CLK_SYS_OSC, ///< HCLK CLock
+    MXC_ADC_CLK_ADC0 = MXC_ADC_CLK_EXT, ///< ADC0 Clock
+    MXC_ADC_CLK_ADC1 = MXC_ADC_CLK_IBRO, ///< ADC1 Clock
+    MXC_ADC_CLK_ADC2 = MXC_ADC_CLK_ERFO, ///< ADC2 Clock
 } mxc_adc_clock_t;
 
 /**
@@ -234,6 +240,22 @@ typedef struct {
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_ADC_Init(mxc_adc_req_t *req);
+
+/**
+ * @brief   Set the input clock source for the ADC peripheral
+ *
+ * @param   clock_source Input clock source 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_ADC_SetClockSource(mxc_adc_clock_t clock_source);
+
+/**
+ * @brief   Set the clock divider the ADC peripheral's input clock
+ *
+ * @param   div Clock divider
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_ADC_SetClockDiv(mxc_adc_clkdiv_t div);
 
 /**
  * @brief   Shuts down the ADC
