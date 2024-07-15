@@ -125,11 +125,11 @@ typedef struct {
 #define MXC_V_MCR_CTRL_CLKSEL_EXTCLK                   ((uint32_t)0x2UL) /**< CTRL_CLKSEL_EXTCLK Value */
 #define MXC_S_MCR_CTRL_CLKSEL_EXTCLK                   (MXC_V_MCR_CTRL_CLKSEL_EXTCLK << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_EXTCLK Setting */
 
-#define MXC_F_MCR_CTRL_ERTCO_EN_POS                    3 /**< CTRL_ERTCO_EN Position */
-#define MXC_F_MCR_CTRL_ERTCO_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_EN_POS)) /**< CTRL_ERTCO_EN Mask */
-
-#define MXC_F_MCR_CTRL_ERTCO_32KHZ_EN_POS              5 /**< CTRL_ERTCO_32KHZ_EN Position */
+#define MXC_F_MCR_CTRL_ERTCO_32KHZ_EN_POS              3 /**< CTRL_ERTCO_32KHZ_EN Position */
 #define MXC_F_MCR_CTRL_ERTCO_32KHZ_EN                  ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_32KHZ_EN_POS)) /**< CTRL_ERTCO_32KHZ_EN Mask */
+
+#define MXC_F_MCR_CTRL_ERTCO_EN_POS                    5 /**< CTRL_ERTCO_EN Position */
+#define MXC_F_MCR_CTRL_ERTCO_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_EN_POS)) /**< CTRL_ERTCO_EN Mask */
 
 /**@} end of group MCR_CTRL_Register */
 

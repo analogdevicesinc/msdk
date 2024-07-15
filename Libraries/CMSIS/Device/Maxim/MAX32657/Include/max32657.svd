@@ -6336,14 +6336,14 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ERTCO_EN</name>
-       <description>Enable ERTCO 4KHz.</description>
+       <name>ERTCO_32KHZ_EN</name>
+       <description>Enable ERTCO 32KHz while ERTCO_EN.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ERTCO_32KHZ_EN</name>
-       <description>Enable ERTCO 32KHz while ERTCO_EN.</description>
+       <name>ERTCO_EN</name>
+       <description>Enable ERTCO 4KHz.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
