@@ -22,6 +22,7 @@
     http://www.embedded.com/electronics-blogs/programmer-s-toolbox/4219659/Integer-Square-Roots
 
     And book 'Math Toolkit for Realtime Programming'
+        Jack Crenshaw (2000) Math Toolkit for Real-Time Programming. Lawrence, Kan: CRC Press.
 */
 uint16_t sqrt32(uint32_t a)
 {
