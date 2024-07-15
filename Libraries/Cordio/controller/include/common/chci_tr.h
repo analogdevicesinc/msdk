@@ -41,9 +41,9 @@ extern "C" {
 #define UART_BAUD   1000000
 #endif
 
-#ifndef UART_HWFC
+#ifndef CHCI_UART_HWFC
 /*! \brief  Default Hardware Flow Control. */
-#define UART_HWFC    1
+#define CHCI_UART_HWFC    0
 #endif
 
 /**************************************************************************************************

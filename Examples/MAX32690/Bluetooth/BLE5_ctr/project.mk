@@ -24,3 +24,8 @@ BLE_CONTROLLER = 1
 # Set to 0 to disable
 # Set to 2 to enable serial port trace messages
 TRACE = 2
+
+# HCI Hardware flow control
+# set 1 to enable, 0 to disable
+# default is zero
+CHCI_UART_HWFC=0

@@ -64,6 +64,10 @@ ifeq ($(LIB_CORDIO), 1)
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 
+
+CHCI_UART_HWFC?=0
+CFG_DEV += CHCI_UART_HWFC=$(CHCI_UART_HWFC)
+
 CHIP_REVISION ?= b
 export CHIP_REVISION
 

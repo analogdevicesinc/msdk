@@ -31,6 +31,7 @@
 #include "wsf_os.h"
 #include "util/bstream.h"
 #include <string.h>
+#include <stdio.h>
 
 #if (CHCI_TR_UART == 1)
 #include "pal_uart.h"
@@ -483,6 +484,7 @@ void ChciTrResetCmdEvtCounts(void)
 
 /*************************************************************************************************/
 /*!
+
  *  \brief  Initialize the transport handler.
  *
  *  \param  handlerId       Handler ID.
@@ -500,7 +502,7 @@ void ChciTrHandlerInit(wsfHandlerId_t handlerId, uint16_t maxAclLen, uint16_t ma
 #if (CHCI_TR_UART == 1)
   PalUartConfig_t cfg;
   cfg.baud   = UART_BAUD;
-  cfg.hwFlow = UART_HWFC;
+  cfg.hwFlow = CHCI_UART_HWFC;
   cfg.rdCback = chciRxPacketSM;
   cfg.wrCback = chciTxComplete;
   PalUartInit(PAL_UART_ID_CHCI, &cfg);
