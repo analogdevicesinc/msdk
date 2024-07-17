@@ -253,40 +253,11 @@ int MXC_FLC_BlockPageRead(uint32_t address)
 //******************************************************************************
 volatile uint32_t *MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
 {
-    uint32_t reg_num;
-    reg_num = page_num >>
-              5; // Divide by 32 to get WELR register number containing the page lock bit
-
-    if (address < MXC_FLASH_MEM_BASE || address > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
-        return NULL;
-    }
-
-    switch (reg_num) {
-    case 0:
-        return &(MXC_FLC->welr0);
-    case 1:
-        return &(MXC_FLC->welr1);
-    }
-
     return NULL;
 }
 
 //******************************************************************************
 volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
 {
-    uint32_t reg_num;
-    reg_num = page_num >> 5; // Divide by 32 to get RLR register number containing the page lock bit
-
-    if (address < MXC_FLASH_MEM_BASE || address > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
-        return NULL;
-    }
-
-    switch (reg_num) {
-    case 0:
-        return &(MXC_FLC->rlr0);
-    case 1:
-        return &(MXC_FLC->rlr1);
-    }
-
     return NULL;
 }
