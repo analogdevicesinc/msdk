@@ -61,7 +61,7 @@ static struct {
  *  \return None.
  */
 /*************************************************************************************************/
-__attribute__ ((weak)) void WUT_IRQHandler(void)
+void WUT_Common(void)
 {
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 #ifndef __riscv
@@ -69,24 +69,19 @@ __attribute__ ((weak)) void WUT_IRQHandler(void)
 #endif
 
   NVIC_ClearPendingIRQ(WUT_IRQn);
+}
+
+__attribute__ ((weak)) void WUT_IRQHandler(void)
+{
+  WUT_Common();
 }
 __attribute__ ((weak)) void WUT0_IRQHandler(void)
 {
-  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-#ifndef __riscv
-  MXC_WUT_IntClear(MXC_WUT);
-#endif
-
-  NVIC_ClearPendingIRQ(WUT_IRQn);
+  WUT_Common();
 }
 __attribute__ ((weak)) void WUT1_IRQHandler(void)
 {
-  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-#ifndef __riscv
-  MXC_WUT_IntClear(MXC_WUT);
-#endif
-
-  NVIC_ClearPendingIRQ(WUT_IRQn);
+  WUT_Common();
 }
 
 /*************************************************************************************************/
