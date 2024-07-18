@@ -442,11 +442,11 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 #ifdef __riscv
     switch(clock) {
         case MXC_SYS_CLOCK_PCLK:
-            MXC_PWRSEQ &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+            MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
             break;
         case MXC_SYS_CLOCK_ISO:
             MXC_SYS_Clock_Enable(MXC_SYS_CLOCK_ISO);
-            MXC_PWRSEQ |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+            MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
             break;
         default:
             return E_BAD_PARAM;
