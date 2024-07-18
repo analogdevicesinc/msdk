@@ -445,7 +445,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
             MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
             break;
         case MXC_SYS_CLOCK_ISO:
-            MXC_SYS_Clock_Enable(MXC_SYS_CLOCK_ISO);
+            MXC_SYS_ClockEnable(MXC_SYS_CLOCK_ISO);
             MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
             break;
         default:
