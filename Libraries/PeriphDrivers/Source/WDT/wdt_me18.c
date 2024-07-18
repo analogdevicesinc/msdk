@@ -26,7 +26,7 @@
 #include "wdt.h"
 #include "wdt_revb.h"
 
-bool g_is_clock_locked[MXC_CFG_WDT_INSTANCES] = {
+static bool g_is_clock_locked[MXC_CFG_WDT_INSTANCES] = {
     [0 ... MXC_CFG_WDT_INSTANCES - 1] = false
 };
 

@@ -47,6 +47,8 @@ static setup_phase_t setup_phase = SETUP_IDLE;
 /* Driver options passed in during MXC_USB_Init() */
 static maxusb_cfg_options_t driver_opts;
 
+static bool g_is_clock_locked = false;
+
 static volatile uint8_t *get_fifo_ptr(unsigned int ep)
 {
     volatile uint32_t *ptr;
@@ -174,8 +176,18 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     return 0;
 }
 
+int MXC_USB_LockClockSource(bool lock)
+{
+    g_is_clock_locked = lock;
+    return E_NO_ERROR;
+}
+
 int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source)
 {
+    if (g_is_clock_locked) {
+        return E_BAD_STATE; // Clock source must be unlocked to set it.
+    }
+
     // The USB peripheral's clock source is set in the FCR register bank.
     // The actual clock source selected by each field value may vary between 
     // microcontrollers, so it is the responsibility of the implementer to define

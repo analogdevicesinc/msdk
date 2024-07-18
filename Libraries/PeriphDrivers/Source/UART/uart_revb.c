@@ -62,7 +62,7 @@ uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
     }
 };
 // clang-format on
-bool g_is_clock_locked[MXC_UART_INSTANCES] = {
+static bool g_is_clock_locked[MXC_UART_INSTANCES] = {
     [0 ... MXC_UART_INSTANCES - 1] = false
 };
 

@@ -21,6 +21,7 @@
 #ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_
 #define LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_
 
+#include <stdbool.h>
 #include "usb_hwopt.h"
 #include "usb_protocol.h"
 
@@ -160,6 +161,16 @@ typedef enum {
  * 
  */
 int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source);
+
+/**
+ * @brief   Lock the input clock source to the USB peripheral.
+ *
+ * @param   lock Whether to lock the clock source.  Set to true to lock, false to unlock.
+ *  
+ * @return This function returns zero (0) for success, non-zero for failure
+ * 
+ */
+int MXC_USB_LockClockSource(bool lock);
 
 /** 
  * @brief Shut down the USB peripheral block
