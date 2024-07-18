@@ -162,7 +162,8 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
     return E_NO_ERROR;
 }
 
-void MXC_WDT_LockClockSource(mxc_wdt_regs_t *wdt, bool lock)
+int MXC_WDT_LockClockSource(mxc_wdt_regs_t *wdt, bool lock)
 {
     g_is_clock_locked[MXC_WDT_GET_IDX(wdt)] = lock;
+    return E_NO_ERROR;
 }

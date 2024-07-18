@@ -222,6 +222,14 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
  */
 int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source);
 
+/**
+ * @brief       Lock the input clock source for the WDT.  The clock source must be unlocked
+ *              to be set again.
+ * @param       wdt     Pointer to watchdog registers.
+ * @param       lock    Whether to lock the clock source.  Set to true to lock, false to unlock.
+ */
+int MXC_WDT_LockClockSource(mxc_wdt_regs_t *wdt, bool lock);
+
 /**@} end of group wdt */
 
 #ifdef __cplusplus
