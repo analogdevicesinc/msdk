@@ -118,9 +118,14 @@ int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div)
     return E_NO_ERROR;
 }
 
-void MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock)
+int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock)
 {
     g_is_clock_locked = lock;
+    if (g_is_clock_locked == lock) {
+        return E_FAIL;
+    } else {
+        return E_NO_ERROR;
+    }
 }
 
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc)

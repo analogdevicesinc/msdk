@@ -120,6 +120,11 @@ int MXC_ADC_SetClockSource(mxc_adc_clock_t clock_source)
     return MXC_ADC_RevB_SetClockSource((mxc_adc_revb_regs_t *)MXC_ADC, clock_source);
 }
 
+int MXC_ADC_LockClockSource(bool lock)
+{
+    return MXC_ADC_RevB_LockClockSource((mxc_adc_revb_regs_t *)MXC_ADC, lock);
+}
+
 int MXC_ADC_SetClockDiv(mxc_adc_clkdiv_t div)
 {
     return MXC_ADC_RevB_SetClockDiv((mxc_adc_revb_regs_t *)MXC_ADC, div);

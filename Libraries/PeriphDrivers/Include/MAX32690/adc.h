@@ -28,6 +28,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_ADC_H_
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include <stdint.h>
 #include "adc_regs.h"
 #include "mcr_regs.h"
@@ -248,6 +249,15 @@ int MXC_ADC_Init(mxc_adc_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_ADC_SetClockSource(mxc_adc_clock_t clock_source);
+
+/**
+ * @brief   Lock the input clock source for the ADC peripheral.  The clock source
+ *          must be unlocked for it to be set.
+ *
+ * @param   lock Whether to lock the clock source.  Set to true to lock, false, to unlock. 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_ADC_LockClockSource(bool lock);
 
 /**
  * @brief   Set the clock divider the ADC peripheral's input clock

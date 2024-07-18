@@ -38,7 +38,7 @@ int MXC_ADC_RevB_SetClockSource(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock_
 
 int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div);
 
-void MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock);
+int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock);
 
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc);
 
