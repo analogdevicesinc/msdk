@@ -94,6 +94,7 @@ typedef enum {
  */
 typedef enum {
     MXC_WDT_PCLK = 0,
+    MXC_WDT_APB_CLK = MXC_WDT_PCLK,
     MXC_WDT_IBRO_CLK,
     MXC_WDT_INRO_CLK,
     MXC_WDT_ERTCO_CLK,
