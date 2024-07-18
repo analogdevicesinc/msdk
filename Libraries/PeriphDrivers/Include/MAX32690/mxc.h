@@ -48,7 +48,7 @@
  *  Peripheral Driver Includes
  */
 #include "adc.h"
-#include "aes.h"
+// #include "aes.h" // TODO(JC): AES drivers not implemented for ME18 (?)
 #include "can.h"
 #include "crc.h"
 #include "ctb.h"
