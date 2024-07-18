@@ -63,7 +63,7 @@ ifeq ($(LIB_CORDIO), 1)
 # Include the Cordio Library
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
-
+PROJ_CFLAGS += -D__CORDIO__
 CHIP_REVISION ?= b
 export CHIP_REVISION
 
