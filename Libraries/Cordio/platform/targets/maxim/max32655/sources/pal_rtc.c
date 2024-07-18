@@ -38,6 +38,7 @@
 #include "lp.h"
 #include "mxc_device.h"
 #include "wut_regs.h"
+#include "nvic_table.h"
 
 /**************************************************************************************************
   Macros
@@ -61,7 +62,7 @@ static struct {
  *  \return None.
  */
 /*************************************************************************************************/
-void WUT_Common(void)
+void WUT_Handler(void)
 {
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 #ifndef __riscv
@@ -71,18 +72,7 @@ void WUT_Common(void)
   NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 
-__attribute__ ((weak)) void WUT_IRQHandler(void)
-{
-  WUT_Common();
-}
-__attribute__ ((weak)) void WUT0_IRQHandler(void)
-{
-  WUT_Common();
-}
-__attribute__ ((weak)) void WUT1_IRQHandler(void)
-{
-  WUT_Common();
-}
+
 
 /*************************************************************************************************/
 /*!
@@ -127,6 +117,8 @@ void PalRtcInit(void)
   MXC_WUT_Config(MXC_WUT, &cfg);
   MXC_LP_EnableWUTAlarmWakeup();
 
+
+  MXC_NVIC_SetVector(WUT_IRQn, WUT_Handler);
   NVIC_ClearPendingIRQ(WUT_IRQn);
   NVIC_EnableIRQ(WUT_IRQn);
 
