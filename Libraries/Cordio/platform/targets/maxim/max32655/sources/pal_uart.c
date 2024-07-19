@@ -195,12 +195,7 @@ void palUartCallback(mxc_uart_req_t* req, int error)
     /* Find the corresponding rqeuest and call the callback */
     if(req == &palUartCb[i].readReq) {
       if(palUartCb[i].rdCback != NULL) {
-
-        // if(error != E_NO_ERROR)
-        // {
           palUartCb[i].rdCback();
-        // }
-
       }
       return;
     }
@@ -208,11 +203,8 @@ void palUartCallback(mxc_uart_req_t* req, int error)
     if(req == &palUartCb[i].writeReq) {
       palUartCb[i].state = PAL_UART_STATE_READY;
       if(palUartCb[i].wrCback != NULL) {
-
-        // if(error != E_NO_ERROR)
-        // {
           palUartCb[i].wrCback();
-        // }
+        
       }
       return;
     }
