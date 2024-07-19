@@ -45,6 +45,7 @@ LPCMP
 Pulse_Train
 RTC
 RTC_Backup
+SDHC_FTHR
 SPI
 TMR
 TRNG
