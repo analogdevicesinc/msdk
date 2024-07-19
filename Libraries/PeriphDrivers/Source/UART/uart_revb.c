@@ -90,8 +90,8 @@ static void emptyRxAsync(mxc_uart_revb_req_t *req)
         numToRead = req->rxLen - req->rxCnt;
 
         /* Upper bound the threshold */
-        if (numToRead > (MXC_UART_FIFO_DEPTH-1)) {
-            numToRead = (MXC_UART_FIFO_DEPTH-1);
+        if (numToRead > (MXC_UART_FIFO_DEPTH - 1)) {
+            numToRead = (MXC_UART_FIFO_DEPTH - 1);
         }
         MXC_UART_SetRXThreshold((mxc_uart_regs_t *)(req->uart), numToRead);
 
@@ -105,7 +105,7 @@ static void emptyRxAsync(mxc_uart_revb_req_t *req)
          * threshold again. 
          */
 
-    } while(numToRead && numToRead <= MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart))) ;
+    } while (numToRead && numToRead <= MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart)));
 }
 
 int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_revb_clock_t clock)
@@ -720,9 +720,9 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
 
         /* Read data already in the FIFO */
         emptyRxAsync((mxc_uart_revb_req_t *)req);
-        
+
         /* Pend the interrupt if we're done reading */
-        if(req->rxLen == req->rxCnt) {
+        if (req->rxLen == req->rxCnt) {
             NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uart_num));
         }
     }
@@ -832,8 +832,7 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
 
     req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];
     if ((req != NULL) && (req->rxLen)) {
-        emptyRxAsync((mxc_uart_revb_req_t*)req);
-
+        emptyRxAsync((mxc_uart_revb_req_t *)req);
     }
 
     if (AsyncRxRequests[uart_num] == AsyncTxRequests[uart_num]) {
