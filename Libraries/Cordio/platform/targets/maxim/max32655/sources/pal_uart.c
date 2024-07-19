@@ -82,14 +82,6 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
-void palUartFlush(uint8_t uartId)
-{
-
-  
-
-
-
-}
 void UART_CommonHandler(mxc_uart_regs_t *uart)
 {
   const int32_t err = MXC_UART_AsyncHandler(uart);
@@ -107,35 +99,26 @@ void UART_CommonHandler(mxc_uart_regs_t *uart)
       PAL_SYS_ASSERT(err == E_NO_ERROR);
     }
   }
-  
 }
 void UART0_IRQHandler(void)
 {
-  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART0);
-
 }
 void UART1_IRQHandler(void)
 {
-  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART1);
-
 }
 void UART2_IRQHandler(void)
 {  
-  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART2);
-
 }
 void UART3_IRQHandler(void)
 {
-
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   UART_CommonHandler(MXC_UART3);
-
 }
 
 /*************************************************************************************************/
@@ -173,12 +156,6 @@ void RISCV_IRQHandler(void)
 #endif
 #endif
 
-typedef enum{
-  UART_READ_CALLBACK,
-  UART_WRITE_CALLBACK,
-  UART_FLUSH
-}palUartAction_t;
-
 /*************************************************************************************************/
 /*!
  *  \brief      Callback from the UART driver.
@@ -188,9 +165,6 @@ typedef enum{
 /*************************************************************************************************/
 void palUartCallback(mxc_uart_req_t* req, int error)
 {
-
- 
-  
   for(int i = 0; i < PAL_UARTS; i++) {
     /* Find the corresponding rqeuest and call the callback */
     if(req == &palUartCb[i].readReq) {
@@ -416,8 +390,6 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
   palUartCb[uartNum].readReq.txLen      = 0;
   palUartCb[uartNum].readReq.callback   = palUartCallback;
 
-  NVIC_DisableIRQ(irqn);
-
   /* Start the read */
   result = MXC_UART_TransactionAsync(&palUartCb[uartNum].readReq);
   (void)result;
@@ -456,8 +428,6 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 
   uartNum = palUartGetNum(id);
   irqn = MXC_UART_GET_IRQ(uartNum);
-
-  NVIC_DisableIRQ(irqn);
 
   palUartCb[uartNum].state = PAL_UART_STATE_BUSY;
 
