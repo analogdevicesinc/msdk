@@ -69,9 +69,7 @@ void __attribute__((weak)) UART2_IRQHandler(void) {}
 void __attribute__((weak)) I2C2_IRQHandler(void) {}
 void __attribute__((weak)) UART3_IRQHandler(void) {}
 void __attribute__((weak)) SPI1_IRQHandler(void) {}
-#ifndef __CORDIO__
 void __attribute__((weak)) WUT0_IRQHandler(void) {}
-#endif
 void __attribute__((weak)) FLC0_IRQHandler(void) {}
 void __attribute__((weak)) GPIO0_IRQHandler(void) {}
 void __attribute__((weak)) GPIO1_IRQHandler(void) {}
