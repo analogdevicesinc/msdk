@@ -65,8 +65,8 @@ BUILD_DIR=./Build
 endif
 
 
-ifeq "${LIB_DIR}" ""
-LIB_DIR := ${CMSIS_ROOT}/../../Libraries
+ifeq "${LIBS_DIR}" ""
+LIBS_DIR := ${CMSIS_ROOT}/../../Libraries
 endif
 
 include ${LIBS_DIR}/Cordio/platform/targets/maxim/build/cordio.mk
