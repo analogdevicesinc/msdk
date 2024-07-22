@@ -47,6 +47,8 @@ extern "C" {
   #define bool_t uint8_t
 #endif
 
+#define bool _Bool
+
 #ifndef FALSE
   #define FALSE 0
 #endif
