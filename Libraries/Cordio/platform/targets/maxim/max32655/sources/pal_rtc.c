@@ -66,7 +66,6 @@ void WUT0_IRQHandler(void)
 {
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
   MXC_WUT_Handler(MXC_WUT);
-  APP_TRACE_INFO0("WUT");
 }
 
 
