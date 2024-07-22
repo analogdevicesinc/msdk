@@ -187,21 +187,7 @@ static void mainWsfInit(void)
 #endif
 }
 
-/*************************************************************************************************/
-/*!
-*  \fn     WUT_IRQHandler
-*
-*  \brief  WUY interrupt handler.
-*
-*  \return None.
-*/
-/*************************************************************************************************/
-void WUT_IRQHandler(void)
-{
-    MXC_WUT_IntClear(MXC_WUT0);
-    NVIC_ClearPendingIRQ(WUT_IRQn);
-    MXC_WUT_Handler(MXC_WUT0);
-}
+
 
 /*************************************************************************************************/
 /*!
