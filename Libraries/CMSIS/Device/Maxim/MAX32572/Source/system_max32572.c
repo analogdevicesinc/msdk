@@ -21,7 +21,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "max32572.h"
+#include "mxc_device.h"
 #include "gcr_regs.h"
 #include "mxc_sys.h"
 #include "usbhs_regs.h"
