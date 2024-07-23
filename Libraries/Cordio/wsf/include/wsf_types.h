@@ -47,6 +47,7 @@ extern "C" {
   #define bool_t uint8_t
 #endif
 
+/* New library uses bool instead of bool_t */
 #define bool _Bool
 
 #ifndef FALSE
