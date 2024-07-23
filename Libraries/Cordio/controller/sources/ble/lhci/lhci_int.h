@@ -255,6 +255,9 @@ extern "C" {
 #define LHCI_LEN_CMD_STATUS_EVT 0xFF
 
 /* Packetcraft vendor specific OCF range is 0x3C0-0x3FF */
+#define LHCI_OPCODE_VS_FIRM_UPDATE\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C0) /*!< Firmware update opcode. */
+
 #define LHCI_OPCODE_VS_SET_SCAN_CH_MAP \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3E0) /*!< Set Scan Channel Map opcode. */
 #define LHCI_OPCODE_VS_SET_EVENT_MASK \

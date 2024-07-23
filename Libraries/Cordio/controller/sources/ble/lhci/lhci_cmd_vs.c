@@ -89,6 +89,28 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     switch (pHdr->opCode) {
         /* --- extended device commands --- */
 
+    case LHCI_OPCODE_VS_FIRM_UPDATE: {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!get here @!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+        
+        for(int i = 1; i < 256; i++)
+        {
+            printf("%02x", pBuf[i-1]);
+            if (i % 44 == 0)
+            {
+                printf("\n");
+            }
+        }
+        printf("\n");
+
+        //Ext_Flash_Init();
+        //Ext_Flash_Quad(1);
+        //Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);
+        //Ext_Flash_Program_Page(0x00000000, pBuf, 0x40000, Ext_Flash_DataLine_Quad);
+        
+        break;
+    }
+
+
     case LHCI_OPCODE_VS_SET_OP_FLAGS: {
         uint32_t flags;
         bool_t enable;
