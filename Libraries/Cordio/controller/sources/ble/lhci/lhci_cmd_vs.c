@@ -82,7 +82,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    uint8_t channel = 0;
 
     /* Decode and consume command packet. */
 
@@ -209,6 +208,24 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     {
         uint16_t numPackets = (pBuf[4] << 8) | pBuf[3];
         status = LlEnhancedRxTest(pBuf[0], pBuf[1], pBuf[2], numPackets);
+        break;
+    }
+    case LHCI_OPCODE_VS_GET_RSSI:
+    {
+        status = LL_SUCCESS;
+        evtParamLen += sizeof(int8_t);
+        break;
+    }
+    case LHCI_OPCODE_VS_RESET_ADV_STATS:
+    {
+        status = LL_SUCCESS;
+        BbBleResetAdvStats();
+        break;
+    }
+    case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+    {
+        status = LL_SUCCESS;
+        BbBleResetScanStats();
         break;
     }
 
