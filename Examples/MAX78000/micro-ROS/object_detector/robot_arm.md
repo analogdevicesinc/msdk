@@ -157,6 +157,12 @@ After completing hardware setup, follow these instructions to setup the software
 
 ## Demo Operation
 
+### Initial Position
+
+Before proceeding to launch the demo, ensure the robot arm is resting on the place oriented as follows.  Otherwise, the demo may not launch successfully if the motors are resting outside of their software-enforced angle limits.
+
+![Arm Orientation](res/arm-orientation.png)
+
 ### Launching
 
 To launch the demo, run the following command from inside the project folder (`Examples/MAX78000/micro-ROS/object_detector`):
