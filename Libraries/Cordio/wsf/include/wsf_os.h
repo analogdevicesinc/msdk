@@ -97,7 +97,7 @@ typedef wsfHandlerId_t  wsfTaskId_t;
 typedef uint8_t wsfTaskEvent_t;
 
 /*! \brief      Idle check function. */
-typedef bool_t (*WsfOsIdleCheckFunc_t)(void);
+typedef bool (*WsfOsIdleCheckFunc_t)(void);
 
 /**************************************************************************************************
   External Variables
