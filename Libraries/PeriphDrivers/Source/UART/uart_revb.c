@@ -104,7 +104,6 @@ static void emptyRxAsync(mxc_uart_revb_req_t *req)
          * the number of bytes currently in the FIFO, then we need to read from the FIFO and reset the
          * threshold again. 
          */
-
     } while (numToRead && numToRead <= MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart)));
 }
 
