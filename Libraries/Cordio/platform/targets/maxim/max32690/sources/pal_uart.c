@@ -82,6 +82,25 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
+void UART_CommonHandler(mxc_uart_regs_t *uart)
+{
+  const int32_t err = MXC_UART_AsyncHandler(uart);
+
+  if(err == E_INVALID)
+  {
+    const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
+
+    if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
+    {
+      MXC_UART_ClearRXFIFO(uart);
+    }
+    else
+    {
+      PAL_SYS_ASSERT(err == E_NO_ERROR);
+    }
+  }
+  
+}
 void UART0_IRQHandler(void)
 {
   int result0;

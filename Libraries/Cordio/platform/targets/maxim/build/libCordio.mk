@@ -79,8 +79,9 @@ ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=./Build
 endif
 
+
 ifeq "${LIBS_DIR}" ""
-LIBS_DIR := ${MAXIM_PATH}/Libraries
+LIBS_DIR := ${CMSIS_ROOT}/../../Libraries
 endif
 
 include ${LIBS_DIR}/Cordio/platform/targets/maxim/build/cordio.mk
