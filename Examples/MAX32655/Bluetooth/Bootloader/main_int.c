@@ -182,6 +182,7 @@ static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
 
 int main(void)
 {
+    
     volatile int i;
     int numLedsBlink;
 

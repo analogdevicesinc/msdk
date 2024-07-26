@@ -38,7 +38,11 @@
 #include "wsf_trace.h"
 #include "util/bstream.h"
 #include "bb_ble_api.h"
+#include "mxc_delay.h"
 #include <string.h>
+#include "flc.h"
+#include <stdio.h>
+
 
 /**************************************************************************************************
   Macros
@@ -60,6 +64,8 @@
 #define LHCI_LEN_GET_SYS_STATS_EVT                                                               \
     (2 * sizeof(uint16_t) + 3 * sizeof(uint32_t) + 7 * sizeof(uint16_t) + 2 * sizeof(uint16_t) + \
      10 * sizeof(uint16_t))
+
+extern uint32_t _flash1;
 
 /**************************************************************************************************
   Functions
@@ -84,29 +90,84 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint32_t regReadAddr = 0;
     uint8_t channel = 0;
 
+    static uint32_t * address;
+
     /* Decode and consume command packet. */
 
     switch (pHdr->opCode) {
         /* --- extended device commands --- */
+    case LHCI_OPCODE_VS_FIRM_RESET: {
+ 
+        NVIC_SystemReset();
+        
+        break;
+      
+    }
+
+    case LHCI_OPCODE_VS_FIRM_ERASE: {
+        LL_TRACE_INFO0("Erasing the firmware");
+        uint32_t addr;
+        uint32_t size;
+
+
+        BSTREAM_TO_UINT32(addr, pBuf);
+        address = (uint32_t*) addr;
+        uint8_t * addressErase = (uint8_t*) addr;
+
+        BSTREAM_TO_UINT32(size, pBuf);
+        
+        
+
+
+
+
+        volatile uint32_t address32 = (uint32_t)addressErase;
+        address32 &= 0xFFFFF;
+
+
+        size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
+        int error = E_NO_ERROR;
+
+        while (size) {
+            error = MXC_FLC_PageErase((uint32_t)addressErase);
+            if (error != E_NO_ERROR) {
+                break;
+            }
+
+        addressErase += MXC_FLASH_PAGE_SIZE;
+        size -= MXC_FLASH_PAGE_SIZE;
+        }
+
+        if (error == E_NO_ERROR || error == E_BAD_PARAM) {
+            LL_TRACE_INFO0("Erase the firmware Done");
+        }
+        else{
+            LL_TRACE_ERR0("Erase the firmware Failed!");
+        }
+      
+        break;
+      
+    }
 
     case LHCI_OPCODE_VS_FIRM_UPDATE: {
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!get here @!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-        
-        for(int i = 1; i < 256; i++)
-        {
-            printf("%02x", pBuf[i-1]);
-            if (i % 44 == 0)
-            {
-                printf("\n");
-            }
-        }
-        printf("\n");
+        int error = E_NO_ERROR;
 
-        //Ext_Flash_Init();
-        //Ext_Flash_Quad(1);
-        //Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);
-        //Ext_Flash_Program_Page(0x00000000, pBuf, 0x40000, Ext_Flash_DataLine_Quad);
-        
+
+
+        for (int i = 0; i < 8; i++)
+        {
+            error = MXC_FLC_Write128((uint32_t)address, (uint32_t*) (pBuf+i*16));
+            address += 4;
+            if (error != E_NO_ERROR) {
+                break;
+            }
+            
+        }
+        if (error != E_NO_ERROR) {
+                LL_TRACE_ERR0("Update the firmware Failed!");
+        }
+
+      
         break;
     }
 

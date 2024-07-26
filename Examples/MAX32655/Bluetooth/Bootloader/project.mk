@@ -19,7 +19,7 @@ SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
 
 AUTOSEARCH=0
-USE_INTERNAL_FLASH ?=0
+USE_INTERNAL_FLASH ?=1
 ifeq ($(USE_INTERNAL_FLASH), 1)
 SRCS += main_int.c
 else

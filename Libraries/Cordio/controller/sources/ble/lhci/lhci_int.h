@@ -257,6 +257,11 @@ extern "C" {
 /* Packetcraft vendor specific OCF range is 0x3C0-0x3FF */
 #define LHCI_OPCODE_VS_FIRM_UPDATE\
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C0) /*!< Firmware update opcode. */
+#define LHCI_OPCODE_VS_FIRM_ERASE\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C1) /*!< Firmware erase opcode. */
+#define LHCI_OPCODE_VS_FIRM_RESET\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C2) /*!< Firmware system_reset opcode. */
+
 
 #define LHCI_OPCODE_VS_SET_SCAN_CH_MAP \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3E0) /*!< Set Scan Channel Map opcode. */
