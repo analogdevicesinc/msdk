@@ -371,7 +371,7 @@ endif
 
 all:
 # 	Extend the functionality of the "all" recipe here
-	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+	$(PREFIX)-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
