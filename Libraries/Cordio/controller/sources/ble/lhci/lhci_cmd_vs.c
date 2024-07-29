@@ -39,6 +39,7 @@
 #include "util/bstream.h"
 #include "bb_ble_api.h"
 #include "flc.h"
+#include "mxc_delay.h"
 #include <string.h>
 
 /**************************************************************************************************
@@ -65,6 +66,13 @@
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
+//this is the callback function to the Msg
+void device_reset(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    MXC_Delay(3000);
+    NVIC_SystemReset();
+    return;
+}
 
 /*************************************************************************************************/
 /*!
@@ -90,14 +98,19 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
     switch (pHdr->opCode) {
         /* --- extended device commands --- */
+        
 
     case LHCI_OPCODE_VS_DEVICE_RESET: {
-        NVIC_SystemReset();
+        char* pMsg = WsfMsgDataAlloc(1,1);
+        wsfHandlerId_t handlerId;
+        handlerId = WsfOsSetNextHandler(device_reset);
+        WsfMsgSend(handlerId, pMsg);
+
         break;
     }
 
     case LHCI_OPCODE_VS_MEMORY_ERASE: {
-        LL_TRACE_INFO0("Erasing the firmware");
+        LL_TRACE_INFO0("Erasing the memory...");
         uint32_t addr;
         uint32_t size;
 
@@ -125,10 +138,10 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         }
 
         if (error == E_NO_ERROR || error == E_BAD_PARAM) {
-            LL_TRACE_INFO0("Erase the firmware Done");
+            LL_TRACE_INFO0("Done");
         }
         else{
-            LL_TRACE_ERR0("Erase the firmware Failed!");
+            LL_TRACE_ERR0("Failed");
         }
         break;
     
@@ -145,7 +158,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             }
         }
         if (error != E_NO_ERROR) {
-                LL_TRACE_ERR0("Update the firmware Failed!");
+                LL_TRACE_ERR0("Writing to flash memory Failed!");
         }
         break;
     }    

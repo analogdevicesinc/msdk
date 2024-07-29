@@ -39,14 +39,14 @@ Static BDA[5:3]=00:18:80
 
 ```
 
-to update the firmware, you have to erase the second memory bank first!!!!!.
+to update the firmware, you have to erase the second memory bank first!.
 
-you can do it through CLI by typing `erase 0x10040000 0x38000`, the result should look like this:
+you can do it through CLI by typing `erase 10:04:00:00 03:80:00`, the result should look like this:
 ```
-Erasing the firmware
-Erase the firmware Done
+Erasing the memory...
+Done
 ```
-`erase 0x10040000 0x38000`: the first parameter `0x10040000` is the starting address second memory bank which is used to store the updated firmware. The second parameter `0x38000` is to tell the size of the memory bank to be erased. 
+`erase 10:04:00:00 03:80:00`: the first parameter `10:04:00:00` is the starting address of second memory bank (0x10040000) which is used to store the updated firmware. The second parameter `03:80:00` is to tell the size of the memory bank (0x38000) to be erased. 
 
 Then you can update the program by typing `update hello_world.bin`. `hello_world.bin` is file for new application. This file is in repository `MAX-BLE-HCI/examples/firmware_update`.
 

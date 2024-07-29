@@ -203,19 +203,6 @@ int main(void)
         DELAY(0x1FFFFF);
     }
 
-/*
-    __disable_irq();
-    mxc_gpio_cfg_t gpio_in;
-    gpio_in.port = MXC_GPIO_PORT_IN;
-    gpio_in.mask = MXC_GPIO_PIN_IN;
-    gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
-    gpio_in.func = MXC_GPIO_FUNC_IN;
-    gpio_in.vssel = MXC_GPIO_VSSEL_VDDIO;
-    gpio_in.drvstr = MXC_GPIO_DRVSTR_0;
-    MXC_GPIO_Config(&gpio_in);
-  
-*/
-
     if (((uint32_t) (* (uint32_t *)FLASH1_START)) != 0xFFFFFFFF) {
 
 
