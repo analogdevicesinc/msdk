@@ -27,18 +27,17 @@
 #include "nvic_table.h"
 #include "mxc_delay.h"
 
-int g_tx_channel;
-int g_rx_channel;
-int g_fill_dummy_bytes = 0;
-int g_dummy_len = 0;
-uint8_t g_dummy_byte = 0xFF;
+static int g_tx_channel;
+static int g_rx_channel;
+static int g_dummy_len = 0;
+static uint8_t g_dummy_byte = 0xFF;
 
-bool g_dma_initialized = false;
+static bool g_dma_initialized = false;
 
-uint8_t *g_rx_buffer;
-uint8_t *g_tx_buffer;
-uint32_t g_rx_len;
-uint32_t g_tx_len;
+static uint8_t *g_rx_buffer;
+static uint8_t *g_tx_buffer;
+static uint32_t g_rx_len;
+static uint32_t g_tx_len;
 
 static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
