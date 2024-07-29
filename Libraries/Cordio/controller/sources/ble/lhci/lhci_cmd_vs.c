@@ -38,6 +38,7 @@
 #include "wsf_trace.h"
 #include "util/bstream.h"
 #include "bb_ble_api.h"
+#include "flc.h"
 #include <string.h>
 
 /**************************************************************************************************
@@ -83,10 +84,71 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
 
+    static uint32_t * address;
+
     /* Decode and consume command packet. */
 
     switch (pHdr->opCode) {
         /* --- extended device commands --- */
+
+    case LHCI_OPCODE_VS_DEVICE_RESET: {
+        NVIC_SystemReset();
+        break;
+    }
+
+    case LHCI_OPCODE_VS_MEMORY_ERASE: {
+        LL_TRACE_INFO0("Erasing the firmware");
+        uint32_t addr;
+        uint32_t size;
+
+
+        BSTREAM_TO_UINT32(addr, pBuf);
+        address = (uint32_t*) addr;
+        uint8_t * addressErase = (uint8_t*) addr;
+
+        BSTREAM_TO_UINT32(size, pBuf);
+        volatile uint32_t address32 = (uint32_t)addressErase;
+        address32 &= 0xFFFFF;
+
+
+        size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
+        int error = E_NO_ERROR;
+
+        while (size) {
+            error = MXC_FLC_PageErase((uint32_t)addressErase);
+            if (error != E_NO_ERROR) {
+                break;
+            }
+
+        addressErase += MXC_FLASH_PAGE_SIZE;
+        size -= MXC_FLASH_PAGE_SIZE;
+        }
+
+        if (error == E_NO_ERROR || error == E_BAD_PARAM) {
+            LL_TRACE_INFO0("Erase the firmware Done");
+        }
+        else{
+            LL_TRACE_ERR0("Erase the firmware Failed!");
+        }
+        break;
+    
+    }
+
+    case LHCI_OPCODE_VS_WRITE_FLASH: {
+        int error = E_NO_ERROR;
+        for (int i = 0; i < 8; i++)
+        {
+            error = MXC_FLC_Write128((uint32_t)address, (uint32_t*) (pBuf+i*16));
+            address += 4;
+            if (error != E_NO_ERROR) {
+                break;
+            }
+        }
+        if (error != E_NO_ERROR) {
+                LL_TRACE_ERR0("Update the firmware Failed!");
+        }
+        break;
+    }    
 
     case LHCI_OPCODE_VS_SET_OP_FLAGS: {
         uint32_t flags;
