@@ -50,8 +50,7 @@ extern uint32_t _flash1;
 adjust this FLASH_LEN according to the linker script 
 in both Bootloader and BLT folder
 */
-#define FLASH_LEN  0x38000 
-
+#define FLASH_LEN 0x38000
 
 #define FLASH_ERASED_WORD 0xFFFFFFFF
 #define MXC_GPIO_PORT_IN MXC_GPIO0
@@ -103,7 +102,6 @@ uint32_t crc32_for_byte(uint32_t r)
  */
 /*************************************************************************************************/
 static uint32_t table[0x100] = { 0 };
-
 
 void bootError(void)
 {
@@ -179,7 +177,6 @@ static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
 
 int main(void)
 {
-    
     volatile int i;
     int numLedsBlink;
 
@@ -203,19 +200,13 @@ int main(void)
         DELAY(0x1FFFFF);
     }
 
-    if (((uint32_t) (* (uint32_t *)FLASH1_START)) != 0xFFFFFFFF) {
-
-
+    if (((uint32_t)(*(uint32_t *)FLASH1_START)) != 0xFFFFFFFF) {
         multiPageErase((uint8_t *)FLASH0_START, FLASH_LEN);
 
-      
-        flashWrite((uint32_t *)FLASH0_START,(uint32_t *)FLASH1_START,FLASH_LEN);
- 
+        flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START, FLASH_LEN);
 
         multiPageErase((uint8_t *)FLASH1_START, 0x40000);
-  
     }
-    
 
     Boot_Lower();
 

@@ -258,7 +258,6 @@ void setInterruptPriority(void)
 /*************************************************************************************************/
 int main(void)
 {
-    
     uint32_t memUsed;
 
     mainLoadConfiguration();
@@ -280,7 +279,6 @@ int main(void)
                             .pFreeMem = WsfHeapGetFreeStartAddress(),
                             .freeMemAvail = WsfHeapCountAvailable() };
 
-    
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
     WsfCsExit();
@@ -299,6 +297,3 @@ int main(void)
     /* Does not return. */
     return 0;
 }
-      
-    
-    

@@ -29,9 +29,6 @@
 int main(void)
 {
     printf("Second Application: Hello World!\n");
-    while(1){}
+    while (1) {}
     return 0;
 }
-      
-    
-    
