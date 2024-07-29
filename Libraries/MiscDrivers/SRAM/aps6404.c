@@ -31,7 +31,13 @@ MODE_t g_current_mode;
 
 // Utility macro for validating an error code.  Assumes an 'err' variable
 // of type int exists in the macro's context
-#define ERR_CHECK(x) {err = (x); if (err != E_NO_ERROR) {return x;}}
+#define ERR_CHECK(x)             \
+    {                            \
+        err = (x);               \
+        if (err != E_NO_ERROR) { \
+            return x;            \
+        }                        \
+    }
 
 inline void _parse_spi_header(uint8_t cmd, uint32_t address, uint8_t *out)
 {
@@ -57,7 +63,7 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
 int aps6404_init()
 {
     int err = E_NO_ERROR;
-    ERR_CHECK(spi_init());    
+    ERR_CHECK(spi_init());
     ERR_CHECK(aps6404_reset());
     return err;
 }
@@ -151,7 +157,7 @@ int aps6404_read(uint32_t address, uint8_t *out, unsigned int len)
 {
     int err = E_NO_ERROR;
 
-    if (g_current_mode == STANDARD_MODE) {        
+    if (g_current_mode == STANDARD_MODE) {
         ERR_CHECK(_transmit_spi_header(0x03, address));
         ERR_CHECK(spi_transmit(NULL, 0, out, len, true));
     } else if (g_current_mode == QUAD_MODE) {

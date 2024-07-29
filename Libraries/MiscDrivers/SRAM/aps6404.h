@@ -17,8 +17,8 @@
  * limitations under the License.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78002_QSPI_APS6404_H_
-#define EXAMPLES_MAX78002_QSPI_APS6404_H_
+#ifndef LIBRARIES_MISCDRIVERS_SRAM_APS6404_H_
+#define LIBRARIES_MISCDRIVERS_SRAM_APS6404_H_
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -178,4 +178,4 @@ int aps6404_read(uint32_t address, uint8_t *out, unsigned int len);
  */
 int aps6404_write(uint32_t address, uint8_t *data, unsigned int len);
 
-#endif // EXAMPLES_MAX78002_QSPI_APS6404_H_
+#endif // LIBRARIES_MISCDRIVERS_SRAM_APS6404_H_

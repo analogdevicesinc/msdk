@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
-#define LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
+#ifndef LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_FASTSPI_CONFIG_H_
+#define LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_FASTSPI_CONFIG_H_
 
 /**
  * @file    fastspi_config.c
@@ -53,4 +53,4 @@ static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = FASTSPI_PINS_PORT,
                                                  .pad = MXC_GPIO_PAD_NONE,
                                                  .vssel = FASTSPI_VSSEL };
 
-#endif // LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
+#endif // LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_FASTSPI_CONFIG_H_

@@ -262,11 +262,11 @@ int main(void)
         return err;
     } else {
         printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID,
-           id.KGD, id.density, id.EID);
+               id.KGD, id.density, id.EID);
     }
 
-    uint8_t tx_data[4] = {1, 2, 3, 4};
-    uint8_t rx_buffer[4] = {0, 0, 0, 0};
+    uint8_t tx_data[4] = { 1, 2, 3, 4 };
+    uint8_t rx_buffer[4] = { 0, 0, 0, 0 };
 
     aps6404_enter_quadmode(); // Quad mode is faster
     aps6404_write(TEST_ADDR, tx_data, 4);
@@ -274,7 +274,8 @@ int main(void)
 
     for (int i = 0; i < 4; i++) {
         if (tx_data[i] != rx_buffer[i]) {
-            printf("Simple R/W test failed at index %i!  Expected %i but got %i\n", i, tx_data[i], rx_buffer[i]);
+            printf("Simple R/W test failed at index %i!  Expected %i but got %i\n", i, tx_data[i],
+                   rx_buffer[i]);
             return E_FAIL;
         }
     }
