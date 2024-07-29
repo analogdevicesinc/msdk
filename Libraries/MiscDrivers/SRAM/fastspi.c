@@ -189,10 +189,12 @@ int spi_init(void)
     fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
     FASTSPI_INSTANCE->ctrl0 =
-        (0b0100
-         << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
         MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
         MXC_F_SPI_CTRL0_EN; // Enable SPI
+
+    // Enable hardware slave select.  The instance number should be defined
+    // in "fastspi_config.h".
+    MXC_SETFIELD(FASTSPI_INSTANCE->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE, FASTSPI_SS_NUM << MXC_F_SPI_CTRL0_SS_ACTIVE_POS);
 
     FASTSPI_INSTANCE->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS); // Set 8 bits per character
 

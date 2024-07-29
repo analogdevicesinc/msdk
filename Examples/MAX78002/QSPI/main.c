@@ -66,7 +66,7 @@ int main(void)
     printf("\tTest Address: 0x%x\n", TEST_ADDR);
     printf("\tTest size: %i bytes\n", TEST_SIZE);
     printf("\tTest count: %i rows\n", TEST_COUNT);
-    printf("\tTest speed: %i Hz\n", SPI_SPEED);
+    printf("\tTest speed: %i Hz\n", FASTSPI_SPEED);
 
     ram_init();
 

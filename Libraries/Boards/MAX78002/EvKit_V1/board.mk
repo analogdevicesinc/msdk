@@ -92,6 +92,11 @@ PROJ_CFLAGS+=-DCAMERA_OV7692
 endif
 SRCS += sccb.c
 
+# The MAX78002EVKIT has an on-board external APS6404 SRAM.
+# Add drivers for it from MiscDrivers.
+SRCS += fastspi.c
+SRCS += aps6404.c
+
 MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
@@ -102,6 +107,7 @@ VPATH += $(MISC_DRIVERS_DIR)/Display
 VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
+VPATH += $(MISC_DRIVERS_DIR)/SRAM
 
 
 # Where to find BSP header files
@@ -112,5 +118,6 @@ IPATH += $(MISC_DRIVERS_DIR)/Display
 IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/Touchscreen
+IPATH += $(MISC_DRIVERS_DIR)/SRAM
 
 include $(MISC_DRIVERS_DIR)/Display/fonts/fonts.mk

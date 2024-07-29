@@ -46,7 +46,7 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
     _parse_spi_header(cmd, address, header);
 
     // Transmit header, but keep Chip Select asserted.
-    spi_transmit(header, 4, NULL, 0, false, true, true);
+    spi_transmit(header, 4, NULL, 0, false);
     return err;
 }
 
@@ -70,8 +70,8 @@ int ram_reset()
     int err = E_NO_ERROR;
     uint8_t data[2] = { 0x66, 0x99 };
 
-    spi_transmit(&data[0], 1, NULL, 0, true, true, true);
-    spi_transmit(&data[1], 1, NULL, 0, true, true, true);
+    spi_transmit(&data[0], 1, NULL, 0, true);
+    spi_transmit(&data[1], 1, NULL, 0, true);
 
     return err;
 }
@@ -81,9 +81,9 @@ int ram_enter_quadmode()
     int err = E_NO_ERROR;
     uint8_t tx_data = 0x35;
 
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-    spi_transmit(&tx_data, 1, NULL, 0, true, true, true);
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
+    MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD);
+    spi_transmit(&tx_data, 1, NULL, 0, true);
+    MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD);
 
     g_current_mode = QUAD_MODE;
 
@@ -95,9 +95,9 @@ int ram_exit_quadmode()
     int err = E_NO_ERROR;
     uint8_t tx_data = 0xF5;
 
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
-    spi_transmit(&tx_data, 1, NULL, 0, true, true, true);
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
+    MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD);
+    spi_transmit(&tx_data, 1, NULL, 0, true);
+    MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD);
 
     g_current_mode = STANDARD_MODE;
 
@@ -113,8 +113,8 @@ int ram_read_id(ram_id_t *out)
     if (g_current_mode != STANDARD_MODE)
         ram_exit_quadmode();
 
-    spi_transmit(&tx_data, 1, NULL, 0, false, true, true);
-    spi_transmit(NULL, 0, rx_data, 12, true, true, true);
+    spi_transmit(&tx_data, 1, NULL, 0, false);
+    spi_transmit(NULL, 0, rx_data, 12, true);
 
     out->MFID = rx_data[3];
     out->KGD = rx_data[4];
@@ -149,7 +149,7 @@ int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len)
     if (err)
         return err;
 
-    return spi_transmit(NULL, 0, out, len, true, true, true);
+    return spi_transmit(NULL, 0, out, len, true);
 }
 
 int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
@@ -163,8 +163,8 @@ int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
     // ^ Sending dummy bytes with value 0x00 seems to break QSPI reads...  Sending 0xFF works
     _parse_spi_header(0xEB, address, header);
 
-    err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
-    err = spi_transmit(NULL, 0, out, len, true, true, true);
+    err = spi_transmit(&header[0], 7, NULL, 0, false);
+    err = spi_transmit(NULL, 0, out, len, true);
     return err;
 }
 
@@ -178,7 +178,7 @@ int ram_write(uint32_t address, uint8_t *data, unsigned int len)
     if (err)
         return err;
 
-    return spi_transmit(data, len, NULL, 0, true, true, true);
+    return spi_transmit(data, len, NULL, 0, true);
 }
 
 int ram_write_quad(uint32_t address, uint8_t *data, unsigned int len)
@@ -191,7 +191,7 @@ int ram_write_quad(uint32_t address, uint8_t *data, unsigned int len)
     if (err)
         return err;
 
-    return spi_transmit(data, len, NULL, 0, true, true, true);
+    return spi_transmit(data, len, NULL, 0, true);
 }
 
 int benchmark_dma_overhead(unsigned int *out)
@@ -200,7 +200,7 @@ int benchmark_dma_overhead(unsigned int *out)
     _parse_spi_header(0x02, 0x0, buffer);
 
     MXC_TMR_SW_Start(MXC_TMR0);
-    spi_transmit(buffer, 5, NULL, 0, true, true, false);
+    spi_transmit(buffer, 5, NULL, 0, true);
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
 
     *out = elapsed;
