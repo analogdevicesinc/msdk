@@ -387,7 +387,6 @@ ifeq "$(RISCV_RWX_SEGMENTS_SUPPORTED)" "" # ------------------------------------
 # be on the path, and that's how we invoke the linker for our implicit rules
 LINKER_OPTIONS := $(shell $(CC) -Xlinker --help)
 ifneq "$(findstring --no-warn-rwx-segments,$(LINKER_OPTIONS))" ""
-$(error test)
 RISCV_RWX_SEGMENTS_SUPPORTED := 1
 else
 RISCV_RWX_SEGMENTS_SUPPORTED := 0
