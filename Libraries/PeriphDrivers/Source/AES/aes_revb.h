@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +26,7 @@
 #include "aes_revb_regs.h"
 #include "aeskeys_revb_regs.h"
 #include "trng_revb_regs.h"
+#include "dma.h"
 
 /**
   * @brief  Enumeration type to select AES key
@@ -61,7 +61,7 @@ typedef struct _mxc_aes_revb_cipher_req_t {
     mxc_aes_complete_t callback; ///< Callback function
 } mxc_aes_revb_req_t;
 
-int MXC_AES_RevB_Init(mxc_aes_revb_regs_t *aes);
+int MXC_AES_RevB_Init(mxc_aes_revb_regs_t *aes, mxc_dma_regs_t *dma);
 void MXC_AES_RevB_EnableInt(mxc_aes_revb_regs_t *aes, uint32_t interrupt);
 void MXC_AES_RevB_DisableInt(mxc_aes_revb_regs_t *aes, uint32_t interrupt);
 int MXC_AES_RevB_IsBusy(mxc_aes_revb_regs_t *aes);
@@ -77,8 +77,8 @@ void MXC_AES_RevB_ClearFlags(mxc_aes_revb_regs_t *aes, uint32_t flags);
 int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);
 int MXC_AES_RevB_Encrypt(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);
 int MXC_AES_RevB_Decrypt(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);
-int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len);
-int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len);
+int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma);
+int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma);
 int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req, uint8_t enc);
 int MXC_AES_RevB_EncryptAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);
 int MXC_AES_RevB_DecryptAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);

@@ -5,11 +5,11 @@ Examples/*/*/*/buildrv
 .vscode/settings.json
 Libraries/PeriphDrivers/Documentation/MAX*
 Libraries/PeriphDrivers/bin
-docs
 Documentation/Libraries
 Documentation/res
 Examples/MAX78000/PowerTest
 Examples/MAX32570
+Examples/MAX32572
 __pycache__
 msdk-internal
 Tools/GNUTools
@@ -37,3 +37,5 @@ node_modules
 package-lock.json
 package.json
 .python-version
+mxc_version.h
+mxc_version.mk

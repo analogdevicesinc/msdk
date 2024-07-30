@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,7 +236,7 @@ int main(void)
 
     if (fail_count > 0) {
         printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count,
-               100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
+               (double)(100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT))));
         return E_FAIL;
     }
 

@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +42,7 @@ int MXC_AES_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 #endif
 
-    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES);
+    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES, MXC_DMA);
 }
 
 void MXC_AES_EnableInt(uint32_t interrupt)
@@ -133,12 +132,12 @@ int MXC_AES_Decrypt(mxc_aes_req_t *req)
 
 int MXC_AES_TXDMAConfig(void *src_addr, int len)
 {
-    return MXC_AES_RevB_TXDMAConfig(src_addr, len);
+    return MXC_AES_RevB_TXDMAConfig(src_addr, len, MXC_DMA);
 }
 
 int MXC_AES_RXDMAConfig(void *dest_addr, int len)
 {
-    return MXC_AES_RevB_RXDMAConfig(dest_addr, len);
+    return MXC_AES_RevB_RXDMAConfig(dest_addr, len, MXC_DMA);
 }
 
 int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc)

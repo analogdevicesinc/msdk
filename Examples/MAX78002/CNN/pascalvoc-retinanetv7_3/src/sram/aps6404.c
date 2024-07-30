@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +51,7 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
     return err;
 }
 
-int ram_init()
+int ram_init(void)
 {
     int err = E_NO_ERROR;
     err = spi_init();
@@ -67,7 +66,7 @@ int ram_init()
     return err;
 }
 
-int ram_reset()
+int ram_reset(void)
 {
     int err = E_NO_ERROR;
     uint8_t data[2] = { 0x66, 0x99 };
@@ -78,7 +77,7 @@ int ram_reset()
     return err;
 }
 
-int ram_enter_quadmode()
+int ram_enter_quadmode(void)
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0x35;
@@ -92,7 +91,7 @@ int ram_enter_quadmode()
     return err;
 }
 
-int ram_exit_quadmode()
+int ram_exit_quadmode(void)
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0xF5;

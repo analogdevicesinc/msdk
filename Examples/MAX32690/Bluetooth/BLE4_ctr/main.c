@@ -33,6 +33,8 @@
 #include "wsf_timer.h"
 #include "wsf_trace.h"
 #include "wsf_bufio.h"
+#include "wsf_types.h"
+#include "wsf_os.h"
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
@@ -130,7 +132,7 @@ static void mainWsfInit(void)
  *  \return TRUE if there is token pending.
  */
 /*************************************************************************************************/
-static bool_t mainCheckServiceTokens(void)
+static bool mainCheckServiceTokens(void)
 {
     bool_t eventPending = FALSE;
 

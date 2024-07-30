@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,10 +35,10 @@
 #include "fcr_regs.h"
 #include "led.h"
 #include "tmr.h"
-
+#include "nvic_table.h"
 /***** Definitions *****/
 
-#define POLLING // Uncomment to perform ADC conversions using blocking/polling method
+//#define POLLING // Uncomment to perform ADC conversions using blocking/polling method
 // #define INTERRUPT    // Uncomment to perform ADC conversions using interrupt driven method
 // #define DMA          // Uncomment to perform ADC conversions using DMA driven method.
 
@@ -182,7 +181,7 @@ void StartHWTriggerTimer(void)
 /* Performs the 1.25V Internal Reference Trim
  * Derived from UG7618 Section 11.6.3 - 1.25V Internal Reference Trim
  */
-void adc_internal_1v25_ref_trim()
+void adc_internal_1v25_ref_trim(void)
 {
     uint32_t tempData;
 
@@ -249,7 +248,7 @@ void adc_internal_1v25_ref_trim()
 /* Performs the 2.048V Internal Reference Trim
  * Derived from UG7618 Section 11.6.4 - 2.048V Internal Reference Trim
  */
-void adc_internal_2v048_ref_trim()
+void adc_internal_2v048_ref_trim(void)
 {
     uint32_t tempData;
 
@@ -316,7 +315,7 @@ void adc_internal_2v048_ref_trim()
 /* Performs the External Reference Trim
  * Derived from UG7618 Section 11.6.5 - External Reference Trim
  */
-void adc_external_ref_trim()
+void adc_external_ref_trim(void)
 {
     uint32_t tempData;
 

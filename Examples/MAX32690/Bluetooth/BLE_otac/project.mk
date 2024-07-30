@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -63,3 +63,16 @@ ${FW_UPDATE_OBJ}: fw_update.S ${FW_UPDATE_BIN}
 ifeq ($(BOARD),FTHR)
 $(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
 endif
+
+
+# set ADVTISEMENT name you want to connect
+ADV_NAME?=DATS
+PROJ_CFLAGS += -DADV_NAME=\"$(ADV_NAME)\"
+
+
+
+### CONFIGURE security
+# /*! TRUE to initiate security upon connection*/
+PROJ_CFLAGS += -DINIT_SECURITY=TRUE
+
+

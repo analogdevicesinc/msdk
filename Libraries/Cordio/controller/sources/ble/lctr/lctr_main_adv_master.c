@@ -43,6 +43,7 @@
 /*! \brief      Scan operational context. */
 lctrMstScanCtx_t lctrMstScan;
 
+
 /*************************************************************************************************/
 /*!
  *  \brief      Master scan reset handler.
@@ -611,6 +612,7 @@ void lctrAdvRptGenerateExtHash(uint64_t *pHash, uint8_t addrType, uint64_t addr,
 /*************************************************************************************************/
 bool_t lctrAdvRptCheckDuplicate(lctrAdvRptFilt_t *pAdvFilt, uint64_t hash)
 {
+
   if (!pAdvFilt->enable)
   {
     return FALSE;

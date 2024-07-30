@@ -83,6 +83,10 @@ lctrSyncInfo_t trsfSyncInfo;
 /*! \brief      Active extended scan contexts. */
 lctrActiveExtScan_t lctrActiveExtScan;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 /*************************************************************************************************/
 /*!
  *  \brief      Master create sync message dispatcher.
@@ -849,7 +853,9 @@ void LctrMstExtScanDefaults(void)
   lmgrCb.numExtScanPhys = 1;
   lctrMstExtScanTbl[LCTR_SCAN_PHY_1M]->scanParam = defScanParam;
 
+
   lctrMstExtScan.enaPhys = 1 << LCTR_SCAN_PHY_1M;
+
 
   /* Setup timers. */
   lctrMsgHdr_t *pMsg;

@@ -1,19 +1,19 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:MSYS_path}/usr/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
 
     "terminal.integrated.env.linux": {
-        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
+        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${config:Make_path}:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.env.osx": {
-        "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
+        "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${config:Make_path}:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
-
+    
     "target":"MAX32660",
     "board":"EvKit_V1",
 
@@ -33,7 +33,8 @@
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
     "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-elf-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
+    "Make_path":"${config:MAXIM_PATH}/Tools/GNUTools/Make",
+    "MSYS_path":"${config:MAXIM_PATH}/Tools/MSYS2",
 
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",
@@ -47,6 +48,7 @@
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
@@ -60,6 +62,7 @@
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
@@ -67,26 +70,10 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-
+        
     ],
     "C_Cpp.default.forcedInclude": [
         "${workspaceFolder}/build/project_defines.h"
-    ],
-    "files.associations": {
-        "spimss.h": "c",
-        "nvic_table.h": "c",
-        "spimss_regs.h": "c",
-        "mxc_delay.h": "c",
-        "mxc_sys.h": "c",
-        "dma.h": "c",
-        "spimss_reva.h": "c",
-        "uart.h": "c",
-        "mxc_lock.h": "c",
-        "dma_regs.h": "c",
-        "spi.h": "c",
-        "led.h": "c",
-        "mxc_pins.h": "c",
-        "mxc_device.h": "c"
-    }
+    ]
 }
 

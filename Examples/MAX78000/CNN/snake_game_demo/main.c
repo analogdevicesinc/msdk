@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,18 +180,18 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit();
+void I2SInit(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 
-void snakeIntro();
-void setup();
-void placeFruit();
-boolean fruitIsEaten();
-void drawSnakeHead();
-void moveTheSnake();
+void snakeIntro(void);
+void setup(void);
+void placeFruit(void);
+boolean fruitIsEaten(void);
+void drawSnakeHead(void);
+void moveTheSnake(void);
 void setSnakeDirection(int top_index);
-void checkSnakeCollision();
+void checkSnakeCollision(void);
 
 // ******************************************************************************
 static uint32_t setColor(int r, int g, int b)
@@ -590,7 +589,7 @@ int main(void)
 }
 
 /* **************************************************************************** */
-void I2SInit()
+void I2SInit(void)
 {
     mxc_i2s_req_t req;
     int32_t err;
@@ -601,8 +600,10 @@ void I2SInit()
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
-    req.wordSize = MXC_I2S_DATASIZE_WORD;
+    req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
+    req.bitsWord = 32;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
@@ -934,7 +935,7 @@ void snakeIntro(void)
 }
 
 // ******************************************************************************
-void setup()
+void setup(void)
 {
     uint32_t color;
     mxc_tmr_cfg_t tmr1 = { TMR_PRES_4,      TMR_MODE_CONTINUOUS,
@@ -986,7 +987,7 @@ void setup()
 }
 
 // ******************************************************************************
-void placeFruit()
+void placeFruit(void)
 {
     uint32_t color;
 
@@ -1088,7 +1089,7 @@ void setSnakeDirection(int top_index)
 }
 
 // ******************************************************************************
-void checkSnakeCollision()
+void checkSnakeCollision(void)
 {
     for (int k = 0; k < snakeLength - 1; k++) {
         if (positions[0][k] == positions[0][snakeLength - 1] &&
@@ -1099,7 +1100,7 @@ void checkSnakeCollision()
 }
 
 // ******************************************************************************
-boolean fruitIsEaten()
+boolean fruitIsEaten(void)
 {
     uint32_t color;
 
@@ -1158,7 +1159,7 @@ boolean fruitIsEaten()
 }
 
 // ******************************************************************************
-void updatePositions()
+void updatePositions(void)
 {
     uint32_t color;
     // Delete the tail of the snake
@@ -1174,7 +1175,7 @@ void updatePositions()
 }
 
 // ******************************************************************************
-void drawSnakeHead()
+void drawSnakeHead(void)
 {
     uint32_t color;
     // this function draw the new head of the snake
@@ -1184,7 +1185,7 @@ void drawSnakeHead()
 }
 
 // ******************************************************************************
-void moveTheSnake()
+void moveTheSnake(void)
 {
     // move the snake according to the direction
     switch (snakeDirection) {

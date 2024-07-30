@@ -9,11 +9,11 @@ to project.mk to see how to include ".a" static library files into your project.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-This example supports all available MAX32650 evaluation platforms but comes _pre-configured_ for the MAX32650EVKIT by default. See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
+This example supports all available MAX32650 evaluation platforms but comes _pre-configured_ for the MAX32650EVKIT by default. See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
 
 ## Required Connections
 

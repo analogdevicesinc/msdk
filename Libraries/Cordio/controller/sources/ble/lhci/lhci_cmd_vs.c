@@ -83,8 +83,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
 
-    
-
     /* Decode and consume command packet. */
 
     switch (pHdr->opCode) {
@@ -218,16 +216,16 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         evtParamLen += sizeof(int8_t);
         break;
     }
-    case LHCI_OPCODE_VS_PHY_EN:
+    case LHCI_OPCODE_VS_RESET_ADV_STATS:
     {
         status = LL_SUCCESS;
-        PalBbEnable();
+        BbBleResetAdvStats();
         break;
     }
-    case LHCI_OPCODE_VS_PHY_DIS:
+    case LHCI_OPCODE_VS_RESET_SCAN_STATS:
     {
         status = LL_SUCCESS;
-        PalBbDisable();
+        BbBleResetScanStats();
         break;
     }
 
@@ -256,9 +254,8 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_REG_WRITE:
         case LHCI_OPCODE_VS_RX_TEST:
         case LHCI_OPCODE_VS_TX_TEST:
-        case LHCI_OPCODE_VS_PHY_EN:
-        case LHCI_OPCODE_VS_PHY_DIS:
-
+        case LHCI_OPCODE_VS_RESET_ADV_STATS:
+        case LHCI_OPCODE_VS_RESET_SCAN_STATS:
 
             /* no action */
             break;
@@ -292,11 +289,16 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             break;
         }
 
+        case LHCI_OPCODE_VS_GET_RSSI:{
+            
+            pBuf[0] = -10;
+            break;
+        }
+
 
         case LHCI_OPCODE_VS_SET_LOCAL_FEAT:
         case LHCI_OPCODE_VS_SET_DIAG_MODE:
             /* no action */
-            break;
 
         case LHCI_OPCODE_VS_GET_SYS_STATS: {
             uint16_t stackWatermark = PalSysGetStackUsage();

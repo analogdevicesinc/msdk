@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +53,7 @@ int MXC_I2S_RevA_SetSampleRate(mxc_i2s_reva_regs_t *i2s, uint32_t smpl_rate,
 int MXC_I2S_RevA_GetSampleRate(mxc_i2s_reva_regs_t *i2s, uint32_t src_clk);
 
 int MXC_I2S_RevA_CalculateClockDiv(mxc_i2s_reva_regs_t *i2s, uint32_t smpl_rate,
-                                   mxc_i2s_wsize_t smpl_sz, uint32_t src_clk);
+                                   mxc_i2s_wsize_t word_sz, uint32_t src_clk);
 
 void MXC_I2S_RevA_Flush(mxc_i2s_reva_regs_t *i2s);
 

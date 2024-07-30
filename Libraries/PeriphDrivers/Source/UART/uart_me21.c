@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,6 +68,7 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
     sys_map_t current_pin_mapping = MXC_UART_GetPinMapping(uart);
 
@@ -145,6 +145,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         MXC_MCR->lppioctrl |= (MXC_F_MCR_LPPIOCTRL_LPUART0_RX | MXC_F_MCR_LPPIOCTRL_LPUART0_TX);
         break;
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
 }
@@ -436,7 +437,8 @@ int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned
         break;
     }
 
-    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, bytes, len, callback, config);
+    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, MXC_DMA, bytes, len, callback,
+                                       config);
 }
 
 unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -474,7 +476,8 @@ int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigne
         break;
     }
 
-    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, bytes, len, callback, config);
+    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, MXC_DMA, bytes, len, callback,
+                                        config);
 }
 
 unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -551,7 +554,7 @@ int MXC_UART_TransactionAsync(mxc_uart_req_t *req)
 
 int MXC_UART_TransactionDMA(mxc_uart_req_t *req)
 {
-    return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req);
+    return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req, MXC_DMA);
 }
 
 int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)

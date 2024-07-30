@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +26,8 @@
 #define SHOW_START_X (TFT_WIDTH - HEIGHT_ID) / 2
 #define SHOW_START_Y (TFT_HEIGHT - WIDTH_ID) / 2
 
-int record();
-void show_keyboard();
-void init_cnn_from_flash();
+int record(void);
+void show_keyboard(void);
+void init_cnn_from_flash(void);
 
 #endif // _RECORD_H_

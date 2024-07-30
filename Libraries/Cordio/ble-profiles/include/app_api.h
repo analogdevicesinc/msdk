@@ -7,13 +7,15 @@
  *  Copyright (c) 2011-2019 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
- *  
+ *
+ *  Portions Copyright (C) 2024 Analog Devices, Inc.
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -157,6 +159,7 @@ typedef struct
                                                     disable periodic scanning. */
   uint8_t     discMode;                        /*!< \brief The GAP discovery mode (general, limited, or none) */
   uint8_t     scanType[DM_NUM_PHYS];           /*!< \brief The scan type (active or passive) */
+  bool_t      filterDup;                       /*!< \brief Enable filtering of duplicates */
 } appExtMasterCfg_t;
 
 /*! \brief Configurable parameters for security */
@@ -654,12 +657,14 @@ void AppMasterResolveAddr(dmEvt_t *pMsg, appDbHdl_t dbHdl, uint8_t resolveType);
  *                    period set to non-zero, scanning will continue until DmExtScanStop() is
  *                    called.
  *  \param  period    The scan period, in 1.28 sec units.  Set to zero to disable periodic scanning.
+ *  \param  filterDup Enable filtering of duplicate packets in the scan. This is defaulted
+ *                    to True when using the legacy AppScanStart
  *
  *  \return None.
  */
 /*************************************************************************************************/
 void AppExtScanStart(uint8_t scanPhys, uint8_t mode, const uint8_t *pScanType, uint16_t duration,
-                     uint16_t period);
+                     uint16_t period, bool_t filterDup);
 
 /*************************************************************************************************/
 /*!
@@ -1199,7 +1204,7 @@ void AppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /*************************************************************************************************/
 /*!
- *  \brief      Get Bluetooth device address currently used by LL 
+ *  \brief      Get Bluetooth device address currently used by LL
  *              or all zeros if address is not set.
  *
  *  \param      pBdAddr  Pointer where address will be stored.

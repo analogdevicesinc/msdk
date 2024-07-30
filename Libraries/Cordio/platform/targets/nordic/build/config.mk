@@ -104,6 +104,6 @@ endif
 
 # Compiler flags
 C_FLAGS         += -mcpu=$(CPU) -mthumb -mlittle-endian
-
+C_FLAGS += -DAPP_CODED_PHY_DEMO=0
 # Linker flags
 LD_FLAGS        += -mthumb -mcpu=$(CPU)

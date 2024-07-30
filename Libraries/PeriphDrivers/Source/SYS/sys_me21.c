@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +46,11 @@
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(100)
 
+// DAP Lock macros
+#define INFOBLOCK_DAP_LOCK_OFFSET 0x30
+#define DAP_LOCK_SEQUENCE_01 0x5A5AA5A5
+#define DAP_LOCK_SEQUENCE_23 0xFFFFFFFF
+
 /* **** Globals **** */
 
 /* **** Functions **** */
@@ -64,7 +68,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    memset(usn, 0, MXC_SYS_USN_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -98,10 +102,13 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         // Set NULL Key
         MXC_AES_SetExtKey((const void *)aes_key, MXC_AES_128BITS);
 
+        uint8_t usn_copy[MXC_SYS_USN_LEN] = { 0 };
+        memcpy(usn_copy, usn, MXC_SYS_USN_LEN);
+
         // Compute Checksum
         mxc_aes_req_t aes_req;
         aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
-        aes_req.inputData = (uint32_t *)usn;
+        aes_req.inputData = (uint32_t *)usn_copy;
         aes_req.resultData = (uint32_t *)check_csum;
         aes_req.keySize = MXC_AES_128BITS;
         aes_req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
@@ -468,4 +475,44 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         while (MXC_GCR->rst0 & (0x1 << reset)) {}
     }
 }
+
+/* ************************************************************************** */
+int MXC_SYS_LockDAP_Permanent(void)
+{
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
+    int err;
+    uint32_t info_blk_addr;
+    uint32_t lock_sequence[4];
+
+    // Infoblock address to write lock sequence to
+    info_blk_addr = MXC_INFO_MEM_BASE + INFOBLOCK_DAP_LOCK_OFFSET;
+
+    // Set lock sequence
+    lock_sequence[0] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[1] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[2] = DAP_LOCK_SEQUENCE_23;
+    lock_sequence[3] = DAP_LOCK_SEQUENCE_23;
+
+    // Initialize FLC
+    MXC_FLC_Init();
+
+    // Unlock infoblock
+    MXC_FLC_UnlockInfoBlock(info_blk_addr);
+
+    // Write DAP lock sequence to infoblock
+    err = MXC_FLC_Write128(info_blk_addr, lock_sequence);
+
+    // Re-lock infoblock
+    MXC_FLC_LockInfoBlock(info_blk_addr);
+
+    return err;
+#endif
+}
+
 /**@} end of mxc_sys */

@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -12,8 +12,14 @@
 # **********************************************************
 
 # Add your config here!
+DEBUG=1
 
 LIB_FREERTOS = 1
+
+# Can provide a value for the FREERTOS heap allocation scheme
+# Default value is 4
+# FREERTOS_HEAP_TYPE := 2
+# export FREERTOS_HEAP_TYPE
 
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)

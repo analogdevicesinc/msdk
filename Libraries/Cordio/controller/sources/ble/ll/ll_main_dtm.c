@@ -7,6 +7,8 @@
  *  Copyright (c) 2013-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019-2020 Packetcraft, Inc.
+ * 
+ *  Portions Copyright (C) 2024 Analog Devices, Inc.
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -1076,7 +1078,18 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
 
     return LL_SUCCESS;
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief      Check whether a test is active.
+ *  \return     TRUE if active FALSE otherwise.
+ *
+ * Checke test mode and return true or false
+ */
+/*************************************************************************************************/
+bool_t LlTestIsActive(void)
+{
+    return llTestCb.state == LL_TEST_STATE_TX || llTestCb.state == LL_TEST_STATE_RX;
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Set pattern of errors for Tx test mode.

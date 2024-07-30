@@ -109,7 +109,7 @@ DRESULT disk_read (
 {
     DRESULT status;
 
-    if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_Get_Default_DataWidth()) != E_NO_ERROR) {
 		status = RES_ERROR;
     } else {
 		status = RES_OK;
@@ -135,7 +135,7 @@ DRESULT disk_write (
 {
     DRESULT status;
 
-    if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_Get_Default_DataWidth()) != E_NO_ERROR) {
 		status = RES_ERROR;
     } else {
 		status = RES_OK;
@@ -354,7 +354,7 @@ BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
-static void init_mmc()
+static void init_mmc(void)
 {
     mxc_spi_pins_t pins;
     mxc_gpio_cfg_t gpio;

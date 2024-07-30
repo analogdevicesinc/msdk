@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -57,10 +56,6 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me14.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_reva.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CORE1
-PERIPH_DRIVER_A_FILES += $(SOURCE_DIR)/CORE1/startup_core1.S
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CORE1/system_core1.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me14.c

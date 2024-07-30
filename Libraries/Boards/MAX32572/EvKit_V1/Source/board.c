@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -273,7 +272,7 @@ __attribute__((section(".spix_config")))
 /**
  * @brief      Configurations for SPIXFM (XiP)
  */
-void SPIXFM_Config()
+void SPIXFM_Config(void)
 {
     MXC_SPIXF_SetSPIFrequency(EXT_FLASH_SPIXFM_BAUD);
     MXC_SPIXF_SetMode(MXC_SPIXF_MODE_0);

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +47,11 @@
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(1)
 
+// DAP Lock macros
+#define INFOBLOCK_DAP_LOCK_OFFSET 0x30
+#define DAP_LOCK_SEQUENCE_01 0x5A5AA5A5
+#define DAP_LOCK_SEQUENCE_23 0xFFFFFFFF
+
 /* **** Globals **** */
 
 /* Symbol defined when loading RISCV image */
@@ -67,7 +71,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    memset(usn, 0, MXC_SYS_USN_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -93,9 +97,9 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         /* Initialize key and plaintext */
         memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
         memset(pt32, 0, MXC_SYS_USN_CHECKSUM_LEN);
-        memcpy(pt32, usn, MXC_SYS_USN_CHECKSUM_LEN);
+        memcpy(pt32, usn, MXC_SYS_USN_LEN);
 
-        /* Read the checksum from the info block */
+        /* Read the checksum from the inspfo block */
         checksum[1] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[0] = ((infoblock[4] & 0x007F8000) >> 15);
 
@@ -440,6 +444,25 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 }
 
 /* ************************************************************************** */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
+{
+    /* Return if this setting is already current */
+    if (div == MXC_SYS_GetClockDiv()) {
+        return;
+    }
+
+    MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_DIV, div);
+
+    SystemCoreClockUpdate();
+}
+
+/* ************************************************************************** */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
+{
+    return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
+}
+
+/* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
     /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 and 64 for the rst register. */
@@ -491,4 +514,44 @@ uint32_t MXC_SYS_RiscVClockRate(void)
         return PeripheralClock;
     }
 }
+
+/* ************************************************************************** */
+int MXC_SYS_LockDAP_Permanent(void)
+{
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
+    int err;
+    uint32_t info_blk_addr;
+    uint32_t lock_sequence[4];
+
+    // Infoblock address to write lock sequence to
+    info_blk_addr = MXC_INFO_MEM_BASE + INFOBLOCK_DAP_LOCK_OFFSET;
+
+    // Set lock sequence
+    lock_sequence[0] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[1] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[2] = DAP_LOCK_SEQUENCE_23;
+    lock_sequence[3] = DAP_LOCK_SEQUENCE_23;
+
+    // Initialize FLC
+    MXC_FLC_Init();
+
+    // Unlock infoblock
+    MXC_FLC_UnlockInfoBlock(info_blk_addr);
+
+    // Write DAP lock sequence to infoblock
+    err = MXC_FLC_Write128(info_blk_addr, lock_sequence);
+
+    // Re-lock infoblock
+    MXC_FLC_LockInfoBlock(info_blk_addr);
+
+    return err;
+#endif
+}
+
 /**@} end of mxc_sys */

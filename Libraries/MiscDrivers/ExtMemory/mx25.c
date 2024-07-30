@@ -5,8 +5,8 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
@@ -71,7 +71,7 @@ static uint8_t g_is_configured = 0;
 /* **** Static Functions **** */
 
 /* ************************************************************************* */
-static int flash_busy()
+static int flash_busy(void)
 {
     uint8_t buf;
 
@@ -85,7 +85,7 @@ static int flash_busy()
 }
 
 /* ************************************************************************* */
-static int write_enable()
+static int write_enable(void)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd = MX25_CMD_WRITE_EN;

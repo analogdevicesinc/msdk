@@ -8,13 +8,13 @@ The projects in this folder are ports of ARM's DSP example projects that can be 
 
 Debug launch configurations are included in each project, and should appear in the "Favorites" menu in Eclipse.
 
-Development with Visual Studio Code is also supported.  See [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop)
+Development with Visual Studio Code is also supported.  See [VSCode-Maxim](https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop)
 
 ## Software
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 

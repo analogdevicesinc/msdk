@@ -1,7 +1,7 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
@@ -29,6 +29,8 @@
 #include "nvic_table.h"
 #endif
 
+// TOD(DMA): Fix multiple instance handling.
+
 /* **** Definitions **** */
 #define MXC_UART_REVB_ERRINT_EN \
     (MXC_F_UART_REVB_INT_EN_RX_FERR | MXC_F_UART_REVB_INT_EN_RX_PAR | MXC_F_UART_REVB_INT_EN_RX_OV)
@@ -46,15 +48,65 @@ typedef struct {
     int channelTx;
     int channelRx;
     bool auto_dma_handlers;
+    mxc_dma_regs_t *dma;
 } uart_revb_req_state_t;
 
-uart_revb_req_state_t states[MXC_UART_INSTANCES];
+// clang-format off
+uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
+    [0 ... MXC_UART_INSTANCES - 1] = {
+        .tx_req = NULL,
+        .rx_req = NULL,
+        .channelTx = -1,
+        .channelRx = -1,
+        .auto_dma_handlers = false
+    }
+};
+// clang-format on
 
 /* **** Function Prototypes **** */
 
 /* ************************************************************************* */
 /* Control/Configuration functions                                           */
 /* ************************************************************************* */
+
+static void emptyRxAsync(mxc_uart_revb_req_t *req)
+{
+    uint32_t numToRead;
+
+    do {
+        /* Clear the RX threshold interrupt */
+        MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
+
+        /* Determine how many bytes we have left to read from the FIFO */
+        numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
+        numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
+        numToRead = MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt],
+                                        numToRead);
+
+        /* Increment the number of bytes we just read */
+        req->rxCnt += numToRead;
+
+        /* Determine how to set the threshold */
+        numToRead = req->rxLen - req->rxCnt;
+
+        /* Upper bound the threshold */
+        if (numToRead > (MXC_UART_FIFO_DEPTH - 1)) {
+            numToRead = (MXC_UART_FIFO_DEPTH - 1);
+        }
+        MXC_UART_SetRXThreshold((mxc_uart_regs_t *)(req->uart), numToRead);
+
+        /* Determine if we need to reset the threshold.
+         * The RX threshold interrupt is edge sensitive, meaning it only triggers on the transition
+         * from threshold-1 to threshold. If we happened to receive a byte between emptying the FIFO
+         * and setting the threshold, we will miss the threshold interrupt.
+         *
+         * If we still have data to read and the threshold value we just set is less than or equal to 
+         * the number of bytes currently in the FIFO, then we need to read from the FIFO and reset the
+         * threshold again. 
+         */
+    } while (numToRead && numToRead <= MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart)));
+}
+
 int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_revb_clock_t clock)
 {
     int err;
@@ -93,6 +145,7 @@ int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_r
     states[i].tx_req = NULL;
     states[i].rx_req = NULL;
     states[i].auto_dma_handlers = false;
+    states[i].dma = NULL;
 
     return E_NO_ERROR;
 }
@@ -609,7 +662,7 @@ int MXC_UART_RevB_Transaction(mxc_uart_revb_req_t *req)
 
 int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
 {
-    uint32_t numToWrite, numToRead;
+    uint32_t numToWrite;
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart));
 
     if (!AsyncTxRequests[uart_num] && !AsyncRxRequests[uart_num]) {
@@ -642,10 +695,8 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
         req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
                                            numToWrite);
 
-        /* If we're finished writing to the TX FIFO and it's less than half+1 full, pend the interrupt */
-        if ((MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart)) >=
-             (MXC_UART_FIFO_DEPTH / 2)) &&
-            (req->txCnt == req->txLen)) {
+        /* If we're finished writing to the TX FIFO, pend the interrupt */
+        if (req->txCnt == req->txLen) {
             NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uart_num));
         }
     }
@@ -660,15 +711,19 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
         // Save RX Request
         AsyncRxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
 
+        // Enable threshold interrupt
+        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_RX_THD);
+
         // All error interrupts are related to RX
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_UART_REVB_ERRINT_EN);
 
-        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_RX_THD);
-        numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
-        numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-        req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt],
-                                          numToRead);
-        MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
+        /* Read data already in the FIFO */
+        emptyRxAsync((mxc_uart_revb_req_t *)req);
+
+        /* Pend the interrupt if we're done reading */
+        if (req->rxLen == req->rxCnt) {
+            NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uart_num));
+        }
     }
 
     return E_NO_ERROR;
@@ -745,7 +800,7 @@ int MXC_UART_RevB_AbortAsync(mxc_uart_revb_regs_t *uart)
 
 int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
 {
-    uint32_t numToWrite, numToRead, flags;
+    uint32_t numToWrite, flags;
     mxc_uart_req_t *req;
 
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
@@ -768,23 +823,15 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
     if ((req != NULL) && (req->txLen)) {
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
-        req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
-                                           numToWrite);
+        numToWrite = MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
+                                          numToWrite);
+        req->txCnt += numToWrite;
         MXC_UART_ClearFlags(req->uart, MXC_F_UART_REVB_INT_FL_TX_HE);
     }
 
     req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];
-    if ((req != NULL) && (flags & MXC_F_UART_REVB_INT_FL_RX_THD) && (req->rxLen)) {
-        numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
-        numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-        req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt],
-                                          numToRead);
-
-        if ((req->rxLen - req->rxCnt) < MXC_UART_GetRXThreshold((mxc_uart_regs_t *)(req->uart))) {
-            MXC_UART_SetRXThreshold((mxc_uart_regs_t *)(req->uart), req->rxLen - req->rxCnt);
-        }
-
-        MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
+    if ((req != NULL) && (req->rxLen)) {
+        emptyRxAsync((mxc_uart_revb_req_t *)req);
     }
 
     if (AsyncRxRequests[uart_num] == AsyncTxRequests[uart_num]) {
@@ -822,11 +869,45 @@ int MXC_UART_RevB_SetAutoDMAHandlers(mxc_uart_revb_regs_t *uart, bool enable)
     return E_NO_ERROR;
 }
 
-void MXC_UART_RevB_DMA_SetupAutoHandlers(unsigned int channel)
+#if (TARGET_NUM == 32657)
+
+void MXC_UART_RevA_DMA0_Handler(void)
+{
+    MXC_DMA_Handler(MXC_DMA0);
+}
+
+void MXC_UART_RevA_DMA1_Handler(void)
+{
+    MXC_DMA_Handler(MXC_DMA1);
+}
+
+#endif
+
+/* "Auto" handlers just need to call MXC_DMA_Handler with the correct
+DMA instance.
+*/
+void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned int channel)
 {
 #ifdef __arm__
+#if (TARGET_NUM == 32657)
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(dma_instance, channel));
+
+    /* (JC): This is not the cleanest or most scalable way to do this,
+        but I tried defining default handler's in the system file.
+        Some complications make this the most attractive short-term
+        option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
+    if (dma_instance == MXC_DMA0) {
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA0_Handler);
+    } else if (dma_instance == MXC_DMA1) {
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
+    }
+#else
     NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));
+
+    // Only one DMA instance, we can point direct to MXC_DMA_Handler
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_DMA_Handler);
+#endif // MXC_DMA_INSTANCES > 1
+
 #else
     // TODO(JC): RISC-V
 
@@ -865,7 +946,8 @@ int MXC_UART_RevB_GetRXDMAChannel(mxc_uart_revb_regs_t *uart)
     return states[n].channelRx;
 }
 
-int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                unsigned char *bytes, unsigned int len,
                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
@@ -879,9 +961,13 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, unsigned char *bytes
 
     if (states[uart_num].auto_dma_handlers && states[uart_num].channelRx < 0) {
         /* Acquire channel if we don't have one already */
+#if (TARGET_NUM == 32657)
+        channel = MXC_DMA_AcquireChannel(dma);
+#else
         channel = MXC_DMA_AcquireChannel();
+#endif
         MXC_UART_RevB_SetRXDMAChannel(uart, channel);
-        MXC_UART_RevB_DMA_SetupAutoHandlers(channel);
+        MXC_UART_RevB_DMA_SetupAutoHandlers(dma, channel);
     } else {
         if (states[uart_num].channelRx < 0)
             return E_BAD_STATE;
@@ -903,7 +989,13 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, unsigned char *bytes
     states[uart_num].channelRx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
+
+#if (TARGET_NUM == 32657)
+    MXC_DMA_EnableInt(dma, channel);
+#else
     MXC_DMA_EnableInt(channel);
+#endif
+
     MXC_DMA_Start(channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
     MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
@@ -912,9 +1004,9 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, unsigned char *bytes
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, const unsigned char *bytes,
-                                 unsigned int len, mxc_uart_dma_complete_cb_t callback,
-                                 mxc_dma_config_t config)
+int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                 const unsigned char *bytes, unsigned int len,
+                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
     mxc_dma_srcdst_t srcdst;
@@ -927,9 +1019,13 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, const unsigned char
 
     if (states[uart_num].auto_dma_handlers && states[uart_num].channelTx < 0) {
         /* Acquire channel if we don't have one already */
+#if (TARGET_NUM == 32657)
+        channel = MXC_DMA_AcquireChannel(dma);
+#else
         channel = MXC_DMA_AcquireChannel();
+#endif
         MXC_UART_RevB_SetTXDMAChannel(uart, channel);
-        MXC_UART_RevB_DMA_SetupAutoHandlers(channel);
+        MXC_UART_RevB_DMA_SetupAutoHandlers(dma, channel);
     } else {
         if (states[uart_num].channelTx < 0)
             return E_BAD_STATE;
@@ -951,7 +1047,13 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, const unsigned char
     states[uart_num].channelTx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
+
+#if (TARGET_NUM == 32657)
+    MXC_DMA_EnableInt(dma, channel);
+#else
     MXC_DMA_EnableInt(channel);
+#endif
+
     MXC_DMA_Start(channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
     MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
@@ -960,9 +1062,12 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, const unsigned char
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
+int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma)
 {
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart));
+
+    // Save DMA instance for DMA Callback.
+    states[uart_num].dma = dma;
 
     if (req->txLen) {
         if (req->txData == NULL) {
@@ -988,7 +1093,11 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
     (req->uart)->dma |= (1 << MXC_F_UART_REVB_DMA_RX_THD_VAL_POS);
     (req->uart)->dma |= (2 << MXC_F_UART_REVB_DMA_TX_THD_VAL_POS);
 
+#if (TARGET_NUM == 32657)
+    MXC_DMA_Init(dma);
+#else
     MXC_DMA_Init();
+#endif
 
     // Reset rx/tx counters,
     req->rxCnt = 0;
@@ -998,8 +1107,13 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
     if ((req->txData != NULL) && (req->txLen)) {
         /* Save TX req, the DMA handler will use this later. */
         states[uart_num].tx_req = req;
+#if (TARGET_NUM == 32657)
+        if (MXC_UART_WriteTXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->txData, req->txLen,
+                                    NULL) != E_NO_ERROR) {
+#else
         if (MXC_UART_WriteTXFIFODMA((mxc_uart_regs_t *)(req->uart), req->txData, req->txLen,
                                     NULL) != E_NO_ERROR) {
+#endif
             return E_BAD_PARAM;
         }
     }
@@ -1007,8 +1121,13 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
     //rx
     if ((req->rxData != NULL) && (req->rxLen)) {
         states[uart_num].rx_req = req;
+#if (TARGET_NUM == 32657)
+        if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->rxData, req->rxLen,
+                                   NULL) != E_NO_ERROR) {
+#else
         if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), req->rxData, req->rxLen, NULL) !=
             E_NO_ERROR) {
+#endif
             return E_BAD_PARAM;
         }
     }
@@ -1024,7 +1143,7 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
         if (states[i].channelTx == ch) {
             /* Populate txLen.  The number of "remainder" bytes is what's left on the 
             DMA channel's count register. */
-            states[i].tx_req->txCnt = states[i].tx_req->txLen - MXC_DMA->ch[ch].cnt;
+            states[i].tx_req->txCnt = states[i].tx_req->txLen - states[i].dma->ch[ch].cnt;
 
             temp_req = states[i].tx_req;
 
@@ -1046,7 +1165,7 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
             break;
         } else if (states[i].channelRx == ch) {
             /* Same as above, but for RX */
-            states[i].rx_req->rxCnt = states[i].rx_req->rxLen - MXC_DMA->ch[ch].cnt;
+            states[i].rx_req->rxCnt = states[i].rx_req->rxLen - states[i].dma->ch[ch].cnt;
             temp_req = states[i].rx_req;
             if (states[i].auto_dma_handlers) {
                 MXC_DMA_ReleaseChannel(ch);

@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -331,17 +330,19 @@ int MXC_CSI2_Stop(void);
 
 /**
  * @brief      Capture an image frame using DMA. Same as MXC_CSI2_CaptureFrameDMA.
- * @param      num_data_lanes    Number of data lanes used.
+ * @note       API changed on 7-8-2024 to remove 'num_data_lanes' as an argument.  Set
+ *             'num_lanes' in @ref mxc_csi2_ctrl_cfg_t instead, which is passed to
+ *             @ref MXC_CSI2_Init
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_CaptureFrame(int num_data_lanes);
+int MXC_CSI2_CaptureFrame(void);
 
 /**
  * @brief      Capture an image frame using DMA.
  * @param      num_data_lanes    Number of data lanes used.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_CaptureFrameDMA();
+int MXC_CSI2_CaptureFrameDMA(void);
 
 /**
  * @brief      Select Lane Control Source for D0-D4 and C0.
@@ -589,7 +590,7 @@ int MXC_CSI2_PPI_Stop(void);
 
 bool MXC_CSI2_DMA_Frame_Complete(void);
 
-mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats();
+mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats(void);
 
 /**
  * @brief      Clears the interrupt flags for PPI.

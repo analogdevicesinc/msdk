@@ -148,7 +148,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    INIT_SECURITY /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -570,9 +570,9 @@ static void datcScanReport(dmEvt_t *pMsg)
     if (!connect && ((pData = DmFindAdType(DM_ADV_TYPE_LOCAL_NAME, pMsg->scanReport.len,
                                            pMsg->scanReport.pData)) != NULL)) {
         /* check length and device name */
-        if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'D') &&
-            (pData[DM_AD_DATA_IDX + 1] == 'A') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
-            (pData[DM_AD_DATA_IDX + 3] == 'S')) {
+        char advName[] = ADV_NAME;
+        if (pData[DM_AD_LEN_IDX] == sizeof(advName) &&
+            !strncmp(advName, (char *)&(pData[DM_AD_DATA_IDX]), sizeof(advName))) {
             connect = TRUE;
         }
     }
@@ -1278,11 +1278,10 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 {
     if (btnId == 1) {
         if (!btnTmrIsEnabled(BTN_1_TMR)) {
-                APP_TRACE_INFO0("Software timer is not enabled!");
-                return;
+            APP_TRACE_INFO0("Software timer is not enabled!");
+            return;
         }
 
-        
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
@@ -1301,10 +1300,12 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
             MXC_TMR_SW_Start(BTN_1_TMR);
         }
     } else if (btnId == 2) {
-            if (!btnTmrIsEnabled(BTN_2_TMR)) {
-                APP_TRACE_INFO0("Software timer is not enabled!");
-                return;
-            }
+
+        if (!btnTmrIsEnabled(BTN_2_TMR)) {
+            APP_TRACE_INFO0("Software timer is not enabled!");
+            return;
+        }
+
 
         /* Start/stop button timer */
         if (state == PAL_BTN_POS_UP) {
@@ -1374,7 +1375,7 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcInitSvcHdlList()
+static void datcInitSvcHdlList(void)
 {
     uint8_t i;
 

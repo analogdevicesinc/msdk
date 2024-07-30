@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -76,3 +76,12 @@ bl_obj: $(BOOTLOADER_OBJ)
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
 	${CC} ${AFLAGS} -o ${@} -c bl_build.S
 endif
+
+# SET advertising name
+ADV_NAME?=DATS
+PROJ_CFLAGS += -DADV_NAME=\"$(ADV_NAME)\"
+
+
+### CONFIGURE security
+# /*! TRUE to initiate security upon connection*/
+PROJ_CFLAGS += -DINIT_SECURITY=TRUE

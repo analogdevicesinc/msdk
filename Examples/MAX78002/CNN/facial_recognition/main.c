@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -196,7 +195,7 @@ mxc_uart_regs_t *CommUart;
 unsigned int touch_x, touch_y;
 int font = (int)&Liberation_Sans16x16[0];
 
-void init_names()
+void init_names(void)
 {
     char default_names[DEFAULT_EMBS_NUM][7] = DEFAULT_NAMES;
 #pragma GCC diagnostic push
@@ -225,7 +224,7 @@ area_t area_2 = { 0, 260, 80, 30 };
 #endif
 // *****************************************************************************
 
-void WUT_IRQHandler()
+void WUT_IRQHandler(void)
 {
     MXC_WUT_IntClear();
 }

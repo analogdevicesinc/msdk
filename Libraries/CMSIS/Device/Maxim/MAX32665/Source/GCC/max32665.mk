@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -59,6 +58,16 @@ endif
 SRCS += backup_max32665.S
 SRCS += heap.c
 SRCS += system_max32665.c
+endif
+
+# Add Core 1 CMSIS source files
+# This prevents the linker script from allocating memory for the Core 1
+#	stack and vector table when Core 1 is not in use.
+# Ex:  "make ARM_DUALCORE=1"
+ARM_DUALCORE ?= 0
+ifeq ($(ARM_DUALCORE),1)
+SRCS += system_core1_max32665.c
+SRCS += startup_core1_max32665.S
 endif
 
 # Add target specific CMSIS source directories

@@ -6,7 +6,7 @@ This example uses the I2C Master to find the addresses of any I2C Slave devices 
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -19,6 +19,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   For EvKit
      -   Connect jumpers JP3 and JP4 (I2C0 pullup resistor enables).
 -   Connect I2C0 (SCL - P0.6, SDA - P0.7) to I2C bus.
+
+If using the MAX32675 RevB:
+-	Close I2C pull-up jumpers JP25 and JP26
 
 ## Expected Output
 

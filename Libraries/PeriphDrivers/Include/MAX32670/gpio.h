@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,12 +126,26 @@ typedef enum {
 
 /**
  * @brief   Enumeration type for drive strength on a given pin.
+ *          This represents what the two GPIO_DS[2] (Drive Strength) 
+ *          registers are set to for a given GPIO pin; NOT the
+ *          drive strength level.
+ *
+ *          For example:
+ *              MXC_GPIO_DRVSTR_0: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_1: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 1
+ *              MXC_GPIO_DRVSTR_2: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_3: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 1
+ *
+ *          Refer to the user guide and datasheet to select the
+ *          appropriate drive strength. Note: the drive strength values
+ *          are not linear, and can vary from pin-to-pin and the state
+ *          of the GPIO pin (alternate function and voltage level).
  */
 typedef enum {
-    MXC_GPIO_DRVSTR_0, ///< Drive Strength 0
-    MXC_GPIO_DRVSTR_1, ///< Drive Strength 1
-    MXC_GPIO_DRVSTR_2, ///< Drive Strength 2
-    MXC_GPIO_DRVSTR_3, ///< Drive Strength 3
+    MXC_GPIO_DRVSTR_0, ///< Drive Strength GPIO_DS[2][pin]=0b00
+    MXC_GPIO_DRVSTR_1, ///< Drive Strength GPIO_DS[2][pin]=0b01
+    MXC_GPIO_DRVSTR_2, ///< Drive Strength GPIO_DS[2][pin]=0b10
+    MXC_GPIO_DRVSTR_3, ///< Drive Strength GPIO_DS[2][pin]=0b11
 } mxc_gpio_drvstr_t;
 
 /**
@@ -176,6 +189,14 @@ typedef enum {
     MXC_GPIO_INT_LOW, ///< Interrupt triggers when level is low
     MXC_GPIO_INT_BOTH ///< Interrupt triggers on either edge
 } mxc_gpio_int_pol_t;
+
+/**
+ * @brief   Enumeration type for the pin configuration lock mechanism.
+ */
+typedef enum {
+    MXC_GPIO_CONFIG_UNLOCKED = 0, /**< Allow changing pins' configuration. */
+    MXC_GPIO_CONFIG_LOCKED, /**< Ignore changes to a pin's configuration. */
+} mxc_gpio_config_lock_t;
 
 /* **** Function Prototypes **** */
 
@@ -357,6 +378,20 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
  * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
  */
 int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t drvstr, uint32_t mask);
+
+/**
+ * @brief      Enables/Disables the lock on all pins' configurations.  If 
+ *             locked, any changes to a pin's configuration made through the
+ *             MXC_GPIO_Config function will be ignored.
+ *
+ * @param      locked  Determines if changes will be allowed. */
+void MXC_GPIO_SetConfigLock(mxc_gpio_config_lock_t locked);
+
+/**
+ * @brief      Reads the current lock state on pin configuration.
+ *
+ * @returns    The lock state. */
+mxc_gpio_config_lock_t MXC_GPIO_GetConfigLock(void);
 
 /**@} end of group gpio */
 

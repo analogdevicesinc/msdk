@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,16 +41,12 @@
 #include "led.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC 1
-#define MASTERASYNC 0
-#define MASTERDMA 0
+//#define MASTERSYNC 1
+//#define MASTERASYNC 0
+//#define MASTERDMA 0
+// define three METHOD above in project.mk
+// MASTERSYNC  is default
 
-#if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
-#error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."
-#endif
-#if ((MASTERSYNC && MASTERASYNC) || (MASTERASYNC && MASTERDMA) || (MASTERDMA && MASTERSYNC))
-#error "You must select either MASTERSYNC or MASTERASYNC or MASTERDMA, not all 3."
-#endif
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
 #define DATA_VALUE 0xA5A5 // This is for master mode only...
@@ -154,11 +149,11 @@ int main(void)
             return retVal;
         }
 
-#if MASTERSYNC
+#ifdef MASTERSYNC
         MXC_SPI_MasterTransaction(&req);
 #endif
 
-#if MASTERASYNC
+#ifdef MASTERASYNC
         MXC_NVIC_SetVector(SPI_IRQ, SPI_IRQHandler);
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
@@ -167,7 +162,7 @@ int main(void)
 
 #endif
 
-#if MASTERDMA
+#ifdef MASTERDMA
         MXC_DMA_ReleaseChannel(0);
         MXC_DMA_ReleaseChannel(1);
 

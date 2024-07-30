@@ -22,8 +22,10 @@
  */
 /*************************************************************************************************/
 
+#include <string.h>
 #include "wsf_types.h"
 #include "wsf_nvm.h"
+#include "wsf_cs.h"
 #include "wsf_assert.h"
 #include "pal_flash.h"
 #include "util/crc32.h"
@@ -63,6 +65,9 @@ typedef struct {
   uint32_t          dataCrc;    /*!< CRC of subsequent data. */
 } WsfNvmHeader_t;
 
+#define WSF_NVM_HEADER_SIZE sizeof(WsfNvmHeader_t)
+#define WSF_NVM_FILE_SIZE(header_len) (WSF_NVM_HEADER_SIZE + WSF_NVM_WORD_ALIGN(header_len))
+
 static struct {
   uint32_t          availAddr;  /*!< Next available address for NVM write. */
   uint32_t          sectorSize; /*!< Size of erase sector. */
@@ -72,6 +77,36 @@ static struct {
 /**************************************************************************************************
   Global Functions
 **************************************************************************************************/
+/*************************************************************************************************/
+/*!
+ *  \brief  Get remaining space in WSF Allcoated NVM.
+ *  \return Bytes left.
+ */
+/*************************************************************************************************/
+uint32_t WsfNvmGetRemainingSpace(void)
+{
+    const int32_t bytesLeft = wsfNvmCb.totalSize - (wsfNvmCb.availAddr - WSF_NVM_START_ADDR);
+    
+    WSF_ASSERT(bytesLeft >= 0);
+    
+    if(bytesLeft < 0)
+    {
+        return 0;
+    }
+    
+    
+    return (uint32_t)bytesLeft;
+}
+/*************************************************************************************************/
+/*!
+ *  \brief  Check if NVM space is full.
+ *  \return TRUE if all NVM space is taken, FALSE otherwise.
+ */
+/*************************************************************************************************/
+bool_t WsfNvmIsFull(void)
+{
+    return WsfNvmGetRemainingSpace() <= 0;
+}
 
 /*************************************************************************************************/
 /*!
@@ -119,7 +154,11 @@ void WsfNvmInit(void)
 
     /* Move to next stored data block and read header. */
     storageAddr += WSF_NVM_WORD_ALIGN(header.len) + sizeof(header);
-    WSF_ASSERT((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize);
+    if (!((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize)) {
+        WSF_TRACE_INFO0("WSF -> NVM IS FULL!");
+        storageAddr =  WSF_NVM_START_ADDR + wsfNvmCb.totalSize;
+        break;
+    }
 
   } while ((storageAddr - WSF_NVM_START_ADDR) < wsfNvmCb.totalSize);
 
@@ -208,7 +247,23 @@ bool_t WsfNvmReadData(uint64_t id, uint8_t *pData, uint16_t len, WsfNvmCompEvent
   }
   return findId;
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief  Check whether or not the amount of data has space to fit into NVM
+ *
+ *  \param  lenNeeded         Number of bytes wanting to store
+ *
+ *  \return TRUE if NVM operation is successful, FALSE otherwise.
+ */
+/*************************************************************************************************/
+static inline bool_t wsfNvmHaveEnoughSpace(uint32_t lenNeeded)
+{
+    if (WSF_NVM_FILE_SIZE(lenNeeded) > WsfNvmGetRemainingSpace()) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Write data.
@@ -232,7 +287,11 @@ bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCo
   }
 
   WSF_ASSERT(!((id == WSF_NVM_RESERVED_FILECODE) || (id == WSF_NVM_UNUSED_FILECODE)));
-  WSF_ASSERT((wsfNvmCb.availAddr - WSF_NVM_START_ADDR) <= wsfNvmCb.totalSize);
+
+  if (!wsfNvmHaveEnoughSpace(len)) {
+      WSF_TRACE_INFO0("WsfNvm: Failed to write flash! Out of space.");
+      return FALSE;
+  }
 
   /* Read first header. */
   PalFlashRead(&header, sizeof(header), storageAddr);
@@ -372,4 +431,70 @@ void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
   if (compCback) {
     compCback(TRUE);
   }
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Defragment NVM
+ *  \param  copyBuf       Scratch buffer to temporarily copy NVM stored data.
+ *  \param  size          Size of copyBuf in bytes.
+ *  \return  TRUE if defragment successful. FALSE otherwise
+ * 
+ *  \note   Defragment should only be called when the storage is full and a record has been invalidated.
+ *          Furthermore, copyBuf must be at least the size of WSF NVM allocated flash.
+ */
+/*************************************************************************************************/
+bool_t WsfNvmDefragment(uint8_t *copyBuf, uint32_t size)
+{
+
+    WSF_ASSERT(copyBuf && size >= wsfNvmCb.totalSize);
+
+    if (!copyBuf || size < wsfNvmCb.totalSize) {
+        WSF_TRACE_INFO0("Not enough memory given to defragment NVM");
+        return FALSE;
+    }
+
+
+    WsfCsEnter();
+
+    bool_t defragPossible = FALSE;
+    uint32_t currentOffset = WSF_NVM_START_ADDR;
+    uint32_t copyOffset = 0;
+    WsfNvmHeader_t header = { 0 };
+
+    /* Get the first header*/
+    PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+    while (currentOffset < wsfNvmCb.availAddr && header.id != WSF_NVM_UNUSED_FILECODE) {
+        const uint32_t fileSize = WSF_NVM_FILE_SIZE(header.len);
+
+        /*If the entry is valid copy it into the defragmentation buffer, if its reserved we can defrag it*/
+        if (header.id != WSF_NVM_RESERVED_FILECODE) {
+            PalFlashRead(&copyBuf[copyOffset], fileSize, currentOffset);
+            copyOffset += WSF_NVM_FILE_SIZE(header.len);
+        } else {
+            defragPossible = TRUE;
+        }
+
+        currentOffset += fileSize;
+        
+        if(currentOffset + WSF_NVM_HEADER_SIZE <= WSF_NVM_START_ADDR + wsfNvmCb.totalSize)
+        {
+            PalFlashRead(&header, WSF_NVM_HEADER_SIZE, currentOffset);
+        }
+    }
+
+  /*
+    If we defragged anything clear the sector and rewrite flash with defragmented data
+  */
+    if (defragPossible) {
+        WsfNvmEraseDataAll(NULL);
+        PalFlashWrite(copyBuf, copyOffset, wsfNvmCb.availAddr);
+        wsfNvmCb.availAddr += copyOffset;
+    } else {
+        WSF_TRACE_INFO0("No unused memory for defragementation!");
+    }
+
+    WsfCsExit();
+
+    return defragPossible;
 }
