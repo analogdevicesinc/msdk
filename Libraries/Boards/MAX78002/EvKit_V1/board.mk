@@ -94,8 +94,11 @@ SRCS += sccb.c
 
 # The MAX78002EVKIT has an on-board external APS6404 SRAM.
 # Add drivers for it from MiscDrivers.
+ifeq "$(RISCV_CORE)" ""
+# RISC-V core does not have access to SPI0.  Skip drivers
 SRCS += fastspi.c
 SRCS += aps6404.c
+endif
 
 MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
