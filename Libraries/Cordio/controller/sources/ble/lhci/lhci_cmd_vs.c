@@ -120,9 +120,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         uint8_t * addressErase = (uint8_t*) addr;
 
         BSTREAM_TO_UINT32(size, pBuf);
-        volatile uint32_t address32 = (uint32_t)addressErase;
-        address32 &= 0xFFFFF;
-
 
         size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
         int error = E_NO_ERROR;
