@@ -34,16 +34,11 @@ static uint8_t g_dummy_byte = 0xFF;
 
 static bool g_dma_initialized = false;
 
-static uint8_t *g_rx_buffer;
-static uint8_t *g_tx_buffer;
-static uint32_t g_rx_len;
-static uint32_t g_tx_len;
-
 static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
 static volatile bool g_master_done = 0;
 
-void DMA_TX_IRQHandler(void)
+static void DMA_TX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_tx_channel]; // Cast the pointer for readability in this ISR
@@ -59,7 +54,7 @@ void DMA_TX_IRQHandler(void)
     }
 }
 
-void DMA_RX_IRQHandler(void)
+static void DMA_RX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_rx_channel]; // Cast the pointer for readability in this ISR
@@ -72,32 +67,6 @@ void DMA_RX_IRQHandler(void)
 
     if (status & MXC_F_DMA_STATUS_BUS_ERR) { // Bus Error
         ch->status |= MXC_F_DMA_STATUS_BUS_ERR;
-    }
-}
-
-void processSPI(void)
-{
-    // Unload any SPI data that has come in
-    while (g_rx_buffer && (FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
-        *g_rx_buffer++ = FASTSPI_INSTANCE->fifo8[0];
-        g_rx_len--;
-    }
-
-    if (g_rx_len <= 0) {
-        g_rx_done = 1;
-    }
-
-    // Write any pending bytes out.
-    while (g_tx_buffer &&
-           (((FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) <
-            MXC_SPI_FIFO_DEPTH) &&
-           g_tx_len > 0) {
-        FASTSPI_INSTANCE->fifo8[0] = *g_tx_buffer++;
-        g_tx_len--;
-    }
-
-    if (g_tx_len <= 0) {
-        g_tx_done = 1;
     }
 }
 
