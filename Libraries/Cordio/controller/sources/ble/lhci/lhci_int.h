@@ -261,6 +261,8 @@ extern "C" {
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C1) /*!< MEMORY erase opcode. */
 #define LHCI_OPCODE_VS_DEVICE_RESET\
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C2) /*!< Device system_reset opcode. */
+#define LHCI_OPCODE_VS_SET_FLASH_ADDR\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C3) /*!< Set Write Flash Address. */
 #define LHCI_OPCODE_VS_SET_SCAN_CH_MAP \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3E0) /*!< Set Scan Channel Map opcode. */
 #define LHCI_OPCODE_VS_SET_EVENT_MASK \

@@ -114,38 +114,28 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     }
 
     case LHCI_OPCODE_VS_MEMORY_ERASE: {
-        LL_TRACE_INFO0("Erasing the memory...");
-        uint32_t addr;
-        uint32_t size;
+        LL_TRACE_INFO1("Erase flash memory at address: %x", address);
 
-
-        BSTREAM_TO_UINT32(addr, pBuf);
-        address = (uint32_t*) addr;
-        uint8_t * addressErase = (uint8_t*) addr;
-
-        BSTREAM_TO_UINT32(size, pBuf);
-
-        size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
-        int error = E_NO_ERROR;
-
-        while (size) {
-            error = MXC_FLC_PageErase((uint32_t)addressErase);
-            if (error != E_NO_ERROR) {
-                break;
-            }
-
-        addressErase += MXC_FLASH_PAGE_SIZE;
-        size -= MXC_FLASH_PAGE_SIZE;
-        }
+        int error = MXC_FLC_PageErase(address);
+        address += MXC_FLASH_PAGE_SIZE;
 
         if (error == E_NO_ERROR || error == E_BAD_PARAM) {
             LL_TRACE_INFO0("Done");
+            
         }
         else{
             LL_TRACE_ERR0("Failed");
+            status = HCI_ERR_HARDWARE_FAILURE;
         }
         break;
     
+    }
+    case LHCI_OPCODE_VS_SET_FLASH_ADDR: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
+        address = (uint32_t*) addr;
+        LL_TRACE_INFO1("Set flash write starting address to: %x", address);
+        break;
     }
 
     case LHCI_OPCODE_VS_WRITE_FLASH: {
@@ -160,7 +150,9 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         }
         if (error != E_NO_ERROR) {
                 LL_TRACE_ERR0("Writing to flash memory Failed!");
+                status = HCI_ERR_HARDWARE_FAILURE;
         }
+        
         break;
     }    
 
