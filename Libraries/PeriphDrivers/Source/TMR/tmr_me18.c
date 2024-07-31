@@ -195,6 +195,21 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }
 
+void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock)
+{
+    MXC_TMR_RevB_LockClockSource((mxc_tmr_revb_regs_t *)tmr, lock);
+}
+
+void MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_clock_t clk_src)
+{
+    MXC_TMR_RevB_SetClockSource((mxc_tmr_revb_regs_t *)tmr, bit_mode, clk_src);
+}
+
+void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_pres_t prescalar)
+{
+    MXC_TMR_RevB_SetPrescalar((mxc_tmr_revb_regs_t *)tmr, bit_mode, prescalar);
+}
+
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 {
     MXC_ASSERT(MXC_TMR_GET_IDX(tmr) >= 0);
