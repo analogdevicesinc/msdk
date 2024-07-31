@@ -72,7 +72,8 @@ extern "C" {
  * Structure type to access the MCR Registers.
  */
 typedef struct {
-    __R  uint32_t rsv_0x0_0x7[2];
+    __R  uint32_t rsv_0x0;
+    __IO uint32_t rst;                  /**< <tt>\b 0x04:</tt> MCR RST Register */
     __IO uint32_t outen;                /**< <tt>\b 0x08:</tt> MCR OUTEN Register */
     __R  uint32_t rsv_0xc;
     __IO uint32_t ctrl;                 /**< <tt>\b 0x10:</tt> MCR CTRL Register */
@@ -91,6 +92,7 @@ typedef struct {
  * @brief      MCR Peripheral Register Offsets from the MCR Base Peripheral Address.
  * @{
  */
+#define MXC_R_MCR_RST                      ((uint32_t)0x00000004UL) /**< Offset from MCR Base Address: <tt> 0x0004</tt> */
 #define MXC_R_MCR_OUTEN                    ((uint32_t)0x00000008UL) /**< Offset from MCR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_MCR_CTRL                     ((uint32_t)0x00000010UL) /**< Offset from MCR Base Address: <tt> 0x0010</tt> */
 #define MXC_R_MCR_BBREG0                   ((uint32_t)0x00000030UL) /**< Offset from MCR Base Address: <tt> 0x0030</tt> */
@@ -98,6 +100,17 @@ typedef struct {
 #define MXC_R_MCR_BBDATA0                  ((uint32_t)0x00000040UL) /**< Offset from MCR Base Address: <tt> 0x0040</tt> */
 #define MXC_R_MCR_BBDATA1                  ((uint32_t)0x00000044UL) /**< Offset from MCR Base Address: <tt> 0x0044</tt> */
 /**@} end of group mcr_registers */
+
+/**
+ * @ingroup  mcr_registers
+ * @defgroup MCR_RST MCR_RST
+ * @brief    Reset Register.
+ * @{
+ */
+#define MXC_F_MCR_RST_BOOST_POS                        0 /**< RST_BOOST Position */
+#define MXC_F_MCR_RST_BOOST                            ((uint32_t)(0x1UL << MXC_F_MCR_RST_BOOST_POS)) /**< RST_BOOST Mask */
+
+/**@} end of group MCR_RST_Register */
 
 /**
  * @ingroup  mcr_registers

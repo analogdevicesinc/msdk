@@ -6295,6 +6295,19 @@
    </addressBlock>
    <registers>
     <register>
+     <name>RST</name>
+     <description>Reset Register.</description>
+     <addressOffset>0x04</addressOffset>
+     <fields>
+      <field>
+       <name>BOOST</name>
+       <description>Reset BOOST Controller.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
      <name>OUTEN</name>
      <description>Output Enable Register.</description>
      <addressOffset>0x08</addressOffset>
