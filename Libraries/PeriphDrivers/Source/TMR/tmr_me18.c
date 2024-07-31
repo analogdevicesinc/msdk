@@ -108,7 +108,14 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
     case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            /*  If the bit mode is set to 16A or 16B we avoid a full peripheral reset
+                because the user is probably trying to use the dual-mode timer config,
+                which requires two Init calls.  We don't want to reset because that would
+                wipe out any previous initializations.
+             */
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
         if (init_pins) {
@@ -122,7 +129,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case 1:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
         if (init_pins) {
@@ -136,7 +145,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
         if (init_pins) {
@@ -150,7 +161,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case 3:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
         if (init_pins) {
