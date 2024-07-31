@@ -22,6 +22,7 @@
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_ADC_ADC_REVB_H_
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "adc.h"
 #include "adc_revb_regs.h"
 
