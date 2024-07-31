@@ -36,56 +36,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
-    switch (cfg->clock) {
-    case MXC_TMR_ISO_CLK:
-        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
-
-        clockSource = MXC_TMR_CLK1;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ISO_FREQ);
-        break;
-
-    case MXC_TMR_IBRO_CLK:
-        if (tmr_id <= 3) {
-            clockSource = MXC_TMR_CLK2;
-        } else {
-            clockSource = MXC_TMR_CLK0;
-        }
-
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
-        break;
-
-    case MXC_TMR_ERTCO_CLK:
-        if (tmr_id == 4) {
-            clockSource = MXC_TMR_CLK1;
-        } else if (tmr_id < 4) {
-            clockSource = MXC_TMR_CLK3;
-        } else { // Timers 5 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
-
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
-        break;
-
-    case MXC_TMR_INRO_CLK:
-        if (tmr_id < 4) { // Timers 0-3 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
-
-        clockSource = MXC_TMR_CLK2;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ);
-        break;
-
-    default:
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, PeripheralClock);
-        break;
-    }
-
 #ifndef MSDK_NO_GPIO_CLK_INIT
     //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
@@ -174,6 +124,8 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     (void)init_pins;
 #endif
 
+    clockSource = MXC_TMR_SetClockSource(tmr, cfg->bitMode, cfg->clock);
+
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }
 
@@ -182,9 +134,65 @@ void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock)
     MXC_TMR_RevB_LockClockSource((mxc_tmr_revb_regs_t *)tmr, lock);
 }
 
-void MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_clock_t clk_src)
+uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_clock_t clk_src)
 {
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+    uint8_t clockSource = MXC_TMR_CLK0;
+
+    switch (clk_src) {
+    case MXC_TMR_ISO_CLK:
+        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
+
+        clockSource = MXC_TMR_CLK1;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ISO_FREQ);
+        break;
+
+    case MXC_TMR_IBRO_CLK:
+        if (tmr_id <= 3) {
+            clockSource = MXC_TMR_CLK2;
+        } else {
+            clockSource = MXC_TMR_CLK0;
+        }
+
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
+        break;
+
+    case MXC_TMR_ERTCO_CLK:
+        if (tmr_id == 4) {
+            clockSource = MXC_TMR_CLK1;
+        } else if (tmr_id < 4) {
+            clockSource = MXC_TMR_CLK3;
+        } else { // Timers 5 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
+
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
+        break;
+
+    case MXC_TMR_INRO_CLK:
+        if (tmr_id < 4) { // Timers 0-3 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
+
+        clockSource = MXC_TMR_CLK2;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ);
+        break;
+
+    default:
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, PeripheralClock);
+        break;
+    }
+
     MXC_TMR_RevB_SetClockSource((mxc_tmr_revb_regs_t *)tmr, bit_mode, clk_src);
+    return clockSource; /*  Note this function returns the actual value of the clockSource field to set because 
+                            our TMR API was written extremely jankily.  The Init function accepts this register value
+                            as an argument, so we need to pass that back up from this API... */
 }
 
 void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_pres_t prescalar)
