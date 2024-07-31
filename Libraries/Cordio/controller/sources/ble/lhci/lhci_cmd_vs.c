@@ -40,6 +40,7 @@
 #include "bb_ble_api.h"
 #include "flc.h"
 #include "mxc_delay.h"
+#include "pal_uart.h"
 #include <string.h>
 
 /**************************************************************************************************
@@ -69,7 +70,9 @@
 //this is the callback function to the Msg
 void device_reset(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
+    /*This delay is necessary here to let UART transfer the status back to hci*/
     MXC_Delay(3000);
+
     NVIC_SystemReset();
     return;
 }
@@ -101,6 +104,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         
 
     case LHCI_OPCODE_VS_DEVICE_RESET: {
+        LlReset();
         char* pMsg = WsfMsgDataAlloc(1,1);
         wsfHandlerId_t handlerId;
         handlerId = WsfOsSetNextHandler(device_reset);
