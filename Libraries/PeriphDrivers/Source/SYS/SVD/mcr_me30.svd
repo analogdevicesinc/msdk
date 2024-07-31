@@ -21,6 +21,12 @@
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field>
+            <name>RSTZ</name>
+            <description>Reset RSTZ Controller.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>

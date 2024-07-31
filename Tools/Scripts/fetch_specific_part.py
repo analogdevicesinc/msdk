@@ -180,6 +180,10 @@ with open(periphdrivers_mk_src, 'r') as part_files_mk:
             # Isolate file and their parent directory path.
             src_file = line.split("$(SOURCE_DIR)/")[-1].rstrip('\n')
             periphdrivers_src_files.append(src_file)
+        
+        # Quick hack to add i3c_ccc.h.
+        if "I3C" in line:
+            periphdrivers_src_files.append("I3C/i3c_ccc.h")
 
 # Create all source directories.
 for src_dir in periphdrivers_src_dirs:

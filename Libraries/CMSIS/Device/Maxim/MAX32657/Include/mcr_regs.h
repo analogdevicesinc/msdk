@@ -110,6 +110,9 @@ typedef struct {
 #define MXC_F_MCR_RST_BOOST_POS                        0 /**< RST_BOOST Position */
 #define MXC_F_MCR_RST_BOOST                            ((uint32_t)(0x1UL << MXC_F_MCR_RST_BOOST_POS)) /**< RST_BOOST Mask */
 
+#define MXC_F_MCR_RST_RSTZ_POS                         1 /**< RST_RSTZ Position */
+#define MXC_F_MCR_RST_RSTZ                             ((uint32_t)(0x1UL << MXC_F_MCR_RST_RSTZ_POS)) /**< RST_RSTZ Mask */
+
 /**@} end of group MCR_RST_Register */
 
 /**
