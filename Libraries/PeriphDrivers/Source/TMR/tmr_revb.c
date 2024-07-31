@@ -71,9 +71,9 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     if (cfg->bitMode == TMR_BIT_MODE_16B || cfg->bitMode == TMR_BIT_MODE_32) {
         MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
                      (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
-        // mxc_tmr_pres_t is for for CLKDIV_A register settings [4:7]
-        // Field positions for CLKDIV_B are Located at [16:19]. Shift 12 more bits.
-        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres) << 12);
+        // mxc_tmr_pres_t is for for CLKDIV_A register settings [7:4]
+        // Field positions for CLKDIV_B are Located at [23:20]. Shift 16 more bits.
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres) << 16);
     }
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
@@ -197,14 +197,6 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 #else
     tmr->ctrl1 |= (MXC_F_TMR_REVB_CTRL1_OUTEN_A << timerOffset);
 #endif
-
-    // If configured as TIMER_16B then enable the interrupt and start the timer
-    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
-        tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_IE_B;
-
-        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
-        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
-    }
 }
 
 void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
@@ -227,8 +219,20 @@ void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
-    while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
+    /* If a timer's clk is enabled, it's a reliable signal that the
+    clock itself is configured and we should start it.  This check is
+    relevant for dual-mode timer configs
+    */
+
+    if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_A) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
+    }
+
+    if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_B) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
+    } 
 }
 
 void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
@@ -237,7 +241,8 @@ void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    tmr->ctrl0 &= ~MXC_F_TMR_REVB_CTRL0_EN_A;
+    // Will stop both timers in a dual-mode config
+    tmr->ctrl0 &= ~(MXC_F_TMR_REVB_CTRL0_EN_A | MXC_F_TMR_REVB_CTRL0_EN_B);
 }
 
 int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
