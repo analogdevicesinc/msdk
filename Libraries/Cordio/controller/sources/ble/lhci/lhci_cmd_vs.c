@@ -39,7 +39,7 @@
 #include "util/bstream.h"
 #include "bb_ble_api.h"
 #include "flc.h"
-#include "mxc_delay.h"
+#include "wsf_timer.h"
 #include "pal_uart.h"
 #include <string.h>
 
@@ -68,12 +68,14 @@
   Functions
 **************************************************************************************************/
 //this is the callback function to the Msg
+wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
 void device_reset(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-    /*This delay is necessary here to let UART transfer the status back to hci*/
-    MXC_Delay(3000);
-
+     //uint32_t delayStart_ms = 500;
     NVIC_SystemReset();
+    //WsfTimerStartMs(&myTimer, delayStart_ms);
+
     return;
 }
 
@@ -95,7 +97,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
 
-    static uint32_t * address;
+    static uint32_t * address = (uint32_t *) 0x10040000;
 
     /* Decode and consume command packet. */
 
@@ -105,37 +107,39 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
     case LHCI_OPCODE_VS_DEVICE_RESET: {
         LlReset();
-        char* pMsg = WsfMsgDataAlloc(1,1);
-        wsfHandlerId_t handlerId;
-        handlerId = WsfOsSetNextHandler(device_reset);
-        WsfMsgSend(handlerId, pMsg);
+
+        myTimerHandlerId = WsfOsSetNextHandler(device_reset);
+        myTimer.handlerId = myTimerHandlerId;
+
+        /*This delay is necessary here to let UART transfer the status back to hci*/
+        WsfTimerStartMs(&myTimer, 5000);
 
         break;
     }
 
-    case LHCI_OPCODE_VS_MEMORY_ERASE: {
-        LL_TRACE_INFO1("Erase flash memory at address: %x", address);
-
-        int error = MXC_FLC_PageErase(address);
-        address += MXC_FLASH_PAGE_SIZE;
-
-        if (error == E_NO_ERROR || error == E_BAD_PARAM) {
-            LL_TRACE_INFO0("Done");
-            
+    case LHCI_OPCODE_VS_PAGE_ERASE: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
+        LL_TRACE_INFO1("Erase flash memory at address: %x", addr);
+        if (addr % MXC_FLASH_PAGE_SIZE)
+        {
+            status = HCI_ERR_INVALID_PARAM; 
         }
-        else{
-            LL_TRACE_ERR0("Failed");
-            status = HCI_ERR_HARDWARE_FAILURE;
+        else
+        {
+            int error = MXC_FLC_PageErase(addr);
+       
+            if (error == E_NO_ERROR || error == E_BAD_PARAM) {
+                LL_TRACE_INFO0("Done");
+            
+            }
+            else{
+                LL_TRACE_ERR0("Failed");
+                status = HCI_ERR_HARDWARE_FAILURE;
+            }
         }
         break;
     
-    }
-    case LHCI_OPCODE_VS_SET_FLASH_ADDR: {
-        uint32_t addr;
-        BSTREAM_TO_UINT32(addr, pBuf);
-        address = (uint32_t*) addr;
-        LL_TRACE_INFO1("Set flash write starting address to: %x", address);
-        break;
     }
 
     case LHCI_OPCODE_VS_WRITE_FLASH: {
