@@ -319,3 +319,18 @@ LIB_CLI_DIR ?= $(LIBS_DIR)/CLI
 include $(LIB_CLI_DIR)/CLI.mk
 endif
 # ************************
+
+# Unified Security Software (USS) (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_USS ?= 0
+ifeq ($(LIB_USS),1)
+LIB_USS_DIR ?= $(LIBS_DIR)/USS
+
+ifeq ("$(wildcard $(LIB_USS))","")
+$(error ERR_LIBNOTFOUND: USS library not found (Only available via NDA). Please install the USS package to $(LIB_USS_DIR))
+endif
+
+include $(LIB_USS_DIR)/uss.mk
+endif
+# ************************
