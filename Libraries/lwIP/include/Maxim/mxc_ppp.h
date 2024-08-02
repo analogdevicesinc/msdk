@@ -21,8 +21,8 @@
  *
  ******************************************************************************
  */
-#ifndef _MXC_PPP_H_
-#define _MXC_PPP_H_
+#ifndef LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_SYS_ARCH_H_
+#define LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_SYS_ARCH_H_
 
 #include "lwip/netif.h"
 #include "lwip/sio.h"
@@ -78,4 +78,4 @@ void mxc_ppp_loop(void);
  * @return     #E_NULL_PTR        if pointer is null
  */
 void mxc_ppp_force_close(void);
-#endif /* _MXC_PPP_H_ */
+#endif /* LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_SYS_ARCH_H_ */
