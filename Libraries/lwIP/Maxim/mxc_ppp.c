@@ -31,9 +31,8 @@
 
 #include "lwip/sio.h"
 
-#include "mxc_ppp.h"
-
 #if PPP_SUPPORT && PPPOS_SUPPORT /* don't build if not configured for use in lwipopts.h */
+#include "mxc_ppp.h"
 
 /***** Globals *****/
 static sio_fd_t ppp_sio = NULL;
