@@ -72,10 +72,7 @@ wsfHandlerId_t myTimerHandlerId;
 wsfTimer_t myTimer;
 void device_reset(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-     //uint32_t delayStart_ms = 500;
     NVIC_SystemReset();
-    //WsfTimerStartMs(&myTimer, delayStart_ms);
-
     return;
 }
 
@@ -96,8 +93,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-
-    static uint32_t * address = (uint32_t *) 0x10040000;
 
     /* Decode and consume command packet. */
 
@@ -143,17 +138,14 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     }
 
     case LHCI_OPCODE_VS_WRITE_FLASH: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
         int error = E_NO_ERROR;
-        for (int i = 0; i < 8; i++)
-        {
-            error = MXC_FLC_Write128((uint32_t)address, (uint32_t*) (pBuf+i*16));
-            address += 4;
-            if (error != E_NO_ERROR) {
-                break;
-            }
-        }
+
+        error = MXC_FLC_Write(addr, (uint32_t) (pHdr->len - 4), (uint32_t*) pBuf);
+
         if (error != E_NO_ERROR) {
-                LL_TRACE_ERR0("Writing to flash memory Failed!");
+                LL_TRACE_ERR1("Writing to flash memory Failed! Error code: %d", error);
                 status = HCI_ERR_HARDWARE_FAILURE;
         }
         
