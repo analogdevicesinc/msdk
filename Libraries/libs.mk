@@ -327,7 +327,7 @@ LIB_USS ?= 0
 ifeq ($(LIB_USS),1)
 LIB_USS_DIR ?= $(LIBS_DIR)/USS
 
-ifeq ("$(wildcard $(LIB_USS))","")
+ifeq ("$(wildcard $(LIB_USS_DIR))","")
 $(error ERR_LIBNOTFOUND: USS library not found (Only available via NDA). Please install the USS package to $(LIB_USS_DIR))
 endif
 
