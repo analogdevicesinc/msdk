@@ -717,7 +717,13 @@ int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t *tpu, mxc_tpu_maa_clcsel_t clc,
     memcpy((void *)MAA_M, (uint32_t *)mod, len);
 
     // Start MAA
-    MXC_SETFIELD(tpu->maa_ctrl, MXC_F_TPU_REVA_MAA_CTRL_CLC, clc << MXC_F_TPU_REVA_MAA_CTRL_CLC);
+    uint8_t clc_val = (uint8_t)clc;
+    if (((tpu->maa_maws & MXC_F_TPU_MAA_MAWS_MSGSZ) >> MXC_F_TPU_MAA_MAWS_MSGSZ_POS) >= 1024) {
+        // The actual value of the field must be left shifted by 1 if MAWS >= 1024
+        clc_val <<= 1;
+    }
+    MXC_SETFIELD(tpu->maa_ctrl, MXC_F_TPU_REVA_MAA_CTRL_CLC,
+                 clc_val << MXC_F_TPU_REVA_MAA_CTRL_CLC_POS);
     tpu->maa_ctrl |= MXC_F_TPU_REVA_MAA_CTRL_STC;
 
     // Check if MAA Error occurs
