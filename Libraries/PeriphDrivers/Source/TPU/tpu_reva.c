@@ -261,8 +261,8 @@ int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_modesel_t 
 // ******************************* Function to Select the Source of the Cipher Key *************************************
 int MXC_TPU_RevA_Cipher_KeySelect(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_keysrc_t key_src)
 {
-    MXC_SETFIELD(tpu->cipher_ctrl, MXC_F_TPU_REVA_CIPHER_CTRL_SRC,
-                 key_src << MXC_F_TPU_REVA_CIPHER_CTRL_SRC_POS);
+    MXC_SETFIELD(tpu->cipher_ctrl, MXC_F_TPU_REVA_CIPHER_CTRL_SRC, key_src);
+    // Note: "key_src" enum is set with "S" definitions instead of "V" definitions, so shifting is not necessary
 
     return E_SUCCESS;
 }
