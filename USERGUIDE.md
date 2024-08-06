@@ -1793,6 +1793,7 @@ The following variables can be used to enable the [available libraries](#librari
 | `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
 | `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
 | `LIB_CLI`             | Include the MSDK's built-in CLI library                     | This option toggles the MSDK's built-in CLI library, which can be used to process received commands over UART. |
+| `LIB_USS`             | Include the USS Library                                     | This option toggles the Unified Security Software library.  It is only available via NDA. |
 
 #### Build Variables for the PeriphDrivers Library
 
