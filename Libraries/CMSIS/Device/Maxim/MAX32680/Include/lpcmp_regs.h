@@ -99,14 +99,14 @@ typedef struct {
 #define MXC_F_LPCMP_CTRL_POL_POS                       5 /**< CTRL_POL Position */
 #define MXC_F_LPCMP_CTRL_POL                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_POL_POS)) /**< CTRL_POL Mask */
 
-#define MXC_F_LPCMP_CTRL_INT_EN_POS                    6 /**< CTRL_INT_EN Position */
-#define MXC_F_LPCMP_CTRL_INT_EN                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_EN_POS)) /**< CTRL_INT_EN Mask */
+#define MXC_F_LPCMP_CTRL_INTEN_POS                     6 /**< CTRL_INTEN Position */
+#define MXC_F_LPCMP_CTRL_INTEN                         ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INTEN_POS)) /**< CTRL_INTEN Mask */
 
 #define MXC_F_LPCMP_CTRL_OUT_POS                       14 /**< CTRL_OUT Position */
 #define MXC_F_LPCMP_CTRL_OUT                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_OUT_POS)) /**< CTRL_OUT Mask */
 
-#define MXC_F_LPCMP_CTRL_INT_FL_POS                    15 /**< CTRL_INT_FL Position */
-#define MXC_F_LPCMP_CTRL_INT_FL                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_FL_POS)) /**< CTRL_INT_FL Mask */
+#define MXC_F_LPCMP_CTRL_INTFL_POS                     15 /**< CTRL_INTFL Position */
+#define MXC_F_LPCMP_CTRL_INTFL                         ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INTFL_POS)) /**< CTRL_INTFL Mask */
 
 /**@} end of group LPCMP_CTRL_Register */
 
