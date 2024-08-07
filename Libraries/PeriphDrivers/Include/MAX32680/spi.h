@@ -433,7 +433,7 @@ void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   numBytes    The threshold level to set. This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -461,7 +461,7 @@ unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   numBytes    The threshold level to set.  This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
