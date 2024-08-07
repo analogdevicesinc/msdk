@@ -755,30 +755,10 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
 
 void MXC_TFT_PrintFontColor(int x0, int y0, int id, text_t *str, unsigned int font_color, unsigned int fill_color)
 {
-    int i;
-    char value;
-
     MXC_TFT_SetForeGroundColor(font_color);
     g_background_color = fill_color;
 
-    if (id != 0)
-        MXC_TFT_SetFont(id);
-
-    locate(x0, y0);
-
-    for (i = 0; i < str->len; i++) {
-        value = str->data[i];
-
-        if (value == '\n') { // new line
-            char_x = 0;
-            char_y = char_y + g_font[2];
-            if (char_y >= height() - g_font[2]) {
-                char_y = 0;
-            }
-        } else {
-            tft_character(char_x, char_y, value);
-        }
-    }
+    MXC_TFT_PrintFont(x0, y0, id, str, NULL);
 }
 
 void MXC_TFT_Print(int x0, int y0, text_t *str, area_t *area)
