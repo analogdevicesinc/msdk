@@ -223,7 +223,7 @@ void MXC_TFT_ResetCursor(void);
 void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t *str, area_t *area);
 
 /**
- * @brief      Print string with selected font
+ * @brief      Print string with selected font, font color, and surrounding fill color
  *
  * @param       x0              x location on screen
  * @param       y0              y location on screen
