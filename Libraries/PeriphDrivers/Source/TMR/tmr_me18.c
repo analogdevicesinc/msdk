@@ -124,7 +124,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     (void)init_pins;
 #endif
 
-    uint8_t clockSource = MXC_TMR_SetClockSource(tmr, cfg->bitMode, cfg->clock);
+    clockSource = MXC_TMR_SetClockSource(tmr, cfg->bitMode, cfg->clock);
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }
