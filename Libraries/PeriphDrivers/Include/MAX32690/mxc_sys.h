@@ -202,10 +202,6 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
     MXC_SYS_CLOCK_EXTCLK =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
-#ifdef __riscv
-    ,
-    MXC_SYS_CLOCK_PCLK /**< Use the PCLK as the RISC-V system clock */
-#endif
 } mxc_sys_system_clock_t;
 
 typedef enum {
