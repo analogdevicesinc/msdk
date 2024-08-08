@@ -213,9 +213,7 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
                 tx_byte = tx_byte << 1;
             }
 
-
             tft_clk.port->out_set = tft_clk.mask; // Clk high
-
         }
     }
 

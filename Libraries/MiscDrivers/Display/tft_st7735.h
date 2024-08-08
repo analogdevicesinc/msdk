@@ -232,7 +232,8 @@ void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t *str, area_t *area);
  * @param       font_color      Color of the font text in RGB565 format
  * @param       fill_color      Color of the area surrounding the text in RGB565 format
  */
-void MXC_TFT_PrintFontColor(int x0, int y0, int id, text_t *str, unsigned int font_color, unsigned int fill_color);
+void MXC_TFT_PrintFontColor(int x0, int y0, int id, text_t *str, unsigned int font_color,
+                            unsigned int fill_color);
 
 /**
  * @brief      Print string with current font
