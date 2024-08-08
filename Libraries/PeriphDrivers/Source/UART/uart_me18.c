@@ -94,6 +94,9 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     default:
         return E_BAD_PARAM;
     }
+
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval) return retval;
 #endif
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, (mxc_uart_revb_clock_t)clock);
