@@ -452,9 +452,11 @@ int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
 
     int err = E_NO_ERROR;
     // The following section implements section 4.1.1.1 of the MAX32690 UG Rev 1
-    if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO))) return err;
+    if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO)))
+        return err;
     MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_ACDIV, 3662 << MXC_F_FCR_AUTOCAL2_ACDIV_POS);
-    MXC_SETFIELD(MXC_FCR->autocal1, MXC_F_FCR_AUTOCAL1_INITTRM, 0x40 << MXC_F_FCR_AUTOCAL1_INITTRM_POS);
+    MXC_SETFIELD(MXC_FCR->autocal1, MXC_F_FCR_AUTOCAL1_INITTRM,
+                 0x40 << MXC_F_FCR_AUTOCAL1_INITTRM_POS);
     MXC_FCR->autocal0 |= 0x7;
     MXC_Delay(MXC_DELAY_MSEC(10)); // Wait 10ms for calibration to complete
     // Calculated trim is loaded to MXC_FCR->hirc96mactmrout and is used by the hardware as long as
@@ -524,6 +526,23 @@ void MXC_SYS_RISCVShutdown(void)
     MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
 }
 
+int MXC_SYS_RISCVClockSelect(mxc_sys_riscv_clock_t clock)
+{
+    switch (clock) {
+    case MXC_SYS_RISCV_CLOCK_PCLK:
+        MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+        break;
+    case MXC_SYS_RISCV_CLOCK_ISO:
+        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_ISO);
+        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+        break;
+    default:
+        return E_BAD_PARAM;
+    }
+
+    return E_NO_ERROR;
+}
+
 /* ************************************************************************** */
 uint32_t MXC_SYS_RiscVClockRate(void)
 {
@@ -581,7 +600,8 @@ int MXC_SYS_SetBypass(mxc_sys_system_clock_t clock, bool bypass)
     if (clock == MXC_SYS_CLOCK_ERFO) {
         MXC_SETFIELD(MXC_GCR->pm, MXC_F_GCR_PM_ERFO_BP, bypass << MXC_F_GCR_PM_ERFO_BP_POS);
     } else if (clock == MXC_SYS_CLOCK_ERTCO) {
-        MXC_SETFIELD(MXC_RTC->oscctrl, MXC_F_RTC_OSCCTRL_BYPASS, bypass << MXC_F_RTC_OSCCTRL_BYPASS_POS);
+        MXC_SETFIELD(MXC_RTC->oscctrl, MXC_F_RTC_OSCCTRL_BYPASS,
+                     bypass << MXC_F_RTC_OSCCTRL_BYPASS_POS);
     } else {
         return E_BAD_PARAM;
     }
