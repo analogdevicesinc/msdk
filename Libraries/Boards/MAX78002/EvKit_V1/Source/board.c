@@ -370,11 +370,7 @@ int Console_Init(void)
 {
     int err;
 
-    MXC_UART_Enable(ConsoleUart);
-    MXC_UART_SetClockSource(ConsoleUart, MXC_UART_IBRO_CLK);
-    MXC_UART_LockClockSource(ConsoleUart);
-
-    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
+    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return err;
     }
 
