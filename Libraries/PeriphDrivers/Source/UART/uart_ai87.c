@@ -56,33 +56,6 @@ void MXC_UART_UnlockClockSource(mxc_uart_regs_t *uart)
     g_clock_source_locked[MXC_UART_GET_IDX(uart)] = false;
 }
 
-int MXC_UART_Enable(mxc_uart_regs_t *uart)
-{
-    int err = E_NO_ERROR;
-    switch (MXC_UART_GET_IDX(uart)) {
-    case 0:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
-        break;
-
-    case 1:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
-        break;
-
-    case 2:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
-        break;
-
-    case 3:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return err;
-}
-
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int err;
@@ -93,32 +66,33 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         return err;
     }
 
-    err = MXC_UART_Enable(uart);
-    if (err) return err;
-
-    err = MXC_UART_SetClockSource(uart, clock);
-    if (err) return err;
-
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_uart0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
         break;
 
     case 1:
         MXC_GPIO_Config(&gpio_cfg_uart1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
         break;
 
     case 2:
         MXC_GPIO_Config(&gpio_cfg_uart2);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
         break;
 
     case 3:
         MXC_GPIO_Config(&gpio_cfg_uart3);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
         break;
 
     default:
         return E_BAD_PARAM;
     }
+
+    err = MXC_UART_SetClockSource(uart, clock);
+    if (err) return err;
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }

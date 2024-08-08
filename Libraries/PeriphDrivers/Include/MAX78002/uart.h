@@ -131,14 +131,6 @@ struct _mxc_uart_req_t {
 /* ************************************************************************* */
 
 /**
- * @brief   Enable (but do not initialize) a UART peripheral.  This enables the peripheral
- *          clock only, "powering on" the peripheral.
-
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_UART_Enable(mxc_uart_regs_t *uart);
-
-/**
  * @brief   Initialize and enable UART peripheral.
  * 
  * This function initializes everything necessary to call a UART transaction function.
