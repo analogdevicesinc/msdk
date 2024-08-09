@@ -48,12 +48,16 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 void MXC_UART_LockClockSource(mxc_uart_regs_t *uart)
 {
-    g_clock_source_locked[MXC_UART_GET_IDX(uart)] = true;
+    int idx = MXC_UART_GET_IDX(uart);
+    MXC_ASSERT(idx >= 0);
+    g_clock_source_locked[idx] = true;
 }
 
 void MXC_UART_UnlockClockSource(mxc_uart_regs_t *uart)
 {
-    g_clock_source_locked[MXC_UART_GET_IDX(uart)] = false;
+    int idx = MXC_UART_GET_IDX(uart);
+    MXC_ASSERT(idx >= 0);
+    g_clock_source_locked[idx] = false;
 }
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
@@ -253,8 +257,10 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
     int err = E_NO_ERROR;
+    int idx = MXC_UART_GET_IDX(uart);
+    if (idx < 0) return E_BAD_PARAM;
 
-    if (g_clock_source_locked[MXC_UART_GET_IDX(uart)]) {
+    if (g_clock_source_locked[idx]) {
         return E_NO_ERROR; // Clock source locked, return silently.
     }
 
