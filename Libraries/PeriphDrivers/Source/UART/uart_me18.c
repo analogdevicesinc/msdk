@@ -94,6 +94,10 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     default:
         return E_BAD_PARAM;
     }
+
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval)
+        return retval;
 #endif
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, (mxc_uart_revb_clock_t)clock);
@@ -327,7 +331,19 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
+    if (uart == MXC_UART3 && (clock != MXC_UART_IBRO_CLK || clock != MXC_UART_ERTCO_CLK)) {
+        return E_BAD_PARAM;
+    } else if (clock != MXC_UART_APB_CLK || clock != MXC_UART_ERFO_CLK ||
+               clock != MXC_UART_IBRO_CLK) {
+        return E_BAD_PARAM;
+    }
+
     return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, (mxc_uart_revb_clock_t)clock);
+}
+
+void MXC_UART_LockClockSource(mxc_uart_regs_t *uart, bool lock)
+{
+    return MXC_UART_RevB_LockClockSource((mxc_uart_revb_regs_t *)uart, lock);
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)

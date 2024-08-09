@@ -192,6 +192,33 @@ typedef void (*mxc_tmr_complete_t)(int error);
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins);
 
 /**
+ * @brief   Lock the clock source for the specified timer instance.  If the clock source is locked,
+ *          @ref MXC_TMR_SetClockSource will have no effect.
+ * @param   tmr  Pointer to timer instance
+ * @param   lock Whether to lock the clock source or not.  Set to true to lock, false to unlock
+ */
+void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock);
+
+/**
+ * @brief   Set the clock source for the specified timer instance.  Note this API will have no effect
+ *          if the clock source has been locked via @ref MXC_TMR_LockClockSource
+ * @param   tmr  Pointer to timer instance
+ * @param   bit_mode Bit mode of the TMR module.
+ * @param   clk_src Desired clock source.
+ */
+uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_clock_t clk_src);
+
+/**
+ * @brief   Set the input clock prescalar for the specified timer instance.
+ * @param   tmr  Pointer to timer instance
+ * @param   bit_mode Bit mode of the TMR module.
+ * @param   prescalar Desired clock source prescalar.
+ */
+void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                          mxc_tmr_pres_t prescalar);
+
+/**
  * @brief   Shutdown timer module clock.
  * @param   tmr  Pointer to timer module to initialize.
  */

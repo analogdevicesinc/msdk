@@ -677,6 +677,15 @@ typedef enum {
 #define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
 #define MXC_USBHS_MAX_PACKET 512
 
+/** @brief USB clock source options */
+typedef enum {
+    MXC_USB_CLOCK_SYS_DIV_10 = 0, ///< SYS_CLK divded by 10
+    MXC_USB_CLOCK_EXTCLK = 1, ///< External clock input
+    MXC_USB_CLOCK_ERFO = 2 ///< External RF Oscillator input
+} _mxc_usb_clock_t;
+
+#define mxc_usb_clock_t _mxc_usb_clock_t
+
 /******************************************************************************/
 /*                                                                       SDHC */
 #define MXC_BASE_SDHC ((uint32_t)0x400B6000UL)

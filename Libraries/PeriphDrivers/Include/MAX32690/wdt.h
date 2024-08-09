@@ -94,6 +94,7 @@ typedef enum {
  */
 typedef enum {
     MXC_WDT_PCLK = 0,
+    MXC_WDT_APB_CLK = MXC_WDT_PCLK,
     MXC_WDT_IBRO_CLK,
     MXC_WDT_INRO_CLK,
     MXC_WDT_ERTCO_CLK,
@@ -220,6 +221,14 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
  * @param       clock_source    Clock source.
  */
 int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source);
+
+/**
+ * @brief       Lock the input clock source for the WDT.  The clock source must be unlocked
+ *              to be set again.
+ * @param       wdt     Pointer to watchdog registers.
+ * @param       lock    Whether to lock the clock source.  Set to true to lock, false to unlock.
+ */
+int MXC_WDT_LockClockSource(mxc_wdt_regs_t *wdt, bool lock);
 
 /**@} end of group wdt */
 

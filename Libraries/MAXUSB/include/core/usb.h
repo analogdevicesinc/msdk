@@ -21,6 +21,7 @@
 #ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_
 #define LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_
 
+#include <stdbool.h>
 #include "usb_hwopt.h"
 #include "usb_protocol.h"
 
@@ -134,6 +135,48 @@ typedef struct {
  * 
  */
 int MXC_USB_Init(maxusb_cfg_options_t *options);
+
+#ifdef MAX32690
+// Clock setter mux APIs are currently only supported on the MAX32690.  It does not exist
+// on earlier hardware revisions such as the MAX32650
+
+#ifndef mxc_usb_clock_t
+#warning "mxc_usb_clock_t" not implemented.  See note in usb.h on "MXC_USB_SetClockSource"
+typedef enum {
+  MXC_USB_CLOCK_0 = 0,
+  MXC_USB_CLOCK_1 = 1,
+  MXC_USB_CLOCK_2 = 2
+} mxc_usb_clock_t;
+#endif
+
+/**
+ * @brief Set the input clock source to the USB peripheral.
+ *
+ * @param   clock_source Input clock source
+ * @note    (Developers): "mxc_usb_clock_t" should be defined as a macro in the top-level "max32xxx.h" file
+ *          so that the pre-processor can check for its existence.  Ex:
+ * 
+ *          #define mxc_usb_clock_t _mxc_usb_clock_t
+ * 
+ *          where "_mxc_usb_clock_t" is the actual "typedef enum".
+ *          See "max32690.h" for reference.
+ *  
+ * @return This function returns zero (0) for success, non-zero for failure
+ * 
+ */
+int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source);
+
+/**
+ * @brief   Lock the input clock source to the USB peripheral.
+ *
+ * @param   lock Whether to lock the clock source.  Set to true to lock, false to unlock.
+ *  
+ * @return This function returns zero (0) for success, non-zero for failure
+ * 
+ */
+int MXC_USB_LockClockSource(bool lock);
+
+#endif
 
 /** 
  * @brief Shut down the USB peripheral block

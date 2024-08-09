@@ -50,6 +50,8 @@ static mxc_adc_complete_cb_t async_callback;
 static mxc_adc_conversion_req_t *async_req;
 // static volatile uint8_t flag;      //indicates  to irqhandler where to store data
 
+static bool g_is_clock_locked = false;
+
 int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
 {
     if (req == NULL) {
@@ -63,11 +65,10 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
     //Enter reset mode
     adc->ctrl0 &= ~MXC_F_ADC_REVB_CTRL0_RESETB;
 
+    MXC_ADC_RevB_SetClockSource(adc, req->clock);
+    MXC_ADC_RevB_SetClockDiv(adc, req->clkdiv);
+
     //Power up to Sleep State
-    MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
-                 (req->clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS));
-    MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKDIV,
-                 (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS));
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_RESETB;
 
@@ -99,6 +100,34 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
     async_req = NULL;
 
     return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_SetClockSource(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock_source)
+{
+    if (!g_is_clock_locked) {
+        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
+                     clock_source << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS);
+    }
+    return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div)
+{
+    if (!g_is_clock_locked) {
+        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKDIV,
+                     div << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS);
+    }
+    return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock)
+{
+    g_is_clock_locked = lock;
+    if (g_is_clock_locked == lock) {
+        return E_FAIL;
+    } else {
+        return E_NO_ERROR;
+    }
 }
 
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc)

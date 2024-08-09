@@ -62,6 +62,7 @@ uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
     }
 };
 // clang-format on
+static bool g_is_clock_locked[MXC_UART_INSTANCES] = { [0 ... MXC_UART_INSTANCES - 1] = false };
 
 /* **** Function Prototypes **** */
 
@@ -163,55 +164,23 @@ int MXC_UART_RevB_ReadyForSleep(mxc_uart_revb_regs_t *uart)
     return MXC_UART_GetActive((mxc_uart_regs_t *)uart);
 }
 
-int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int baud,
-                               mxc_uart_revb_clock_t clock)
+int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_clock_freq,
+                               unsigned int baud)
 {
     unsigned clkDiv = 0, mod = 0;
 
     // OSR default value
     uart->osr = 5;
 
-    switch (clock) {
-    case MXC_UART_REVB_APB_CLK:
-        clkDiv = (PeripheralClock / baud);
-        mod = (PeripheralClock % baud);
-        break;
-
-    case MXC_UART_REVB_EXT_CLK:
-        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-        clkDiv = UART_EXTCLK_FREQ / baud;
-        mod = UART_EXTCLK_FREQ % baud;
-        break;
-
-    //case MXC_UART_IBRO_CLK:
-    case MXC_UART_REVB_CLK2:
-        clkDiv = (IBRO_FREQ / baud);
-        mod = (IBRO_FREQ % baud);
-
-        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
-        break;
-
-    //case MXC_UART_ERFO:
-    case MXC_UART_REVB_CLK3:
-#if (TARGET_NUM == 78000 || TARGET_NUM == 78002)
-        return E_BAD_PARAM;
-#else
-        clkDiv = (ERFO_FREQ / baud);
-        mod = (ERFO_FREQ % baud);
-#endif
-
-        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
+    clkDiv = (input_clock_freq / baud);
+    mod = (input_clock_freq % baud);
 
     if (!clkDiv || mod > (baud / 2)) {
         clkDiv++;
     }
+
     uart->clkdiv = clkDiv;
-    return MXC_UART_GetFrequency((mxc_uart_regs_t *)uart);
+    return baud;
 }
 
 int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart)
@@ -312,6 +281,44 @@ int MXC_UART_RevB_SetParity(mxc_uart_revb_regs_t *uart, mxc_uart_parity_t parity
     return E_NO_ERROR;
 }
 
+int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_option)
+{
+    MXC_ASSERT(clock_option >= 0 && clock_option <= 3);
+
+    if (g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)]) {
+        return E_NO_ERROR; // Return with no error so Init doesn't error out if clock config is locked
+    }
+
+    bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_CTRL_BCLKEN) != 0;
+
+    if (is_bclk_enabled) {
+        // Shut down baud rate clock before changing clock source
+        uart->ctrl &= ~MXC_F_UART_CTRL_BCLKEN;
+    }
+
+    MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_BCLKSRC, clock_option << MXC_F_UART_CTRL_BCLKSRC_POS);
+
+    if (is_bclk_enabled) {
+        // Turn the baud rate clock back on
+        uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
+        while (!(uart->ctrl & MXC_F_UART_CTRL_BCLKRDY)) {
+            continue;
+        }
+    }
+
+    return E_NO_ERROR;
+}
+
+unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart)
+{
+    return ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) >> MXC_F_UART_CTRL_BCLKSRC_POS);
+}
+
+void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock)
+{
+    g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)] = lock;
+}
+
 int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCtrl,
                               int rtsThreshold)
 {
@@ -330,31 +337,6 @@ int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCt
     }
 
     //FIXME: Fix missing code for CTS threshhold.
-
-    return E_NO_ERROR;
-}
-
-int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, mxc_uart_revb_clock_t clock)
-{
-    switch (clock) {
-    case MXC_UART_REVB_APB_CLK:
-        break;
-
-    case MXC_UART_REVB_EXT_CLK:
-        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-        break;
-
-    case MXC_UART_REVB_CLK2:
-        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
-        break;
-
-    case MXC_UART_REVB_CLK3:
-        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
 
     return E_NO_ERROR;
 }
