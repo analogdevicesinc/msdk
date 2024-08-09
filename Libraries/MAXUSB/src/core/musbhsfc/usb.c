@@ -26,8 +26,12 @@
 #include "mxc_errors.h"
 #include "mxc_sys.h"
 #include "usbhs_regs.h"
-#include "fcr_regs.h"
 #include "usb.h"
+
+#ifdef MAX32690
+#include "fcr_regs.h"
+static bool g_is_clock_locked = false;
+#endif
 
 #define USBHS_M31_CLOCK_RECOVERY
 
@@ -46,8 +50,6 @@ static unsigned int ep_size[MXC_USBHS_NUM_EP];
 static setup_phase_t setup_phase = SETUP_IDLE;
 /* Driver options passed in during MXC_USB_Init() */
 static maxusb_cfg_options_t driver_opts;
-
-static bool g_is_clock_locked = false;
 
 static volatile uint8_t *get_fifo_ptr(unsigned int ep)
 {
@@ -176,6 +178,8 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     return 0;
 }
 
+#ifdef MAX32690
+
 int MXC_USB_LockClockSource(bool lock)
 {
     g_is_clock_locked = lock;
@@ -206,6 +210,8 @@ int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source)
 
     return E_NO_ERROR;
 }
+
+#endif
 
 int MXC_USB_Shutdown(void)
 {

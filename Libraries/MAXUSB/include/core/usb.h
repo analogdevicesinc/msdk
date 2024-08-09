@@ -136,6 +136,10 @@ typedef struct {
  */
 int MXC_USB_Init(maxusb_cfg_options_t *options);
 
+#ifdef MAX32690
+// Clock setter mux APIs are currently only supported on the MAX32690.  It does not exist
+// on earlier hardware revisions such as the MAX32650
+
 #ifndef mxc_usb_clock_t
 #warning "mxc_usb_clock_t" not implemented.  See note in usb.h on "MXC_USB_SetClockSource"
 typedef enum {
@@ -171,6 +175,8 @@ int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source);
  * 
  */
 int MXC_USB_LockClockSource(bool lock);
+
+#endif
 
 /** 
  * @brief Shut down the USB peripheral block
