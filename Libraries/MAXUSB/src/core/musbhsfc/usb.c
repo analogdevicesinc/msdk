@@ -193,7 +193,7 @@ int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source)
     }
 
     // The USB peripheral's clock source is set in the FCR register bank.
-    // The actual clock source selected by each field value may vary between 
+    // The actual clock source selected by each field value may vary between
     // microcontrollers, so it is the responsibility of the implementer to define
     // mxc_usb_clock_t correctly in the top-level "max32xxx.h" file.  The enum values
     // should match the field values when type-casted to an unsigned int.

@@ -209,9 +209,10 @@ uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
     }
 
     MXC_TMR_RevB_SetClockSource((mxc_tmr_revb_regs_t *)tmr, bit_mode, clockSource);
-    return clockSource; /*  Note this function returns the actual value of the clockSource field to set because 
-                            our TMR API was written extremely jankily.  The Init function accepts this register value
-                            as an argument, so we need to pass that back up from this API... */
+    return clockSource;
+    /*  Note this function returns the actual value of the clockSource field to set because 
+        our TMR API was written extremely jankily.  The Init function accepts this register value
+        as an argument, so we need to pass that back up from this API... */
 }
 
 void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
