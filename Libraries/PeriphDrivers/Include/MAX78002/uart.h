@@ -77,11 +77,7 @@ typedef enum {
 
 /**
  * @brief      Clock settings */
-typedef enum {
-    MXC_UART_APB_CLK = 0,
-    MXC_UART_IBRO_CLK,
-    MXC_UART_ERTCO_CLK
-} mxc_uart_clock_t;
+typedef enum { MXC_UART_APB_CLK = 0, MXC_UART_IBRO_CLK, MXC_UART_ERTCO_CLK } mxc_uart_clock_t;
 
 /**
  * @brief   The callback routine used to indicate the transaction has terminated.

@@ -66,7 +66,7 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
     adc->ctrl0 &= ~MXC_F_ADC_REVB_CTRL0_RESETB;
 
     MXC_ADC_RevB_SetClockSource(adc, req->clock);
-    MXC_ADC_RevB_SetClockDiv(adc, req->clkdiv); 
+    MXC_ADC_RevB_SetClockDiv(adc, req->clkdiv);
 
     //Power up to Sleep State
 
@@ -105,7 +105,8 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
 int MXC_ADC_RevB_SetClockSource(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock_source)
 {
     if (!g_is_clock_locked) {
-        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL, clock_source << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS);
+        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
+                     clock_source << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS);
     }
     return E_NO_ERROR;
 }
@@ -113,7 +114,8 @@ int MXC_ADC_RevB_SetClockSource(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock_
 int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div)
 {
     if (!g_is_clock_locked) {
-        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKDIV, div << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS);
+        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKDIV,
+                     div << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS);
     }
     return E_NO_ERROR;
 }

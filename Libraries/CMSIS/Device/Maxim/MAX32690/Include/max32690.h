@@ -339,10 +339,7 @@ typedef enum {
 #define MXC_BASE_WDT1 ((uint32_t)0x40080800UL)
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
 
-#define MXC_WDT_GET_IDX(p) \
-    ((p) == MXC_WDT0 ? 0 : \
-     (p) == MXC_WDT1 ? 1 : \
-                      -1)
+#define MXC_WDT_GET_IDX(p) ((p) == MXC_WDT0 ? 0 : (p) == MXC_WDT1 ? 1 : -1)
 
 /******************************************************************************/
 /*                                                                   AES Keys */

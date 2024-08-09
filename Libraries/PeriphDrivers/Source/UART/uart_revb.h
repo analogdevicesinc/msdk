@@ -55,7 +55,8 @@ struct _mxc_uart_revb_req_t {
 int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_revb_clock_t clock);
 int MXC_UART_RevB_Shutdown(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ReadyForSleep(mxc_uart_revb_regs_t *uart);
-int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_clock_freq, unsigned int baud);
+int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_clock_freq,
+                               unsigned int baud);
 int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_SetDataSize(mxc_uart_revb_regs_t *uart, int dataSize);
 int MXC_UART_RevB_SetStopBits(mxc_uart_revb_regs_t *uart, mxc_uart_stop_t stopBits);

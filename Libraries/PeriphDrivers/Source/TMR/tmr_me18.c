@@ -134,7 +134,8 @@ void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock)
     MXC_TMR_RevB_LockClockSource((mxc_tmr_revb_regs_t *)tmr, lock);
 }
 
-uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_clock_t clk_src)
+uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_clock_t clk_src)
 {
     uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
     uint8_t clockSource = MXC_TMR_CLK0;
@@ -213,7 +214,8 @@ uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
                             as an argument, so we need to pass that back up from this API... */
 }
 
-void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_pres_t prescalar)
+void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                          mxc_tmr_pres_t prescalar)
 {
     MXC_TMR_RevB_SetPrescalar((mxc_tmr_revb_regs_t *)tmr, bit_mode, prescalar);
 }

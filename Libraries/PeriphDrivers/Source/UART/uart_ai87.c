@@ -27,9 +27,7 @@
 #include "lpgcr_regs.h"
 #include "dma.h"
 
-bool g_clock_source_locked[MXC_UART_INSTANCES] = {
-    [0 ... MXC_UART_INSTANCES - 1] = false
-};
+bool g_clock_source_locked[MXC_UART_INSTANCES] = { [0 ... MXC_UART_INSTANCES - 1] = false };
 
 void MXC_UART_DMACallback(int ch, int error)
 {
@@ -96,7 +94,8 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     }
 
     err = MXC_UART_SetClockSource(uart, clock);
-    if (err) return err;
+    if (err)
+        return err;
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
@@ -144,23 +143,23 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
     unsigned int input_clock_freq = 0;
     switch (clock) {
-        case MXC_UART_APB_CLK:
-            input_clock_freq = SystemCoreClock / 2;
-            break;
-        case MXC_UART_IBRO_CLK:
-            input_clock_freq = IBRO_FREQ;
-            break;
-        case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_F_UART_CTRL_FDM; // Enable FDM
-            input_clock_freq = ERTCO_FREQ * 2; // 2x to account for FDM
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-            break;
-        default:
-            return E_BAD_PARAM;
+    case MXC_UART_APB_CLK:
+        input_clock_freq = SystemCoreClock / 2;
+        break;
+    case MXC_UART_IBRO_CLK:
+        input_clock_freq = IBRO_FREQ;
+        break;
+    case MXC_UART_ERTCO_CLK:
+        uart->ctrl |= MXC_F_UART_CTRL_FDM; // Enable FDM
+        input_clock_freq = ERTCO_FREQ * 2; // 2x to account for FDM
+        if (baud > 2400) {
+            uart->osr = 0;
+        } else {
+            uart->osr = 1;
+        }
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     int freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, input_clock_freq, baud);
@@ -258,14 +257,15 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
     int err = E_NO_ERROR;
     int idx = MXC_UART_GET_IDX(uart);
-    if (idx < 0) return E_BAD_PARAM;
+    if (idx < 0)
+        return E_BAD_PARAM;
 
     if (g_clock_source_locked[idx]) {
         return E_NO_ERROR; // Clock source locked, return silently.
     }
 
     // The following interprets table 12-1 from the MAX78002 UG.
-    switch(MXC_UART_GET_IDX(uart)) {
+    switch (MXC_UART_GET_IDX(uart)) {
     case 0:
     case 1:
     case 2:
@@ -308,32 +308,32 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 
 mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
 {
-    unsigned int clock_option = MXC_UART_RevB_GetClockSource((mxc_uart_revb_regs_t*)uart);
-    switch(MXC_UART_GET_IDX(uart)) {
+    unsigned int clock_option = MXC_UART_RevB_GetClockSource((mxc_uart_revb_regs_t *)uart);
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+    case 1:
+    case 2:
+        switch (clock_option) {
         case 0:
-        case 1:
+            return MXC_UART_APB_CLK;
         case 2:
-            switch (clock_option) {
-                case 0:
-                    return MXC_UART_APB_CLK;
-                case 2:
-                    return MXC_UART_IBRO_CLK;
-                default:
-                    return E_BAD_STATE;
-            }
-            break;
-        case 3:
-            switch (clock_option) {
-                case 0:
-                    return MXC_UART_IBRO_CLK;
-                case 1:
-                    return MXC_UART_ERTCO_CLK;
-                default:
-                    return E_BAD_STATE;
-            }
-            break;
+            return MXC_UART_IBRO_CLK;
         default:
-            return E_BAD_PARAM;
+            return E_BAD_STATE;
+        }
+        break;
+    case 3:
+        switch (clock_option) {
+        case 0:
+            return MXC_UART_IBRO_CLK;
+        case 1:
+            return MXC_UART_ERTCO_CLK;
+        default:
+            return E_BAD_STATE;
+        }
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 }
 

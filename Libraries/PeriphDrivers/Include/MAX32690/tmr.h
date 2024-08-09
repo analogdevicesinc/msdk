@@ -209,7 +209,8 @@ void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock);
  * @param   bit_mode Bit mode of the TMR module.
  * @param   clk_src Desired clock source.
  */
-uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_clock_t clk_src);
+uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_clock_t clk_src);
 
 /**
  * @brief   Set the input clock prescalar for the specified timer instance.
@@ -217,7 +218,8 @@ uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
  * @param   bit_mode Bit mode of the TMR module.
  * @param   prescalar Desired clock source prescalar.
  */
-void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_pres_t prescalar);
+void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                          mxc_tmr_pres_t prescalar);
 
 /**
  * @brief   Shutdown timer module clock.

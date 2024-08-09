@@ -38,9 +38,8 @@ typedef struct {
 } mxc_tmr_revb_clksrc_freq_t;
 
 static mxc_tmr_revb_clksrc_freq_t tmr_clksrc[MXC_CFG_TMR_INSTANCES];
-static bool g_is_clock_locked[MXC_CFG_TMR_INSTANCES] = {
-    [0 ... MXC_CFG_TMR_INSTANCES - 1] = false
-};
+static bool g_is_clock_locked[MXC_CFG_TMR_INSTANCES] = { [0 ... MXC_CFG_TMR_INSTANCES - 1] =
+                                                             false };
 
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src)
@@ -137,9 +136,11 @@ void MXC_TMR_RevB_LockClockSource(mxc_tmr_revb_regs_t *tmr, bool lock)
     g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)] = lock;
 }
 
-void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, uint8_t clk_src)
+void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                                 uint8_t clk_src)
 {
-    if (g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)]) return;
+    if (g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)])
+        return;
 
     // Select clock Source
     // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
@@ -154,7 +155,8 @@ void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bi
     }
 }
 
-void MXC_TMR_RevB_SetPrescalar(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode, mxc_tmr_pres_t prescalar)
+void MXC_TMR_RevB_SetPrescalar(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_pres_t prescalar)
 {
     // Set prescaler
     // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
@@ -259,7 +261,7 @@ void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr)
     if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_B) {
         tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
         while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
-    } 
+    }
 }
 
 void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)

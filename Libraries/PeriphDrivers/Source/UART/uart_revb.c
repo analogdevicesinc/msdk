@@ -62,9 +62,7 @@ uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
     }
 };
 // clang-format on
-static bool g_is_clock_locked[MXC_UART_INSTANCES] = {
-    [0 ... MXC_UART_INSTANCES - 1] = false
-};
+static bool g_is_clock_locked[MXC_UART_INSTANCES] = { [0 ... MXC_UART_INSTANCES - 1] = false };
 
 /* **** Function Prototypes **** */
 
@@ -166,7 +164,8 @@ int MXC_UART_RevB_ReadyForSleep(mxc_uart_revb_regs_t *uart)
     return MXC_UART_GetActive((mxc_uart_regs_t *)uart);
 }
 
-int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_clock_freq, unsigned int baud)
+int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_clock_freq,
+                               unsigned int baud)
 {
     unsigned clkDiv = 0, mod = 0;
 
@@ -291,14 +290,14 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
     }
 
     bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_CTRL_BCLKEN) != 0;
-    
+
     if (is_bclk_enabled) {
         // Shut down baud rate clock before changing clock source
         uart->ctrl &= ~MXC_F_UART_CTRL_BCLKEN;
     }
 
     MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_BCLKSRC, clock_option << MXC_F_UART_CTRL_BCLKSRC_POS);
-    
+
     if (is_bclk_enabled) {
         // Turn the baud rate clock back on
         uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
