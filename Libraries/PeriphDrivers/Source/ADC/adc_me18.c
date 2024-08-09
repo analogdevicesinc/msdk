@@ -115,6 +115,21 @@ int MXC_ADC_Init(mxc_adc_req_t *req)
     return MXC_ADC_RevB_Init((mxc_adc_revb_regs_t *)MXC_ADC, req);
 }
 
+int MXC_ADC_SetClockSource(mxc_adc_clock_t clock_source)
+{
+    return MXC_ADC_RevB_SetClockSource((mxc_adc_revb_regs_t *)MXC_ADC, clock_source);
+}
+
+int MXC_ADC_LockClockSource(bool lock)
+{
+    return MXC_ADC_RevB_LockClockSource((mxc_adc_revb_regs_t *)MXC_ADC, lock);
+}
+
+int MXC_ADC_SetClockDiv(mxc_adc_clkdiv_t div)
+{
+    return MXC_ADC_RevB_SetClockDiv((mxc_adc_revb_regs_t *)MXC_ADC, div);
+}
+
 int MXC_ADC_Shutdown(void)
 {
     MXC_ADC_RevB_Shutdown((mxc_adc_revb_regs_t *)MXC_ADC);
