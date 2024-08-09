@@ -843,6 +843,12 @@ typedef enum {
     MXC_USB_CLOCK_ERFO = 2 ///< External RF Oscillator input
 } _mxc_usb_clock_t;
 
+/**
+ * @brief   USB clock source options macro
+ * @note    (Developers): "mxc_usb_clock_t" should be defined as a macro in the top-level 
+            file here so that the pre-processor can check for its existence when the USB
+            library is built.  The macro should pass through to the actual enum
+*/
 #define mxc_usb_clock_t _mxc_usb_clock_t
 
 /******************************************************************************/
