@@ -55,7 +55,8 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/SRAM"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -72,7 +73,8 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/SRAM"
     ],
     "C_Cpp.default.defines": [
         

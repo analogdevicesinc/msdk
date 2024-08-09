@@ -29,6 +29,16 @@ enum MODE { STANDARD_MODE, QUAD_MODE };
 typedef enum MODE MODE_t;
 MODE_t g_current_mode;
 
+// Utility macro for validating an error code.  Assumes an 'err' variable
+// of type int exists in the macro's context
+#define ERR_CHECK(x)             \
+    {                            \
+        err = (x);               \
+        if (err != E_NO_ERROR) { \
+            return x;            \
+        }                        \
+    }
+
 inline void _parse_spi_header(uint8_t cmd, uint32_t address, uint8_t *out)
 {
     out[0] = cmd;
@@ -46,75 +56,75 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
     _parse_spi_header(cmd, address, header);
 
     // Transmit header, but keep Chip Select asserted.
-    spi_transmit(header, 4, NULL, 0, false, true, true);
+    spi_transmit(header, 4, NULL, 0, false);
     return err;
 }
 
-int ram_init()
+int aps6404_init()
 {
     int err = E_NO_ERROR;
-    err = spi_init();
-    if (err)
-        return err;
-
-    err = ram_exit_quadmode(); // Protect against quad-mode lock-up
-    if (err)
-        return err;
-
-    err = ram_reset();
+    ERR_CHECK(spi_init());
+    ERR_CHECK(aps6404_reset());
     return err;
 }
 
-int ram_reset()
+int aps6404_reset()
 {
     int err = E_NO_ERROR;
+
+    ERR_CHECK(aps6404_exit_quadmode()); // Protect against quad-mode lock-up
+
     uint8_t data[2] = { 0x66, 0x99 };
-
-    spi_transmit(&data[0], 1, NULL, 0, true, true, true);
-    spi_transmit(&data[1], 1, NULL, 0, true, true, true);
+    ERR_CHECK(spi_transmit(&data[0], 1, NULL, 0, true));
+    ERR_CHECK(spi_transmit(&data[1], 1, NULL, 0, true));
 
     return err;
 }
 
-int ram_enter_quadmode()
+int aps6404_enter_quadmode()
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0x35;
 
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-    spi_transmit(&tx_data, 1, NULL, 0, true, true, true);
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
+    ERR_CHECK(MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD));
+    ERR_CHECK(spi_transmit(&tx_data, 1, NULL, 0, true));
+    ERR_CHECK(MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD));
 
     g_current_mode = QUAD_MODE;
 
     return err;
 }
 
-int ram_exit_quadmode()
+int aps6404_exit_quadmode()
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0xF5;
 
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
-    spi_transmit(&tx_data, 1, NULL, 0, true, true, true);
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
+    ERR_CHECK(MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD));
+    ERR_CHECK(spi_transmit(&tx_data, 1, NULL, 0, true));
+    ERR_CHECK(MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD));
 
     g_current_mode = STANDARD_MODE;
 
     return err;
 }
 
-int ram_read_id(ram_id_t *out)
+int aps6404_read_id(aps6404_id_t *out)
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0x9F;
     uint8_t rx_data[12];
+    bool back_to_quad_mode = false;
 
-    if (g_current_mode != STANDARD_MODE)
-        ram_exit_quadmode();
+    if (g_current_mode != STANDARD_MODE) {
+        // ID fields seem not to support quad mode.
+        // If we're currently in quad mode, exit it but re-enable it later
+        aps6404_exit_quadmode();
+        back_to_quad_mode = true;
+    }
 
-    spi_transmit(&tx_data, 1, NULL, 0, false, true, true);
-    spi_transmit(NULL, 0, rx_data, 12, true, true, true);
+    ERR_CHECK(spi_transmit(&tx_data, 1, NULL, 0, false));
+    ERR_CHECK(spi_transmit(NULL, 0, rx_data, 12, true));
 
     out->MFID = rx_data[3];
     out->KGD = rx_data[4];
@@ -128,6 +138,10 @@ int ram_read_id(ram_id_t *out)
     }
     out->EID = tmp;
 
+    if (back_to_quad_mode) {
+        aps6404_enter_quadmode();
+    }
+
     // Validate against expected values
     if (out->MFID != MFID_EXPECTED)
         return E_INVALID;
@@ -139,70 +153,34 @@ int ram_read_id(ram_id_t *out)
     return err;
 }
 
-int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len)
+int aps6404_read(uint32_t address, uint8_t *out, unsigned int len)
 {
-    if (g_current_mode != STANDARD_MODE)
-        ram_exit_quadmode();
-
     int err = E_NO_ERROR;
-    err = _transmit_spi_header(0x03, address);
-    if (err)
-        return err;
 
-    return spi_transmit(NULL, 0, out, len, true, true, true);
-}
-
-int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
-{
-    if (g_current_mode != QUAD_MODE)
-        ram_enter_quadmode();
-
-    int err = E_NO_ERROR;
-    uint8_t header[7];
-    memset(header, 0xFF, 7);
-    // ^ Sending dummy bytes with value 0x00 seems to break QSPI reads...  Sending 0xFF works
-    _parse_spi_header(0xEB, address, header);
-
-    err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
-    err = spi_transmit(NULL, 0, out, len, true, true, true);
+    if (g_current_mode == STANDARD_MODE) {
+        ERR_CHECK(_transmit_spi_header(0x03, address));
+        ERR_CHECK(spi_transmit(NULL, 0, out, len, true));
+    } else if (g_current_mode == QUAD_MODE) {
+        uint8_t header[7];
+        memset(header, 0xFF, 7);
+        // ^ Sending dummy bytes with value 0x00 seems to break QSPI reads...  Sending 0xFF works
+        _parse_spi_header(0xEB, address, header);
+        ERR_CHECK(spi_transmit(&header[0], 7, NULL, 0, false));
+        ERR_CHECK(spi_transmit(NULL, 0, out, len, true));
+    }
     return err;
 }
 
-int ram_write(uint32_t address, uint8_t *data, unsigned int len)
+int aps6404_write(uint32_t address, uint8_t *data, unsigned int len)
 {
-    if (g_current_mode != STANDARD_MODE)
-        ram_exit_quadmode();
-
     int err = E_NO_ERROR;
-    err = _transmit_spi_header(0x02, address);
-    if (err)
-        return err;
 
-    return spi_transmit(data, len, NULL, 0, true, true, true);
-}
-
-int ram_write_quad(uint32_t address, uint8_t *data, unsigned int len)
-{
-    if (g_current_mode != QUAD_MODE)
-        ram_enter_quadmode();
-
-    int err = E_NO_ERROR;
-    err = _transmit_spi_header(0x38, address);
-    if (err)
-        return err;
-
-    return spi_transmit(data, len, NULL, 0, true, true, true);
-}
-
-int benchmark_dma_overhead(unsigned int *out)
-{
-    uint8_t buffer[5];
-    _parse_spi_header(0x02, 0x0, buffer);
-
-    MXC_TMR_SW_Start(MXC_TMR0);
-    spi_transmit(buffer, 5, NULL, 0, true, true, false);
-    unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-
-    *out = elapsed;
-    return E_NO_ERROR;
+    if (g_current_mode == STANDARD_MODE) {
+        ERR_CHECK(_transmit_spi_header(0x02, address));
+        ERR_CHECK(spi_transmit(data, len, NULL, 0, true));
+    } else if (g_current_mode == QUAD_MODE) {
+        ERR_CHECK(_transmit_spi_header(0x38, address));
+        ERR_CHECK(spi_transmit(data, len, NULL, 0, true));
+    }
+    return err;
 }

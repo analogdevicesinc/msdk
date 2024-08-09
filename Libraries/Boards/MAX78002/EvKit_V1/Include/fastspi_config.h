@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
-#define LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
+#ifndef LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_FASTSPI_CONFIG_H_
+#define LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_FASTSPI_CONFIG_H_
 
 /**
  * @file    fastspi_config.c
@@ -29,22 +29,21 @@
 
 // (*) Required definitions:
 #define FASTSPI_INSTANCE MXC_SPI0
-#define FASTSPI_SPEED 25000000
+#define FASTSPI_SPEED 24000000
 
-// Optional definitions to make GPIO creation easier:
 #define FASTSPI_PINS_PORT MXC_GPIO0
 #define FASTSPI_VSSEL MXC_GPIO_VSSEL_VDDIOH
 #define FASTSPI_PINS_MASK \
     (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9)
 
 #define FASTSPI_SS_PORT MXC_GPIO0
-#define FASTSPI_SS_PIN MXC_GPIO_PIN_10 // (SS2)
-#define FASTSPI_SS_NUM 2
+#define FASTSPI_SS_PIN MXC_GPIO_PIN_4
+#define FASTSPI_SS_NUM 1
 
 // (*) Required GPIO definitions:
 static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = FASTSPI_SS_PORT,
                                                .mask = FASTSPI_SS_PIN,
-                                               .func = MXC_GPIO_FUNC_ALT2, // ALT2 for SS2
+                                               .func = MXC_GPIO_FUNC_ALT1,
                                                .pad = MXC_GPIO_PAD_WEAK_PULL_UP,
                                                .vssel = FASTSPI_VSSEL };
 
@@ -54,4 +53,4 @@ static const mxc_gpio_cfg_t fastspi_spi_pins = { .port = FASTSPI_PINS_PORT,
                                                  .pad = MXC_GPIO_PAD_NONE,
                                                  .vssel = FASTSPI_VSSEL };
 
-#endif // LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_FASTSPI_CONFIG_H_
+#endif // LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_FASTSPI_CONFIG_H_
