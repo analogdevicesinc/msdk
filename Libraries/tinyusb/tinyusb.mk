@@ -30,7 +30,6 @@ export TINYUSB_DIR
 # of the specified BUILD_DIR 
 ifeq "$(BUILD_DIR)" ""
 TINYUSB_BUILD_DIR = $(abspath $(TINYUSB_DIR)/build/$(TARGET_UC))
-BUILD_DIR := $(TINYUSB_BUILD_DIR)
 else
 TINYUSB_BUILD_DIR = $(abspath $(BUILD_DIR)/tinyusb)
 endif
