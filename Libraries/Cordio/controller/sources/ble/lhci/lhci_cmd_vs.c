@@ -89,6 +89,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         /* --- extended device commands --- */
 
     case LHCI_OPCODE_VS_SET_OP_FLAGS: {
+        
         uint32_t flags;
         bool_t enable;
         BSTREAM_TO_UINT32(flags, pBuf);
@@ -289,11 +290,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             break;
         }
 
-        case LHCI_OPCODE_VS_GET_RSSI:{
-            
-            pBuf[0] = -10;
-            break;
-        }
 
 
         case LHCI_OPCODE_VS_SET_LOCAL_FEAT:

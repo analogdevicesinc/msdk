@@ -563,10 +563,7 @@ void LctrMstExtInitDefaults(void)
   lmgrCb.numExtScanPhys = 1;
 
   lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_1M;
-<<<<<<< HEAD
-=======
 
->>>>>>> main
 }
 
 /*************************************************************************************************/

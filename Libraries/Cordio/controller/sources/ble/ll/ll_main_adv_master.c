@@ -139,7 +139,7 @@ void LlScanEnable(uint8_t enable, uint8_t filterDup)
   lctrScanEnableMsg_t *pMsg;
 
   LL_TRACE_INFO2("### LlApi ###  LlScanEnable: enable=%u, filterDup=%u", enable, filterDup);
-
+  
   if ((LL_API_PARAM_CHECK == 1) &&
       !LmgrIsLegacyCommandAllowed())
   {
@@ -156,7 +156,7 @@ void LlScanEnable(uint8_t enable, uint8_t filterDup)
     LmgrSendScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
     return;
   }
-
+    
   if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
   {
     pMsg->hdr.dispId = LCTR_DISP_SCAN;

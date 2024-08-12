@@ -83,10 +83,7 @@ lctrSyncInfo_t trsfSyncInfo;
 /*! \brief      Active extended scan contexts. */
 lctrActiveExtScan_t lctrActiveExtScan;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> main
 /*************************************************************************************************/
 /*!
  *  \brief      Master create sync message dispatcher.
