@@ -197,8 +197,8 @@ endif
 LIB_TINYUSB ?= 0
 ifeq ($(LIB_TINYUSB), 1)
 TINYUSB_DIR ?= $(LIBS_DIR)/tinyusb
-TINYUSB_CONFIG_DIR ?= .
 include $(TINYUSB_DIR)/tinyusb.mk
+libclean: clean.tinyusb
 endif
 # ************************
 

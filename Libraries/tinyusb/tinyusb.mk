@@ -17,33 +17,28 @@
  #
  ##############################################################################
 
+ifeq "$(TINYUSB_MK)" ""
+TINYUSB_MK := 1
+
 ifeq "$(TINYUSB_DIR)" ""
-$(error TINYUSB_DIR must be specified")
+# If TINYUSB_DIR is not specified, this Makefile will locate itself.
+TINYUSB_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
+export TINYUSB_DIR
 
-# Specify the build directory if not defined by the project
+# Build in the library folder by default.  Otherwise, build in a tinyusb subdirectory
+# of the specified BUILD_DIR 
 ifeq "$(BUILD_DIR)" ""
-TINYUSB_BUILD_DIR=$(CURDIR)/build/tinyusb
+TINYUSB_BUILD_DIR = $(abspath $(TINYUSB_DIR)/build/$(TARGET_UC))
+BUILD_DIR := $(TINYUSB_BUILD_DIR)
 else
-TINYUSB_BUILD_DIR=$(BUILD_DIR)/tinyusb
+TINYUSB_BUILD_DIR = $(abspath $(BUILD_DIR)/tinyusb)
 endif
 
-# Export paths needed by the peripheral driver makefile. Since the makefile to
-# build the library will execute in a different directory, paths must be
-# specified absolutely
-TINYUSB_BUILD_DIR := ${abspath ${TINYUSB_BUILD_DIR}}
-export TOOL_DIR := ${abspath ${TOOL_DIR}}
-export CMSIS_ROOT := ${abspath ${CMSIS_ROOT}}
-export PERIPH_DRIVER_DIR := ${abspath ${PERIPH_DRIVER_DIR}}
-
-# Export other variables needed by the peripheral driver makefile
-export TARGET
-export COMPILER
-export TARGET_MAKEFILE
-export PROJ_CFLAGS
-export PROJ_LDFLAGS
-export VERBOSE
+# Path for tusb_config.h
+TINYUSB_CONFIG_DIR ?= $(TINYUSB_DIR)/src/portable/mentor/musb/default_configs
 export TINYUSB_CONFIG_DIR := ${abspath ${TINYUSB_CONFIG_DIR}}
+IPATH += $(TINYUSB_CONFIG_DIR)
 
 # Configure the correct TUSB_MCU
 ifeq "$(TARGET_UC)" "MAX32650"
@@ -84,6 +79,12 @@ IPATH += ${TINYUSB_DIR}/hw/
 LIBS += ${TINYUSB_BUILD_DIR}/tinyusb.a
 
 # Add rule to build the Driver Library
-${TINYUSB_BUILD_DIR}/tinyusb.a: FORCE
+${TINYUSB_BUILD_DIR}/tinyusb.a: ${TINYUSB_CONFIG_DIR}/tusb_config.h
 	$(MAKE) -C ${TINYUSB_DIR} lib BUILD_DIR=${TINYUSB_BUILD_DIR}
+
+.PHONY: clean.tinyusb
+clean.tinyusb:
+	$(MAKE) -C ${TINYUSB_DIR} clean
+
+endif #TINYUSB_MK
 
