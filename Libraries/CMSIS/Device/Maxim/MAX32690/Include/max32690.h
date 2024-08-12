@@ -339,6 +339,8 @@ typedef enum {
 #define MXC_BASE_WDT1 ((uint32_t)0x40080800UL)
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
 
+#define MXC_WDT_GET_IDX(p) ((p) == MXC_WDT0 ? 0 : (p) == MXC_WDT1 ? 1 : -1)
+
 /******************************************************************************/
 /*                                                                   AES Keys */
 #define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
@@ -833,6 +835,21 @@ typedef enum {
 #define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
 #define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
 #define MXC_USBHS_MAX_PACKET 512
+
+/** @brief USB clock source options */
+typedef enum {
+    MXC_USB_CLOCK_SYS_DIV_10 = 0, ///< SYS_CLK divded by 10
+    MXC_USB_CLOCK_EXTCLK = 1, ///< External clock input
+    MXC_USB_CLOCK_ERFO = 2 ///< External RF Oscillator input
+} _mxc_usb_clock_t;
+
+/**
+ * @brief   USB clock source options macro
+ * @note    (Developers): "mxc_usb_clock_t" should be defined as a macro in the top-level 
+            file here so that the pre-processor can check for its existence when the USB
+            library is built.  The macro should pass through to the actual enum
+*/
+#define mxc_usb_clock_t _mxc_usb_clock_t
 
 /******************************************************************************/
 /*                                                  Low Power General control */

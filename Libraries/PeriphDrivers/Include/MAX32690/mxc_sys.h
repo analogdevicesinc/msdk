@@ -26,6 +26,7 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_MXC_SYS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_MXC_SYS_H_
 
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "lpgcr_regs.h"
 #include "gcr_regs.h"
@@ -202,6 +203,11 @@ typedef enum {
     MXC_SYS_CLOCK_EXTCLK =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
+
+typedef enum {
+    MXC_SYS_RISCV_CLOCK_ISO, /**< Select the Internal Secondary Oscillator (ISO) as the RISCV clock source */
+    MXC_SYS_RISCV_CLOCK_PCLK /**< Select the Advanced Peripheral Bus (APB) clock as the RISCV clock source */
+} mxc_sys_riscv_clock_t;
 
 typedef enum {
     MXC_SYS_CLOCK_DIV_1 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1,
@@ -395,6 +401,14 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
 
 /**
+ * @brief Calibrate the specified system clock.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.  
+ *          Check the microcontroller's UG for more details.
+ * @returns         E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
+
+/**
  * @brief Wait for a clock to enable with timeout
  * @param      ready The clock to wait for
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
@@ -417,6 +431,14 @@ void MXC_SYS_RISCVRun(void);
 void MXC_SYS_RISCVShutdown(void);
 
 /**
+ * @brief Set the clock source for the RISC-V core.
+ * 
+ * @param clock The clock source to set
+ * @returns 0 if successful, @ref MXC_Error_Codes on errors
+ */
+int MXC_SYS_RISCVClockSelect(mxc_sys_riscv_clock_t clock);
+
+/**
  * @brief Returns the clock rate (in Hz) of the Risc-V core.
  */
 uint32_t MXC_SYS_RiscVClockRate(void);
@@ -428,6 +450,18 @@ uint32_t MXC_SYS_RiscVClockRate(void);
  *          to reprogram the target micro.
  */
 int MXC_SYS_LockDAP_Permanent(void);
+
+/**
+ * @brief Bypass the crystal oscillator driver circuit for the specified clock.  Some clock sources
+ *        support this option, allowing an external square wave input signal to be fed directly to the
+ *        clock's input pin.  Refer to the microcontroller's User Guide for more details.
+ *
+ * @param   clock The clock source target
+ * @param   bypass Bypass the oscillator circuit or not.  Set to true to bypass, false to disable the bypass
+ * 
+ * @return @ref MXC_Error_Codes
+ */
+int MXC_SYS_SetBypass(mxc_sys_system_clock_t clock, bool bypass);
 
 #ifdef __cplusplus
 }
