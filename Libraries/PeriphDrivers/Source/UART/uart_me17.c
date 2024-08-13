@@ -130,35 +130,35 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
-    switch(clock) {
-        case MXC_UART_APB_CLK:
-            clock_freq = SystemCoreClock / 2;
-            break;
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = SystemCoreClock / 2;
+        break;
 
-        case MXC_UART_IBRO_CLK:
-            clock_freq = IBRO_FREQ;
-            break;
-        
-        case MXC_UART_ERTCO_CLK:
-            // Only UART3 (LPUART0) supports ERTCO clock source.
-            if (uart != MXC_UART3) {
-                return E_BAD_PARAM;
-            }
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
 
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-        
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-
-            clock_freq = ERTCO_FREQ * 2; // x2 to account for FDM.
-            break;
-        
-        default:
+    case MXC_UART_ERTCO_CLK:
+        // Only UART3 (LPUART0) supports ERTCO clock source.
+        if (uart != MXC_UART3) {
             return E_BAD_PARAM;
+        }
+
+        uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+        uart->ctrl |= MXC_F_UART_CTRL_FDM;
+
+        if (baud > 2400) {
+            uart->osr = 0;
+        } else {
+            uart->osr = 1;
+        }
+
+        clock_freq = ERTCO_FREQ * 2; // x2 to account for FDM.
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
@@ -258,45 +258,45 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
     int error = E_NO_ERROR;
 
     switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-        case 1:
-        case 2:
-            // UART0-2 support PCLK and IBRO
-            switch (clock) {
-            case MXC_UART_APB_CLK:
-                MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
-                break;
-
-            case MXC_UART_IBRO_CLK:
-                error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-                MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
-                break;
-
-            default:
-                return E_BAD_PARAM;
-            }
+    case 0:
+    case 1:
+    case 2:
+        // UART0-2 support PCLK and IBRO
+        switch (clock) {
+        case MXC_UART_APB_CLK:
+            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
             break;
 
-        case 3:
-            // UART3 (LPUART0) supports IBRO and ERTCO
-            switch (clock) {
-            case MXC_UART_IBRO_CLK:
-                error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-                MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
-                break;
-
-            case MXC_UART_ERTCO_CLK:
-                error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-                MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
-                break;
-
-            default:
-                return E_BAD_PARAM;
-            }
+        case MXC_UART_IBRO_CLK:
+            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
             break;
 
         default:
             return E_BAD_PARAM;
+        }
+        break;
+
+    case 3:
+        // UART3 (LPUART0) supports IBRO and ERTCO
+        switch (clock) {
+        case MXC_UART_IBRO_CLK:
+            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
+            break;
+
+        case MXC_UART_ERTCO_CLK:
+            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     return error;

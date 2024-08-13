@@ -127,21 +127,21 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
-    switch(clock) {
-        case MXC_UART_APB_CLK:
-            clock_freq = SystemCoreClock / 2;
-            break;
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = SystemCoreClock / 2;
+        break;
 
-        case MXC_UART_IBRO_CLK:
-            clock_freq = IBRO_FREQ;
-            break;
-        
-        case MXC_UART_ERFO_CLK:
-            clock_freq = ERFO_FREQ;
-            break;
-        
-        default:
-            return E_BAD_PARAM;
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
+
+    case MXC_UART_ERFO_CLK:
+        clock_freq = ERFO_FREQ;
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
@@ -238,22 +238,22 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 
     // The following interprets table 12-1 from the MAX78002 UG.
     switch (clock) {
-        case MXC_UART_APB_CLK:
-            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
-            break;
-        
-        case MXC_UART_IBRO_CLK:
-            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
-            break;
+    case MXC_UART_APB_CLK:
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
+        break;
 
-        case MXC_UART_ERFO_CLK:
-            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
-            break;
+    case MXC_UART_IBRO_CLK:
+        error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    case MXC_UART_ERFO_CLK:
+        error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     return error;
