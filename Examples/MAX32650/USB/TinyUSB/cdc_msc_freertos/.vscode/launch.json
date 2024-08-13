@@ -185,25 +185,6 @@
           "ignoreFailures": false
         }
       ]
-    },
-    {
-      "name": "C/C++ Runner: Debug Session",
-      "type": "cppdbg",
-      "request": "launch",
-      "args": [],
-      "stopAtEntry": false,
-      "externalConsole": true,
-      "cwd": "c:/Workspace/MSDK_Development/brentk-adi-fork/Examples/MAX32650/USB/TinyUSB/cdc_msc",
-      "program": "c:/Workspace/MSDK_Development/brentk-adi-fork/Examples/MAX32650/USB/TinyUSB/cdc_msc/build/Debug/outDebug",
-      "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
     }
   ]
 }

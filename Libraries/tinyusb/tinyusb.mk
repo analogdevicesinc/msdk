@@ -27,7 +27,7 @@ endif
 export TINYUSB_DIR
 
 # Build in the library folder by default.  Otherwise, build in a tinyusb subdirectory
-# of the specified BUILD_DIR 
+# of the specified BUILD_DIR
 ifeq "$(BUILD_DIR)" ""
 TINYUSB_BUILD_DIR = $(abspath $(TINYUSB_DIR)/build/$(TARGET_UC))
 else
@@ -73,6 +73,7 @@ PROJ_CFLAGS += -DCFG_TUSB_MCU=$(TARGET_USB)
 
 IPATH += ${TINYUSB_DIR}/src/
 IPATH += ${TINYUSB_DIR}/hw/
+IPATH += ${RTOS_IPATH}
 
 # Add to library list
 LIBS += ${TINYUSB_BUILD_DIR}/tinyusb.a

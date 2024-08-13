@@ -1,7 +1,8 @@
 ## Description
 
-The example demonstrates the use of USB composite device with Mass Storage driver class and CDC-ACM driver class using the TinyUSB stack
-and FreeRTOS operating system. After doing the required connections given below, run the program and two new devices appear in the device manager, a Portable device and COM Port. The README.TXT file on the portable device can be read. Open a terminal application on the PC at 115200 baud rate, and echo the characters on the terminal.
+The example demonstrates the use of USB composite HID driver class. After doing the required connections given below, run the program and a new composite
+HID device appears in the device manager, with keyboard, joystick, mouse and consumer control support. Pressing the switch SW2 on the EV Kit will result
+in the 'a' key being pressed by the keyboard, the mouse moving down and right, joystick button A, and volume down.
 
 
 ## Software
@@ -32,9 +33,7 @@ to '2', the Console UART of the device will output these messages:
 USBD init on controller 0, Highspeed = 1024
 sizeof(usbd_device_t) = 69
 sizeof(dcd_event_t) = 12
-sizeof(tu_fifo_t) = 20
-sizeof(tu_edpt_stream_t) = 112
-CDC init
-MSC init
-USBD Bus Reset : High Speed
+sizeof(tu_fifo_t) = 12
+sizeof(tu_edpt_stream_t) = 24
+HID init
 ```

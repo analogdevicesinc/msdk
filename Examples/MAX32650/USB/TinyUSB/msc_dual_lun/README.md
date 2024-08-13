@@ -1,7 +1,6 @@
 ## Description
 
-The example demonstrates the use of USB composite device with Mass Storage driver class and CDC-ACM driver class using the TinyUSB stack
-and FreeRTOS operating system. After doing the required connections given below, run the program and two new devices appear in the device manager, a Portable device and COM Port. The README.TXT file on the portable device can be read. Open a terminal application on the PC at 115200 baud rate, and echo the characters on the terminal.
+The example demonstrates the use of USB Mass Storage driver class with TinyUSB. After doing the required connections given below, run the program and two new portable device appears in the device manager. It will appear as a new drives which can be read from.
 
 
 ## Software
@@ -32,9 +31,7 @@ to '2', the Console UART of the device will output these messages:
 USBD init on controller 0, Highspeed = 1024
 sizeof(usbd_device_t) = 69
 sizeof(dcd_event_t) = 12
-sizeof(tu_fifo_t) = 20
-sizeof(tu_edpt_stream_t) = 112
-CDC init
+sizeof(tu_fifo_t) = 12
+sizeof(tu_edpt_stream_t) = 24
 MSC init
-USBD Bus Reset : High Speed
 ```

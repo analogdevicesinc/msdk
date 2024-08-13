@@ -20,6 +20,9 @@ SBT=0
 
 # Enable TINYUSB library
 LIB_TINYUSB=1
+TINYUSB_CONFIG_DIR = ./
 
 # Enable FreeRTOS library
 LIB_FREERTOS=1
+
+

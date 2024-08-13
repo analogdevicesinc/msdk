@@ -24,15 +24,20 @@
  *
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "bsp/board_api.h"
 #include "tusb.h"
 #include "led.h"
+#include "pb.h"
 #include "mxc_device.h"
 #include "gcr_regs.h"
 #include "mxc_sys.h"
 
 //--------------------------------------------------------------------+
-// MACRO CONSTANT TYPEDEF PROTOTYPES
+// MACRO CONSTANT TYPEDEF PROTYPES
 //--------------------------------------------------------------------+
 
 /* Blink pattern
@@ -49,7 +54,6 @@ enum {
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 void led_blinking_task(void);
-void cdc_task(void);
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -66,8 +70,6 @@ int main(void)
     while (1) {
         tud_task(); // tinyusb device task
         led_blinking_task();
-
-        cdc_task();
     }
 }
 
@@ -100,51 +102,6 @@ void tud_suspend_cb(bool remote_wakeup_en)
 void tud_resume_cb(void)
 {
     blink_interval_ms = tud_mounted() ? BLINK_MOUNTED : BLINK_NOT_MOUNTED;
-}
-
-//--------------------------------------------------------------------+
-// USB CDC
-//--------------------------------------------------------------------+
-void cdc_task(void)
-{
-    // connected() check for DTR bit
-    // Most but not all terminal client set this when making connection
-    // if ( tud_cdc_connected() )
-    {
-        // connected and there are data available
-        if (tud_cdc_available()) {
-            // read data
-            char buf[64];
-            uint32_t count = tud_cdc_read(buf, sizeof(buf));
-            (void)count;
-
-            // Echo back
-            // Note: Skip echo by commenting out write() and write_flush()
-            // for throughput test e.g
-            //    $ dd if=/dev/zero of=/dev/ttyACM0 count=10000
-            tud_cdc_write(buf, count);
-            tud_cdc_write_flush();
-        }
-    }
-}
-
-// Invoked when cdc when line state changed e.g connected/disconnected
-void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
-{
-    (void)itf;
-    (void)rts;
-
-    if (dtr) {
-        // Terminal connected
-    } else {
-        // Terminal disconnected
-    }
-}
-
-// Invoked when CDC interface received data from host
-void tud_cdc_rx_cb(uint8_t itf)
-{
-    (void)itf;
 }
 
 //--------------------------------------------------------------------+
@@ -189,6 +146,11 @@ void board_led_write(bool state)
     } else {
         LED_Off(0);
     }
+}
+
+uint32_t board_button_read(void)
+{
+    return PB_Get(0);
 }
 
 //--------------------------------------------------------------------+

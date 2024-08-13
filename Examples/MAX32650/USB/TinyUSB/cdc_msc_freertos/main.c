@@ -2,6 +2,7 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2019 Ha Thach (tinyusb.org)
+ * Copyright (c) 2024 Analog Devices, Inc
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +32,8 @@
 #include "tusb.h"
 #include "led.h"
 #include "mxc_device.h"
+#include "gcr_regs.h"
+#include "mxc_sys.h"
 
 #if TUP_MCU_ESPRESSIF
 // ESP-IDF need "freertos/" prefix in include path.
@@ -54,8 +57,9 @@
 #define USBD_STACK_SIZE (3 * configMINIMAL_STACK_SIZE / 2) * (CFG_TUSB_DEBUG ? 2 : 1)
 #endif
 
-#define CDC_STACK_SIZE configMINIMAL_STACK_SIZE
-#define BLINKY_STACK_SIZE configMINIMAL_STACK_SIZE
+// Use the USBD_STACK_SIZE to account for option CFG_TUSB_DEBUG settings
+#define CDC_STACK_SIZE USBD_STACK_SIZE
+#define BLINKY_STACK_SIZE USBD_STACK_SIZE
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTOTYPES

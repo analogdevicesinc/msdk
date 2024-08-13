@@ -19,33 +19,37 @@
  ##############################################################################
 
 # ** Readme! **
-# Don't edit this file! This is the core Makefile for a MaximSDK
-# project. The available configuration options can be overridden
-# in "project.mk", on the command-line, or with system environment
+# Don't edit this file! This is the core Makefile for a MaximSDK 
+# project. The available configuration options can be overridden 
+# in "project.mk", on the command-line, or with system environment 
 # variables.
 
 # See https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
-# The detailed instructions mentioned above are easier to read than
-# this file, but the comments found in this file also outline the
-# available configuration variables. This file is organized into
+# The detailed instructions mentioned above are easier to read than 
+# this file, but the comments found in this file also outline the 
+# available configuration variables. This file is organized into 
 # sub-sections, some of which expose config variables.
 
 
 # *******************************************************************************
-# Set the target microcontroller and board to compile for.
+# Set the target microcontroller and board to compile for.  
 
-# Every TARGET microcontroller has some Board Support Packages (BSPs) that are
-# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP
+# Every TARGET microcontroller has some Board Support Packages (BSPs) that are 
+# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP 
 # that gets selected is MaximSDK/Libraries/Boards/TARGET/BOARD.
 
 # Configuration Variables:
 # - TARGET : Override the default target microcontroller.  Ex: TARGET=MAX78000
 # - BOARD : Override the default BSP (case sensitive).  Ex: BOARD=EvKit_V1, BOARD=FTHR_RevA
 
+
 ifeq "$(TARGET)" ""
-$(error TARGET must be specified)
+# Default target microcontroller
+TARGET := MAX32650
+TARGET_UC := MAX32650
+TARGET_LC := max32650
 else
 # "TARGET" has been overridden in the environment or on the command-line.
 # We need to calculate an upper and lowercase version of the part number,
@@ -60,11 +64,11 @@ BOARD ?= EvKit_V1
 # *******************************************************************************
 # Locate the MaximSDK
 
-# This Makefile needs to know where to find the MaximSDK, and the MAXIM_PATH variable
+# This Makefile needs to know where to find the MaximSDK, and the MAXIM_PATH variable 
 # should point to the root directory of the MaximSDK installation.  Setting this manually
 # is usually only required if you're working on the command-line.
 
-# If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK
+# If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK 
 # and move up from this project's original location.
 
 # Configuration Variables:
@@ -80,7 +84,7 @@ CMSIS_ROOT := $(LIBS_DIR)/CMSIS
 endif
 
 # *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH
+# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
 # in case project.mk needs to reference those values.  However, we also include
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
@@ -88,7 +92,7 @@ endif
 
 PROJECTMK ?= $(abspath ./project.mk)
 include $(PROJECTMK)
-$(info Loaded $(PROJECTMK))
+$(info Loaded project.mk)
 # PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
@@ -96,7 +100,7 @@ $(info Loaded $(PROJECTMK))
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH := ../../../
+DEPTH := ../../../../
 MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
@@ -133,10 +137,10 @@ export CMSIS_ROOT
 
 # Configuration Variables:
 # - VPATH : Tell this Makefile to search additional locations for source (.c) files.
-# 			You should use the "+=" operator with this option.
+# 			You should use the "+=" operator with this option.  
 #			Ex:  VPATH += your/new/path
 # - IPATH : Tell this Makefile to search additional locations for header (.h) files.
-# 			You should use the "+=" operator with this option.
+# 			You should use the "+=" operator with this option.  
 #			Ex:  VPATH += your/new/path
 # - SRCS : Tell this Makefile to explicitly add a source (.c) file to the build.
 # 			This is really only useful if you want to add a source file that isn't
@@ -186,10 +190,10 @@ PROJECT ?= $(TARGET_LC)
 # Configuration Variables:
 # - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
 #			symbols and sets -Og as the default optimization level.
-# - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.
+# - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
-#			You should use the "+=" operator with this option.
+#			You should use the "+=" operator with this option. 
 #			Ex:  PROJ_CFLAGS += -Wextra
 # - MFLOAT_ABI : Set the floating point acceleration level.
 #			The only options are "hard", "soft", or "softfp".
@@ -279,7 +283,7 @@ endif # SBT
 # (ie. just running 'make' instead of 'make all')
 
 # Configuration variables:
-#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the
+#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the 
 #			command-line
 #			** "override" must be used with this variable. **
 #			Ex: "override .DEFAULT_GOAL = mygoal"
@@ -368,10 +372,10 @@ all:
 # 	Extend the functionality of the "all" recipe here
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 
-libclean:
+libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
-
-clean:
+	
+clean: 
 #	Extend the functionality of the "clean" recipe here
 
 # The rule to clean out all the build products.
