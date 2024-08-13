@@ -216,7 +216,7 @@ void MXC_TFT_ResetCursor(void);
  *
  * @param       x0              x location on screen
  * @param       y0              y location on screen
- * @param       fon_id          Font number
+ * @param       font_id         Font number ID
  * @param       str             String which will be display
  * @param       area            Location of printf outputs
  */
