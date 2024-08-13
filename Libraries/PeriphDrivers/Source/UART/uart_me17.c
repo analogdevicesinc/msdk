@@ -140,6 +140,11 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
             break;
         
         case MXC_UART_ERTCO_CLK:
+            // Only UART3 (LPUART0) supports ERTCO clock source.
+            if (uart != MXC_UART3) {
+                return E_BAD_PARAM;
+            }
+
             uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
             uart->ctrl |= MXC_F_UART_CTRL_FDM;
         
@@ -252,7 +257,6 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
     int error = E_NO_ERROR;
 
-    // The following interprets table 12-1 from the MAX78002 UG.
     switch (MXC_UART_GET_IDX(uart)) {
         case 0:
         case 1:
