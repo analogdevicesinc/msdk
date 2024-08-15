@@ -43,6 +43,10 @@
 // A1
 #define MXC_TMR_REV 0
 #define MXC_UART_REV 0
+#elif (TARGET_REV == 0x4231)
+// B1
+#define MXC_TMR_REV 0
+#define MXC_UART_REV 0
 #else
 
 #error TARGET_REV NOT SUPPORTED
