@@ -78,22 +78,8 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     int retval;
 
     retval = MXC_UART_Shutdown(uart);
-
     if (retval) {
         return retval;
-    }
-
-    switch (clock) {
-    case MXC_UART_ERTCO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        break;
-
-    case MXC_UART_IBRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
-
-    default:
-        break;
     }
 
     switch (MXC_UART_GET_IDX(uart)) {
@@ -119,6 +105,11 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
 
     default:
         return E_BAD_PARAM;
+    }
+
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval != E_NO_ERROR) {
+        return retval;
     }
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
@@ -161,7 +152,9 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t *uart)
 
 int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-    int frequency, clkDiv = 0, mod = 0;
+    int freq;
+    uint32_t clock_freq = 0;
+
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
@@ -176,36 +169,13 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         clock_freq = SystemCoreClock / 2;
         break;
 
-        switch (clock) {
-        case MXC_UART_APB_CLK:
-        case MXC_UART_IBRO_CLK:
-            clkDiv = ((IBRO_FREQ) / baud);
-            mod = ((IBRO_FREQ) % baud);
-            break;
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
 
-        case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-            clkDiv = ((ERTCO_FREQ * 2) / baud);
-            mod = ((ERTCO_FREQ * 2) % baud);
-
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
-        if (!clkDiv || mod > (baud / 2)) {
-            clkDiv++;
-        }
-        uart->clkdiv = clkDiv;
-        frequency = MXC_UART_GetFrequency(uart);
-    } else {
-        if (clock == MXC_UART_ERTCO_CLK) {
+    case MXC_UART_ERTCO_CLK:
+        // Only UART3 (LPUART0) supports ERTCO clock source.
+        if (uart != MXC_UART3) {
             return E_BAD_PARAM;
         }
 
@@ -224,13 +194,15 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
-    if (frequency > 0) {
+    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
+
+    if (freq > 0) {
         // Enable baud clock and wait for it to become ready.
         uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
         while (((uart->ctrl & MXC_F_UART_CTRL_BCLKRDY) >> MXC_F_UART_CTRL_BCLKRDY_POS) == 0) {}
     }
 
-    return frequency;
+    return freq;
 }
 
 int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
