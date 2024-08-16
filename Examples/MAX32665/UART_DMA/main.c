@@ -44,7 +44,7 @@
 #include "led.h"
 
 /***** Definitions *****/
-//#define AUTOHANDLERS
+#define AUTOHANDLERS
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 512
@@ -52,13 +52,14 @@
 #define RX_UART MXC_UART1
 #define TX_UART MXC_UART2
 
+#define DMA MXC_DMA0
+
 /***** Globals *****/
 volatile int READ_FLAG;
 volatile int WRITE_FLAG;
 volatile int buttonPressed;
 static mxc_uart_req_t read_req;
 static mxc_uart_req_t write_req;
-static mxc_dma_regs_t dma;
 
 #ifndef BOARD_FTHR2
 #warning "This example has been written for the MAX32665 FTHR2 board."
@@ -68,12 +69,12 @@ static mxc_dma_regs_t dma;
 #ifndef AUTOHANDLERS
 void DMA_RX_Handler(void)
 {
-    MXC_DMA_Handler(MXC_DMA0);
+    MXC_DMA_Handler(DMA);
 }
 
 void DMA_TX_Handler(void)
 {
-    MXC_DMA_Handler(MXC_DMA0);
+    MXC_DMA_Handler(DMA);
 }
 #endif
 
@@ -108,14 +109,14 @@ int exampleDMAAutoHandlers(void)
     // to complete, since the DMA APIs are asynchronous (non-blocking)
     READ_FLAG = 1;
 
-    error = MXC_UART_TransactionDMA(&read_req);
+    error = MXC_UART_TransactionDMA(&read_req,DMA);
     if (error) {
         printf("-->Error starting DMA read: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
 
-    error = MXC_UART_TransactionDMA(&write_req);
+    error = MXC_UART_TransactionDMA(&write_req,DMA);
     if (error) {
         printf("-->Error starting DMA write: %d\n", error);
         printf("-->Example Failed\n");
@@ -132,10 +133,10 @@ int exampleDMAManualHandlers(void)
 {
     int error = 0;
     // Manally initialize DMA
-    MXC_DMA_Init(MXC_DMA0);
+    MXC_DMA_Init(DMA);
 
     // Manually acquire a channel for the read request and assign it to the drivers.
-    int rx_channel = MXC_DMA_AcquireChannel(MXC_DMA0);
+    int rx_channel = MXC_DMA_AcquireChannel(DMA);
     if (rx_channel >= 0) {
         printf("Acquired DMA channel %i for RX transaction\n", rx_channel);
     } else {
@@ -150,7 +151,7 @@ int exampleDMAManualHandlers(void)
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(rx_channel), DMA_RX_Handler);
 
     // Do the same for the write request.
-    int tx_channel = MXC_DMA_AcquireChannel(MXC_DMA0);
+    int tx_channel = MXC_DMA_AcquireChannel(DMA);
     if (tx_channel >= 0) {
         printf("Acquired DMA channel %i for RX transaction\n", tx_channel);
     } else {
@@ -166,14 +167,14 @@ int exampleDMAManualHandlers(void)
     WRITE_FLAG = 1;
     READ_FLAG = 1;
 
-    error = MXC_UART_TransactionDMA(&read_req, MXC_DMA0);
+    error = MXC_UART_TransactionDMA(&read_req, DMA);
     if (error) {
         printf("-->Error starting DMA read: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
 
-    error = MXC_UART_TransactionDMA(&write_req, MXC_DMA0);
+    error = MXC_UART_TransactionDMA(&write_req, DMA);
     if (error) {
         printf("-->Error starting DMA write: %d\n", error);
         printf("-->Example Failed\n");

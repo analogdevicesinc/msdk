@@ -44,7 +44,7 @@
 #include "led.h"
 
 /***** Definitions *****/
-//#define AUTOHANDLERS
+#define AUTOHANDLERS
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 512

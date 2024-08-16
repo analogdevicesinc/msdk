@@ -1,8 +1,7 @@
 ## Description
 
-A basic getting started program.
+To demonstrate the use of the UART peripheral with DMA, data is sent between two UART ports on the MAX32672.
 
-This version of Hello_World prints an incrementing count to the console UART and toggles a GPIO (P0.22 - LED1) once every 500 ms.
 
 ## Software
 
@@ -16,22 +15,57 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select RX0 and TX0 on Headers JP10 and JP11 (UART 0).
+-   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect P0.28 (RX of UART1) and P0.15 (TX of UART2).
 
 ## Expected Output
 
 The Console UART of the device will output these messages:
 
 ```
-Hello World!
-count = 0
-count = 1
-count = 2
-count = 3
-count = 4
-...
+**************** UART Example ******************
+This example sends data from one UART to another
+
+Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+
+To indicate a successful UART transfer, LED1 will illuminate.
+
+Push SW2 to continue
+
+UART Baud       : 115200 Hz
+Test Length     : 512 bytes
+
+-->UART Initialized
+
+-->Data verified
+
+-->Example Succeeded
+
 ```
 
-You will also observe LED0 blinking at a rate of 1Hz.
+or
+
+```
+**************** UART Example ******************
+This example sends data from one UART to another
+
+Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+
+To indicate a successful UART transfer, LED1 will illuminate.
+
+Push SW2 to continue
+
+UART Baud       : 115200 Hz
+Test Length     : 512 bytes
+
+Acquired DMA channel 0 for RX transaction
+Acquired DMA channel 1 for TX transaction
+
+-->UART Initialized
+
+-->Data verified
+
+-->Example Succeeded
+
+```

@@ -1,6 +1,6 @@
 ## Description
 
-To demonstrate the use of the UART peripheral, data is sent between two UART ports on the MAX32650.
+To demonstrate the use of the UART peripheral with DMA, data is sent between two UART ports on the MAX32650.
 
 
 ## Software
@@ -17,7 +17,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Connect UART1 RX (P2.14) to UART2 TX (P1.10).
+-   Connect P2.14 (RX of UART1) and P1.10 (TX of UART2).
 
 ## Expected Output
 
@@ -27,7 +27,7 @@ The Console UART of the device will output these messages:
 **************** UART Example ******************
 This example sends data from one UART to another
 
-Connect RX(P2.14) of UART1 and TX(P1.10) of UART2.
+Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
 
 To indicate a successful UART transfer, LED1 will illuminate.
 
@@ -41,4 +41,31 @@ Test Length     : 512 bytes
 -->Data verified
 
 -->Example Succeeded
+
+```
+
+or
+
+```
+**************** UART Example ******************
+This example sends data from one UART to another
+
+Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+
+To indicate a successful UART transfer, LED1 will illuminate.
+
+Push SW2 to continue
+
+UART Baud       : 115200 Hz
+Test Length     : 512 bytes
+
+Acquired DMA channel 0 for RX transaction
+Acquired DMA channel 1 for TX transaction
+
+-->UART Initialized
+
+-->Data verified
+
+-->Example Succeeded
+
 ```

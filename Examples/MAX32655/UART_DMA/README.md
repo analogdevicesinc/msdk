@@ -1,8 +1,6 @@
 ## Description
 
-A basic getting started program.
-
-This version of Hello_World prints an incrementing count to the console UART and toggles a LED0 every 500 ms.
+To demonstrate the use of the UART peripheral with DMA, data is sent between two UART ports on the MAX32655.
 
 
 ## Software
@@ -13,30 +11,61 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+(None - this project builds as a standard example)
 
 ## Required Connections
-If using the MAX32655EVKIT (EvKit\_V1):
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Close jumper JP2 (LED0 EN).
--   Close jumper JP3 (LED1 EN).
 
-If using the MAX32655FTHR (FTHR\_Apps\_P1):
--   Connect a USB cable between the PC and the J4 (USB/PWR) connector.
--   Open an terminal application on the PC and connect to the board's console UART at 115200, 8-N-1.
+-   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect P2.6 (UART 3 RX) and P2.7 (UART 3 TX).
 
 ## Expected Output
 
 The Console UART of the device will output these messages:
 
 ```
-Hello World!
-count : 0
-count : 1
-count : 2
-count : 3
+**************** UART Example ******************
+This example sends data from one UART to another
+
+Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+
+To indicate a successful UART transfer, LED1 will illuminate.
+
+Push SW2 to continue
+
+UART Baud       : 115200 Hz
+Test Length     : 512 bytes
+
+-->UART Initialized
+
+-->Data verified
+
+-->Example Succeeded
+
 ```
 
-You will also observe LED0 blinking at a rate of 2Hz.
+or
+
+```
+**************** UART Example ******************
+This example sends data from one UART to another
+
+Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+
+To indicate a successful UART transfer, LED1 will illuminate.
+
+Push SW2 to continue
+
+UART Baud       : 115200 Hz
+Test Length     : 512 bytes
+
+Acquired DMA channel 0 for RX transaction
+Acquired DMA channel 1 for TX transaction
+
+-->UART Initialized
+
+-->Data verified
+
+-->Example Succeeded
+
+```

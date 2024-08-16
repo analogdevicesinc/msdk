@@ -54,10 +54,8 @@
 
 /***** Globals *****/
 volatile int READ_FLAG;
-volatile int WRITE_FLAG;
 volatile int buttonPressed;
 static mxc_uart_req_t loop_req;
-static mxc_uart_req_t write_req;
 
 /***** Functions *****/
 #ifndef AUTOHANDLERS
