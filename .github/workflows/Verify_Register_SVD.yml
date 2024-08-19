@@ -655,5 +655,26 @@ jobs:
             fi
           done
           set -e
-          
+
+          # Remove generated register files for next time a runner picks up the job.
+          # The register files generated in a previous instance will remain and won't
+          # be regenerated because the Wall-E doesn't refresh its workspace and this 
+          # workflow only generates the register files for a specific part only once 
+          # (to save time) by checking whether the generated register files exist or not.
+          cd ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
+
+          # Enter each directory and remove ./chip_test/
+          for file_dir in *
+          do
+            # Don't mess with files.
+            [[ -d $file_dir ]] || continue
+
+            if [[ ${DIE_TO_CHIP_NAMES[$file_dir]+_} ]]; then
+              rm -rf ./${file_dir}/chip_test/
+            fi
+          done
+
+          # Return to workspace
+          cd ../../../
+
           exit $CHECK_FAIL

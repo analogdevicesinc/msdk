@@ -76,7 +76,11 @@ extern "C" {
 typedef struct {
     __I  uint32_t sistat;               /**< <tt>\b 0x00:</tt> SIR SISTAT Register */
     __I  uint32_t erraddr;              /**< <tt>\b 0x04:</tt> SIR ERRADDR Register */
-    __R  uint32_t rsv_0x8_0xff[62];
+    __R  uint32_t rsv_0x8_0x53[19];
+    __IO uint32_t btle_ldo_trim_tx;     /**< <tt>\b 0x54:</tt> SIR BTLE_LDO_TRIM_TX Register */
+    __R  uint32_t rsv_0x58;
+    __IO uint32_t btle_ldo_trim_rx;     /**< <tt>\b 0x5C:</tt> SIR BTLE_LDO_TRIM_RX Register */
+    __R  uint32_t rsv_0x60_0xff[40];
     __I  uint32_t fstat;                /**< <tt>\b 0x100:</tt> SIR FSTAT Register */
     __I  uint32_t sfstat;               /**< <tt>\b 0x104:</tt> SIR SFSTAT Register */
 } mxc_sir_regs_t;
@@ -90,6 +94,8 @@ typedef struct {
  */
 #define MXC_R_SIR_SISTAT                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_SIR_ERRADDR                  ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SIR_BTLE_LDO_TRIM_TX         ((uint32_t)0x00000054UL) /**< Offset from SIR Base Address: <tt> 0x0054</tt> */
+#define MXC_R_SIR_BTLE_LDO_TRIM_RX         ((uint32_t)0x0000005CUL) /**< Offset from SIR Base Address: <tt> 0x005C</tt> */
 #define MXC_R_SIR_FSTAT                    ((uint32_t)0x00000100UL) /**< Offset from SIR Base Address: <tt> 0x0100</tt> */
 #define MXC_R_SIR_SFSTAT                   ((uint32_t)0x00000104UL) /**< Offset from SIR Base Address: <tt> 0x0104</tt> */
 /**@} end of group sir_registers */
@@ -120,6 +126,28 @@ typedef struct {
 #define MXC_F_SIR_ERRADDR_ERRADDR                      ((uint32_t)(0xFFFFFFFFUL << MXC_F_SIR_ERRADDR_ERRADDR_POS)) /**< ERRADDR_ERRADDR Mask */
 
 /**@} end of group SIR_ERRADDR_Register */
+
+/**
+ * @ingroup  sir_registers
+ * @defgroup SIR_BTLE_LDO_TRIM_TX SIR_BTLE_LDO_TRIM_TX
+ * @brief    BTLE LDO TX Trim register.
+ * @{
+ */
+#define MXC_F_SIR_BTLE_LDO_TRIM_TX_TX_POS              0 /**< BTLE_LDO_TRIM_TX_TX Position */
+#define MXC_F_SIR_BTLE_LDO_TRIM_TX_TX                  ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_TX_TX_POS)) /**< BTLE_LDO_TRIM_TX_TX Mask */
+
+/**@} end of group SIR_BTLE_LDO_TRIM_TX_Register */
+
+/**
+ * @ingroup  sir_registers
+ * @defgroup SIR_BTLE_LDO_TRIM_RX SIR_BTLE_LDO_TRIM_RX
+ * @brief    BTLE LDO RX Trim register.
+ * @{
+ */
+#define MXC_F_SIR_BTLE_LDO_TRIM_RX_RX_POS              0 /**< BTLE_LDO_TRIM_RX_RX Position */
+#define MXC_F_SIR_BTLE_LDO_TRIM_RX_RX                  ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_RX_RX_POS)) /**< BTLE_LDO_TRIM_RX_RX Mask */
+
+/**@} end of group SIR_BTLE_LDO_TRIM_RX_Register */
 
 /**
  * @ingroup  sir_registers
