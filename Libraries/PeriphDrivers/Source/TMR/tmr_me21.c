@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -38,14 +25,14 @@
 
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 {
-    uint8_t tmr_id;
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
     uint8_t clockSource = MXC_TMR_CLK0;
 
     if (cfg == NULL) {
         return E_NULL_PTR;
     }
 
-    MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
+    MXC_ASSERT(tmr_id >= 0);
 
     switch (cfg->clock) {
     case MXC_TMR_EXT_CLK:
@@ -53,7 +40,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
-    case MXC_TMR_32K_CLK:
+    case MXC_TMR_ERTCO_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -63,7 +50,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
         break;
 
-    case MXC_TMR_80K_CLK:
+    case MXC_TMR_INRO_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -73,7 +60,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ);
         break;
 
-    case MXC_TMR_8M_CLK:
+    case MXC_TMR_IBRO_CLK:
         if (tmr_id > 3) { // TImers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -83,7 +70,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
         break;
 
-    case MXC_TMR_32M_CLK:
+    case MXC_TMR_ERFO_CLK:
         if (tmr_id > 3) { // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -98,6 +85,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
     case 0:
@@ -105,7 +93,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr0a);
             }
         }
@@ -117,7 +105,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr1a);
             }
         }
@@ -129,7 +117,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr2a);
             }
         }
@@ -141,7 +129,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr3a);
             }
         }
@@ -153,7 +141,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_lptmr0);
             } else {
                 return E_NOT_SUPPORTED;
@@ -168,7 +156,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
 
         if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_lptmr1);
             } else {
                 return E_NOT_SUPPORTED;
@@ -181,14 +169,18 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     default:
         return E_NOT_SUPPORTED;
     }
+#else
+    (void)init_pins;
+#endif
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 {
-    uint8_t tmr_id;
-    MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+
+    MXC_ASSERT(tmr_id >= 0);
 
     MXC_TMR_RevB_Shutdown((mxc_tmr_revb_regs_t *)tmr);
 
@@ -260,11 +252,11 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = (PeripheralClock / 4);
             break;
 
-        case MXC_TMR_32K_CLK:
+        case MXC_TMR_ERTCO_CLK:
             clockFrequency = ERTCO_FREQ;
             break;
 
-        case MXC_TMR_80K_CLK:
+        case MXC_TMR_INRO_CLK:
             clockFrequency = INRO_FREQ;
             break;
 
@@ -277,12 +269,13 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = PeripheralClock;
             break;
 
-        case MXC_TMR_8M_CLK:
+        case MXC_TMR_IBRO_CLK:
             clockFrequency = IBRO_FREQ;
             break;
 
-        case MXC_TMR_32M_CLK:
-            clockFrequency = 16000000; // Clock Frequency 16 MHz
+        case MXC_TMR_ERFO_CLK:
+            clockFrequency = ERFO_FREQ; // Note: Could vary between 16-32Mhz.  ERFO_FREQ should be
+                // overridden for custom designs.
             break;
 
         default:

@@ -1,35 +1,22 @@
-/* ****************************************************************************
- * Copyright(C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -69,11 +56,11 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_GPIO_Config(&gpio_cfg_spi1);
-#ifdef MXC_SPI2
-    } else if (spi == MXC_SPI2) {
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI2);
-        MXC_GPIO_Config(&gpio_cfg_spi2);
+#ifdef MXC_SPI3
+    } else if (spi == MXC_SPI3) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI3);
+        MXC_GPIO_Config(&gpio_cfg_spi3);
 #endif
     } else {
         return E_NO_DEVICE;
@@ -95,8 +82,8 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
     } else if (spi == MXC_SPI1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
-    } else if (spi == MXC_SPI2) {
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI2);
+    } else if (spi == MXC_SPI3) {
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI3);
     } else {
         return E_INVALID;
     }
@@ -113,7 +100,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 {
     if (spi == MXC_SPI0 || spi == MXC_SPI1) {
         return PeripheralClock;
-    } else if (spi == MXC_SPI2) {
+    } else if (spi == MXC_SPI3) {
         uint32_t clk_sel = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
                            MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
         switch (clk_sel) {
@@ -292,42 +279,24 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
     spi_num = MXC_SPI_GET_IDX(req->spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (req->txData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+    switch (spi_num) {
+    case 0:
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+    case 1:
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        break;
 
-        case 2:
-            reqselTx = MXC_DMA_REQUEST_SPI2TX;
-            break;
+    case 3:
+        reqselTx = MXC_DMA_REQUEST_SPI3TX;
+        reqselRx = MXC_DMA_REQUEST_SPI3RX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-        }
-    }
-
-    if (req->rxData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
-
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
-
-        case 2:
-            reqselRx = MXC_DMA_REQUEST_SPI2RX;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_SPI_RevA1_MasterTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,
@@ -353,42 +322,24 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
     spi_num = MXC_SPI_GET_IDX(req->spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (req->txData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+    switch (spi_num) {
+    case 0:
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+    case 1:
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        break;
 
-        case 2:
-            reqselTx = MXC_DMA_REQUEST_SPI2TX;
-            break;
+    case 3:
+        reqselTx = MXC_DMA_REQUEST_SPI3TX;
+        reqselRx = MXC_DMA_REQUEST_SPI3RX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-        }
-    }
-
-    if (req->rxData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
-
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
-
-        case 2:
-            reqselRx = MXC_DMA_REQUEST_SPI2RX;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,

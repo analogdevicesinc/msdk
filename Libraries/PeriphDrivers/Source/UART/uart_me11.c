@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -76,6 +63,7 @@ int MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, sys_map_t map)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
     retval = MXC_UART_Shutdown(uart);
@@ -109,6 +97,9 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, sys_map_t map)
         return E_BAD_PARAM;
         break;
     }
+#else
+    (void)map;
+#endif
 
     return MXC_UART_RevA_Init(((mxc_uart_reva_regs_t *)uart), baud);
 }
@@ -409,4 +400,25 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req)
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req)
 {
     return req->rxCnt;
+}
+
+int MXC_UART_SetAutoDMAHandlers(mxc_uart_regs_t *uart, bool enable)
+{
+    return MXC_UART_RevA_SetAutoDMAHandlers((mxc_uart_reva_regs_t *)uart, enable);
+}
+int MXC_UART_SetTXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel)
+{
+    return MXC_UART_RevA_SetTXDMAChannel((mxc_uart_reva_regs_t *)uart, channel);
+}
+int MXC_UART_GetTXDMAChannel(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevA_GetTXDMAChannel((mxc_uart_reva_regs_t *)uart);
+}
+int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel)
+{
+    return MXC_UART_RevA_SetRXDMAChannel((mxc_uart_reva_regs_t *)uart, channel);
+}
+int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevA_GetRXDMAChannel((mxc_uart_reva_regs_t *)uart);
 }

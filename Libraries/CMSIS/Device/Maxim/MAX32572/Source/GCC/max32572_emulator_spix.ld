@@ -1,23 +1,14 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Except as contained in this notice, the name of Maxim Integrated
  * Products, Inc. shall not be used except as stated in the Maxim Integrated
@@ -29,44 +20,43 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
- * $Revision: 22594 $
+ * $Date: 2018-12-18 15:37:22 -0600 (Tue, 18 Dec 2018) $ 
+ * $Revision: 40072 $
  *
  ******************************************************************************/
 
 MEMORY {
-    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB "ROM" */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256kB "FLASH" */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x000BE000 /* 760kB SRAM */
-
-    XIP_0 (rx)   : ORIGIN = 0x08000000, LENGTH = 0x00010000
-    XIP_1 (rx)   : ORIGIN = 0x08010000, LENGTH = 0x00010000
-    XIP_2 (rx)   : ORIGIN = 0x08020000, LENGTH = 0x00010000
-    XIP_SLEEP (rx)   : ORIGIN = 0x08030000, LENGTH = 0x00010000    
+    ROM (rx) : ORIGIN = 0x00000000, LENGTH = 64K
+    SPIXIP (rx) : ORIGIN = 0x08000000, LENGTH = 128M
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 432K*/
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /*32kB SRAM0 */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00048000 /* 288kB SRAM, leaving last 32kB for openocd work area */
 }
 
 SECTIONS {
-    .rom :
-    {
-        KEEP(*(.rom_vector))
-        *(.rom_handlers*)
-    } > ROM
 
-    .text :
+    .romcode :
     {
-        _text = .;
+        //_text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
-        *(.rodata*)  /* read-only data: "const" */
-
+        KEEP(*(.Reset))
+        
         KEEP(*(.init))
         KEEP(*(.fini))
 
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
+        //_etext = .;
+    } > ROM
+    
+    .text :
+    {
+        _text = .;
+        *(.text*)    /* program code */
+        *(.rodata*)  /* read-only data: "const" */
         _etext = .;
-    } > FLASH
-
+    } > SPIXIP
+    
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :
@@ -74,14 +64,13 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > FLASH
+    } > ROM
 
     .data :
     {
         _data = ALIGN(., 4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
-        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
-        *(.flashprog*)      /* Flash program */
+        KEEP(*(.spix_config*))    /* SPIX configuration functions need to be run from SRAM */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -105,36 +94,8 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>FLASH
+    } > SRAM AT>SPIXIP
     __load_data = LOADADDR(.data);
-
-    .xip_0 :  AT(0x10000)
-    {
-        _XIP_START_0 = .;
-        *(.xip_0*)
-        _XIP_END_0 = .;
-    } > XIP_0
-
-    .xip_1 :  AT(0x11000)
-    {
-        _XIP_START_1 = .;
-        *(.xip_1*)
-        _XIP_END_1 = .;
-    } > XIP_1
-
-    .xip_2 : AT(0x12000)
-    {
-        _XIP_START_2 = .;
-        *(.xip_2*)
-        _XIP_END_2 = .;
-    } > XIP_2
-
-    .xip_sleep : AT(0x13000)
-    {
-        _XIP_START_SLEEP = .;
-        *(.xip_sleep*)
-        _XIP_END_SLEEP = .;
-    } > XIP_SLEEP
 
     .bss :
     {

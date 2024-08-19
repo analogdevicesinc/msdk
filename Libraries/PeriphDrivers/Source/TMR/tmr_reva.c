@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -49,65 +36,73 @@ void MXC_TMR_RevA_Init(mxc_tmr_reva_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 
     // Set the prescaler
     switch (cfg->pres) {
-    case TMR_PRES_1:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV1);
+    case MXC_TMR_PRES_1:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV1);
         break;
 
-    case TMR_PRES_2:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV2);
+    case MXC_TMR_PRES_2:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV2);
         break;
 
-    case TMR_PRES_4:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV4);
+    case MXC_TMR_PRES_4:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV4);
         break;
 
-    case TMR_PRES_8:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV8);
+    case MXC_TMR_PRES_8:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV8);
         break;
 
-    case TMR_PRES_16:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV16);
+    case MXC_TMR_PRES_16:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV16);
         break;
 
-    case TMR_PRES_32:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV32);
+    case MXC_TMR_PRES_32:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV32);
         break;
 
-    case TMR_PRES_64:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV64);
+    case MXC_TMR_PRES_64:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV64);
         break;
 
-    case TMR_PRES_128:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV128);
+    case MXC_TMR_PRES_128:
+        tmr->cn &= ~(MXC_F_TMR_REVA_CN_PRES3);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV128);
         break;
 
-    case TMR_PRES_256:
+    case MXC_TMR_PRES_256:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        tmr->cn &= ~(MXC_S_TMR_REVA_CN_PRES_DIV1);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV1);
         break;
 
-    case TMR_PRES_512:
+    case MXC_TMR_PRES_512:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV4);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV2);
         break;
 
-    case TMR_PRES_1024:
+    case MXC_TMR_PRES_1024:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV8);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV4);
         break;
 
-    case TMR_PRES_2048:
+    case MXC_TMR_PRES_2048:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV16);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV8);
         break;
 
-    case TMR_PRES_4096:
+    case MXC_TMR_PRES_4096:
         tmr->cn |= (MXC_F_TMR_REVA_CN_PRES3);
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV32);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV16);
         break;
 
     default:
-        tmr->cn |= (MXC_S_TMR_REVA_CN_PRES_DIV1);
+        MXC_SETFIELD(tmr->cn, 0b111 << MXC_F_TMR_REVA_CN_PRES_POS, MXC_S_TMR_REVA_CN_PRES_DIV1);
         break;
     }
 
@@ -221,7 +216,7 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, uint32_t us)
 
     // Initialize the timer in one-shot mode
     cfg.pres = prescale;
-    cfg.mode = TMR_MODE_ONESHOT;
+    cfg.mode = MXC_TMR_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
 
@@ -244,7 +239,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_NANOSEC;
+        *units = MXC_TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
 
@@ -252,7 +247,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MICROSEC;
+        *units = MXC_TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
 
@@ -260,7 +255,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MILLISEC;
+        *units = MXC_TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
 
@@ -268,7 +263,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_SEC;
+        *units = MXC_TMR_UNIT_SEC;
         return E_NO_ERROR;
     }
 

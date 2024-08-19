@@ -1,35 +1,86 @@
+###############################################################################
+ #
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ ##############################################################################
+
 ################################################################################
- # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
- #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
- #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
- #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
- #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
- #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
- ###############################################################################
+# Detect whether we're working from the Github repo or not.
+# If so, attempt to update the version number files every time we build.
+
+ifeq "$(PYTHON_CMD)" ""
+# Try python
+ifneq "$(wildcard $(MAXIM_PATH)/.git)" ""
+
+PYTHON_VERSION := $(shell python --version)
+ifneq ($(.SHELLSTATUS),0)
+PYTHON_CMD := none
+else
+PYTHON_CMD := python
+endif
+
+# Try python3
+ifeq "$(PYTHON_CMD)" "none"
+PYTHON_VERSION := $(shell python3 --version)
+ifneq ($(.SHELLSTATUS),0)
+PYTHON_CMD := none
+else
+PYTHON_CMD := python
+endif
+endif
+
+# Export PYTHON_CMD so we don't check for it again unnecessarily
+export PYTHON_CMD
+endif
+
+# Run script
+ifneq "$(PYTHON_CMD)" "none"
+UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
+else
+$(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif
+endif
+
+ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
+endif
+################################################################################
+
+SUPPRESS_HELP ?= 0
+ifeq "$(SUPPRESS_HELP)" "0"
+ifneq "$(HELP_COMPLETE)" "1"
+
+$(info ****************************************************************************)
+$(info * Analog Devices MSDK)
+ifneq "$(MSDK_VERSION_STRING)" ""
+$(info * $(MSDK_VERSION_STRING))
+endif
+$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+$(info * - Get Support: https://www.analog.com/support/technical-support.html)
+$(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
+$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
+$(info ****************************************************************************)
+# export HELP_COMPLETE so that it's only printed once.
+HELP_COMPLETE = 1
+export HELP_COMPLETE
+endif
+endif
+
+################################################################################
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
@@ -218,9 +269,9 @@ ifeq "$(PREFIX)" "riscv-none-elf"
 # With the upgrade to riscv-none-elf came a new ISA spec
 # See https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/aE1ZeHHCYf4
 # BASE = RV32I
-# EXTENSION = M
+# EXTENSION = MC
 # EXTRAS = _zicsr_zifencei as recommended above
-MARCH ?= rv32im_zicsr_zifencei
+MARCH ?= rv32imc_zicsr_zifencei
 endif
 
 # Default option (riscv-none-embed)
@@ -276,6 +327,13 @@ ifneq "$(TARGET)" ""
 CFLAGS+=-DTARGET=$(TARGET)
 endif
 
+ifneq "$(TARGET_UC)" ""
+# Define a flag that the pre-processor can actually work with
+# (i.e. #ifdef MAX78000 ...)
+# TARGET_UC typically comes from the project core Makefile
+CFLAGS += -D$(TARGET_UC)
+endif
+
 ifneq "$(TARGET_REV)" ""
 CFLAGS+=-DTARGET_REV=$(TARGET_REV)
 endif
@@ -294,6 +352,11 @@ CXXFLAGS += \
 	-fno-rtti				\
 	-fno-exceptions			\
 	-std=c++11				\
+
+C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
+CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
+CFLAGS += -Wstrict-prototypes
+# ^ Add strict-prototypes after CXX_FLAGS so it's only added for C builds
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
@@ -314,6 +377,30 @@ LDFLAGS+=-Xlinker --gc-sections       \
 	  -march=$(MARCH) 	\
 	  -mabi=$(MABI)		\
       -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
+
+# Add --no-warn-rwx-segments on GCC 12+
+# This is not universally supported or enabled by default, so we need to check whether the linker supports it first
+RISCV_RWX_SEGMENTS_SUPPORTED ?=
+ifeq "$(RISCV_RWX_SEGMENTS_SUPPORTED)" "" # -------------------------------------
+# Print the linker's help string and parse it for --no-warn-rwx-segments
+# Note we invoke the linker through the compiler "-Xlinker" because ld may not
+# be on the path, and that's how we invoke the linker for our implicit rules
+LINKER_OPTIONS := $(shell $(CC) -Xlinker --help)
+ifneq "$(findstring --no-warn-rwx-segments,$(LINKER_OPTIONS))" ""
+RISCV_RWX_SEGMENTS_SUPPORTED := 1
+else
+RISCV_RWX_SEGMENTS_SUPPORTED := 0
+endif
+
+# export the variable for sub-make calls, so we don't need to interact with the shell again (it's slow).
+export RISCV_RWX_SEGMENTS_SUPPORTED
+endif # ------------------------------------------------------------------
+
+ifeq "$(RISCV_RWX_SEGMENTS_SUPPORTED)" "1"
+LDFLAGS += -Xlinker --no-warn-rwx-segments
+endif
+
+# Add project-specific linker flags
 LDFLAGS+=$(PROJ_LDFLAGS)
 
 # Include math library
@@ -451,7 +538,9 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf: $(PROJECTMK) | $(BUILD_DIR)
+# Note "RISCV_COMMON_LD" in the dependency tree.  Part-specific makefiles (ie. max78000.mk)
+# are responsible for defining this optional variable.
+${BUILD_DIR}/%.elf: $(PROJECTMK) $(RISCV_COMMON_LD) | $(BUILD_DIR)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
 ifeq "$(_OS)" "windows_msys"
@@ -589,6 +678,28 @@ $(BUILD_DIR)/_empty_tmp_file.c: | $(BUILD_DIR)
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
 
-$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c | $(BUILD_DIR)
+$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(BUILD_DIR)
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
+
+################################################################################
+# Add a rule for querying the value of any Makefile variable.  This is useful for
+# IDEs when they need to figure out include paths, value of the target, etc. for a
+# project
+# Set QUERY_VAR to the variable to inspect.
+# The output must be parsed, since other Makefiles may print additional info strings.
+# The relevant content will be on its own line, and separated by an '=' character.
+# Ex: make query QUERY_VAR=TARGET
+# will return
+# TARGET=MAXxxxxx
+ifeq "$(MAKECMDGOALS)" "query"
+SUPPRESS_HELP := 1
+endif
+.PHONY: query
+query:
+ifneq "$(QUERY_VAR)" ""
+	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+else
+	$(MAKE) debug
+endif
+

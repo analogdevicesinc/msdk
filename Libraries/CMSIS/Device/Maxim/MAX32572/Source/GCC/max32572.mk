@@ -1,38 +1,22 @@
-################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+###############################################################################
  #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
  #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
+ #     http://www.apache.org/licenses/LICENSE-2.0
  #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
  #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
- # $Date: 2016-03-23 13:28:53 -0700 (Wed, 23 Mar 2016) $ 
- # $Revision: 22067 $
- #
- ###############################################################################
+ ##############################################################################
 
 ifeq "$(CMSIS_ROOT)" ""
 $(error CMSIS_ROOT must be specified)
@@ -43,15 +27,27 @@ TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
+ifeq "$(RISCV_CORE)" ""
 BUILD_DIR=$(CURDIR)/build
+else
+BUILD_DIR=$(CURDIR)/buildrv
+endif
 endif
 
 ifeq "$(STARTUPFILE)" ""
+ifeq "$(RISCV_CORE)" ""
 STARTUPFILE=startup_$(TARGET_LC).S
+else
+STARTUPFILE=startup_riscv_$(TARGET_LC).S
+endif
 endif
 
 ifeq "$(LINKERFILE)" ""
+ifeq "$(RISCV_CORE)" ""
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
+else
+LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_riscv.ld
+endif
 endif
 
 ifeq "$(ENTRY)" ""
@@ -68,7 +64,11 @@ endif
 ifneq (${MAKECMDGOALS},lib)
 SRCS += ${STARTUPFILE}
 SRCS += heap.c
+ifeq "$(RISCV_CORE)" ""
 SRCS += system_$(TARGET_LC).c
+else
+SRCS += system_riscv_$(TARGET_LC).c
+endif
 endif
 
 # Add target specific CMSIS source directories

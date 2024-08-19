@@ -1,33 +1,21 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -73,19 +61,26 @@ int MXC_RTC_Stop(void)
     return MXC_RTC_RevA_Stop((mxc_rtc_reva_regs_t *)MXC_RTC);
 }
 
-int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
+int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
-    // Enable clock
-    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->ctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->clkctrl &= ~(MXC_F_MCR_CLKCTRL_ERTCO_PD);
 
-    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
-int MXC_RTC_SquareWave(mxc_rtc_reva_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
+int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
 
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC, sqe, ft);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
+                                   ft);
+}
+
+int MXC_RTC_SquareWaveStop(void)
+{
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC,
+                                   MXC_RTC_REVA_SQUARE_WAVE_DISABLED, MXC_RTC_F_32KHZ);
 }
 
 int MXC_RTC_Trim(int8_t trm)
@@ -132,4 +127,27 @@ int MXC_RTC_GetSeconds(uint32_t *sec)
 int MXC_RTC_GetTime(uint32_t *sec, uint32_t *subsec)
 {
     return MXC_RTC_RevA_GetTime((mxc_rtc_reva_regs_t *)MXC_RTC, sec, subsec);
+}
+
+int MXC_RTC_GetBusyFlag(void)
+{
+    return MXC_RTC_RevA_GetBusyFlag((mxc_rtc_reva_regs_t *)MXC_RTC);
+}
+
+int MXC_RTC_TrimCrystal(mxc_tmr_regs_t *tmr)
+{
+    if (MXC_TMR_GET_IDX(tmr) < 0 ||
+        MXC_TMR_GET_IDX(tmr) > 3) { // Timer must support ERFO as clock source
+        return E_BAD_PARAM;
+    }
+
+    mxc_tmr_cfg_t
+        tmr_cfg; // Configure timer to trigger each interrupt NUM_PERIOD number of times within a second
+    tmr_cfg.pres = MXC_TMR_PRES_1;
+    tmr_cfg.mode = MXC_TMR_MODE_CONTINUOUS;
+    tmr_cfg.cmp_cnt = ERFO_FREQ / MXC_RTC_REVA_TRIM_PERIODS;
+    tmr_cfg.pol = 0;
+    MXC_TMR_Init(tmr, &tmr_cfg);
+
+    return MXC_RTC_RevA_TrimCrystal((mxc_rtc_reva_regs_t *)MXC_RTC, tmr);
 }

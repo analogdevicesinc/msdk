@@ -1,35 +1,22 @@
-/* ****************************************************************************
- * Copyright(C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /****** Includes *******/
 #include <stddef.h>
@@ -41,14 +28,74 @@
 #include "spixf.h"
 #include "spixf_reva.h"
 
+#if defined(SPIXF_RAM)
+
+#include "gpio.h"
+#include "gpio_regs.h"
+#include "gpio_reva_regs.h"
+#include "mxc_pins.h"
+
+/* NOTE: SPIXF functions should not access the flash area when
+ * executing from RAM.
+ */
+// Non-const version of 'gpio_cfg_spixf' pin set.
+mxc_gpio_cfg_t gpio_cfg_spixf_ram = { MXC_GPIO1,
+                                      (MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 |
+                                       MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27),
+                                      MXC_GPIO_FUNC_ALT1,
+                                      MXC_GPIO_PAD_NONE,
+                                      MXC_GPIO_VSSEL_VDDIO,
+                                      MXC_GPIO_DRVSTR_0 };
+
+#if IAR_PRAGMAS
+#pragma section = ".spix_config"
+#else
+__attribute__((section(".spix_config")))
+#endif
+static int MXC_GPIO_Config_SPIXF(mxc_gpio_cfg_t *cfg)
+{
+    mxc_gpio_regs_t *gpio = cfg->port;
+    mxc_gpio_reva_regs_t *port = (mxc_gpio_reva_regs_t *)gpio;
+
+    port->inen |= cfg->mask;
+    //Switch to I/O mode first
+    port->en0_set = cfg->mask;
+    port->en3_clr = cfg->mask;
+    port->en2_clr = cfg->mask;
+    port->en1_clr = cfg->mask;
+    port->en0_clr = cfg->mask;
+
+    // Configure the pad
+    gpio->padctrl0 &= ~cfg->mask;
+    gpio->padctrl1 &= ~cfg->mask;
+    port->vssel &= ~(cfg->mask);
+    port->ds0 &= ~(cfg->mask);
+    port->ds1 &= ~(cfg->mask);
+
+    return E_NO_ERROR;
+}
+#endif
+
 /****** Functions ******/
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_Init(uint32_t cmdval, uint32_t frequency)
 {
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXFC); // SPIXFC
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP); // XIP ICACHE
+#ifndef MSDK_NO_GPIO_CLK_INIT
+    // Enable clock of SPIXFM
+    MXC_GCR->pclkdis0 &= ~(0x1 << MXC_SYS_PERIPH_CLOCK_SPIXIP);
+    // Enable clock of SPIXFC
+    MXC_GCR->pclkdis0 &= ~(0x1 << MXC_SYS_PERIPH_CLOCK_SPIXFC);
+#if defined(SPIXF_RAM)
+    MXC_GPIO_Config_SPIXF(&gpio_cfg_spixf_ram);
+#else
     MXC_GPIO_Config(&gpio_cfg_spixf);
+#endif
+#endif
 
     return MXC_SPIXF_RevA_Init((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
                                (mxc_spixfm_reva_regs_t *)MXC_SPIXFM, cmdval, frequency);
@@ -59,7 +106,6 @@ void MXC_SPIXF_Shutdown(void)
     MXC_SPIXF_RevA_Shutdown((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXFC); // SPIXFC
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
-    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP); // XIP ICACHE
 }
 
 void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
@@ -68,6 +114,11 @@ void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds
     MXC_SPIXF_RevA_IOCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, sclk_ds, ss_ds, sdio_ds, pupdctrl);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_Clocks(uint32_t len, uint8_t deass)
 {
     return MXC_SPIXF_RevA_Clocks((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -75,6 +126,11 @@ int MXC_SPIXF_Clocks(uint32_t len, uint8_t deass)
                                  (mxc_spixfc_fifo_reva_regs_t *)MXC_SPIXFC_FIFO, len, deass);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_Transaction(mxc_spixf_req_t *req)
 {
     return MXC_SPIXF_RevA_Transaction((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -125,6 +181,11 @@ int MXC_SPIXF_GetFlags(void)
 
 //Low level
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetMode(mxc_spixf_mode_t mode)
 {
     return MXC_SPIXF_RevA_SetMode((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -142,6 +203,11 @@ int MXC_SPIXF_SetSSPolActiveHigh(void)
                                              (mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetSSPolActiveLow(void)
 {
     return MXC_SPIXF_RevA_SetSSPolActiveLow((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -153,6 +219,11 @@ int MXC_SPIXF_GetSSPolarity(void)
     return MXC_SPIXF_RevA_GetSSPolarity((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetSPIFrequency(unsigned int hz)
 {
     return MXC_SPIXF_RevA_SetSPIFrequency((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -184,6 +255,11 @@ uint32_t MXC_SPIXF_GetSPIFrequencyWrite(void)
     return MXC_SPIXF_RevA_GetSPIFrequencyWrite((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetSSActiveTime(mxc_spixf_ssact_t ssact)
 {
     return MXC_SPIXF_RevA_SetSSActiveTime((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -195,6 +271,11 @@ mxc_spixf_ssact_t MXC_SPIXF_GetSSActiveTime(void)
     return MXC_SPIXF_RevA_GetSSActiveTime((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetSSInactiveTime(mxc_spixf_ssiact_t ssiact)
 {
     return MXC_SPIXF_RevA_SetSSInactiveTime((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -206,6 +287,11 @@ mxc_spixf_ssiact_t MXC_SPIXF_GetSSInactiveTime(void)
     return MXC_SPIXF_RevA_GetSSInactiveTime((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetCmdWidth(mxc_spixf_spiwidth_t width)
 {
     return MXC_SPIXF_RevA_SetCmdWidth((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, width);
@@ -216,6 +302,11 @@ mxc_spixf_spiwidth_t MXC_SPIXF_GetCmdWidth(void)
     return MXC_SPIXF_RevA_GetCmdWidth((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetAddrWidth(mxc_spixf_spiwidth_t width)
 {
     return MXC_SPIXF_RevA_SetAddrWidth((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, width);
@@ -226,6 +317,11 @@ mxc_spixf_spiwidth_t MXC_SPIXF_GetAddrWidth(void)
     return MXC_SPIXF_RevA_GetAddrWidth((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetDataWidth(mxc_spixf_spiwidth_t width)
 {
     return MXC_SPIXF_RevA_SetDataWidth((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, width);
@@ -241,6 +337,11 @@ int MXC_SPIXF_Set4ByteAddr(void)
     return MXC_SPIXF_RevA_Set4ByteAddr((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_Set3ByteAddr(void)
 {
     return MXC_SPIXF_RevA_Set3ByteAddr((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
@@ -251,6 +352,11 @@ unsigned int MXC_SPIXF_GetBytesPerAddr(void)
     return MXC_SPIXF_RevA_GetBytesPerAddr((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetModeClk(uint8_t mdclk)
 {
     return MXC_SPIXF_RevA_SetModeClk((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, mdclk);
@@ -261,6 +367,11 @@ uint8_t MXC_SPIXF_GetModeClk(void)
     return MXC_SPIXF_RevA_GetModeClk((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetCmdValue(uint8_t cmdval)
 {
     return MXC_SPIXF_RevA_SetCmdValue((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, cmdval);
@@ -306,6 +417,11 @@ uint8_t MXC_SPIXF_GetBBDataInputValue(void)
     return MXC_SPIXF_RevA_GetBBDataInputValue((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetModeData(uint16_t data)
 {
     return MXC_SPIXF_RevA_SetModeData((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -323,6 +439,11 @@ int MXC_SPIXF_SetSCKInverted(void)
                                          (mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetSCKNonInverted(void)
 {
     return MXC_SPIXF_RevA_SetSCKNonInverted((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -334,6 +455,11 @@ int MXC_SPIXF_GetSCKInverted(void)
     return MXC_SPIXF_RevA_GetSCKInverted((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SCKFeedbackEnable(void)
 {
     return MXC_SPIXF_RevA_SCKFeedbackEnable((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -496,16 +622,31 @@ int MXC_SPIXF_TXFIFOIsEnabled(void)
     return MXC_SPIXF_RevA_IsEnabled((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_Enable(void)
 {
     return MXC_SPIXF_RevA_Enable((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_Disable(void)
 {
     return MXC_SPIXF_RevA_Disable((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_IsEnabled(void)
 {
     return MXC_SPIXF_RevA_IsEnabled((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
@@ -566,6 +707,11 @@ uint8_t MXC_SPIXF_GetPuPdCtrl(void)
     return MXC_SPIXF_RevA_GetPuPdCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_SetBusIdle(unsigned int busidle)
 {
     return MXC_SPIXF_RevA_SetBusIdle((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, busidle);

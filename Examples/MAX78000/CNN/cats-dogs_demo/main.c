@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -80,8 +67,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #ifdef BOARD_FTHR_REVA
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 const char classes[CNN_NUM_OUTPUTS][10] = { "Cat", "Dog" };
@@ -164,9 +151,7 @@ static uint8_t *rx_data = NULL;
 void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
 {
     // TFT DMA
-    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
-    }
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {}
 
     MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
     MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
@@ -199,9 +184,7 @@ void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
 /* **************************************************************************** */
 void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
 {
-    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
-    }
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {}
 
     if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
         MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
@@ -413,8 +396,10 @@ int main(void)
     Camera_Power(POWER_ON);
     //MXC_Delay(300000);
     printf("\n\nCats-vs-Dogs Feather Demo\n");
-#else
+#elif defined(BOARD_EVKIT_V1)
     printf("\n\nCats-vs-Dogs Evkit Demo\n");
+#else
+    printf("\n\nCats-vs-Dogs CAM02 Demo\n");
 #endif
 
     /* Enable cache */
@@ -476,7 +461,8 @@ int main(void)
 
 #ifdef BOARD_EVKIT_V1
     camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow
-#else
+#endif
+#ifdef BOARD_FTHR_REVA
     camera_write_reg(0x11, 0x0); // set camera clock prescaller to prevent streaming overflow
 #endif
 
@@ -487,11 +473,13 @@ int main(void)
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 55, 50, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
     TFT_Print(buff, 55, 90, font_1, snprintf(buff, sizeof(buff), "Cats-vs-Dogs Demo"));
-    TFT_Print(buff, 30, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 20, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
+#if defined(BOARD_EVKIT_V1) || defined(BOARD_FTHR_REVA)
     printf("********** Press PB1(SW1) to capture an image **********\r\n");
     while (!PB_Get(0)) {}
+#endif
 
 #ifdef TFT_ENABLE
     MXC_TFT_ClearScreen();
@@ -579,9 +567,12 @@ int main(void)
 
 #ifdef ASCII_ART
         asciiart((uint8_t *)input_0);
-        printf("********** Press PB1(SW1) to capture an image **********\r\n");
 #endif
+
+#if defined(BOARD_EVKIT_V1) || defined(BOARD_FTHR_REVA)
+        printf("********** Press PB1(SW1) to capture an image **********\r\n");
         while (!PB_Get(0)) {}
+#endif
     }
 
     return 0;

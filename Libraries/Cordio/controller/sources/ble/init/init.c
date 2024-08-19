@@ -147,10 +147,14 @@ void LlInitLlInit(void)
   #endif
 
   #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    #ifdef INIT_CENTRAL
-      LlExtScanMasterInit();
-      LlExtInitMasterInit();
-      LlPhyMasterInit();
+    #if defined(INIT_CENTRAL) 
+    
+      #if defined(INIT_EXTENDED) 
+        LlExtScanMasterInit();
+        LlExtInitMasterInit();
+        LlPhyMasterInit();
+      #endif
+      
       #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
         LlCisMasterInit();
         LlBisMasterInit();
@@ -165,8 +169,11 @@ void LlInitLlInit(void)
       #endif
     #endif
 
-    #ifdef INIT_PERIPHERAL
+    #if defined(INIT_PERIPHERAL)
+
+    #if defined(INIT_EXTENDED)
       LlExtAdvSlaveInit();
+    #endif
       LlPhySlaveInit();
       #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
         LlCisSlaveInit();

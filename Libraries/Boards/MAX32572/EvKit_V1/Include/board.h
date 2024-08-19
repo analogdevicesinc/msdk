@@ -1,36 +1,21 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2017-07-17 18:10:38 -0500 (Mon, 17 Jul 2017) $
- * $Revision: 28913 $
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -54,12 +39,12 @@ extern "C" {
 #ifdef LED_OFF
 #undef LED_OFF
 #endif
-#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_OFF 0 /// Override inactive state of LEDs
 
 #ifdef LED_ON
 #undef LED_ON
 #endif
-#define LED_ON 0 /// Override active state of LEDs
+#define LED_ON 1 /// Override active state of LEDs
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
@@ -69,14 +54,15 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#ifndef MX25_BAUD
-#define MX25_BAUD 3000000
-#endif
-// #define MX25_SPI                    MXC_SPIXC
-// #define MX25_SSEL                   0
-// // #define SPI_CHAR_BITS               8
+#define EXT_FLASH_SPIXFC_BAUD 3000000
+#define EXT_FLASH_SPIXFM_BAUD 24000000
 
-// const spixc_cfg_t mx25_spixc_cfg;
+#define SPIXFC_CMD_VAL 0x0B
+#define SPIXFM_BUS_IDLE_VAL 0x1000
+
+#define TS_I2C MXC_I2C0
+#define TS_I2C_FREQ MXC_I2C_STD_MODE
+#define TS_I2C_TARGET_ADDR 0x48
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -104,40 +90,35 @@ int Console_Shutdown(void);
 int Console_PrepForSleep(void);
 
 /**
- * \brief   Initialize the SPI peripheral to use for MX25
-  * \returns #E_NO_ERROR if everything is successful
+ * @brief      Writes data to external flash.
+ * @note       This function must be executed from RAM.
+ * @param      address  Address in external flash to start writing from.
+ * @param      length   Number of bytes to be written.
+ * @param      buffer   Pointer to data to be written to external flash.
+ * @return     #EF_E_SUCCESS If function is successful.
+ * @note       make sure to disable SFCC and interrupts; before running this function
  */
-int MX25_Board_Init(void);
+int MXC_Ext_Write(uint32_t address, uint32_t length, uint8_t *buffer);
 
 /**
- * \brief   Translation function to implement SPI Read transaction
- * @param   read        Pointer to where master will store data.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * @param   width       spi_width_t for how many data lines to use
- * \returns #E_NO_ERROR if successful, !=0 otherwise
+ * @brief      Reads data from external flash
+ * @note       This function must be executed from RAM.
+ * @param[in]  address  The address to read from
+ * @param      buffer   The buffer to read the data into
+ * @param[in]  len      The length of the buffer
+ * @return     #EF_E_SUCCESS If function is successful.
+ * @note       make sure to disable SFCC and interrupts; before running this function
  */
-
-int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
-/**
- * \brief   Translation function to implement SPI Write transaction
- * @param   write       Pointer to data master will write.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * @param   width       spi_width_t for how many data lines to use
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-
-int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert,
-                     mxc_spixf_width_t width);
+int MXC_Ext_Read(int address, uint8_t *buffer, int len);
 
 /**
- * \brief   Send clocks on SCLK.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * \returns #E_NO_ERROR if successful, !=0 otherwise
+ * @brief      Erases the sector of external flash at the specified address.
+ * @note       This function must be executed from RAM.
+ * @param      address  Any address within the sector to erase.
+ * @return     #EF_E_SUCCESS If function is successful.
+ * @note       make sure to disable SFCC and interrupts; before running this function
  */
-int MX25_Clock(unsigned len, unsigned deassert);
+int MXC_Ext_SectorErase(int address);
 
 #ifdef __cplusplus
 }

@@ -4,41 +4,25 @@
  *             Secure Digital High Capacity (SDHC) peripheral module.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2017-03-01 09:46:57 -0600 (Wed, 01 Mar 2017) $
- * $Revision: 26777 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_SDHC_INCLUDE_SDHC_LIB_H_
 #define LIBRARIES_SDHC_INCLUDE_SDHC_LIB_H_
@@ -51,6 +35,17 @@
 #include "mxc_sys.h"
 #include "sdhc.h"
 #include "sdhc_resp_regs.h"
+
+#ifndef SDHC_CLK_FREQ
+/**
+ * @brief SDHC target clock frequency.
+ * @details Max freq. is limited by GCR register to be @ref SystemCoreClock / 2 or @ref SystemCoreClock / 4.
+ * This field is used as a target for the SDHC peripheral's internal clock divider.
+ * R/W reliability issues can sometimes be eliminated by reducing the clock frequency, which is a good first step for troubleshooting.
+ */
+#define SDHC_CLK_FREQ 40000000
+#endif
+
 
 /**
  * @ingroup sdhc
@@ -91,7 +86,7 @@ int MXC_SDHC_Lib_SetRCA(void);
 int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd);
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
+unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
 
 /* ************************************************************************** */
 unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd);
@@ -128,7 +123,10 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
 
 /* ************************************************************************** */
 int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
-
+/* ************************************************************************** */
+void MXC_SDHC_Set_Default_DataWidth(mxc_sdhc_data_width width);
+/* ************************************************************************** */
+mxc_sdhc_data_width MXC_SDHC_Get_Default_DataWidth(void);
 
 /**@} end of group sdhc */
 

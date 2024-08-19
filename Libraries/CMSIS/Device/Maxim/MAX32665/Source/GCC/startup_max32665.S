@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -202,17 +189,18 @@ __isr_vector:
     .long    WDT2_IRQHandler               /* 0x61  0x0184  97: Watchdog Timer 2 */
     .long    ECC_IRQHandler                /* 0x62  0x0188  98: Error Correction */
     .long    DVS_IRQHandler                /* 0x63  0x018C  99: DVS Controller */
-    .long    SIMO_IRQHandler               /* 0x64 0x0190  100: SIMO Controller */
-    .long    SCA_IRQHandler                /* 0x65  0x0194  101: SCA */
-    .long    AUDIO_IRQHandler              /* 0x66  0x0198  102: Audio subsystem */
-    .long    FLC1_IRQHandler               /* 0x67  0x019C  103: Flash Control 1 */
-    .long    RSV88_IRQHandler              /* 0x68  0x01A0  104: UART 3 */
-    .long    RSV89_IRQHandler              /* 0x69  0x01A4  105: UART 4 */
-    .long    RSV90_IRQHandler              /* 0x6A  0x01A8  106: UART 5 */
-    .long    RSV91_IRQHandler              /* 0x6B  0x01AC  107: Camera IF */
-    .long    RSV92_IRQHandler              /* 0x6C  0x01B0  108: I3C */ 
-    .long    HTMR0_IRQHandler              /* 0x6D  0x01B4  109: HTmr */
-    .long    HTMR1_IRQHandler              /* 0x6E  0x01B8  109: HTmr */
+    .long    SIMO_IRQHandler               /* 0x64  0x0190 100: SIMO Controller */
+    .long    SCA_IRQHandler                /* 0x65  0x0194 101: SCA */
+    .long    AUDIO_IRQHandler              /* 0x66  0x0198 102: Audio subsystem */
+    .long    FLC1_IRQHandler               /* 0x67  0x019C 103: Flash Control 1 */
+    .long    RSV88_IRQHandler              /* 0x68  0x01A0 104: Reserved */
+    .long    RSV89_IRQHandler              /* 0x69  0x01A4 105: Reserved */
+    .long    RSV90_IRQHandler              /* 0x6A  0x01A8 106: Reserved */
+    .long    RSV91_IRQHandler              /* 0x6B  0x01AC 107: Reserved */
+    .long    RSV92_IRQHandler              /* 0x6C  0x01B0 108: Reserved */ 
+    .long    HTMR0_IRQHandler              /* 0x6D  0x01B4 109: HTmr */
+    .long    HTMR1_IRQHandler              /* 0x6E  0x01B8 110: HTmr */
+
     .text   
     .thumb
     .thumb_func
@@ -220,7 +208,6 @@ __isr_vector:
     .globl   Reset_Handler
     .type    Reset_Handler %function
 Reset_Handler:
-
 
 #ifdef  ECC_INIT_ATSTARTUP
     //
@@ -503,16 +490,16 @@ ecc_init_exit:
     def_irq_handler    WDT2_IRQHandler               /* 0x61  0x0184  97: Watchdog Timer 2 */
     def_irq_handler    ECC_IRQHandler                /* 0x62  0x0188  98: Error Correction */
     def_irq_handler    DVS_IRQHandler                /* 0x63  0x018C  99: DVS Controller */
-    def_irq_handler    SIMO_IRQHandler               /* 0x64 0x0190  100: SIMO Controller */
-    def_irq_handler    SCA_IRQHandler                /* 0x65  0x0194  101: SCA */ /* @TODO: Is this correct? */
-    def_irq_handler    AUDIO_IRQHandler              /* 0x66  0x0198  102: Audio subsystem */
-    def_irq_handler    FLC1_IRQHandler               /* 0x67  0x019C  103: Flash Control 1 */
-    def_irq_handler    RSV88_IRQHandler              /* 0x68  0x01A0  104: UART 3 */
-    def_irq_handler    RSV89_IRQHandler              /* 0x69  0x01A4  105: UART 4 */
-    def_irq_handler    RSV90_IRQHandler              /* 0x6A  0x01A8  106: UART 5 */
-    def_irq_handler    RSV91_IRQHandler              /* 0x6B  0x01AC  107: Camera IF */
-    def_irq_handler    RSV92_IRQHandler              /* 0x6C  0x01B0  108: I3C */ 
-    def_irq_handler    HTMR0_IRQHandler              /* 0x6D  0x01B4  109: HTmr */
-    def_irq_handler    HTMR1_IRQHandler              /* 0x6E  0x01B8  109: HTmr */
+    def_irq_handler    SIMO_IRQHandler               /* 0x64  0x0190 100: SIMO Controller */
+    def_irq_handler    SCA_IRQHandler                /* 0x65  0x0194 101: SCA */ /* @TODO: Is this correct? */
+    def_irq_handler    AUDIO_IRQHandler              /* 0x66  0x0198 102: Audio subsystem */
+    def_irq_handler    FLC1_IRQHandler               /* 0x67  0x019C 103: Flash Control 1 */
+    def_irq_handler    RSV88_IRQHandler              /* 0x68  0x01A0 104: Reserved */
+    def_irq_handler    RSV89_IRQHandler              /* 0x69  0x01A4 105: Reserved */
+    def_irq_handler    RSV90_IRQHandler              /* 0x6A  0x01A8 106: Reserved */
+    def_irq_handler    RSV91_IRQHandler              /* 0x6B  0x01AC 107: Reserved */
+    def_irq_handler    RSV92_IRQHandler              /* 0x6C  0x01B0 108: Reserved */ 
+    def_irq_handler    HTMR0_IRQHandler              /* 0x6D  0x01B4 109: HTmr */
+    def_irq_handler    HTMR1_IRQHandler              /* 0x6E  0x01B8 110: HTmr */
 
     .end

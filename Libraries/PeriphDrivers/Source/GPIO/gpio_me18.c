@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -151,6 +138,19 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     // Initialize callback function pointers
     MXC_GPIO_Init(1 << port);
 
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
+    // Configure the vssel
+    if (port < 4) {
+        error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
+
     // Configure alternate function
     if (port < 4) {
         error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
@@ -249,19 +249,23 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         }
     }
 
-    // Configure the vssel
-    if (port < 4) {
-        return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    // Configure the drive strength
+    if (cfg->func == MXC_GPIO_FUNC_IN) {
+        return E_NO_ERROR;
+    } else {
+        return MXC_GPIO_SetDriveStrength(gpio, cfg->drvstr, cfg->mask);
     }
-
-    return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        return GPIO4_DATAIN_MASK(mask);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_IN_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1);
+        return ((gpio40 | gpio41) & mask);
     }
 
     return MXC_GPIO_RevA_InGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -293,7 +297,11 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     if (port == MXC_GPIO4) {
-        return GPIO4_DATAOUT_GET_MASK(mask);
+        uint32_t gpio40 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >>
+                          MXC_F_MCR_GPIO4_CTRL_P40_DO_POS;
+        uint32_t gpio41 = (MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >>
+                          (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1);
+        return ((gpio40 | gpio41) & mask);
     }
 
     return MXC_GPIO_RevA_OutGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -426,9 +434,29 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 {
+    // GPIO Port 4 not a wakeup source. Return 0.
+    //  Can't return error code (negative values) due to return type.
     if (port == MXC_GPIO4) {
-        return E_NOT_SUPPORTED;
+        return 0;
     }
 
     return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
+}
+
+/* ************************************************************************** */
+int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t drvstr, uint32_t mask)
+{
+    return MXC_GPIO_RevA_SetDriveStrength((mxc_gpio_reva_regs_t *)port, drvstr, mask);
+}
+
+/* ************************************************************************** */
+void MXC_GPIO_SetConfigLock(mxc_gpio_config_lock_t locked)
+{
+    MXC_GPIO_Common_SetConfigLock(locked);
+}
+
+/* ************************************************************************** */
+mxc_gpio_config_lock_t MXC_GPIO_GetConfigLock(void)
+{
+    return MXC_GPIO_Common_GetConfigLock();
 }

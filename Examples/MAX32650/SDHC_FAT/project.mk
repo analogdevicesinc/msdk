@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -20,3 +20,8 @@ SBT=0
 
 # Enable the SDHC library
 LIB_SDHC=1
+# Use FatFS R0.15
+FATFS_VERSION = ff15
+
+# Enable CLI Library
+LIB_CLI=1

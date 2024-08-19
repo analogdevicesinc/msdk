@@ -4,43 +4,28 @@
  *             Secure Digital High Capacity (SDHC) peripheral module.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2017-03-01 09:46:57 -0600 (Wed, 01 Mar 2017) $
- * $Revision: 26777 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
@@ -105,6 +90,9 @@
 /* **** Globals **** */
 int card_rca;
 mxc_sdhc_lib_card_type card_type = CARD_NONE;
+mxc_sdhc_csd_regs_t g_csd;
+bool g_csd_is_cached = false;
+static mxc_sdhc_data_width default_data_width = MXC_SDHC_LIB_SINGLE_DATA;
 
 /* **** Functions **** */
 
@@ -142,28 +130,48 @@ int MXC_SDHC_Lib_SetRCA()
 /* ************************************************************************** */
 int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd)
 {
-    mxc_sdhc_cmd_cfg_t cmd_cfg;
     int result;
 
-    cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
-    cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
-    cmd_cfg.callback = NULL;
-    cmd_cfg.arg_1 = card_rca;
-    cmd_cfg.command = MXC_SDHC_LIB_CMD9;
+    /* 
+    TODO: We cache the CSD because there seems to be some issues
+        with reading out the CSD after R/W sequences to the card.  We need
+        to investigate this further.
+    */
 
-    if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) == E_NO_ERROR) {
-    MXC_SDHC_Get_Response128((unsigned char *)csd->array);
+    if (g_csd_is_cached) {
+        *csd = g_csd;
+        result = E_NO_ERROR;
+    } else {
+        mxc_sdhc_cmd_cfg_t cmd_cfg;
+
+        cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
+        cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
+        cmd_cfg.callback = NULL;
+        cmd_cfg.arg_1 = card_rca;
+        cmd_cfg.command = MXC_SDHC_LIB_CMD9;
+
+        if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) == E_NO_ERROR) {
+            MXC_SDHC_Get_Response128((unsigned char *)g_csd.array);
+            g_csd_is_cached = true;
+            *csd = g_csd;
+        }
     }
 
     return result;
 }
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
+unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
 {
     unsigned int size = csd->csd.c_size;
 
-    return (size*(512*1024));
+    return ((unsigned long long)(size+1))*((unsigned long long)512*1024);
+}
+
+/* ************************************************************************** */
+unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd)
+{
+    return csd->csd.c_size;
 }
 
 /* ************************************************************************** */
@@ -229,6 +237,8 @@ int MXC_SDHC_Lib_SetBusWidth(mxc_sdhc_data_width bus_width)
     uint32_t card_status;
     int result;
 
+    
+
     cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
     cmd_cfg.callback = NULL;
 
@@ -280,6 +290,9 @@ int MXC_SDHC_Lib_InitCard(int retries)
     int err;
     int cmd0 = 1;
     uint32_t response;
+
+    g_csd_is_cached = false;
+    // Reset CSD cache so that we read CSD at least once on init.
 
     card_type = CARD_NONE;
 
@@ -407,6 +420,19 @@ int MXC_SDHC_Lib_InitCard(int retries)
         return err;
     }
 
+    err = MXC_SDHC_Lib_GetCSD(&g_csd);
+    if (err != E_NO_ERROR)
+        return err;
+
+    // Calculate clk div to achieve target SDHC clk.
+    // First, there is a GCR register setting to determine the input clock to the peripheral.
+    // This varies between micros, so a native implementation for each one is maintained in
+    // sdhc_mexx.c
+    unsigned int sdhc_input_clk_freq = MXC_SDHC_Get_Input_Clock_Freq();
+    MXC_ASSERT(sdhc_input_clk_freq >= SDHC_CLK_FREQ);
+    unsigned int sdhc_clk_div = sdhc_input_clk_freq / (2 * SDHC_CLK_FREQ);
+    MXC_SDHC_Set_Clock_Config(sdhc_clk_div);
+
     return E_NO_ERROR;
 }
 
@@ -421,6 +447,9 @@ int MXC_SDHC_Lib_Prepare_Trans(mxc_sdhc_data_width width)
     mxc_sdhc_state state;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
     int result;
+
+    
+
 
     cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
     cmd_cfg.arg_1 = 0;
@@ -476,6 +505,8 @@ int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt, 
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
+    
+
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
     return result;
@@ -504,6 +535,9 @@ int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt, m
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
+    
+
+
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
     return result;
@@ -531,6 +565,7 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
 {
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
+
 
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
@@ -563,6 +598,8 @@ int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int c
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
+    
+
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
         return E_BUSY;
@@ -587,4 +624,15 @@ int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int c
 
     return MXC_SDHC_SendCommandAsync(&cmd_cfg);
 }
+void MXC_SDHC_Set_Default_DataWidth(mxc_sdhc_data_width width)
+{
+    MXC_ASSERT(width == MXC_SDHC_LIB_SINGLE_DATA || width == MXC_SDHC_LIB_QUAD_DATA);
+    default_data_width = width;
+}
+
+mxc_sdhc_data_width MXC_SDHC_Get_Default_DataWidth(void)
+{
+    return default_data_width;
+}
+
 /**@} end of group sdhc */

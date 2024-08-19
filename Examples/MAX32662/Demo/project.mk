@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -20,3 +20,5 @@ endif
 
 IPATH += resources
 VPATH += resources/tft_demo
+
+FONTS = LiberationSans16x16

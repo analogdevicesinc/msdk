@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -47,10 +34,17 @@
 /* **** Definitions **** */
 
 /* ************************************************************************** */
-int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
+int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
+                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)
 {
     int spi_num;
+
+    // Remap input parameters for v1 implementation.
+    int masterMode = controller_target;
+    int quadModeUsed = if_mode;
+    int numSlaves = numTargets;
+    int ssPolarity = ts_active_pol_mask;
+    int hz = freq;
 
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
@@ -409,34 +403,19 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
     spi_num = MXC_SPI_GET_IDX(req->spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (req->txData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+    switch (spi_num) {
+    case 0:
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+    case 1:
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-        }
-    }
-
-    if (req->rxData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
-
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_SPI_RevA1_MasterTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,
@@ -463,36 +442,20 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
     spi_num = MXC_SPI_GET_IDX(req->spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (req->txData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+    switch (spi_num) {
+    case 0:
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+    case 1:
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
-        }
-    }
-
-    if (req->rxData != NULL) {
-        switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
-
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-            break;
-        }
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
     return MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, reqselTx, reqselRx,
@@ -512,4 +475,142 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi)
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
 {
     MXC_SPI_RevA1_AsyncHandler((mxc_spi_reva_regs_t *)spi);
+}
+
+/* ** SPI v2 functions to prevent build errors ** */
+
+int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma_tx, bool use_dma_rx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_tscontrol_t MXC_SPI_GetTSControl(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetFrameSize(mxc_spi_regs_t *spi, int frame_size)
+{
+    return MXC_SPI_SetDataSize(spi, frame_size);
+}
+
+int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_GetDataSize(spi);
+}
+
+int MXC_SPI_SetInterface(mxc_spi_regs_t *spi, mxc_spi_interface_t mode)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_interface_t MXC_SPI_GetInterface(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetDummyTX(mxc_spi_regs_t *spi, uint16_t tx_value)
+{
+    return MXC_SPI_SetDefaultTXData(spi, tx_value);
+}
+
+/* ** DMA-Specific Functions ** */
+
+int MXC_SPI_DMA_Init(mxc_spi_regs_t *spi, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+bool MXC_SPI_DMA_GetInitialized(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_dma_rx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+/* ** Transaction Functions ** */
+
+int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
+{
+    return MXC_SPI_MasterTransaction(req);
+}
+
+int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
+{
+    return MXC_SPI_MasterTransactionAsync(req);
+}
+
+int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
+{
+    return MXC_SPI_MasterTransactionDMA(req);
+}
+
+int MXC_SPI_TargetTransaction(mxc_spi_req_t *req)
+{
+    return MXC_SPI_SlaveTransaction(req);
+}
+
+int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
+{
+    return MXC_SPI_SlaveTransactionAsync(req);
+}
+
+int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
+{
+    return MXC_SPI_SlaveTransactionDMA(req);
+}
+
+/* ** Handler Functions ** */
+
+void MXC_SPI_Handler(mxc_spi_regs_t *spi)
+{
+    MXC_SPI_AsyncHandler(spi);
+}
+
+void MXC_SPI_DMA_TX_Handler(mxc_spi_regs_t *spi)
+{
+    return;
+}
+
+void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi)
+{
+    return;
 }

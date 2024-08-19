@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -55,6 +42,11 @@
 
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MXC_DELAY_MSEC(1)
+
+// DAP Lock macros
+#define INFOBLOCK_DAP_LOCK_OFFSET 0x30
+#define DAP_LOCK_SEQUENCE_01 0x5A5AA5A5
+#define DAP_LOCK_SEQUENCE_23 0xFFFFFFFF
 
 /* **** Globals **** */
 
@@ -313,6 +305,25 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 }
 
 /* ************************************************************************** */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
+{
+    /* Return if this setting is already current */
+    if (div == MXC_SYS_GetClockDiv()) {
+        return;
+    }
+
+    MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_PSC, div);
+
+    SystemCoreClockUpdate();
+}
+
+/* ************************************************************************** */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
+{
+    return (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_PSC);
+}
+
+/* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
     /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 for the rstr1 register. */
@@ -325,4 +336,44 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         while (MXC_GCR->rst0 & (0x1 << reset)) {}
     }
 }
+
+/* ************************************************************************** */
+int MXC_SYS_LockDAP_Permanent(void)
+{
+#ifdef DEBUG
+    // Locking the DAP is not supported while in DEBUG.
+    // To use this function, build for release ("make release")
+    // or set DEBUG = 0
+    // (see https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-tables)
+    return E_NOT_SUPPORTED;
+#else
+    int err;
+    uint32_t info_blk_addr;
+    uint32_t lock_sequence[4];
+
+    // Infoblock address to write lock sequence to
+    info_blk_addr = MXC_INFO_MEM_BASE + INFOBLOCK_DAP_LOCK_OFFSET;
+
+    // Set lock sequence
+    lock_sequence[0] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[1] = DAP_LOCK_SEQUENCE_01;
+    lock_sequence[2] = DAP_LOCK_SEQUENCE_23;
+    lock_sequence[3] = DAP_LOCK_SEQUENCE_23;
+
+    // Initialize FLC
+    MXC_FLC_Init();
+
+    // Unlock infoblock
+    MXC_FLC_UnlockInfoBlock(info_blk_addr);
+
+    // Write DAP lock sequence to infoblock
+    err = MXC_FLC_Write128(info_blk_addr, lock_sequence);
+
+    // Re-lock infoblock
+    MXC_FLC_LockInfoBlock(info_blk_addr);
+
+    return err;
+#endif
+}
+
 /**@} end of mxc_sys */

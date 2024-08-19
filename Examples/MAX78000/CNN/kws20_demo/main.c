@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -81,6 +68,8 @@
 #define WUT_ENABLE // enables WUT timer
 #define WUT_USEC 380 // continuous WUT duration close to I2S polling time in usec
 //#define ENERGY            // if enabled, turn off LED2, toggle LED1 for 10sec for energy measurements on Power monitor (System Power)
+#define SAMPLE_RATE 16000
+#define EXT_I2S_FREQ 12288000
 
 #if SLEEP_MODE == 2 // need WakeUp Timer (WUT) for deepsleep (LPM)
 #ifndef WUT_ENABLE
@@ -91,13 +80,13 @@
 #ifdef SEND_MIC_OUT_SDCARD
 #undef WUT_ENABLE
 #warning !!! Disabling WUT_ENABLE option when SD card is enabled !!!
-#ifdef ENABLE_TFT
-#undef ENABLE_TFT
+#ifdef TFT_ENABLE
+#undef TFT_ENABLE
 #warning !!! TFT cannot be used when SD card is enabled  !!!
 #endif
 #endif
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 #define DISPLAY_AUDIO // displays audio waveform on TFT
 #endif
 
@@ -150,7 +139,6 @@
 
 #if defined(ENABLE_CODEC_MIC)
 #define PMIC_AUDIO_I2C MXC_I2C1
-#define CODEC_MCLOCK 12288000
 #endif
 
 /* DEBUG Print */
@@ -245,10 +233,11 @@ uint8_t MicReadChunk(uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit();
+void I2SInit(void);
+static void codec_init(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void);
 void TFT_Print(char *str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
@@ -259,14 +248,14 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #endif
 #ifdef BOARD_FTHR_REVA
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
-#endif //#ifdef ENABLE_TFT
+#endif //#ifdef TFT_ENABLE
 
 int32_t tot_usec = -100000;
 #ifdef WUT_ENABLE
-void WUT_IRQHandler()
+void WUT_IRQHandler(void)
 {
     i2s_flag = 1;
     MXC_WUT_IntClear();
@@ -369,10 +358,7 @@ int main(void)
 
 #ifdef ENABLE_MIC_PROCESSING
 #if defined(ENABLE_CODEC_MIC)
-    int err;
-    if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK, 1)) != E_NO_ERROR) {
-        PR_DEBUG("\nError in max9867_init: %d\n", err);
-    }
+    codec_init();
 #elif defined(BOARD_FTHR_REVA)
     /* Enable microphone power on Feather board only if codec is not enabled */
     Microphone_Power(POWER_ON);
@@ -448,7 +434,7 @@ int main(void)
     I2SInit();
 #endif
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     MXC_Delay(500000);
     PR_DEBUG("\n*** Init TFT ***\n");
 #ifdef BOARD_EVKIT_V1
@@ -477,7 +463,7 @@ int main(void)
 #else
 
     MXC_Delay(SEC(2)); // wait for debugger to connect
-#endif // #ifdef ENABLE_TFT
+#endif // #ifdef TFT_ENABLE
 
     PR_INFO("\n*** READY ***\n");
 #ifdef WUT_ENABLE
@@ -900,7 +886,7 @@ int main(void)
     LED_Off(LED2);
     PR_DEBUG("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
 
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     TFT_End(wordCounter);
 #endif
 
@@ -910,7 +896,25 @@ int main(void)
 /* **************************************************************************** */
 
 #ifdef ENABLE_MIC_PROCESSING
-void I2SInit()
+#ifdef ENABLE_CODEC_MIC
+static void codec_init(void)
+{
+    int err;
+    if (MXC_I2C_Init(PMIC_AUDIO_I2C, 1, 0) != E_NO_ERROR)
+        printf("Error initializing I2C controller");
+    else
+        printf("I2C initialized successfully \n");
+
+    MXC_I2C_SetFrequency(PMIC_AUDIO_I2C, CODEC_I2C_FREQ);
+    if ((err = max9867_init(PMIC_AUDIO_I2C, EXT_I2S_FREQ, 1)) != E_NO_ERROR) {
+        PR_DEBUG("\nError in max9867_init: %d\n", err);
+    }
+
+    if (max9867_enable_record(1) != E_NO_ERROR)
+        printf("Error enabling record path");
+}
+#endif
+void I2SInit(void)
 {
     mxc_i2s_req_t req;
     int32_t err;
@@ -921,8 +925,10 @@ void I2SInit()
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
-    req.wordSize = MXC_I2S_DATASIZE_WORD;
+    req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
+    req.bitsWord = 32;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
@@ -930,13 +936,15 @@ void I2SInit()
     req.stereoMode = MXC_I2S_MONO_LEFT_CH;
     req.bitOrder = MXC_I2S_MSB_FIRST;
     /* I2S clock = PT freq / (2*(req.clkdiv + 1)) */
-    /* I2S sample rate = I2S clock/64 = 16kHz */
-    req.clkdiv = 5;
+    /* I2S sample rate = I2S clock/(2*wsize) = 16kHz */
+    req.clkdiv = MXC_I2S_CalculateClockDiv(SAMPLE_RATE, req.wordSize, EXT_I2S_FREQ);
     req.rawData = NULL;
     req.txData = NULL;
     req.rxData = i2s_rx_buffer;
     req.length = I2S_RX_BUFFER_SIZE;
-
+#ifdef ENABLE_CODEC_MIC
+    req.channelMode = MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS;
+#endif
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         PR_DEBUG("\nError in I2S_Init: %d\n", err);
 
@@ -961,7 +969,7 @@ void I2SInit()
 /* **************************************************************************** */
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob)
 {
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
     char buff[TFT_BUFF_SIZE];
 #endif
     int32_t temp[NUM_OUTPUTS];
@@ -986,7 +994,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         if (top == 0) {
             *out_class = max_index;
             *out_prob = 100.0 * max / 32768.0;
-#ifndef ENABLE_TFT
+#ifndef TFT_ENABLE
             break;
         }
 
@@ -1194,11 +1202,7 @@ uint8_t MicReadChunk(uint16_t *avg)
         sample = (int32_t)MXC_I2S->fifoch0;
 
         /* The actual value is 18 MSB of 32-bit word */
-#ifdef ENABLE_CODEC_MIC
-        temp = sample >> 19; // adjusted for codec
-#else
         temp = sample >> 14;
-#endif
 
         /* Remove DC from microphone signal */
         sample = HPF((int16_t)temp); // filter needs about 1K sample to converge
@@ -1299,7 +1303,7 @@ int16_t HPF(int16_t input)
 }
 
 /************************************************************************************/
-#ifdef ENABLE_TFT
+#ifdef TFT_ENABLE
 void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];
@@ -1311,7 +1315,7 @@ void TFT_Intro(void)
     TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "detected:"));
     TFT_Print(buff, 35, 160, font_1, snprintf(buff, sizeof(buff), "0...9, up, down, left, right"));
     TFT_Print(buff, 35, 185, font_1, snprintf(buff, sizeof(buff), "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 20, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 
     while (!PB_Get(0)) {}
 
@@ -1345,6 +1349,6 @@ void TFT_End(uint16_t words)
     MXC_TFT_ClearScreen();
     TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
     TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
-    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 0, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif

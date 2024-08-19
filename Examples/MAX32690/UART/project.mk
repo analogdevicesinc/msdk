@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -17,3 +17,7 @@ SBT=0
 ifeq ($(BOARD),FTHR)
 $(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
 endif
+
+
+METHOD ?= INTERRUPT
+PROJ_CFLAGS += -D$(METHOD)

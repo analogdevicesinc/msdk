@@ -4,14 +4,14 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 
 ## Quick Links
 
-* [VSCode-Maxim Github](https://github.com/Analog-Devices-MSDK/VSCode-Maxim)
-* [Wiki](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/wiki)
+* [VSCode-Maxim Github](https://github.com/analogdevicesinc/VSCode-Maxim)
+* [Wiki](https://github.com/analogdevicesinc/VSCode-Maxim/wiki)
   * If it's not in the readme, check the wiki.
   * If it's not in the wiki, open a ticket!
 
 ## Introduction
 
-VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/Analog-Devices-MSDK/msdk) and the [MAX-series](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.
+VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/analogdevicesinc/msdk) and the [MAX-series](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.
 
 The following features are supported:
 
@@ -91,7 +91,7 @@ Ex:
 
 ### Where to Find Projects
 
-The [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
+The [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
 
 Additionally, empty project templates and a drag-and-drop folder for "injecting" a VSCode-Maxim project can be found under `Tools/VSCode-Maxim` in the MaximSDK installation.
 
@@ -413,7 +413,7 @@ For example, if I wanted to enable hardware floating-point acceleration for my p
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 

@@ -60,6 +60,8 @@ lctrExtScanCtx_t lctrMstExtInitTbl[LCTR_SCAN_PHY_TOTAL];
 /*! \brief      Extended initiator control block. */
 lctrExtInitCtrlBlk_t lctrMstExtInit;
 
+
+
 /*************************************************************************************************/
 /*!
  *  \brief      Master initiate reset handler.
@@ -561,7 +563,9 @@ void LctrMstExtInitDefaults(void)
   memset(&lctrMstExtInit, 0, sizeof(lctrMstExtInit));
 
   lmgrCb.numExtScanPhys = 1;
+
   lctrMstExtInit.enaPhys = 1 << LCTR_SCAN_PHY_1M;
+
 }
 
 /*************************************************************************************************/

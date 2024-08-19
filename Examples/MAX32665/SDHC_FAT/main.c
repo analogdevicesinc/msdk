@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -98,7 +85,7 @@ void generateMessage(unsigned length)
     }
 }
 
-int mount()
+int mount(void)
 {
     fs = &fs_obj;
     if ((err = f_mount(fs, "", 1)) != FR_OK) { //Mount the default drive to fs now
@@ -114,7 +101,7 @@ int mount()
     return err;
 }
 
-int umount()
+int umount(void)
 {
     if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
@@ -126,7 +113,7 @@ int umount()
     return err;
 }
 
-int formatSDHC()
+int formatSDHC(void)
 {
     printf("\n\n*****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****\n");
     printf("**************PRESS ANY KEY TO ABORT**************\n\n");
@@ -138,7 +125,9 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
+    MKFS_PARM format_options = { .fmt = FM_ANY };
+
+    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
@@ -147,7 +136,7 @@ int formatSDHC()
 
     mount();
 
-    if ((err = f_setlabel("MAXIM")) != FR_OK) {
+    if ((err = f_setlabel("Analog")) != FR_OK) {
         printf("Error setting drive label: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
     }
@@ -157,8 +146,11 @@ int formatSDHC()
     return err;
 }
 
-int getSize()
+int getSize(void)
 {
+    QWORD disksize = 0;
+    QWORD available_bytes = 0;
+
     if (!mounted) {
         mount();
     }
@@ -170,14 +162,17 @@ int getSize()
 
     sectors_total = (fs->n_fatent - 2) * fs->csize;
     sectors_free = clusters_free * fs->csize;
+    disksize = (QWORD)(sectors_total / 2) *
+               (QWORD)(1024); // for cards over 3GB, we need QWORD to hold size
+    available_bytes = (QWORD)(sectors_free / 2) * (QWORD)(1024);
 
-    printf("Disk Size: %u bytes\n", sectors_total / 2);
-    printf("Available: %u bytes\n", sectors_free / 2);
+    printf("Disk Size: %llu bytes\n", disksize);
+    printf("Available: %llu bytes\n", available_bytes);
 
     return err;
 }
 
-int ls()
+int ls(void)
 {
     if (!mounted) {
         mount();
@@ -210,7 +205,7 @@ int ls()
     return err;
 }
 
-int createFile()
+int createFile(void)
 {
     unsigned int length = 128;
 
@@ -249,7 +244,7 @@ int createFile()
     return err;
 }
 
-int appendFile()
+int appendFile(void)
 {
     unsigned int length = 0;
 
@@ -288,7 +283,7 @@ int appendFile()
     return err;
 }
 
-int mkdir()
+int mkdir(void)
 {
     if (!mounted) {
         mount();
@@ -315,7 +310,7 @@ int mkdir()
     return err;
 }
 
-int cd()
+int cd(void)
 {
     if (!mounted) {
         mount();
@@ -335,13 +330,14 @@ int cd()
         return err;
     }
 
+    // save directory
     printf("Changed to %s\n", directory);
     f_getcwd(cwd, sizeof(cwd));
 
     return err;
 }
 
-int delete ()
+int delete (void)
 {
     if (!mounted) {
         mount();
@@ -363,9 +359,13 @@ int delete ()
     return err;
 }
 
-int example()
+int example(void)
 {
     unsigned int length = 256;
+
+    if (!mounted) {
+        mount();
+    }
 
     if ((err = formatSDHC()) != FR_OK) {
         printf("Error Formatting SD Card: %s\n", FF_ERRORS[err]);
@@ -379,7 +379,7 @@ int example()
     }
     printf("SD Card Opened!\n");
 
-    if ((err = f_setlabel("MAXIM")) != FR_OK) {
+    if ((err = f_setlabel("Analog")) != FR_OK) {
         printf("Error setting drive label: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -426,10 +426,10 @@ int example()
         return err;
     }
 
-    err = f_stat("MaximSDHC", &fno);
+    err = f_stat("AnalogSDHC", &fno);
     if (err == FR_NO_FILE) {
         printf("Creating Directory...\n");
-        if ((err = f_mkdir("MaximSDHC")) != FR_OK) {
+        if ((err = f_mkdir("AnalogSDHC")) != FR_OK) {
             printf("Error creating directory: %s\n", FF_ERRORS[err]);
             f_mount(NULL, "", 0);
             return err;
@@ -437,21 +437,21 @@ int example()
     }
 
     printf("Renaming File...\n");
-    if ((err = f_rename("0:HelloWorld.txt", "0:MaximSDHC/HelloMaxim.txt")) !=
+    if ((err = f_rename("0:HelloWorld.txt", "0:AnalogSDHC/HelloAnalog.txt")) !=
         FR_OK) { //cr: clearify 0:file notation
         printf("Error moving file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
     }
 
-    if ((err = f_chdir("/MaximSDHC")) != FR_OK) {
+    if ((err = f_chdir("/AnalogSDHC")) != FR_OK) {
         printf("Error in chdir: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
     }
 
     printf("Attempting to read back file...\n");
-    if ((err = f_open(&file, "HelloMaxim.txt", FA_READ)) != FR_OK) {
+    if ((err = f_open(&file, "HelloAnalog.txt", FA_READ)) != FR_OK) {
         printf("Error opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -480,14 +480,16 @@ int example()
     if ((err = f_mount(NULL, "", 0)) != FR_OK) {
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
         return err;
+    } else {
+        mounted = 0;
     }
-
     return 0;
 }
 
 /******************************************************************************/
 int main(void)
 {
+    MXC_Delay(MXC_DELAY_SEC(2));
     mxc_sdhc_cfg_t cfg;
 
     FF_ERRORS[0] = "FR_OK";
@@ -511,7 +513,7 @@ int main(void)
     FF_ERRORS[18] = "FR_TOO_MANY_OPEN_FILES";
     FF_ERRORS[19] = "FR_INVALID_PARAMETER";
     srand(12347439);
-    int run = 1, input = -1;
+    int run = 1, input = 0;
 
     printf("\n\n***** " TOSTRING(TARGET) " SDHC FAT Filesystem Example *****\n");
 
@@ -553,15 +555,6 @@ int main(void)
         printf("Card type: SDHC\n");
     } else {
         printf("Card type: MMC/eMMC\n");
-    }
-
-    /* Configure for fastest possible clock, must not exceed 52 MHz for eMMC */
-    if (SystemCoreClock > 96000000) {
-        printf("SD clock ratio (at card) 4:1\n");
-        MXC_SDHC_Set_Clock_Config(1);
-    } else {
-        printf("SD clock ratio (at card) 2:1\n");
-        MXC_SDHC_Set_Clock_Config(0);
     }
 
     while (run) {
@@ -627,11 +620,13 @@ int main(void)
             err = -1;
             break;
         }
+        /*
         if (err >= 0 && err <= 20) {
             printf("Function Returned with code: %d\n", FF_ERRORS[err]);
         } else {
             printf("Function Returned with code: %d\n", err);
         }
+        */
         MXC_TMR_Delay(MXC_TMR0, MXC_DELAY_MSEC(500));
     }
     printf("End of example, please try to read the card.\n");

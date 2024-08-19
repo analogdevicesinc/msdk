@@ -7,7 +7,7 @@ This example uses the I2C Master to read/write from/to the I2C Slave.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -21,7 +21,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Expected Output
 ```
-******** I2C SLAVE ASYNC TRANSACTION TEST *********
+******** I2C Master-Slave Transaction Demo *********
 
 This example uses one I2C peripheral as a master to
 read and write to another I2C which acts as a slave.
@@ -29,6 +29,8 @@ read and write to another I2C which acts as a slave.
 You will need to connect P0.8->P0.2 (SCL) and
 P0.9->P0.3 (SDA).
 
+-->I2C Master Initialization Complete
+-->I2C Slave Initialization Complete
 
 -->Writing data to slave, and reading the data back
 

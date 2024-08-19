@@ -2,38 +2,26 @@
  * @file    smon_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SMON Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup smon_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -207,11 +195,14 @@ typedef struct {
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS             4 /**< INTSCTRL_DFD_NMI_EN Position */
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS)) /**< INTSCTRL_DFD_NMI_EN Mask */
 
-#define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS           8 /**< INTSCTRL_DFD_STDBY_EN Position */
-#define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN               ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS)) /**< INTSCTRL_DFD_STDBY_EN Mask */
+#define MXC_F_SMON_INTSCTRL_TAMPOUT_EN_POS             7 /**< INTSCTRL_TAMPOUT_EN Position */
+#define MXC_F_SMON_INTSCTRL_TAMPOUT_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_TAMPOUT_EN_POS)) /**< INTSCTRL_TAMPOUT_EN Mask */
 
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS             16 /**< INTSCTRL_LOTEMP_SEL Position */
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS)) /**< INTSCTRL_LOTEMP_SEL Mask */
+
+#define MXC_F_SMON_INTSCTRL_HITEMP_SEL_POS             17 /**< INTSCTRL_HITEMP_SEL Position */
+#define MXC_F_SMON_INTSCTRL_HITEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_HITEMP_SEL_POS)) /**< INTSCTRL_HITEMP_SEL Mask */
 
 #define MXC_F_SMON_INTSCTRL_VCORELO_EN_POS             18 /**< INTSCTRL_VCORELO_EN Position */
 #define MXC_F_SMON_INTSCTRL_VCORELO_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VCORELO_EN_POS)) /**< INTSCTRL_VCORELO_EN Mask */
@@ -410,17 +401,17 @@ typedef struct {
  * @brief    Security Monitor Status Register.
  * @{
  */
-#define MXC_F_SMON_SECST_EXTSCTRL_ST_POS               0 /**< SECST_EXTSCTRL_ST Position */
-#define MXC_F_SMON_SECST_EXTSCTRL_ST                   ((uint32_t)(0x1UL << MXC_F_SMON_SECST_EXTSCTRL_ST_POS)) /**< SECST_EXTSCTRL_ST Mask */
+#define MXC_F_SMON_SECST_EXTSCTRL_POS                  0 /**< SECST_EXTSCTRL Position */
+#define MXC_F_SMON_SECST_EXTSCTRL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECST_EXTSCTRL_POS)) /**< SECST_EXTSCTRL Mask */
 
-#define MXC_F_SMON_SECST_INTSCTRL_ST_POS               1 /**< SECST_INTSCTRL_ST Position */
-#define MXC_F_SMON_SECST_INTSCTRL_ST                   ((uint32_t)(0x1UL << MXC_F_SMON_SECST_INTSCTRL_ST_POS)) /**< SECST_INTSCTRL_ST Mask */
+#define MXC_F_SMON_SECST_INTSCTRL_POS                  1 /**< SECST_INTSCTRL Position */
+#define MXC_F_SMON_SECST_INTSCTRL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECST_INTSCTRL_POS)) /**< SECST_INTSCTRL Mask */
 
-#define MXC_F_SMON_SECST_SECALM_ST_POS                 2 /**< SECST_SECALM_ST Position */
-#define MXC_F_SMON_SECST_SECALM_ST                     ((uint32_t)(0x1UL << MXC_F_SMON_SECST_SECALM_ST_POS)) /**< SECST_SECALM_ST Mask */
+#define MXC_F_SMON_SECST_SECALM_POS                    2 /**< SECST_SECALM Position */
+#define MXC_F_SMON_SECST_SECALM                        ((uint32_t)(0x1UL << MXC_F_SMON_SECST_SECALM_POS)) /**< SECST_SECALM Mask */
 
-#define MXC_F_SMON_SECST_MEUCTRL_ST_POS                7 /**< SECST_MEUCTRL_ST Position */
-#define MXC_F_SMON_SECST_MEUCTRL_ST                    ((uint32_t)(0x1UL << MXC_F_SMON_SECST_MEUCTRL_ST_POS)) /**< SECST_MEUCTRL_ST Mask */
+#define MXC_F_SMON_SECST_MEUCTRL_POS                   7 /**< SECST_MEUCTRL Position */
+#define MXC_F_SMON_SECST_MEUCTRL                       ((uint32_t)(0x1UL << MXC_F_SMON_SECST_MEUCTRL_POS)) /**< SECST_MEUCTRL Mask */
 
 /**@} end of group SMON_SECST_Register */
 

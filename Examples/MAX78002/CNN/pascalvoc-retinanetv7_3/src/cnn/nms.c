@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -38,6 +25,7 @@
 #include "nms.h"
 #include "rtc.h"
 #include "tft_utils.h"
+#include "mxc_delay.h"
 
 #define SQUARE(x) ((x) * (x))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
@@ -108,16 +96,6 @@ uint32_t utils_get_time_ms(void)
     return ms;
 }
 
-static uint8_t signed_to_unsigned(int8_t val)
-{
-    uint8_t value;
-    if (val < 0) {
-        value = ~val + 1;
-        return (128 - value);
-    }
-    return val + 128;
-}
-
 int get_prior_idx(int os_idx, int ar_idx, int scale_idx, int rel_idx)
 {
     int prior_idx = 0;
@@ -182,7 +160,7 @@ void calc_softmax(int32_t *prior_cls_vals, int prior_idx)
 
     for (ch = 0; ch < (NUM_CLASSES); ++ch) {
         prior_cls_softmax[prior_idx * NUM_CLASSES + ch] =
-            (uint8_t)(256. * exp(prior_cls_vals[ch] / fp_scale) / sum);
+            (uint8_t)((double)256. * exp(prior_cls_vals[ch] / fp_scale) / sum);
     }
 }
 
@@ -330,8 +308,8 @@ void get_cxcy(float *cxcy, int prior_idx)
     cx = rel_idx % dims_x[scale_idx];
     cxcy[0] = (float)((float)(cx + 0.5) / dims_x[scale_idx]);
     cxcy[1] = (float)((float)(cy + 0.5) / dims_y[scale_idx]);
-    cxcy[2] = obj_scales[os_idx] * scales[scale_idx] * sqrt(ars[ar_idx]);
-    cxcy[3] = obj_scales[os_idx] * scales[scale_idx] / sqrt(ars[ar_idx]);
+    cxcy[2] = obj_scales[os_idx] * scales[scale_idx] * (float)sqrt(ars[ar_idx]);
+    cxcy[3] = obj_scales[os_idx] * scales[scale_idx] / (float)sqrt(ars[ar_idx]);
 
     for (i = 0; i < 4; ++i) {
         cxcy[i] = MAX(0.0, cxcy[i]);
@@ -348,8 +326,8 @@ void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy)
 
     cxcy[0] = priors_cxcy[0] + gcxgcy[0] * priors_cxcy[2] / 10;
     cxcy[1] = priors_cxcy[1] + gcxgcy[1] * priors_cxcy[3] / 10;
-    cxcy[2] = exp(gcxgcy[2] / 5) * priors_cxcy[2];
-    cxcy[3] = exp(gcxgcy[3] / 5) * priors_cxcy[3];
+    cxcy[2] = (float)exp(gcxgcy[2] / 5) * priors_cxcy[2];
+    cxcy[3] = (float)exp(gcxgcy[3] / 5) * priors_cxcy[3];
 }
 
 void cxcy_to_xy(float *xy, float *cxcy)

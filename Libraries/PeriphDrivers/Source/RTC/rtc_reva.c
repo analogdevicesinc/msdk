@@ -1,33 +1,21 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * is proprietary to Analog Devices, Inc. and its licensors.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -47,7 +35,7 @@
 #include "pwrseq_regs.h"
 #endif
 
-void MXC_RTC_Wait_BusyToClear(void)
+static void MXC_RTC_RevA_waitBusyToClear(void)
 {
     while (MXC_RTC_REVA_IS_BUSY) {}
 }
@@ -62,44 +50,46 @@ int MXC_RTC_RevA_GetBusyFlag(mxc_rtc_reva_regs_t *rtc)
 
 int MXC_RTC_RevA_EnableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
-    mask &= (MXC_RTC_INT_EN_LONG | MXC_RTC_INT_EN_SHORT | MXC_RTC_INT_EN_READY);
+    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE |
+             MXC_F_RTC_REVA_CTRL_RDY_IE);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
         return E_BAD_PARAM;
     }
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl |= mask;
 
     /* If TOD and SSEC interrupt enable, check busy after CTRL register write*/
-    mask &= ~MXC_RTC_INT_EN_READY;
+    mask &= ~MXC_F_RTC_REVA_CTRL_RDY_IE;
 
     if (mask) {
-        MXC_RTC_Wait_BusyToClear();
+        MXC_RTC_RevA_waitBusyToClear();
     }
     return E_SUCCESS;
 }
 
 int MXC_RTC_RevA_DisableInt(mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
-    mask &= (MXC_RTC_INT_EN_LONG | MXC_RTC_INT_EN_SHORT | MXC_RTC_INT_EN_READY);
+    mask &= (MXC_F_RTC_REVA_CTRL_TOD_ALARM_IE | MXC_F_RTC_REVA_CTRL_SSEC_ALARM_IE |
+             MXC_F_RTC_REVA_CTRL_RDY_IE);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
         return E_BAD_PARAM;
     }
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl &= ~mask;
 
     /* If TOD and SSEC interrupt enable, check busy after CTRL register write*/
-    mask &= ~MXC_RTC_INT_EN_READY;
+    mask &= ~MXC_F_RTC_REVA_CTRL_RDY_IE;
 
     if (mask) {
-        MXC_RTC_Wait_BusyToClear();
+        MXC_RTC_RevA_waitBusyToClear();
     }
     return E_SUCCESS;
 }
@@ -136,12 +126,12 @@ int MXC_RTC_RevA_Start(mxc_rtc_reva_regs_t *rtc)
 
     rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN; // Allow writing to registers
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     // Can only write if WE=1 and BUSY=0
     rtc->ctrl |= MXC_F_RTC_REVA_CTRL_EN; // setting RTCE = 1
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN; // Prevent Writing...
 
@@ -156,12 +146,12 @@ int MXC_RTC_RevA_Stop(mxc_rtc_reva_regs_t *rtc)
 
     rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN; // Allow writing to registers
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     // Can only write if WE=1 and BUSY=0
     rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_EN; // setting RTCE = 0
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN; // Prevent Writing...
 
@@ -176,23 +166,23 @@ int MXC_RTC_RevA_Init(mxc_rtc_reva_regs_t *rtc, uint32_t sec, uint32_t ssec)
 
     rtc->ctrl = MXC_F_RTC_REVA_CTRL_WR_EN; //  Allow Writes
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl = MXC_RTC_REVA_CTRL_RESET_DEFAULT; // Start with a Clean Register
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN; // Set Write Enable, allow writing to reg.
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ssec = ssec;
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->sec = sec;
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN; // Prevent Writing...
 
@@ -208,41 +198,41 @@ int MXC_RTC_RevA_SquareWave(mxc_rtc_reva_regs_t *rtc, mxc_rtc_reva_sqwave_en_t s
 
     rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN; // Allow writing to registers
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     if (sqe == MXC_RTC_REVA_SQUARE_WAVE_ENABLED) {
         if (ft == MXC_RTC_F_32KHZ) { // if 32KHz output is selected...
             rtc->oscctrl |= MXC_F_RTC_REVA_OSCCTRL_SQW_32K; // Enable 32KHz wave
 
-            MXC_RTC_Wait_BusyToClear();
+            MXC_RTC_RevA_waitBusyToClear();
 
             rtc->ctrl |= MXC_F_RTC_REVA_CTRL_SQW_EN; // Enable output on the pin
         } else { // if 1Hz, 512Hz, 4KHz output is selected
             rtc->oscctrl &=
                 ~MXC_F_RTC_REVA_OSCCTRL_SQW_32K; // Must make sure that the 32KHz is disabled
 
-            MXC_RTC_Wait_BusyToClear();
+            MXC_RTC_RevA_waitBusyToClear();
 
             rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_SQW_SEL;
 
-            MXC_RTC_Wait_BusyToClear();
+            MXC_RTC_RevA_waitBusyToClear();
 
             rtc->ctrl |= (MXC_F_RTC_REVA_CTRL_SQW_EN | ft); // Enable Sq. wave,
         }
 
-        MXC_RTC_Wait_BusyToClear();
+        MXC_RTC_RevA_waitBusyToClear();
 
         rtc->ctrl |= MXC_F_RTC_REVA_CTRL_EN; // Enable Real Time Clock
     } else { // Turn off the square wave output on the pin
         rtc->oscctrl &=
             ~MXC_F_RTC_REVA_OSCCTRL_SQW_32K; // Must make sure that the 32KHz is disabled
 
-        MXC_RTC_Wait_BusyToClear();
+        MXC_RTC_RevA_waitBusyToClear();
 
         rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_SQW_EN; // No sq. wave output
     }
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN; // Disable Writing to register
 
@@ -257,11 +247,11 @@ int MXC_RTC_RevA_Trim(mxc_rtc_reva_regs_t *rtc, int8_t trim)
 
     rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN;
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     MXC_SETFIELD(rtc->trim, MXC_F_RTC_REVA_TRIM_TRIM, trim << MXC_F_RTC_REVA_TRIM_TRIM_POS);
 
-    MXC_RTC_Wait_BusyToClear();
+    MXC_RTC_RevA_waitBusyToClear();
 
     rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN; // Disable Writing to register
 
@@ -270,12 +260,14 @@ int MXC_RTC_RevA_Trim(mxc_rtc_reva_regs_t *rtc, int8_t trim)
 
 int MXC_RTC_RevA_GetFlags(mxc_rtc_reva_regs_t *rtc)
 {
-    return rtc->ctrl & (MXC_RTC_INT_FL_LONG | MXC_RTC_INT_FL_SHORT | MXC_RTC_INT_FL_READY);
+    return rtc->ctrl & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM |
+                        MXC_F_RTC_REVA_CTRL_RDY);
 }
 
 int MXC_RTC_RevA_ClearFlags(mxc_rtc_reva_regs_t *rtc, int flags)
 {
-    rtc->ctrl &= ~(flags & (MXC_RTC_INT_FL_LONG | MXC_RTC_INT_FL_SHORT | MXC_RTC_INT_FL_READY));
+    rtc->ctrl &= ~(flags & (MXC_F_RTC_REVA_CTRL_TOD_ALARM | MXC_F_RTC_REVA_CTRL_SSEC_ALARM |
+                            MXC_F_RTC_REVA_CTRL_RDY));
 
     return E_SUCCESS;
 }
@@ -347,7 +339,7 @@ int MXC_RTC_RevA_GetSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *sec)
 
 int MXC_RTC_RevA_GetTime(mxc_rtc_reva_regs_t *rtc, uint32_t *sec, uint32_t *subsec)
 {
-    uint32_t temp_sec = 0;
+    int32_t temp_sec = 0;
 
     if (sec == NULL || subsec == NULL) {
         return E_NULL_PTR;

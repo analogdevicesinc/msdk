@@ -1162,7 +1162,6 @@ bool_t lctrMstDiscoverRxAuxAdvPktHandler(BbOpDesc_t *pOp, const uint8_t *pAdvBuf
         if (lctrMstExtScanIsr.advAReceived == TRUE)
         {
           pExtScanCtx->extAdvHdr.extHdrFlags |= LL_EXT_HDR_ADV_ADDR_BIT;
-
         }
         pExtScanCtx->extAdvHdr.advAddr = lctrMstExtScanIsr.advA;
         lctrMstExtScanIsr.advHdr.txAddrRnd = lctrMstExtScanIsr.advARand;

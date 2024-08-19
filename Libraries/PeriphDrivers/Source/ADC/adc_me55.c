@@ -1,67 +1,89 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
-
 #include <stdio.h>
+#include "adc.h"
+#include "adc_regs.h"
+#include "adc_reva.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "mxc_lock.h"
-#include "adc.h"
-#include "adc_regs.h"
-#include "adc_reva.h"
 #include "mcr_regs.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
+
+static void initGPIOForChannel(mxc_adc_chsel_t channel)
+{
+    switch (channel) {
+    case MXC_ADC_CH_0:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain0);
+        break;
+
+    case MXC_ADC_CH_1:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain1);
+        break;
+
+    case MXC_ADC_CH_2:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain2);
+        break;
+
+    case MXC_ADC_CH_3:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain3);
+        break;
+
+    case MXC_ADC_CH_4:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain4);
+        break;
+
+    case MXC_ADC_CH_5:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain5);
+        break;
+
+    case MXC_ADC_CH_6:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain6);
+        break;
+
+    case MXC_ADC_CH_7:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain7);
+        break;
+
+    default:
+        break;
+    }
+}
 
 int MXC_ADC_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
-
-    //turn on charge pump enable (chip specific)
-    MXC_ADC->ctrl |= MXC_F_ADC_CTRL_CHGPUMP_PWR;
+#endif
 
     return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t *)MXC_ADC);
 }
 
 int MXC_ADC_Shutdown(void)
 {
-    // Disable ADC Charge Pump (chip specific)
-    MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CHGPUMP_PWR;
-
     MXC_ADC_RevA_Shutdown((mxc_adc_reva_regs_t *)MXC_ADC);
 
-    //Disable ADC peripheral clock
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ADC);
 
     return E_NO_ERROR;
@@ -118,13 +140,12 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
     //enable clock
     MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t *)MXC_ADC, hz);
 
-    return E_NO_ERROR;
+    return MXC_ADC_GetConversionSpeed();
 }
 
 int MXC_ADC_GetConversionSpeed(void)
 {
     uint8_t divider = (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_ADCFRQ) >> MXC_F_GCR_PCLKDIV_ADCFRQ_POS;
-
     return MXC_ADC_RevA_GetConversionSpeed(divider);
 }
 
@@ -170,6 +191,8 @@ int MXC_ADC_GetMonitorLowThreshold(mxc_adc_monitor_t monitor)
 
 void MXC_ADC_SetMonitorChannel(mxc_adc_monitor_t monitor, mxc_adc_chsel_t channel)
 {
+    initGPIOForChannel(channel);
+
     MXC_ADC_RevA_SetMonitorChannel((mxc_adc_reva_regs_t *)MXC_ADC, monitor, channel);
 }
 
@@ -190,16 +213,22 @@ void MXC_ADC_DisableMonitorAsync(mxc_adc_monitor_t monitor)
 
 int MXC_ADC_StartConversion(mxc_adc_chsel_t channel)
 {
+    initGPIOForChannel(channel);
+
     return MXC_ADC_RevA_StartConversion((mxc_adc_reva_regs_t *)MXC_ADC, channel);
 }
 
 int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t callback)
 {
+    initGPIOForChannel(channel);
+
     return MXC_ADC_RevA_StartConversionAsync((mxc_adc_reva_regs_t *)MXC_ADC, channel, callback);
 }
 
 int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t *data, void (*callback)(int, int))
 {
+    initGPIOForChannel(channel);
+
     return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t *)MXC_ADC, channel, MXC_DMA, data,
                                            callback);
 }
@@ -211,11 +240,15 @@ int MXC_ADC_Handler(void)
 
 int MXC_ADC_Convert(mxc_adc_conversion_req_t *req)
 {
+    initGPIOForChannel(req->channel);
+
     return MXC_ADC_RevA_Convert((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 
 int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t *req)
 {
+    initGPIOForChannel(req->channel);
+
     return MXC_ADC_RevA_ConvertAsync((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 

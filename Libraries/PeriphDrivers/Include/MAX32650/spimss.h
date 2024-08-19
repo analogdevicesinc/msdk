@@ -4,35 +4,22 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -46,6 +33,7 @@
 #include "mxc_pins.h"
 #include "gpio.h"
 #include "spimss_regs.h"
+#include "stdbool.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -95,7 +83,7 @@ typedef void (*mxc_spimss_callback_fn)(mxc_spimss_req_t *req, int error_code);
 struct mxc_spimss_req {
     uint8_t ssel; /**< Not Used*/
     uint8_t deass; /**< Not Used*/
-    const void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
+    void *tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
     void *rx_data; /**< Pointer to a buffer to store data received. NULL if undesired.*/
     mxc_spimss_width_t width; /**< Not Used */
     unsigned len; /**< Number of transfer units to send from the \p tx_data buffer. */
@@ -183,6 +171,65 @@ int MXC_SPIMSS_SlaveTransAsync(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req);
  *             MXC_Error_Codes "error" if unsuccessful.
  */
 int MXC_SPIMSS_AbortAsync(mxc_spimss_req_t *req);
+
+/**
+ * @brief     Execute a master transaction over DMA.
+ * @param     spi   Pointer to spi module.
+ * @param     req   Pointer to spi request.
+ *
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+ */
+int MXC_SPIMSS_MasterTransDMA(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req);
+
+/**
+ * @brief      Enable Disable auto dma handling. If set to true, dma channel for transaction
+ *             is acquired in the MXC_SPIMSS_MasterTransDMA function. Otherwise, user has to set
+ *             tx and rx channel for SPIMSS DMA transaction with MXC_SPIMSS_SetTXDMAChannel and 
+ *             MXC_SPIMSS_SetRXDMAChannel functions.
+ *
+ * @param      spi   Pointer to spi module
+ * @param      enable    Enable Disable auto handler
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+*/
+int MXC_SPIMSS_SetAutoDMAHandlers(mxc_spimss_regs_t *spi, bool enable);
+
+/**
+ * @brief      Set the TX channel id for DMA to be used in SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @param      channel    Id of the channel for TXDma Channel.
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+*/
+int MXC_SPIMSS_SetTXDMAChannel(mxc_spimss_regs_t *spi, unsigned int channel);
+
+/**
+ * @brief      Returns the current TX channel id set for SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @return  \c #TXDMA_ChannelId of the spi module.
+*/
+int MXC_SPIMSS_GetTXDMAChannel(mxc_spimss_regs_t *spi);
+
+/**
+ * @brief      Set the RX channel id for DMA to be used in SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @param      channel    Id of the channel for RXDma Channel.
+ * @return  \c #E_NO_ERROR if successful, @ref
+ *             MXC_Error_Codes "error" if unsuccessful.
+*/
+int MXC_SPIMSS_SetRXDMAChannel(mxc_spimss_regs_t *spi, unsigned int channel);
+
+/**
+ * @brief      Returns the current RX channel id set for SPIMSS DMA transaction.
+ *
+ * @param      spi   Pointer to spi module
+ * @return  \c #RXDMA_ChannelId of the spi module.
+*/
+int MXC_SPIMSS_GetRXDMAChannel(mxc_spimss_regs_t *spi);
 
 /**@} end of group spimss */
 

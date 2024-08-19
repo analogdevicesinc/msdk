@@ -1,42 +1,28 @@
+/******************************************************************************
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ ******************************************************************************/
+
 /**
  * @file    main.c
  * @brief   SPI Controller Demo
- * @details Shows Controller loopback demo for QSPI0
- *          Read the printf() for instructions
+ * @details This example demonstrates the SPI controller loopback transactions.
  */
-
-/******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
 
 /***** Includes *****/
 #include <stdio.h>
@@ -50,24 +36,25 @@
 #include "uart.h"
 #include "spi.h"
 #include "dma.h"
+#include "led.h"
 
 /***** Preprocessors *****/
-#define BLOCKING 1
-#define NON_BLOCKING 0
-#define DMA 0
+#define CONTROLLER_SYNC 0
+#define CONTROLLER_ASYNC 0
+#define CONTROLLER_DMA 1
 
-#define CUSTOM_TARGET 0
-
-#if (!(BLOCKING || NON_BLOCKING || DMA))
-#error "You must set either BLOCKING or NON_BLOCKING or DMA to 1."
+// Preprocessor Error Checking
+#if (!(CONTROLLER_SYNC || CONTROLLER_ASYNC || CONTROLLER_DMA))
+#error "You must set either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA to 1."
 #endif
-#if ((BLOCKING && NON_BLOCKING) || (NON_BLOCKING && DMA) || (DMA && BLOCKING))
-#error "You must select either BLOCKING or NON_BLOCKING or DMA, not all 3."
+#if ((CONTROLLER_SYNC && CONTROLLER_ASYNC) || (CONTROLLER_ASYNC && CONTROLLER_DMA) || \
+     (CONTROLLER_DMA && CONTROLLER_SYNC))
+#error "You must select either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA, not all 3."
 #endif
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5B7 // This is for master mode only...
+#define DATA_VALUE 0xA5B7 // This is for Controller mode only...
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
 
@@ -115,21 +102,20 @@ int main(void)
 {
     int i, j, retVal;
     uint16_t temp;
-    mxc_spi_init_t init;
-    mxc_spi_target_t target;
+    mxc_spi_cfg_t cfg;
 
     printf("\n**************************** SPI CONTROLLER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
     printf("MOSI (P0.21) pins.  Connect these two pins together.\n\n");
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
 
-#if BLOCKING
+#if CONTROLLER_SYNC
     printf("Performing blocking (synchronous) transactions...\n");
 #endif
-#if NON_BLOCKING
+#if CONTROLLER_ASYNC
     printf("Performing non-blocking (asynchronous) transactions...\n");
 #endif
-#if DMA
+#if CONTROLLER_DMA
     printf("Performing transactions with DMA...\n");
 #endif
 
@@ -139,79 +125,68 @@ int main(void)
             tx_data[j] = DATA_VALUE;
         }
 
-        // Initialization Settings.
-        init.spi = SPI;
-        init.freq = SPI_SPEED;
-        init.spi_pins = NULL; // Use default, predefined pins
-        init.mode = MXC_SPI_INTERFACE_STANDARD; // 4-wire
-        init.type = MXC_SPI_TYPE_CONTROLLER;
-        init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
-        init.frame_size = i;
-        init.callback = SPI_Callback;
+        mxc_spi_pins_t spi_pins;
+        // This example enables the TS0 HW pin.
+        spi_pins.ss0 = true; // TS0
+        spi_pins.ss1 = false; // TS1
+        spi_pins.ss2 = false; // TS2
+        spi_pins.vddioh = true;
+        spi_pins.drvstr = MXC_GPIO_DRVSTR_0;
 
-        // Target Select Settings
-#if CUSTOM_TARGET
-        // Example to select a custom target.
-        mxc_gpio_cfg_t target_pins;
-        target_pins.port = MXC_GPIO0;
-        target_pins.mask = MXC_GPIO_PIN_9;
-        target_pins.func = MXC_GPIO_FUNC_OUT;
-        target_pins.pad = MXC_GPIO_PAD_PULL_UP;
-        target_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
-
-        init.ts_control =
-            MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
-        init.target.pins = target_pins;
-        init.target.active_polarity = 0;
-        init.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set SPI pins to VDDIOH (3.3V).
-
-        // Select target for transaction.
-        target.pins = target_pins; // Custom pins
-#else
-        init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // HW will deassert/assert TS pins.
-        init.target.active_polarity = 0;
-        init.target.init_mask = 0x01; // Initialize Target Select 0 pin.
-        init.vssel = MXC_GPIO_VSSEL_VDDIO;
-
-        // Select target for transaction.
-        target.index = 0; // TS0
-#endif
-
-        // DMA Settings.
-#if DMA
-        init.use_dma = true;
-        init.dma = MXC_DMA;
-#else
-        init.use_dma = false;
-#endif
-
-        retVal = MXC_SPI_Init_v2(&init);
+        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0b000,
+                              SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
+            return retVal;
+        }
+
+        // SPI Settings.
+        cfg.spi = SPI;
+        cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
+        cfg.frame_size = i;
+
+        // DMA Settings.
+#if CONTROLLER_DMA
+        cfg.use_dma_tx = true;
+        cfg.use_dma_rx = true;
+        cfg.dma = MXC_DMA;
+#else
+        cfg.use_dma_rx = false;
+        cfg.use_dma_tx = false;
+        cfg.dma = MXC_DMA;
+#endif
+
+        retVal = MXC_SPI_Config(&cfg);
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI CONFIGURATION ERROR\n");
             return retVal;
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         // SPI Request (Callback)
+        mxc_spi_req_t req;
+        req.spi = SPI;
+        req.txData = (uint8_t *)tx_data;
+        req.txLen = DATA_LEN;
+        req.rxData = (uint8_t *)rx_data;
+        req.rxLen = DATA_LEN;
+        req.ssDeassert = 1;
+        req.completeCB = SPI_Callback;
         SPI_FLAG = 1;
 
-#if BLOCKING
-        // Blocking SPI v2 Implementation is Interrupt driven.
-        NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_ControllerTransactionB(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                       DATA_LEN, 1, &target);
+#if CONTROLLER_SYNC
+        MXC_SPI_ControllerTransaction(&req);
 #endif
 
-#if NON_BLOCKING
+#if CONTROLLER_ASYNC
         NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                      DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransactionAsync(&req);
 
         while (SPI_FLAG == 1) {}
 #endif
 
-#if DMA
+#if CONTROLLER_DMA
         TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
         RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
 
@@ -221,14 +196,14 @@ int main(void)
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
 
-        MXC_SPI_ControllerTransactionDMA(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                         DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransactionDMA(&req);
 
         while (SPI_FLAG == 1) {}
 #endif
 
         uint8_t bits = MXC_SPI_GetFrameSize(SPI);
 
+        // Reformat tx_data to match rx_data frame size.
         for (j = 0; j < DATA_LEN; j++) {
             if (bits <= 8) {
                 if (j < (DATA_LEN / 2)) {
@@ -254,6 +229,7 @@ int main(void)
         // Printf needs the Uart turned on since they share the same pins
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
+            LED_On(1);
             return E_COMM_ERR;
         } else {
             printf("-->%2d Bits Transaction Successful\n", i);
@@ -268,5 +244,6 @@ int main(void)
     }
 
     printf("\nExample Complete.\n");
+    LED_On(0);
     return E_NO_ERROR;
 }

@@ -52,8 +52,14 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>AES_KEYGEN</name>
-            <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+            <name>MEU_KEYGEN</name>
+            <description>If set to 1, the TRNG generates the 256-bit AES MEU keys.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>XIP_KEYGEN</name>
+            <description>If set to 1, the TRNG generates the 128-bit QSPI (XIP) keys.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -114,17 +120,17 @@
               <enumeratedValue>
                 <name>RO_0</name>
                 <description>Ring Oscillator 0.</description>
-                <value>0</value>
+                <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>RO_1</name>
                 <description>Ring Oscillator 1.</description>
-                <value>1</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>RO_2</name>
                 <description>Ring Oscillator 2.</description>
-                <value>2</value>
+                <value>4</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>

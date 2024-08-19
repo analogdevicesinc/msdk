@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -79,11 +66,15 @@ void MXC_LP_EnterBackupMode(void)
 
 void MXC_LP_EnterShutDownMode(void)
 {
-    MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
-    MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
+    // TODO(SDK Team): Check this function once SBT is added for MAX32572.
 
-    while (1) {}
-    // Should never reach this line - device will reset on exit from shutdown mode.
+    // MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
+    // MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
+
+    // while (1) {}
+    // // Should never reach this line - device will reset on exit from shutdown mode.
+
+    return;
 }
 
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
@@ -134,21 +125,6 @@ void MXC_LP_PORVCOREoreMonitorDisable(void)
 int MXC_LP_PORVCOREoreMonitorIsEnabled(void)
 {
     return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS);
-}
-
-void MXC_LP_LDOEnable(void)
-{
-    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
-}
-
-void MXC_LP_LDODisable(void)
-{
-    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
-}
-
-int MXC_LP_LDOIsEnabled(void)
-{
-    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_LDO_DIS);
 }
 
 void MXC_LP_FastWakeupEnable(void)
@@ -298,11 +274,6 @@ void MXC_LP_SysRam6LightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM6LS_EN;
 }
 
-void MXC_LP_ICache0LightSleepEnable(void)
-{
-    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICCLS_EN;
-}
-
 void MXC_LP_ICacheXIPLightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICCXIPLS_EN;
@@ -326,6 +297,11 @@ void MXC_LP_ROM0LightSleepEnable(void)
 void MXC_LP_ROM1LightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM1LS_EN;
+}
+
+void MXC_LP_MAALightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_MAALS_EN;
 }
 
 void MXC_LP_SysRam0LightSleepDisable(void)
@@ -363,11 +339,6 @@ void MXC_LP_SysRam6LightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM6LS_EN;
 }
 
-void MXC_LP_ICache0LightSleepDisable(void)
-{
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICCLS_EN;
-}
-
 void MXC_LP_ICacheXIPLightSleepDisable(void)
 {
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICCXIPLS_EN;
@@ -391,6 +362,11 @@ void MXC_LP_ROM0LightSleepDisable(void)
 void MXC_LP_ROM1LightSleepDisable(void)
 {
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM1LS_EN;
+}
+
+void MXC_LP_MAALightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_MAALS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)

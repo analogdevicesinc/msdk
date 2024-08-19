@@ -98,7 +98,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSIACT</name>
+            <name>SSINACT</name>
             <description>Slave Select Inactive Timing.</description>
             <bitOffset>18</bitOffset>
             <bitWidth>2</bitWidth>
@@ -133,13 +133,13 @@
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>CMDVAL</name>
+            <name>CMD_VAL</name>
             <description>Command Value sent to target to initiate fetching from SPI flash.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>CMDWTH</name>
+            <name>CMD_WDTH</name>
             <description>Command Width. Number of data I/O used to send commands.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>2</bitWidth>
@@ -167,7 +167,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ADDR_WIDTH</name>
+            <name>ADDR_WDTH</name>
             <description>Address Width. Number of data I/O used to send address, and mode/dummy clocks.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>2</bitWidth>
@@ -195,7 +195,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DATA_WIDTH</name>
+            <name>DATA_WDTH</name>
             <description>Data Width. Number of data I/O used to receive data.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>2</bitWidth>
@@ -285,13 +285,13 @@
         <addressOffset>0x0C</addressOffset>
         <fields>
           <field>
-            <name>MDDATA</name>
+            <name>DATA</name>
             <description>Mode Data. Specifies the data to send with the Dummy/Mode clocks.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>16</bitWidth>
           </field>
           <field>
-            <name>MDOUT_EN</name>
+            <name>OUT_EN</name>
             <description>Mode Output Enable. Output enable state for each corresponding data bit in MD_DATA. 0: output enable off, I/O is tristate and 1: Output enable on, I/O is driving MD_DATA.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>16</bitWidth>
@@ -304,7 +304,7 @@
         <addressOffset>0x10</addressOffset>
         <fields>
           <field>
-            <name>FB_EN</name>
+            <name>EN</name>
             <description>Enable SCLK feedback mode.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -449,7 +449,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AUTH_DISABLE</name>
+            <name>AUTH_DIS</name>
             <description>Integrity Enable.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>

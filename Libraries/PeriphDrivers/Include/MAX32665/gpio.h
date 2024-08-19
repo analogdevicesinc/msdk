@@ -4,35 +4,22 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -137,6 +124,30 @@ typedef enum {
 } mxc_gpio_vssel_t;
 
 /**
+ * @brief   Enumeration type for drive strength on a given pin.
+ *          This represents what the two GPIO_DS[2] (Drive Strength) 
+ *          registers are set to for a given GPIO pin; NOT the
+ *          drive strength level.
+ *
+ *          For example:
+ *              MXC_GPIO_DRVSTR_0: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_1: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 1
+ *              MXC_GPIO_DRVSTR_2: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_3: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 1
+ *
+ *          Refer to the user guide and datasheet to select the
+ *          appropriate drive strength. Note: the drive strength values
+ *          are not linear, and can vary from pin-to-pin and the state
+ *          of the GPIO pin (alternate function and voltage level).
+ */
+typedef enum {
+    MXC_GPIO_DRVSTR_0, /**< Drive Strength GPIO_DS[2][pin]=0b00 */
+    MXC_GPIO_DRVSTR_1, /**< Drive Strength GPIO_DS[2][pin]=0b01 */
+    MXC_GPIO_DRVSTR_2, /**< Drive Strength GPIO_DS[2][pin]=0b10 */
+    MXC_GPIO_DRVSTR_3, /**< Drive Strength GPIO_DS[2][pin]=0b11 */
+} mxc_gpio_drvstr_t;
+
+/**
  * @brief   Enumeration type for the type of GPIO pad on a given pin.
  */
 typedef enum {
@@ -156,6 +167,7 @@ typedef struct {
     mxc_gpio_func_t func; /**< Function type */
     mxc_gpio_pad_t pad; /**< Pad type */
     mxc_gpio_vssel_t vssel; /**< Voltage select */
+    mxc_gpio_drvstr_t drvstr; /**< Drive Strength select */
 } mxc_gpio_cfg_t;
 
 /**
@@ -176,6 +188,14 @@ typedef enum {
     MXC_GPIO_INT_LOW, /**< Interrupt triggers when level is low */
     MXC_GPIO_INT_BOTH /**< Interrupt triggers on either edge */
 } mxc_gpio_int_pol_t;
+
+/**
+ * @brief   Enumeration type for the pin configuration lock mechanism.
+ */
+typedef enum {
+    MXC_GPIO_CONFIG_UNLOCKED = 0, /**< Allow changing pins' configuration. */
+    MXC_GPIO_CONFIG_LOCKED, /**< Ignore changes to a pin's configuration. */
+} mxc_gpio_config_lock_t;
 
 /* **** Function Prototypes **** */
 
@@ -350,6 +370,29 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
  * @returns    The value of the wake enable register.
  */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
+
+/**
+ * @brief      Set Drive Strength for pins.
+ *
+ * @param      port   The GPIO port.
+ * @param[in]  ds     Drive strength level. Ref /mxc_gpio_ds_t enum type.
+ * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
+ */
+int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t drvstr, uint32_t mask);
+
+/**
+ * @brief      Enables/Disables the lock on all pins' configurations.  If 
+ *             locked, any changes to a pin's configuration made through the
+ *             MXC_GPIO_Config function will be ignored.
+ *
+ * @param      locked  Determines if changes will be allowed. */
+void MXC_GPIO_SetConfigLock(mxc_gpio_config_lock_t locked);
+
+/**
+ * @brief      Reads the current lock state on pin configuration.
+ *
+ * @returns    The lock state. */
+mxc_gpio_config_lock_t MXC_GPIO_GetConfigLock(void);
 
 /**@} end of group gpio */
 

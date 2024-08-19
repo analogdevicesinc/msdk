@@ -35,7 +35,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>INT_EN</name>
+            <name>INTEN</name>
             <description>IRQ Enable.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
@@ -47,7 +47,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>INT_FL</name>
+            <name>INTFL</name>
             <description>IRQ Flag</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>

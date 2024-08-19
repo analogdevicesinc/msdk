@@ -1,61 +1,41 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
-FLASH_MEM_SIZE = _RISCV_FLASH_SIZE - _PAL_NVM_SIZE;
-FLASH_MEM_ORIGIN = _FLASH_SIZE + _FLASH_ORIGIN - _RISCV_FLASH_SIZE - _PAL_NVM_SIZE;
-MAILBOX_ORIGIN = _SRAM_SIZE +_SRAM_ORIGIN - _RISCV_SRAM_SIZE;
-SRAM_MEM_ORIGIN = _SRAM_SIZE +_SRAM_ORIGIN - _RISCV_SRAM_SIZE + _MAILBOX_SIZE*2;
-SRAM_MEM_SIZE =  _RISCV_SRAM_SIZE - _MAILBOX_SIZE*2;
+MSR_DATA_LEN = 0x300;
 
 MEMORY {
-    FLASH      (rx) : ORIGIN = FLASH_MEM_ORIGIN, LENGTH = FLASH_MEM_SIZE
-    PAL_NVM_DB (r)  : ORIGIN = FLASH_MEM_ORIGIN + FLASH_MEM_SIZE, LENGTH = _PAL_NVM_SIZE
-    MAILBOX_0  (rw) : ORIGIN = MAILBOX_ORIGIN, LENGTH = _MAILBOX_SIZE
-    MAILBOX_1  (rw) : ORIGIN = MAILBOX_ORIGIN + _MAILBOX_SIZE, LENGTH = _MAILBOX_SIZE
-    SRAM      (rwx) : ORIGIN = SRAM_MEM_ORIGIN, LENGTH = SRAM_MEM_SIZE
+    SRAM5 (rw) : ORIGIN = 0x20060000, LENGTH = 8K
+    SRAM5_MSRDATA (rw) : ORIGIN = 0x20062000, LENGTH = MSR_DATA_LEN
+    SRAM5_ROMDATA (rw) : ORIGIN = 0x20062000 + MSR_DATA_LEN, LENGTH = 24K - MSR_DATA_LEN
+    SRAM6 (rwx) : ORIGIN = 0x20068000, LENGTH = 16K
+/*    ROM (rx) : ORIGIN = 0x2006C000, LENGTH = 32K */
 }
 
 SECTIONS {
     
     .text :
     {
-        _text = ALIGN(.,13);
+        _text = ALIGN(.,4);
         KEEP(*(.isr_vector))
         KEEP(*(.c_iv))
-        *(.text*)    /* program code */
-
-        *(.srodata*) /* read-only data: "const" */
-        *(.rodata*)  /* read-only data: "const" */
+        *(.text*)  /* program code */
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -63,23 +43,7 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > FLASH
-
-    .mailbox_0 (NOLOAD) :
-    {
-        _mailbox_0 = ALIGN(., 4); 
-        *(.mailbox_0*)           /*Shared memory section*/
-        . = . + _MAILBOX_SIZE;
-        _emailbox_0 = ALIGN(., 4);
-    } > MAILBOX_0
-
-    .mailbox_1 (NOLOAD) :
-    {
-        _mailbox_1 = ALIGN(., 4);
-        *(.mailbox_1*)           /*Shared memory section*/
-        . = . + _MAILBOX_SIZE;
-        _emailbox_1 = ALIGN(., 4);
-    } > MAILBOX_1
+    } > SRAM6
 
     /* short/global data section */
     .sdata :
@@ -92,7 +56,7 @@ SECTIONS {
         _esdata = ALIGN(., 4);
         __sdata_end = .;
     
-    } > SRAM AT>FLASH
+    } > SRAM5
     __load_sdata = LOADADDR(.sdata);
 
     .data :
@@ -101,7 +65,9 @@ SECTIONS {
         __data_start__ = . ;            /* Standard newlib definition. */
     
         *(.data*)           /*read-write initialized data: initialized global variable*/
-        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM3 */
+        *(.sdata*)  /*read-write initialized data: initialized global variable*/
+        *(.srodata*) /* read-only data: "const" */
+        *(.rodata*)  /* read-only data: "const" */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -125,22 +91,22 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-       __data_end__ = . ;                /* Standard newlib definition. */
-    } > SRAM AT>FLASH
+        __data_end__ = . ;                /* Standard newlib definition. */
+    } > SRAM5
     __load_data = LOADADDR(.data);
 
     .sbss :
     {
         . = ALIGN(4);
         __sbss_start = .;                 /* Standard newlib definition. */
-    __sbss_start__ = .;                 /* Standard newlib definition. */
+        __sbss_start__ = .;                /* Standard newlib definition. */
         _sbss = .;
         *(.sbss*)     /*read-write zero initialized data: uninitialzed global variable*/
         *(COMMON)
         _esbss = ALIGN(., 4);
         __sbss_end__ = .;                /* Standard newlib definition. */
         __sbss_end = .;                    /* Standard newlib definition. */
-    } > SRAM
+    } > SRAM5
 
     .bss :
     {
@@ -152,22 +118,12 @@ SECTIONS {
         *(COMMON)
         _ebss = ALIGN(., 4);
         __bss_end__ = .;                /* Standard newlib definition. */
-    __bss_end = .;                    /* Standard newlib definition. */
-     } > SRAM
-
-    .pal_nvm_db :
-    {
-    /* Align to the sector size */
-    . = ALIGN(0x2000);
-    __pal_nvm_db_start__ = .;
-    . = . + _PAL_NVM_SIZE;
-    __pal_nvm_db_end__ = .;
-    } > PAL_NVM_DB
-     
+        __bss_end = .;                    /* Standard newlib definition. */
+     } > SRAM5
 
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */
-    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
+    __StackTop = ORIGIN(SRAM5) + LENGTH(SRAM5);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
 
     /* .stack_dummy section doesn't contains any symbols. It is only
@@ -176,14 +132,14 @@ SECTIONS {
     .stack_dummy (COPY):
     {
         *(.stack*)
-    } > SRAM
+    } > SRAM5
 
     .heap (COPY):
     {
         . = ALIGN(4);
         *(.heap*)
         __HeapLimit = ABSOLUTE(__StackLimit);
-    } > SRAM
+    } > SRAM5
 
     /* init two words preceding const seg to address and length of segment */
     PROVIDE(__stack = __StackTop);

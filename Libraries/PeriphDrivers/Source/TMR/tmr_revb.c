@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -51,6 +38,8 @@ typedef struct {
 } mxc_tmr_revb_clksrc_freq_t;
 
 static mxc_tmr_revb_clksrc_freq_t tmr_clksrc[MXC_CFG_TMR_INSTANCES];
+static bool g_is_clock_locked[MXC_CFG_TMR_INSTANCES] = { [0 ... MXC_CFG_TMR_INSTANCES - 1] =
+                                                             false };
 
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src)
@@ -63,16 +52,8 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
         return E_NULL_PTR;
     }
 
-    uint32_t timerOffset;
-
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
-        timerOffset = TIMER_16B_OFFSET;
-    } else {
-        timerOffset = TIMER_16A_OFFSET;
-    }
-
     // Default 32 bit timer
-    if (cfg->bitMode & (TMR_BIT_MODE_16A | TMR_BIT_MODE_16B)) {
+    if (cfg->bitMode & (MXC_TMR_BIT_MODE_16A | MXC_TMR_BIT_MODE_16B)) {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_CASCADE;
     } else {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_CASCADE;
@@ -81,60 +62,65 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Clear interrupt flag
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 
-    // Set the prescale
-    tmr->ctrl0 |= (cfg->pres << timerOffset);
-
-    // Select clock Source
-    tmr->ctrl1 |= ((clk_src << MXC_F_TMR_REVB_CTRL1_CLKSEL_A_POS) << timerOffset);
+    MXC_TMR_RevB_SetClockSource(tmr, cfg->bitMode, cfg->clock);
+    MXC_TMR_RevB_SetPrescalar(tmr, cfg->bitMode, cfg->pres);
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
-    case TMR_MODE_ONESHOT:
+    case MXC_TMR_MODE_ONESHOT:
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
 
-    case TMR_MODE_CONTINUOUS:
+    case MXC_TMR_MODE_CONTINUOUS:
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
 
-    case TMR_MODE_COUNTER:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_COUNTER:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_CAPTURE:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_CAPTURE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_COMPARE:
+    case MXC_TMR_MODE_COMPARE:
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
 
-    case TMR_MODE_GATED:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_GATED:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_CAPTURE_COMPARE:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_CAPTURE_COMPARE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
         break;
 
-    case TMR_MODE_PWM:
-        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    case MXC_TMR_MODE_DUAL_EDGE:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
+
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
+
+    case MXC_TMR_MODE_PWM:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
 
@@ -143,6 +129,46 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     }
 
     return E_NO_ERROR;
+}
+
+void MXC_TMR_RevB_LockClockSource(mxc_tmr_revb_regs_t *tmr, bool lock)
+{
+    g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)] = lock;
+}
+
+void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                                 uint8_t clk_src)
+{
+    if (g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)])
+        return;
+
+    // Select clock Source
+    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
+    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
+    if (bit_mode == TMR_BIT_MODE_16A || bit_mode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
+    }
+    if (bit_mode == TMR_BIT_MODE_16B || bit_mode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
+    }
+}
+
+void MXC_TMR_RevB_SetPrescalar(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_pres_t prescalar)
+{
+    // Set prescaler
+    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
+    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
+    if (bit_mode == TMR_BIT_MODE_16A || bit_mode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, prescalar);
+    }
+    if (bit_mode == TMR_BIT_MODE_16B || bit_mode == TMR_BIT_MODE_32) {
+        // mxc_tmr_pres_t is for for CLKDIV_A register settings [7:4]
+        // Field positions for CLKDIV_B are Located at [23:20]. Shift 16 more bits.
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (prescalar) << 16);
+    }
 }
 
 void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq)
@@ -179,7 +205,7 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
         return;
     }
 
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         timerOffset = TIMER_16B_OFFSET;
     } else {
         timerOffset = TIMER_16A_OFFSET;
@@ -200,14 +226,6 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 #else
     tmr->ctrl1 |= (MXC_F_TMR_REVB_CTRL1_OUTEN_A << timerOffset);
 #endif
-
-    // If configured as TIMER_16B then enable the interrupt and start the timer
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
-        tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_IE_B;
-
-        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
-        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
-    }
 }
 
 void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
@@ -216,6 +234,8 @@ void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // Stop timer before disable it.
+    MXC_TMR_RevB_Stop(tmr);
     // Disable timer and clear settings
     tmr->ctrl0 = 0;
     while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A) {}
@@ -228,8 +248,20 @@ void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
-    while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
+    /* If a timer's clk is enabled, it's a reliable signal that the
+    clock itself is configured and we should start it.  This check is
+    relevant for dual-mode timer configs
+    */
+
+    if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_A) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
+    }
+
+    if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_B) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
+    }
 }
 
 void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
@@ -238,7 +270,8 @@ void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    tmr->ctrl0 &= ~MXC_F_TMR_REVB_CTRL0_EN_A;
+    // Will stop both timers in a dual-mode config
+    tmr->ctrl0 &= ~(MXC_F_TMR_REVB_CTRL0_EN_A | MXC_F_TMR_REVB_CTRL0_EN_B);
 }
 
 int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
@@ -251,10 +284,28 @@ int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
         return E_BAD_PARAM;
     }
 
-    while (tmr->cnt >= pwm) {}
+    bool timera_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_A;
+    bool timerb_is_running = tmr->ctrl0 & MXC_F_TMR_CTRL0_EN_B;
+
+    if (timera_is_running || timerb_is_running) {
+        MXC_TMR_RevB_ClearFlags(tmr); // Clear flags so we can catch the next one
+        while (!MXC_TMR_RevB_GetFlags(tmr)) {} // Wait for next PWM transition
+        MXC_TMR_RevB_Stop(tmr); // Pause timer
+        MXC_TMR_RevB_SetCount(tmr, 0); // Reset the count
+        MXC_TMR_RevB_ClearFlags(
+            tmr); // Clear flags since app code wants the new PWM transitions set by this function
+    }
 
     tmr->pwm = pwm;
     while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
+
+    if (timera_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A; // Unpause A
+    }
+
+    if (timerb_is_running) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B; // Unpause B
+    }
 
     return E_NO_ERROR;
 }
@@ -350,7 +401,7 @@ void MXC_TMR_RevB_EnableWakeup(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     MXC_ASSERT(tmr_id >= 0);
 
     // Enable Timer wake-up source
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_WE_B;
     } else {
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_WE_A;
@@ -364,7 +415,7 @@ void MXC_TMR_RevB_DisableWakeup(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     MXC_ASSERT(tmr_id >= 0);
 
     // Disable Timer wake-up source
-    if (cfg->bitMode == TMR_BIT_MODE_16B) {
+    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_WE_B;
     } else {
         tmr->ctrl1 &= ~MXC_F_TMR_REVB_CTRL1_WE_A;
@@ -410,13 +461,13 @@ void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, uint32_t us)
         ++clk_shift;
     }
 
-    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)clk_shift << MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
+    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)(clk_shift << MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS);
     mxc_tmr_cfg_t cfg;
 
     // Initialize the timer in one-shot mode
     cfg.pres = prescale;
-    cfg.mode = TMR_MODE_ONESHOT;
-    cfg.bitMode = TMR_BIT_MODE_32;
+    cfg.mode = MXC_TMR_MODE_ONESHOT;
+    cfg.bitMode = MXC_TMR_BIT_MODE_32;
     cfg.clock = MXC_TMR_APB_CLK;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
@@ -454,7 +505,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_NANOSEC;
+        *units = MXC_TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
 
@@ -462,7 +513,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MICROSEC;
+        *units = MXC_TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
 
@@ -470,7 +521,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_MILLISEC;
+        *units = MXC_TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
 
@@ -478,7 +529,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
-        *units = TMR_UNIT_SEC;
+        *units = MXC_TMR_UNIT_SEC;
         return E_NO_ERROR;
     }
 
@@ -498,19 +549,19 @@ int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t *tmr, uint32_t time, mxc_tmr_unit_
     prescale = ((tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKDIV_A) >> MXC_F_TMR_CTRL0_CLKDIV_A_POS);
 
     switch (units) {
-    case TMR_UNIT_NANOSEC:
+    case MXC_TMR_UNIT_NANOSEC:
         unit_div0 = 1000000;
         unit_div1 = 1000;
         break;
-    case TMR_UNIT_MICROSEC:
+    case MXC_TMR_UNIT_MICROSEC:
         unit_div0 = 1000;
         unit_div1 = 1000;
         break;
-    case TMR_UNIT_MILLISEC:
+    case MXC_TMR_UNIT_MILLISEC:
         unit_div0 = 1;
         unit_div1 = 1000;
         break;
-    case TMR_UNIT_SEC:
+    case MXC_TMR_UNIT_SEC:
         unit_div0 = 1;
         unit_div1 = 1;
         break;

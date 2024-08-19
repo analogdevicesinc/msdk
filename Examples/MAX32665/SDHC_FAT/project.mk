@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -14,3 +14,5 @@ SBT=0
 
 # Enable SDHC library
 LIB_SDHC = 1
+# Use FatFS version R0.15
+FATFS_VERSION = ff15

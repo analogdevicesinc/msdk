@@ -1,23 +1,15 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Except as contained in this notice, the name of Maxim Integrated
  * Products, Inc. shall not be used except as stated in the Maxim Integrated
@@ -29,15 +21,12 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
- * $Revision: 22594 $
- *
  ******************************************************************************/
+
 
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB ROM */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00100000 /* 1MB flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x000BE000 /* 760kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0006C000 /* 432kB SRAM */
 }
 
 SECTIONS {
@@ -45,9 +34,9 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
-        *(.rodata*)  /* read-only data: "const" */
-	*(.flashprog*)      /* Flash program */
+        *(.text*)       /* program code */
+        *(.rodata*)     /* read-only data: "const" */
+	    *(.flashprog*)  /* Flash program */
 
         KEEP(*(.init))
         KEEP(*(.fini))

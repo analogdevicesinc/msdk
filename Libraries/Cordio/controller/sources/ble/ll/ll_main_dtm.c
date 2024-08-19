@@ -7,6 +7,8 @@
  *  Copyright (c) 2013-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019-2020 Packetcraft, Inc.
+ * 
+ *  Portions Copyright (C) 2024 Analog Devices, Inc.
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -275,6 +277,8 @@ static void llBuildTxPkt(uint8_t len, uint8_t pktType, uint8_t *pBuf)
 }
 static void llTestTxAbortCback(BbOpDesc_t *pOp)
 {
+
+    
     BbBleData_t *const pBle = pOp->prot.pBle;
     BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
@@ -286,6 +290,26 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
         WsfBufFree(pTx->pTxBuf);
         WsfBufFree(pBle);
         WsfBufFree(pOp);
+        
+        BbStop(BB_PROT_BLE_DTM);
+
+        if (llTestCb.state == LL_TEST_STATE_RESET) {
+            lctrMsgHdr_t *pMsg;
+
+            /* Send SM an test termination event. */
+            if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+                /* pMsg->handle = 0; */ /* not used */
+                pMsg->dispId = LCTR_DISP_TEST;
+                pMsg->event = LL_TEST_MSG_TERMINATE;
+
+                WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+            }
+        } else {
+            /* Terminate immediately. */
+            llTestCb.state = LL_TEST_STATE_IDLE;
+            lmgrCb.testEnabled = FALSE;
+            LmgrDecResetRefCount();
+        }
     }
 }
 /*************************************************************************************************/
@@ -682,16 +706,38 @@ uint8_t LlTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint16_t numPkt)
 
 static void llTestRxAbortCback(BbOpDesc_t *pOp)
 {
+
     BbBleData_t *const pBle = pOp->prot.pBle;
     BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
     if (llTestCb.state == LL_TEST_STATE_RX) {
         SchInsertNextAvailable(pOp);
     } else {
-        WsfBufFree(pBle);
         WsfBufFree(pRx->pRxBuf);
+        WsfBufFree(pBle);
         WsfBufFree(pOp);
+
         llTestCb.packetsFreed = TRUE;
+
+        BbStop(BB_PROT_BLE_DTM);
+
+        if (llTestCb.state == LL_TEST_STATE_RESET) {
+            lctrMsgHdr_t *pMsg;
+
+            /* Send SM an test termination event. */
+            if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+                /* pMsg->handle = 0; */ /* not used */
+                pMsg->dispId = LCTR_DISP_TEST;
+                pMsg->event = LL_TEST_MSG_TERMINATE;
+
+                WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+            }
+        } else {
+            /* Terminate immediately. */
+            llTestCb.state = LL_TEST_STATE_IDLE;
+            lmgrCb.testEnabled = FALSE;
+            LmgrDecResetRefCount();
+        }
     }
 }
 /*************************************************************************************************/
@@ -992,7 +1038,7 @@ uint8_t LlRxTest(uint8_t rfChan, uint16_t numPkt)
 /*************************************************************************************************/
 uint8_t LlEndTest(LlTestReport_t *pRpt)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlEndTesdfsdfsdst");
+    LL_TRACE_INFO0("### LlApi ###  LlEndTest");
     if ((llTestCb.state == LL_TEST_STATE_TX) && (llTestCb.tx.pktType == LL_TEST_PKT_TYPE_PRBS15)) {
         BbStop(BB_PROT_PRBS15);
         llTestCb.state = LL_TEST_STATE_IDLE;
@@ -1033,7 +1079,18 @@ uint8_t LlEndTest(LlTestReport_t *pRpt)
 
     return LL_SUCCESS;
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief      Check whether a test is active.
+ *  \return     TRUE if active FALSE otherwise.
+ *
+ * Checke test mode and return true or false
+ */
+/*************************************************************************************************/
+bool_t LlTestIsActive(void)
+{
+    return llTestCb.state == LL_TEST_STATE_TX || llTestCb.state == LL_TEST_STATE_RX;
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Set pattern of errors for Tx test mode.

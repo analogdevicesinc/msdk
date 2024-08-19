@@ -1,43 +1,31 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2019-02-11 14:50:18 -0600 (Mon, 11 Feb 2019) $ 
- * $Revision: 40949 $
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB "ROM" */
     FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256kB "FLASH" */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00098000 /* 608kB SRAM */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00050000 /* 320kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00048000 /* 288kB SRAM, leaving last 32kB for openocd work area */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /*32kB SRAM0 */
+    /*SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00010000 /*64kB SRAM0 + SRAM1 */
+
 }
 
 SECTIONS {
@@ -45,7 +33,10 @@ SECTIONS {
     {
         KEEP(*(.rom_vector))
         *(.rom_handlers*)
-    } > ROM
+        
+        
+    } > ROM 
+   
 
     .text :
     {
@@ -53,12 +44,15 @@ SECTIONS {
         KEEP(*(.isr_vector))
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
-
+        
+        KEEP(*(.isr_vector))
+        
         KEEP(*(.init))
         KEEP(*(.fini))
-
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
+
+        
         _etext = .;
     } > SRAM
 
@@ -75,8 +69,8 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
-        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
-        *(.flashprog*)      /* Flash program */
+        KEEP(*(.spix_config*))    /* SPIX configuration functions need to be run from SRAM */
+        /**(.flashprog*)      /* Flash program */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);

@@ -123,7 +123,7 @@
                 { "text":"cd ${workspaceFolder}" },
                 { "text": "set architecture riscv:rv32", "ignoreFailures": false },          
                 { "text":"exec-file build/${config:program_file}", "ignoreFailures": false },
-                { "text":"symbol-file build/buildrv/riscv.elf", "ignoreFailures": false },
+                { "text":"symbol-file buildrv/${config:symbol_file}", "ignoreFailures": false },
                 { "text":"target remote localhost:3334" },
                 { "text":"b main" },
                 { "text": "set $pc=Reset_Handler","ignoreFailures": false }

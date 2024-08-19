@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -69,9 +56,7 @@ int MXC_UART_RevC_Init(mxc_uart_revc_regs_t *uart, unsigned int baud)
 {
     int err;
 
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
+    MXC_ASSERT(MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) >= 0)
 
     // Initialize UART
     // Set RX threshold to 1 byte
@@ -101,10 +86,6 @@ int MXC_UART_RevC_Init(mxc_uart_revc_regs_t *uart, unsigned int baud)
 
 int MXC_UART_RevC_ReadyForSleep(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     if (AsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)] != NULL) {
         return E_BUSY;
     }
@@ -115,10 +96,6 @@ int MXC_UART_RevC_ReadyForSleep(mxc_uart_revc_regs_t *uart)
 int MXC_UART_RevC_SetFrequency(mxc_uart_revc_regs_t *uart, unsigned int baud)
 {
     int div = 0, baud0 = 0, baud1 = 0;
-
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
 
     // Set the baud rate
     // Calculate divisor
@@ -145,10 +122,6 @@ int MXC_UART_RevC_GetFrequency(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_SetDataSize(mxc_uart_revc_regs_t *uart, int dataSize)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     if (dataSize < 5 || dataSize > 8) {
         return E_BAD_PARAM;
     }
@@ -162,10 +135,6 @@ int MXC_UART_RevC_SetDataSize(mxc_uart_revc_regs_t *uart, int dataSize)
 
 int MXC_UART_RevC_SetStopBits(mxc_uart_revc_regs_t *uart, mxc_uart_stop_t stopBits)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     switch (stopBits) {
     case MXC_UART_STOP_1:
         MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVC_CTRL_STOPBITS,
@@ -187,10 +156,6 @@ int MXC_UART_RevC_SetStopBits(mxc_uart_revc_regs_t *uart, mxc_uart_stop_t stopBi
 
 int MXC_UART_RevC_SetParity(mxc_uart_revc_regs_t *uart, mxc_uart_parity_t parity)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     switch (parity) {
     case MXC_UART_PARITY_DISABLE:
         MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVC_CTRL_PARITY_EN,
@@ -237,10 +202,6 @@ int MXC_UART_RevC_SetParity(mxc_uart_revc_regs_t *uart, mxc_uart_parity_t parity
 
 int MXC_UART_RevC_GetActive(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     if (uart->status & (MXC_F_UART_REVC_STATUS_TX_BUSY | MXC_F_UART_REVC_STATUS_RX_BUSY)) {
         return E_BUSY;
     }
@@ -250,19 +211,11 @@ int MXC_UART_RevC_GetActive(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_AbortTransmission(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     return MXC_UART_ClearTXFIFO((mxc_uart_regs_t *)uart);
 }
 
 int MXC_UART_RevC_ReadCharacterRaw(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     if (uart->status & MXC_F_UART_REVC_STATUS_RX_EMPTY) {
         return E_UNDERFLOW;
     }
@@ -272,10 +225,6 @@ int MXC_UART_RevC_ReadCharacterRaw(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_WriteCharacterRaw(mxc_uart_revc_regs_t *uart, uint8_t character)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     // Return error if the FIFO is full
     if (uart->status & MXC_F_UART_REVC_STATUS_TX_FULL) {
         return E_OVERFLOW;
@@ -437,10 +386,6 @@ unsigned int MXC_UART_RevC_GetTXFIFOAvailable(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_ClearRXFIFO(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     uart->ctrl |= MXC_F_UART_REVC_CTRL_RX_FLUSH;
 
     while (uart->ctrl & MXC_F_UART_REVC_CTRL_RX_FLUSH) {}
@@ -450,10 +395,6 @@ int MXC_UART_RevC_ClearRXFIFO(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_ClearTXFIFO(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     uart->ctrl |= MXC_F_UART_REVC_CTRL_TX_FLUSH;
 
     while (uart->ctrl & MXC_F_UART_REVC_CTRL_TX_FLUSH) {}
@@ -463,10 +404,6 @@ int MXC_UART_RevC_ClearTXFIFO(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_SetRXThreshold(mxc_uart_revc_regs_t *uart, unsigned int numBytes)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     if (numBytes < 1 || numBytes > MXC_UART_FIFO_DEPTH) {
         return E_BAD_PARAM;
     }
@@ -489,10 +426,6 @@ unsigned int MXC_UART_RevC_GetFlags(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_ClearFlags(mxc_uart_revc_regs_t *uart, unsigned int flags)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     uart->int_fl &= ~flags;
 
     return E_NO_ERROR;
@@ -500,10 +433,6 @@ int MXC_UART_RevC_ClearFlags(mxc_uart_revc_regs_t *uart, unsigned int flags)
 
 int MXC_UART_RevC_EnableInt(mxc_uart_revc_regs_t *uart, unsigned int intEn)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     uart->int_en |= intEn;
 
     return E_NO_ERROR;
@@ -511,10 +440,6 @@ int MXC_UART_RevC_EnableInt(mxc_uart_revc_regs_t *uart, unsigned int intEn)
 
 int MXC_UART_RevC_DisableInt(mxc_uart_revc_regs_t *uart, unsigned int intDis)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     uart->int_en &= ~intDis;
 
     return E_NO_ERROR;
@@ -666,9 +591,7 @@ int MXC_UART_RevC_TransactionDMA(mxc_uart_revc_req_t *req)
 {
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart));
 
-    if (uart_num < 0) {
-        return E_BAD_PARAM;
-    }
+    MXC_ASSERT(uart_num >= 0)
 
     if (req->txLen) {
         if (req->txData == NULL) {
@@ -740,10 +663,6 @@ void MXC_UART_RevC_DMACallback(int ch, int error)
 
 int MXC_UART_RevC_AsyncCallback(mxc_uart_revc_regs_t *uart, int retVal)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     mxc_uart_revc_req_t *req =
         (mxc_uart_revc_req_t *)AsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)];
 
@@ -756,10 +675,6 @@ int MXC_UART_RevC_AsyncCallback(mxc_uart_revc_regs_t *uart, int retVal)
 
 int MXC_UART_RevC_AsyncStop(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     MXC_UART_DisableInt((mxc_uart_regs_t *)uart, 0xFFFFFFFF);
     AsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)] = NULL;
 
@@ -768,10 +683,6 @@ int MXC_UART_RevC_AsyncStop(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_AbortAsync(mxc_uart_revc_regs_t *uart)
 {
-    if (MXC_UART_GET_IDX((mxc_uart_regs_t *)uart) < 0) {
-        return E_BAD_PARAM;
-    }
-
     MXC_UART_AsyncCallback((mxc_uart_regs_t *)uart, E_ABORT);
     MXC_UART_AsyncStop((mxc_uart_regs_t *)uart);
 
@@ -780,15 +691,13 @@ int MXC_UART_RevC_AbortAsync(mxc_uart_revc_regs_t *uart)
 
 int MXC_UART_RevC_AsyncHandler(mxc_uart_revc_regs_t *uart)
 {
-    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
     int flags, numToWrite, numToRead;
     mxc_uart_revc_req_t *req;
 
-    if (uartNum < 0) {
-        return E_INVALID;
-    }
+    MXC_ASSERT(uart_num >= 0)
 
-    req = (mxc_uart_revc_req_t *)AsyncRequests[uartNum];
+    req = (mxc_uart_revc_req_t *)AsyncRequests[uart_num];
 
     flags = MXC_UART_GetFlags((mxc_uart_regs_t *)uart);
 

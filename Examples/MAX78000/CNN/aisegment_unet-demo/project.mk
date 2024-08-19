@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -28,7 +28,7 @@ ifeq "$(BOARD)" "EvKit_V1"
 VPATH += TFT/evkit
 endif
 ifeq "$(BOARD)" "FTHR_RevA"
-VPATH += TFT/fthr
+FONTS = LiberationSans16x16
 endif
 
 IPATH += TFT/evkit
@@ -40,4 +40,9 @@ endif
 ifeq ($(BOARD),CAM01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
 endif
+
+ifeq ($(BOARD),CAM02_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM02 board)
+endif
+
 

@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -78,7 +65,8 @@ SECTIONS {
     .text :
     {
         _text = .;
-        KEEP(*(.isr_vector))
+        KEEP(*(.isr_vector)) /* Core 0 vector table */
+        *(.isr_vector_core1) /* Core 1 vector table */
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
         
@@ -109,8 +97,10 @@ SECTIONS {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
     
-    /* This section will keep the SPIX data until loaded into the external device */
-    /* Upon initialization of SPIX (user code needs to do this) */
+    /**
+     * This section will keep the SPIX data until loaded into the external device.
+     * Upon initialization of SPIX (user code needs to do this).
+     */
     .xip_section :
     {
         KEEP(*(.xip_section*))
@@ -132,11 +122,10 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         *(vtable)
-        *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
         *(.flashprog*)      /* Flash program */
         
-
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
         /* preinit data */
@@ -174,32 +163,28 @@ SECTIONS {
     .otp (NOLOAD) :
     {
         _otp = ALIGN(., 4);
-        *(.otp*)           /*Copy of OTP memory*/
-
+        *(.otp*)           /* Copy of OTP memory */
         _eotp = ALIGN(., 4);
     } > OTP
 
     .arm_shared (NOLOAD) :
     {
         _arm_shared = ALIGN(., 4);
-        *(.arm_shared*)           /*Shared memory section*/
-
-    _earm_shared = ALIGN(., 4);
+        *(.arm_shared*)           /* Shared memory section */
+        _earm_shared = ALIGN(., 4);
     } > ARM_SHARED
 
     .sdma_shared (NOLOAD) :
     {
         _sdma_shared = ALIGN(., 4);
-        *(.sdma_shared*)           /*Shared memory section*/
-
+        *(.sdma_shared*)           /* Shared memory section */
         _esdma_shared = ALIGN(., 4);
     } > SDMA_SHARED
 
     .sdma_code :
     {
         _sdma_code = ALIGN(., 4);
-        *(.sdma_code*)           /*SDMA Code*/
-
+        *(.sdma_code*)           /* SDMA Code */
         _esdma_code = ALIGN(., 4);
     } > SDMA_CODE AT>FLASH
     __load_sdma_code = LOADADDR(.sdma_code);
@@ -207,8 +192,7 @@ SECTIONS {
     .sdma_data :
     {
         _sdma_data = ALIGN(., 4);
-        *(.sdma_data*)           /*SDMA Data*/
-
+        *(.sdma_data*)           /* SDMA Data */
         _esdma_data = ALIGN(., 4);
     } > SDMA_DATA AT>FLASH
     __load_sdma_data = LOADADDR(.sdma_data);
@@ -217,20 +201,23 @@ SECTIONS {
     {
         . = ALIGN(4);
         _bss = .;
-        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
+        *(.bss*)     /* read-write zero-initialized data: uninitialized global variable */
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
 
-    /* Setup the stack for Core 1, it will only be used if the user code
+    /**
+     * Setup the stack for Core 1, it will only be used if the project build
      * includes a definition of Stack_Size_Core1, which defines the space
-     * reserved above the main core's stack for core 1's stack */
-
+     * reserved above the main core's stack for core 1's stack.
+     */
     __StackTop_Core1 = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit_Core1 = DEFINED(Stack_Size_Core1) ? __StackTop_Core1 - Stack_Size_Core1 : __StackTop_Core1;
 
-    /* Set stack top to end of RAM, and stack limit move down by Stack_Size. 
-     * If core 1 is used, set the stack to the bottom of Core 1's stack region */
+    /**
+     * Set stack top to end of RAM, and stack limit move down by Stack_Size. 
+     * If core 1 is used, set the stack to the bottom of Core 1's stack region.
+     */
 
     __StackTop = DEFINED(Stack_Size_Core1) ? __StackLimit_Core1 : ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit = __StackTop - Stack_Size;

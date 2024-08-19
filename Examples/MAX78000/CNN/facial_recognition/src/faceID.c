@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 #include <string.h>
@@ -40,11 +27,11 @@
 #include "camera.h"
 #include "faceID.h"
 #include "facedetection.h"
-#include "utils.h"
-#include "embedding_process.h"
+#include "embeddings.h"
 #include "MAXCAM_Debug.h"
 #include "cnn_1.h"
 #include "cnn_2.h"
+#include "cnn_3.h"
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
 #endif
@@ -58,79 +45,65 @@
 
 extern area_t area;
 /************************************ VARIABLES ******************************/
+extern volatile char names[1024][7];
 extern volatile uint32_t cnn_time; // Stopwatch
 
-static void run_cnn_2(int x_offset, int y_offset);
+static void run_cnn_2(void);
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_FTHR_REVA
-static int font = (int)&SansSerif16x16[0];
+static int font = (int)&Liberation_Sans16x16[0];
 #endif
 #endif //#ifdef TFT_ENABLE
 
-int8_t prev_decision = -2;
-static int8_t decision = -2;
 extern uint8_t box[4]; // x1, y1, x2, y2
-
-int reload_faceid = 1;
+volatile int32_t output_buffer[16];
+char *name;
+static int32_t ml_3_data32[(CNN_3_NUM_OUTPUTS + 3) / 4];
 
 int face_id(void)
 {
 #if (PRINT_TIME == 1)
-    /* Get current time */
-    uint32_t process_time = utils_get_time_ms();
-    uint32_t total_time = utils_get_time_ms();
-    uint32_t weight_load_time = 0;
+    uint32_t process_time;
 #endif
-
-    if (reload_faceid) {
-        // Power off CNN after unloading result to clear all CNN registers.
-        // It's needed to load and run other CNN model
-        cnn_disable();
-
-        // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
-        // CNN clock: 50 MHz div 1
-        cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-        ///weight_load_time = utils_get_time_ms();
-        /* Configure CNN 2 to recognize a face */
-        cnn_2_init(); // Bring state machine into consistent state
-
-        weight_load_time = utils_get_time_ms();
-        cnn_2_load_weights_from_SD(); // Load CNN kernels from SD card
-        PR_DEBUG("FaceID CNN weight load time: %dms", utils_get_time_ms() - weight_load_time);
-        cnn_2_load_bias(); // Reload CNN bias
-        cnn_2_configure(); // Configure state machine
-    }
 
     /* Check for received image */
     if (camera_is_image_rcv()) {
 #if (PRINT_TIME == 1)
-        process_time = utils_get_time_ms();
-#endif
-        /* Run CNN 3 times with slight offset */
-        run_cnn_2(0, 0);
-        run_cnn_2(-10, -10);
-        run_cnn_2(10, 10);
-
-#if (PRINT_TIME == 1)
-        PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
+        process_time =
+            utils_get_time_ms(); // Mark the start of process_time.  Var will be re-used to re-calculate itself.
 #endif
 
+        // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
+        // CNN clock: 50 MHz div 1
+        cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+        /* Configure CNN 2 to recognize a face */
+        cnn_2_init(); // Bring state machine into consistent state
+        uint32_t weight_load_time = utils_get_time_ms();
+        cnn_2_load_weights_from_SD(); // Load CNN kernels from SD card
+        PR_DEBUG("CNN weight load time: %dms", utils_get_time_ms() - weight_load_time);
+        cnn_2_load_bias(); // Reload CNN bias
+        PR_DEBUG("CNN bias load");
+        cnn_2_configure(); // Configure state machine
+        PR_DEBUG("CNN configure");
+
+        /* Run CNN */
+        run_cnn_2();
+        PR_DEBUG("CNN RUN");
+
 #if (PRINT_TIME == 1)
-        PR_INFO("Capture Time : %dms", process_time - total_time);
-        PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
-        total_time = utils_get_time_ms();
+        process_time = utils_get_time_ms() - process_time;
+        PR_INFO("FaceID Processing Time : %dms", process_time);
 #endif
     }
 
     return 0;
 }
 
-static void run_cnn_2(int x_offset, int y_offset)
+static void run_cnn_2(void)
 {
     uint32_t imgLen;
     uint32_t w, h;
-    static uint32_t noface_count = 0;
     /* Get current time */
     uint32_t pass_time = 0;
     uint8_t *raw;
@@ -138,10 +111,50 @@ static void run_cnn_2(int x_offset, int y_offset)
     float x_prime;
     uint8_t x_loc;
     uint8_t y_loc;
-    uint8_t x1 = MAX(box[1], 0);
-    uint8_t y1 = MAX(box[0], 0);
+    int adj_boxes[4];
+    int diff = 0;
+
+    float sum = 0;
+    float b;
+
     uint8_t box_width = box[2] - box[0];
     uint8_t box_height = box[3] - box[1];
+
+    if (box_width > box_height) {
+        diff = box_width - box_height;
+        PR_DEBUG("width is bigger diff: %d", diff);
+        PR_DEBUG("x1: %d, y1: %d, x2: %d, y2: %d", box[0], box[1], box[2], box[3]);
+        if (diff % 2 == 0) {
+            adj_boxes[1] = (int)box[1] - diff / 2;
+            adj_boxes[3] = (int)box[3] + diff / 2;
+        } else {
+            adj_boxes[1] = (int)box[1] - diff / 2;
+            adj_boxes[3] = (int)box[3] + diff / 2 + 1;
+        }
+        adj_boxes[0] = (int)box[0];
+        adj_boxes[2] = (int)box[2];
+        PR_DEBUG("ADJUSTED x1: %d, y1: %d, x2: %d, y2: %d", adj_boxes[0], adj_boxes[1],
+                 adj_boxes[2], adj_boxes[3]);
+    } else {
+        diff = box_height - box_width;
+        PR_DEBUG("height is bigger diff: %d", diff);
+        PR_DEBUG("x1: %d, y1: %d, x2: %d, y2: %d", box[0], box[1], box[2], box[3]);
+        if (diff % 2 == 0) {
+            adj_boxes[0] = (int)box[0] - diff / 2;
+            adj_boxes[2] = (int)box[2] + diff / 2;
+        } else {
+            adj_boxes[0] = (int)box[0] - diff / 2;
+            adj_boxes[2] = (int)box[2] + diff / 2 + 1;
+        }
+        adj_boxes[1] = (int)box[1];
+        adj_boxes[3] = (int)box[3];
+        PR_DEBUG("ADJUSTED x1: %d, y1: %d, x2: %d, y2: %d", adj_boxes[0], adj_boxes[1],
+                 adj_boxes[2], adj_boxes[3]);
+    }
+    int x1 = adj_boxes[1]; //rotated box
+    int y1 = adj_boxes[0]; //rotated box
+    box_height = adj_boxes[3] - adj_boxes[1];
+    box_width = adj_boxes[2] - adj_boxes[0];
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -149,35 +162,37 @@ static void run_cnn_2(int x_offset, int y_offset)
     pass_time = utils_get_time_ms();
     cnn_start();
 
-    //PR_INFO("CNN initialization time : %d", utils_get_time_ms() - pass_time);
-
     uint8_t *data = raw;
 
-    pass_time = utils_get_time_ms();
-
-    PR_INFO("x1: %d, y1: %d", x1, y1);
+    PR_DEBUG("x1: %d, y1: %d", x1, y1);
 
     // Resize image inside facedetection box to 160x120 and load to CNN memory
-    for (int i = y_offset; i < HEIGHT_ID + y_offset; i++) {
+    for (int i = 0; i < HEIGHT_ID; i++) {
         y_prime = ((float)(i) / HEIGHT_ID) * box_height;
-        y_loc = (uint8_t)(MIN(round(y_prime), box_height - 1)); // + y1;
+        y_loc = (uint8_t)(MIN(round(y_prime), box_height - 1));
         data = raw + y1 * IMAGE_W * BYTE_PER_PIXEL + y_loc * BYTE_PER_PIXEL;
         data += x1 * BYTE_PER_PIXEL;
-        for (int j = x_offset; j < WIDTH_ID + x_offset; j++) {
+        for (int j = 0; j < WIDTH_ID; j++) {
             uint8_t ur, ug, ub;
             int8_t r, g, b;
             uint32_t number;
             x_prime = ((float)(j) / WIDTH_ID) * box_width;
             x_loc = (uint8_t)(MIN(round(x_prime), box_width - 1));
+            if ((y1 + x_loc < 0) || (x1 + y_loc < 0) || (y1 + x_loc >= WIDTH_DET) ||
+                (x1 + y_loc >= HEIGHT_DET)) {
+                b = 0;
+                g = 0;
+                r = 0;
+            } else {
+                ub = (uint8_t)(data[x_loc * BYTE_PER_PIXEL * HEIGHT_DET + 1] << 3);
+                ug = (uint8_t)((data[x_loc * BYTE_PER_PIXEL * HEIGHT_DET] << 5) |
+                               ((data[x_loc * BYTE_PER_PIXEL * HEIGHT_DET + 1] & 0xE0) >> 3));
+                ur = (uint8_t)(data[x_loc * BYTE_PER_PIXEL * HEIGHT_DET] & 0xF8);
 
-            ub = (uint8_t)(data[x_loc * BYTE_PER_PIXEL * IMAGE_W + 1] << 3);
-            ug = (uint8_t)((data[x_loc * BYTE_PER_PIXEL * IMAGE_W] << 5) |
-                           ((data[x_loc * BYTE_PER_PIXEL * IMAGE_W + 1] & 0xE0) >> 3));
-            ur = (uint8_t)(data[x_loc * BYTE_PER_PIXEL * IMAGE_W] & 0xF8);
-
-            b = ub - 128;
-            g = ug - 128;
-            r = ur - 128;
+                b = ub - 128;
+                g = ug - 128;
+                r = ur - 128;
+            }
 
             number = 0x00FFFFFF & ((((uint8_t)b) << 16) | (((uint8_t)g) << 8) | ((uint8_t)r));
             // Loading data into the CNN fifo
@@ -190,7 +205,7 @@ static void run_cnn_2(int x_offset, int y_offset)
     }
 
     int cnn_load_time = utils_get_time_ms() - pass_time;
-    PR_DEBUG("FaceID CNN load data time : %d", cnn_load_time);
+    PR_DEBUG("CNN load data time : %d", cnn_load_time);
 
     pass_time = utils_get_time_ms();
 
@@ -201,107 +216,168 @@ static void run_cnn_2(int x_offset, int y_offset)
         asm volatile("wfi"); // Sleep and wait for CNN interrupt
     }
 
-    PR_INFO("FaceID CNN wait time : %d", utils_get_time_ms() - pass_time);
+    PR_DEBUG("CNN wait time : %d", utils_get_time_ms() - pass_time);
 
     pass_time = utils_get_time_ms();
 
-    cnn_2_unload((uint32_t *)(raw));
+    cnn_2_unload((uint32_t *)(output_buffer));
 
-    PR_INFO("FaceID CNN unload time : %d", utils_get_time_ms() - pass_time);
+    cnn_disable();
 
-    pass_time = utils_get_time_ms();
+    uint32_t value;
+    int8_t pr_value;
+    float n1, n2, n3, n4;
+    //Calculate vector sum
+    for (int i = 0; i < 16; i++) {
+        value = output_buffer[i];
+        pr_value = (int8_t)(value & 0xff);
+        sum += pr_value * pr_value;
+        pr_value = (int8_t)((value >> 8) & 0xff);
+        sum += pr_value * pr_value;
+        pr_value = (int8_t)((value >> 16) & 0xff);
+        sum += pr_value * pr_value;
+        pr_value = (int8_t)((value >> 24) & 0xff);
+        sum += pr_value * pr_value;
+    }
+    b = 1 / sqrt(sum);
 
-    int pResult = calculate_minDistance((uint8_t *)(raw));
-    PR_DEBUG("Embedding time : %d", utils_get_time_ms() - pass_time);
-    PR_DEBUG("Result = %d \n", pResult);
-
-    if (pResult == 0) {
-        reload_faceid = 1; // it will go to face detection again and reload facid
-    } else
-        reload_faceid = 0; // no need to go to face detection and reload faceid
-
-    if (pResult == 0) {
-        char *name;
-
-        uint8_t *counter;
-        uint8_t counter_len;
-        get_min_dist_counter(&counter, &counter_len);
-
-        name = "";
-        prev_decision = decision;
-        decision = -5;
-
-        PR_INFO("counter_len: %d,  %d,%d,%d\n", counter_len, counter[0], counter[1], counter[2]);
-
-        for (uint8_t id = 0; id < counter_len; ++id) {
-            if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.8)) { // >80%  detection
-                name = get_subject(id);
-                decision = id;
-                noface_count = 0;
-                PR_DEBUG("Status: %s", name);
-                PR_INFO("Detection: %s: %d", name, counter[id]);
-                LED_Off(RED_LED);
-                LED_On(GREEN_LED);
-                LED_Off(BLUE_LED);
-                break;
-            } else if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.4)) { // >%40 adjust
-                name = "Adjust Face";
-                decision = -2;
-                noface_count = 0;
-                PR_DEBUG("Status: %s", name);
-                PR_INFO("Detection: %s: %d", name, counter[id]);
-                LED_Off(RED_LED);
-                LED_Off(GREEN_LED);
-                LED_On(BLUE_LED);
-                break;
-            } else if (counter[id] > closest_sub_buffer_size * 0.2) { //>>20% unknown
-                name = "Unknown";
-                decision = -1;
-                noface_count = 0;
-                PR_DEBUG("Status: %s", name);
-                PR_INFO("Detection: %s: %d", name, counter[id]);
-                LED_On(RED_LED);
-                LED_Off(GREEN_LED);
-                LED_On(BLUE_LED);
-                break;
-            } else if (counter[id] > closest_sub_buffer_size * 0.1) { //>> 10% transition
-                name = "";
-                decision = -3;
-                noface_count = 0;
-                PR_DEBUG("Status: %s", name);
-                PR_INFO("Detection: %s: %d", name, counter[id]);
-                LED_On(RED_LED);
-                LED_Off(GREEN_LED);
-                LED_Off(BLUE_LED);
-
-            } else {
-                noface_count++;
-
-                if (noface_count > 10) {
-                    name = "No subject";
-                    decision = -4;
-                    noface_count--;
-                    PR_INFO("Detection: %s: %d", name, counter[id]);
-                    LED_On(RED_LED);
-                    LED_Off(GREEN_LED);
-                    LED_Off(BLUE_LED);
-                }
-            }
+    for (int i = 0; i < 16; i++) {
+        value = output_buffer[i];
+        pr_value = (int8_t)(value & 0xff);
+        n1 = 128 * pr_value * b;
+        if (n1 < 0) {
+            n1 = 256 + n1;
         }
 
-        PR_DEBUG("Decision: %d Name:%s\n", decision, name);
-
-#ifdef TFT_ENABLE
-        MXC_TFT_SetRotation(ROTATE_180);
-        text_t printResult;
-        if (decision != prev_decision) {
-            printResult.data = name;
-            printResult.len = strlen(name);
-            MXC_TFT_ClearArea(&area, 4);
-            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult, NULL);
+        pr_value = (int8_t)((value >> 8) & 0xff);
+        n2 = 128 * pr_value * b;
+        if (n2 < 0) {
+            n2 = 256 + n2;
         }
-        MXC_TFT_SetRotation(ROTATE_270);
 
+        pr_value = (int8_t)((value >> 16) & 0xff);
+        n3 = 128 * pr_value * b;
+        if (n3 < 0) {
+            n3 = 256 + n3;
+        }
+        pr_value = (int8_t)((value >> 24) & 0xff);
+        n4 = 128 * pr_value * b;
+        if (n4 < 0) {
+            n4 = 256 + n4;
+        }
+#ifdef UNNORMALIZE_RECORD
+        norm_output_buffer[i] = (((uint8_t)n4) << 24) | (((uint8_t)n3) << 16) |
+                                (((uint8_t)n2) << 8) | ((uint8_t)n1);
+#else
+        output_buffer[i] = (((uint8_t)n4) << 24) | (((uint8_t)n3) << 16) | (((uint8_t)n2) << 8) |
+                           ((uint8_t)n1);
 #endif
     }
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_3_init(); // Bring CNN state machine into consistent state
+    cnn_3_load_weights(); // Load CNN kernels
+    cnn_3_load_bias(); // Load CNN bias
+    cnn_3_configure();
+//load input
+#ifdef UNNORMALIZE_RECORD
+    uint32_t *out_point = (uint32_t *)norm_output_buffer; // For unnormalized emb. experiment
+#else
+    uint32_t *out_point = (uint32_t *)output_buffer;
+#endif
+
+    memcpy32((uint32_t *)0x50400000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50408000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50410000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50418000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50800000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50808000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50810000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50818000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50c00000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50c08000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50c10000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x50c18000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x51000000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x51008000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x51010000, out_point, 1);
+    out_point++;
+    memcpy32((uint32_t *)0x51018000, out_point, 1);
+    out_point++;
+    cnn_3_start(); // Start CNN_3
+    while (cnn_time == 0)
+        ;
+    //    MXC_LP_EnterSleepMode(); // Wait for CNN_3, but not sleep, ISR can't catch it otherwise
+    cnn_3_unload((uint32_t *)ml_3_data32);
+    cnn_disable();
+
+    PR_DEBUG("CNN unload time : %d", utils_get_time_ms() - pass_time);
+
+    pass_time = utils_get_time_ms();
+
+    int32_t *ml_point = ml_3_data32;
+    int8_t max_emb = 0;
+    int32_t max_emb_index = 0;
+    char *name;
+
+    for (int i = 0; i < DEFAULT_EMBS_NUM; i++) {
+        value = *ml_point;
+        pr_value = value & 0xff;
+        if ((int8_t)pr_value > max_emb) {
+            max_emb = (int8_t)pr_value;
+            max_emb_index = i * 4;
+        }
+        pr_value = (value >> 8) & 0xff;
+        if ((int8_t)pr_value > max_emb) {
+            max_emb = (int8_t)pr_value;
+            max_emb_index = (i * 4) + 1;
+        }
+        pr_value = (value >> 16) & 0xff;
+        if ((int8_t)pr_value > max_emb) {
+            max_emb = (int8_t)pr_value;
+            max_emb_index = (i * 4) + 2;
+        }
+        pr_value = (value >> 24) & 0xff;
+        if ((int8_t)pr_value > max_emb) {
+            max_emb = (int8_t)pr_value;
+            max_emb_index = (i * 4) + 3;
+        }
+        ml_point++;
+    }
+    PR_DEBUG("FaceID inference time: %d ms\n", utils_get_time_ms() - pass_time);
+    PR_DEBUG("CNN_3 max value: %d \n", max_emb);
+    PR_DEBUG("CNN_3 max value index: %d \n", max_emb_index);
+    if (max_emb > Threshold) {
+        PR_INFO("FaceID result: subject id: %d \n", max_emb_index);
+        name = (char *)names[max_emb_index];
+        PR_INFO("FaceID result: subject name: %s \n", name);
+    } else {
+        PR_INFO("FaceID result: Unknown subject");
+        name = "Unknown";
+    }
+
+#ifdef TFT_ENABLE
+    text_t printResult;
+    printResult.data = name;
+    printResult.len = strlen(name);
+    //Rotate before print text
+    MXC_TFT_SetRotation(ROTATE_180);
+    MXC_TFT_ClearArea(&area, 4);
+    MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult, NULL);
+    MXC_TFT_SetRotation(ROTATE_270);
+
+#endif
 }

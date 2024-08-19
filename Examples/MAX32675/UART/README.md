@@ -7,7 +7,7 @@ This application uses two serial ports to send and receive data.  One serial por
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -16,11 +16,16 @@ Universal instructions on building, flashing, and debugging this project can be 
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select TX0 on Headers JP6.
--	DE-select RX0 on Header JP5.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect P0.8 to P0.15.
 -   Connect P0.9 to P0.14.
+
+If using MAX32675 RevA:
+-   Select TX0 on Headers JP6.
+-	DE-select RX0 on Header JP5.
+If using MAX32675 RevB
+-   Select TX0 on Headers JP3.
+-	DE-select RX0 on Header JP4.
 
 ## Expected Output
 

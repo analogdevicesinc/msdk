@@ -41,7 +41,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>rv32_irq</name>
+            <name>cm4_irq</name>
             <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -72,7 +72,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>cm4_irq</name>
+            <name>rv32_irq</name>
             <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>

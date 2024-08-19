@@ -1,3 +1,20 @@
+##############################################################################
+ #
+ # Copyright 2023 Analog Devices, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ ##############################################################################
 # This Makefile is used to manage the inclusion of the various
 # libraries that are available in the MaximSDK.  'include'-ing 
 # libs.mk offers 'toggle switch' variables that can be used to
@@ -41,19 +58,63 @@ endif
 # Cordio (Disabled by default)
 # ************************
 LIB_CORDIO ?= 0
+CODED_PHY_DEMO ?= 0
+INIT_EXTENDED ?= 0
 ifeq ($(LIB_CORDIO), 1)
 # Include the Cordio Library
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
+PROJ_CFLAGS += -D__CORDIO__
+
+ifeq ($(INIT_EXTENDED),1)
+PROJ_CFLAGS += -DINIT_EXTENDED=1
+endif
+
+CHIP_REVISION ?= b
+export CHIP_REVISION
+
+# for CHIP_REVISION a ***********************************************
+ifeq ($(CHIP_REVISION),a)
+ifeq ($(RISCV_CORE),)
+
+ifeq ($(MFLOAT_ABI),hard)
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_hard.a
+else
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1.a
+endif
+
+else
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_riscv.a
+endif
+
+#*********************************************************************
+
+# for CHIP_REVISION b ***************************************************
+else ifeq ($(CHIP_REVISION),b)
+
 
 ifeq ($(RISCV_CORE),)
+
 ifeq ($(MFLOAT_ABI),hard)
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
 endif
+
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
+endif
+#**************************************************************************
+endif
+
+
+#*********************************************************************
+
+
+ifeq ($(CODED_PHY_DEMO),1)
+PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=1
+else
+PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=0
 endif
 
 endif
@@ -138,8 +199,26 @@ ifeq ($(LIB_SDHC), 1)
 # Set the SDHC driver directory
 SDHC_DRIVER_DIR ?= $(LIBS_DIR)/SDHC
 
+# Create option for FatFS version selection
+# Acceptable values:
+# - ff13
+# - ff14
+# - ff15
+FATFS_VERSION ?= ff15
+ifneq "$(FATFS_VERSION)" "ff13"
+ifneq "$(FATFS_VERSION)" "ff14"
+ifneq "$(FATFS_VERSION)" "ff15"
+$(error Invalid FATFS_VERSION.  Acceptable values are "ff13" "ff14" or "ff15")
+endif
+endif
+endif
+
 # Set the FAT32 driver directory
-FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/ff13
+FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/$(FATFS_VERSION)
+
+# Set default SDHC clock frequency (40Mhz)
+SDHC_CLK_FREQ ?= 30000000
+PROJ_CFLAGS += -DSDHC_CLK_FREQ=$(SDHC_CLK_FREQ)
 
 # Include the SDHC library
 include $(FAT32_DRIVER_DIR)/fat32.mk
@@ -229,5 +308,29 @@ LIB_BARCODE_DECODER ?= 0
 ifeq ($(LIB_BARCODE_DECODER), 1)
 BARCODE_DECODER_DIR ?= $(LIBS_DIR)/MiscDrivers/BarcodeDecoder/zbar
 include $(BARCODE_DECODER_DIR)/barcode_decoder.mk
+endif
+# ************************
+
+# CLI (Disabled by default)
+# ************************
+LIB_CLI ?= 0
+ifeq ($(LIB_CLI), 1)
+LIB_CLI_DIR ?= $(LIBS_DIR)/CLI
+include $(LIB_CLI_DIR)/CLI.mk
+endif
+# ************************
+
+# Unified Security Software (USS) (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_USS ?= 0
+ifeq ($(LIB_USS),1)
+LIB_USS_DIR ?= $(LIBS_DIR)/USS
+
+ifeq ("$(wildcard $(LIB_USS_DIR))","")
+$(error ERR_LIBNOTFOUND: USS library not found (Only available via NDA). Please install the USS package to $(LIB_USS_DIR))
+endif
+
+include $(LIB_USS_DIR)/uss.mk
 endif
 # ************************

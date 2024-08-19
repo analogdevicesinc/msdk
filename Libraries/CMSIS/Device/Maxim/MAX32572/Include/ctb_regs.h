@@ -2,38 +2,26 @@
  * @file    ctb_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CTB Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup ctb_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -122,6 +110,8 @@ typedef struct {
     __IO uint32_t sca_res_addr;         /**< <tt>\b 0x728:</tt> CTB SCA_RES_ADDR Register */
     __IO uint32_t sca_op_buff_addr;     /**< <tt>\b 0x72C:</tt> CTB SCA_OP_BUFF_ADDR Register */
     __IO uint32_t sca_moddata;          /**< <tt>\b 0x730:</tt> CTB SCA_MODDATA Register */
+    __IO uint32_t sca_nrng;             /**< <tt>\b 0x734:</tt> CTB SCA_NRNG Register */
+    __IO uint32_t sca_wash;             /**< <tt>\b 0x738:</tt> CTB SCA_WASH Register */
 } mxc_ctb_regs_t;
 
 /* Register offsets for module CTB */
@@ -166,6 +156,8 @@ typedef struct {
 #define MXC_R_CTB_SCA_RES_ADDR             ((uint32_t)0x00000728UL) /**< Offset from CTB Base Address: <tt> 0x0728</tt> */
 #define MXC_R_CTB_SCA_OP_BUFF_ADDR         ((uint32_t)0x0000072CUL) /**< Offset from CTB Base Address: <tt> 0x072C</tt> */
 #define MXC_R_CTB_SCA_MODDATA              ((uint32_t)0x00000730UL) /**< Offset from CTB Base Address: <tt> 0x0730</tt> */
+#define MXC_R_CTB_SCA_NRNG                 ((uint32_t)0x00000734UL) /**< Offset from CTB Base Address: <tt> 0x0734</tt> */
+#define MXC_R_CTB_SCA_WASH                 ((uint32_t)0x00000738UL) /**< Offset from CTB Base Address: <tt> 0x0738</tt> */
 /**@} end of group ctb_registers */
 
 /**
@@ -626,8 +618,14 @@ typedef struct {
 #define MXC_F_CTB_SCA_CTRL1_RESSELECT_POS              3 /**< SCA_CTRL1_RESSELECT Position */
 #define MXC_F_CTB_SCA_CTRL1_RESSELECT                  ((uint32_t)(0x3UL << MXC_F_CTB_SCA_CTRL1_RESSELECT_POS)) /**< SCA_CTRL1_RESSELECT Mask */
 
+#define MXC_F_CTB_SCA_CTRL1_NRNG_POS                   5 /**< SCA_CTRL1_NRNG Position */
+#define MXC_F_CTB_SCA_CTRL1_NRNG                       ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL1_NRNG_POS)) /**< SCA_CTRL1_NRNG Mask */
+
 #define MXC_F_CTB_SCA_CTRL1_CARRYPOS_POS               8 /**< SCA_CTRL1_CARRYPOS Position */
 #define MXC_F_CTB_SCA_CTRL1_CARRYPOS                   ((uint32_t)(0x3FFUL << MXC_F_CTB_SCA_CTRL1_CARRYPOS_POS)) /**< SCA_CTRL1_CARRYPOS Mask */
+
+#define MXC_F_CTB_SCA_CTRL1_CM_EN_POS                  20 /**< SCA_CTRL1_CM_EN Position */
+#define MXC_F_CTB_SCA_CTRL1_CM_EN                      ((uint32_t)(0xFFFUL << MXC_F_CTB_SCA_CTRL1_CM_EN_POS)) /**< SCA_CTRL1_CM_EN Mask */
 
 /**@} end of group CTB_SCA_CTRL1_Register */
 
@@ -781,6 +779,28 @@ typedef struct {
 #define MXC_F_CTB_SCA_MODDATA_DATA                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_SCA_MODDATA_DATA_POS)) /**< SCA_MODDATA_DATA Mask */
 
 /**@} end of group CTB_SCA_MODDATA_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_SCA_NRNG CTB_SCA_NRNG
+ * @brief    SCA NIST RNG Address Register.
+ * @{
+ */
+#define MXC_F_CTB_SCA_NRNG_ADDR_POS                    0 /**< SCA_NRNG_ADDR Position */
+#define MXC_F_CTB_SCA_NRNG_ADDR                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_SCA_NRNG_ADDR_POS)) /**< SCA_NRNG_ADDR Mask */
+
+/**@} end of group CTB_SCA_NRNG_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_SCA_WASH CTB_SCA_WASH
+ * @brief    SCA Wash Register.
+ * @{
+ */
+#define MXC_F_CTB_SCA_WASH_ADDR_POS                    0 /**< SCA_WASH_ADDR Position */
+#define MXC_F_CTB_SCA_WASH_ADDR                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_SCA_WASH_ADDR_POS)) /**< SCA_WASH_ADDR Mask */
+
+/**@} end of group CTB_SCA_WASH_Register */
 
 #ifdef __cplusplus
 }

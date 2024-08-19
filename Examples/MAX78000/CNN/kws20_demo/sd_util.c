@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -95,7 +82,7 @@ void generateMessage(unsigned length)
     }
 }
 
-int mount()
+int mount(void)
 {
     fs = &fs_obj;
 
@@ -112,7 +99,7 @@ int mount()
     return err;
 }
 
-int umount()
+int umount(void)
 {
     if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
@@ -124,7 +111,7 @@ int umount()
     return err;
 }
 
-int formatSDHC()
+int formatSDHC(void)
 {
     printf("\n\n*****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****\n");
     printf("**************PRESS ANY KEY TO ABORT**************\n\n");
@@ -137,7 +124,9 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
+    MKFS_PARM format_options = { .fmt = FM_ANY };
+
+    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
@@ -156,7 +145,7 @@ int formatSDHC()
     return err;
 }
 
-int getSize()
+int getSize(void)
 {
     if (!mounted) {
         mount();
@@ -176,7 +165,7 @@ int getSize()
     return err;
 }
 
-int ls()
+int ls(void)
 {
     if (!mounted) {
         mount();
@@ -257,7 +246,7 @@ int writeSoundSnippet(char *snippetFilename, unsigned int snippetLength, int8_t 
     return err;
 }
 
-int createFile()
+int createFile(void)
 {
     unsigned int length = 128;
 
@@ -305,7 +294,7 @@ int createFile()
     return err;
 }
 
-int appendFile()
+int appendFile(void)
 {
     unsigned int length = 0;
 
@@ -405,7 +394,7 @@ int mkdirSoundSnippet_CD()
     return err;
 }
 
-int mkdir()
+int mkdir(void)
 {
     if (!mounted) {
         mount();
@@ -434,7 +423,7 @@ int mkdir()
     return err;
 }
 
-int cd()
+int cd(void)
 {
     if (!mounted) {
         mount();
@@ -460,7 +449,7 @@ int cd()
     return err;
 }
 
-int delete ()
+int delete (void)
 {
     if (!mounted) {
         mount();

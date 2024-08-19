@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -65,6 +52,11 @@ static int SPIXFC_ReadRXFIFO(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfc_fifo_rev
 static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t *spixfc,
                                 mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, mxc_spixf_req_t *req);
 
+#if defined(SPIXF_RAM)
+static int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value);
+static void MXC_FreeLock_SPIXF(uint32_t *lock);
+#endif
+
 /******* Globals *******/
 typedef struct {
     mxc_spixf_req_t *req;
@@ -73,6 +65,12 @@ typedef struct {
 static spixf_req_head_t states;
 
 /****** Functions ******/
+
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                         uint32_t cmdval, uint32_t frequency)
 {
@@ -83,8 +81,13 @@ int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *
     MXC_SPIXF_RevA_TXFIFOEnable(spixfc);
     MXC_SPIXF_RevA_SCKFeedbackEnable(spixfc, spixfm);
     MXC_SPIXF_RevA_SetSPIFrequency(spixfc, spixfm, frequency);
+#if defined(SPIXF_RAM)
+    MXC_SPIXF_RevA_SetSSActiveTime(spixfc, spixfm, MXC_SPIXF_SYS_CLOCKS_2);
+    MXC_SPIXF_RevA_SetSSInactiveTime(spixfc, spixfm, MXC_SPIXF_SYS_CLOCKS_9);
+#else
     MXC_SPIXF_RevA_SetSSActiveTime(spixfc, spixfm, MXC_SPIXF_SYS_CLOCKS_0);
     MXC_SPIXF_RevA_SetSSInactiveTime(spixfc, spixfm, MXC_SPIXF_SYS_CLOCKS_1);
+#endif
     MXC_SPIXF_RevA_SetCmdValue(spixfm, cmdval);
     MXC_SPIXF_RevA_SetCmdWidth(spixfm, MXC_SPIXF_SINGLE_SDIO);
     MXC_SPIXF_RevA_SetAddrWidth(spixfm, MXC_SPIXF_SINGLE_SDIO);
@@ -121,7 +124,8 @@ void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t *spixfc)
 }
 
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl)
+                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
+                           mxc_spixf_padctrl_t padctrl)
 {
     spixfm->io_ctrl = 0;
 
@@ -141,9 +145,14 @@ void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_d
         MXC_SPIXF_RevA_SetIoctrlSDIODriveHigh(spixfm);
     }
 
-    MXC_SPIXF_RevA_SetPuPdCtrl(spixfm, pupdctrl);
+    MXC_SPIXF_RevA_SetPuPdCtrl(spixfm, padctrl);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                           mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, uint32_t len, uint8_t deass)
 {
@@ -158,10 +167,17 @@ int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t
         return E_NO_ERROR;
     }
 
+#if defined(SPIXF_RAM)
+    // Lock this SPIXFC
+    if (MXC_GetLock_SPIXF((uint32_t *)&states.req, 1) != E_NO_ERROR) {
+        return E_BUSY;
+    }
+#else
     // Lock this SPIXFC
     if (MXC_GetLock((uint32_t *)&states.req, 1) != E_NO_ERROR) {
         return E_BUSY;
     }
+#endif
 
     // Wait for any previous data to transmit
     while (spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) {}
@@ -202,12 +218,22 @@ int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t
     // Enable the feedback clock
     MXC_SPIXF_RevA_SCKFeedbackEnable(spixfc, spixfm);
 
+#if defined(SPIXF_RAM)
+    // Unlock this SPIXFC
+    MXC_FreeLock_SPIXF((uint32_t *)&states.req);
+#else
     // Unlock this SPIXFC
     MXC_FreeLock((uint32_t *)&states.req);
+#endif
 
     return num;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t *spixfc,
                                mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, mxc_spixf_req_t *req)
 {
@@ -228,10 +254,17 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t *spixfc,
         return E_NO_ERROR;
     }
 
+#if defined(SPIXF_RAM)
+    // Lock this SPIXFC
+    if (MXC_GetLock_SPIXF((uint32_t *)&states.req, 1) != E_NO_ERROR) {
+        return E_BUSY;
+    }
+#else
     // Lock this SPIXFC
     if (MXC_GetLock((uint32_t *)&states.req, 1) != E_NO_ERROR) {
         return E_BUSY;
     }
+#endif
 
     // Clear the number of bytes counter
     req->read_num = 0;
@@ -346,8 +379,13 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t *spixfc,
         }
     } // end of while(remain)
 
+#if defined(SPIXF_RAM)
+    // Unlock this SPIXFC
+    MXC_FreeLock_SPIXF((uint32_t *)&states.req);
+#else
     // Unlock this SPIXFC
     MXC_FreeLock((uint32_t *)&states.req);
+#endif
 
     if (write) {
         return req->write_num;
@@ -433,6 +471,11 @@ void MXC_SPIXF_RevA_Handler(mxc_spixfc_reva_regs_t *spixfc,
     }
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 __attribute__((noinline)) static int SPIXFC_ReadRXFIFO(mxc_spixfc_reva_regs_t *spixfc,
                                                        mxc_spixfc_fifo_reva_regs_t *fifo,
                                                        uint8_t *data, int len)
@@ -708,6 +751,11 @@ int MXC_SPIXF_RevA_GetFlags(mxc_spixfc_reva_regs_t *spixfc)
 //Low level
 /* ************************************************ */
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetMode(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                            mxc_spixf_mode_t mode)
 {
@@ -718,7 +766,8 @@ int MXC_SPIXF_RevA_SetMode(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_
 
 mxc_spixf_mode_t MXC_SPIXF_RevA_GetMode(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_MODE) >> MXC_F_SPIXFC_REVA_CFG_MODE_POS);
+    return (mxc_spixf_mode_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_MODE) >>
+                              MXC_F_SPIXFC_REVA_CFG_MODE_POS);
 }
 
 int MXC_SPIXF_RevA_SetSSPolActiveHigh(mxc_spixfc_reva_regs_t *spixfc,
@@ -729,6 +778,11 @@ int MXC_SPIXF_RevA_SetSSPolActiveHigh(mxc_spixfc_reva_regs_t *spixfc,
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetSSPolActiveLow(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm)
 {
     spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_SSPOL;
@@ -741,6 +795,11 @@ int MXC_SPIXF_RevA_GetSSPolarity(mxc_spixfc_reva_regs_t *spixfc)
     return !!(spixfc->ss_pol & MXC_F_SPIXFC_REVA_SS_POL_SS_POLARITY);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                                    unsigned int hz)
 {
@@ -803,6 +862,11 @@ int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_re
     }
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 uint32_t MXC_SPIXF_RevA_GetSPIFrequency(mxc_spixfm_reva_regs_t *spixfm)
 {
     uint32_t clocks;
@@ -816,6 +880,11 @@ uint32_t MXC_SPIXF_RevA_GetSPIFrequency(mxc_spixfm_reva_regs_t *spixfm)
     return SystemCoreClock / (2 * clocks);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 uint32_t MXC_SPIXF_RevA_GetSPIFrequencyWrite(mxc_spixfc_reva_regs_t *spixfc)
 {
     uint32_t clocks;
@@ -829,6 +898,11 @@ uint32_t MXC_SPIXF_RevA_GetSPIFrequencyWrite(mxc_spixfc_reva_regs_t *spixfc)
     return PeripheralClock / (2 * clocks);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetSSActiveTime(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                                    mxc_spixf_ssact_t ssact)
 {
@@ -841,9 +915,15 @@ int MXC_SPIXF_RevA_SetSSActiveTime(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_re
 
 mxc_spixf_ssact_t MXC_SPIXF_RevA_GetSSActiveTime(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSACT) >> MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
+    return (mxc_spixf_ssact_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSACT) >>
+                               MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetSSInactiveTime(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                                      mxc_spixf_ssiact_t ssiact)
 {
@@ -856,9 +936,15 @@ int MXC_SPIXF_RevA_SetSSInactiveTime(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_
 
 mxc_spixf_ssiact_t MXC_SPIXF_RevA_GetSSInactiveTime(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSIACT) >> MXC_F_SPIXFC_REVA_CFG_SSIACT_POS);
+    return (mxc_spixf_ssiact_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSIACT) >>
+                                MXC_F_SPIXFC_REVA_CFG_SSIACT_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetCmdWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwidth_t width)
 {
     MXC_ASSERT(width < MXC_SPIXF_INVALID);
@@ -870,10 +956,15 @@ int MXC_SPIXF_RevA_SetCmdWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwidt
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetCmdWidth(mxc_spixfm_reva_regs_t *spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
+    return (mxc_spixf_spiwidth_t)((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH) >>
+                                  MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetAddrWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwidth_t width)
 {
     MXC_ASSERT(width < MXC_SPIXF_INVALID);
@@ -885,10 +976,15 @@ int MXC_SPIXF_RevA_SetAddrWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwid
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetAddrWidth(mxc_spixfm_reva_regs_t *spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
+    return (mxc_spixf_spiwidth_t)((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH) >>
+                                  MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetDataWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwidth_t width)
 {
     MXC_ASSERT(width < MXC_SPIXF_INVALID);
@@ -900,8 +996,8 @@ int MXC_SPIXF_RevA_SetDataWidth(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_spiwid
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetDataWidth(mxc_spixfm_reva_regs_t *spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
+    return (mxc_spixf_spiwidth_t)((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH) >>
+                                  MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
 }
 
 int MXC_SPIXF_RevA_Set4ByteAddr(mxc_spixfm_reva_regs_t *spixfm)
@@ -910,6 +1006,11 @@ int MXC_SPIXF_RevA_Set4ByteAddr(mxc_spixfm_reva_regs_t *spixfm)
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_Set3ByteAddr(mxc_spixfm_reva_regs_t *spixfm)
 {
     spixfm->fetch_ctrl &= (~MXC_F_SPIXFM_REVA_FETCH_CTRL_FOUR_BYTE_ADDR);
@@ -925,6 +1026,11 @@ unsigned int MXC_SPIXF_RevA_GetBytesPerAddr(mxc_spixfm_reva_regs_t *spixfm)
     }
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetModeClk(mxc_spixfm_reva_regs_t *spixfm, uint8_t mdclk)
 {
     MXC_SETFIELD(spixfm->mode_ctrl, MXC_F_SPIXFM_REVA_MODE_CTRL_MDCLK, mdclk);
@@ -988,6 +1094,11 @@ uint8_t MXC_SPIXF_RevA_GetBBDataInputValue(mxc_spixfc_reva_regs_t *spixfc)
             MXC_F_SPIXFC_REVA_GEN_CTRL_SDIO_DATA_IN_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetModeData(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                                uint16_t data)
 {
@@ -1009,6 +1120,11 @@ int MXC_SPIXF_RevA_SetSCKInverted(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_rev
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetSCKNonInverted(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm)
 {
     spixfm->fb_ctrl &= (~MXC_F_SPIXFM_REVA_FB_CTRL_INVERT_EN);
@@ -1021,6 +1137,11 @@ int MXC_SPIXF_RevA_GetSCKInverted(mxc_spixfm_reva_regs_t *spixfm)
     return !!(spixfm->fb_ctrl & MXC_F_SPIXFM_REVA_FB_CTRL_INVERT_EN);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SCKFeedbackEnable(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm)
 {
     spixfm->fb_ctrl |= MXC_F_SPIXFM_REVA_FB_CTRL_FB_EN;
@@ -1028,6 +1149,11 @@ int MXC_SPIXF_RevA_SCKFeedbackEnable(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SCKFeedbackDisable(mxc_spixfc_reva_regs_t *spixfc,
                                       mxc_spixfm_reva_regs_t *spixfm)
 {
@@ -1036,6 +1162,11 @@ int MXC_SPIXF_RevA_SCKFeedbackDisable(mxc_spixfc_reva_regs_t *spixfc,
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SCKFeedbackIsEnabled(mxc_spixfm_reva_regs_t *spixfm)
 {
     return !!(spixfm->fb_ctrl & MXC_F_SPIXFM_REVA_FB_CTRL_FB_EN);
@@ -1053,6 +1184,11 @@ uint8_t MXC_SPIXF_RevA_GetSCKSampleDelay(mxc_spixfc_reva_regs_t *spixfc)
     return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_IOSMPL) >> MXC_F_SPIXFC_REVA_CFG_IOSMPL_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetCmdValue(mxc_spixfm_reva_regs_t *spixfm, uint8_t cmdval)
 {
     MXC_SETFIELD(spixfm->fetch_ctrl, MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL,
@@ -1066,6 +1202,11 @@ uint8_t MXC_SPIXF_RevA_GetCmdValue(mxc_spixfm_reva_regs_t *spixfm)
             MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL_POS);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 void MXC_SPIXF_RevA_SetPageSize(mxc_spixfc_reva_regs_t *spixfc, mxc_spixf_page_size_t size)
 {
     MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE,
@@ -1074,7 +1215,8 @@ void MXC_SPIXF_RevA_SetPageSize(mxc_spixfc_reva_regs_t *spixfc, mxc_spixf_page_s
 
 mxc_spixf_page_size_t MXC_SPIXF_RevA_GetPageSize(mxc_spixfc_reva_regs_t *spixfc)
 {
-    return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE) >> MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE_POS);
+    return (mxc_spixf_page_size_t)((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE) >>
+                                   MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE_POS);
 }
 
 int MXC_SPIXF_RevA_SimpleRXEnabled(mxc_spixfc_reva_regs_t *spixfc)
@@ -1182,13 +1324,23 @@ uint8_t MXC_SPIXF_RevA_GetIoctrlSSDrive(mxc_spixfm_reva_regs_t *spixfm)
     return !!(spixfm->io_ctrl & MXC_F_SPIXFM_REVA_IO_CTRL_SS_DS);
 }
 
-void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_pup_t pupd)
+void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad)
 {
-    spixfm->io_ctrl &= ~(MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
-    spixfm->io_ctrl |= (pupd & MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
+    MXC_SPIXF_RevA_SetPadCtrl(spixfm, pad);
 }
 
 uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm)
+{
+    return MXC_SPIXF_RevA_GetPadCtrl(spixfm);
+}
+
+void MXC_SPIXF_RevA_SetPadCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad)
+{
+    spixfm->io_ctrl &= ~(MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
+    spixfm->io_ctrl |= (pad & MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
+}
+
+uint8_t MXC_SPIXF_RevA_GetPadCtrl(mxc_spixfm_reva_regs_t *spixfm)
 {
     return (spixfm->io_ctrl & MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
 }
@@ -1240,6 +1392,11 @@ int MXC_SPIXF_RevA_BitBangModeIsEnabled(mxc_spixfc_reva_regs_t *spixfc)
     return !!(spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_BBMODE);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_RXFIFOEnable(mxc_spixfc_reva_regs_t *spixfc)
 {
     spixfc->gen_ctrl |= MXC_F_SPIXFC_REVA_GEN_CTRL_RX_FIFO_EN;
@@ -1257,6 +1414,11 @@ int MXC_SPIXF_RevA_RXFIFOIsEnabled(mxc_spixfc_reva_regs_t *spixfc)
     return !!(spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_RX_FIFO_EN);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_TXFIFOEnable(mxc_spixfc_reva_regs_t *spixfc)
 {
     spixfc->gen_ctrl |= MXC_F_SPIXFC_REVA_GEN_CTRL_TX_FIFO_EN;
@@ -1274,23 +1436,43 @@ int MXC_SPIXF_RevA_TXFIFOIsEnabled(mxc_spixfc_reva_regs_t *spixfc)
     return !!(spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_TX_FIFO_EN);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_Enable(mxc_spixfc_reva_regs_t *spixfc)
 {
     spixfc->gen_ctrl |= MXC_F_SPIXFC_REVA_GEN_CTRL_ENABLE;
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_Disable(mxc_spixfc_reva_regs_t *spixfc)
 {
     spixfc->gen_ctrl &= (~MXC_F_SPIXFC_REVA_GEN_CTRL_ENABLE);
     return E_NO_ERROR;
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_IsEnabled(mxc_spixfc_reva_regs_t *spixfc)
 {
     return !!(spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_ENABLE);
 }
 
+#if defined(SPIXF_RAM) && IAR_PRAGMAS
+#pragma section = ".spix_config"
+#elif defined(SPIXF_RAM)
+__attribute__((section(".spix_config")))
+#endif
 int MXC_SPIXF_RevA_SetBusIdle(mxc_spixfm_reva_regs_t *spixfm, unsigned int busidle)
 {
     spixfm->bus_idle = busidle;
@@ -1301,3 +1483,49 @@ unsigned int MXC_SPIXF_RevA_GetBusIdle(mxc_spixfm_reva_regs_t *spixfm)
 {
     return spixfm->bus_idle;
 }
+
+/* ************************************************************************** */
+
+// MXC_GetLock
+#if defined(SPIXF_RAM)
+#if IAR_PRAGMAS
+#pragma section = ".spix_config"
+#else
+__attribute__((section(".spix_config")))
+#endif
+int MXC_GetLock_SPIXF(uint32_t *lock, uint32_t value)
+{
+#ifndef __riscv
+    do {
+        // Return if the lock is taken by a different thread
+        if (__LDREXW((volatile uint32_t *)lock) != 0) {
+            return E_BUSY;
+        }
+
+        // Attempt to take the lock
+    } while (__STREXW(value, (volatile uint32_t *)lock) != 0);
+
+    // Do not start any other memory access until memory barrier is complete
+    __DMB();
+#endif // __riscv
+
+    return E_NO_ERROR;
+}
+#endif
+
+// MXC_FreeLock
+#if defined(SPIXF_RAM)
+#if IAR_PRAGMAS
+#pragma section = ".spix_config"
+#else
+__attribute__((section(".spix_config")))
+#endif
+void MXC_FreeLock_SPIXF(uint32_t *lock)
+{
+#ifndef __riscv
+    // Ensure memory operations complete before releasing lock
+    __DMB();
+#endif // __riscv
+    *lock = 0;
+}
+#endif

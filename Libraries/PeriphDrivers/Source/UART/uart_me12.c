@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -56,29 +43,12 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock, sys_map_t map)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
     retval = MXC_UART_Shutdown(uart);
-
     if (retval) {
         return retval;
-    }
-
-    switch (clock) {
-    case MXC_UART_EXT_CLK:
-        MXC_GPIO_Config(&gpio_cfg_hf_extclk);
-        break;
-
-    case MXC_UART_IBRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
-
-    case MXC_UART_ERFO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
-
-    default:
-        break;
     }
 
     if (uart == MXC_UART0) {
@@ -93,6 +63,14 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
     } else {
         return E_BAD_PARAM;
+    }
+#else
+    (void)map;
+#endif // MSDK_NO_GPIO_CLK_INIT
+
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval != E_NO_ERROR) {
+        return retval;
     }
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
@@ -126,12 +104,34 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t *uart)
 int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int freq;
+    uint32_t clock_freq;
 
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = SystemCoreClock / 2;
+        break;
+
+    case MXC_UART_EXT_CLK:
+        clock_freq = HF_EXTCLK_FREQ;
+        break;
+
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
+
+    case MXC_UART_ERFO_CLK:
+        clock_freq = ERFO_FREQ;
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+
+    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
 
     if (freq > 0) {
         // Enable baud clock and wait for it to become ready.
@@ -201,7 +201,55 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
-    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock);
+    int error = E_NO_ERROR;
+
+    if (MXC_UART_GET_IDX(uart) < 0 || MXC_UART_GET_IDX(uart) > 1) {
+        return E_BAD_PARAM;
+    }
+
+    // The following interprets table 12-1 from the MAX78002 UG.
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
+        break;
+
+    case MXC_UART_EXT_CLK:
+        error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 1);
+        break;
+
+    case MXC_UART_IBRO_CLK:
+        error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
+        break;
+
+    case MXC_UART_ERFO_CLK:
+        error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+
+    return error;
+}
+
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
+{
+    unsigned int clock_option = MXC_UART_RevB_GetClockSource((mxc_uart_revb_regs_t *)uart);
+    switch (clock_option) {
+    case 0:
+        return MXC_UART_APB_CLK;
+    case 1:
+        return MXC_UART_EXT_CLK;
+    case 2:
+        return MXC_UART_IBRO_CLK;
+    case 3:
+        return MXC_UART_ERFO_CLK;
+    default:
+        return E_BAD_PARAM;
+    }
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
@@ -268,7 +316,8 @@ int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned
         break;
     }
 
-    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, bytes, len, callback, config);
+    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, MXC_DMA, bytes, len, callback,
+                                       config);
 }
 
 unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -300,7 +349,8 @@ int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, const unsigned char *bytes, u
         break;
     }
 
-    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, bytes, len, callback, config);
+    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, MXC_DMA, bytes, len, callback,
+                                        config);
 }
 
 unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -375,7 +425,7 @@ int MXC_UART_TransactionAsync(mxc_uart_req_t *req)
 
 int MXC_UART_TransactionDMA(mxc_uart_req_t *req)
 {
-    return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req);
+    return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req, MXC_DMA);
 }
 
 int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)
@@ -386,4 +436,29 @@ int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)
 int MXC_UART_AsyncHandler(mxc_uart_regs_t *uart)
 {
     return MXC_UART_RevB_AsyncHandler((mxc_uart_revb_regs_t *)uart);
+}
+
+int MXC_UART_SetAutoDMAHandlers(mxc_uart_regs_t *uart, bool enable)
+{
+    return MXC_UART_RevB_SetAutoDMAHandlers((mxc_uart_revb_regs_t *)uart, enable);
+}
+
+int MXC_UART_SetTXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel)
+{
+    return MXC_UART_RevB_SetTXDMAChannel((mxc_uart_revb_regs_t *)uart, channel);
+}
+
+int MXC_UART_GetTXDMAChannel(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevB_GetTXDMAChannel((mxc_uart_revb_regs_t *)uart);
+}
+
+int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel)
+{
+    return MXC_UART_RevB_SetRXDMAChannel((mxc_uart_revb_regs_t *)uart, channel);
+}
+
+int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevB_GetTXDMAChannel((mxc_uart_revb_regs_t *)uart);
 }

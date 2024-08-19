@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -228,11 +215,11 @@ int MXC_CTB_RevA_Shutdown(uint32_t features)
     enabled_features &= ~features;
 
     if (features & MXC_CTB_REVA_FEATURE_CIPHER) {
-        MXC_CTB_Cipher_SetCipher(MXC_CTB_REVA_CIPHER_DIS);
+        MXC_CTB_RevA_Cipher_SetCipher((mxc_ctb_reva_regs_t *)MXC_CTB, MXC_CTB_REVA_CIPHER_DIS);
     }
 
     if (features & MXC_CTB_REVA_FEATURE_HASH) {
-        MXC_CTB_Hash_SetFunction(MXC_CTB_REVA_HASH_DIS);
+        MXC_CTB_RevA_Hash_SetFunction((mxc_ctb_reva_regs_t *)MXC_CTB, MXC_CTB_REVA_HASH_DIS);
     }
 
     if (features & MXC_CTB_REVA_FEATURE_DMA) {
@@ -354,7 +341,8 @@ void MXC_CTB_RevA_DMA_SetReadSource(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_dma_read_source_t MXC_CTB_RevA_DMA_GetReadSource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RDSRC) >> MXC_F_CTB_REVA_CTRL_RDSRC_POS;
+    return (mxc_ctb_reva_dma_read_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RDSRC) >>
+                                            MXC_F_CTB_REVA_CTRL_RDSRC_POS);
 }
 
 void MXC_CTB_RevA_DMA_SetWriteSource(mxc_ctb_reva_regs_t *ctb_regs,
@@ -366,7 +354,8 @@ void MXC_CTB_RevA_DMA_SetWriteSource(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_dma_write_source_t MXC_CTB_RevA_DMA_GetWriteSource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_WRSRC) >> MXC_F_CTB_REVA_CTRL_WRSRC_POS;
+    return (mxc_ctb_reva_dma_write_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_WRSRC) >>
+                                             MXC_F_CTB_REVA_CTRL_WRSRC_POS);
 }
 
 void MXC_CTB_RevA_DMA_SetSource(mxc_ctb_reva_regs_t *ctb_regs, uint8_t *source)
@@ -390,12 +379,12 @@ int MXC_CTB_RevA_DMA_SetupOperation(mxc_ctb_reva_dma_req_t *req)
         return E_NULL_PTR;
     }
 
-    MXC_CTB_DMA_SetReadSource(MXC_CTB_REVA_DMA_READ_FIFO_DMA);
+    MXC_CTB_DMA_SetReadSource((mxc_ctb_dma_read_source_t)MXC_CTB_REVA_DMA_READ_FIFO_DMA);
 
     if (req->destBuffer == NULL) {
-        MXC_CTB_DMA_SetWriteSource(MXC_CTB_REVA_DMA_WRITE_FIFO_NONE);
+        MXC_CTB_DMA_SetWriteSource((mxc_ctb_dma_write_source_t)MXC_CTB_REVA_DMA_WRITE_FIFO_NONE);
     } else {
-        MXC_CTB_DMA_SetWriteSource(MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
+        MXC_CTB_DMA_SetWriteSource((mxc_ctb_dma_write_source_t)MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
     }
 
     MXC_CTB_DMA_SetSource(req->sourceBuffer);
@@ -655,7 +644,8 @@ void MXC_CTB_RevA_CRC_SetDirection(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_crc_bitorder_t MXC_CTB_RevA_CRC_GetDirection(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return ((ctb_regs->crc_ctrl & MXC_F_CTB_REVA_CRC_CTRL_MSB) >> MXC_F_CTB_REVA_CRC_CTRL_MSB_POS);
+    return (mxc_ctb_reva_crc_bitorder_t)((ctb_regs->crc_ctrl & MXC_F_CTB_REVA_CRC_CTRL_MSB) >>
+                                         MXC_F_CTB_REVA_CRC_CTRL_MSB_POS);
 }
 
 void MXC_CTB_RevA_CRC_SetPoly(mxc_ctb_reva_regs_t *ctb_regs, uint32_t poly)
@@ -760,8 +750,8 @@ void MXC_CTB_RevA_Hash_SetFunction(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_h
 
 mxc_ctb_reva_hash_func_t MXC_CTB_RevA_Hash_GetFunction(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_HASH) >>
-           MXC_F_CTB_REVA_HASH_CTRL_HASH_POS;
+    return (mxc_ctb_reva_hash_func_t)((ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_HASH) >>
+                                      MXC_F_CTB_REVA_HASH_CTRL_HASH_POS);
 }
 
 void MXC_CTB_RevA_Hash_SetAutoPad(mxc_ctb_reva_regs_t *ctb_regs, int pad)
@@ -794,7 +784,8 @@ void MXC_CTB_RevA_Hash_SetSource(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_has
 
 mxc_ctb_reva_hash_source_t MXC_CTB_RevA_Hash_GetSource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_SRC) >> MXC_F_CTB_REVA_CTRL_SRC_POS;
+    return (mxc_ctb_reva_hash_source_t)((ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_SRC) >>
+                                        MXC_F_CTB_REVA_CTRL_SRC_POS);
 }
 
 void MXC_CTB_RevA_Hash_InitializeHash(mxc_ctb_reva_regs_t *ctb_regs)
@@ -829,7 +820,7 @@ int MXC_CTB_RevA_Hash_Compute(mxc_ctb_reva_hash_req_t *req)
     MXC_CTB_DisableInt();
 
     MXC_CTB_Hash_SetMessageSize(req->len);
-    MXC_CTB_Hash_SetSource(MXC_CTB_REVA_HASH_SOURCE_INFIFO);
+    MXC_CTB_Hash_SetSource((mxc_ctb_hash_source_t)MXC_CTB_REVA_HASH_SOURCE_INFIFO);
     MXC_CTB_Hash_InitializeHash();
 
     blockSize = MXC_CTB_Hash_GetBlockSize(MXC_CTB_Hash_GetFunction());
@@ -902,7 +893,7 @@ void MXC_CTB_RevA_Hash_ComputeAsync(mxc_ctb_reva_hash_req_t *req)
     saved_requests[HSH_ID] = req;
 
     MXC_CTB_Hash_SetMessageSize(req->len);
-    MXC_CTB_Hash_SetSource(MXC_CTB_REVA_HASH_SOURCE_INFIFO);
+    MXC_CTB_Hash_SetSource((mxc_ctb_hash_source_t)MXC_CTB_REVA_HASH_SOURCE_INFIFO);
     MXC_CTB_Hash_InitializeHash();
 
     async_blockSize = MXC_CTB_Hash_GetBlockSize(MXC_CTB_Hash_GetFunction());
@@ -938,8 +929,8 @@ void MXC_CTB_RevA_Cipher_SetMode(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_cip
 
 mxc_ctb_reva_cipher_mode_t MXC_CTB_RevA_Cipher_GetMode(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_MODE) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS;
+    return (mxc_ctb_reva_cipher_mode_t)((ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_MODE) >>
+                                        MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS);
 }
 
 void MXC_CTB_RevA_Cipher_SetCipher(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_cipher_t cipher)
@@ -950,8 +941,8 @@ void MXC_CTB_RevA_Cipher_SetCipher(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_c
 
 mxc_ctb_reva_cipher_t MXC_CTB_RevA_Cipher_GetCipher(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS;
+    return (mxc_ctb_reva_cipher_t)((ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER) >>
+                                   MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS);
 }
 
 void MXC_CTB_RevA_Cipher_SetKeySource(mxc_ctb_reva_regs_t *ctb_regs,
@@ -963,8 +954,8 @@ void MXC_CTB_RevA_Cipher_SetKeySource(mxc_ctb_reva_regs_t *ctb_regs,
 
 mxc_ctb_reva_cipher_key_t MXC_CTB_RevA_Cipher_GetKeySource(mxc_ctb_reva_regs_t *ctb_regs)
 {
-    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_SRC) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS;
+    return (mxc_ctb_reva_cipher_key_t)((ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_SRC) >>
+                                       MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS);
 }
 
 void MXC_CTB_RevA_Cipher_LoadKey(mxc_ctb_reva_regs_t *ctb_regs)
@@ -1041,13 +1032,13 @@ static int MXC_CTB_Cipher_Generic(mxc_ctb_cipher_req_t *req, int op)
     }
 
     // Configure for encryption/decryption
-    MXC_CTB_Cipher_SetOperation(op);
+    MXC_CTB_Cipher_SetOperation((mxc_ctb_cipher_operation_t)op);
 
     dma_req.sourceBuffer = req->plaintext;
     dma_req.destBuffer = req->ciphertext;
     dma_req.length = dataLength;
 
-    MXC_CTB_DMA_SetWriteSource(MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
+    MXC_CTB_DMA_SetWriteSource((mxc_ctb_dma_write_source_t)MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
     MXC_CTB_DMA_SetupOperation((mxc_ctb_dma_req_t *)&dma_req);
 
     for (i = 0; i < numBlocks; i++) {
@@ -1115,12 +1106,12 @@ static void MXC_CTB_Cipher_GenericAsync(mxc_ctb_cipher_req_t *req, int op)
     }
 
     // Configure for encryption
-    MXC_CTB_Cipher_SetOperation(op);
+    MXC_CTB_Cipher_SetOperation((mxc_ctb_cipher_operation_t)op);
 
     dma_req.sourceBuffer = req->plaintext;
     dma_req.destBuffer = req->ciphertext;
 
-    MXC_CTB_DMA_SetWriteSource(MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
+    MXC_CTB_DMA_SetWriteSource((mxc_ctb_dma_write_source_t)MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
     MXC_CTB_DMA_SetupOperation((mxc_ctb_dma_req_t *)&dma_req);
 
     MXC_CTB_EnableInt();

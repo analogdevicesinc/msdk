@@ -47,6 +47,14 @@ extern "C" {
   Macros
 **************************************************************************************************/
 
+/* maximum number of event handlers per task */
+#ifndef WSF_MAX_HANDLERS
+#define WSF_MAX_HANDLERS                          16
+#endif
+
+/*! \brief OS serivice function number */
+#define WSF_OS_MAX_SERVICE_FUNCTIONS                  3
+
 /*! \brief Derive task from handler ID */
 #define WSF_TASK_FROM_ID(handlerID)       (((handlerID) >> 4) & 0x0F)
 
@@ -89,7 +97,7 @@ typedef wsfHandlerId_t  wsfTaskId_t;
 typedef uint8_t wsfTaskEvent_t;
 
 /*! \brief      Idle check function. */
-typedef bool_t (*WsfOsIdleCheckFunc_t)(void);
+typedef bool (*WsfOsIdleCheckFunc_t)(void);
 
 /**************************************************************************************************
   External Variables

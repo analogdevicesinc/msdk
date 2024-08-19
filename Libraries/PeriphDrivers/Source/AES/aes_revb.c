@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -46,6 +33,7 @@
 /* **** Variable Declaration **** */
 typedef struct {
     uint8_t enc;
+    mxc_dma_regs_t *dma;
     uint8_t channelRX;
     uint8_t channelTX;
     uint32_t remain;
@@ -60,7 +48,10 @@ static mxc_aes_revb_dma_req_t dma_state;
      (((x) << 24) & 0xFF000000))
 
 /* Prevent GCC from optimimzing this function to memcpy */
-static void __attribute__((optimize("no-tree-loop-distribute-patterns")))
+#if !(defined(__CC_ARM) || defined(__ARMCC_VERSION))
+__attribute__((optimize("no-tree-loop-distribute-patterns")))
+#endif
+static void
 memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
 {
     uint32_t *dstr = dst + (len / 4) - 1;
@@ -72,13 +63,15 @@ memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
     }
 }
 
-int MXC_AES_RevB_Init(mxc_aes_revb_regs_t *aes)
+int MXC_AES_RevB_Init(mxc_aes_revb_regs_t *aes, mxc_dma_regs_t *dma)
 {
     aes->ctrl = 0x00;
 
     while (MXC_AES_RevB_IsBusy(aes) != E_NO_ERROR) {}
 
     aes->ctrl |= MXC_F_AES_REVB_CTRL_EN;
+
+    dma_state.dma = dma;
 
     return E_NO_ERROR;
 }
@@ -236,7 +229,7 @@ int MXC_AES_RevB_Decrypt(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
     return MXC_AES_RevB_Generic(aes, req);
 }
 
-int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len)
+int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma)
 {
     uint8_t channel;
     mxc_dma_config_t config;
@@ -250,9 +243,16 @@ int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len)
         return E_BAD_PARAM;
     }
 
+#if (TARGET_NUM == 32657)
+    MXC_DMA_Init(dma);
+
+    channel = MXC_DMA_AcquireChannel(dma);
+#else
     MXC_DMA_Init();
 
     channel = MXC_DMA_AcquireChannel();
+#endif
+
     dma_state.channelTX = channel;
 
     config.reqsel = MXC_DMA_REQUEST_AESTX;
@@ -279,7 +279,12 @@ int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len)
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_AES_RevB_DMACallback);
 
+#if (TARGET_NUM == 32657)
+    MXC_DMA_EnableInt(dma, channel);
+#else
     MXC_DMA_EnableInt(channel);
+#endif
+
     MXC_DMA_Start(channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
     MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
@@ -287,7 +292,7 @@ int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len)
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len)
+int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma)
 {
     if (dest_addr == NULL) {
         return E_NULL_PTR;
@@ -301,9 +306,16 @@ int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len)
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
 
+#if (TARGET_NUM == 32657)
+    MXC_DMA_Init(dma);
+
+    channel = MXC_DMA_AcquireChannel(dma);
+#else
     MXC_DMA_Init();
 
     channel = MXC_DMA_AcquireChannel();
+#endif
+
     dma_state.channelRX = channel;
 
     config.reqsel = MXC_DMA_REQUEST_AESRX;
@@ -330,7 +342,12 @@ int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len)
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_AES_RevB_DMACallback);
 
+#if (TARGET_NUM == 32657)
+    MXC_DMA_EnableInt(dma, channel);
+#else
     MXC_DMA_EnableInt(channel);
+#endif
+
     MXC_DMA_Start(channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
     MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
@@ -369,7 +386,8 @@ int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req,
     aes->ctrl |= MXC_F_AES_REVB_CTRL_DMA_RX_EN; //Enable AES DMA
     aes->ctrl |= MXC_F_AES_REVB_CTRL_DMA_TX_EN; //Enable AES DMA
 
-    if (MXC_AES_RevB_TXDMAConfig(dma_state.inputText, dma_state.remain) != E_NO_ERROR) {
+    if (MXC_AES_RevB_TXDMAConfig(dma_state.inputText, dma_state.remain, dma_state.dma) !=
+        E_NO_ERROR) {
         return E_BAD_PARAM;
     }
 
@@ -395,7 +413,7 @@ void MXC_AES_RevB_DMACallback(int ch, int error)
             if (dma_state.remain < 4) {
                 MXC_AES_Start();
             }
-            MXC_AES_RevB_RXDMAConfig(dma_state.outputText, dma_state.remain);
+            MXC_AES_RevB_RXDMAConfig(dma_state.outputText, dma_state.remain, dma_state.dma);
         } else if (dma_state.channelRX == ch) {
             if (dma_state.remain > 4) {
                 dma_state.remain -= 4;
@@ -404,7 +422,7 @@ void MXC_AES_RevB_DMACallback(int ch, int error)
             }
             MXC_DMA_ReleaseChannel(dma_state.channelRX);
             if (dma_state.remain > 0) {
-                MXC_AES_RevB_TXDMAConfig(dma_state.inputText, dma_state.remain);
+                MXC_AES_RevB_TXDMAConfig(dma_state.inputText, dma_state.remain, dma_state.dma);
             }
         }
     }

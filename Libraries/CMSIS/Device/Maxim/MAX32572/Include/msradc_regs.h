@@ -2,38 +2,26 @@
  * @file    msradc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the MSRADC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup msradc_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -224,6 +212,14 @@ typedef struct {
 #define MXC_S_MSRADC_FIFO_INPUT_CH2_IN                 (MXC_V_MSRADC_FIFO_INPUT_CH2_IN << MXC_F_MSRADC_FIFO_INPUT_POS) /**< FIFO_INPUT_CH2_IN Setting */
 #define MXC_V_MSRADC_FIFO_INPUT_CH3_IN                 ((uint32_t)0x3UL) /**< FIFO_INPUT_CH3_IN Value */
 #define MXC_S_MSRADC_FIFO_INPUT_CH3_IN                 (MXC_V_MSRADC_FIFO_INPUT_CH3_IN << MXC_F_MSRADC_FIFO_INPUT_POS) /**< FIFO_INPUT_CH3_IN Setting */
+#define MXC_V_MSRADC_FIFO_INPUT_CH4_IN                 ((uint32_t)0x4UL) /**< FIFO_INPUT_CH4_IN Value */
+#define MXC_S_MSRADC_FIFO_INPUT_CH4_IN                 (MXC_V_MSRADC_FIFO_INPUT_CH4_IN << MXC_F_MSRADC_FIFO_INPUT_POS) /**< FIFO_INPUT_CH4_IN Setting */
+#define MXC_V_MSRADC_FIFO_INPUT_CH5_IN                 ((uint32_t)0x5UL) /**< FIFO_INPUT_CH5_IN Value */
+#define MXC_S_MSRADC_FIFO_INPUT_CH5_IN                 (MXC_V_MSRADC_FIFO_INPUT_CH5_IN << MXC_F_MSRADC_FIFO_INPUT_POS) /**< FIFO_INPUT_CH5_IN Setting */
+#define MXC_V_MSRADC_FIFO_INPUT_CH6_IN                 ((uint32_t)0x6UL) /**< FIFO_INPUT_CH6_IN Value */
+#define MXC_S_MSRADC_FIFO_INPUT_CH6_IN                 (MXC_V_MSRADC_FIFO_INPUT_CH6_IN << MXC_F_MSRADC_FIFO_INPUT_POS) /**< FIFO_INPUT_CH6_IN Setting */
+#define MXC_V_MSRADC_FIFO_INPUT_CH7_IN                 ((uint32_t)0x7UL) /**< FIFO_INPUT_CH7_IN Value */
+#define MXC_S_MSRADC_FIFO_INPUT_CH7_IN                 (MXC_V_MSRADC_FIFO_INPUT_CH7_IN << MXC_F_MSRADC_FIFO_INPUT_POS) /**< FIFO_INPUT_CH7_IN Setting */
 
 #define MXC_F_MSRADC_FIFO_INCOMPLETE_POS               12 /**< FIFO_INCOMPLETE Position */
 #define MXC_F_MSRADC_FIFO_INCOMPLETE                   ((uint32_t)(0x1UL << MXC_F_MSRADC_FIFO_INCOMPLETE_POS)) /**< FIFO_INCOMPLETE Mask */
@@ -237,7 +233,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS             0 /**< INTEN_SET_FIFOLVL Position */
-#define MXC_F_MSRADC_INTEN_SET_FIFOLVL                 ((uint32_t)(0x7UL << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS)) /**< INTEN_SET_FIFOLVL Mask */
+#define MXC_F_MSRADC_INTEN_SET_FIFOLVL                 ((uint32_t)(0x1FUL << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS)) /**< INTEN_SET_FIFOLVL Mask */
 #define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_1      ((uint32_t)0x0UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_1 Value */
 #define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_1      (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_1 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_1 Setting */
 #define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_2      ((uint32_t)0x1UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_2 Value */
@@ -254,9 +250,25 @@ typedef struct {
 #define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_7      (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_7 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_7 Setting */
 #define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8      ((uint32_t)0x7UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_8 Value */
 #define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8      (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_8 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_9      ((uint32_t)0x8UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_9 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_9      (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_9 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_9 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_10     ((uint32_t)0x9UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_10 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_10     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_10 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_10 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_11     ((uint32_t)0xAUL) /**< INTEN_SET_FIFOLVL_AT_LEAST_11 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_11     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_11 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_11 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_12     ((uint32_t)0xBUL) /**< INTEN_SET_FIFOLVL_AT_LEAST_12 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_12     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_12 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_12 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_13     ((uint32_t)0xCUL) /**< INTEN_SET_FIFOLVL_AT_LEAST_13 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_13     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_13 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_13 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_14     ((uint32_t)0xDUL) /**< INTEN_SET_FIFOLVL_AT_LEAST_14 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_14     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_14 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_14 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_15     ((uint32_t)0xEUL) /**< INTEN_SET_FIFOLVL_AT_LEAST_15 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_15     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_15 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_15 Setting */
+#define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_16     ((uint32_t)0xFUL) /**< INTEN_SET_FIFOLVL_AT_LEAST_16 Value */
+#define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_16     (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_16 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_16 Setting */
 
-#define MXC_F_MSRADC_INTEN_DMAREQ_EN_POS               3 /**< INTEN_DMAREQ_EN Position */
-#define MXC_F_MSRADC_INTEN_DMAREQ_EN                   ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_DMAREQ_EN_POS)) /**< INTEN_DMAREQ_EN Mask */
+#define MXC_F_MSRADC_INTEN_DMAREQ_POS                  5 /**< INTEN_DMAREQ Position */
+#define MXC_F_MSRADC_INTEN_DMAREQ                      ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_DMAREQ_POS)) /**< INTEN_DMAREQ Mask */
 
 #define MXC_F_MSRADC_INTEN_FIFO_OV_POS                 6 /**< INTEN_FIFO_OV Position */
 #define MXC_F_MSRADC_INTEN_FIFO_OV                     ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_FIFO_OV_POS)) /**< INTEN_FIFO_OV Mask */
@@ -279,24 +291,24 @@ typedef struct {
  * @{
  */
 #define MXC_F_MSRADC_INTFL_FIFOCNT_POS                 0 /**< INTFL_FIFOCNT Position */
-#define MXC_F_MSRADC_INTFL_FIFOCNT                     ((uint32_t)(0xFUL << MXC_F_MSRADC_INTFL_FIFOCNT_POS)) /**< INTFL_FIFOCNT Mask */
+#define MXC_F_MSRADC_INTFL_FIFOCNT                     ((uint32_t)(0x3FUL << MXC_F_MSRADC_INTFL_FIFOCNT_POS)) /**< INTFL_FIFOCNT Mask */
 
-#define MXC_F_MSRADC_INTFL_FIFO_FULL_ST_POS            4 /**< INTFL_FIFO_FULL_ST Position */
+#define MXC_F_MSRADC_INTFL_FIFO_FULL_ST_POS            6 /**< INTFL_FIFO_FULL_ST Position */
 #define MXC_F_MSRADC_INTFL_FIFO_FULL_ST                ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_FIFO_FULL_ST_POS)) /**< INTFL_FIFO_FULL_ST Mask */
 
-#define MXC_F_MSRADC_INTFL_FIFO_EM_ST_POS              5 /**< INTFL_FIFO_EM_ST Position */
+#define MXC_F_MSRADC_INTFL_FIFO_EM_ST_POS              7 /**< INTFL_FIFO_EM_ST Position */
 #define MXC_F_MSRADC_INTFL_FIFO_EM_ST                  ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_FIFO_EM_ST_POS)) /**< INTFL_FIFO_EM_ST Mask */
 
-#define MXC_F_MSRADC_INTFL_FIFO_OV_POS                 6 /**< INTFL_FIFO_OV Position */
+#define MXC_F_MSRADC_INTFL_FIFO_OV_POS                 8 /**< INTFL_FIFO_OV Position */
 #define MXC_F_MSRADC_INTFL_FIFO_OV                     ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_FIFO_OV_POS)) /**< INTFL_FIFO_OV Mask */
 
-#define MXC_F_MSRADC_INTFL_FIFO_UN_POS                 7 /**< INTFL_FIFO_UN Position */
+#define MXC_F_MSRADC_INTFL_FIFO_UN_POS                 9 /**< INTFL_FIFO_UN Position */
 #define MXC_F_MSRADC_INTFL_FIFO_UN                     ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_FIFO_UN_POS)) /**< INTFL_FIFO_UN Mask */
 
-#define MXC_F_MSRADC_INTFL_FIFO_LVL_POS                8 /**< INTFL_FIFO_LVL Position */
+#define MXC_F_MSRADC_INTFL_FIFO_LVL_POS                10 /**< INTFL_FIFO_LVL Position */
 #define MXC_F_MSRADC_INTFL_FIFO_LVL                    ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_FIFO_LVL_POS)) /**< INTFL_FIFO_LVL Mask */
 
-#define MXC_F_MSRADC_INTFL_GLOBAL_POS                  9 /**< INTFL_GLOBAL Position */
+#define MXC_F_MSRADC_INTFL_GLOBAL_POS                  11 /**< INTFL_GLOBAL Position */
 #define MXC_F_MSRADC_INTFL_GLOBAL                      ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_GLOBAL_POS)) /**< INTFL_GLOBAL Mask */
 
 /**@} end of group MSRADC_INTFL_Register */

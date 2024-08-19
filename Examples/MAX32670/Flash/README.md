@@ -21,7 +21,7 @@ The _second_ time the example is run the application will see the "magic" 32-bit
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
@@ -37,7 +37,7 @@ MAX32670EVKIT:
 
 ## Building and Running
 
-**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
+**See the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
 
 ## Expected Output
 

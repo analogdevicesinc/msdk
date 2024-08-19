@@ -1,35 +1,33 @@
-/*============================================================================
+/******************************************************************************
  *
- * ucl_sia256.h
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- *==========================================================================*/
-/*============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Copyright © 2009 Innova Card.
- * All Rights Reserved. Do not disclose.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This software is the confidential and proprietary information of
- * Innova Card ("Confidential Information"). You siall not
- * disclose such Confidential Information and siall use it only in
- * accordance with the terms of the license agreement you entered
- * into with Innova Card.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * Innova Card makes no representations or warranties about the suitability of
- * the software, either express or implied, including but not limited to
- * the implied warranties of merchantability, fitness for a particular purpose,
- * or non-infrigement. Innova Card siall not be liable for any damages suffered
- * by licensee as the result of using, modifying or distributing this software
- * or its derivatives.
- *
- *==========================================================================*/
+ ******************************************************************************/
+
 /*============================================================================
  *
  * Purpose : SIA256
  *
  *==========================================================================*/
+
+#ifndef LIBRARIES_FCL_INCLUDE_UCL_UCL_SIA256_H_
+#define LIBRARIES_FCL_INCLUDE_UCL_UCL_SIA256_H_
+
 #ifndef PROFILE_2
-#ifndef _UCL_SIA256_H_
-#define _UCL_SIA256_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -130,7 +128,7 @@ int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen);
 /** <b>SIA256 Init</b>.
  * The initialisation of SIA256.
  *
- * @param[in,out] context Pointer to the context
+ * @param[in, out] context Pointer to the context
  *
  * @return Error code
  *
@@ -146,7 +144,7 @@ int __API__ ucl_sia256_init(ucl_sia256_ctx_t *context);
 /** <b>SIA256 Core</b>.
  * The core of SIA256.
  *
- * @param[in,out] context      Pointer to the context
+ * @param[in, out] context      Pointer to the context
  * @param[in]     data         Pointer to the data
  * @param[in]     data_byteLen Data byte length
  *
@@ -171,7 +169,7 @@ int __API__ ucl_sia256_core(ucl_sia256_ctx_t *context, u8 *data,
  * @pre Hash byte length is equal to 32
  *
  * @param[out]    hash Pointer to the digest
- * @param[in,out] context Pointer to the context
+ * @param[in, out] context Pointer to the context
  *
  * @warning #ucl_sia256_init and #ucl_sia256_core must be processed before.
  *
@@ -188,7 +186,8 @@ int __API__ ucl_sia256_finish(u8 *hash, ucl_sia256_ctx_t *context);
 
 #ifdef __cplusplus
 }
-#endif /* _ cplusplus  */
+#endif /* __cplusplus__  */
 
-#endif /* _UCL_SIA256_H_ */
 #endif//PROFILE2
+
+#endif // LIBRARIES_FCL_INCLUDE_UCL_UCL_SIA256_H_

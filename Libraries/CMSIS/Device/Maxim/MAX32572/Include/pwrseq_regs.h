@@ -2,38 +2,26 @@
  * @file    pwrseq_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup pwrseq_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -136,14 +124,10 @@ typedef struct {
  * @{
  */
 #define MXC_F_PWRSEQ_LPCTRL_RAMRET_EN_POS              0 /**< LPCTRL_RAMRET_EN Position */
-#define MXC_F_PWRSEQ_LPCTRL_RAMRET_EN                  ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCTRL_RAMRET_EN_POS)) /**< LPCTRL_RAMRET_EN Mask */
+#define MXC_F_PWRSEQ_LPCTRL_RAMRET_EN                  ((uint32_t)(0xFUL << MXC_F_PWRSEQ_LPCTRL_RAMRET_EN_POS)) /**< LPCTRL_RAMRET_EN Mask */
 
 #define MXC_F_PWRSEQ_LPCTRL_OVR_POS                    4 /**< LPCTRL_OVR Position */
 #define MXC_F_PWRSEQ_LPCTRL_OVR                        ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCTRL_OVR_POS)) /**< LPCTRL_OVR Mask */
-#define MXC_V_PWRSEQ_LPCTRL_OVR_0_9V                   ((uint32_t)0x0UL) /**< LPCTRL_OVR_0_9V Value */
-#define MXC_S_PWRSEQ_LPCTRL_OVR_0_9V                   (MXC_V_PWRSEQ_LPCTRL_OVR_0_9V << MXC_F_PWRSEQ_LPCTRL_OVR_POS) /**< LPCTRL_OVR_0_9V Setting */
-#define MXC_V_PWRSEQ_LPCTRL_OVR_1_0V                   ((uint32_t)0x1UL) /**< LPCTRL_OVR_1_0V Value */
-#define MXC_S_PWRSEQ_LPCTRL_OVR_1_0V                   (MXC_V_PWRSEQ_LPCTRL_OVR_1_0V << MXC_F_PWRSEQ_LPCTRL_OVR_POS) /**< LPCTRL_OVR_1_0V Setting */
 #define MXC_V_PWRSEQ_LPCTRL_OVR_1_1V                   ((uint32_t)0x2UL) /**< LPCTRL_OVR_1_1V Value */
 #define MXC_S_PWRSEQ_LPCTRL_OVR_1_1V                   (MXC_V_PWRSEQ_LPCTRL_OVR_1_1V << MXC_F_PWRSEQ_LPCTRL_OVR_POS) /**< LPCTRL_OVR_1_1V Setting */
 
@@ -159,8 +143,14 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS_POS           12 /**< LPCTRL_VCOREPOR_DIS Position */
 #define MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS               ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS_POS)) /**< LPCTRL_VCOREPOR_DIS Mask */
 
-#define MXC_F_PWRSEQ_LPCTRL_LDO_DIS_POS                16 /**< LPCTRL_LDO_DIS Position */
-#define MXC_F_PWRSEQ_LPCTRL_LDO_DIS                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_LDO_DIS_POS)) /**< LPCTRL_LDO_DIS Mask */
+#define MXC_F_PWRSEQ_LPCTRL_VDDIOHHVMON_DIS_POS        17 /**< LPCTRL_VDDIOHHVMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCTRL_VDDIOHHVMON_DIS            ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_VDDIOHHVMON_DIS_POS)) /**< LPCTRL_VDDIOHHVMON_DIS Mask */
+
+#define MXC_F_PWRSEQ_LPCTRL_VDDIOHVMON_DIS_POS         18 /**< LPCTRL_VDDIOHVMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCTRL_VDDIOHVMON_DIS             ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_VDDIOHVMON_DIS_POS)) /**< LPCTRL_VDDIOHVMON_DIS Mask */
+
+#define MXC_F_PWRSEQ_LPCTRL_VCOREHVMON_DIS_POS         19 /**< LPCTRL_VCOREHVMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCTRL_VCOREHVMON_DIS             ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_VCOREHVMON_DIS_POS)) /**< LPCTRL_VCOREHVMON_DIS Mask */
 
 #define MXC_F_PWRSEQ_LPCTRL_VCOREMON_DIS_POS           20 /**< LPCTRL_VCOREMON_DIS Position */
 #define MXC_F_PWRSEQ_LPCTRL_VCOREMON_DIS               ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_VCOREMON_DIS_POS)) /**< LPCTRL_VCOREMON_DIS Mask */
@@ -180,8 +170,8 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPCTRL_VDDBMON_DIS_POS            27 /**< LPCTRL_VDDBMON_DIS Position */
 #define MXC_F_PWRSEQ_LPCTRL_VDDBMON_DIS                ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_VDDBMON_DIS_POS)) /**< LPCTRL_VDDBMON_DIS Mask */
 
-#define MXC_F_PWRSEQ_LPCTRL_WKRST_POS                  31 /**< LPCTRL_WKRST Position */
-#define MXC_F_PWRSEQ_LPCTRL_WKRST                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_WKRST_POS)) /**< LPCTRL_WKRST Mask */
+#define MXC_F_PWRSEQ_LPCTRL_DEEPSLEEP_PDOUT_DIS_POS    30 /**< LPCTRL_DEEPSLEEP_PDOUT_DIS Position */
+#define MXC_F_PWRSEQ_LPCTRL_DEEPSLEEP_PDOUT_DIS        ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCTRL_DEEPSLEEP_PDOUT_DIS_POS)) /**< LPCTRL_DEEPSLEEP_PDOUT_DIS Mask */
 
 /**@} end of group PWRSEQ_LPCTRL_Register */
 
@@ -221,14 +211,17 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPPWKFL_USBVBUS_POS               2 /**< LPPWKFL_USBVBUS Position */
 #define MXC_F_PWRSEQ_LPPWKFL_USBVBUS                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKFL_USBVBUS_POS)) /**< LPPWKFL_USBVBUS Mask */
 
-#define MXC_F_PWRSEQ_LPPWKFL_HA0_POS                   3 /**< LPPWKFL_HA0 Position */
-#define MXC_F_PWRSEQ_LPPWKFL_HA0                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKFL_HA0_POS)) /**< LPPWKFL_HA0 Mask */
+#define MXC_F_PWRSEQ_LPPWKFL_CPU1_POS                  3 /**< LPPWKFL_CPU1 Position */
+#define MXC_F_PWRSEQ_LPPWKFL_CPU1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKFL_CPU1_POS)) /**< LPPWKFL_CPU1 Mask */
 
 #define MXC_F_PWRSEQ_LPPWKFL_BACKUP_POS                16 /**< LPPWKFL_BACKUP Position */
 #define MXC_F_PWRSEQ_LPPWKFL_BACKUP                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKFL_BACKUP_POS)) /**< LPPWKFL_BACKUP Mask */
 
 #define MXC_F_PWRSEQ_LPPWKFL_RESET_POS                 17 /**< LPPWKFL_RESET Position */
 #define MXC_F_PWRSEQ_LPPWKFL_RESET                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKFL_RESET_POS)) /**< LPPWKFL_RESET Mask */
+
+#define MXC_F_PWRSEQ_LPPWKFL_DRS_EVT_POS               19 /**< LPPWKFL_DRS_EVT Position */
+#define MXC_F_PWRSEQ_LPPWKFL_DRS_EVT                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKFL_DRS_EVT_POS)) /**< LPPWKFL_DRS_EVT Mask */
 
 /**@} end of group PWRSEQ_LPPWKFL_Register */
 
@@ -243,6 +236,9 @@ typedef struct {
 
 #define MXC_F_PWRSEQ_LPPWKEN_USBVBUS_POS               2 /**< LPPWKEN_USBVBUS Position */
 #define MXC_F_PWRSEQ_LPPWKEN_USBVBUS                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_USBVBUS_POS)) /**< LPPWKEN_USBVBUS Mask */
+
+#define MXC_F_PWRSEQ_LPPWKEN_CPU1_POS                  3 /**< LPPWKEN_CPU1 Position */
+#define MXC_F_PWRSEQ_LPPWKEN_CPU1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_CPU1_POS)) /**< LPPWKEN_CPU1 Mask */
 
 /**@} end of group PWRSEQ_LPPWKEN_Register */
 

@@ -2,38 +2,26 @@
  * @file    spi_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SPI Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup spi_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -102,7 +90,7 @@ typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x24:</tt> SPI INTEN Register */
     __IO uint32_t wkfl;                 /**< <tt>\b 0x28:</tt> SPI WKFL Register */
     __IO uint32_t wken;                 /**< <tt>\b 0x2C:</tt> SPI WKEN Register */
-    __I  uint32_t stat;                 /**< <tt>\b 0x30:</tt> SPI STAT Register */
+    __I  uint32_t status;               /**< <tt>\b 0x30:</tt> SPI STATUS Register */
 } mxc_spi_regs_t;
 
 /* Register offsets for module SPI */
@@ -125,7 +113,7 @@ typedef struct {
 #define MXC_R_SPI_INTEN                    ((uint32_t)0x00000024UL) /**< Offset from SPI Base Address: <tt> 0x0024</tt> */
 #define MXC_R_SPI_WKFL                     ((uint32_t)0x00000028UL) /**< Offset from SPI Base Address: <tt> 0x0028</tt> */
 #define MXC_R_SPI_WKEN                     ((uint32_t)0x0000002CUL) /**< Offset from SPI Base Address: <tt> 0x002C</tt> */
-#define MXC_R_SPI_STAT                     ((uint32_t)0x00000030UL) /**< Offset from SPI Base Address: <tt> 0x0030</tt> */
+#define MXC_R_SPI_STATUS                   ((uint32_t)0x00000030UL) /**< Offset from SPI Base Address: <tt> 0x0030</tt> */
 /**@} end of group spi_registers */
 
 /**
@@ -271,16 +259,16 @@ typedef struct {
 #define MXC_F_SPI_CTRL2_THREE_WIRE_POS                 15 /**< CTRL2_THREE_WIRE Position */
 #define MXC_F_SPI_CTRL2_THREE_WIRE                     ((uint32_t)(0x1UL << MXC_F_SPI_CTRL2_THREE_WIRE_POS)) /**< CTRL2_THREE_WIRE Mask */
 
-#define MXC_F_SPI_CTRL2_SS_POL_POS                     16 /**< CTRL2_SS_POL Position */
-#define MXC_F_SPI_CTRL2_SS_POL                         ((uint32_t)(0xFUL << MXC_F_SPI_CTRL2_SS_POL_POS)) /**< CTRL2_SS_POL Mask */
-#define MXC_V_SPI_CTRL2_SS_POL_SS0_HIGH                ((uint32_t)0x1UL) /**< CTRL2_SS_POL_SS0_HIGH Value */
-#define MXC_S_SPI_CTRL2_SS_POL_SS0_HIGH                (MXC_V_SPI_CTRL2_SS_POL_SS0_HIGH << MXC_F_SPI_CTRL2_SS_POL_POS) /**< CTRL2_SS_POL_SS0_HIGH Setting */
-#define MXC_V_SPI_CTRL2_SS_POL_SS1_HIGH                ((uint32_t)0x2UL) /**< CTRL2_SS_POL_SS1_HIGH Value */
-#define MXC_S_SPI_CTRL2_SS_POL_SS1_HIGH                (MXC_V_SPI_CTRL2_SS_POL_SS1_HIGH << MXC_F_SPI_CTRL2_SS_POL_POS) /**< CTRL2_SS_POL_SS1_HIGH Setting */
-#define MXC_V_SPI_CTRL2_SS_POL_SS2_HIGH                ((uint32_t)0x4UL) /**< CTRL2_SS_POL_SS2_HIGH Value */
-#define MXC_S_SPI_CTRL2_SS_POL_SS2_HIGH                (MXC_V_SPI_CTRL2_SS_POL_SS2_HIGH << MXC_F_SPI_CTRL2_SS_POL_POS) /**< CTRL2_SS_POL_SS2_HIGH Setting */
-#define MXC_V_SPI_CTRL2_SS_POL_SS3_HIGH                ((uint32_t)0x8UL) /**< CTRL2_SS_POL_SS3_HIGH Value */
-#define MXC_S_SPI_CTRL2_SS_POL_SS3_HIGH                (MXC_V_SPI_CTRL2_SS_POL_SS3_HIGH << MXC_F_SPI_CTRL2_SS_POL_POS) /**< CTRL2_SS_POL_SS3_HIGH Setting */
+#define MXC_F_SPI_CTRL2_SSPOL_POS                      16 /**< CTRL2_SSPOL Position */
+#define MXC_F_SPI_CTRL2_SSPOL                          ((uint32_t)(0xFUL << MXC_F_SPI_CTRL2_SSPOL_POS)) /**< CTRL2_SSPOL Mask */
+#define MXC_V_SPI_CTRL2_SSPOL_SS0_HIGH                 ((uint32_t)0x1UL) /**< CTRL2_SSPOL_SS0_HIGH Value */
+#define MXC_S_SPI_CTRL2_SSPOL_SS0_HIGH                 (MXC_V_SPI_CTRL2_SSPOL_SS0_HIGH << MXC_F_SPI_CTRL2_SSPOL_POS) /**< CTRL2_SSPOL_SS0_HIGH Setting */
+#define MXC_V_SPI_CTRL2_SSPOL_SS1_HIGH                 ((uint32_t)0x2UL) /**< CTRL2_SSPOL_SS1_HIGH Value */
+#define MXC_S_SPI_CTRL2_SSPOL_SS1_HIGH                 (MXC_V_SPI_CTRL2_SSPOL_SS1_HIGH << MXC_F_SPI_CTRL2_SSPOL_POS) /**< CTRL2_SSPOL_SS1_HIGH Setting */
+#define MXC_V_SPI_CTRL2_SSPOL_SS2_HIGH                 ((uint32_t)0x4UL) /**< CTRL2_SSPOL_SS2_HIGH Value */
+#define MXC_S_SPI_CTRL2_SSPOL_SS2_HIGH                 (MXC_V_SPI_CTRL2_SSPOL_SS2_HIGH << MXC_F_SPI_CTRL2_SSPOL_POS) /**< CTRL2_SSPOL_SS2_HIGH Setting */
+#define MXC_V_SPI_CTRL2_SSPOL_SS3_HIGH                 ((uint32_t)0x8UL) /**< CTRL2_SSPOL_SS3_HIGH Value */
+#define MXC_S_SPI_CTRL2_SSPOL_SS3_HIGH                 (MXC_V_SPI_CTRL2_SSPOL_SS3_HIGH << MXC_F_SPI_CTRL2_SSPOL_POS) /**< CTRL2_SSPOL_SS3_HIGH Setting */
 
 /**@} end of group SPI_CTRL2_Register */
 
@@ -346,8 +334,8 @@ typedef struct {
 #define MXC_F_SPI_DMA_TX_LVL_POS                       8 /**< DMA_TX_LVL Position */
 #define MXC_F_SPI_DMA_TX_LVL                           ((uint32_t)(0x3FUL << MXC_F_SPI_DMA_TX_LVL_POS)) /**< DMA_TX_LVL Mask */
 
-#define MXC_F_SPI_DMA_DMA_TX_EN_POS                    15 /**< DMA_DMA_TX_EN Position */
-#define MXC_F_SPI_DMA_DMA_TX_EN                        ((uint32_t)(0x1UL << MXC_F_SPI_DMA_DMA_TX_EN_POS)) /**< DMA_DMA_TX_EN Mask */
+#define MXC_F_SPI_DMA_TX_EN_POS                        15 /**< DMA_TX_EN Position */
+#define MXC_F_SPI_DMA_TX_EN                            ((uint32_t)(0x1UL << MXC_F_SPI_DMA_TX_EN_POS)) /**< DMA_TX_EN Mask */
 
 #define MXC_F_SPI_DMA_RX_THD_VAL_POS                   16 /**< DMA_RX_THD_VAL Position */
 #define MXC_F_SPI_DMA_RX_THD_VAL                       ((uint32_t)(0x1FUL << MXC_F_SPI_DMA_RX_THD_VAL_POS)) /**< DMA_RX_THD_VAL Mask */
@@ -361,8 +349,8 @@ typedef struct {
 #define MXC_F_SPI_DMA_RX_LVL_POS                       24 /**< DMA_RX_LVL Position */
 #define MXC_F_SPI_DMA_RX_LVL                           ((uint32_t)(0x3FUL << MXC_F_SPI_DMA_RX_LVL_POS)) /**< DMA_RX_LVL Mask */
 
-#define MXC_F_SPI_DMA_DMA_RX_EN_POS                    31 /**< DMA_DMA_RX_EN Position */
-#define MXC_F_SPI_DMA_DMA_RX_EN                        ((uint32_t)(0x1UL << MXC_F_SPI_DMA_DMA_RX_EN_POS)) /**< DMA_DMA_RX_EN Mask */
+#define MXC_F_SPI_DMA_RX_EN_POS                        31 /**< DMA_RX_EN Position */
+#define MXC_F_SPI_DMA_RX_EN                            ((uint32_t)(0x1UL << MXC_F_SPI_DMA_RX_EN_POS)) /**< DMA_RX_EN Mask */
 
 /**@} end of group SPI_DMA_Register */
 
@@ -503,14 +491,14 @@ typedef struct {
 
 /**
  * @ingroup  spi_registers
- * @defgroup SPI_STAT SPI_STAT
+ * @defgroup SPI_STATUS SPI_STATUS
  * @brief    SPI Status register.
  * @{
  */
-#define MXC_F_SPI_STAT_BUSY_POS                        0 /**< STAT_BUSY Position */
-#define MXC_F_SPI_STAT_BUSY                            ((uint32_t)(0x1UL << MXC_F_SPI_STAT_BUSY_POS)) /**< STAT_BUSY Mask */
+#define MXC_F_SPI_STATUS_BUSY_POS                      0 /**< STATUS_BUSY Position */
+#define MXC_F_SPI_STATUS_BUSY                          ((uint32_t)(0x1UL << MXC_F_SPI_STATUS_BUSY_POS)) /**< STATUS_BUSY Mask */
 
-/**@} end of group SPI_STAT_Register */
+/**@} end of group SPI_STATUS_Register */
 
 #ifdef __cplusplus
 }

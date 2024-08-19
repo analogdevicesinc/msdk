@@ -1,35 +1,22 @@
-/******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+/*
+ * Copyright (c) 2009-2020 Arm Limited. All rights reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Portions Copyright (C) 2022-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * SPDX-License-Identifier: Apache-2.0
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ * Licensed under the Apache License, Version 2.0 (the License); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ * www.apache.org/licenses/LICENSE-2.0
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #ifndef LIBRARIES_CMSIS_INCLUDE_CORE_RV32_H_
 #define LIBRARIES_CMSIS_INCLUDE_CORE_RV32_H_
@@ -331,14 +318,19 @@ typedef struct {
 
 /*@} end of group CMSIS_NVIC */
 
-#define MXC_BASE_INTR ((uint32_t)0xE5070000UL)
-//#define MXC_BASE_INTR                   ((uint32_t)0xE5000000UL)
+/* For MCUs with extra RISCV core (RISCV1) */
+#ifdef __riscv1
+#define MXC_BASE_INTR   ((uint32_t)0xE5170000UL)
+#define MXC_BASE_EVENT  ((uint32_t)0xE5170020UL)
+#define MXC_BASE_SLEEP  ((uint32_t)0xE5170040UL)
+#else
+#define MXC_BASE_INTR   ((uint32_t)0xE5070000UL)
+#define MXC_BASE_EVENT  ((uint32_t)0xE5070020UL)
+#define MXC_BASE_SLEEP  ((uint32_t)0xE5070040UL)
+#endif
+
 #define MXC_INTR ((mxc_intr_regs_t *)MXC_BASE_INTR)
-#define MXC_BASE_EVENT ((uint32_t)0xE5070020UL)
-//#define MXC_BASE_EVENT                  ((uint32_t)0xE5000020UL)
 #define MXC_EVENT ((mxc_event_regs_t *)MXC_BASE_EVENT)
-#define MXC_BASE_SLEEP ((uint32_t)0xE5070040UL)
-//#define MXC_BASE_SLEEP                  ((uint32_t)0xE5000040UL)
 #define MXC_SLEEP ((mxc_sleep_regs_t *)MXC_BASE_SLEEP)
 
 /*******************************************************************************
@@ -466,7 +458,13 @@ __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
-    //NVIC->ISPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* set interrupt pending */
+    if (IRQn < 32) {
+        MXC_INTR->irq0_set_pending |= (1 << IRQn);
+        MXC_EVENT->event0_set_pending |= (1 << IRQn);
+    } else {
+        MXC_INTR->irq1_set_pending |= (1 << (IRQn - 32));
+        MXC_EVENT->event1_set_pending |= (1 << (IRQn - 32));
+    }
 }
 
 /** \brief  Clear Pending Interrupt

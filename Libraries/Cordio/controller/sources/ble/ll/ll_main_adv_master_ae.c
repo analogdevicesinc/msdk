@@ -33,6 +33,7 @@
 #include "wsf_msg.h"
 #include "wsf_trace.h"
 
+
 /*************************************************************************************************/
 /*!
  *  \brief      Validate scan parameter.
@@ -167,7 +168,12 @@ void LlExtScanEnable(uint8_t enable, uint8_t filterDup, uint16_t duration, uint1
 {
   const unsigned int durMsPerUnit = 10;
   const unsigned int perMsPerUnit = 1280;
-  const unsigned int filterDupMax = LL_SCAN_FILTER_DUP_ENABLE_PERIODIC;
+  unsigned int filterDupMax;
+  
+
+
+  filterDupMax = LL_SCAN_FILTER_DUP_ENABLE_PERIODIC;
+  
 
   lctrExtScanEnableMsg_t *pMsg;
   uint32_t durMs = duration * durMsPerUnit;
@@ -544,4 +550,3 @@ uint8_t LlReadPeriodicAdvListSize(uint8_t *pListSize)
 
   return LL_SUCCESS;
 }
-

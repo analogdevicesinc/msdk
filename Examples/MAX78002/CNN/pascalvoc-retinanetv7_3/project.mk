@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration
 
 # **********************************************************
 
@@ -22,3 +22,5 @@ IPATH += src/camera
 
 VPATH += src/cnn
 IPATH += src/cnn
+
+FONTS = LiberationSans16x16

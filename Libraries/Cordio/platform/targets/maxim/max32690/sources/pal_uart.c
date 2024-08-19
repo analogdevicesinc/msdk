@@ -14,6 +14,20 @@
  * Agreement do not use this file and delete all copies in your possession or control;
  * if you do not have a copy of the Agreement, you must contact Packetcraft, Inc. prior
  * to any use, copying or further distribution of this software.
+ *
+ * Copyright (c) 2022-2023 Analog Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 /*************************************************************************************************/
 
@@ -68,37 +82,52 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
+void UART_CommonHandler(mxc_uart_regs_t *uart)
+{
+  const int32_t err = MXC_UART_AsyncHandler(uart);
+
+  if(err == E_INVALID)
+  {
+    const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
+
+    if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
+    {
+      MXC_UART_ClearRXFIFO(uart);
+    }
+    else
+    {
+      PAL_SYS_ASSERT(err == E_NO_ERROR);
+    }
+  }
+  
+}
 void UART0_IRQHandler(void)
 {
-  int result0;
+  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result0 = MXC_UART_AsyncHandler(MXC_UART0);
-  (void)result0;
-  PAL_SYS_ASSERT(result0 == 0);
+  UART_CommonHandler(MXC_UART0);
+
 }
 void UART1_IRQHandler(void)
 {
-  int result1;
+  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result1 = MXC_UART_AsyncHandler(MXC_UART1);
-  (void)result1;
-  PAL_SYS_ASSERT(result1 == 0);
+  UART_CommonHandler(MXC_UART1);
+
 }
 void UART2_IRQHandler(void)
 {
-  int result2;
+  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result2 = MXC_UART_AsyncHandler(MXC_UART2);
-  (void)result2;
-  PAL_SYS_ASSERT(result2 == 0);
+  UART_CommonHandler(MXC_UART2);
+
 }
 void UART3_IRQHandler(void)
 {
-  int result3;
+  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result3 = MXC_UART_AsyncHandler(MXC_UART3);
-  (void)result3;
-  PAL_SYS_ASSERT(result3 == 0);
+  UART_CommonHandler(MXC_UART3);
+
 }
 
 /*************************************************************************************************/

@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -91,27 +78,27 @@ void TFT_test(void)
         MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Arial12x12[0]); // Use Arial 12x12 font
-        TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Arial12x12[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Arial12x12[0]);
+        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Liberation_Sans12x12[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Liberation_Sans12x12[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Liberation_Sans12x12[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Arial24x23[0]); // Use Arial 24x23 font
-        TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Arial24x23[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Arial24x23[0]);
+        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Liberation_Sans24x24[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Liberation_Sans24x24[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Liberation_Sans24x24[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Arial28x28[0]); // Use Arial 28x28 font
-        TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Arial28x28[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Arial28x28[0]);
+        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Liberation_Sans28x28[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Liberation_Sans28x28[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Liberation_Sans28x28[0]);
         MXC_Delay(1000000);
         MXC_TFT_ClearScreen();
 
-        TFT_Print(buff, sizeof(buff), 3, 80, (int)&SansSerif16x16[0]); // Use Sans Serif 16x16 font
-        TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&SansSerif16x16[0]);
-        TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&SansSerif16x16[0]);
+        TFT_Print(buff, sizeof(buff), 3, 80, (int)&Liberation_Sans16x16[0]);
+        TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&Liberation_Sans16x16[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&Liberation_Sans16x16[0]);
         MXC_Delay(1000000);
     }
 }

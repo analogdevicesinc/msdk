@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -242,7 +229,9 @@ int MXC_SPI_RevA1_SetFrequency(mxc_spi_reva_regs_t *spi, unsigned int hz)
 unsigned int MXC_SPI_RevA1_GetFrequency(mxc_spi_reva_regs_t *spi)
 {
     if (MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) < 0) {
-        return E_BAD_PARAM;
+        // Can't return error code (negative values) due to return type.
+        //  Return 0Hz instead.
+        return 0;
     }
 
     unsigned scale, lo_clk, hi_clk;
@@ -530,33 +519,42 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
         len &= ~(unsigned)0x1;
     }
 
-    unsigned cnt = 0;
+    unsigned count = 0;
 
-    if (bits <= 8 || len >= 2) {
-        // Read from the FIFO
-        while (len) {
+    // Read from the FIFO
+    while (len) {
+        // Reading 2-8 bit wide messages from the FIFO16 or FIFO32 register
+        //  swaps the ordering of the message.
+        //  Example:
+        //      When the SPI FIFO receives the message '00, 01, 02, 03', reading the FIFO16
+        //      or FIFO32 register could result in '01, 00, 03, 02' - depending on the part.
+        if (bits > 8) {
             if (len > 3) {
-                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo32), 4);
+                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo32), 4);
                 len -= 4;
-                cnt += 4;
+                count += 4;
             } else if (len > 1) {
-                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo16[0]), 2);
+                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo16[0]), 2);
                 len -= 2;
-                cnt += 2;
-
-            } else {
-                ((uint8_t *)bytes)[cnt++] = spi->fifo8[0];
-                len -= 1;
+                count += 2;
             }
 
-            // Don't read less than 2 bytes if we are using greater than 8 bit characters
-            if (len == 1 && bits > 8) {
+            // Don't read less than 2 bytes if we are using greater than 8 bit wide messages.
+            //  Due to the nature of how this function is called in the drivers, it should never
+            //  reach to this point.
+            if (len == 1) {
                 break;
             }
+
+            // 9-16 bit wide messages should not be read from the FIFO8 register (cuts
+            //  off the upper byte).
+        } else {
+            ((uint8_t *)bytes)[count++] = spi->fifo8[0];
+            len -= 1;
         }
     }
 
-    return cnt;
+    return count;
 }
 
 unsigned int MXC_SPI_RevA1_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -584,28 +582,35 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
         len &= ~(unsigned)0x1;
     }
 
-    unsigned cnt = 0;
+    unsigned count = 0;
 
     while (len) {
-        if (len > 3) {
-            memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[cnt]), 4);
+        // Writing 2-8 bit wide messages to the FIFO16 or FIFO32 register
+        //  swaps the ordering of the message.
+        //  Example:
+        //      SPI FIFO is expected to transmit the message '00, 01, 02, 03'.
+        //      Writing the four byte-wide characters to the FIFO16 or FIFO32 register could
+        //      result in this message shifted out: '01, 00, 03, 02' - depending on the part.
+        if (bits > 8) {
+            if (len > 3) {
+                memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[count]), 4);
+                len -= 4;
+                count += 4;
+            } else if (len > 1) {
+                memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[count]), 2);
+                len -= 2;
+                count += 2;
+            }
 
-            len -= 4;
-            cnt += 4;
-
-        } else if (len > 1) {
-            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[cnt]), 2);
-
-            len -= 2;
-            cnt += 2;
-
-        } else if (bits <= 8) {
-            spi->fifo8[0] = ((uint8_t *)bytes)[cnt++];
-            len--;
+            // 9-16 bit wide messages should not be written to the FIFO8 register (cuts
+            //  off the upper byte).
+        } else {
+            spi->fifo8[0] = ((uint8_t *)bytes)[count++];
+            len -= 1;
         }
     }
 
-    return cnt;
+    return count;
 }
 
 unsigned int MXC_SPI_RevA1_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -753,6 +758,7 @@ int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req)
     } else {
         states[spi_num].txrx_req = false;
     }
+
     (req->spi)->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH | MXC_F_SPI_REVA_DMA_RX_FLUSH);
     (req->spi)->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
 
@@ -770,7 +776,9 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
 
     // Leave slave select asserted at the end of the transaction
     if (states[spi_num].hw_ss_control && !req->ssDeassert) {
-        spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        spi->ctrl0 = (spi->ctrl0 & ~MXC_F_SPI_REVA_CTRL0_START) | MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        // Note: Setting 0 to START bit to avoid race condition and duplicated starts.
+        // See https://github.com/analogdevicesinc/msdk/issues/713
     }
 
     retval = MXC_SPI_RevA1_TransHandler(spi, req);
@@ -782,7 +790,7 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
 
     // Deassert slave select at the end of the transaction
     if (states[spi_num].hw_ss_control && req->ssDeassert) {
-        spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_START | MXC_F_SPI_REVA_CTRL0_SS_CTRL);
     }
 
     return retval;
@@ -927,7 +935,9 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     uint8_t error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
+    mxc_dma_adv_config_t advConfig = {
+        0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0
+    };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
 
@@ -942,7 +952,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     // for non-MT mode do this setup every time, for MT mode only first time
     if ((states[spi_num].mtMode == 0) ||
         ((states[spi_num].mtMode == 1) && (states[spi_num].mtFirstTrans == 1))) {
-#if TARGET_NUM == 32665
+#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
         MXC_DMA_Init(dma);
         states[spi_num].channelTx = MXC_DMA_AcquireChannel(dma);
         states[spi_num].channelRx = MXC_DMA_AcquireChannel(dma);
@@ -960,11 +970,6 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
 
         states[spi_num].mtFirstTrans = 0;
 
-        MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
-        MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
-        MXC_DMA_EnableInt(states[spi_num].channelTx);
-        MXC_DMA_EnableInt(states[spi_num].channelRx);
-
         // Configure SS for per-transaction or always on
         if (req->ssDeassert) {
             req->spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
@@ -975,7 +980,23 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
 
     bits = MXC_SPI_GetDataSize((mxc_spi_regs_t *)req->spi);
 
-    MXC_SPI_RevA1_TransHandler(req->spi, req);
+    /*
+    There is a known issue with the SPI hardware and DMA.  The SPI FIFO must be pre-loaded before DMA is initiated,
+    otherwise the it will not work properly.  To do that, we leverage the TransHandler function, which will load the
+    FIFOs as much as possible.
+
+    If the TX or RX length is less than the FIFO size, there will be nothing for the DMA to transfer.  We need extra logic
+    to ensure that the callbacks are still run in this case.  The TransHandler function returns a mask indicating the enabled
+    interrupts.  Interrupts are only enabled if DMA is still needed.  We check this mask to see if DMA is still needed for RX/TX.
+    Otherwise, we start the transmission (FIFOs are loaded, but a start is still needed to empty them) and then manually run the callbacks.
+    */
+    uint32_t enabled_interrupts = MXC_SPI_RevA1_TransHandler(req->spi, req);
+    // TX FIFO is loaded completely.  DMA is not needed.
+    bool tx_is_complete = !(enabled_interrupts & MXC_F_SPI_REVA_INTEN_TX_THD) &&
+                          (req->txCnt == req->txLen);
+    // RX FIFO is loaded completely.  DMA is not needed.
+    bool rx_is_complete = !(enabled_interrupts & MXC_F_SPI_REVA_INTEN_RX_THD) &&
+                          (req->rxCnt == req->rxLen);
 
     if (bits <= 8) {
         MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)req->spi, 1); //set threshold to 1 byte
@@ -986,8 +1007,16 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     //tx
-    if (req->txData != NULL) {
-        config.reqsel = reqselTx;
+    if (req->txData != NULL && req->txLen && !tx_is_complete) {
+        MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
+
+#if (TARGET_NUM == 32657)
+        MXC_DMA_EnableInt(dma, states[spi_num].channelTx);
+#else
+        MXC_DMA_EnableInt(states[spi_num].channelTx);
+#endif
+
+        config.reqsel = (mxc_dma_reqsel_t)reqselTx;
         config.ch = states[spi_num].channelTx;
         advConfig.ch = states[spi_num].channelTx;
         advConfig.burst_size = 2;
@@ -1023,8 +1052,17 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
         }
     }
 
-    if (req->rxData != NULL) {
-        config.reqsel = reqselRx;
+    // rx
+    if (req->rxData != NULL && req->rxLen && !rx_is_complete) {
+        MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
+
+#if (TARGET_NUM == 32657)
+        MXC_DMA_EnableInt(dma, states[spi_num].channelRx);
+#else
+        MXC_DMA_EnableInt(states[spi_num].channelRx);
+#endif
+
+        config.reqsel = (mxc_dma_reqsel_t)reqselRx;
         config.ch = states[spi_num].channelRx;
         config.srcinc_en = 0;
         config.dstinc_en = 1;
@@ -1059,11 +1097,22 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
         }
     }
 
-    (req->spi)->dma |= (MXC_F_SPI_REVA_DMA_DMA_TX_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    // Enable TX/RX DMA, but only if it's still needed.
+    (req->spi)->dma |= ((!(tx_is_complete) << MXC_F_SPI_REVA_DMA_DMA_TX_EN_POS) |
+                        (!(rx_is_complete) << MXC_F_SPI_REVA_DMA_DMA_RX_EN_POS));
 
     if (!states[spi_num].started) {
         MXC_SPI_StartTransmission((mxc_spi_regs_t *)req->spi);
         states[spi_num].started = 1;
+    }
+
+    // Manually run TX/RX callbacks if the FIFO pre-load already completed that portion of the transaction
+    if (req->txData != NULL && req->txLen && tx_is_complete) {
+        MXC_SPI_RevA1_DMACallback(states[spi_num].channelTx, E_NO_ERROR);
+    }
+
+    if (req->rxData != NULL && req->rxLen && rx_is_complete) {
+        MXC_SPI_RevA1_DMACallback(states[spi_num].channelRx, E_NO_ERROR);
     }
 
     return E_NO_ERROR;
@@ -1106,7 +1155,9 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     uint8_t error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
+    mxc_dma_adv_config_t advConfig = {
+        0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0
+    };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
 
@@ -1121,7 +1172,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     // for non-MT mode do this setup every time, for MT mode only first time
     if ((states[spi_num].mtMode == 0) ||
         ((states[spi_num].mtMode == 1) && (states[spi_num].mtFirstTrans == 1))) {
-#if TARGET_NUM == 32665
+#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
         MXC_DMA_Init(dma);
         states[spi_num].channelTx = MXC_DMA_AcquireChannel(dma);
         states[spi_num].channelRx = MXC_DMA_AcquireChannel(dma);
@@ -1141,8 +1192,14 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
 
         MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
         MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
+
+#if (TARGET_NUM == 32657)
+        MXC_DMA_EnableInt(dma, states[spi_num].channelTx);
+        MXC_DMA_EnableInt(dma, states[spi_num].channelRx);
+#else
         MXC_DMA_EnableInt(states[spi_num].channelTx);
         MXC_DMA_EnableInt(states[spi_num].channelRx);
+#endif
     }
 
     bits = MXC_SPI_GetDataSize((mxc_spi_regs_t *)req->spi);
@@ -1159,7 +1216,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
 
     //tx
     if (req->txData != NULL) {
-        config.reqsel = reqselTx;
+        config.reqsel = (mxc_dma_reqsel_t)reqselTx;
         config.ch = states[spi_num].channelTx;
         advConfig.ch = states[spi_num].channelTx;
         advConfig.burst_size = 2;
@@ -1196,7 +1253,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     }
 
     if (req->rxData != NULL) {
-        config.reqsel = reqselRx;
+        config.reqsel = (mxc_dma_reqsel_t)reqselRx;
         config.ch = states[spi_num].channelRx;
         config.srcinc_en = 0;
         config.dstinc_en = 1;

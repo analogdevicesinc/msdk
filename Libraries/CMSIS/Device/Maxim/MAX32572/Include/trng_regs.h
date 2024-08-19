@@ -2,38 +2,26 @@
  * @file    trng_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup trng_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -121,8 +109,11 @@ typedef struct {
 #define MXC_F_TRNG_CTRL_HEALTH_IE_POS                  2 /**< CTRL_HEALTH_IE Position */
 #define MXC_F_TRNG_CTRL_HEALTH_IE                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_IE_POS)) /**< CTRL_HEALTH_IE Mask */
 
-#define MXC_F_TRNG_CTRL_AES_KEYGEN_POS                 4 /**< CTRL_AES_KEYGEN Position */
-#define MXC_F_TRNG_CTRL_AES_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AES_KEYGEN_POS)) /**< CTRL_AES_KEYGEN Mask */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN_POS                 3 /**< CTRL_MEU_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_MEU_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_MEU_KEYGEN_POS)) /**< CTRL_MEU_KEYGEN Mask */
+
+#define MXC_F_TRNG_CTRL_XIP_KEYGEN_POS                 4 /**< CTRL_XIP_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_XIP_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_XIP_KEYGEN_POS)) /**< CTRL_XIP_KEYGEN Mask */
 
 #define MXC_F_TRNG_CTRL_OD_ROMON_POS                   6 /**< CTRL_OD_ROMON Position */
 #define MXC_F_TRNG_CTRL_OD_ROMON                       ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_ROMON_POS)) /**< CTRL_OD_ROMON Mask */
@@ -150,11 +141,11 @@ typedef struct {
 
 #define MXC_F_TRNG_CTRL_ROMON_DIS_POS                  24 /**< CTRL_ROMON_DIS Position */
 #define MXC_F_TRNG_CTRL_ROMON_DIS                      ((uint32_t)(0x7UL << MXC_F_TRNG_CTRL_ROMON_DIS_POS)) /**< CTRL_ROMON_DIS Mask */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x0UL) /**< CTRL_ROMON_DIS_RO_0 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_0 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_0                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_0 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_0 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_1 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_1 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_1                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_1 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_1 Setting */
-#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_2 Value */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x4UL) /**< CTRL_ROMON_DIS_RO_2 Value */
 #define MXC_S_TRNG_CTRL_ROMON_DIS_RO_2                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_2 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_2 Setting */
 
 /**@} end of group TRNG_CTRL_Register */

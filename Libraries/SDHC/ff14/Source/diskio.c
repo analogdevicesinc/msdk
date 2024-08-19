@@ -14,6 +14,14 @@
 /* Definitions of physical drive number for each drive */
 #define DEV_SD      0   /* Example: Map MMC/SD card to physical drive 1 */
 
+#ifndef SDHC_CLK_FREQ
+/* For non-native SDHC, a SPI is used to emulate the SDHC hardware.  In 
+that case, sdhc_lib.h is not included and we need to redefine a default speed
+here. */
+#define SDHC_CLK_FREQ 40000000
+#endif
+#define SPI_SPEED SDHC_CLK_FREQ
+
 #ifdef NATIVE_SDHC
 
 /* # of times to check for a card, should be > 1 to detect both SD and MMC */
@@ -101,7 +109,7 @@ DRESULT disk_read (
 {
     DRESULT status;
 
-    if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_Get_Default_DataWidth()) != E_NO_ERROR) {
 		status = RES_ERROR;
     } else {
 		status = RES_OK;
@@ -127,7 +135,7 @@ DRESULT disk_write (
 {
     DRESULT status;
 
-    if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_Get_Default_DataWidth()) != E_NO_ERROR) {
 		status = RES_ERROR;
     } else {
 		status = RES_OK;
@@ -229,10 +237,23 @@ static DRESULT get_sector_count(void *buff)
     DRESULT status = RES_ERROR;
 
     if (init_done) {
-    	if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
-	    	*((DWORD *)buff) = MXC_SDHC_Lib_GetCapacity(&csd) / FF_MIN_SS;
-	    	status = RES_OK;
-		}
+    	int err = MXC_SDHC_Lib_GetCSD(&csd);
+        if (err == E_NO_ERROR) {
+            *((DWORD *)buff) = (csd.csd.c_size + 1) << 10;
+            // The "sector count" for FatFS is the total data area capacity (in bytes)
+            // divided by the size of a sector (in bytes).  An SDHC sector is always 512 bytes,
+            // and this is guaranteed by the spec.
+
+            // The formula given by the CSD register spec v2.0 (which can be found in the SD 
+            // physical layer spec) is
+            // memory capacity = (C_SIZE + 1) * 512 * 1024
+            // so dividing by the sector size, we have
+            // sector count = memory capacity / 512 = (C_SIZE + 1) * 1024 = (C_SIZE + 1) << 10
+
+            // NOTE: We used to multiply by 512 in MXC_SDHC_Lib_GetCSD, then divide again by 512 here.
+            // That caused 32-bit integer overflow...  so be wary of overflow!
+            status = RES_OK;
+        }
     } else {
 		status = RES_NOTRDY;
     }
@@ -333,7 +354,7 @@ BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
-static void init_mmc()
+static void init_mmc(void)
 {
     mxc_spi_pins_t pins;
     mxc_gpio_cfg_t gpio;
@@ -371,7 +392,7 @@ static void init_mmc()
     pins.sdio2 = false;
     pins.sdio3 = false;
     pins.vddioh = true;
-    MXC_SPI_Init(mmc_spi, 1, 0, 0, 0, 400000, pins);
+    MXC_SPI_Init(mmc_spi, 1, 0, 0, 0, SPI_SPEED, pins);
 	MXC_SPI_SetDataSize(mmc_spi, 8);
 	MXC_SPI_SetDefaultTXData(mmc_spi, 0xFF);
 

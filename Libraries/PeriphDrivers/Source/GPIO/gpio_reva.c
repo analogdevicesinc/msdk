@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -134,6 +121,11 @@ uint32_t MXC_GPIO_RevA_GetFlags(mxc_gpio_reva_regs_t *port)
 
 int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     // Configure the vssel
     switch (vssel) {
     case MXC_GPIO_VSSEL_VDDIO:
@@ -153,6 +145,11 @@ int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t *port, mxc_gpio_vssel_t vssel, u
 
 int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     //This is required for new devices going forward.
     port->inen |= mask;
 
@@ -234,4 +231,43 @@ void MXC_GPIO_RevA_ClearWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask)
 uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port)
 {
     return port->wken;
+}
+
+int MXC_GPIO_RevA_SetDriveStrength(mxc_gpio_reva_regs_t *port, mxc_gpio_drvstr_t drvstr,
+                                   uint32_t mask)
+{
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
+    // Configure the drive strength.
+    switch (drvstr) {
+    case MXC_GPIO_DRVSTR_0:
+        port->ds0 &= ~mask;
+        port->ds1 &= ~mask;
+        break;
+
+    case MXC_GPIO_DRVSTR_1:
+        port->ds0 |= mask;
+        port->ds1 &= ~mask;
+        break;
+
+    case MXC_GPIO_DRVSTR_2:
+        port->ds0 &= ~mask;
+        port->ds1 |= mask;
+        break;
+
+    case MXC_GPIO_DRVSTR_3:
+        port->ds0 |= mask;
+        port->ds1 |= mask;
+        break;
+
+    default:
+        // Set default drive strength to type 0.
+        port->ds0 &= ~mask;
+        port->ds1 &= ~mask;
+    }
+
+    return E_NO_ERROR;
 }

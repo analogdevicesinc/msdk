@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -37,6 +24,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "mxc_device.h"
+
+#warning "core1.h is deprecated (05-24-2024)."
+#warning "Use mxc_device.h instead, and set `ARM_DUALCORE=1` in project.mk"
+#warning "Core 1 Startup/System code is located at Libraries/CMSIS/Device/Maxim/MAX32665/"
 
 /**
  * @file    core1.h
@@ -48,32 +41,36 @@ extern "C" {
  * @brief Starts the code on core 1
  *        Core1 code beings executing from Core1_Main()
  */
-void Core1_Start(void);
+#if defined(__GNUC__)
+inline __attribute__((deprecated("Use Start_Core1(); instead."))) void Core1_Start(void)
+{
+    Start_Core1();
+}
+#endif
 
 /**
  * @brief Stops code executing in Core 1
  */
-void Core1_Stop(void);
+#if defined(__GNUC__)
+inline __attribute__((deprecated("Use Stop_Core1(); instead."))) void Core1_Stop(void)
+{
+    Stop_Core1();
+}
+#endif
 
 /**
  * @brief Main function for Core 1 Code
  *        The user should override this function
  *        in their application code
  */
-int Core1_Main(void);
+#if defined(__GNUC__)
+inline __attribute__((deprecated(
+    "Use `int main_core1(void)` instead - main_core1 is Core 1's entry point where code starts, not Core1_Main."))) int
+Core1_Main(void);
+#endif
 
-/**
- * @brief Equivalent to PreInit for Core 0
- *        Can be used for preliminary initialization
- */
-void PreInit_Core1(void);
-
-/**
- * @brief Equivalent to PreInit for Core 1
- *        Enables FPU, and ICache
- *        Sets interrupt vector
- */
-void SystemInit_Core1(void);
+// void PreInit_Core1(void) is now located in system_core_max32665.h
+// void SystemInit_Core1(void) is now located in system_core_max32665.h
 
 #ifdef __cplusplus
 }

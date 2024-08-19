@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -50,6 +37,7 @@
 #include "dma.h"
 #include "dma_reva.h"
 #include "mcr_regs.h"
+#include "tmr.h"
 
 /* **** Definitions **** */
 
@@ -79,6 +67,8 @@
                  ((x) == 1) ? DMA1_IRQn : \
                  ((x) == 2) ? DMA2_IRQn : \
                               DMA3_IRQn))
+
+#define MAX_G_FRAME_COMPLETE_US 1500000 // 1.5 seconds
 
 /* **** Globals **** */
 
@@ -116,7 +106,7 @@ void _free_line_buffer(void)
     }
 }
 
-int _init_line_buffer()
+int _init_line_buffer(void)
 {
     _free_line_buffer();
 
@@ -130,7 +120,7 @@ int _init_line_buffer()
     return E_NO_ERROR;
 }
 
-void _swap_line_buffer()
+void _swap_line_buffer(void)
 {
     uint8_t *temp = lb.active;
     lb.active = lb.inactive;
@@ -287,7 +277,7 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_CaptureFrameDMA()
+int MXC_CSI2_RevA_CaptureFrameDMA(void)
 {
     int i;
     int error;
@@ -374,7 +364,15 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     interrupt handler. (MXC_CSI2_RevA_Handler)
     */
 
-    while (!g_frame_complete) {}
+    MXC_TMR_SW_Start(MXC_TMR0); // runs in microseconds
+
+    while (!g_frame_complete) {
+        if (MXC_TMR_TO_Elapsed(MXC_TMR0) > MAX_G_FRAME_COMPLETE_US) {
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            return E_NO_RESPONSE;
+        }
+    }
+    MXC_TMR_SW_Stop(MXC_TMR0);
 
     if (!csi2_state.capture_stats.success)
         return E_FAIL;
@@ -419,7 +417,7 @@ void MXC_CSI2_RevA_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h)
     *h = csi2_state.req->lines_per_frame;
 }
 
-void MXC_CSI2_RevA_Handler()
+void MXC_CSI2_RevA_Handler(void)
 {
     uint32_t ctrl_flags, vfifo_flags, ppi_flags;
 
@@ -1047,6 +1045,7 @@ mxc_gpio_cfg_t indicator = { .func = MXC_GPIO_FUNC_OUT,
                              .port = GPIO_INDICATOR_PORT,
                              .mask = GPIO_INDICATOR_PIN,
                              .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                             .drvstr = MXC_GPIO_DRVSTR_0,
                              .pad = MXC_GPIO_PAD_NONE };
 #endif
 
@@ -1055,12 +1054,12 @@ bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
     return g_frame_complete;
 }
 
-mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats()
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats(void)
 {
     return csi2_state.capture_stats;
 }
 
-void MXC_CSI2_RevA_DMA_Handler()
+void MXC_CSI2_RevA_DMA_Handler(void)
 {
     // Clear CTZ Status Flag
     if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {

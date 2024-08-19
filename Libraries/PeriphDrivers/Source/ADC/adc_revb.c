@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -63,6 +50,8 @@ static mxc_adc_complete_cb_t async_callback;
 static mxc_adc_conversion_req_t *async_req;
 // static volatile uint8_t flag;      //indicates  to irqhandler where to store data
 
+static bool g_is_clock_locked = false;
+
 int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
 {
     if (req == NULL) {
@@ -76,11 +65,10 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
     //Enter reset mode
     adc->ctrl0 &= ~MXC_F_ADC_REVB_CTRL0_RESETB;
 
-    //Power up to Sleep State
-    adc->clkctrl |= (req->clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
+    MXC_ADC_RevB_SetClockSource(adc, req->clock);
+    MXC_ADC_RevB_SetClockDiv(adc, req->clkdiv);
 
-    adc->clkctrl |= (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS) &
-                    MXC_F_ADC_REVB_CLKCTRL_CLKDIV;
+    //Power up to Sleep State
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_RESETB;
 
@@ -94,10 +82,10 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
         adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_SKIP_CAL;
     }
 
-    adc->sampclkctrl |= (req->trackCount << MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT_POS) &
-                        MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT;
-    adc->sampclkctrl |= (req->idleCount << MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT_POS) &
-                        MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT;
+    MXC_SETFIELD(adc->sampclkctrl, MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT,
+                 (req->trackCount << MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT_POS));
+    MXC_SETFIELD(adc->sampclkctrl, MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT,
+                 (req->idleCount << MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT_POS));
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_ADC_EN;
 
@@ -112,6 +100,34 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
     async_req = NULL;
 
     return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_SetClockSource(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock_source)
+{
+    if (!g_is_clock_locked) {
+        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
+                     clock_source << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS);
+    }
+    return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div)
+{
+    if (!g_is_clock_locked) {
+        MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKDIV,
+                     div << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS);
+    }
+    return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock)
+{
+    g_is_clock_locked = lock;
+    if (g_is_clock_locked == lock) {
+        return E_FAIL;
+    } else {
+        return E_NO_ERROR;
+    }
 }
 
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc)
@@ -153,7 +169,8 @@ void MXC_ADC_RevB_ClearFlags(mxc_adc_revb_regs_t *adc, uint32_t flags)
 
 void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock)
 {
-    adc->clkctrl |= (clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
+    MXC_SETFIELD(adc->clkctrl, MXC_F_ADC_REVB_CLKCTRL_CLKSEL,
+                 (clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL_POS));
 }
 
 int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t *adc)
@@ -216,7 +233,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     channel = req->dma_channel;
 
-    config.reqsel = MXC_S_DMA_CTRL_REQUEST_ADC;
+    config.reqsel = MXC_DMA_REQUEST_ADC;
     config.ch = channel;
 
     config.srcwd = MXC_DMA_WIDTH_WORD;

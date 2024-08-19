@@ -8,5 +8,5 @@ To **get started** see the [**User Guide**](USERGUIDE.md).
 
 For **development resources**:
 
-* [Github](https://github.com/Analog-Devices-MSDK/msdk)
+* [Github](https://github.com/analogdevicesinc/msdk)
 * [Contributing](CONTRIBUTING.md)

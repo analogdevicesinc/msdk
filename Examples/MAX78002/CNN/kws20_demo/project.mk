@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -23,5 +23,7 @@ IPATH += tft
 
 # If enabled, it sends out the Mic samples used for inference to the serial port
 #PROJ_CFLAGS+=-DSEND_MIC_OUT_SERIAL
+
+FONTS = LiberationSans16x16
 
 endif

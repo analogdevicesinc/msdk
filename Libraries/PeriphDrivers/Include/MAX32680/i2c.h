@@ -1,38 +1,25 @@
 /**
-* @file
-* @brief   Inter-integrated circuit (I2C) communications interface driver.
+* @file     i2c.h
+* @brief    Inter-integrated circuit (I2C) communications interface driver.
 */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -41,9 +28,10 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_I2C_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "mxc_sys.h"
 #include "i2c_regs.h"
-/***** Definitions *****/
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -182,8 +170,11 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
 
 /**
  * @brief   Initialize and enable I2C peripheral.
- * @note    This function sets the I2C Speed to 100kHz,  if another speed is
- *          desired use the MXC_I2C_SetFrequency() function to set it.
+ *
+ * @note    On default this function enables I2C peripheral clock and i2c gpio pins.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *          By this flag this function will remove clock and gpio related codes from file.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   masterMode  Whether to put the device in master or slave mode. Use
@@ -284,6 +275,54 @@ int MXC_I2C_SetClockStretching(mxc_i2c_regs_t *i2c, int enable);
  * @return  Zero if clock stretching is disabled, non-zero otherwise
  */
 int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Initializes the DMA for I2C DMA transactions.
+ * 
+ * This function will release any acquired DMA channels before reacquiring and
+ * reconfiguring selected I2C DMA TX or RX channels.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   dma         Pointer to DMA registers (selects the DMA block used).
+ * @param   use_dma_tx  If true, acquire and configure DMA TX channel, else release any 
+ *                      acquired DMA TX channel.
+ * @param   use_dma_rx  If true, acquire and configure DMA RX channel, else release any 
+ *                      acquired DMA RX channel.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
+
+/**
+ * @brief   Retreive the DMA TX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Retreive the DMA RX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetRXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Sets the I2C instance's DMA TX/RX request select.
+ * 
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   txData      Pointer to transmit buffer.
+ * @param   rxData      Pointer to receive buffer.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *rxData);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */
@@ -565,8 +604,6 @@ void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t *i2c);
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   timeout     Timeout in uS
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_SetTimeout(mxc_i2c_regs_t *i2c, unsigned int timeout);
 
@@ -660,8 +697,14 @@ int MXC_I2C_MasterTransaction(mxc_i2c_req_t *req);
 int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t *req);
 
 /**
- * @brief   Performs a non-blocking I2C transaction using DMA for reduced time
- *          in the ISR.
+ * @brief   Performs a non-blocking I2C Master transaction using DMA for reduced time
+ *          in the ISR. This function initializes the DMA and acquires DMA channels
+ *          if MXC_I2C_DMA_Init(...) was not called earlier.
+ * 
+ * It is recommended to initialize the DMA by calling MXC_I2C_DMA_Init(...) function
+ * before calling MXC_I2C_MasterTransactionDMA(...). This provides flexibility in
+ * setting up generic DMA channel vectors during run-time without knowing what DMA 
+ * channels will be acquired beforehand.
  *
  * Performs a non-blocking I2C transaction.  These actions will be performed:
  *   1. If necessary, generate a start condition on the bus.

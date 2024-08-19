@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -89,7 +76,8 @@ void MXC_WUT_RevA_Disable(mxc_wut_reva_regs_t *wut)
 void MXC_WUT_RevA_Config(mxc_wut_reva_regs_t *wut, const mxc_wut_reva_cfg_t *cfg)
 {
     // Configure the timer
-    wut->ctrl |= (wut->ctrl & ~(MXC_F_WUT_REVA_CTRL_TMODE | MXC_F_WUT_REVA_CTRL_TPOL)) |
+    uint32_t wut_ctrl = wut->ctrl;
+    wut->ctrl |= (wut_ctrl & ~(MXC_F_WUT_REVA_CTRL_TMODE | MXC_F_WUT_REVA_CTRL_TPOL)) |
                  ((cfg->mode << MXC_F_WUT_REVA_CTRL_TMODE_POS) & MXC_F_WUT_REVA_CTRL_TMODE);
 
     wut->cnt = 0x1;
@@ -147,8 +135,10 @@ int MXC_WUT_RevA_GetTicks(mxc_wut_reva_regs_t *wut, uint32_t timerClock, uint32_
     uint32_t prescale;
     uint64_t temp_ticks;
 
-    prescale = ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
-               (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
+    uint32_t wut_ctrl = wut->ctrl;
+
+    prescale = ((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
+               (((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
 
     switch (units) {
     case MXC_WUT_REVA_UNIT_NANOSEC:
@@ -191,9 +181,10 @@ int MXC_WUT_RevA_GetTime(mxc_wut_reva_regs_t *wut, uint32_t timerClock, uint32_t
                          uint32_t *time, mxc_wut_reva_unit_t *units)
 {
     uint64_t temp_time = 0;
+    uint32_t wut_ctrl = wut->ctrl;
     uint32_t prescale =
-        ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
-        (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
+        ((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
+        (((wut_ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
 
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
 

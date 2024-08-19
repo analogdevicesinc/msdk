@@ -22,13 +22,13 @@ To improve the unknown detection, the model in version 3.2 is trained with an ad
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
 Note:  fully clean and re-build this project after changing any of the config options below.
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 * This project supports output to a TFT display.  When building for the MAX78000EVKIT, the display is **enabled** by default.
     * To _disable_ the TFT display code, comment out `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
@@ -365,7 +365,7 @@ When option `-a` is used, each file is converted to a .wav file once and subsequ
 
 ***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake-Up Timer (WUT) is disabled.***
 
-***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `ENABLE_TFT` is disabled regardless of make options.***
+***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `TFT_ENABLE` is disabled regardless of make options.***
 
 ### Sending Sound Snippets to serial
 

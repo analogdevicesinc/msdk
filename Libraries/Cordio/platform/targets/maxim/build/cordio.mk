@@ -64,7 +64,7 @@ PLATFORM        := maxim
 RTOS            ?= baremetal
 
 # Used for storing pairing/bonding information
-PAL_NVM_SIZE	?= 0x2000
+PAL_NVM_SIZE	?= 0x4000
 
 CFG_DEV         := BT_VER=$(BT_VER)
 CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
@@ -126,6 +126,7 @@ endif
 # re-built for each application
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_uart.c
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_sys.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_rtc.c
 
 # This will let us enable/disable trace messaging by application
 APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c

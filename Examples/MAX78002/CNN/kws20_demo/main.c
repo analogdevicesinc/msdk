@@ -1,35 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
- * 
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -203,7 +188,7 @@ uint8_t MicReadChunk(uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit();
+void I2SInit(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 #ifdef ENABLE_TFT
@@ -212,13 +197,13 @@ void TFT_Print(char *str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
 
 int image_bitmap = (int)&img_1_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif //#ifdef ENABLE_TFT
 
 int32_t tot_usec = -100000;
 #ifdef WUT_ENABLE
-void WUT_IRQHandler()
+void WUT_IRQHandler(void)
 {
     i2s_flag = 1;
     MXC_WUT_IntClear();
@@ -788,7 +773,7 @@ int main(void)
 /* **************************************************************************** */
 
 #ifdef ENABLE_MIC_PROCESSING
-void I2SInit()
+void I2SInit(void)
 {
     mxc_i2s_req_t req;
     int32_t err;
@@ -799,8 +784,10 @@ void I2SInit()
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
-    req.wordSize = MXC_I2S_DATASIZE_WORD;
+    req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
+    req.bitsWord = 32;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
@@ -876,7 +863,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             else
                 TFT_Print(buff, 20, 30, font_2,
                           snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
-                                   (double)100.0 * max / 32768.0));
+                                   (double)(100.0 * max / 32768.0)));
             //TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
             /* uncomment to show the next 4 top classes */
@@ -1183,7 +1170,7 @@ void TFT_Intro(void)
     TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "detected:"));
     TFT_Print(buff, 35, 160, font_1, snprintf(buff, sizeof(buff), "0...9, up, down, left, right"));
     TFT_Print(buff, 35, 185, font_1, snprintf(buff, sizeof(buff), "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 10, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 
     while (!PB_Get(0)) {}
 
@@ -1217,6 +1204,6 @@ void TFT_End(uint16_t words)
     MXC_TFT_ClearScreen();
     TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
     TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
-    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 0, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif

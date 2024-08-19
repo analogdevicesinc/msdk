@@ -1,3 +1,23 @@
+###############################################################################
+#
+# Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+# Analog Devices, Inc.),
+# Copyright (C) 2023-2024 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+##############################################################################
+
 name: Build_Examples
 
 concurrency: 
@@ -23,9 +43,13 @@ jobs:
     runs-on:
       - ubuntu-latest
 
+    env:
+      SOURCE_BRANCH: ${{github.ref_name}}
+      TARGET_BRANCH: ${{github.event.pull_request.base.ref}}
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Update the submodules below, doing so here will convert ssh to https
           submodules: false
@@ -34,13 +58,20 @@ jobs:
           repository: '${{ github.event.pull_request.head.repo.full_name }}'
 
       - name: Check watch files
-        id: check_watch 
+        id: check_watch        
         run: |
+          echo SOURCE_BRANCH = $SOURCE_BRANCH
+          echo TARGET_BRANCH = $TARGET_BRANCH
           # Determine if we need to run the test
           RUN_TEST=0
 
           # Always run test if a workflow_dispatch
           if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
+            RUN_TEST=1
+          fi
+
+          if [[ $SOURCE_BRANCH == "main" ]]; then
+            echo "Pushed to main, running test"
             RUN_TEST=1
           fi
 
@@ -57,8 +88,16 @@ jobs:
             makefile \
             Makefile"
 
-          # Get the diff from main
-          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          if [[ -n $TARGET_BRANCH ]]; then
+            # We are in a PR.  Need to check changes against the target branch.
+            echo "Comparing PR against target branch: $TARGET_BRANCH"
+            echo "Adding remote '$GITHUB_SERVER_URL/$GITHUB_REPOSITORY' as 'upstream'"
+            git remote add upstream $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
+            echo "Fetching $TARGET_BRANCH"
+            git fetch upstream $TARGET_BRANCH
+            echo "diffing files"
+            CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/upstream/$TARGET_BRANCH)
+          fi
 
           echo "Watching these locations and files"
           echo $WATCH_FILES
@@ -226,13 +265,20 @@ jobs:
           fi
 
       - name: Check watch files
-        id: check_watch 
+        id: check_watch        
         run: |
+          echo SOURCE_BRANCH = $SOURCE_BRANCH
+          echo TARGET_BRANCH = $TARGET_BRANCH
           # Determine if we need to run the test
           RUN_TEST=0
 
           # Always run test if a workflow_dispatch
           if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
+            RUN_TEST=1
+          fi
+
+          if [[ $SOURCE_BRANCH == "main" ]]; then
+            echo "Pushed to main, running test"
             RUN_TEST=1
           fi
 
@@ -249,8 +295,16 @@ jobs:
             makefile \
             Makefile"
 
-          # Get the diff from main
-          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          if [[ -n $TARGET_BRANCH ]]; then
+            # We are in a PR.  Need to check changes against the target branch.
+            echo "Comparing PR against target branch: $TARGET_BRANCH"
+            echo "Adding remote '$GITHUB_SERVER_URL/$GITHUB_REPOSITORY' as 'upstream'"
+            git remote add upstream $GITHUB_SERVER_URL/$GITHUB_REPOSITORY
+            echo "Fetching $TARGET_BRANCH"
+            git fetch upstream $TARGET_BRANCH
+            echo "diffing files"
+            CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/upstream/$TARGET_BRANCH)
+          fi
 
           echo "Watching these locations and files"
           echo $WATCH_FILES

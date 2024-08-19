@@ -4,35 +4,22 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -41,6 +28,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_UART_H_
 
 /***** Definitions *****/
+#include <stdbool.h>
 #include "uart_regs.h"
 #include "mxc_sys.h"
 
@@ -147,6 +135,23 @@ struct _mxc_uart_req_t {
 /* ************************************************************************* */
 
 /**
+ * @brief   Set the UART pin mapping to use.  This should be called *before* MXC_UART_Init!
+ * 
+ * @param   uart  Pointer to UART registers to set the pin mapping for
+ * @param   pin_mapping  Pin mapping to use (i.e. UART0A, UART0B).  See datasheet for mapping assignments.
+ * @return  E_NO_ERROR if successful, error code otherwise.
+ */
+int MXC_UART_SetPinMapping(mxc_uart_regs_t *uart, sys_map_t pin_mapping);
+
+/**
+ * @brief   Get the current UART pin mapping to use.
+ * 
+ * @param   uart  Pointer to UART registers to get the pin mapping for
+ * @return  The current pin mapping.
+ */
+sys_map_t MXC_UART_GetPinMapping(mxc_uart_regs_t *uart);
+
+/**
  * @brief   Initialize and enable UART peripheral.
  * 
  * This function initializes everything necessary to call a UART transaction function.
@@ -157,6 +162,11 @@ struct _mxc_uart_req_t {
  * UART Flow Control - None
  * 
  * These parameters can be modified after initialization using low level functions
+ * 
+ * @note    On default this function enables UART peripheral clock.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *          By this flag this function will remove clock and gpio related codes from file.
  * 
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   baud         The requested clock frequency. The actual clock frequency
@@ -671,6 +681,69 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req);
  * @return  Returns receive bytes (in FIFO).
  */
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
+
+/**
+ * @brief Enable or disable automatic DMA interrupt handlers for the UART module.
+ * 
+ * The @ref MXC_UART_TransactionDMA functions require special interrupt handlers to work.
+ *  
+ * When "Auto" DMA handlers are enabled, the UART drivers will acquire DMA channels
+ * and assign the appropriate handlers automatically.  The acquired channels are
+ * released after each transaction.
+ * 
+ * If "Auto" DMA handlers are disabled, the user must acquire DMA channels manually
+ * and assign them to the drivers with the @ref MXC_UART_SetTXDMAChannel and
+ * @ref MXC_UART_SetRXDMAChannel functions.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @param enable true to enable Auto DMA handlers, false to disable.
+ * @return 0 on success, or a non-zero error code on failure.
+ */
+int MXC_UART_SetAutoDMAHandlers(mxc_uart_regs_t *uart, bool enable);
+
+/**
+ * @brief Set the TX (Transmit) DMA channel for a UART module.
+ *
+ * This function assigns the DMA channel for transmitting data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @param channel The DMA channel number to be used for @ref MXC_UART_TransactionDMA.
+ */
+int MXC_UART_SetTXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
+
+/**
+ * @brief Get the TX (Transmit) DMA channel for a UART module.
+ *
+ * This function retrieves the currently assigned DMA channel for transmitting data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @return The currently assigned TX DMA channel.
+ */
+int MXC_UART_GetTXDMAChannel(mxc_uart_regs_t *uart);
+
+/**
+ * @brief Set the RX (Receive) DMA channel for a UART module.
+ *
+ * This function assigns the DMA channel for receiving data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @param channel The DMA channel number to be used for @ref MXC_UART_TransactionDMA.
+ */
+int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
+
+/**
+ * @brief Get the RX (Receive) DMA channel for a UART module.
+ *
+ * This function retrieves the currently configured DMA channel for receiving data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @return The currently configured RX DMA channel.
+ */
+int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart);
 
 /**@} end of group uart */
 

@@ -1,36 +1,20 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
- * $Revision: 22594 $
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -40,11 +24,6 @@
     .section .stack
     .align 3
 	
-	/* Define SDMA_SIZE to enable the loading of the SDMA image */
-#ifdef __MSR_SDMA_SIZE
-    .global MSR_SDMA_SIZE
-    .equ    MSR_SDMA_SIZE, __MSR_SDMA_SIZE - 512
-#endif
 
 #ifdef __STACK_SIZE
     .equ    Stack_Size, __STACK_SIZE
@@ -258,39 +237,6 @@ Reset_Handler:
 .LC1:
 #endif
 
-#ifdef __MSR_SDMA_SIZE
-/*     Loop to copy data from read only SDMA memory to RAM. The ranges
- *      of copy from/to are specified by following symbols evaluated in
- *      linker script.
- *      __load_sdma: Where data sections are saved.
- *      _sdma /_esdma: RAM address range that data should be
- *      copied to. Both must be aligned to 4 bytes boundary.  */
-
-    ldr    r1, =__load_msr_sdma
-    ldr    r2, =_msr_sdma
-    ldr    r3, =_emsr_sdma
-
-#if 0
-/* Here are two copies of loop implemenations. First one favors code size
- * and the second one favors performance. Default uses the first one.
- * Change to "#if 0" to use the second one */
-.LC0_sdma:
-    cmp     r2, r3
-    ittt    lt
-    ldrlt   r0, [r1], #4
-    strlt   r0, [r2], #4
-    blt    .LC0_sdma
-#else
-    subs    r3, r2
-    ble    .LC1_sdma
-.LC0_sdma:
-    subs    r3, #4
-    ldr    r0, [r1, r3]
-    str    r0, [r2, r3]
-    bgt    .LC0_sdma
-.LC1_sdma:
-#endif
-#endif
 
 /*
  *     Loop to zero out BSS section, which uses following symbols

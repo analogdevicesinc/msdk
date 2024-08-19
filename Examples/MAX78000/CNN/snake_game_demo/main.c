@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -182,8 +169,8 @@ int font_2 = urw_gothic_13_white_bg_grey;
 #ifdef BOARD_FTHR_REVA
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1 = (int)&SansSerif16x16[0];
-int font_2 = (int)&SansSerif16x16[0];
+int font_1 = (int)&Liberation_Sans16x16[0];
+int font_2 = (int)&Liberation_Sans16x16[0];
 #endif
 
 /* **** Functions Prototypes **** */
@@ -193,18 +180,18 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit();
+void I2SInit(void);
 void HPF_init(void);
 int16_t HPF(int16_t input);
 
-void snakeIntro();
-void setup();
-void placeFruit();
-boolean fruitIsEaten();
-void drawSnakeHead();
-void moveTheSnake();
+void snakeIntro(void);
+void setup(void);
+void placeFruit(void);
+boolean fruitIsEaten(void);
+void drawSnakeHead(void);
+void moveTheSnake(void);
 void setSnakeDirection(int top_index);
-void checkSnakeCollision();
+void checkSnakeCollision(void);
 
 // ******************************************************************************
 static uint32_t setColor(int r, int g, int b)
@@ -602,7 +589,7 @@ int main(void)
 }
 
 /* **************************************************************************** */
-void I2SInit()
+void I2SInit(void)
 {
     mxc_i2s_req_t req;
     int32_t err;
@@ -613,8 +600,10 @@ void I2SInit()
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
-    req.wordSize = MXC_I2S_DATASIZE_WORD;
+    req.wordSize = MXC_I2S_WSIZE_WORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
+    req.bitsWord = 32;
+    req.adjust = MXC_I2S_ADJUST_LEFT;
     req.justify = MXC_I2S_MSB_JUSTIFY;
     req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
@@ -946,7 +935,7 @@ void snakeIntro(void)
 }
 
 // ******************************************************************************
-void setup()
+void setup(void)
 {
     uint32_t color;
     mxc_tmr_cfg_t tmr1 = { TMR_PRES_4,      TMR_MODE_CONTINUOUS,
@@ -998,7 +987,7 @@ void setup()
 }
 
 // ******************************************************************************
-void placeFruit()
+void placeFruit(void)
 {
     uint32_t color;
 
@@ -1100,7 +1089,7 @@ void setSnakeDirection(int top_index)
 }
 
 // ******************************************************************************
-void checkSnakeCollision()
+void checkSnakeCollision(void)
 {
     for (int k = 0; k < snakeLength - 1; k++) {
         if (positions[0][k] == positions[0][snakeLength - 1] &&
@@ -1111,7 +1100,7 @@ void checkSnakeCollision()
 }
 
 // ******************************************************************************
-boolean fruitIsEaten()
+boolean fruitIsEaten(void)
 {
     uint32_t color;
 
@@ -1170,7 +1159,7 @@ boolean fruitIsEaten()
 }
 
 // ******************************************************************************
-void updatePositions()
+void updatePositions(void)
 {
     uint32_t color;
     // Delete the tail of the snake
@@ -1186,7 +1175,7 @@ void updatePositions()
 }
 
 // ******************************************************************************
-void drawSnakeHead()
+void drawSnakeHead(void)
 {
     uint32_t color;
     // this function draw the new head of the snake
@@ -1196,7 +1185,7 @@ void drawSnakeHead()
 }
 
 // ******************************************************************************
-void moveTheSnake()
+void moveTheSnake(void)
 {
     // move the snake according to the direction
     switch (snakeDirection) {

@@ -1,33 +1,20 @@
 /******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  ******************************************************************************/
 
@@ -41,207 +28,203 @@
 /***** Includes *****/
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "FreeRTOS.h"
-#include "FreeRTOS_CLI.h"
 #include "board.h"
+#include "cli.h"
 #include "crc.h"
 #include "definitions.h"
-#include "dma.h"
-#include "flc.h"
-#include "gcr_regs.h"
-#include "icc.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "nvic_table.h"
-#include "semphr.h"
-#include "task.h"
-#include "uart.h"
 #include "ecc_regs.h"
-
-/* FreeRTOS+CLI */
-void vRegisterCLICommands(void);
-
-/* Task IDs */
-TaskHandle_t cmd_task_id;
-
-/* Stringification macros */
-#define STRING(x) STRING_(x)
-#define STRING_(x) #x
-
-/* Console ISR selection */
-#if (CONSOLE_UART == 0)
-#define UARTx_IRQHandler UART0_IRQHandler
-#define UARTx_IRQn UART0_IRQn
-
-#elif (CONSOLE_UART == 1)
-#define UARTx_IRQHandler UART1_IRQHandler
-#define UARTx_IRQn UART1_IRQn
-#else
-#error "Please update ISR macro for UART CONSOLE_UART"
-#endif
-mxc_uart_regs_t *ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
-
-/* Array sizes */
-#define CMD_LINE_BUF_SIZE 80
-#define OUTPUT_BUF_SIZE 512
-#define POLY 0xEDB88320
+#include "flc.h"
+#include "icc.h"
+#include "uart.h"
 
 /***** Functions *****/
-
-/* =| UART0_IRQHandler |======================================
- *
- * This function overrides the weakly-declared interrupt handler
- *  in system_max326xx.c and is needed for asynchronous UART
- *  calls to work properly
- *
- * ===========================================================
- */
-void UARTx_IRQHandler(void)
+int main(void)
 {
-    MXC_UART_AsyncHandler(ConsoleUART);
+    printf("\n\n*************** Flash Control CLI Example ***************\n");
+    printf("\nThis example demonstrates various features of the Flash Controller");
+    printf("\n(page erase and write), and how to use the CRC to compute the");
+    printf("\nCRC value of an array. Enter commands in the terminal window.\n\n");
+
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+
+    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
+
+    // Set up CLI command table
+    const command_t cmd_table[] = CMD_TABLE;
+    const unsigned int cmd_table_sz = sizeof(cmd_table) / sizeof(command_t);
+
+    // Initialize CLI
+    if (MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), cmd_table, cmd_table_sz) != E_NO_ERROR) {
+        printf("Failed to initialize command-line interface.\n");
+        return E_BAD_STATE;
+    }
+
+    // Run CLI
+    while (1) {}
 }
 
-/* =| vCmdLineTask_cb |======================================
- *
- * Callback on asynchronous reads to wake the waiting command
- *  processor task
- *
- * ===========================================================
- */
-void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
+// *****************************************************************************
+// ********************* Command Handler Functions *****************************
+// *****************************************************************************
+int handle_write(int argc, char *argv[])
 {
-    BaseType_t xHigherPriorityTaskWoken;
+    int err, i = 0;
+    uint32_t data[MXC_FLASH_PAGE_SIZE / 4];
 
-    /* Wake the task */
-    xHigherPriorityTaskWoken = pdFALSE;
-    vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-}
+    // Check for an invalid command
+    if (argc != 3 || argv == NULL) {
+        printf("Invalid command format. Aborting flash write.\n");
+        return E_BAD_PARAM;
+    }
 
-/* =| vCmdLineTask |======================================
- *
- * The command line task provides a prompt on the serial
- *  interface and takes input from the user to evaluate
- *  via the FreeRTOS+CLI parser.
- *
- * NOTE: FreeRTOS+CLI is part of FreeRTOS+ and has
- *  different licensing requirements. Please see
- *  http://www.freertos.org/FreeRTOS-Plus for more information
- *
- * =======================================================
- */
-void vCmdLineTask(void *pvParameters)
-{
-    unsigned char tmp;
-    unsigned int index; /* Index into buffer */
-    unsigned int x;
-    int uartReadLen;
-    char buffer[CMD_LINE_BUF_SIZE]; /* Buffer for input */
-    char output[OUTPUT_BUF_SIZE]; /* Buffer for output */
-    BaseType_t xMore;
-    mxc_uart_req_t async_read_req;
+    // Get command-line arguments
+    int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
+    char *text = argv[DATA_POS];
 
-    memset(buffer, 0, CMD_LINE_BUF_SIZE);
-    index = 0;
+    // Convert character string to uint32_t since we must write flash in 32-bit words
+    for (int i = 0; i < strlen(text); i++) {
+        data[i] = (uint32_t)text[i];
+    }
 
-    /* Register available CLI commands */
-    vRegisterCLICommands();
+    // Check if flash controller is busy
+    if (MXC_FLC0->ctrl & MXC_F_FLC_CTRL_PEND) {
+        return E_BUSY;
+    }
 
-    /* Enable UARTx interrupt */
-    NVIC_ClearPendingIRQ(UARTx_IRQn);
-    NVIC_DisableIRQ(UARTx_IRQn);
-    NVIC_SetPriority(UARTx_IRQn, 1);
-    NVIC_EnableIRQ(UARTx_IRQn);
+    // Check whether the flash we are attempting to write has already been written to
+    if (!check_erased(startaddr, strlen(text))) {
+        return E_INVALID;
+    }
 
-    /* Async read will be used to wake process */
-    async_read_req.uart = ConsoleUART;
-    async_read_req.rxData = &tmp;
-    async_read_req.rxLen = 1;
-    async_read_req.txData = NULL;
-    async_read_req.txLen = 0;
-    async_read_req.callback = vCmdLineTask_cb;
+    MXC_ICC_Disable();
 
-    printf("\nEnter 'help' to view a list of available commands.\n");
-    printf("cmd> ");
-    fflush(stdout);
-
-    while (1) {
-        while (MXC_UART_ReadyForSleep(ConsoleUART)) {}
-
-        /* Register async read request */
-        if (MXC_UART_TransactionAsync(&async_read_req) != E_NO_ERROR) {
-            printf("Error registering async request. Command line unavailable.\n");
-            vTaskDelay(portMAX_DELAY);
+    // Write each character to flash
+    for (uint32_t testaddr = startaddr; i < strlen(text); testaddr += 4, i++) {
+        // Write a word
+        err = MXC_FLC_Write(testaddr, 4, &data[i]);
+        if (err != E_NO_ERROR) {
+            printf("Failure in writing a word : error %i addr: 0x%08x\n", err, testaddr);
+            return err;
         }
-        /* Hang here until ISR wakes us for a character */
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
-        /* Check that we have a valid character */
-        if (async_read_req.rxCnt > 0) {
-            /* Process character */
-            do {
-                if (tmp == 0x08) {
-                    /* Backspace */
-                    if (index > 0) {
-                        index--;
-                        printf("\x08 \x08");
-                    }
-                    fflush(stdout);
-                } else if (tmp == 0x03) {
-                    /* ^C abort */
-                    index = 0;
-                    printf("^C");
-                    printf("\ncmd> ");
-                    fflush(stdout);
-                } else if ((tmp == '\r') || (tmp == '\n')) {
-                    printf("\r\n");
-                    /* Null terminate for safety */
-                    buffer[index] = 0x00;
-                    /* Evaluate */
-                    do {
-                        xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
-                        /* If xMore == pdTRUE, then output buffer contains no null
-						 * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
-						 * use strlen.
-						 */
-                        for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
-                            putchar(*(output + x));
-                        }
-                    } while (xMore != pdFALSE);
-                    /* New prompt */
-                    index = 0;
-                    printf("\ncmd> ");
-                    fflush(stdout);
-                } else if (index < CMD_LINE_BUF_SIZE) {
-                    putchar(tmp);
-                    buffer[index++] = tmp;
-                    fflush(stdout);
-                } else {
-                    /* Throw away data and beep terminal */
-                    putchar(0x07);
-                    fflush(stdout);
-                }
-                uartReadLen = 1;
-                /* If more characters are ready, process them here */
+        printf("Write addr 0x%08X: %c\r\n", testaddr, data[i]);
+    }
 
-                if (ConsoleUART->status & MXC_F_UART_STATUS_RX_EM) { // Prevent dropping characters
-                    MXC_Delay(500);
-                }
-            } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
-                     (MXC_UART_Read(ConsoleUART, (uint8_t *)&tmp, &uartReadLen) == 0));
+    MXC_ICC_Enable();
+
+    // Verify the flash write was successful
+    err = flash_verify(startaddr, strlen(text), data);
+    if (err != E_NO_ERROR) {
+        printf("Write failed with error %i\n", err);
+    } else {
+        printf("Success\n");
+    }
+
+    return E_NO_ERROR;
+}
+
+// *****************************************************************************
+int handle_read(int argc, char *argv[])
+{
+    uint32_t addr;
+    uint8_t data[MXC_FLASH_PAGE_SIZE / 4];
+
+    // Check for an invalid command
+    if (argc != 3 || argv == NULL) {
+        printf("Invalid command format. Aborting flash read.\n");
+        return E_BAD_PARAM;
+    }
+
+    // Get command-line arguments
+    int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
+    int length = atoi(argv[LENGTH_POS]);
+
+    // Initialize data buffer
+    memset(data, 0x0, sizeof(data));
+
+    // Read requested characters from flash
+    for (int i = 0; i < length; i++) {
+        addr = startaddr + i * 4;
+        data[i] = *(uint32_t *)addr;
+
+        if (data[i] == 0xFF) {
+            printf("Read addr 0x%08X: %s\n", addr, "empty");
+        } else {
+            printf("Read addr 0x%08X: %c\n", addr, data[i]);
         }
     }
+
+    printf("Success:\n");
+    printf("%s\n", (char *)data);
+
+    return E_NO_ERROR;
 }
 
-//******************************************************************************
+// *****************************************************************************
+int handle_erase(int argc, char *argv[])
+{
+    int err = E_NO_ERROR;
+
+    // Check for an invalid command
+    if (argc != 1 || argv == NULL) {
+        printf("Invalid command format. Aborting flash erase.\n");
+        return E_BAD_PARAM;
+    }
+
+    // Check whether the flash page is already erased
+    if (!check_erased(FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE)) {
+        // Erase flash page if it's not already erased
+        if ((err = MXC_FLC_PageErase(FLASH_STORAGE_START_ADDR)) != E_NO_ERROR) {
+            printf("Failed to erase flash page.\n");
+            return err;
+        }
+    }
+
+    printf("Success\n");
+
+    return err;
+}
+
+// *****************************************************************************
+int handle_crc(int argc, char *argv[])
+{
+    int err;
+    mxc_crc_req_t req;
+
+    // Check for an invalid command
+    if (argc != 1 || argv == NULL) {
+        printf("Invalid command format. Aborting CRC compute.\n");
+        return E_BAD_PARAM;
+    }
+
+    // Setup CRC request to calculate CRC value for the entire flash page
+    req.dataBuffer = (uint32_t *)FLASH_STORAGE_START_ADDR;
+    req.dataLen = MXC_FLASH_PAGE_SIZE / sizeof(uint32_t);
+
+    // Initialize CRC engine and compute CRC value
+    MXC_CRC_Init();
+    MXC_CRC_SetPoly(POLY);
+    if ((err = MXC_CRC_Compute(&req)) != E_NO_ERROR) {
+        return err;
+    }
+
+    // Print result
+    printf("CRC: 0x%08X\r\n", req.resultCRC);
+
+    return E_NO_ERROR;
+}
+
+// *****************************************************************************
+// ************************* Helper Functions **********************************
+// *****************************************************************************
 int flash_verify(uint32_t address, uint32_t length, uint32_t *data)
 {
     volatile uint32_t *ptr;
 
+    // Loop through memory and check whether it matches the data array
     for (ptr = (uint32_t *)address; ptr < (uint32_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
@@ -253,120 +236,24 @@ int flash_verify(uint32_t address, uint32_t length, uint32_t *data)
     return E_NO_ERROR;
 }
 
-//******************************************************************************
-int flash_write(uint32_t startaddr, uint32_t length, uint32_t *data)
-{
-    int i = 0;
-
-    // Check if flash controller is busy
-    if (MXC_FLC0->ctrl & MXC_F_FLC_CTRL_PEND) {
-        return E_BUSY;
-    }
-
-    if (!check_erased(startaddr, length)) {
-        return E_INVALID;
-    }
-
-    MXC_ICC_Disable();
-
-    for (uint32_t testaddr = startaddr; i < length; testaddr += 4) {
-        // Write a word
-        int error_status = MXC_FLC_Write(testaddr, 4, &data[i]);
-        LOGV("Write addr 0x%08X: %c\r\n", testaddr, data[i]);
-        if (error_status != E_NO_ERROR) {
-            printf("Failure in writing a word : error %i addr: 0x%08x\n", error_status, testaddr);
-            return error_status;
-        }
-        i++;
-    }
-
-    MXC_ICC_Enable();
-
-    return flash_verify(startaddr, length, data);
-}
-
-// *****************************************************************************
-int flash_read(uint32_t startaddr, uint32_t length, uint8_t *data)
-{
-    for (int i = 0; i < length; i++) {
-        uint32_t addr = startaddr + i * 4;
-        data[i] = *(uint32_t *)addr;
-        if (data[i] == 0xFF) {
-            LOGV("Read addr 0x%08X: %s\r\n", addr, "empty");
-        } else {
-            LOGV("Read addr 0x%08X: %c\r\n", addr, data[i]);
-        }
-    }
-    return E_NO_ERROR;
-}
-
 // *****************************************************************************
 int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
     uint32_t *ptr;
 
+    // Loop through memory and check whether it matches the expected data value
     for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
         }
     }
+
     return 1;
 }
 
 //******************************************************************************
 int check_erased(uint32_t startaddr, uint32_t length)
 {
+    // Check whether flash memory is set to all 1's (erased state)
     return check_mem(startaddr, length, 0xFFFFFFFF);
-}
-
-//******************************************************************************
-void flash_init(void)
-{
-    MXC_FLC_ClearFlags(0x3);
-}
-
-//******************************************************************************
-uint32_t calculate_crc(uint32_t *array, uint32_t length)
-{
-    int err;
-    mxc_crc_req_t req;
-
-    req.dataBuffer = array;
-    req.dataLen = length;
-
-    MXC_CRC_Init();
-    MXC_CRC_SetPoly(POLY);
-    if ((err = MXC_CRC_Compute(&req)) != E_NO_ERROR) {
-        return err;
-    }
-
-    return req.resultCRC;
-}
-
-//******************************************************************************
-int main(void)
-{
-    printf("\n\n*************** Flash Control CLI Example ***************\n");
-    printf("\nThis example demonstrates the CLI commands feature of FreeRTOS, various features");
-    printf("\nof the Flash Controller (page erase and write), and how to use the CRC to");
-    printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n\n");
-
-    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
-
-    NVIC_SetRAM();
-    // Initialize the Flash
-    flash_init();
-
-    /* Configure task */
-    if ((xTaskCreate(vCmdLineTask, (const char *)"CmdLineTask",
-                     configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                     tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
-        printf("xTaskCreate() failed to create a task.\n");
-    } else {
-        /* Start scheduler */
-        printf("Starting FreeRTOS scheduler.\n");
-        vTaskStartScheduler();
-    }
-
-    return 0;
 }

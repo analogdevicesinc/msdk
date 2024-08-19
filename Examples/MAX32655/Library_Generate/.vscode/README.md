@@ -4,14 +4,14 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 
 ## Quick Links
 
-* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+* [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
   * If it's not in the README, check the UG.
   * If it's not in the UG, open a ticket!
-* [VSCode-Maxim Github](https://github.com/Analog-Devices-MSDK/VSCode-Maxim)
+* [VSCode-Maxim Github](https://github.com/analogdevicesinc/VSCode-Maxim)
 
 ## Introduction
 
-VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/Analog-Devices-MSDK/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
+VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/analogdevicesinc/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
 
 The following features are supported:
 
@@ -31,14 +31,14 @@ The following features are supported:
 
 The steps below are also available in video form in "Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code" [here](https://www.analog.com/en/education/education-library/videos/6313212752112.html).
 
-1. Download and install the Analog Devices MSDK for your OS from the links below.  For more detailed instructions on installing the MSDK, see the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+1. Download and install the Analog Devices MSDK for your OS from the links below.  For more detailed instructions on installing the MSDK, see the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
     * [Windows](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
     * [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720A)
     * [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610A)
 
 2. Run the installer executable, and ensure that "Visual Studio Code Support" is enabled for your installation.
 
-    ![Selected Components](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/installer_components.JPG)
+    ![Selected Components](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/installer_components.JPG)
 
 3. Finish the MSDK installation, taking note of where the MSDK was installed.
 
@@ -54,7 +54,7 @@ The steps below are also available in video form in "Understanding Artificial In
 
 9. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
-    ![Open Settings JSON Command](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/open_settings_json.jpg)
+    ![Open Settings JSON Command](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/open_settings_json.jpg)
 
 10. Add the entries below into your user settings.json file.
 
@@ -82,7 +82,7 @@ This section covers basic usage of the VSCode-Maxim project files.  For document
 
 Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is `File -> Open Folder...`.
 
-![File -> Open Folder](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/file_openfolder.JPG)
+![File -> Open Folder](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/file_openfolder.JPG)
 
 As a result, you'll notice that there is no "New Project" mechanism.  A "project" in VS Code is simply a folder.  It will look inside of the opened folder for a `.vscode` _sub_-folder to load project-specific settings from.
 
@@ -90,11 +90,11 @@ A project that is configured for VS Code will have, at minimum, a .vscode sub-fo
 
 Ex:
 
-![Example Directory Contents](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/opening_projects_2.jpg)
+![Example Directory Contents](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/opening_projects_2.jpg)
 
 ### Where to Find Projects
 
-The [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
+The [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
 
 Additionally, empty project templates and a drag-and-drop folder for "injecting" a VSCode-Maxim project can be found under `Tools/VSCode-Maxim` in the MSDK installation.
 
@@ -102,7 +102,7 @@ Additionally, empty project templates and a drag-and-drop folder for "injecting"
 
 Once a project is opened 4 available build tasks will become available via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.  These tasks are configured by the `.vscode/task.json` file.
 
-![Build Tasks Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG)
+![Build Tasks Image](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/buildtasks.JPG)
 
 #### Build
 
@@ -138,7 +138,7 @@ Once a project is opened 4 available build tasks will become available via `Term
 
 ### Debugging
 
-![Debug Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger.JPG)
+![Debug Window](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/debugger.JPG)
 
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations can be found in the `.vscode/launch.json` file.
 
@@ -162,11 +162,11 @@ In general, the MAX-series microcontrollers have the following debugger limitati
 
 3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.  
 
-    ![Debug Tab](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger_window.JPG)
+    ![Debug Tab](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/debugger_window.JPG)
 
 4. The debugger will launch a GDB client & OpenOCD server, reset the microcontroller, and should break on entry into `main`.
 
-    ![Debugger Break on Main](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger_breakmain.JPG)
+    ![Debugger Break on Main](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/debugger_breakmain.JPG)
 
 #### Using the Debugger
 
@@ -174,13 +174,13 @@ In general, the MAX-series microcontrollers have the following debugger limitati
 
 The main interface for the debugger is the debugger control bar:
 
-![Debugger Control Bar Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger_bar.JPG)
+![Debugger Control Bar Image](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/debugger_bar.JPG)
 
 `Continue | Step Over | Step Into | Step Out | Restart | Stop`
 
 Breakpoints can be set by clicking in the space next to the line number in a source code file.  A red dot indicates a line to break on.  Breakpoints can be removed by clicking on them again.  Ex:
 
-![Breakpoint](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/breakpoint.JPG)
+![Breakpoint](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/breakpoint.JPG)
 
 ## Project Configuration
 
@@ -190,7 +190,7 @@ Breakpoints can be set by clicking in the space next to the line number in a sou
 
 **When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
 
-![Reload Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG)
+![Reload Window](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/reload_window.JPG)
 
 The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
 
@@ -227,7 +227,7 @@ The following configuration options are available:
   * ... can be found in the `Libraries/Boards` folder of the MSDK
   * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
 
-  ![MAX78000 Boards](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/78000_boards.JPG)
+  ![MAX78000 Boards](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/78000_boards.JPG)
 
 ### Advanced Config Options
 
@@ -353,7 +353,7 @@ A project's build system is managed by two files found in the project's root dir
 * `Makefile`
 * `project.mk`
 
-![Files are located in the root directory](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/65af7c61800c7039956f3c1971ffd7915008668d/img/projectmk.JPG)
+![Files are located in the root directory](https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/65af7c61800c7039956f3c1971ffd7915008668d/img/projectmk.JPG)
 
 When the command...
 
@@ -416,7 +416,7 @@ For example, if I wanted to enable hardware floating-point acceleration for my p
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://github.com/analogdevicesinc/VSCode-Maxim/tree/develop#build-configuration
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -540,7 +540,7 @@ If you want to start from scratch, take this option.
 
 ## Issue Tracker
 
-Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/issues) tracker on Github.
+Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/analogdevicesinc/VSCode-Maxim/issues) tracker on Github.
 
 New issues should contain _at minimum_ the following information:
 
