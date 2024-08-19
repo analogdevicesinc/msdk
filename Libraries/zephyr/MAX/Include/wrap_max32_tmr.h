@@ -159,6 +159,10 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
 
 void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
+#if defined(CONFIG_SOC_MAX32657)
+    (void)tmr;
+    (void)cfg;
+#else
     mxc_tmr_cfg_t mxc_cfg;
 
     mxc_cfg.pres = cfg->pres;
@@ -172,6 +176,7 @@ void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
     MXC_LP_EnableTimerWakeup(tmr);
     // Enable Timer wake-up source
     MXC_TMR_EnableWakeup(tmr, &mxc_cfg);
+#endif
 }
 
 void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
