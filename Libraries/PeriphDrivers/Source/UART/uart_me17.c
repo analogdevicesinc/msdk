@@ -82,7 +82,6 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     if (retval != E_NO_ERROR) {
         return retval;
     }
-
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
 
@@ -320,9 +319,9 @@ mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
         break;
     case 3:
         switch (clock_option) {
-        case 0:
+        case 2:
             return MXC_UART_IBRO_CLK;
-        case 1:
+        case 3:
             return MXC_UART_ERTCO_CLK;
         default:
             return E_BAD_STATE;
