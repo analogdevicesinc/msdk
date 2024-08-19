@@ -128,6 +128,9 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
+    // Default OSR setting.
+    uart->osr = 5;
+
     switch (clock) {
     case MXC_UART_APB_CLK:
         clock_freq = SystemCoreClock / 2;
@@ -143,7 +146,6 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
             return E_BAD_PARAM;
         }
 
-        uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
         uart->ctrl |= MXC_F_UART_CTRL_FDM;
 
         if (baud > 2400) {
