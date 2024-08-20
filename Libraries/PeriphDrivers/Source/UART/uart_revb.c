@@ -189,8 +189,7 @@ int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart)
 {
     int periphClock = 0;
 
-    if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
-        MXC_S_UART_REVB_CTRL_BCLKSRC_CLK1) {
+    if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK1) {
         periphClock = UART_EXTCLK_FREQ;
     } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
                MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
