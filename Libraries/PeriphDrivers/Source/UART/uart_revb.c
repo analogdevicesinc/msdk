@@ -169,8 +169,9 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_cl
 {
     unsigned clkDiv = 0, mod = 0;
 
-    // OSR default value
-    // uart->osr = 5;
+    // Set the over-sampling rate for LPUART in chip-specific drivers. Due to how the
+    //  frequency and clock sources are set up, setting the UART_OSR register here will
+    //  overwrite the sampling rate set at the chip-specific functions for LPUARTs.
 
     clkDiv = (input_clock_freq / baud);
     mod = (input_clock_freq % baud);
