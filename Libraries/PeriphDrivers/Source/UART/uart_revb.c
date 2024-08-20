@@ -184,8 +184,9 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int baud,
 {
     unsigned clkDiv = 0, mod = 0;
 
-    // OSR default value
-    uart->osr = 5;
+    // Set the over-sampling rate for LPUART in chip-specific drivers. Due to how the
+    //  frequency and clock sources are set up, setting the UART_OSR register here will
+    //  overwrite the sampling rate set at the chip-specific functions for LPUARTs.
 
     switch (clock) {
     case MXC_UART_REVB_APB_CLK:
@@ -230,12 +231,13 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int baud,
     return MXC_UART_GetFrequency((mxc_uart_regs_t *)uart);
 }
 
+// TODO(SW): The clock sources will vary from chip to chip. Maybe it's a better idea to
+//  make this function chip-specific only.
 int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart)
 {
     int periphClock = 0;
 
-    if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
-        MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+    if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK1) {
         periphClock = UART_EXTCLK_FREQ;
     } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
                MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
