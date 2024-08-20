@@ -130,6 +130,8 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
     }
 
     // Default OSR
+    //  Setting LPUART Over-Sampling Rate in MXC_UART_RevB_SetFrequency function overwrites
+    //  the sampling rate set below for the ERTCO.
     uart->osr = 5;
 
     switch (clock) {
