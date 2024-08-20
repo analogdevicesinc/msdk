@@ -129,6 +129,11 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
+    // Default OSR
+    //  Setting LPUART Over-Sampling Rate in MXC_UART_RevB_SetFrequency function overwrites
+    //  the sampling rate set below for the ERTCO.
+    uart->osr = 5;
+
     switch (clock) {
     case MXC_UART_APB_CLK:
         clock_freq = SystemCoreClock / 2;
@@ -144,7 +149,6 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
             return E_BAD_PARAM;
         }
 
-        uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
         uart->ctrl |= MXC_F_UART_CTRL_FDM;
 
         if (baud > 2400) {
@@ -184,8 +188,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
             MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = IBRO_FREQ;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
-                   MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK1) {
             periphClock = ERTCO_FREQ * 2;
         } else {
             return E_NOT_SUPPORTED;
@@ -281,12 +284,12 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
         switch (clock) {
         case MXC_UART_IBRO_CLK:
             error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
+            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
             break;
 
         case MXC_UART_ERTCO_CLK:
             error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
+            MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 1);
             break;
 
         default:
@@ -319,9 +322,9 @@ mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
         break;
     case 3:
         switch (clock_option) {
-        case 2:
+        case 0:
             return MXC_UART_IBRO_CLK;
-        case 3:
+        case 1:
             return MXC_UART_ERTCO_CLK;
         default:
             return E_BAD_STATE;

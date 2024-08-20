@@ -121,7 +121,7 @@
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>External_Clock</name>
+                <name>CLK1</name>
                 <description>Clock 1</description>
                 <value>1</value>
               </enumeratedValue>
