@@ -125,7 +125,7 @@ UNAME_RESULT := $(shell uname -s 2>&1)
 # variable will still be set to Windows_NT since we configure
 # MSYS2 to inherit from Windows by default.
 # Here we'll attempt to call uname (only present on MSYS2)
-# while routing stderr -> stdout to avoid throwing an error 
+# while routing stderr -> stdout to avoid throwing an error
 # if uname can't be found.
 ifneq ($(findstring CYGWIN, $(UNAME_RESULT)), )
 CYGWIN=True
@@ -406,7 +406,8 @@ LDFLAGS=-mthumb                                                                \
         -mfloat-abi=$(MFLOAT_ABI)                                              \
         -mfpu=$(MFPU)                                                          \
         -Xlinker --gc-sections                                                 \
-	-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
+        -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map                     \
+        -Xlinker --print-memory-usage
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
