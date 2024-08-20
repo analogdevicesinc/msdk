@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -54,7 +54,7 @@ typedef struct {
 } uart_reva_req_state_t;
 
 // clang-format off
-uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
+static uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
     [0 ... MXC_UART_INSTANCES - 1] = {
         .tx_req = NULL,
         .rx_req = NULL,
@@ -1050,14 +1050,14 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
 
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
         if (states[i].channelTx == ch) {
-            /* Populate txLen.  The number of "remainder" bytes is what's left on the 
+            /* Populate txLen.  The number of "remainder" bytes is what's left on the
             DMA channel's count register. */
             states[i].tx_req->txCnt = states[i].tx_req->txLen - states[i].dma->ch[ch].cnt;
 
             temp_req = states[i].tx_req;
 
             if (states[i].auto_dma_handlers) {
-                /* Release channel _before_ running callback in case 
+                /* Release channel _before_ running callback in case
                 user wants to start another transaction inside it */
                 MXC_DMA_ReleaseChannel(ch);
                 states[i].channelTx = -1;
