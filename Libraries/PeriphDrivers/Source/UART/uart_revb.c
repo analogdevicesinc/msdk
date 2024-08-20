@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
@@ -52,7 +52,7 @@ typedef struct {
 } uart_revb_req_state_t;
 
 // clang-format off
-uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
+static uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
     [0 ... MXC_UART_INSTANCES - 1] = {
         .tx_req = NULL,
         .rx_req = NULL,
@@ -101,9 +101,9 @@ static void emptyRxAsync(mxc_uart_revb_req_t *req)
          * from threshold-1 to threshold. If we happened to receive a byte between emptying the FIFO
          * and setting the threshold, we will miss the threshold interrupt.
          *
-         * If we still have data to read and the threshold value we just set is less than or equal to 
+         * If we still have data to read and the threshold value we just set is less than or equal to
          * the number of bytes currently in the FIFO, then we need to read from the FIFO and reset the
-         * threshold again. 
+         * threshold again.
          */
     } while (numToRead && numToRead <= MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart)));
 }
@@ -169,8 +169,9 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_cl
 {
     unsigned clkDiv = 0, mod = 0;
 
-    // OSR default value
-    uart->osr = 5;
+    // Set the over-sampling rate for LPUART in chip-specific drivers. Due to how the
+    //  frequency and clock sources are set up, setting the UART_OSR register here will
+    //  overwrite the sampling rate set at the chip-specific functions for LPUARTs.
 
     clkDiv = (input_clock_freq / baud);
     mod = (input_clock_freq % baud);
@@ -183,12 +184,13 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_cl
     return baud;
 }
 
+// TODO(SW): The clock sources will vary from chip to chip. Maybe it's a better idea to
+//  make this function chip-specific only.
 int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart)
 {
     int periphClock = 0;
 
-    if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
-        MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+    if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK1) {
         periphClock = UART_EXTCLK_FREQ;
     } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
                MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
@@ -1123,14 +1125,14 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
 
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
         if (states[i].channelTx == ch) {
-            /* Populate txLen.  The number of "remainder" bytes is what's left on the 
+            /* Populate txLen.  The number of "remainder" bytes is what's left on the
             DMA channel's count register. */
             states[i].tx_req->txCnt = states[i].tx_req->txLen - states[i].dma->ch[ch].cnt;
 
             temp_req = states[i].tx_req;
 
             if (states[i].auto_dma_handlers) {
-                /* Release channel _before_ running callback in case 
+                /* Release channel _before_ running callback in case
                 user wants to start another transaction inside it */
                 MXC_DMA_ReleaseChannel(ch);
                 states[i].channelTx = -1;
