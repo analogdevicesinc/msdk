@@ -607,15 +607,16 @@ We may want to handle GET_IRQ better...
 
 /******************************************************************************/
 /*                                                                        I3C */
-#define MXC_I3C_FIFO_DEPTH (8) // TODO(ME30): Confirm this is correct.
+#define MXC_CFG_I3C_INSTANCES (1)
+#define MXC_I3C_FIFO_DEPTH (8)
 
 /* Non-secure Mapping */
 #define MXC_BASE_I3C_NS ((uint32_t)0x4001D000UL)
-#define MXC_I3C_NS ((mxc_i2c_regs_t *)MXC_BASE_I3C_NS)
+#define MXC_I3C_NS ((mxc_i3c_regs_t *)MXC_BASE_I3C_NS)
 
 /* Secure Mapping */
 #define MXC_BASE_I3C_S ((uint32_t)0x5001D000UL)
-#define MXC_I3C_S ((mxc_i2c_regs_t *)MXC_BASE_I3C_S)
+#define MXC_I3C_S ((mxc_i3c_regs_t *)MXC_BASE_I3C_S)
 
 #if IS_SECURE_ENVIRONMENT
 #define MXC_BASE_I3C MXC_BASE_I3C_S
@@ -624,6 +625,11 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_I3C MXC_BASE_I3C_NS
 #define MXC_I3C MXC_I3C_NS
 #endif
+
+#define MXC_I3C_GET_BASE(i) ((i) == 0 ? MXC_BASE_I3C : 0)
+#define MXC_I3C_GET_I3C(i) ((i) == 0 ? MXC_I3C : 0)
+#define MXC_I3C_GET_IRQ(i) (IRQn_Type)((i) == 0 ? I3C_IRQn : 0)
+#define MXC_I3C_GET_IDX(p) ((p) == MXC_I3C_NS ? 0 : (p) == MXC_I3C_S ? 0 : -1)
 
 /******************************************************************************/
 /*                                                                        DMA */
