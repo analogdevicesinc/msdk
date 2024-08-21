@@ -33,11 +33,11 @@
 #include "i2s.h"
 
 /* ***** Definitions ***** */
-#define DATALENGTH_EIGHT (8)
-#define DATALENGTH_SIXTEEN (16)
-#define DATALENGTH_TWENTY (20)
-#define DATALENGTH_TWENTYFOUR (24)
-#define DATALENGTH_THIRTYTWO (32)
+#define DATALENGTH_EIGHT (8 - 1)
+#define DATALENGTH_SIXTEEN (16 - 1)
+#define DATALENGTH_TWENTY (20 - 1)
+#define DATALENGTH_TWENTYFOUR (24 - 1)
+#define DATALENGTH_THIRTYTWO (32 - 1)
 
 // #define USE_LEGACY_I2S_DMA_CFG
 
@@ -55,32 +55,6 @@ static void (*async_cb)(int) = NULL;
 static mxc_i2s_req_t txn_req;
 static mxc_i2s_reva_txn_t txn_state;
 static uint32_t txn_lock = 0;
-
-static void configure_data_sizes(mxc_i2s_reva_regs_t *i2s, uint8_t bits_word, uint8_t smp_sz,
-                                 uint8_t wsize)
-{
-    if (bits_word > 0) {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS,
-                     (bits_word - 1) << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS); // Subtract 1
-    } else {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS,
-                     0); // Clear to 0
-    }
-
-    //Set sample length if defined:
-    //The SMP_SIZE is equal to bitsWord when sampleSize == 0 or sampleSize > bitsWord
-    if (smp_sz > 0) {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS,
-                     (smp_sz - 1) << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS); // Subtract 1
-    } else {
-        MXC_SETFIELD(i2s->ctrl1ch0, 0b11111 << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS,
-                     smp_sz); // Clear to 0
-    }
-
-    //Set datasize to load in FIFO
-    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
-                 wsize << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
-}
 
 /* ****** Functions ****** */
 int MXC_I2S_RevA_Init(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
@@ -160,12 +134,26 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
     i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD;
     i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE;
 
-    configure_data_sizes(i2s, req->bitsWord, req->sampleSize, req->wordSize);
+    switch (req->sampleSize) {
+    case MXC_I2S_SAMPLESIZE_EIGHT:
+        if (req->wordSize == MXC_I2S_DATASIZE_WORD) {
+            //Set word length
+            i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+        } else if (req->wordSize == MXC_I2S_DATASIZE_HALFWORD) {
+            //Set word length
+            i2s->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+        } else {
+            //Set word length
+            i2s->ctrl1ch0 |= (DATALENGTH_EIGHT << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+        }
 
-    MXC_SETFIELD(i2s->ctrl1ch0, MXC_F_I2S_REVA_CTRL1CH0_ADJUST,
-                 (req->adjust) << MXC_F_I2S_REVA_CTRL1CH0_ADJUST_POS);
+        //Set sample length
+        i2s->ctrl1ch0 |= (DATALENGTH_EIGHT << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
 
-    if (req->bitsWord <= DATALENGTH_EIGHT) {
+        //Set datasize to load in FIFO
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
+                     (MXC_I2S_DATASIZE_BYTE) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
+
         dataMask = 0x000000ff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -173,7 +161,25 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_8++ = *rawdata_8++ & dataMask;
             }
         }
-    } else if (req->bitsWord <= DATALENGTH_SIXTEEN) {
+
+        break;
+
+    case MXC_I2S_SAMPLESIZE_SIXTEEN:
+        if (req->wordSize == MXC_I2S_DATASIZE_WORD) {
+            //Set word length
+            i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+        } else {
+            //Set word length
+            i2s->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+        }
+
+        //Set sample length
+        i2s->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
+
+        //Set datasize
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
+                     (MXC_I2S_DATASIZE_HALFWORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
+
         dataMask = 0x0000ffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -181,7 +187,20 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_16++ = *rawdata_16++ & dataMask;
             }
         }
-    } else if (req->bitsWord <= DATALENGTH_TWENTY) {
+
+        break;
+
+    case MXC_I2S_SAMPLESIZE_TWENTY:
+        //Set word length
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+
+        //Set sample length
+        i2s->ctrl1ch0 |= (DATALENGTH_TWENTY << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
+
+        //Set datasize
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
+                     (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
+
         dataMask = 0x00fffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -189,7 +208,20 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_32++ = (*rawdata_32++ & dataMask) << 12;
             }
         }
-    } else if (req->bitsWord <= DATALENGTH_TWENTYFOUR) {
+
+        break;
+
+    case MXC_I2S_SAMPLESIZE_TWENTYFOUR:
+        //Set word length
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+
+        //Set sample length
+        i2s->ctrl1ch0 |= (DATALENGTH_TWENTYFOUR << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
+
+        //Set datasize
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
+                     (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
+
         dataMask = 0x00ffffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -197,7 +229,20 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_32++ = (*rawdata_32++ & dataMask) << 8;
             }
         }
-    } else if (req->bitsWord <= DATALENGTH_THIRTYTWO) {
+
+        break;
+
+    case MXC_I2S_SAMPLESIZE_THIRTYTWO:
+        //Set word length
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
+
+        //Set sample length
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
+
+        //Set datasize
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE,
+                     (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
+
         dataMask = 0xffffffff;
 
         if ((req->rawData != NULL) && (req->txData != NULL)) {
@@ -205,6 +250,12 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
                 *txdata_32++ = *rawdata_32++ & dataMask;
             }
         }
+
+        break;
+
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
     return E_NO_ERROR;
@@ -286,13 +337,13 @@ int MXC_I2S_RevA_GetSampleRate(mxc_i2s_reva_regs_t *i2s, uint32_t src_clk)
               MXC_F_I2S_REVA_CTRL1CH0_CLKDIV_POS; // Get clock divider value
 
     switch (word_sz) { // Get word size
-    case MXC_I2S_WSIZE_BYTE:
+    case MXC_I2S_DATASIZE_BYTE:
         word_sz = 8;
         break;
-    case MXC_I2S_WSIZE_HALFWORD:
+    case MXC_I2S_DATASIZE_HALFWORD:
         word_sz = 16;
         break;
-    case MXC_I2S_WSIZE_WORD:
+    case MXC_I2S_DATASIZE_WORD:
     default:
         word_sz = 32;
         break;
@@ -305,32 +356,31 @@ int MXC_I2S_RevA_GetSampleRate(mxc_i2s_reva_regs_t *i2s, uint32_t src_clk)
 }
 
 int MXC_I2S_RevA_CalculateClockDiv(mxc_i2s_reva_regs_t *i2s, uint32_t smpl_rate,
-                                   mxc_i2s_wsize_t word_sz, uint32_t src_clk)
+                                   mxc_i2s_wsize_t smpl_sz, uint32_t src_clk)
 {
-    uint32_t bclk = 0;
-    uint32_t word_size = 0;
+    uint32_t bclk;
 
-    switch (word_sz) { // Get word size
-    case MXC_I2S_WSIZE_BYTE:
-        word_size = 8;
+    switch (smpl_sz) { // Get word size
+    case MXC_I2S_DATASIZE_BYTE:
+        bclk = 8;
         break;
-    case MXC_I2S_WSIZE_HALFWORD:
-        word_size = 16;
+    case MXC_I2S_DATASIZE_HALFWORD:
+        bclk = 16;
         break;
-    case MXC_I2S_WSIZE_WORD:
-        word_size = 32;
+    case MXC_I2S_DATASIZE_WORD:
+        bclk = 32;
         break;
     default:
         return E_BAD_PARAM;
     }
 
-    bclk = smpl_rate * word_size * 2; // bclk_frequency = sample_rate * word_size * 2
+    bclk *= smpl_rate * 4; // bclk_frequency = sample_rate * word_size * 2
 
     if (bclk > src_clk) {
         return E_INVALID;
     }
 
-    return (src_clk / (bclk * 2)) - 1; // clk_divider = src_clk_frequency / (bclk_frequency * 2) - 1
+    return (src_clk / bclk) - 1; // clk_divider = src_clk_frequency / (bclk_frequency * 2) - 1
 }
 
 void MXC_I2S_RevA_Flush(mxc_i2s_reva_regs_t *i2s)
@@ -344,17 +394,17 @@ static uint32_t write_tx_fifo(void *tx, mxc_i2s_wsize_t wordSize, int smpl_cnt)
 {
     uint32_t write_val = 0;
 
-    if (wordSize == MXC_I2S_WSIZE_BYTE) {
+    if (wordSize == MXC_I2S_DATASIZE_BYTE) {
         uint8_t *tx8 = (uint8_t *)tx;
         for (int i = 0; i < 4; i++) {
             write_val |= (tx8[smpl_cnt++] << (i * 8));
         }
-    } else if (wordSize == MXC_I2S_WSIZE_HALFWORD) {
+    } else if (wordSize == MXC_I2S_DATASIZE_HALFWORD) {
         uint16_t *tx16 = (uint16_t *)tx;
         for (int i = 0; i < 2; i++) {
             write_val |= (tx16[smpl_cnt++] << (i * 16));
         }
-    } else if (wordSize == MXC_I2S_WSIZE_WORD) {
+    } else if (wordSize == MXC_I2S_DATASIZE_WORD) {
         uint32_t *tx32 = (uint32_t *)tx;
         write_val = tx32[smpl_cnt];
     }
@@ -371,7 +421,7 @@ int MXC_I2S_RevA_FillTXFIFO(mxc_i2s_reva_regs_t *i2s, void *txData, mxc_i2s_wsiz
 
     if (txData == NULL) { // Check for bad parameters
         return E_NULL_PTR;
-    } else if (wordSize > MXC_I2S_WSIZE_WORD) {
+    } else if (wordSize > MXC_I2S_DATASIZE_WORD) {
         return E_BAD_PARAM;
     } else if (len == 0) {
         return E_NO_ERROR;
@@ -395,19 +445,19 @@ static void read_rx_fifo(mxc_i2s_reva_regs_t *i2s, void *rxData, mxc_i2s_wsize_t
 {
     uint32_t fifo_val = i2s->fifoch0;
 
-    if (wordSize == MXC_I2S_WSIZE_BYTE) {
+    if (wordSize == MXC_I2S_DATASIZE_BYTE) {
         uint8_t *rx8 = (uint8_t *)rxData;
         for (int i = 0; i < 4; i++) {
             rx8[cnt++] = fifo_val & 0xFF;
             fifo_val = fifo_val >> 8;
         }
-    } else if (wordSize == MXC_I2S_WSIZE_HALFWORD) {
+    } else if (wordSize == MXC_I2S_DATASIZE_HALFWORD) {
         uint16_t *rx16 = (uint16_t *)rxData;
         for (int i = 0; i < 2; i++) {
             rx16[cnt++] = fifo_val & 0xFFFF;
             fifo_val = fifo_val >> 16;
         }
-    } else if (wordSize == MXC_I2S_WSIZE_WORD) {
+    } else if (wordSize == MXC_I2S_DATASIZE_WORD) {
         uint32_t *rx32 = (uint32_t *)rxData;
         rx32[cnt] = fifo_val;
     }
@@ -422,7 +472,7 @@ int MXC_I2S_RevA_ReadRXFIFO(mxc_i2s_reva_regs_t *i2s, void *rxData, mxc_i2s_wsiz
 
     if (rxData == NULL) { // Check for bad parameters
         return E_NULL_PTR;
-    } else if (wordSize > MXC_I2S_WSIZE_WORD) {
+    } else if (wordSize > MXC_I2S_DATASIZE_WORD) {
         return E_BAD_PARAM;
     } else if (len == 0) {
         return E_NO_ERROR;
@@ -607,19 +657,19 @@ int MXC_I2S_RevA_TXDMAConfig(mxc_i2s_reva_regs_t *i2s, void *src_addr, int len)
     config.ch = channel;
 
     switch (request->wordSize) {
-    case MXC_I2S_WSIZE_WORD:
+    case MXC_I2S_DATASIZE_WORD:
         config.srcwd = MXC_DMA_WIDTH_WORD;
         config.dstwd = MXC_DMA_WIDTH_WORD;
         advConfig.burst_size = 4;
         break;
 
-    case MXC_I2S_WSIZE_HALFWORD:
+    case MXC_I2S_DATASIZE_HALFWORD:
         config.srcwd = MXC_DMA_WIDTH_HALFWORD;
         config.dstwd = MXC_DMA_WIDTH_WORD;
         advConfig.burst_size = 2;
         break;
 
-    case MXC_I2S_WSIZE_BYTE:
+    case MXC_I2S_DATASIZE_BYTE:
         config.srcwd = MXC_DMA_WIDTH_BYTE;
         config.dstwd = MXC_DMA_WIDTH_WORD;
         advConfig.burst_size = 1;
@@ -684,19 +734,19 @@ int MXC_I2S_RevA_RXDMAConfig(mxc_i2s_reva_regs_t *i2s, void *dest_addr, int len)
     config.ch = channel;
 
     switch (request->wordSize) {
-    case MXC_I2S_WSIZE_WORD:
+    case MXC_I2S_DATASIZE_WORD:
         config.srcwd = MXC_DMA_WIDTH_WORD;
         config.dstwd = MXC_DMA_WIDTH_WORD;
         advConfig.burst_size = 4;
         break;
 
-    case MXC_I2S_WSIZE_HALFWORD:
+    case MXC_I2S_DATASIZE_HALFWORD:
         config.srcwd = MXC_DMA_WIDTH_WORD;
         config.dstwd = MXC_DMA_WIDTH_HALFWORD;
         advConfig.burst_size = 2;
         break;
 
-    case MXC_I2S_WSIZE_BYTE:
+    case MXC_I2S_DATASIZE_BYTE:
         config.srcwd = MXC_DMA_WIDTH_WORD;
         config.dstwd = MXC_DMA_WIDTH_BYTE;
         advConfig.burst_size = 1;
