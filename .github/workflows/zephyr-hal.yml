@@ -17,11 +17,14 @@ on:
 
 env:
   # Add environment variables here
-  PR_NUM: ${{ github.event.pull_request.number }}
+  PR_NUM: ${{ github.event.number }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   if_merged:
+    # Run only when a PR is merged
+    if: github.event.pull_request.merged == true
+
     # The type of OS that the job will run on
     runs-on: [ ubuntu-latest ]
 
@@ -36,7 +39,6 @@ jobs:
         with:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
           ref: ''
-          ssh-key: ${{ secrets.MSDK_SSH_KEY }}
           # Repository name (Default will be the current repo the action is running from)
           repository: ${{ github.repository }}
           fetch-depth: 0
@@ -49,7 +51,6 @@ jobs:
         with:
           # Specific Branch, tag, or SHA to checkout (uses default branch if empty)
           ref: 'develop'
-          ssh-key: ${{ secrets.MSDK_SSH_KEY }}
           # Name of different repository ('organization_name/repo_name')
           # Update the following line to point to the hal_adi repo once that repo is created.
           repository: 'analogdevicesinc/hal_adi'
@@ -65,12 +66,11 @@ jobs:
           # directory that contains the 'msdk' and 'hal_adi' folders.
           bash ./msdk/.github/workflows/scripts/zephyr-hal.sh
 
-      - name: Push changes to hal_adi repository
-        run: |
-          echo "$(pwd) - $(ls)"
-          cd ./hal_adi
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add *
-          git commit -m "Update Zephyr MSDK Hal based on MSDK PR: https://github.com/analogdevicesinc/msdk/pull/${PR_NUM}"
-          git push 
+      - name: Push hal_adi repository
+        uses: EndBug/add-and-commit@v9.0.1
+        with:
+          add: '*'
+          message: 'Updating Zephyr MSDK Hal based on msdk PR# $PR_NUM'
+          push: true
+          # Specify path in workspace to the repo you want to push to
+          cwd: './hal_adi'
