@@ -58,7 +58,7 @@ extern "C" {
   *
   */
 typedef enum {
-    MXC_ADC_CH_0 = 0, ///< Select Channel 0
+    MXC_ADC_CH_0, ///< Select Channel 0
     MXC_ADC_CH_1, ///< Select Channel 1
     MXC_ADC_CH_2, ///< Select Channel 2
     MXC_ADC_CH_3, ///< Select Channel 3
@@ -89,7 +89,7 @@ typedef enum {
  * @brief       Enumeration type for ADC clock divider
  */
 typedef enum {
-    MXC_ADC_CLKDIV_2 = 0, ///< ADC Scale by 1/2
+    MXC_ADC_CLKDIV_2, ///< ADC Scale by 1/2
     MXC_ADC_CLKDIV_4, ///< ADC Scale by 1/4
     MXC_ADC_CLKDIV_8, ///< ADC Scale by 1/8
     MXC_ADC_CLKDIV_16, ///< ADC Scale by 1/16
@@ -100,23 +100,17 @@ typedef enum {
  * @brief       Clock settings
  */
 typedef enum {
-    MXC_ADC_CLK_SYS_OSC = 0,
-    MXC_ADC_CLK_EXT = 1,
-    MXC_ADC_CLK_IBRO = 2,
-    MXC_ADC_CLK_ERFO = 3,
-
-    // Legacy names
-    MXC_ADC_HCLK = MXC_ADC_CLK_SYS_OSC, ///< HCLK CLock
-    MXC_ADC_CLK_ADC0 = MXC_ADC_CLK_EXT, ///< ADC0 Clock
-    MXC_ADC_CLK_ADC1 = MXC_ADC_CLK_IBRO, ///< ADC1 Clock
-    MXC_ADC_CLK_ADC2 = MXC_ADC_CLK_ERFO, ///< ADC2 Clock
+    MXC_ADC_HCLK, ///< HCLK CLock
+    MXC_ADC_CLK_ADC0, ///< ADC0 Clock
+    MXC_ADC_CLK_ADC1, ///< ADC1 Clock
+    MXC_ADC_CLK_ADC2, ///< ADC2 Clock
 } mxc_adc_clock_t;
 
 /**
  * @brief       Calibration settings 
  */
 typedef enum {
-    MXC_ADC_SKIP_CAL = 0, ///< HCLK CLock
+    MXC_ADC_SKIP_CAL, ///< HCLK CLock
     MXC_ADC_EN_CAL, ///< ADC0 Clock
 } mxc_adc_calibration_t;
 
@@ -124,7 +118,7 @@ typedef enum {
  * @brief       trigger mode settings 
  */
 typedef enum {
-    MXC_ADC_TRIG_SOFTWARE = 0, ///< Software Trigger
+    MXC_ADC_TRIG_SOFTWARE, ///< Software Trigger
     MXC_ADC_TRIG_HARDWARE, ///< Hardware Trigger
 } mxc_adc_trig_mode_t;
 
@@ -132,7 +126,7 @@ typedef enum {
  * @brief       Hardware trigger select options
  */
 typedef enum {
-    MXC_ADC_TRIG_SEL_TMR0 = 0, ///< Timer 0 Out Rising edge
+    MXC_ADC_TRIG_SEL_TMR0, ///< Timer 0 Out Rising edge
     MXC_ADC_TRIG_SEL_TMR1, ///< Timer 1 Out Rising Edge
     MXC_ADC_TRIG_SEL_TMR2, ///< Timer 2 Out Rising Edge
     MXC_ADC_TRIG_SEL_TMR3, ///< Timer 3 Out Rising Edge
@@ -146,7 +140,7 @@ typedef enum {
  * @brief       trigger mode settings 
  */
 typedef enum {
-    MXC_ADC_ATOMIC_CONV = 0, ///< Software Trigger
+    MXC_ADC_ATOMIC_CONV, ///< Software Trigger
     MXC_ADC_CONTINUOUS_CONV, ///< Hardware Trigger
 } mxc_adc_conversion_mode_t;
 
@@ -163,7 +157,7 @@ typedef enum {
  * @brief  Reference voltage select type.
  */
 typedef enum {
-    MXC_ADC_REF_EXT = 0, ///< Use external reference voltage source
+    MXC_ADC_REF_EXT, ///< Use external reference voltage source
     MXC_ADC_REF_INT_1V25, ///< Use internal 1.25V source
     MXC_ADC_REF_INT_2V048, ///< Use internal 2.048V souce
 } mxc_adc_refsel_t;
@@ -173,7 +167,7 @@ typedef enum {
  */
 
 typedef enum {
-    MXC_ADC_DIV_2_5K_50K_ENABLE = 0, ///< 2.5K and 50K divide by 2 enable in lpmode
+    MXC_ADC_DIV_2_5K_50K_ENABLE, ///< 2.5K and 50K divide by 2 enable in lpmode
     MXC_ADC_DIV_2_5K_DISABLE, ///< 2.5K disable and 50K divide  by 2 enable in lpmode
     MXC_ADC_DIV_50K_DISABLE, ///< 2.5K enable and 50K divide  by 2 disable in lpmode
     MXC_ADC_DIV_2_5K_50K_DISABLE, ///< 2.5K and 50K divide by 2 disable in lpmode
@@ -183,7 +177,7 @@ typedef enum {
  * @brief  Data FIFO data format
  */
 typedef enum {
-    MXC_ADC_DATA_STATUS = 0, ///< Data(12-bit) plus Status
+    MXC_ADC_DATA_STATUS, ///< Data(12-bit) plus Status
     MXC_ADC_DATA, ///< Data(12-bit) only
     MXC_ADC_RAW_DATA, ///< 18-bit raw data
 } mxc_adc_fifodataformat_t;
