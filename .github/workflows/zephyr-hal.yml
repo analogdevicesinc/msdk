@@ -9,8 +9,7 @@ on:
   # Run only when a pull-request is closed.
   # The 'if_merged' condition in the 'jobs' section below will make sure the PR was
   #  approved before running the steps.
-  # Caution: pull_request_target grants workflows triggered by forks access to secrets and write permissions.
-  pull_request_target:
+  pull_request:
     types:
       - closed
   # Allows you to run this workflow manually from the Actions tab
@@ -29,7 +28,6 @@ jobs:
     permissions:
       # This will depend on permissions set by repo and org (separate levels of permissions)
       contents: write
-      pull-requests: write
 
     steps:
       # Checkout msdk repository
