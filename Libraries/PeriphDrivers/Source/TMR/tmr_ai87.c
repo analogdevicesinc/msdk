@@ -152,12 +152,11 @@ uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
         break;
 
     case MXC_TMR_IBRO_CLK:
-        if (tmr_id <= 3) {
-            clockSource = MXC_TMR_CLK2;
-        } else {
-            clockSource = MXC_TMR_CLK0;
+        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
+            return E_NOT_SUPPORTED;
         }
 
+        clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
         break;
