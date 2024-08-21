@@ -22,6 +22,3 @@ SBT=0
 LIB_SDHC=1
 # Use FatFS R0.15
 FATFS_VERSION = ff15
-
-# Enable CLI Library
-LIB_CLI=1

@@ -28,7 +28,6 @@
 
 #include "board.h"
 #include "cli.h"
-#include "mxc_errors.h"
 #include "nvic_table.h"
 
 /* -------------------------------------------------- */
@@ -47,17 +46,6 @@
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1
-
-// Macro to call MXC_UART_Init function with appropriate parameters
-#if (TARGET_NUM == 32520 || TARGET_NUM == 32570 || TARGET_NUM == 32650)
-#define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD)
-#elif TARGET_NUM == 32660
-#define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD, MAP_A)
-#elif TARGET_NUM == 32662
-#define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK, MAP_A)
-#else
-#define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK)
-#endif
 
 /* -------------------------------------------------- */
 //                FUNCTION PROTOTYPES
@@ -252,7 +240,7 @@ int handle_help(int argc, char *argv[])
     for (int i = 0; i < command_table_sz; i++) {
         printf("\n%s:\n", command_table[i].cmd);
         printf("  Usage: %s\n", command_table[i].usage);
-        printf("  Description: %s\n", command_table[i].description);
+        printf("  Description: %s\n\n", command_table[i].description);
     }
 
     return E_NO_ERROR;
@@ -302,8 +290,8 @@ int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int 
     command_table = commands;
     command_table_sz = num_commands;
 
-    // Initialize UART
-    if ((error = UART_INIT(uart)) != E_NO_ERROR) {
+    // Initialize Console UART
+    if ((error = MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing CLI UART: %d\n", error);
         return error;
     }

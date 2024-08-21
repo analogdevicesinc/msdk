@@ -19,27 +19,12 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32670_FLASH_CLI_DEFINITIONS_H_
-#define EXAMPLES_MAX32670_FLASH_CLI_DEFINITIONS_H_
+#ifndef EXAMPLES_MAX32670_WEARLEVELING_INCLUDE_MAIN_H_
+#define EXAMPLES_MAX32670_WEARLEVELING_INCLUDE_MAIN_H_
 
-#include "flc.h"
+/***** Definitions *****/
+#define LFS_START_PAGE 32 // First flash memory block used by LFS
+#define LFS_PAGE_CNT 16 // Number of flash memory blocks reserved for LFS
+#define CMD_MAX_SIZE 256 // Size of the command buffer
 
-#define VERBOSE_LOGGING
-
-#ifdef VERBOSE_LOGGING
-#define LOGV(...) printf(__VA_ARGS__)
-#else
-#define LOGV(...)
-#endif
-
-#define FLASH_STORAGE_PAGE_NO                   \
-    (MXC_FLASH_MEM_SIZE / MXC_FLASH_PAGE_SIZE - \
-     1) ///< Internal storage flash memory page (the last page)
-#define FLASH_STORAGE_START_ADDR \
-    MXC_FLASH_PAGE_ADDR(FLASH_STORAGE_PAGE_NO) ///< Internal storage start address
-
-int flash_write(uint32_t startaddr, uint32_t length, uint32_t *data);
-int flash_read(uint32_t startaddr, uint32_t length, uint8_t *data);
-int check_erased(uint32_t startaddr, uint32_t length);
-uint32_t calculate_crc(uint32_t *array, uint32_t length);
-#endif // EXAMPLES_MAX32670_FLASH_CLI_DEFINITIONS_H_
+#endif // EXAMPLES_MAX32670_WEARLEVELING_INCLUDE_MAIN_H_
