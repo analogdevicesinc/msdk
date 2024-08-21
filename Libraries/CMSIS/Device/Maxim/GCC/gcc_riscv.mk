@@ -622,10 +622,10 @@ ifeq "$(SUPPRESS_HELP)" "0"
 ifneq "$(HELP_COMPLETE)" "1"
 $(info ****************************************************************************)
 $(info * Analog Devices MSDK)
-$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+$(info * - User Guide: https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
 $(info * - Get Support: https://www.analog.com/support/technical-support.html)
 $(info * - Report Issues: https://github.com/Analog-Devices-MSDK/msdk/issues)
-$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
+$(info * - Contributing: https://analog-devices-msdk.github.io/msdk/CONTRIBUTING/)
 $(info ****************************************************************************)
 # export HELP_COMPLETE so that it's only printed once.
 HELP_COMPLETE = 1

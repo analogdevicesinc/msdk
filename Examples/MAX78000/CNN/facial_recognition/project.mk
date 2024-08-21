@@ -28,7 +28,7 @@ ifneq "$(BOARD)" "FTHR_RevA"
 define ERR_MSG
 ERR_NOTSUPPORTED: 
 This project is only supported on the MAX78000FTHR (FTHR_RevA)
-See https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages
+See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages
 endef
 $(error $(ERR_MSG))
 endif

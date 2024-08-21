@@ -4,7 +4,7 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 
 ## Quick Links
 
-* [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
   * If it's not in the README, check the UG.
   * If it's not in the UG, open a ticket!
 * [VSCode-Maxim Github](https://github.com/Analog-Devices-MSDK/VSCode-Maxim)
@@ -31,7 +31,7 @@ The following features are supported:
 
 The steps below are also available in video form in "Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code" [here](https://www.analog.com/en/education/education-library/videos/6313212752112.html).
 
-1. Download and install the Analog Devices MSDK for your OS from the links below.  For more detailed instructions on installing the MSDK, see the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+1. Download and install the Analog Devices MSDK for your OS from the links below.  For more detailed instructions on installing the MSDK, see the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
     * [Windows](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
     * [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720A)
     * [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610A)

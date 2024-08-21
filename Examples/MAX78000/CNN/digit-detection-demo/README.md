@@ -13,11 +13,11 @@ The image input size is 74x74 pixels RGB which is 74x74x3 in HWC format.
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 * By default, this project is configured for [camera mode](#camera-mode).  It can be configured for [offline mode](#offline-mode) in [example_config.h](example_config.h) by defining `USE_SAMPLE_DATA`.
 
