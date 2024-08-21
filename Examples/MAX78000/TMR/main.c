@@ -50,9 +50,9 @@
 #define PB2 1
 
 // Parameters for PWM output
-#define OST_CLOCK_SOURCE MXC_TMR_INRO_CLK // \ref mxc_tmr_clock_t
-#define PWM_CLOCK_SOURCE MXC_TMR_ERTCO_CLK // \ref mxc_tmr_clock_t
-#define CONT_CLOCK_SOURCE MXC_TMR_IBRO_CLK // \ref mxc_tmr_clock_t
+#define OST_CLOCK_SOURCE MXC_TMR_8K_CLK // \ref mxc_tmr_clock_t
+#define PWM_CLOCK_SOURCE MXC_TMR_32K_CLK // \ref mxc_tmr_clock_t
+#define CONT_CLOCK_SOURCE MXC_TMR_8M_CLK // \ref mxc_tmr_clock_t
 
 // Parameters for Continuous timer
 #define OST_FREQ 1 // (Hz)
