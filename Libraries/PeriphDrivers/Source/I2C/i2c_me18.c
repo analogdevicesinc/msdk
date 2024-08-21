@@ -54,29 +54,18 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
      *
      * See MAX32690 Rev A2 Errata #16:
      * https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf
-     * 
-     * Additionally, note that the TQFN package does not expose some of the duplicate pins.  For this package,
-     * enabling the un-routed GPIOs has been shown to cause initialization issues with the I2C block.
-     * To work around this, "MAX32690GTK_PACKAGE_TQFN" can be defined by the build system.  The recommend place
-     * to do it is in the "board.mk" file of the BSP.  This will prevent the inaccessible pins from being configured.
      */
     if (i2c == MXC_I2C0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
         MXC_GPIO_Config(&gpio_cfg_i2c0);
-#ifndef MAX32690GTK_PACKAGE_TQFN
         MXC_GPIO_Config(&gpio_cfg_i2c0a);
-#endif
     } else if (i2c == MXC_I2C1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C1);
         MXC_GPIO_Config(&gpio_cfg_i2c1);
-#ifndef MAX32690GTK_PACKAGE_TQFN
         MXC_GPIO_Config(&gpio_cfg_i2c1a);
-#endif
     } else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C2);
-#ifndef MAX32690GTK_PACKAGE_TQFN
         MXC_GPIO_Config(&gpio_cfg_i2c2);
-#endif
         MXC_GPIO_Config(&gpio_cfg_i2c2c);
     } else {
         return E_NO_DEVICE;
