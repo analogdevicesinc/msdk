@@ -156,7 +156,7 @@ int main(void)
     printf("triggers, the rate of the sub-second alarm is switched to %d ms.\n\n",
            SUBSECOND_MSEC_1);
     printf("(LED1) is toggled each time the time-of-day alarm triggers.\n\n");
-    printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing SW3\n",
+    printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing SW1\n",
            TIME_OF_DAY_SEC);
     printf("will output the current value of the RTC to the console UART.\n\n");
 
