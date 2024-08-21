@@ -7,8 +7,6 @@
 
 # **********************************************************
 
-# Note: To change the target board, see https://analogdevicesinc.github.io/msdk//USERGUIDE/#board-support-packages
-
 # Project options:
 # Set to 1 to enable, 0 to disable
 CONSOLE = 1
@@ -28,10 +26,6 @@ CAMERA ?= OV7692
 # This section handles those cases.
 ifeq ($(BOARD),CAM01_RevA)
 CAMERA = HM0360_COLOR
-endif
-
-ifeq ($(BOARD),CAM02_RevA)
-CAMERA = GC0308
 endif
 
 ifeq ($(BOARD),FTHR_RevA)
