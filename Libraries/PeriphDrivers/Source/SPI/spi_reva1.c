@@ -230,9 +230,7 @@ int MXC_SPI_RevA1_SetFrequency(mxc_spi_reva_regs_t *spi, unsigned int hz)
 unsigned int MXC_SPI_RevA1_GetFrequency(mxc_spi_reva_regs_t *spi)
 {
     if (MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) < 0) {
-        // Can't return error code (negative values) due to return type.
-        //  Return 0Hz instead.
-        return 0;
+        return E_BAD_PARAM;
     }
 
     unsigned scale, lo_clk, hi_clk;
@@ -936,9 +934,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     uint8_t error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = {
-        0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0
-    };
+    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
 
@@ -998,7 +994,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
 
     //tx
     if (req->txData != NULL) {
-        config.reqsel = (mxc_dma_reqsel_t)reqselTx;
+        config.reqsel = reqselTx;
         config.ch = states[spi_num].channelTx;
         advConfig.ch = states[spi_num].channelTx;
         advConfig.burst_size = 2;
@@ -1035,7 +1031,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     if (req->rxData != NULL) {
-        config.reqsel = (mxc_dma_reqsel_t)reqselRx;
+        config.reqsel = reqselRx;
         config.ch = states[spi_num].channelRx;
         config.srcinc_en = 0;
         config.dstinc_en = 1;
@@ -1117,9 +1113,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     uint8_t error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = {
-        0, MXC_DMA_PRIO_HIGH, 0, MXC_DMA_TIMEOUT_4_CLK, MXC_DMA_PRESCALE_DISABLE, 0
-    };
+    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
 
@@ -1172,7 +1166,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
 
     //tx
     if (req->txData != NULL) {
-        config.reqsel = (mxc_dma_reqsel_t)reqselTx;
+        config.reqsel = reqselTx;
         config.ch = states[spi_num].channelTx;
         advConfig.ch = states[spi_num].channelTx;
         advConfig.burst_size = 2;
@@ -1209,7 +1203,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     }
 
     if (req->rxData != NULL) {
-        config.reqsel = (mxc_dma_reqsel_t)reqselRx;
+        config.reqsel = reqselRx;
         config.ch = states[spi_num].channelRx;
         config.srcinc_en = 0;
         config.dstinc_en = 1;

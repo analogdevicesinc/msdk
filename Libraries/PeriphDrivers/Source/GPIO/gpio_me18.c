@@ -251,6 +251,8 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     } else {
         return MXC_GPIO_SetDriveStrength(gpio, cfg->drvstr, cfg->mask);
     }
+
+    return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
@@ -422,10 +424,8 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 {
-    // GPIO Port 4 not a wakeup source. Return 0.
-    //  Can't return error code (negative values) due to return type.
     if (port == MXC_GPIO4) {
-        return 0;
+        return E_NOT_SUPPORTED;
     }
 
     return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);

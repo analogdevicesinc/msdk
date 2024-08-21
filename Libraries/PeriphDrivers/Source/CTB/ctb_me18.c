@@ -140,26 +140,22 @@ void MXC_CTB_Handler(void)
 
 void MXC_CTB_DMA_SetReadSource(mxc_ctb_dma_read_source_t source)
 {
-    MXC_CTB_RevA_DMA_SetReadSource((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                   (mxc_ctb_reva_dma_read_source_t)source);
+    MXC_CTB_RevA_DMA_SetReadSource((mxc_ctb_reva_regs_t *)MXC_CTB, source);
 }
 
 mxc_ctb_dma_read_source_t MXC_CTB_DMA_GetReadSource(void)
 {
-    return (mxc_ctb_dma_read_source_t)MXC_CTB_RevA_DMA_GetReadSource(
-        (mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_DMA_GetReadSource((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_DMA_SetWriteSource(mxc_ctb_dma_write_source_t source)
 {
-    MXC_CTB_RevA_DMA_SetWriteSource((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                    (mxc_ctb_reva_dma_write_source_t)source);
+    MXC_CTB_RevA_DMA_SetWriteSource((mxc_ctb_reva_regs_t *)MXC_CTB, source);
 }
 
 mxc_ctb_dma_write_source_t MXC_CTB_DMA_GetWriteSource(void)
 {
-    return (mxc_ctb_dma_write_source_t)MXC_CTB_RevA_DMA_GetWriteSource(
-        (mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_DMA_GetWriteSource((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_DMA_SetSource(uint8_t *source)
@@ -264,13 +260,12 @@ void MXC_CTB_ECC_ErrorCheckAsync(mxc_ctb_ecc_req_t *req)
 
 void MXC_CTB_CRC_SetDirection(mxc_ctb_crc_bitorder_t bitOrder)
 {
-    MXC_CTB_RevA_CRC_SetDirection((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                  (mxc_ctb_reva_crc_bitorder_t)bitOrder);
+    MXC_CTB_RevA_CRC_SetDirection((mxc_ctb_reva_regs_t *)MXC_CTB, bitOrder);
 }
 
 mxc_ctb_crc_bitorder_t MXC_CTB_CRC_GetDirection(void)
 {
-    return (mxc_ctb_crc_bitorder_t)MXC_CTB_RevA_CRC_GetDirection((mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_CRC_GetDirection((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_CRC_SetPoly(uint32_t poly)
@@ -332,13 +327,12 @@ unsigned int MXC_CTB_Hash_GetDigestSize(mxc_ctb_hash_func_t function)
 
 void MXC_CTB_Hash_SetFunction(mxc_ctb_hash_func_t function)
 {
-    MXC_CTB_RevA_Hash_SetFunction((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                  (mxc_ctb_reva_hash_func_t)function);
+    MXC_CTB_RevA_Hash_SetFunction((mxc_ctb_reva_regs_t *)MXC_CTB, function);
 }
 
 mxc_ctb_hash_func_t MXC_CTB_Hash_GetFunction(void)
 {
-    return (mxc_ctb_hash_func_t)MXC_CTB_RevA_Hash_GetFunction((mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_Hash_GetFunction((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_Hash_SetAutoPad(int pad)
@@ -363,12 +357,12 @@ void MXC_CTB_Hash_SetMessageSize(uint32_t size)
 
 void MXC_CTB_Hash_SetSource(mxc_ctb_hash_source_t source)
 {
-    MXC_CTB_RevA_Hash_SetSource((mxc_ctb_reva_regs_t *)MXC_CTB, (mxc_ctb_reva_hash_source_t)source);
+    MXC_CTB_RevA_Hash_SetSource((mxc_ctb_reva_regs_t *)MXC_CTB, source);
 }
 
 mxc_ctb_hash_source_t MXC_CTB_Hash_GetSource(void)
 {
-    return (mxc_ctb_hash_source_t)MXC_CTB_RevA_Hash_GetSource((mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_Hash_GetSource((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_Hash_InitializeHash(void)
@@ -410,33 +404,32 @@ unsigned int MXC_CTB_Cipher_GetBlockSize(mxc_ctb_cipher_t cipher)
 
 void MXC_CTB_Cipher_SetMode(mxc_ctb_cipher_mode_t mode)
 {
-    MXC_CTB_RevA_Cipher_SetMode((mxc_ctb_reva_regs_t *)MXC_CTB, (mxc_ctb_reva_cipher_mode_t)mode);
+    MXC_CTB_RevA_Cipher_SetMode((mxc_ctb_reva_regs_t *)MXC_CTB, mode);
 }
 
 mxc_ctb_cipher_mode_t MXC_CTB_Cipher_GetMode(void)
 {
-    return (mxc_ctb_cipher_mode_t)MXC_CTB_RevA_Cipher_GetMode((mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_Cipher_GetMode((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_Cipher_SetCipher(mxc_ctb_cipher_t cipher)
 {
-    MXC_CTB_RevA_Cipher_SetCipher((mxc_ctb_reva_regs_t *)MXC_CTB, (mxc_ctb_reva_cipher_t)cipher);
+    MXC_CTB_RevA_Cipher_SetCipher((mxc_ctb_reva_regs_t *)MXC_CTB, cipher);
 }
 
 mxc_ctb_cipher_t MXC_CTB_Cipher_GetCipher(void)
 {
-    return (mxc_ctb_cipher_t)MXC_CTB_RevA_Cipher_GetCipher((mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_Cipher_GetCipher((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_Cipher_SetKeySource(mxc_ctb_cipher_key_t source)
 {
-    MXC_CTB_RevA_Cipher_SetKeySource((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                     (mxc_ctb_reva_cipher_key_t)source);
+    MXC_CTB_RevA_Cipher_SetKeySource((mxc_ctb_reva_regs_t *)MXC_CTB, source);
 }
 
 mxc_ctb_cipher_key_t MXC_CTB_Cipher_GetKeySource(void)
 {
-    return (mxc_ctb_cipher_key_t)MXC_CTB_RevA_Cipher_GetKeySource((mxc_ctb_reva_regs_t *)MXC_CTB);
+    return MXC_CTB_RevA_Cipher_GetKeySource((mxc_ctb_reva_regs_t *)MXC_CTB);
 }
 
 void MXC_CTB_Cipher_LoadKey(void)
@@ -446,8 +439,7 @@ void MXC_CTB_Cipher_LoadKey(void)
 
 void MXC_CTB_Cipher_SetOperation(mxc_ctb_cipher_operation_t operation)
 {
-    MXC_CTB_RevA_Cipher_SetOperation((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                     (mxc_ctb_reva_cipher_operation_t)operation);
+    MXC_CTB_RevA_Cipher_SetOperation((mxc_ctb_reva_regs_t *)MXC_CTB, operation);
 }
 
 void MXC_CTB_Cipher_SetKey(uint8_t *key, uint32_t len)
