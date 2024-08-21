@@ -25,7 +25,7 @@
 # in "project.mk", on the command-line, or with system environment 
 # variables.
 
-# See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
 # for more detailed instructions on how to use this system.
 
 # The detailed instructions mentioned above are easier to read than 
@@ -91,10 +91,8 @@ endif
 # the variables below.
 
 
-PROJECTMK ?= $(abspath ./project.mk)
-include $(PROJECTMK)
+include ./project.mk
 $(info Loaded project.mk)
-# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
@@ -167,9 +165,8 @@ IPATH := $(IPATH)
 
 AUTOSEARCH ?= 1
 ifeq ($(AUTOSEARCH), 1)
-# Auto-detect all C/C++ source files on VPATH
+# Auto-detect all C source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
-SRCS += $(wildcard $(addsuffix /*.cpp, $(VPATH)))
 endif
 
 # Collapse SRCS before passing them on to the next stage
@@ -189,8 +186,6 @@ PROJECT ?= $(TARGET_LC)
 # Compiler options
 
 # Configuration Variables:
-# - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
-#			symbols and sets -Og as the default optimization level.
 # - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
@@ -219,18 +214,22 @@ DEBUG = 0
 endif
 
 ifeq ($(DEBUG),1)
-# Optimizes for debugging as recommended
-# by GNU for code-edit-debug cycles
-# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+# Default optimization level for debug builds (make DEBUG=1 ...)
+# gcc.mk checks for this flag to add some additional debug
+# info to the build, and should be used when you really need to
+# debug.
 MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
-# Default level if not building for release or explicitly for debug
+# Fallback default optimizes for debugging as recommended
+# by GNU for code-edit-debug cycles
+# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
 MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
-PROJ_CFLAGS += -Wall # Enable warnings
+PROJ_CFLAGS += -Wall -Wcast-align # Enable warnings
 PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
+PROJ_CFLAGS += -DARM_MATH_CM4
 
 # Set hardware floating point acceleration.
 # Options are:
@@ -238,10 +237,26 @@ PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
 # - soft
 # - softfp (default if MFLOAT_ABI is not set)
 MFLOAT_ABI ?= softfp
-# MFLOAT_ABI must be exported to other Makefiles
+# MFLOAT_ABI must be exported to other Makefiles, who check this too
 export MFLOAT_ABI
 
-# This path contains system-level intialization files for the target micro.  Add to the build.
+ifeq "$(RISCV_CORE)" ""
+# Default linkerfile is only specified for standard Arm-core projects.
+# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
+LINKERFILE ?= $(TARGET_LC).ld
+LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+
+# Check if linkerfile exists
+ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
+# Doesn't exists, attempt to use root project folder.
+LINKERPATH:=.
+endif
+
+# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
+LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
+endif
+
+# This path contains system-level initialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # *******************************************************************************
@@ -284,7 +299,7 @@ endif # SBT
 # (ie. just running 'make' instead of 'make all')
 
 # Configuration variables:
-#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the 
+#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the
 #			command-line
 #			** "override" must be used with this variable. **
 #			Ex: "override .DEFAULT_GOAL = mygoal"
@@ -304,16 +319,6 @@ endif
 # It's also necessary to explicitly set MAKECMDGOALS...
 ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
-endif
-
-# Enable colors when --sync-output is used.
-# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
-ifneq ($(MAKE_TERMOUT),)
-PROJ_CFLAGS += -fdiagnostics-color=always
-endif
-
-ifneq ($(FORCE_COLOR),)
-PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 
 # *******************************************************************************

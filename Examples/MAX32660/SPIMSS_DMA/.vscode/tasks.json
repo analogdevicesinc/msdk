@@ -51,11 +51,11 @@
             "label": "flash & run",
             "type": "shell",
             "command": "arm-none-eabi-gdb",
-            "args": [                
+            "args": [
                 "--cd=\"${workspaceFolder}\"",
                 "--se=\"build/${config:program_file}\"",
                 "--symbols=build/${config:symbol_file}",
-                "-x=\"${workspaceFolder}/.vscode/flash.gdb\"",                
+                "-x=\"${workspaceFolder}/.vscode/flash.gdb\"",
                 "--ex=\"flash_m4_run ${config:OCD_path} ${config:M4_OCD_interface_file} ${config:M4_OCD_target_file}\"",
                 "--batch"
             ],
@@ -102,7 +102,7 @@
             "args": [
                 "--ex=\"cd ${workspaceFolder}\"",
                 "--se=\"build/${config:program_file}\"",
-                "--symbols=build/${config:symbol_file}",                
+                "--symbols=build/${config:symbol_file}",
                 "--ex=\"target remote localhost:3333\"",
                 "--ex=\"monitor reset halt\"",
                 "--ex=\"b main\"",
