@@ -1752,7 +1752,7 @@ The following variables can be used to interface with the compiler to perform co
 | `LINKERFILE`           | Set the linkerfile to use                                  | A linkerfile is responsible for specifying the available memory banks, their layout, and the organization of program binaries memory.  The file should exist in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project. |
 | `PROJ_LDFLAGS`         | Add a linker flag to the build                             | **Use the `+=` operator with this variable**.  Flags can be passed to the linker with this option. See [GCC Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#Link-Options) |
 
-#### Build Variables for Arm Cores
+#### Build Variables for Arm Cortex-M4 Cores
 
 The following build variables are used to control options specific to the Arm Cortex-M4 core available.  They are available on all microcontrollers, and for all projects unless that project is built for a RISC-V core.
 
@@ -1761,8 +1761,6 @@ The following build variables are used to control options specific to the Arm Co
 | `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, and `softfp` (default). To enable full hardware acceleration instructions, use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`. If there is any conflict, you'll get a linker error. For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
 | `DEFAULT_OPTIMIZE_FLAGS` | Override the default extra optimization flags | Extra compiler optimization flags are added to the build.  They are defined in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
 | `DEFAULT_WARNING_FLAGS` | Override the default warning flags | Default flags controlling warning output are added in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
-| `MCPU`           | Set the processor type                  | Set the target ARM processor.  Directly maps to `-mcpu` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).  This flag is handled by the MSDK and not typically changed manually. |
-| `MFPU`           | Set the FPU architecture                  | Set the floating point unit (FPU) architecture.  Directly maps to `-mfpu` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).  This flag is handled by the MSDK and not typically changed manually. |
 
 #### Build Variables for RISC-V Cores
 
