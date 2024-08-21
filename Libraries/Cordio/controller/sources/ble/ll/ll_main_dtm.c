@@ -994,7 +994,7 @@ uint8_t LlRxTest(uint8_t rfChan, uint16_t numPkt)
 /*************************************************************************************************/
 uint8_t LlEndTest(LlTestReport_t *pRpt)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlEndTest");
+    LL_TRACE_INFO0("### LlApi ###  LlEndTesdfsdfsdst");
     if ((llTestCb.state == LL_TEST_STATE_TX) && (llTestCb.tx.pktType == LL_TEST_PKT_TYPE_PRBS15)) {
         BbStop(BB_PROT_PRBS15);
         llTestCb.state = LL_TEST_STATE_IDLE;
