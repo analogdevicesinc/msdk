@@ -266,13 +266,6 @@ ifneq "$(TARGET)" ""
 CFLAGS+=-DTARGET=$(TARGET)
 endif
 
-ifneq "$(TARGET_UC)" ""
-# Define a flag that the pre-processor can actually work with
-# (i.e. #ifdef MAX78000 ...)
-# TARGET_UC typically comes from the project core Makefile
-CFLAGS += -D$(TARGET_UC)
-endif
-
 ifneq "$(TARGET_REV)" ""
 CFLAGS+=-DTARGET_REV=$(TARGET_REV)
 endif
