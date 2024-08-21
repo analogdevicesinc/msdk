@@ -69,7 +69,7 @@ static mxc_gpio_cfg_t pb_pin[] = {
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdog_timeout_handler(void)
+void watchdog_timeout_handler()
 {
     //get and clear flag
     MXC_WDT_GetIntFlag(MXC_WDT0);
@@ -83,7 +83,7 @@ void WDT0_IRQHandler(void)
     watchdog_timeout_handler();
 }
 // *****************************************************************************
-void MXC_WDT_Setup(void)
+void MXC_WDT_Setup()
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_Enable(MXC_WDT0);

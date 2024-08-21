@@ -62,7 +62,7 @@ inline int _transmit_spi_header(uint8_t cmd, uint32_t address)
     return E_NO_ERROR;
 }
 
-int N01S830HA_init(void)
+int N01S830HA_init()
 {
     ERR_CHECK(spi_init());
     ERR_CHECK(N01S830HA_exit_quadmode()); // Protect against quad-mode lock-up
@@ -114,7 +114,7 @@ int N01S830HA_init(void)
     return E_NO_ERROR;
 }
 
-int N01S830HA_enter_quadmode(void)
+int N01S830HA_enter_quadmode()
 {
     uint8_t tx_data = CMD_ENABLE_QUAD_IO;
 
@@ -127,7 +127,7 @@ int N01S830HA_enter_quadmode(void)
     return E_NO_ERROR;
 }
 
-int N01S830HA_exit_quadmode(void)
+int N01S830HA_exit_quadmode()
 {
     uint8_t tx_data = CMD_RESET_IO;
 

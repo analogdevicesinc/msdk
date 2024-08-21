@@ -56,26 +56,26 @@ typedef void (*mxc_trng_complete_t)(void *req, int result);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TRNG_Init(void);
+int MXC_TRNG_Init();
 
 /**
  * @brief   Enable TRNG Interrupts
  *
  */
-void MXC_TRNG_EnableInt(void);
+void MXC_TRNG_EnableInt();
 
 /**
  * @brief   Disable TRNG Interrupts
  *
  */
-void MXC_TRNG_DisableInt(void);
+void MXC_TRNG_DisableInt();
 
 /**
  * @brief   Disable and reset portions of the TRNG
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TRNG_Shutdown(void);
+int MXC_TRNG_Shutdown();
 
 /**
  * @brief   This function should be called from the TRNG ISR Handler

@@ -55,7 +55,7 @@ void setTrigger(int waitForTrigger)
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 }
 
-void WUT0_IRQHandler(void)
+void WUT0_IRQHandler()
 {
     MXC_WUT_IntClear();
 }

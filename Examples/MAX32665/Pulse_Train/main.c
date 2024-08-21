@@ -44,7 +44,7 @@
 /***** Functions *****/
 
 // *****************************************************************************
-static void PB_Start_Stop_handler(void)
+static void PB_Start_Stop_handler()
 {
     uint32_t enablePTMask;
 

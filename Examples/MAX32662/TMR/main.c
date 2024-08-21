@@ -71,7 +71,7 @@ mxc_gpio_cfg_t ost_pin;
 #endif
 
 /***** Functions *****/
-void PWMTimer(void)
+void PWMTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
@@ -112,14 +112,14 @@ void PWMTimer(void)
 }
 
 // Toggles GPIO when continuous timer repeats
-void ContinuousTimerHandler(void)
+void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     LED_Toggle(0);
 }
 
-void ContinuousTimer(void)
+void ContinuousTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
@@ -157,7 +157,7 @@ void ContinuousTimer(void)
     printf("Continuous timer started.\n\n");
 }
 
-void OneshotTimerHandler(void)
+void OneshotTimerHandler()
 {
     MXC_GPIO_OutClr(ost_pin.port, ost_pin.mask);
 
@@ -169,7 +169,7 @@ void OneshotTimerHandler(void)
     }
 }
 
-void OneshotTimer(void)
+void OneshotTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

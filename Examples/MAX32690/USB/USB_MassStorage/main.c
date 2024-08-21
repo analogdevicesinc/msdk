@@ -63,8 +63,8 @@ static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata);
 static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
-int usbStartupCallback(void);
-int usbShutdownCallback(void);
+int usbStartupCallback();
+int usbShutdownCallback();
 
 /***** File Scope Variables *****/
 
@@ -233,7 +233,7 @@ static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 }
 
 /******************************************************************************/
-int usbStartupCallback(void)
+int usbStartupCallback()
 {
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
     MXC_MCR->ldoctrl |= MXC_F_MCR_LDOCTRL_0P9EN;
@@ -244,7 +244,7 @@ int usbStartupCallback(void)
 }
 
 /******************************************************************************/
-int usbShutdownCallback(void)
+int usbShutdownCallback()
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

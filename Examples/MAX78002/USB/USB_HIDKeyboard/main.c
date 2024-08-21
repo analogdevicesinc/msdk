@@ -65,8 +65,8 @@ static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static void buttonCallback(void *pb);
 void usDelay(unsigned int usec);
-int usbStartupCallback(void);
-int usbShutdownCallback(void);
+int usbStartupCallback();
+int usbShutdownCallback();
 
 /******************************************************************************/
 void USB_IRQHandler(void)
@@ -183,7 +183,7 @@ int main(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback(void)
+int usbStartupCallback()
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_USB);
     MXC_MCR->ldoctrl |= MXC_F_MCR_LDOCTRL_0P9EN;
@@ -191,7 +191,7 @@ int usbStartupCallback(void)
 }
 
 /******************************************************************************/
-int usbShutdownCallback(void)
+int usbShutdownCallback()
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

@@ -62,7 +62,7 @@ void dma_ctz_cb(int ch, int err)
 }
 
 /*****************************************************************/
-int main(void)
+int main()
 {
     int err;
 

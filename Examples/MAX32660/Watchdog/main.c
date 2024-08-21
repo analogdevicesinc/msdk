@@ -61,7 +61,7 @@
 volatile uint32_t intCnt = 0;
 
 /***** Functions *****/
-void watchdogHandler(void)
+void watchdogHandler()
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nTIMEOUT!\n");
@@ -76,7 +76,7 @@ void WDT0_IRQHandler(void)
     watchdogHandler();
 }
 
-void WDT_Setup(void)
+void WDT_Setup()
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_SetResetPeriod(MXC_WDT0, RESET_PERIOD);

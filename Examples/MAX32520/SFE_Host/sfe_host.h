@@ -89,7 +89,7 @@ typedef enum {
  * @brief
  *
  */
-void SFE_Reset(void);
+void SFE_Reset();
 
 /**
  * @brief
@@ -139,12 +139,12 @@ void SFE_Read(uint8_t *rxdata, uint32_t length, uint32_t address, spi_width_t wi
  * @brief
  *
  */
-void SFE_4ByteModeEnable(void);
+void SFE_4ByteModeEnable();
 
 /**
  * @brief
  *
  */
-void SFE_4ByteModeDisable(void);
+void SFE_4ByteModeDisable();
 
 #endif // EXAMPLES_MAX32520_SFE_HOST_SFE_HOST_H_

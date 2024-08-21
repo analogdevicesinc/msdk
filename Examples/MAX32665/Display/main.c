@@ -76,7 +76,7 @@ static void rounder_cb(struct _lv_disp_drv_t *disp_drv, lv_area_t *area)
 }
 
 //============================================================================
-void lvgl_setup(void)
+void lvgl_setup()
 {
     /* LittlevGL setup */
     lv_init();

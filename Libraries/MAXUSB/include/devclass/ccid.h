@@ -427,7 +427,7 @@ int ccid_deconfigure(void);
  *  \details  Set variable if a message received
  *  \return   One(1) if received, Zero(0) if not
  */
-int ccid_is_received(void);
+int ccid_is_received();
 
 /**
  *  \brief    Dispatch the callbacks

@@ -106,12 +106,12 @@ static void pixel(int x, int y, int color)
     write_data(color & 0xff);
 }
 
-static int width(void)
+static int width()
 {
     return 130;
 }
 
-static int height(void)
+static int height()
 {
     return 131;
 }
@@ -184,12 +184,12 @@ void locate(int x, int y)
     char_y = y;
 }
 
-int columns(void)
+int columns()
 {
     return width() / g_font[1];
 }
 
-int rows(void)
+int rows()
 {
     return height() / g_font[2];
 }

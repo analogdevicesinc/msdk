@@ -64,7 +64,7 @@ extern const mxc_gpio_cfg_t N01S830HA_hold_pin;
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during initialization.
  */
-extern int spi_init(void);
+extern int spi_init();
 
 /**
  * @brief Transmits and receives data using the SPI module.
@@ -96,7 +96,7 @@ extern int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rx
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode exit process.
  */
-extern int spi_exit_quadmode(void);
+extern int spi_exit_quadmode();
 
 /**
  * @brief Enters the quad mode for SPI (Serial Peripheral Interface) communication.
@@ -108,7 +108,7 @@ extern int spi_exit_quadmode(void);
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode entry process.
  */
-extern int spi_enter_quadmode(void);
+extern int spi_enter_quadmode();
 
 // =======================================================================================
 
@@ -122,7 +122,7 @@ extern int spi_enter_quadmode(void);
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_init(void);
+int N01S830HA_init();
 
 /**
  * @brief Enter Quad Mode for the N01S830HA SRAM.
@@ -132,7 +132,7 @@ int N01S830HA_init(void);
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_enter_quadmode(void);
+int N01S830HA_enter_quadmode();
 
 /**
  * @brief Exit Quad Mode for the N01S830HA SRAM.
@@ -141,7 +141,7 @@ int N01S830HA_enter_quadmode(void);
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_exit_quadmode(void);
+int N01S830HA_exit_quadmode();
 
 /**
  * @brief Read data from the N01S830HA SRAM.

@@ -60,7 +60,7 @@ void WDT0_IRQHandler(void)
     printf("\nTIMEOUT!\n");
 }
 
-void WDT_Setup(void)
+void wdt_setup()
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_ResetTimer(MXC_WDT0);
@@ -113,7 +113,7 @@ int main(void)
     blink_led(0, 3, 100);
 
     //Setup Watchdog
-    WDT_Setup();
+    wdt_setup();
 
     while (1) {
         //Push user push button to reset watchdog

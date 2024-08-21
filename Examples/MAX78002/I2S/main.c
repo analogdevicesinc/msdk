@@ -53,7 +53,7 @@ void i2s_isr(void)
 }
 
 /*****************************************************************/
-int main(void)
+int main()
 {
     int32_t err;
     mxc_i2s_req_t req;

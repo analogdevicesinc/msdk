@@ -1302,7 +1302,7 @@ void hart_cd_isr(void *cbdata)
     }
 }
 
-int hart_uart_check_for_receive(void)
+int hart_uart_check_for_receive()
 {
     // NOTE: RTS is placed into receive mode by hart_uart_send
     // Receive mode is default operation for the HART UART

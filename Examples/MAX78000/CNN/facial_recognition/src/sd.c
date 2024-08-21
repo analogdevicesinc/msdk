@@ -74,7 +74,7 @@ void generateMessage(unsigned length)
     }
 }
 
-int mount(void)
+int mount()
 {
     fs = &fs_obj;
 
@@ -91,7 +91,7 @@ int mount(void)
     return err;
 }
 
-int umount(void)
+int umount()
 {
     if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
         PR_INFO("Error unmounting volume: %s\n", FF_ERRORS[err]);
@@ -103,7 +103,7 @@ int umount(void)
     return err;
 }
 
-void waitCardInserted(void)
+void waitCardInserted()
 {
     // On the MAX78000FTHR board, P0.12 will be pulled low when a card is inserted.
     mxc_gpio_cfg_t cardDetect;

@@ -106,12 +106,12 @@ void RTC_IRQHandler(void)
 }
 
 volatile int buttonPressed = 0;
-void buttonHandler(void)
+void buttonHandler()
 {
     buttonPressed = 1;
 }
 
-void printTime(void)
+void printTime()
 {
     int day, hr, min, err;
     uint32_t sec, rtc_readout;

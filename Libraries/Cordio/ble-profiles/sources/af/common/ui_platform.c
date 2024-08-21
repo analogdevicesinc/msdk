@@ -68,7 +68,7 @@ void UiConsolePrintLn(const char *pLine)
  *  \return None
  */
 /*************************************************************************************************/
-void UiConsoleFlush(void)
+void UiConsoleFlush()
 {
   /* Take no action. */
 }

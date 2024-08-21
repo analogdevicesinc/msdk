@@ -198,7 +198,7 @@ void playback_audio(uint32_t eor_addr)
 }
 
 /*****************************************************************/
-int main(void)
+int main()
 {
     int err;
     uint32_t eor_addr;

@@ -96,7 +96,7 @@ static void rounder_cb(struct _lv_disp_drv_t *disp_drv, lv_area_t *area)
 }
 
 //============================================================================
-void lvgl_setup(void)
+void lvgl_setup()
 {
     /* LittlevGL setup */
     lv_init();
@@ -118,7 +118,7 @@ void lvgl_setup(void)
     lv_disp_set_theme(disp, th);
 }
 
-void LV_Tick_TimerHandler(void)
+void LV_Tick_TimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(TICK_TIMER);
@@ -126,7 +126,7 @@ void LV_Tick_TimerHandler(void)
     lv_task_handler();
 }
 
-void LV_Tick_Timer_Init(void)
+void LV_Tick_Timer_Init()
 {
     // 200Hz (Can be between 1ms to 10ms)
     uint32_t periodTicks = PeripheralClock / 200;

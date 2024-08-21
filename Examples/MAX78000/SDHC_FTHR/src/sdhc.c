@@ -49,7 +49,7 @@ void generateMessage(unsigned length)
     }
 }
 
-int mount(void)
+int mount()
 {
     fs = &fs_obj;
 
@@ -66,7 +66,7 @@ int mount(void)
     return err;
 }
 
-int umount(void)
+int umount()
 {
     if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
@@ -78,7 +78,7 @@ int umount(void)
     return err;
 }
 
-int formatSDHC(void)
+int formatSDHC()
 {
     printf("\n\n*****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****\n");
     printf("**************PRESS ANY KEY TO ABORT**************\n\n");
@@ -111,7 +111,7 @@ int formatSDHC(void)
     return err;
 }
 
-int getSize(void)
+int getSize()
 {
     if (!mounted) {
         mount();
@@ -131,7 +131,7 @@ int getSize(void)
     return err;
 }
 
-int ls(void)
+int ls()
 {
     if (!mounted) {
         mount();
@@ -330,7 +330,7 @@ int deleteFile(char *file_name)
     return err;
 }
 
-int example(void)
+int example()
 {
     unsigned int length = 256;
 
@@ -461,7 +461,7 @@ int example(void)
     return 0;
 }
 
-void waitCardInserted(void)
+void waitCardInserted()
 {
     // On the MAX78000FTHR board, P0.12 will be pulled low when a card is inserted.
     mxc_gpio_cfg_t cardDetect;

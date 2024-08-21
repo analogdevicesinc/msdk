@@ -70,7 +70,7 @@
 
 /***** Functions *****/
 
-void PWMTimer(void)
+void PWMTimer()
 {
     mxc_tmr_cfg_t tmr;
     unsigned int periodTicks;
@@ -111,14 +111,14 @@ void PWMTimer(void)
 }
 
 // Toggles LED0 when continuous timer repeats
-void ContinuousTimerHandler(void)
+void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     LED_Toggle(0);
 }
 
-void ContinuousTimer(void)
+void ContinuousTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
@@ -154,13 +154,13 @@ void ContinuousTimer(void)
 }
 
 // Turns on LED0 when Oneshot expires
-void OneshotTimerHandler(void)
+void OneshotTimerHandler()
 {
     MXC_TMR_ClearFlags(OST_TIMER);
     LED_Toggle(1);
 }
 
-void OneshotTimer(void)
+void OneshotTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

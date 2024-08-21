@@ -65,7 +65,7 @@ private:
     int blink_count;
 };
 
-int main(void)
+int main()
 {
     LED led = LED(0);
 

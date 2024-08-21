@@ -64,8 +64,8 @@ static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static void buttonCallback(void *pb);
 void usDelay(unsigned int usec);
-int usbStartupCallback(void);
-int usbShutdownCallback(void);
+int usbStartupCallback();
+int usbShutdownCallback();
 
 /******************************************************************************/
 void USB_IRQHandler(void)
@@ -182,7 +182,7 @@ int main(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback(void)
+int usbStartupCallback()
 {
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_HIRC96_EN)) {
@@ -199,7 +199,7 @@ int usbStartupCallback(void)
 }
 
 /******************************************************************************/
-int usbShutdownCallback(void)
+int usbShutdownCallback()
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

@@ -54,7 +54,7 @@ typedef struct {
  * @brief Initializes I2C transaction manager
  * @return #E_NO_ERROR if succeeded, error code otherwise
  */
-int I2C_MNGR_Init(void);
+int I2C_MNGR_Init();
 
 /*
  * @brief Executes I2C transaction

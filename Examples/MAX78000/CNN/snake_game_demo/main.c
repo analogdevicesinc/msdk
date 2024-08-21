@@ -180,18 +180,18 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
-void I2SInit(void);
+void I2SInit();
 void HPF_init(void);
 int16_t HPF(int16_t input);
 
-void snakeIntro(void);
-void setup(void);
-void placeFruit(void);
-boolean fruitIsEaten(void);
-void drawSnakeHead(void);
-void moveTheSnake(void);
+void snakeIntro();
+void setup();
+void placeFruit();
+boolean fruitIsEaten();
+void drawSnakeHead();
+void moveTheSnake();
 void setSnakeDirection(int top_index);
-void checkSnakeCollision(void);
+void checkSnakeCollision();
 
 // ******************************************************************************
 static uint32_t setColor(int r, int g, int b)
@@ -589,7 +589,7 @@ int main(void)
 }
 
 /* **************************************************************************** */
-void I2SInit(void)
+void I2SInit()
 {
     mxc_i2s_req_t req;
     int32_t err;
@@ -935,7 +935,7 @@ void snakeIntro(void)
 }
 
 // ******************************************************************************
-void setup(void)
+void setup()
 {
     uint32_t color;
     mxc_tmr_cfg_t tmr1 = { TMR_PRES_4,      TMR_MODE_CONTINUOUS,
@@ -987,7 +987,7 @@ void setup(void)
 }
 
 // ******************************************************************************
-void placeFruit(void)
+void placeFruit()
 {
     uint32_t color;
 
@@ -1089,7 +1089,7 @@ void setSnakeDirection(int top_index)
 }
 
 // ******************************************************************************
-void checkSnakeCollision(void)
+void checkSnakeCollision()
 {
     for (int k = 0; k < snakeLength - 1; k++) {
         if (positions[0][k] == positions[0][snakeLength - 1] &&
@@ -1100,7 +1100,7 @@ void checkSnakeCollision(void)
 }
 
 // ******************************************************************************
-boolean fruitIsEaten(void)
+boolean fruitIsEaten()
 {
     uint32_t color;
 
@@ -1159,7 +1159,7 @@ boolean fruitIsEaten(void)
 }
 
 // ******************************************************************************
-void updatePositions(void)
+void updatePositions()
 {
     uint32_t color;
     // Delete the tail of the snake
@@ -1175,7 +1175,7 @@ void updatePositions(void)
 }
 
 // ******************************************************************************
-void drawSnakeHead(void)
+void drawSnakeHead()
 {
     uint32_t color;
     // this function draw the new head of the snake
@@ -1185,7 +1185,7 @@ void drawSnakeHead(void)
 }
 
 // ******************************************************************************
-void moveTheSnake(void)
+void moveTheSnake()
 {
     // move the snake according to the direction
     switch (snakeDirection) {

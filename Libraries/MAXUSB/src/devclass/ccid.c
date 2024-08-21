@@ -202,7 +202,7 @@ static void ccid_received(void *cbdata) {
     received = 1;
 }
 
-int ccid_is_received(void) {
+int ccid_is_received() {
     return received;
 }
 

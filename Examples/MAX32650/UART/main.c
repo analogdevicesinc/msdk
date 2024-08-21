@@ -70,7 +70,7 @@ void readCallback(mxc_uart_req_t *req, int error)
     READ_FLAG = error;
 }
 
-void buttonHandler(void)
+void buttonHandler()
 {
     buttonPressed = 1;
 }

@@ -62,7 +62,7 @@ void tx_complete_cb(int ch, int err)
 }
 
 /*****************************************************************/
-int main(void)
+int main()
 {
     int err;
     printf("\n\n****************** I2S Transmission Example ******************\n");

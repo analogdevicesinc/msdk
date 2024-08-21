@@ -85,7 +85,7 @@ void generateMessage(unsigned length)
     }
 }
 
-int mount(void)
+int mount()
 {
     fs = &fs_obj;
     if ((err = f_mount(fs, "", 1)) != FR_OK) { //Mount the default drive to fs now
@@ -101,7 +101,7 @@ int mount(void)
     return err;
 }
 
-int umount(void)
+int umount()
 {
     if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
@@ -113,7 +113,7 @@ int umount(void)
     return err;
 }
 
-int formatSDHC(void)
+int formatSDHC()
 {
     printf("\n\n*****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****\n");
     printf("**************PRESS ANY KEY TO ABORT**************\n\n");
@@ -146,7 +146,7 @@ int formatSDHC(void)
     return err;
 }
 
-int getSize(void)
+int getSize()
 {
     QWORD disksize = 0;
     QWORD available_bytes = 0;
@@ -172,7 +172,7 @@ int getSize(void)
     return err;
 }
 
-int ls(void)
+int ls()
 {
     if (!mounted) {
         mount();
@@ -205,7 +205,7 @@ int ls(void)
     return err;
 }
 
-int createFile(void)
+int createFile()
 {
     unsigned int length = 128;
 
@@ -244,7 +244,7 @@ int createFile(void)
     return err;
 }
 
-int appendFile(void)
+int appendFile()
 {
     unsigned int length = 0;
 
@@ -283,7 +283,7 @@ int appendFile(void)
     return err;
 }
 
-int mkdir(void)
+int mkdir()
 {
     if (!mounted) {
         mount();
@@ -310,7 +310,7 @@ int mkdir(void)
     return err;
 }
 
-int cd(void)
+int cd()
 {
     if (!mounted) {
         mount();
@@ -337,7 +337,7 @@ int cd(void)
     return err;
 }
 
-int delete (void)
+int delete ()
 {
     if (!mounted) {
         mount();
@@ -359,7 +359,7 @@ int delete (void)
     return err;
 }
 
-int example(void)
+int example()
 {
     unsigned int length = 256;
 

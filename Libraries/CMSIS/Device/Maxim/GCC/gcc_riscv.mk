@@ -355,8 +355,6 @@ CXXFLAGS += \
 
 C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
 CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
-CFLAGS += -Wstrict-prototypes
-# ^ Add strict-prototypes after CXX_FLAGS so it's only added for C builds
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi

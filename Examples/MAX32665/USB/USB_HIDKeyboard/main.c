@@ -56,8 +56,8 @@ volatile int suspended;
 volatile unsigned int evtFlags;
 
 /***** Function Prototypes *****/
-int usbStartupCallback(void);
-int usbShutdownCallback(void);
+int usbStartupCallback();
+int usbShutdownCallback();
 void usDelay(unsigned int usec);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
@@ -182,7 +182,7 @@ int main(void)
 }
 
 /******************************************************************************/
-int usbStartupCallback(void)
+int usbStartupCallback()
 {
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_HIRC96M_EN)) {
@@ -199,7 +199,7 @@ int usbStartupCallback(void)
 }
 
 /******************************************************************************/
-int usbShutdownCallback(void)
+int usbShutdownCallback()
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
 

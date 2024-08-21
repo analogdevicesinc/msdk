@@ -28,7 +28,7 @@
 mxc_spi_req_t master_req;
 
 //******************************************************************************
-void SFE_Reset(void)
+void SFE_Reset()
 {
     uint8_t cmd = SFE_CMD_RST_EN;
 
@@ -481,7 +481,7 @@ void SFE_Read(uint8_t *rxdata, uint32_t length, uint32_t address, spi_width_t wi
 }
 
 // *****************************************************************************
-void SFE_4ByteModeEnable(void)
+void SFE_4ByteModeEnable()
 {
     uint8_t cmd = SFE_4BYTE_ENTER;
 
@@ -512,7 +512,7 @@ void SFE_4ByteModeEnable(void)
 }
 
 // *****************************************************************************
-void SFE_4ByteModeDisable(void)
+void SFE_4ByteModeDisable()
 {
     uint8_t cmd = SFE_4BYTE_EXIT;
 

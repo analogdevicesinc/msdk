@@ -248,13 +248,13 @@ uint32_t MXC_CTB_CheckFeatures(void);
  * @brief   Enable CTB Interrupts
  *
  */
-void MXC_CTB_EnableInt(void);
+void MXC_CTB_EnableInt();
 
 /**
  * @brief   Disable CTB Interrupts
  *
  */
-void MXC_CTB_DisableInt(void);
+void MXC_CTB_DisableInt();
 
 /**
  * @brief   Checks the global CTB Ready Status
@@ -442,14 +442,14 @@ void MXC_CTB_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_ctb_complete_cb_t
  * @note    ECC calculation is shared with CRC, when ECC is enabled, CRC
  *          computation is not possible
  */
-void MXC_CTB_ECC_Enable(void);
+void MXC_CTB_ECC_Enable();
 
 /**
  * @brief   Disable ECC Calculation
  * @note    ECC calculation is shared with CRC, when ECC is enabled, CRC
  *          computation is not possible
  */
-void MXC_CTB_ECC_Disable(void);
+void MXC_CTB_ECC_Disable();
 
 /**
  * @brief   Get the Result of an ECC Calculation

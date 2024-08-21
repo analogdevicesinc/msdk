@@ -354,7 +354,7 @@ BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
-static void init_mmc(void)
+static void init_mmc()
 {
     mxc_spi_pins_t pins;
     mxc_gpio_cfg_t gpio;

@@ -84,7 +84,7 @@
 #define CBW_CB_IDX                      15
 
 /* Function pointer definition.  Used to call a funtion after a read or write completes. */
-typedef void callbackFunc(void);
+typedef void callbackFunc();
 
 /***** File Scope Data *****/
 

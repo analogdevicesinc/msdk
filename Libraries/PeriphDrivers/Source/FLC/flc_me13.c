@@ -107,7 +107,7 @@ int MXC_FLC_ME13_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 }
 
 //******************************************************************************
-int MXC_FLC_Init(void)
+int MXC_FLC_Init()
 {
     MXC_FLC_SetFLCInt(MXC_FLC0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP);
