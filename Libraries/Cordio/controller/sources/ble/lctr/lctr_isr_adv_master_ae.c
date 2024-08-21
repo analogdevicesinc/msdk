@@ -48,6 +48,7 @@
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
+extern uint8_t appCodedPhyDemo;
 
 /*! \brief      Transitive context (valid only for a single Advertising Event). */
 struct
@@ -365,7 +366,7 @@ static bool_t lctrExtAdvRptPend(lctrExtScanCtx_t *pExtScanCtx, LlExtAdvReportInd
   uint64_t hash;
   lctrAdvRptGenerateExtHash(&hash, pRpt->addrType, BstreamToBda64(pRpt->addr),
                             pRpt->eventType, pRpt->advSID, pExtScanCtx->extAdvHdr.did);
-  if (lctrAdvRptCheckDuplicate(&lctrMstExtScan.advFilt, hash))
+  if (lctrAdvRptCheckDuplicate(&lctrMstExtScan.advFilt, hash) && (appCodedPhyDemo == 0))
   {
     /* Duplicate found, just exit. */
     return FALSE;

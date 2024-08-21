@@ -32,7 +32,7 @@
 #include "util/crc32.h"
 #include "wsf_buf.h"
 #include "wsf_queue.h"
-
+#include "mxc_device.h"
 
 /**************************************************************************************************
   Macros

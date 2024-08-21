@@ -75,7 +75,8 @@
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-#warning "(ERROR): Exmaple is deprecated and non functional!"
+extern uint8_t appCodedPhyDemo;
+
 /*! \brief  Pool runtime configuration. */
 static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
 
@@ -239,6 +240,7 @@ int main(void)
     APP_TRACE_INFO0("Long range demo (coded-PHY s=8)");
     APP_TRACE_INFO0("===============================");
     APP_TRACE_INFO1("BT_VER: %d", BT_VER);
+    appCodedPhyDemo = 1;
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();

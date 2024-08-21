@@ -67,8 +67,6 @@
   Macros
 **************************************************************************************************/
 
-#warning "(ERROR): Exmaple is deprecated and non functional!"
-
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 #define DEFAULT_TX_POWER 4 /* dBm */
@@ -85,6 +83,8 @@ static LlRtCfg_t mainLlRtCfg;
 #endif
 
 volatile int wutTrimComplete;
+
+extern uint8_t appCodedPhyDemo;
 
 /**************************************************************************************************
   Functions
@@ -245,6 +245,7 @@ int main(void)
     APP_TRACE_INFO0("Long distance scanner demo (CODED PHY S=8)");
     APP_TRACE_INFO1("BT_VER=%d", BT_VER);
     APP_TRACE_INFO0("==========================================");
+    appCodedPhyDemo = 1;
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();

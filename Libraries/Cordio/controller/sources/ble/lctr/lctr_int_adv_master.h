@@ -42,8 +42,6 @@ extern "C" {
 /*! \brief      Minimum amount of time required for scanning, to cover ADV + SCAN REQ + SCAN RSP.  */
 #define LCTR_MIN_SCAN_USEC     BB_MIN_SCAN_US
 
-
-
 /**************************************************************************************************
   Constants
 **************************************************************************************************/
