@@ -53,17 +53,7 @@ typedef struct {
     mxc_dma_regs_t *dma;
 } uart_reva_req_state_t;
 
-// clang-format off
-static uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
-    [0 ... MXC_UART_INSTANCES - 1] = {
-        .tx_req = NULL,
-        .rx_req = NULL,
-        .channelTx = -1,
-        .channelRx = -1,
-        .auto_dma_handlers = false
-    }
-};
-// clang-format on
+uart_reva_req_state_t states[MXC_UART_INSTANCES];
 
 /* **** Function Prototypes **** */
 

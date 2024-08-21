@@ -51,18 +51,7 @@ typedef struct {
     mxc_dma_regs_t *dma;
 } uart_revb_req_state_t;
 
-// clang-format off
-static uart_revb_req_state_t states[MXC_UART_INSTANCES] = {
-    [0 ... MXC_UART_INSTANCES - 1] = {
-        .tx_req = NULL,
-        .rx_req = NULL,
-        .channelTx = -1,
-        .channelRx = -1,
-        .auto_dma_handlers = false
-    }
-};
-// clang-format on
-static bool g_is_clock_locked[MXC_UART_INSTANCES] = { [0 ... MXC_UART_INSTANCES - 1] = false };
+uart_revb_req_state_t states[MXC_UART_INSTANCES];
 
 /* **** Function Prototypes **** */
 
