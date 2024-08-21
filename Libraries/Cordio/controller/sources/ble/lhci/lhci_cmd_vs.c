@@ -210,24 +210,24 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         status = LlEnhancedRxTest(pBuf[0], pBuf[1], pBuf[2], numPackets);
         break;
     }
-    case LHCI_OPCODE_VS_GET_RSSI:
-    {
-        status = LL_SUCCESS;
-        evtParamLen += sizeof(int8_t);
-        break;
-    }
-    case LHCI_OPCODE_VS_RESET_ADV_STATS:
-    {
-        status = LL_SUCCESS;
-        BbBleResetAdvStats();
-        break;
-    }
-    case LHCI_OPCODE_VS_RESET_SCAN_STATS:
-    {
-        status = LL_SUCCESS;
-        BbBleResetScanStats();
-        break;
-    }
+    // case LHCI_OPCODE_VS_GET_RSSI:
+    // {
+    //     status = LL_SUCCESS;
+    //     evtParamLen += sizeof(int8_t);
+    //     break;
+    // }
+    // case LHCI_OPCODE_VS_RESET_ADV_STATS:
+    // {
+    //     status = LL_SUCCESS;
+    //     // BbBleResetAdvStats();
+    //     break;
+    // }
+    // case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+    // {
+    //     status = LL_SUCCESS;
+    //     // BbBleResetScanStats();
+    //     break;
+    // }
 
     /* --- default --- */
     default:
