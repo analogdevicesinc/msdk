@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "~/Workspace/msdk/Libraries/PeriphDrivers/Include/**",
+                "~/Workspace/msdk/Libraries/RF-PHY/**",
+                "~/Workspace/msdk/Libraries/**",
+                "~/Workspace/msdk/Libraries/CMSIS/Device/Maxim/MAX32690/Include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
