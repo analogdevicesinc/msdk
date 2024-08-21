@@ -120,7 +120,7 @@ for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):
         for main_file in Path(i).rglob("**/main.c"):
             example_info = parse_example_info(main_file)
             if example_info and example_info.name not in common_example_names:
-                link = f"https://github.com/analogdevicesinc/msdk/tree/release/{Path(example_info.folder).relative_to(repo).as_posix()}"
+                link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_info.folder).relative_to(repo).as_posix()}"
                 table_entries.append(f"| **{example_info.name}** | {example_info.description} | _Local:_`{Path(example_info.folder).relative_to(repo)}`<br>_Github:_ [link]({link})")
         markdown_content += "\n".join(sorted(table_entries))
         markdown_content += "\n\n"
