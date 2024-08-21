@@ -21,7 +21,7 @@ INIT_CENTRAL = 1
 TRACE = 1
 
 # set ADVTISEMENT name you want to connect
-ADV_NAME?=DATS
+ADV_NAME?=690S
 PROJ_CFLAGS += -DADV_NAME=\"$(ADV_NAME)\"
 
 ### CONFIGURE security
