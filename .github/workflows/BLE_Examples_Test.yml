@@ -591,7 +591,7 @@ jobs:
           fi
 
       - name: Lock Boards
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1
         with:
           boards: |
             max32655_board1
@@ -617,7 +617,7 @@ jobs:
 
       - name: Erase Boards DATS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1
         with:
           board: |
             max32655_board1
@@ -633,7 +633,7 @@ jobs:
 
       - name: Flash DATS 655
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1
         with:
           board: |
             max32655_board1
@@ -660,7 +660,7 @@ jobs:
 
       - name: Erase Boards OTAS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1
         with:
           board: |
             max32655_board1
@@ -670,7 +670,7 @@ jobs:
       
       - name: Flash OTAS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1
         with:
           board: |
             max32655_board1
@@ -719,7 +719,7 @@ jobs:
          
       - name: Unlock Boards
         if: always()
-        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1
         with:
           lock: false
           all_owned: true
