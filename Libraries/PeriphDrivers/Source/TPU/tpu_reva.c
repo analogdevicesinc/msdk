@@ -262,7 +262,6 @@ int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_modesel_t 
 int MXC_TPU_RevA_Cipher_KeySelect(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_keysrc_t key_src)
 {
     MXC_SETFIELD(tpu->cipher_ctrl, MXC_F_TPU_REVA_CIPHER_CTRL_SRC, key_src);
-    // Note: "key_src" enum is set with "S" definitions instead of "V" definitions, so shifting is not necessary
 
     return E_SUCCESS;
 }
@@ -717,8 +716,7 @@ int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t *tpu, mxc_tpu_maa_clcsel_t clc,
     memcpy((void *)MAA_M, (uint32_t *)mod, len);
 
     // Start MAA
-    MXC_SETFIELD(tpu->maa_ctrl, MXC_F_TPU_REVA_MAA_CTRL_CLC,
-                 clc << MXC_F_TPU_REVA_MAA_CTRL_CLC_POS);
+    MXC_SETFIELD(tpu->maa_ctrl, MXC_F_TPU_REVA_MAA_CTRL_CLC, clc);
     tpu->maa_ctrl |= MXC_F_TPU_REVA_MAA_CTRL_STC;
 
     // Check if MAA Error occurs
