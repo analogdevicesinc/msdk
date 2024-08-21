@@ -14,7 +14,6 @@ SBT=0
 
 # Enable Cordio library
 LIB_CORDIO = 1
-#CHIP_REVISION = a
 
 # Cordio library options
 BLE_HOST = 0

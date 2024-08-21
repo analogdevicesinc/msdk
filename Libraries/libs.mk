@@ -64,42 +64,15 @@ ifeq ($(LIB_CORDIO), 1)
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 
-CHIP_REVISION ?= b
-export CHIP_REVISION
-
-# for CHIP_REVISION a ***********************************************
-ifeq ($(CHIP_REVISION),a)
 ifeq ($(RISCV_CORE),)
-
-ifeq ($(MFLOAT_ABI),hard)
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_hard.a
-else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1.a
-endif
-
-else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_riscv.a
-endif
-
-#*********************************************************************
-
-# for CHIP_REVISION b ***************************************************
-else ifeq ($(CHIP_REVISION),b)
-
-ifeq ($(RISCV_CORE),)
-
 ifeq ($(MFLOAT_ABI),hard)
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
 endif
-
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
 endif
-#**************************************************************************
-endif
-
 
 ifeq ($(CODED_PHY_DEMO),1)
 PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=1

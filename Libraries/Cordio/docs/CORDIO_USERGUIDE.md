@@ -145,36 +145,6 @@ The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, an
 
 The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system-level functions such as sleep and memory management. 
 
-_MAX32655:_
-
-| **Peripheral** | **Use** | **Configurable** |
-| ---------------|---------|------------------ |
-| GPIO0         | pal_btn |   yes|
-| GPIO1         | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
-| TIMER0-1        | pal_sys pal_timer|   yes|
-| UART0-3         | pal_sys pal_uart|   yes|
-
-
-_MAX32665:_
-
-| **Peripheral** | **Use** | **Configurable** |
-| ---------------|---------|------------------ |
-| GPIO0     | pal_btn |   yes|
-| GPIO1     | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
-| TIMER0-1    | pal_sys pal_timer|   yes|
-| UART0-2     | pal_sys pal_uart|   yes|
-| DMA0-8       | pal_sys pal_uart|   yes|
-
-_MAX32690:_
-
-| **Peripheral** | **Use** | **Configurable** |
-| ---------------|---------|------------------ |
-| GPIO0     | pal_btn |   yes|
-| GPIO1     | pal_led  pal_sys  pal_timer pal_uart pal_rtc|   yes|
-| TIMER0-1    | pal_sys pal_timer|   yes|
-| UART0-3         | pal_sys pal_uart|   yes|
-
-
 ### Attribute Protocol
 
 The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and the attribute protocol server (ATTS).
