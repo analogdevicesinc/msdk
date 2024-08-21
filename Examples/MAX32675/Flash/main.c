@@ -39,7 +39,6 @@
 #include "uart.h"
 #include "led.h"
 #include "pb.h"
-#include "ecc_regs.h"
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
@@ -229,11 +228,7 @@ int main(void)
     int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
-    printf("ECC is disabled for this example.\n");
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
-
-    // Disable ECC for this example.
-    MXC_ECC->en &= ~MXC_F_ECC_EN_FLASH;
 
     PB_RegisterCallback(0, (pb_callback)button_handler);
 
