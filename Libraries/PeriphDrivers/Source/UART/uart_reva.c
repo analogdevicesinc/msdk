@@ -53,7 +53,21 @@ typedef struct {
     mxc_dma_regs_t *dma;
 } uart_reva_req_state_t;
 
+<<<<<<< HEAD
+// clang-format off
+static uart_reva_req_state_t states[MXC_UART_INSTANCES] = {
+    [0 ... MXC_UART_INSTANCES - 1] = {
+        .tx_req = NULL,
+        .rx_req = NULL,
+        .channelTx = -1,
+        .channelRx = -1,
+        .auto_dma_handlers = false
+    }
+};
+// clang-format on
+=======
 uart_reva_req_state_t states[MXC_UART_INSTANCES];
+>>>>>>> parent of 4495706d29 (fix(PeriphDrivers): Fix UART DMA Callbacks for UART1+ (#1004))
 
 /* **** Function Prototypes **** */
 
