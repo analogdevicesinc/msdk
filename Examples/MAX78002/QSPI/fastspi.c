@@ -104,7 +104,7 @@ void processSPI(void)
     }
 }
 
-void SPI_IRQHandler(void)
+void SPI_IRQHandler()
 {
     uint32_t status = SPI->intfl;
 
@@ -130,7 +130,7 @@ void SPI_IRQHandler(void)
     }
 }
 
-int dma_init(void)
+int dma_init()
 {
     int err = MXC_DMA_Init();
     if (err)

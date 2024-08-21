@@ -236,7 +236,7 @@ int main(void)
 
     if (fail_count > 0) {
         printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count,
-               (double)(100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT))));
+               100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
         return E_FAIL;
     }
 

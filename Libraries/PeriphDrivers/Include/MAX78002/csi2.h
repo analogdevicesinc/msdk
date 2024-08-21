@@ -330,19 +330,17 @@ int MXC_CSI2_Stop(void);
 
 /**
  * @brief      Capture an image frame using DMA. Same as MXC_CSI2_CaptureFrameDMA.
- * @note       API changed on 7-8-2024 to remove 'num_data_lanes' as an argument.  Set
- *             'num_lanes' in @ref mxc_csi2_ctrl_cfg_t instead, which is passed to
- *             @ref MXC_CSI2_Init
+ * @param      num_data_lanes    Number of data lanes used.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_CaptureFrame(void);
+int MXC_CSI2_CaptureFrame(int num_data_lanes);
 
 /**
  * @brief      Capture an image frame using DMA.
  * @param      num_data_lanes    Number of data lanes used.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_CaptureFrameDMA(void);
+int MXC_CSI2_CaptureFrameDMA();
 
 /**
  * @brief      Select Lane Control Source for D0-D4 and C0.
@@ -590,7 +588,7 @@ int MXC_CSI2_PPI_Stop(void);
 
 bool MXC_CSI2_DMA_Frame_Complete(void);
 
-mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats(void);
+mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats();
 
 /**
  * @brief      Clears the interrupt flags for PPI.

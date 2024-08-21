@@ -85,7 +85,7 @@ void MXC_WDT_Setup(void)
     MXC_WDT_Enable(MXC_WDT0);
 }
 
-void SW1_Callback(void *pb)
+void SW1_Callback(void)
 {
     printf("\nEnabling Timeout Interrupt...\n");
     MXC_WDT_Disable(MXC_WDT0);
@@ -105,7 +105,7 @@ void SW1_Callback(void *pb)
     PB_RegisterCallback(0, NULL);
 }
 
-void SW2_Callback(void *pb)
+void SW2_Callback(void)
 {
     printf("What happens if the watchdog is reset too early?\n");
     sw2_pressed = 1;

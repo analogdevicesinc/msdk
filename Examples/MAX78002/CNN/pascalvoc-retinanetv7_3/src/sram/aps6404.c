@@ -51,7 +51,7 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
     return err;
 }
 
-int ram_init(void)
+int ram_init()
 {
     int err = E_NO_ERROR;
     err = spi_init();
@@ -66,7 +66,7 @@ int ram_init(void)
     return err;
 }
 
-int ram_reset(void)
+int ram_reset()
 {
     int err = E_NO_ERROR;
     uint8_t data[2] = { 0x66, 0x99 };
@@ -77,7 +77,7 @@ int ram_reset(void)
     return err;
 }
 
-int ram_enter_quadmode(void)
+int ram_enter_quadmode()
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0x35;
@@ -91,7 +91,7 @@ int ram_enter_quadmode(void)
     return err;
 }
 
-int ram_exit_quadmode(void)
+int ram_exit_quadmode()
 {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0xF5;

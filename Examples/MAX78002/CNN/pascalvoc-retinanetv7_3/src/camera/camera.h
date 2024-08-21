@@ -43,7 +43,7 @@
 
 /***** Functions *****/
 
-bool camera_init(void);
+bool camera_init();
 void camera_capture(void);
 void camera_capture_and_load_cnn(void);
 void camera_display_last_image(void);
