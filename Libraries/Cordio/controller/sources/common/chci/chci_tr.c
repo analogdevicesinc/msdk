@@ -635,7 +635,7 @@ void chciTrRecv(uint8_t prot, uint8_t type, uint8_t *pBuf)
  *  \return TRUE if work pending, FALSE if no work is pending.
  */
 /*************************************************************************************************/
-bool ChciTrService(void)
+bool_t ChciTrService(void)
 {
 #if (CHCI_TR_UART == 1)
   if (chciTrCb.wrBufComp)

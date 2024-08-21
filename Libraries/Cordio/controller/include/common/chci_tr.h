@@ -75,7 +75,7 @@ void chciTrSendComplete(void);
  *  \return TRUE if work pending, FALSE if no work is pending.
  */
 /*************************************************************************************************/
-bool ChciTrService(void);
+bool_t ChciTrService(void);
 
 #ifdef __cplusplus
 };

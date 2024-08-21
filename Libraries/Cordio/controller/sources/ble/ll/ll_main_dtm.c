@@ -913,7 +913,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     llTestCb.state = LL_TEST_STATE_RX;
     lmgrCb.testEnabled = TRUE;
     LmgrIncResetRefCount();
-    memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
+    memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
     BbStart(BB_PROT_BLE_DTM);
     SchInsertNextAvailable(pOp);
 
