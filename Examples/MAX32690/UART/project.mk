@@ -17,7 +17,3 @@ SBT=0
 ifeq ($(BOARD),FTHR)
 $(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
 endif
-
-
-METHOD ?= INTERRUPT
-PROJ_CFLAGS += -D$(METHOD)
