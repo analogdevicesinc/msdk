@@ -25,12 +25,6 @@
 extern "C" {
 #endif
 
-#include "mxc_device.h"
-
-#warning "core1.h is deprecated (05-24-2024)."
-#warning "Use mxc_device.h instead, and set `ARM_DUALCORE=1` in project.mk"
-#warning "Core 1 Startup/System code is located at Libraries/CMSIS/Device/Maxim/MAX32665/"
-
 /**
  * @file    core1.h
  * @brief   Startup Code for MAX32665 Family CPU1
@@ -41,36 +35,32 @@ extern "C" {
  * @brief Starts the code on core 1
  *        Core1 code beings executing from Core1_Main()
  */
-#if defined(__GNUC__)
-inline __attribute__((deprecated("Use Start_Core1(); instead."))) void Core1_Start(void)
-{
-    Start_Core1();
-}
-#endif
+void Core1_Start(void);
 
 /**
  * @brief Stops code executing in Core 1
  */
-#if defined(__GNUC__)
-inline __attribute__((deprecated("Use Stop_Core1(); instead."))) void Core1_Stop(void)
-{
-    Stop_Core1();
-}
-#endif
+void Core1_Stop(void);
 
 /**
  * @brief Main function for Core 1 Code
  *        The user should override this function
  *        in their application code
  */
-#if defined(__GNUC__)
-inline __attribute__((deprecated(
-    "Use `int main_core1(void)` instead - main_core1 is Core 1's entry point where code starts, not Core1_Main."))) int
-Core1_Main(void);
-#endif
+int Core1_Main(void);
 
-// void PreInit_Core1(void) is now located in system_core_max32665.h
-// void SystemInit_Core1(void) is now located in system_core_max32665.h
+/**
+ * @brief Equivalent to PreInit for Core 0
+ *        Can be used for preliminary initialization
+ */
+void PreInit_Core1(void);
+
+/**
+ * @brief Equivalent to PreInit for Core 1
+ *        Enables FPU, and ICache
+ *        Sets interrupt vector
+ */
+void SystemInit_Core1(void);
 
 #ifdef __cplusplus
 }

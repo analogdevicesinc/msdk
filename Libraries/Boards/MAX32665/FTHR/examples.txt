@@ -30,7 +30,6 @@ Bluetooth/Bootloader_Host
 CRC
 DES
 DMA
-Dual_Core
 ECC
 Flash
 Flash_CLI

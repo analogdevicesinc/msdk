@@ -34,7 +34,6 @@ Demo
 DES
 Display
 DMA
-Dual_Core
 ECC
 EEPROM_Emulator
 Flash

@@ -35,10 +35,14 @@
 #include "rpu.h"
 #include "tmr.h"
 #include "led.h"
+#include "core1.h"
 
 /***** Definitions *****/
 
 /***** Globals *****/
+//#if defined ( __GNUC__)
+//    extern uint8_t __load_start_cpu1;
+//#endif
 
 /***** Functions *****/
 void HardFault_Handler(void)
@@ -49,7 +53,7 @@ void HardFault_Handler(void)
     while (1) {}
 }
 
-int main_core1(void)
+int Core1_Main(void)
 {
     int err;
     // The RPU defaults to all access enabled
@@ -82,7 +86,7 @@ int main(void)
     MXC_Delay(500000);
     LED_Off(1);
 
-    Start_Core1();
+    Core1_Start();
     MXC_Delay(1000);
 
     // Try to read TMR3's config register
