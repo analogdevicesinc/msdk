@@ -109,14 +109,14 @@ int exampleDMAAutoHandlers(void)
     // to complete, since the DMA APIs are asynchronous (non-blocking)
     READ_FLAG = 1;
 
-    error = MXC_UART_TransactionDMA(&read_req,DMA);
+    error = MXC_UART_TransactionDMA(&read_req, DMA);
     if (error) {
         printf("-->Error starting DMA read: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
 
-    error = MXC_UART_TransactionDMA(&write_req,DMA);
+    error = MXC_UART_TransactionDMA(&write_req, DMA);
     if (error) {
         printf("-->Error starting DMA write: %d\n", error);
         printf("-->Example Failed\n");
@@ -216,14 +216,14 @@ int main(void)
     memset(RxData, 0x0, BUFF_SIZE);
 
     // Initialize the UART
-    error = MXC_UART_Init(TX_UART, UART_BAUD,MAP_A);
+    error = MXC_UART_Init(TX_UART, UART_BAUD, MAP_A);
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
 
-    error = MXC_UART_Init(RX_UART, UART_BAUD,MAP_A);
+    error = MXC_UART_Init(RX_UART, UART_BAUD, MAP_A);
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");

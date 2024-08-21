@@ -29,7 +29,7 @@
  *          The example uses either automatic or manual DMA handler configuration
  *          depending on the AUTOHANDLERS macro definition.
  */
- 
+
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
@@ -186,7 +186,7 @@ int main(void)
     memset(RxData, 0x0, BUFF_SIZE);
 
     // Initialize the UART
-    error = MXC_UART_Init(UART, UART_BAUD,MXC_UART_APB_CLK);
+    error = MXC_UART_Init(UART, UART_BAUD, MXC_UART_APB_CLK);
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
@@ -205,7 +205,6 @@ int main(void)
     loop_req.txData = TxData;
     loop_req.txLen = BUFF_SIZE;
     loop_req.callback = readCallback;
-
 
     printf("-->UART Initialized\n\n");
 

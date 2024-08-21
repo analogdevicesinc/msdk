@@ -30,7 +30,6 @@
  *          depending on the AUTOHANDLERS macro definition.
  */
 
-
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>

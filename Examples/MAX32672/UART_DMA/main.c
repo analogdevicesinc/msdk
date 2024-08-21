@@ -30,7 +30,6 @@
  *          depending on the AUTOHANDLERS macro definition.
  */
 
-
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
@@ -213,13 +212,13 @@ int main(void)
 
     // Initialize the UART
     MXC_UART_SetPinMapping(TX_UART, MAP_B);
-    error = MXC_UART_Init(TX_UART, UART_BAUD,MXC_UART_IBRO_CLK);
+    error = MXC_UART_Init(TX_UART, UART_BAUD, MXC_UART_IBRO_CLK);
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
-	
+
     MXC_UART_SetPinMapping(RX_UART, MAP_A);
     error = MXC_UART_Init(RX_UART, UART_BAUD, MXC_UART_IBRO_CLK);
     if (error < E_NO_ERROR) {
