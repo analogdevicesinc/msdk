@@ -191,6 +191,7 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
     }
 
     MXC_GPIO_OutClr(tft_cs.port, tft_cs.mask); // Assert chip select (active low)
+    MXC_Delay(10);
 
     for (int i = 0; i < count; i++) {
         tx_byte = datain[i];
@@ -213,14 +214,15 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
                 tx_byte = tx_byte << 1;
             }
 
-            for (volatile int k = 0; k < 2; k++) {}
+            for (int k = 0; k < 2; k++) {}
 
             tft_clk.port->out_set = tft_clk.mask; // Clk high
 
-            for (volatile int k = 0; k < 2; k++) {}
+            for (int k = 0; k < 2; k++) {}
         }
     }
 
+    MXC_Delay(10);
     MXC_GPIO_OutSet(tft_cs.port, tft_cs.mask); // De-assert chip select (active low)
 
     return;
