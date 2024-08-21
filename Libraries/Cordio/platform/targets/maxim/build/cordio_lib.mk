@@ -96,4 +96,4 @@ ${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${CORDIO_C_FILES} ${PROJECTMK}
 	BT_VER=${BT_VER}
 
 clean.cordio:
-	@$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk BUILD_DIR=${CORDIO_BUILD_DIR} clean
+	@$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk MAXIM_PATH=${MAXIM_PATH} BUILD_DIR=${CORDIO_BUILD_DIR} clean
