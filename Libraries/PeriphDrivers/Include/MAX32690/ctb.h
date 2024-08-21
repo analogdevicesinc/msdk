@@ -220,7 +220,10 @@ typedef enum {
  * @brief Cipher operation
  *  
  */
-typedef enum { MXC_CTB_CIPHER_ENCRYPTION, MXC_CTB_CIPHER_DECRYPTION } mxc_ctb_cipher_operation_t;
+typedef enum {
+    MXC_CTB_CIPHER_ENCRYPTION = 0,
+    MXC_CTB_CIPHER_DECRYPTION
+} mxc_ctb_cipher_operation_t;
 
 /***** Function Prototypes *****/
 

@@ -55,7 +55,7 @@ void MXC_WUT_Init(mxc_wut_pres_t pres)
 #ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
 #endif
-    MXC_WUT_RevA_Init((mxc_wut_reva_regs_t *)MXC_WUT, pres);
+    MXC_WUT_RevA_Init((mxc_wut_reva_regs_t *)MXC_WUT, (mxc_wut_reva_pres_t)pres);
 }
 
 /* ************************************************************************** */
@@ -127,7 +127,8 @@ void MXC_WUT_SetCount(uint32_t cnt)
 /* ************************************************************************* */
 int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t *ticks)
 {
-    return MXC_WUT_RevA_GetTicks((mxc_wut_reva_regs_t *)MXC_WUT, ERTCO_FREQ, time, units, ticks);
+    return MXC_WUT_RevA_GetTicks((mxc_wut_reva_regs_t *)MXC_WUT, ERTCO_FREQ, time,
+                                 (mxc_wut_reva_unit_t)units, ticks);
 }
 
 /* ************************************************************************* */

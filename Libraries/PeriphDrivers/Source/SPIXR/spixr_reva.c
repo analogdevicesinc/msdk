@@ -143,7 +143,7 @@ int MXC_SPIXR_RevA_SetWidth(mxc_spixr_reva_regs_t *spixr, mxc_spixr_reva_width_t
 
 int MXC_SPIXR_RevA_SetSPIMode(mxc_spixr_reva_regs_t *spixr, mxc_spixr_reva_mode_t mode)
 {
-    if (mode < MXC_SPIXR_REVA_MODE_0 || mode > MXC_SPIXR_REVA_MODE_3) {
+    if (mode > MXC_SPIXR_REVA_MODE_3) {
         return E_BAD_PARAM;
     }
 
@@ -274,7 +274,7 @@ void MXC_SPIXR_RevA_DisableWakeUp(mxc_spixr_reva_regs_t *spixr, int flags)
 void MXC_SPIXR_RevA_ExMemEnable(mxc_spixr_reva_regs_t *spixr)
 {
     MXC_SETFIELD(spixr->xmem_ctrl, MXC_F_SPIXR_REVA_XMEM_CTRL_XMEM_EN,
-                 (1 << MXC_F_SPIXR_REVA_XMEM_CTRL_XMEM_EN_POS));
+                 ((unsigned)1 << MXC_F_SPIXR_REVA_XMEM_CTRL_XMEM_EN_POS));
 }
 
 void MXC_SPIXR_RevA_ExMemDisable(mxc_spixr_reva_regs_t *spixr)

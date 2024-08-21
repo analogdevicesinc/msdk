@@ -339,7 +339,7 @@ int MXC_RTC_RevA_GetSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *sec)
 
 int MXC_RTC_RevA_GetTime(mxc_rtc_reva_regs_t *rtc, uint32_t *sec, uint32_t *subsec)
 {
-    uint32_t temp_sec = 0;
+    int32_t temp_sec = 0;
 
     if (sec == NULL || subsec == NULL) {
         return E_NULL_PTR;

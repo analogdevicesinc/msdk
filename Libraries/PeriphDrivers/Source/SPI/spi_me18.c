@@ -261,22 +261,22 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
 
 int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 {
-    return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, spiWidth);
+    return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, (mxc_spi_reva_width_t)spiWidth);
 }
 
 mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA1_GetWidth((mxc_spi_reva_regs_t *)spi);
+    return (mxc_spi_width_t)MXC_SPI_RevA1_GetWidth((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)
 {
-    return MXC_SPI_RevA1_SetMode((mxc_spi_reva_regs_t *)spi, spiMode);
+    return MXC_SPI_RevA1_SetMode((mxc_spi_reva_regs_t *)spi, (mxc_spi_reva_mode_t)spiMode);
 }
 
 mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA1_GetMode((mxc_spi_reva_regs_t *)spi);
+    return (mxc_spi_mode_t)MXC_SPI_RevA1_GetMode((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi)

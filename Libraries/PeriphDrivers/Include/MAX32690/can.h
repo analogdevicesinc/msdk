@@ -146,7 +146,7 @@ typedef struct {
  * @brief  Selects power state of the CAN peripherals
  */
 typedef enum {
-    MXC_CAN_PWR_CTRL_OFF, ///< Shut off power to peripherals
+    MXC_CAN_PWR_CTRL_OFF = 0, ///< Shut off power to peripherals
     MXC_CAN_PWR_CTRL_SLEEP, ///< Put peripherals to sleep
     MXC_CAN_PWR_CTRL_FULL, ///< Peripherals fully awake
 } mxc_can_pwr_ctrl_t;
@@ -155,7 +155,7 @@ typedef enum {
  * @brief  Selects which bitrate to perform operation on
  */
 typedef enum {
-    MXC_CAN_BITRATE_SEL_NOMINAL, ///< Set bitrate for classic CAN frames
+    MXC_CAN_BITRATE_SEL_NOMINAL = 0, ///< Set bitrate for classic CAN frames
     MXC_CAN_BITRATE_SEL_FD_DATA, ///< Reserved for future use. Not supported on MAX32690, included to prevent build errors.
 } mxc_can_bitrate_sel_t;
 
@@ -163,7 +163,7 @@ typedef enum {
  * @brief  Selects the CAN driver's mode of operation
  */
 typedef enum {
-    MXC_CAN_MODE_INITIALIZATION, ///< Reset mode
+    MXC_CAN_MODE_INITIALIZATION = 0, ///< Reset mode
     MXC_CAN_MODE_NORMAL, ///< Normal operating mode
     MXC_CAN_MODE_RESTRICTED, ///< Restricted mode
     MXC_CAN_MODE_MONITOR, ///< Listen-only mode
@@ -253,7 +253,7 @@ typedef struct {
  * @brief  Used to set the features available to a CAN object
  */
 typedef enum {
-    MXC_CAN_OBJ_CFG_INACTIVE, ///< Object disabled
+    MXC_CAN_OBJ_CFG_INACTIVE = 0, ///< Object disabled
     MXC_CAN_OBJ_CFG_TXRX, ///< Object can transmit and/or receive messages
     MXC_CAN_OBJ_CFG_RSV, ///< Reserved for future use
     MXC_CAN_OBJ_CFG_RX_RTR_TX_DATA, ///< NOT SUPPORTED ON MAX32690
@@ -264,7 +264,8 @@ typedef enum {
  * @brief  Selects the control operation for the CAN driver to perform
  */
 typedef enum {
-    MXC_CAN_CTRL_SET_FD_MODE, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
+    MXC_CAN_CTRL_SET_FD_MODE =
+        0, ///< No effect on MAX32690 (FD mode always enabled when CAN active)
     MXC_CAN_CTRL_ABORT_TX, ///< Abort transmission
     MXC_CAN_CTRL_RETRANSMISSION, ///< Enable/disable auto retransmission on error
     MXC_CAN_CTRL_TRANSCEIVER_DLY, ///< Set transceiver delay
@@ -274,7 +275,7 @@ typedef enum {
  * @brief  State which bus has entered to trigger unit event
  */
 typedef enum {
-    MXC_CAN_UNIT_EVT_INACTIVE, ///< Peripherals entered inactive state (sleep, shutdown)
+    MXC_CAN_UNIT_EVT_INACTIVE = 0, ///< Peripherals entered inactive state (sleep, shutdown)
     MXC_CAN_UNIT_EVT_ACTIVE, ///< Peripherals entered active state
     MXC_CAN_UNIT_EVT_WARNING, ///< Peripheral received error warning
     MXC_CAN_UNIT_EVT_PASSIVE, ///< Peripheral entered passive state
@@ -285,7 +286,7 @@ typedef enum {
  * @brief  Selects which object to notify/handle
  */
 typedef enum {
-    MXC_CAN_OBJ_EVT_TX_COMPLETE, ///< Transmission complete
+    MXC_CAN_OBJ_EVT_TX_COMPLETE = 0, ///< Transmission complete
     MXC_CAN_OBJ_EVT_RX, ///< Message received
     MXC_CAN_OBJ_EVT_RX_OVERRUN, ///< RXFIFO overflow
 } mxc_can_obj_evt_t;
