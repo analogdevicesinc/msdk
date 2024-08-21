@@ -34,6 +34,7 @@ $(error $(ERR_MSG))
 endif
 
 # Place build files specific to FTHR_RevA here.
+ifeq "$(BOARD)" "FTHR_RevA"
 SDHC_CLK_FREQ  = 25000000
 
 ifeq "$(TFT_ENABLE)" "1"
@@ -44,9 +45,8 @@ VPATH += TFT/fthr
 FONTS = LiberationSans16x16
 endif
 
-# Enable the SDHC library
+endif
+
 LIB_SDHC = 1
-# Include a custom ffconf.h file that disables exFAT support.  exFAT support requires additional flash and RAM.
-# - FF_FS_EXFAT = 0
-FATFS_VERSION = ff15
-FF_CONF_DIR = ./include
+
+

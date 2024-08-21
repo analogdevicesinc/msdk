@@ -103,7 +103,8 @@ int main(void)
 {
     maxusb_cfg_options_t usb_opts;
 
-    printf("\n\n***** USB Composite Device (Keyboard and Mass Storage) Example *****\n");
+    printf("\n\n***** " TOSTRING(
+        TARGET) " USB Composite Device (Keyboard and Mass Storage) Example *****\n");
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */

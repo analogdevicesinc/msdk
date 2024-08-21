@@ -25,7 +25,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-***** USB Composite Device (CDCACM and Mass Storage) Example *****
+***** MAX32650 USB Composite Device (CDCACM and Mass Storage) Example *****
 Waiting for VBUS...
 VBUS Connect
 Suspended

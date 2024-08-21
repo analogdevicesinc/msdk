@@ -69,6 +69,8 @@ extern "C" {
 #define EXT_FLASH_BAUD 4000000
 #endif
 
+#define BOARD_FTHR 1 /// Used in examples to control program flow.
+
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.

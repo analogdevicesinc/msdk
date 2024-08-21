@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
  * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +19,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_I2S_MAX9867_H_
-#define EXAMPLES_MAX32655_I2S_MAX9867_H_
+#ifndef EXAMPLES_MAX32655_I2S_PLAYBACK_MAX9867_H_
+#define EXAMPLES_MAX32655_I2S_PLAYBACK_MAX9867_H_
 
 //-----------------------------------------------------------------------------
 // Includes
@@ -38,4 +38,4 @@ int max9867_init(mxc_i2c_regs_t *i2c_inst, int mclk, int lrclk);
 int max9867_shutdown(void);
 int max9867_status(void);
 
-#endif // EXAMPLES_MAX32655_I2S_MAX9867_H_
+#endif // EXAMPLES_MAX32655_I2S_PLAYBACK_MAX9867_H_

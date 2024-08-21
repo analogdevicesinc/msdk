@@ -153,7 +153,7 @@ static void write_command(unsigned char command)
 
 static void write_data(unsigned char data)
 {
-    uint16_t val = data;
+    unsigned char val = data;
 
     MXC_GPIO_OutSet(MXC_GPIO0, MXC_GPIO_PIN_8);
     spi_transmit(&val, 1);

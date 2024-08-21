@@ -53,6 +53,7 @@ void ascii_to_byte(const char *src, char *dst, int len)
 
 int Test_Hash(void)
 {
+    int ret;
     printf("Test Hash\n");
 
     unsigned char sha256_msg[] =

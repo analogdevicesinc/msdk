@@ -25,7 +25,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-***** USB HID Keyboard Example *****
+***** MAX32650 USB HID Keyboard Example *****
 Waiting for VBUS...
 VBUS Connect
 Suspended

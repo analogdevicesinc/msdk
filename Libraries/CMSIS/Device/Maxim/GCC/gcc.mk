@@ -287,9 +287,6 @@ endif
 CFLAGS+=$(PROJ_CFLAGS)
 CXXFLAGS+=$(CFLAGS)
 
-C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
-CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
-
 # The command for calling the library archiver.
 AR=${PREFIX}-ar
 

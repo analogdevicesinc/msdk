@@ -74,7 +74,6 @@ IPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET)/Include
 IPATH += $(CMSIS_ROOT)/Include
 IPATH += $(PERIPH_DRIVER_DIR)/Include/$(TARGET_UC)
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(FF_CONF_DIR)
 
 # Since the diskio.c implementation file has some dependencies
 # on board files, we must set up the board build system as well

@@ -48,7 +48,6 @@
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Include/${config:target}",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
@@ -57,6 +56,7 @@
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl",
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src",
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src/**",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
@@ -67,7 +67,6 @@
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
@@ -76,6 +75,7 @@
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src",
         "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src/**",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display/fonts",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/EEPROM",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],

@@ -96,7 +96,7 @@ int main(void)
 {
     maxusb_cfg_options_t usb_opts;
 
-    printf("\n\n***** USB CDC-ACM Example *****\n");
+    printf("\n\n***** " TOSTRING(TARGET) " USB CDC-ACM Example *****\n");
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */
