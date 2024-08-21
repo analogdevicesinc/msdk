@@ -26,7 +26,11 @@
 extern "C" {
 #endif
 
+/*
+ *  MAX32665, MAX32666 related mapping
+ */
 #if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+
 #define ADI_MAX32_DMA_CTRL_DIS_IE MXC_F_DMA_CFG_CHDIEN
 #define ADI_MAX32_DMA_CTRL_CTZIEN MXC_F_DMA_CFG_CTZIEN
 
@@ -36,7 +40,52 @@ extern "C" {
 #define ADI_MAX32_DMA_STATUS_ST MXC_F_DMA_ST_CH_ST
 
 #define ADI_MAX32_DMA_CFG_REQ_POS MXC_F_DMA_CFG_REQSEL_POS
-#else
+
+static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
+{
+    return dma->intr;
+}
+
+static inline int Wrap_MXC_DMA_Init(mxc_dma_regs_t *dma)
+{
+    return MXC_DMA_Init(dma);
+}
+
+static inline void Wrap_MXC_DMA_DeInit(mxc_dma_regs_t *dma)
+{
+    MXC_DMA_DeInit(dma);
+}
+
+static inline int Wrap_MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)
+{
+    return MXC_DMA_AcquireChannel(dma);
+}
+
+static inline void Wrap_MXC_DMA_Handler(mxc_dma_regs_t *dma)
+{
+    MXC_DMA_Handler(dma);
+}
+
+static inline int Wrap_MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
+                                      mxc_dma_complete_cb_t callback)
+{
+    return MXC_DMA_MemCpy(dma, dest, src, len, callback);
+}
+
+static inline int Wrap_MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t config,
+                                          mxc_dma_srcdst_t firstSrcDst,
+                                          mxc_dma_trans_chain_t callback)
+{
+    return MXC_DMA_DoTransfer(dma, config, firstSrcDst, callback);
+}
+
+/*
+ *  MAX32690, MAX32655 related mapping
+ */
+#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
+    (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
+    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
+
 #define ADI_MAX32_DMA_CTRL_DIS_IE MXC_F_DMA_CTRL_DIS_IE
 #define ADI_MAX32_DMA_CTRL_CTZIEN MXC_F_DMA_CTRL_CTZ_IE
 
@@ -46,89 +95,52 @@ extern "C" {
 #define ADI_MAX32_DMA_STATUS_ST MXC_F_DMA_STATUS_STATUS
 
 #define ADI_MAX32_DMA_CFG_REQ_POS MXC_F_DMA_CTRL_REQUEST_POS
-#endif
 
 static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    return dma->intr;
-#else
     return dma->intfl;
-#endif
 }
 
 static inline int Wrap_MXC_DMA_Init(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    return MXC_DMA_Init(dma);
-#else
     (void)dma;
     return MXC_DMA_Init();
-#endif
 }
 
 static inline void Wrap_MXC_DMA_DeInit(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    MXC_DMA_DeInit(dma);
-#else
     (void)dma;
     MXC_DMA_DeInit();
-#endif
 }
 
 static inline int Wrap_MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    return MXC_DMA_AcquireChannel(dma);
-#else
     (void)dma;
     return MXC_DMA_AcquireChannel();
-#endif
 }
 
 static inline void Wrap_MXC_DMA_Handler(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    MXC_DMA_Handler(dma);
-#else
     (void)dma;
     MXC_DMA_Handler();
-#endif
 }
 
 static inline int Wrap_MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
                                       mxc_dma_complete_cb_t callback)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    return MXC_DMA_MemCpy(dma, dest, src, len, callback);
-#else
     (void)dma;
     return MXC_DMA_MemCpy(dest, src, len, callback);
-#endif
 }
 
 static inline int Wrap_MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t config,
                                           mxc_dma_srcdst_t firstSrcDst,
                                           mxc_dma_trans_chain_t callback)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
-    return MXC_DMA_DoTransfer(dma, config, firstSrcDst, callback);
-#else
     (void)dma;
     return MXC_DMA_DoTransfer(config, firstSrcDst, callback);
-#endif
 }
 
-static inline int Wrap_MXC_DMA_EnableInt(mxc_dma_regs_t *dma, int ch)
-{
-#if defined(CONFIG_SOC_MAX32657)
-    return MXC_DMA_EnableInt(dma, ch);
-#else
-    (void)dma;
-    return MXC_DMA_EnableInt(ch);
-#endif
-}
+#endif // part number
 
 #ifdef __cplusplus
 }
