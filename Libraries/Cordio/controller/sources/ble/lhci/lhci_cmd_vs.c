@@ -218,16 +218,16 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         evtParamLen += sizeof(int8_t);
         break;
     }
-    case LHCI_OPCODE_VS_RESET_ADV_STATS:
+    case LHCI_OPCODE_VS_PHY_EN:
     {
         status = LL_SUCCESS;
-        BbBleResetAdvStats();
+        PalBbEnable();
         break;
     }
-    case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+    case LHCI_OPCODE_VS_PHY_DIS:
     {
         status = LL_SUCCESS;
-        BbBleResetScanStats();
+        PalBbDisable();
         break;
     }
 
@@ -255,8 +255,9 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_REG_WRITE:
         case LHCI_OPCODE_VS_RX_TEST:
         case LHCI_OPCODE_VS_TX_TEST:
-        case LHCI_OPCODE_VS_RESET_ADV_STATS:
-        case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+        case LHCI_OPCODE_VS_PHY_EN:
+        case LHCI_OPCODE_VS_PHY_DIS:
+
 
             /* no action */
             break;
@@ -269,7 +270,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             /*
                 TODO: Needs feature in PHY
             */
-            // PalBbEnable();
             pBuf[0] = -10;
             break;
         }

@@ -369,10 +369,10 @@ extern "C" {
 #define LHCI_OPCODE_VS_GET_RSSI     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x306) /*!<Vendor specific Get RSSI*/
-#define LHCI_OPCODE_VS_RESET_ADV_STATS     \
+#define LHCI_OPCODE_VS_PHY_EN     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x307) /*!<Vendor specific Get RSSI*/
-#define LHCI_OPCODE_VS_RESET_SCAN_STATS     \
+#define LHCI_OPCODE_VS_PHY_DIS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x308) /*!<Vendor specific Get RSSI*/
 /* Vendor specific event masks. */

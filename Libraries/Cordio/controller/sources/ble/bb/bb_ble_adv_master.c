@@ -600,7 +600,3 @@ void BbBleGetScanStats(BbBleScanPktStats_t *pStats)
 {
   *pStats = bbScanStats;
 }
-void BbBleResetScanStats(void)
-{
-  memset(&bbScanStats, 0, sizeof(BbBleScanPktStats_t));
-}
