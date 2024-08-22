@@ -295,6 +295,8 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
 
   uartNum = palUartGetNum(id);
 
+  PAL_SYS_ASSERT(palUartCb[uartNum].state == PAL_UART_STATE_UNINIT);
+
   /* Save the callback */
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
