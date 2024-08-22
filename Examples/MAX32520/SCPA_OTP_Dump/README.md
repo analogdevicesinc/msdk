@@ -25,7 +25,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+SCP Applet examples are special examples as mentioned in description section, these example can not be debugged as regular example.
+It need to be build with SCPA mode, after build genereated scp packages need to be send ROM Bootlader by SBT/scp_sender tool.
 
 ## Required Connections
 
