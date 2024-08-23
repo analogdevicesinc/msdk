@@ -38,7 +38,8 @@
 #include "led.h"
 
 /***** Definitions *****/
-#define MAX_TICKS pow(2, 32)
+#define MAX_TICKS 4294967296
+// 2^32
 
 // Parameters for PWM output
 #define FREQ 1000 // (Hz)
@@ -77,7 +78,7 @@ void PWMTimer(void)
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, 1, FREQ);
-    unsigned int dutyTicks = periodTicks / 100 * 50;
+    unsigned int dutyTicks = periodTicks * (DUTY_CYCLE / 100.0f);
 
     //Configure PWM GPIO Pin
     mxc_gpio_cfg_t pwmOut;
