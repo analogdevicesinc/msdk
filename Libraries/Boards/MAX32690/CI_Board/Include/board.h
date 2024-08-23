@@ -27,8 +27,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifndef LIBRARIES_BOARDS_MAX32690_EVKIT_V1_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX32690_EVKIT_V1_INCLUDE_BOARD_H_
+#ifndef LIBRARIES_BOARDS_MAX32690_CI_BOARD_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32690_CI_BOARD_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -130,4 +130,4 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data);
 }
 #endif
 
-#endif // LIBRARIES_BOARDS_MAX32690_EVKIT_V1_INCLUDE_BOARD_H_
+#endif // LIBRARIES_BOARDS_MAX32690_CI_BOARD_INCLUDE_BOARD_H_
