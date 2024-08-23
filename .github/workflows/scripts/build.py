@@ -106,7 +106,7 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False,
     return (return_code, project_info)
 
 
-def test(maxim_path : Path = None, targets=None, boards=None, projects=None): 
+def test(maxim_path : Path = None, targets=None, boards=None, projects=None, change_file=None): 
 
     console = Console(emoji=False, color_system="standard")
 
@@ -141,6 +141,29 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
     # Enforce alphabetical ordering
     targets = sorted(targets)
+
+    if (args.change_file is not None):
+        console.print(f"Reading '{args.change_file}'")
+        targets_to_skip = []
+        for i in targets: targets_to_skip.append(i)
+        files:list = []
+        with open(args.change_file, "r") as change_file:
+            files = change_file.read().replace(" ", "\n").splitlines()
+
+        console.print(f"Checking {len(files)} changed files...")
+
+        for f in files:
+            for target in targets_to_skip:
+                if target in f:
+                    targets_to_skip.remove(target)
+                    console.print(f"Testing {target} from change to: {f}")
+
+        targets = [i for i in targets if i not in targets_to_skip]
+
+    if targets is not None:
+        console.print(f"Testing: {targets}")
+    else:
+        console.print("Nothing to be tested.")
 
     # Track failed projects for end summary
     failed = []
@@ -350,16 +373,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     inspect(args, title="Script arguments:", )
 
-    if (args.change_file is not None):
-        with open(args.change_file, "r") as change_file:
-            files = change_file.read().replace(" ", "\n").splitlines()
-            print(files)
-
     exit(
         test(
             maxim_path=args.maxim_path,
             targets=args.targets,
             boards=args.boards,
-            projects=args.projects
+            projects=args.projects,
+            change_file=args.change_file
         )
     )
