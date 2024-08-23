@@ -110,16 +110,18 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False,
     return (return_code, project_info)
 
 def query_build_variable(project:Path, variable:str) -> list:
-    result = run(f"make query QUERY_VAR={variable}", cwd=project, shell=True, capture_output=True, encoding="utf-8")
+    result = run(f"make query QUERY_VAR=\"{variable}\"", cwd=project, shell=True, capture_output=True, encoding="utf-8")
     if result.returncode != 0:
         return []
 
-    for line in result.stdout.splitlines():
-        if variable in line:
-            # query output string will be "{variable}={item1, item2, ..., itemN}"
-            return str(line).split("=")[1].split(" ")
+    output = []
+    for v in variable.split(" "):
+        for line in result.stdout.splitlines():
+            if v in line:
+                # query output string will be "{variable}={item1, item2, ..., itemN}"
+                output += str(line).split("=")[1].split(" ")
 
-    raise Exception(f"Bad variable query for {variable} in {project}")
+    return output
 
 """
 Create a dictionary mapping each target micro to its dependencies in the MSDK.
@@ -149,11 +151,8 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
                 projects = [Path(i).parent for i in examples_dir.rglob("**/project.mk")]
                 for project in projects:
                     console.print(f"\t- Checking dependencies: {project}")
-                    IPATH = query_build_variable(project, "IPATH")
-                    VPATH = query_build_variable(project, "VPATH")
-                    SRCS = query_build_variable(project, "SRCS")
-                    LIBS = query_build_variable(project, "SRCS")
-                    dependencies = list(set(IPATH + VPATH + SRCS + LIBS))
+                    dependencies = query_build_variable(project, "IPATH VPATH SRCS LIBS")
+                    dependencies = list(set(dependencies))
                     for i in dependencies:
                         if i == ".":
                             dependencies.remove(i)

@@ -740,8 +740,9 @@ SUPPRESS_HELP := 1
 endif
 .PHONY: query
 query:
+	@echo
 ifneq "$(QUERY_VAR)" ""
-	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+	$(foreach QUERY_VAR,$(QUERY_VAR),$(info $(QUERY_VAR)=$($(QUERY_VAR))))
 else
 	$(MAKE) debug
 endif
