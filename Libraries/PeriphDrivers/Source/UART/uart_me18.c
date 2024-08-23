@@ -53,23 +53,6 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         return retval;
     }
 
-    // switch (clock) {
-    // case MXC_UART_ERTCO_CLK:
-    //     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-    //     break;
-
-    // case MXC_UART_IBRO_CLK:
-    //     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-    //     break;
-
-    // case MXC_UART_ERFO_CLK:
-    //     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-    //     break;
-
-    // default:
-    //     break;
-    // }
-
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_uart0);
@@ -238,7 +221,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
         return E_BAD_PARAM;
     }
 
-    // check if UARt is LP UART
+    // check if UART is LP UART
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
             periphClock = ERTCO_FREQ * 2;

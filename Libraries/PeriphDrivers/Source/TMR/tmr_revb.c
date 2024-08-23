@@ -62,8 +62,8 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Clear interrupt flag
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 
-    MXC_TMR_RevB_SetClockSource(tmr, cfg->bitMode, cfg->clock);
-    MXC_TMR_RevB_SetPrescalar(tmr, cfg->bitMode, cfg->pres);
+    MXC_TMR_RevB_SetClockSource(tmr, cfg->bitMode, clk_src);
+    MXC_TMR_RevB_SetPrescalar(tmr, cfg->bitMode, clk_src);
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {

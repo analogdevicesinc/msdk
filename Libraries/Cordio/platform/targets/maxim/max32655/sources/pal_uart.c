@@ -63,6 +63,8 @@
   Local Variables
 **************************************************************************************************/
 /*! \brief      Control block. */
+
+
 static struct {
   PalUartState_t state;
   mxc_uart_req_t readReq;
@@ -285,6 +287,9 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
 #endif
 
   uartNum = palUartGetNum(id);
+
+
+  PAL_SYS_ASSERT(palUartCb[uartNum].state == PAL_UART_STATE_UNINIT);
 
   /* Save the callback */
   palUartCb[uartNum].rdCback = pCfg->rdCback;
