@@ -65,7 +65,8 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          echo ${ALL_CHANGED_FILES}
+          echo ${ALL_CHANGED_FILES} > change_files.txt
+          cat change_files.txt
 
       - name: Check watch files
         id: check_watch        
