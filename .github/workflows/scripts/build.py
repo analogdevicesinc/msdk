@@ -54,12 +54,7 @@ hardfp_test_list = [
 console = Console(emoji=False, color_system="standard")
 
 def build_project(project:Path, target, board, maxim_path:Path, distclean=False, extra_args=None) -> Tuple[int, tuple]:
-    clean_cmd = "make clean" if not distclean else "make distclean"
-    # NOTE: Disabled Cordio re-builds as of 8/23/2024 now that the library files should
-    # account for basic changes across projects like trace levels and hard/softfp
-    # if "Bluetooth" in project.as_posix() or "BLE" in project.as_posix():
-    #     # Clean cordio lib for BLE projects
-    #     clean_cmd += "&& make clean.cordio"
+    clean_cmd = "make clean" if not distclean else "make distclean"    
     res = run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     # Test build
@@ -67,6 +62,17 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False,
     if extra_args:
         build_cmd += f" {str(extra_args)}"
     res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
+    
+    if res.returncode != 0 and ("Bluetooth" in project.as_posix() or "BLE" in project.as_posix()):
+        # NOTE: Special case is required to handle some Cordio re-builds.
+        # TODO: Track Cordio options better across library re-builds
+        console.print(f"[red]BLE project {project} failed.[/red]")
+        console.print("[yellow]Trying a clean.cordio and rebuild...[/yellow]")
+        clean_cmd += "&& make clean.cordio"
+        run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
+        res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
+        if res.returncode == 0:
+            console.print("[green]Pass[/green] after rebuild.")
 
     project_info = {
         "target":target,
@@ -222,6 +228,8 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
     # Remove the periphdrivers build directory
     console.print("Cleaning PeriphDrivers build directories...")
     shutil.rmtree(Path(maxim_path) / "Libraries" / "PeriphDrivers" / "bin", ignore_errors=True)
+    console.print("Cleaning Cordio build directories...")
+    shutil.rmtree(Path(maxim_path) / "Libraries" / "Cordio" / "bin", ignore_errors=True)
 
     # Get list of target micros if none is specified
     if targets is None:
