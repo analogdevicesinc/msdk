@@ -143,6 +143,15 @@ TODO: Improve this so the dependency checks are more granular.  (i.e. ME14 sourc
     affects ME14).  This is difficult because example projects do not have direct visibility 
     into library SRCS/VPATH for libraries that build a static file.
 
+The format of the dependency map a dictionary:
+    dependency_map[TARGET] = [DEPENDENCIES]
+
+    where TARGET is the target micro's part number (ex: MAX78000)
+    and DEPENDENCIES is a list of absolute paths as strings (ex:   ['/home/jhcarter/repos/msdk/Examples/MAX32690/ADC', 
+                                                                    '/home/jhcarter/repos/msdk/Examples/MAX32690/ADC/board.c', 
+                                                                    '/home/jhcarter/repos/msdk/Examples/MAX32690/ADC/heap.c',
+                                                                    ...])
+    the paths may be a file or a folder.
 """
 def create_dependency_map(maxim_path:Path, targets:list) -> dict:
     dependency_map = dict()
@@ -195,6 +204,9 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
 
     return dependency_map
 
+"""
+Return a list of target microcontrollers that are affected by a change to the specified file.
+"""
 def get_affected_targets(dependency_map: dict, file: Path) -> list:
     file = Path(file)
     affected = []
