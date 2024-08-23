@@ -51,6 +51,8 @@ hardfp_test_list = [
     "BLE_FreeRTOS"
 ]
 
+console = Console(emoji=False, color_system="standard")
+
 def build_project(project:Path, target, board, maxim_path:Path, distclean=False, extra_args=None) -> Tuple[int, tuple]:
     clean_cmd = "make clean" if not distclean else "make distclean"
     if "Bluetooth" in project.as_posix() or "BLE" in project.as_posix():
@@ -105,11 +107,102 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False,
 
     return (return_code, project_info)
 
+def query_build_variable(project:Path, variable:str) -> list:
+    result = run(f"make query QUERY_VAR={variable}", cwd=project, shell=True, capture_output=True, encoding="utf-8")
+    if result.returncode != 0:
+        return []
 
-def test(maxim_path : Path = None, targets=None, boards=None, projects=None, change_file=None): 
+    for line in result.stdout.splitlines():
+        if variable in line:
+            # query output string will be "{variable}={item1, item2, ..., itemN}"
+            return str(line).split("=")[1].split(" ")
 
-    console = Console(emoji=False, color_system="standard")
+    raise Exception(f"Bad variable query for {variable} in {project}")
 
+"""
+Create a dictionary mapping each target micro to its dependencies in the MSDK.
+The dependency paths contain IPATH, VPATH, SRCS, and LIBS from all of the target's examples.
+
+It should be noted that any paths relative to the Libraries folder will be walked back to a
+1-level deep sub-folder.
+
+Ex: Libraries/PeriphDrivers/Source/ADC/adc_me14.c   --->   Libraries/PeriphDrivers
+
+This is so that any changes to source files will be caught by the dependency tracker.
+TODO: Improve this so the dependency checks are more granular.  (i.e. ME14 source change only 
+    affects ME14).  This is difficult because example projects do not have direct visibility 
+    into library SRCS/VPATH for libraries that build a static file.
+
+"""
+def create_dependency_map(maxim_path:Path, targets:list) -> dict:
+    dependency_map = dict()
+
+    with Progress(console=console) as progress:
+        task_dependency_map = progress.add_task("Creating dependency map...", total=len(targets))
+        for target in targets:
+            progress.update(task_dependency_map, description=f"Creating dependency map for {target}...")
+            dependency_map[target] = []
+            examples_dir = Path(maxim_path / "Examples" / target)
+            if examples_dir.exists():
+                projects = [Path(i).parent for i in examples_dir.rglob("**/project.mk")]
+                for project in projects:
+                    console.print(f"\t- Checking dependencies: {project}")
+                    IPATH = query_build_variable(project, "IPATH")
+                    VPATH = query_build_variable(project, "VPATH")
+                    SRCS = query_build_variable(project, "SRCS")
+                    LIBS = query_build_variable(project, "SRCS")
+                    dependencies = list(set(IPATH + VPATH + SRCS + LIBS))
+                    for i in dependencies:
+                        if i == ".":
+                            dependencies.remove(i)
+                            i = project
+
+                        # Convert to absolute paths
+                        if not Path(i).is_absolute():
+                            dependencies.remove(i)
+                            corrected = Path(Path(project) / i).absolute()
+                            i = corrected
+
+                        # Walk back library paths to their root library folder.
+                        # This is so that any src changes will get caught, since
+                        # usually the project does not have the src folders as direct
+                        # dependencies on VPATH/SRCS.  IPATH will be exposed to the project.
+                        if "Libraries" in str(i):
+                            path = Path(i)
+                            while path.parent.stem != "Libraries" and path.exists():
+                                path = path.parent
+                            i = str(path)
+
+                        if i not in dependency_map[target]:
+                            dependency_map[target].append(str(i))
+
+
+            if "." in dependency_map[target]: 
+                dependency_map[target].remove(".") # Root project dir
+            if str(maxim_path) in dependency_map[target]:
+                dependency_map[target].remove(str(maxim_path)) # maxim_path gets added for "mxc_version.h"
+
+            dependency_map[target] = sorted(list(set(dependency_map[target])))
+            # console.print(f"\t- {target} dependencies:\n{dependency_map[target]}")
+            progress.update(task_dependency_map, advance=1)
+
+    return dependency_map
+
+def get_affected_targets(dependency_map: dict, file: Path) -> list:
+    file = Path(file)
+    affected = []
+    for target in dependency_map.keys():
+        add = False
+        if target in str(file).upper(): add = True
+
+        for dependency in dependency_map[target]:
+            if file.is_relative_to(dependency): add = True
+
+        if add and target not in affected: affected.append(target)
+
+    return affected
+
+def test(maxim_path : Path = None, targets=None, boards=None, projects=None, change_file=None):
     env = os.environ.copy()
     if maxim_path is None and "MAXIM_PATH" in env.keys():
         maxim_path = Path(env['MAXIM_PATH']).absolute()
@@ -153,17 +246,30 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
         for i in targets: targets_to_skip.append(i)
         files:list = []
         with open(args.change_file, "r") as change_file:
-            files = change_file.read().replace(" ", "\n").splitlines()
+            files = change_file.read().strip().replace(" ", "\n").splitlines()
+            files = [maxim_path / file for file in files]
 
-        console.print(f"Checking {len(files)} changed files...")
+        if not files:
+            console.print("[red]Changed files is empty.  Skipping dependency checks.[/red]")
+        else:
+            console.print("Creating dependency map...")
+            dependency_map = create_dependency_map(maxim_path, targets)
+            console.print(f"Checking {len(files)} changed files...")
 
-        for f in files:
-            for target in targets_to_skip:
-                if target in str(f).upper():
-                    targets_to_skip.remove(target)
-                    console.print(f"\t- Testing {target} from change to: {f}")
+            for f in files:
+                affected = get_affected_targets(dependency_map, f)
+                if affected:
+                    for i in affected:
+                        if i in targets_to_skip:
+                            targets_to_skip.remove(i)
+                            console.print(f"\t- Testing {i} from change to {f}")
+                else:
+                    console.print(f"\t- Unknown effects from change to {f}, testing everything")
+                    targets_to_skip.clear()
 
-        targets = [i for i in targets if i not in targets_to_skip]
+                if len(targets_to_skip) == 0: break
+
+            targets = [i for i in targets if i not in targets_to_skip]
 
     if targets is not None:
         console.print(f"Testing: {targets}")
