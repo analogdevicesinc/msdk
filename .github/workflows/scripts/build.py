@@ -120,6 +120,11 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
     
     env["FORCE_COLOR"] = 1
 
+    console.print(f"Blacklist: {blacklist}")
+    console.print(f"Project blacklist: {project_blacklist}")
+    console.print(f"Known errors: {known_errors}")
+    console.print(f"Hard FP whitelist: {hardfp_test_list}")
+
     # Remove the periphdrivers build directory
     console.print("Cleaning PeriphDrivers build directories...")
     shutil.rmtree(Path(maxim_path) / "Libraries" / "PeriphDrivers" / "bin", ignore_errors=True)
