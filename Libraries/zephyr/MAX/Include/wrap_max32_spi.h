@@ -116,9 +116,14 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
 #define ADI_MAX32_SPI_INT_EN_TX_THD MXC_F_SPI_INTEN_TX_THD
 
 #define ADI_MAX32_SPI_DMA_TX_FIFO_CLEAR MXC_F_SPI_DMA_TX_FLUSH
-#define ADI_MAX32_SPI_DMA_TX_DMA_EN MXC_F_SPI_DMA_DMA_TX_EN
 #define ADI_MAX32_SPI_DMA_RX_FIFO_CLEAR MXC_F_SPI_DMA_RX_FLUSH
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32662)
+#define ADI_MAX32_SPI_DMA_TX_DMA_EN MXC_F_SPI_DMA_TX_EN
+#define ADI_MAX32_SPI_DMA_RX_DMA_EN MXC_F_SPI_DMA_RX_EN
+#else
+#define ADI_MAX32_SPI_DMA_TX_DMA_EN MXC_F_SPI_DMA_DMA_TX_EN
 #define ADI_MAX32_SPI_DMA_RX_DMA_EN MXC_F_SPI_DMA_DMA_RX_EN
+#endif /* defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32662) */
 
 static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed,
                                     int numSlaves, unsigned ssPolarity, unsigned int hz)
