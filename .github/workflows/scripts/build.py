@@ -159,9 +159,9 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
 
         for f in files:
             for target in targets_to_skip:
-                if target in f:
+                if target in str(f).upper():
                     targets_to_skip.remove(target)
-                    console.print(f"Testing {target} from change to: {f}")
+                    console.print(f"\t- Testing {target} from change to: {f}")
 
         targets = [i for i in targets if i not in targets_to_skip]
 
