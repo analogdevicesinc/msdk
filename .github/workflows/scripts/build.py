@@ -344,10 +344,17 @@ parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the M
 parser.add_argument("--targets", type=str, nargs="+", required=False, help="Target microcontrollers to test.")
 parser.add_argument("--boards", type=str, nargs="+", required=False, help="Boards to test.  Should match the BSP folder-name exactly.")
 parser.add_argument("--projects", type=str, nargs="+", required=False, help="Examples to populate.  Should match the example's folder name.")
+parser.add_argument("--change_file", type=str, required=False, help="(Optional) Pass a text file containing a list of space-separated or new-line separated changed files.  The build script will intelligently adjust which parts it tests based on this list.")
 
 if __name__ == "__main__":
     args = parser.parse_args()
     inspect(args, title="Script arguments:", )
+
+    if (args.change_file is not None):
+        with open(args.change_file, "r") as change_file:
+            files = change_file.read().replace(" ", "\n").splitlines()
+            print(files)
+
     exit(
         test(
             maxim_path=args.maxim_path,
