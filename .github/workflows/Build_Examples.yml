@@ -60,6 +60,16 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **.c
+            **.h
+            **.S
+            **.s
+            **.a
+            **.cpp
+            **.mk
+            **/Makefile
 
       - name: List all changed files
         env:
