@@ -313,6 +313,10 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   if(pCfg->hwFlow) {
     MXC_UART_SetFlowCtrl(MXC_UART_GET_UART(uartNum), MXC_UART_FLOW_EN, 1);
   }
+  
+  const IRQn_Type uartIrqn = MXC_UART_GET_IRQ(uartNum);
+  NVIC_ClearPendingIRQ(uartIrqn);
+  NVIC_EnableIRQ(uartIrqn); 
 
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
 }
