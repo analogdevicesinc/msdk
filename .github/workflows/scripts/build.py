@@ -207,7 +207,6 @@ def get_affected_targets(dependency_map: dict, file: Path) -> list:
 
         for dependency in dependency_map[target]:
             if file.is_relative_to(dependency):
-                console.print(f"{file} match {dependency}") 
                 add = True
 
         if add and target not in affected: affected.append(target)
