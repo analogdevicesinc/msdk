@@ -183,7 +183,7 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
                         # This is so that any src changes will get caught, since
                         # usually the project does not have the src folders as direct
                         # dependencies on VPATH/SRCS.  IPATH will be exposed to the project.
-                        if "Libraries" in str(i):
+                        if "Libraries" in str(i) and "MAX" not in str(i).upper():
                             path = Path(i)
                             while path.parent.stem != "Libraries" and path.exists():
                                 path = path.parent
