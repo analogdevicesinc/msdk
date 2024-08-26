@@ -179,16 +179,6 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
                             corrected = Path(Path(project) / i).absolute()
                             i = corrected
 
-                        # Walk back library paths to their root library folder.
-                        # This is so that any src changes will get caught, since
-                        # usually the project does not have the src folders as direct
-                        # dependencies on VPATH/SRCS.  IPATH will be exposed to the project.
-                        if "Libraries" in str(i) and "MAX" not in str(i).upper():
-                            path = Path(i)
-                            while path.parent.stem != "Libraries" and path.exists():
-                                path = path.parent
-                            i = str(path)
-
                         if i not in dependency_map[target]:
                             dependency_map[target].append(str(i))
 
@@ -199,7 +189,8 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
                 dependency_map[target].remove(str(maxim_path)) # maxim_path gets added for "mxc_version.h"
 
             dependency_map[target] = sorted(list(set(dependency_map[target])))
-            # console.print(f"\t- {target} dependencies:\n{dependency_map[target]}")
+            # with open(f"{target}_dependencies", "w") as f:
+            #     f.write(f"\t- {target} dependencies:\n{dependency_map[target]}")
             progress.update(task_dependency_map, advance=1)
 
     return dependency_map
@@ -215,7 +206,9 @@ def get_affected_targets(dependency_map: dict, file: Path) -> list:
         if target in str(file).upper(): add = True
 
         for dependency in dependency_map[target]:
-            if file.is_relative_to(dependency): add = True
+            if file.is_relative_to(dependency):
+                console.print(f"{file} match {dependency}") 
+                add = True
 
         if add and target not in affected: affected.append(target)
 
