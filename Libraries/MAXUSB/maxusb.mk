@@ -98,3 +98,6 @@ IPATH += ${MAXUSB_DIR}/include/dbg_log
 # Add rule to build the Driver Library
 ${MAXUSB_BUILD_DIR}/maxusb.a: FORCE
 	$(MAKE) -C ${MAXUSB_DIR} lib BUILD_DIR=${MAXUSB_BUILD_DIR}
+
+query.maxusb:
+	@$(MAKE) -C ${MAXUSB_DIR} query QUERY_VAR="${QUERY_VAR}"

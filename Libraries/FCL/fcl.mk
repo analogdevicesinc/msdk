@@ -71,3 +71,6 @@ ${FCL_BUILD_DIR}/${FCL_LIB}: ${FCL_C_FILES} ${FCL_H_FILES}
 
 clean.fcl:
 	@rm -rf ${FCL_BUILD_DIR}/*
+
+query.fcl:
+	@$(MAKE) -f ${FCL_DIR}/libfcl.mk query QUERY_VAR="${QUERY_VAR}"

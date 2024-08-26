@@ -18,13 +18,13 @@ blacklist = [
     "MAX32665/BLE_LR_Central",
     "MAX32665/BLE_LR_Peripheral",
     "MAXREFDES178",
-    "BCB", 
-    "ROM", 
-    "Simulation", 
-    "BCB_PBM", 
-    "Emulator", 
-    "Emulator_NFC", 
-    "EvKit_129B", 
+    "BCB",
+    "ROM",
+    "Simulation",
+    "BCB_PBM",
+    "Emulator",
+    "Emulator_NFC",
+    "EvKit_129B",
     "EvKit_129C",
     "WLP_VAR",
     "WLP_DB",
@@ -54,7 +54,7 @@ hardfp_test_list = [
 console = Console(emoji=False, color_system="standard")
 
 def build_project(project:Path, target, board, maxim_path:Path, distclean=False, extra_args=None) -> Tuple[int, tuple]:
-    clean_cmd = "make clean" if not distclean else "make distclean"    
+    clean_cmd = "make clean" if not distclean else "make distclean"
     res = run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     # Test build
@@ -62,7 +62,7 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False,
     if extra_args:
         build_cmd += f" {str(extra_args)}"
     res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
-    
+
     if res.returncode != 0 and ("Bluetooth" in project.as_posix() or "BLE" in project.as_posix()):
         # NOTE: Special case is required to handle some Cordio re-builds.
         # TODO: Track Cordio options better across library re-builds
@@ -97,7 +97,7 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False,
                 # to stdout.  For these warnings, stderr is non-null but empty
                 if res.stderr == '':
                     known_error = True
-                    
+
 
     if fail and known_error: # build error
         fail = False
@@ -123,7 +123,7 @@ def query_build_variable(project:Path, variable:str) -> list:
     output = []
     for v in variable.split(" "):
         for line in result.stdout.splitlines():
-            if v in line:
+            if line[:len(v)] == v:
                 # query output string will be "{variable}={item1, item2, ..., itemN}"
                 output += str(line).split("=")[1].split(" ")
 
@@ -133,23 +133,12 @@ def query_build_variable(project:Path, variable:str) -> list:
 Create a dictionary mapping each target micro to its dependencies in the MSDK.
 The dependency paths contain IPATH, VPATH, SRCS, and LIBS from all of the target's examples.
 
-It should be noted that any paths relative to the Libraries folder will be walked back to a
-1-level deep sub-folder.
-
-Ex: Libraries/PeriphDrivers/Source/ADC/adc_me14.c   --->   Libraries/PeriphDrivers
-
-This is so that any changes to source files will be caught by the dependency tracker.
-TODO: Improve this so the dependency checks are more granular.  (i.e. ME14 source change only 
-    affects ME14).  This is difficult because example projects do not have direct visibility 
-    into library SRCS/VPATH for libraries that build a static file.
-
 The format of the dependency map a dictionary:
     dependency_map[TARGET] = [DEPENDENCIES]
 
     where TARGET is the target micro's part number (ex: MAX78000)
-    and DEPENDENCIES is a list of absolute paths as strings (ex:   ['/home/jhcarter/repos/msdk/Examples/MAX32690/ADC', 
-                                                                    '/home/jhcarter/repos/msdk/Examples/MAX32690/ADC/board.c', 
-                                                                    '/home/jhcarter/repos/msdk/Examples/MAX32690/ADC/heap.c',
+    and DEPENDENCIES is a list of absolute paths as strings (ex:   ['/home/jhcarter/repos/msdk/Examples/MAX32690/ADC',
+                                                                    '/home/jhcarter/repos/msdk/Examples/MAX32690/ADC/board.c',
                                                                     ...])
     the paths may be a file or a folder.
 """
@@ -166,7 +155,7 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
                 projects = [Path(i).parent for i in examples_dir.rglob("**/project.mk")]
                 for project in projects:
                     console.print(f"\t- Checking dependencies: {project}")
-                    dependencies = query_build_variable(project, "IPATH VPATH SRCS LIBS")
+                    dependencies = query_build_variable(project, "IPATH SRCS LIBS")
                     dependencies = list(set(dependencies))
                     for i in dependencies:
                         if i == ".":
@@ -179,27 +168,17 @@ def create_dependency_map(maxim_path:Path, targets:list) -> dict:
                             corrected = Path(Path(project) / i).absolute()
                             i = corrected
 
-                        # Walk back library paths to their root library folder.
-                        # This is so that any src changes will get caught, since
-                        # usually the project does not have the src folders as direct
-                        # dependencies on VPATH/SRCS.  IPATH will be exposed to the project.
-                        if "Libraries" in str(i) and "MAX" not in str(i).upper():
-                            path = Path(i)
-                            while path.parent.stem != "Libraries" and path.exists():
-                                path = path.parent
-                            i = str(path)
-
                         if i not in dependency_map[target]:
-                            dependency_map[target].append(str(i))
+                            dependency_map[target].append(str(Path(i).resolve()))
 
 
-            if "." in dependency_map[target]: 
+            if "." in dependency_map[target]:
                 dependency_map[target].remove(".") # Root project dir
             if str(maxim_path) in dependency_map[target]:
                 dependency_map[target].remove(str(maxim_path)) # maxim_path gets added for "mxc_version.h"
 
             dependency_map[target] = sorted(list(set(dependency_map[target])))
-            # console.print(f"\t- {target} dependencies:\n{dependency_map[target]}")
+            # console.print(dependency_map[target])
             progress.update(task_dependency_map, advance=1)
 
     return dependency_map
@@ -212,10 +191,17 @@ def get_affected_targets(dependency_map: dict, file: Path) -> list:
     affected = []
     for target in dependency_map.keys():
         add = False
-        if target in str(file).upper(): add = True
+        if target in str(file).upper():
+            add = True
+        else:
+            for dependency in dependency_map[target]:
+                if str(file) == dependency:
+                    add = True
+                elif file.suffix == ".h" and file.is_relative_to(dependency):
+                    add = True
 
-        for dependency in dependency_map[target]:
-            if file.is_relative_to(dependency): add = True
+                if add:
+                    break
 
         if add and target not in affected: affected.append(target)
 
@@ -229,7 +215,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
     else:
         console.print("MAXIM_PATH not set.")
         return
-    
+
     env["FORCE_COLOR"] = 1
 
     console.print(f"Blacklist: {blacklist}")
@@ -253,7 +239,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
                 targets.append(dir.name) # Append subdirectories of Examples to list of target micros
 
         console.print(f"Detected target microcontrollers: {targets}")
-    
+
     else:
         assert(type(targets) is list)
         console.print(f"Testing {targets}")
@@ -323,7 +309,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
             console.print(f"Testing {boards}")
 
         boards = sorted(boards) # Enforce alphabetical ordering
-                
+
         # Get list of examples for this target.
         _projects = set()
         if projects is None:
@@ -338,14 +324,14 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
                     _projects.add(dirpath)
-        
-        
-        
+
+
+
         console.print(f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]")
         console.print(f"Detected boards: {boards}")
 
         _projects = sorted(_projects) # Enforce alphabetical ordering
-                
+
 
         with Progress(console=console) as progress:
             task_build = progress.add_task(description=f"{target}: PeriphDrivers", total=(len(_projects) * len(boards)) + len(boards))
@@ -357,7 +343,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
             for p in _projects:
                 if p.name == "Hello_World":
                     hello_world = p
-            
+
             if hello_world is None:
                 console.print(f"[red]Failed to locate Hello_World for {target}[/red]")
             else:
@@ -406,7 +392,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
                         (return_code, project_info) = build_project(project, target, board, maxim_path, distclean=False)
 
                         # Error check build command
-                        if return_code == 1:                            
+                        if return_code == 1:
                             console.print(f"\n[red]{target} ({board}): {project_name} failed.[/red]")
                             print(f"Build command: {project_info['build_cmd']}")
                             console.print("[bold]Errors:[/bold]")
@@ -473,7 +459,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
             elif not periph_success:
                 progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]PeriphDriver build failed.[/red]", refresh=True)
             else:
-                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(_projects)} projects[/red]", refresh=True)            
+                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(_projects)} projects[/red]", refresh=True)
 
         boards = None # Reset boards list
         _projects = None # Reset projects list
@@ -483,7 +469,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None, cha
         print(f"{len(warnings)} projects with warnings:")
         for p in warnings:
             console.print(f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [yellow]warnings[/yellow] for [yellow]{p['board']}[/yellow]")
-    
+
     if (len(failed) > 0):
         print("Failed projects:")
         for p in failed:

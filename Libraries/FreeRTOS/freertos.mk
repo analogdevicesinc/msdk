@@ -66,4 +66,6 @@ IPATH += ${RTOS_DIR}/Source/include
 # Add rule to build the Driver Library
 ${RTOS_BUILD_DIR}/librtos.a: FORCE
 	$(MAKE) -C ${RTOS_DIR} lib BUILD_DIR=${RTOS_BUILD_DIR}
-
+	
+query.freertos:
+	@$(MAKE) -C ${RTOS_DIR} query QUERY_VAR="${QUERY_VAR}"
