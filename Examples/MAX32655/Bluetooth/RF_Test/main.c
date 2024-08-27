@@ -839,7 +839,6 @@ void setTxPower(int8_t power)
 {
     // TODO(BLE): validate value
     txPower = power;
-    llc_api_set_txpower((int8_t)power);
     LlSetAdvTxPower((int8_t)power);
     printf("> Power set to %d dBm\n", power);
 }
