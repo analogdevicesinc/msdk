@@ -673,15 +673,18 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
         // Save TX Request
         AsyncTxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
 
-        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE);
+        /* Leave the half empty interrupt disabled while we're writing */
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
         req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
                                            numToWrite);
 
-        /* If we're finished writing to the TX FIFO, pend the interrupt */
         if (req->txCnt == req->txLen) {
+            /* If we're finished writing to the TX FIFO, pend the interrupt */
             NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uart_num));
+        } else {
+            /* Else enable the half empty interrupt */
+            MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE);
         }
     }
 
