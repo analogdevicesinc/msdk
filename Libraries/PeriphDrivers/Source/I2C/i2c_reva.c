@@ -298,8 +298,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
                           bool use_dma_rx)
 {
     int8_t i2cNum;
-    int8_t rxChannel;
-    int8_t txChannel;
+    int8_t rxChannel = -1;
+    int8_t txChannel = -1;
 
     if (i2c == NULL || dma == NULL) {
         return E_NULL_PTR;
@@ -357,7 +357,11 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
         states[i2cNum].channelTx = txChannel;
 #ifdef __arm__
         NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(txChannel));
+#if TARGET_NUM == 32665
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
+#else
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Handler);
+#endif
 #endif
     }
 
@@ -391,7 +395,11 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
         MXC_DMA_SetChannelInterruptEn(rxChannel, 0, 1);
 #ifdef __arm__
         NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(rxChannel));
-        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(rxChannel), MXC_DMA_Handler);
+#if TARGET_NUM == 32665
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
+#else
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Handler);
+#endif
 #endif
 
         states[i2cNum].channelRx = rxChannel;

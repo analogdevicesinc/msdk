@@ -445,6 +445,28 @@ int MXC_DMA_Stop(int ch);
  */
 mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
 
+typedef void (*dma_handler_t)(void);
+/**
+ * @brief      Get the appropriate "hard" DMA handler for the specified DMA instance.
+ *             @ref MXC_DMA_DMA0_Handler or @ref MXC_DMA_DMA1_Handler.
+ *             Mostly used by internal drivers.
+ */
+dma_handler_t MXC_DMA_Get_DMA_Handler(mxc_dma_regs_t *dma);
+
+/**
+ * @brief      Interrupt handler function for DMA0
+ * @details    Used by some internal drivers that automatically assign DMA handlers.
+ *             This is equivalent to "MXC_DMA_Handler(MXC_DMA0);"
+ */
+void MXC_DMA_DMA0_Handler(void);
+
+/**
+ * @brief      Interrupt handler function for DMA0
+ * @details    Used by some internal drivers that automatically assign DMA handlers.
+ *             This is equivalent to "MXC_DMA_Handler(MXC_DMA1);"
+ */
+void MXC_DMA_DMA1_Handler(void);
+
 /**
  * @brief      Interrupt handler function
  * @param 	   dma 	Pointer to DMA registers.
