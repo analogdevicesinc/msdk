@@ -358,7 +358,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
 #ifdef __arm__
         NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(txChannel));
 #if TARGET_NUM == 32665
-        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel),
+                           MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
 #else
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Handler);
 #endif
@@ -396,7 +397,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
 #ifdef __arm__
         NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(rxChannel));
 #if TARGET_NUM == 32665
-        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel),
+                           MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
 #else
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Handler);
 #endif
@@ -1150,16 +1152,17 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
             while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
 
             i2c->fifo = ((req->addr) << 1) | 0x1; // Load the slave address with write bit set
-            while(!((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_ACK) || (i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_NACK_ERR))) {
+            while (!((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_ACK) ||
+                     (i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_NACK_ERR))) {
                 // Wait for an ACK or NACK from the slave
             }
             if (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_ACK)) {
-                // If we did not get an ACK, then something went wrong.  
+                // If we did not get an ACK, then something went wrong.
                 // Abort the transaction and signal the user's callback
                 MXC_I2C_RevA_Stop(i2c);
                 MXC_DMA_Stop(states[i2cNum].channelRx);
                 if (states[i2cNum].req->callback != NULL) {
-                    states[i2cNum].req->callback(states[i2cNum].req, E_COMM_ERR);                    
+                    states[i2cNum].req->callback(states[i2cNum].req, E_COMM_ERR);
                 }
                 return E_COMM_ERR;
             }
