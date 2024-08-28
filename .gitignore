@@ -39,3 +39,4 @@ package.json
 .python-version
 mxc_version.h
 mxc_version.mk
+packetcraft-adi
