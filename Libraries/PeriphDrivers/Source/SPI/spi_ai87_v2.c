@@ -812,3 +812,8 @@ int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)
 {
     return MXC_SPI_RevA2_SetDummyTX((mxc_spi_reva_regs_t *)spi, defaultTXData);
 }
+
+void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state)
+{
+    MXC_ASSERT(0);
+}
