@@ -477,6 +477,11 @@ void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
     MXC_SPI_RevA1_AsyncHandler((mxc_spi_reva_regs_t *)spi);
 }
 
+void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state)
+{
+    MXC_SPI_RevA1_HWSSControl((mxc_spi_reva_regs_t *)spi, state);
+}
+
 /* ** SPI v2 functions to prevent build errors ** */
 
 int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
