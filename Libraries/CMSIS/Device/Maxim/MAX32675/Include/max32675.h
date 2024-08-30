@@ -438,32 +438,24 @@ typedef enum {
 
 #define MXC_BASE_UART0 ((uint32_t)0x40042000UL)
 #define MXC_UART0 ((mxc_uart_regs_t *)MXC_BASE_UART0)
-#define MXC_BASE_UART1 ((uint32_t)0x40043000UL)
-#define MXC_UART1 ((mxc_uart_regs_t *)MXC_BASE_UART1)
 #define MXC_BASE_UART2 ((uint32_t)0x40044000UL)
 #define MXC_UART2 ((mxc_uart_regs_t *)MXC_BASE_UART2)
-#define MXC_BASE_UART3 ((uint32_t)0x40145000UL)
-#define MXC_UART3 ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
 #define MXC_UART_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? UART0_IRQn : \
-                (i) == 1 ? UART1_IRQn : \
                 (i) == 2 ? UART2_IRQn : \
-                (i) == 3 ? UART3_IRQn : \
                            0)
 
 #define MXC_UART_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_UART0 : \
-     (i) == 1 ? MXC_BASE_UART1 : \
      (i) == 2 ? MXC_BASE_UART2 : \
-     (i) == 3 ? MXC_BASE_UART3 : \
                 0)
 
 #define MXC_UART_GET_UART(i) \
-    ((i) == 0 ? MXC_UART0 : (i) == 1 ? MXC_UART1 : (i) == 2 ? MXC_UART2 : (i) == 3 ? MXC_UART3 : 0)
+    ((i) == 0 ? MXC_UART0 : (i) == 2 ? MXC_UART2 : 0)
 
 #define MXC_UART_GET_IDX(p) \
-    ((p) == MXC_UART0 ? 0 : (p) == MXC_UART1 ? 1 : (p) == MXC_UART2 ? 2 : (p) == MXC_UART3 ? 3 : -1)
+    ((p) == MXC_UART0 ? 0 : (p) == MXC_UART2 ? 2 : -1)
 
 /******************************************************************************/
 /*                                                                        SPI */
