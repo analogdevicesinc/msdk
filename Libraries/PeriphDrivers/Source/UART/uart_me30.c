@@ -113,18 +113,18 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
-    switch(clock) {
-        case MXC_UART_APB_CLK:
-            clock_freq = PeripheralClock;
-            break;
-        case MXC_UART_IBRO_CLK:
-            clock_freq = IBRO_FREQ;
-            break;
-        case MXC_UART_ERTCO_CLK:
-            clock_freq = ERTCO_FREQ;
-            break;
-        default:
-            return E_BAD_PARAM;
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = PeripheralClock;
+        break;
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
+    case MXC_UART_ERTCO_CLK:
+        clock_freq = ERTCO_FREQ;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     // TODO(JC): Update this call for ME30

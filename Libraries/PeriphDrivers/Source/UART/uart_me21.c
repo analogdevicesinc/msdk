@@ -149,7 +149,8 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
 #endif // MSDK_NO_GPIO_CLK_INIT
 
     retval = MXC_UART_SetClockSource(uart, clock);
-    if (retval) return retval;
+    if (retval)
+        return retval;
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
 }
@@ -200,7 +201,7 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
     // OSR default value
     uart->osr = 5;
 
-    switch(clock) {
+    switch (clock) {
     case MXC_UART_APB_CLK:
         clock_freq = PeripheralClock;
         break;
@@ -232,7 +233,8 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         }
         break;
     case MXC_UART_AOD_CLK:
-        aon_clk_div = (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV) >> MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS;
+        aon_clk_div = (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV) >>
+                      MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS;
         clock_freq = PeripheralClock / (4 * (pow(2, aon_clk_div)));
         break;
     default:
@@ -242,7 +244,6 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
     if (uart->ctrl & MXC_F_UART_CTRL_FDM) {
         clock_freq *= 2; // x2 to account for FDM
     }
-
 
     freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
 
@@ -408,7 +409,8 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
         return E_BAD_PARAM;
     }
 
-    if (error) return error;
+    if (error)
+        return error;
 
     return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
 }

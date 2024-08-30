@@ -98,7 +98,8 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
 #endif // MSDK_NO_GPIO_CLK_INIT
 
     retval = MXC_UART_SetClockSource(uart, clock);
-    if (retval) return retval;
+    if (retval)
+        return retval;
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, (mxc_uart_revb_clock_t)clock);
 }
@@ -131,29 +132,29 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t *uart)
 int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int freq;
-    uint32_t clock_freq = 0;     
+    uint32_t clock_freq = 0;
 
-   if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
     // Default OSR default value
     uart->osr = 5;
 
-    switch(clock) {
-        case MXC_UART_APB_CLK:
-            clock_freq = PeripheralClock;
-            break;
-        case MXC_UART_IBRO_CLK:
-            clock_freq = IBRO_FREQ;
-            break;
-        case MXC_UART_ERFO_CLK:
-            clock_freq = ERFO_FREQ;
-            break;
-        default:
-            return E_BAD_PARAM;
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = PeripheralClock;
+        break;
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
+    case MXC_UART_ERFO_CLK:
+        clock_freq = ERFO_FREQ;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
-    
+
     freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
 
     if (freq > 0) {
@@ -226,27 +227,27 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
     uint8_t clock_option = 0;
 
-    switch(MXC_UART_GET_IDX(uart)) {
-        case 0:
-        case 2:
-            switch(clock) {
-                case MXC_UART_APB_CLK:
-                    clock_option = 0;
-                    break;
-                case MXC_UART_IBRO_CLK:
-                    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-                    clock_option = 2;
-                    break;
-                case MXC_UART_ERFO_CLK:
-                    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-                    clock_option = 3;
-                    break;
-                default:
-                    return E_BAD_PARAM;
-            }
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+    case 2:
+        switch (clock) {
+        case MXC_UART_APB_CLK:
+            clock_option = 0;
+            break;
+        case MXC_UART_IBRO_CLK:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            clock_option = 2;
+            break;
+        case MXC_UART_ERFO_CLK:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+            clock_option = 3;
             break;
         default:
             return E_BAD_PARAM;
+        }
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);

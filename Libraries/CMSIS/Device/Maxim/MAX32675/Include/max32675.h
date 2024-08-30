@@ -441,21 +441,13 @@ typedef enum {
 #define MXC_BASE_UART2 ((uint32_t)0x40044000UL)
 #define MXC_UART2 ((mxc_uart_regs_t *)MXC_BASE_UART2)
 
-#define MXC_UART_GET_IRQ(i)             \
-    (IRQn_Type)((i) == 0 ? UART0_IRQn : \
-                (i) == 2 ? UART2_IRQn : \
-                           0)
+#define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : (i) == 2 ? UART2_IRQn : 0)
 
-#define MXC_UART_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_UART0 : \
-     (i) == 2 ? MXC_BASE_UART2 : \
-                0)
+#define MXC_UART_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0 : (i) == 2 ? MXC_BASE_UART2 : 0)
 
-#define MXC_UART_GET_UART(i) \
-    ((i) == 0 ? MXC_UART0 : (i) == 2 ? MXC_UART2 : 0)
+#define MXC_UART_GET_UART(i) ((i) == 0 ? MXC_UART0 : (i) == 2 ? MXC_UART2 : 0)
 
-#define MXC_UART_GET_IDX(p) \
-    ((p) == MXC_UART0 ? 0 : (p) == MXC_UART2 ? 2 : -1)
+#define MXC_UART_GET_IDX(p) ((p) == MXC_UART0 ? 0 : (p) == MXC_UART2 ? 2 : -1)
 
 /******************************************************************************/
 /*                                                                        SPI */
