@@ -23,6 +23,10 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
 #include "ll_init_api.h"
 #include "chci_tr.h"
 #include "lhci_api.h"
@@ -42,14 +46,8 @@
 #include "nvic_table.h"
 #include "board.h"
 #include "pal_timer.h"
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
-#include "mxc_device.h"
 #include "led.h"
 #include "pb.h"
-#include "board.h"
 #include "mxc_delay.h"
 #include "flc.h"
 #include "Ext_Flash.h"
