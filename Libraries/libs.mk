@@ -62,7 +62,7 @@ CODED_PHY_DEMO ?= 0
 INIT_EXTENDED ?= 0
 ifeq ($(LIB_CORDIO), 1)
 # Include the Cordio Library
-CORDIO_DIR ?= $(LIBS_DIR)/Cordio
+CORDIO_DIR ?= $(LIBS_DIR)/Packetcraft-ADI
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 PROJ_CFLAGS += -D__CORDIO__
 
