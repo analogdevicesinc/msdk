@@ -13,10 +13,10 @@ This is an example to show how to update the firmware through HCI
 
 
 ### Project-Specific Build Notes
-The `project.mk` in `Bootloader` application in conjunction with `project.mk` in `BLT` determine
+The `project.mk` in `Bootloader` application in conjunction with `project.mk` in `BLT` and `Second_App` to determine
 where the expected file is stored and read from.
 
-The flag `USE_INTERNAL_FLASH ` is used to determine which memory to store the firmware (internal or external). Currently, we only have lower level implementation for internal flash memory. 
+The flag `USE_INTERNAL_FLASH ` is used to determine which memory to store the firmware (internal or external). This example only is implemented using internal flash memory. 
 So, you should set the `USE_INTERNAL_FLASH ` to 1 to run the example. 
 
 
@@ -39,16 +39,19 @@ Static BDA[5:3]=00:18:80
 
 ```
 
-to update the firmware, you have to erase the second memory bank first!.
+**Attention**: To update the firmware, you have to erase the second memory bank first! The flash memory won't allow you to write until you erase that memory region first. 
 
-you can do it through CLI by typing `erase 10:04:00:00 03:80:00`, the result should look like this:
+you can do it by using HCI through CLI by typing `erase 10:04:00:00`, the result should look like this:
 ```
-Erasing the memory...
+Erase flash memory at address: 10040000
 Done
 ```
-`erase 10:04:00:00 03:80:00`: the first parameter `10:04:00:00` is the starting address of second memory bank (0x10040000) which is used to store the updated firmware. The second parameter `03:80:00` is to tell the size of the memory bank (0x38000) to be erased. 
 
-Then you can update the program by typing `update hello_world.bin`. `hello_world.bin` is file for new application. This file is in repository `MAX-BLE-HCI/examples/firmware_update`.
+**Attention**: `erase 10:04:00:00`: the parameter `10:04:00:00` is the starting address of second memory bank (0x10040000) which is used to store the updated firmware. This command will only erase **one page** of internal memory starting from 10:04:00:00. To upload the second application successfully, you may need to erase mutiple pages according to the size of the second application.
+
+If you want to erase multipages at once, you can use python script to erase the memory bank. The code is shown in `MAX-BLE-HCI/examples/firmware_update/firmware_update.py`
+
+Then you can update the program by typing `update 10:04:00:00 hello_world.bin`. `hello_world.bin` is file for new application. This file is in repository `MAX-BLE-HCI/examples/firmware_update`. You can also doing this by writing a script. 
 
 Finally you can reset the program to enable the updated firmware. You can reset the program by pressing the reset button or type `sysreset` through HCI. Then you will get the following result:
 ```
@@ -56,7 +59,7 @@ Second Application: Hello World!
 ```
 
 
-You can also run this example through HCI script. The example is located in `MAX-BLE-HCI/examples/firmware_update`.
+You can also run this example through HCI script. The example is located in `MAX-BLE-HCI/examples/firmware_update/firmware_update.py`.
 
 ### Configuration:
 You can change the starting address and size of the memory in linker script in both `BLT` folder and `Bootloader` folder.
