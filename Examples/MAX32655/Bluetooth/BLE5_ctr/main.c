@@ -45,7 +45,6 @@
 #include "board.h"
 #include "pal_timer.h"
 
-
 #define MAX_PRIORITY ((0x1 << __NVIC_PRIO_BITS) - 1)
 
 /*! \brief UART TX buffer size */
