@@ -168,11 +168,30 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
 int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
 {
+    int periphClock = 0;
+    int div = 8;
+
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    return MXC_UART_RevB_GetFrequency((mxc_uart_revb_regs_t *)uart);
+    // check if UARt is LP UART
+    if (uart == MXC_UART3) {
+        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+            return EXTCLK_FREQ;
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
+                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+            div = (1 << (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV)) * 8;
+            periphClock = SystemCoreClock / div;
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
+            periphClock = ERTCO_FREQ * 2;
+        } else {
+            return E_BAD_PARAM;
+        }
+        return (periphClock / uart->clkdiv);
+    } else {
+        return MXC_UART_RevB_GetFrequency((mxc_uart_revb_regs_t *)uart);
+    }
 }
 
 int MXC_UART_SetDataSize(mxc_uart_regs_t *uart, int dataSize)
