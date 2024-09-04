@@ -17,20 +17,31 @@
  * limitations under the License.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78002_QSPI_FASTSPI_CONFIG_H_
-#define EXAMPLES_MAX78002_QSPI_FASTSPI_CONFIG_H_
+ 
+    .syntax unified
+    .arch armv7-m
+    .text   
+    .thumb
+    .thumb_func
+    .align 2
 
-#include "spi.h"
-#include "gpio.h"
 
-// TODO(Jake): Config struct
-#define SPI MXC_SPI0
-#define SPI_SPEED 24000000
-// #define SPI_SPEED 1000000
-#define SPI_PINS_PORT MXC_GPIO0
-#define SPI_PINS_MASK \
-    (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9)
-#define SPI_SS_PORT MXC_GPIO0
-#define SPI_SS_PIN MXC_GPIO_PIN_4
+    .globl   Boot_Lower
+    .type    Boot_Lower %function
+/* Boot from the lower flash array */
+Boot_Lower:
 
-#endif // EXAMPLES_MAX78002_QSPI_FASTSPI_CONFIG_H_
+    ldr     r0,=0x10004000      /* Address for main flash image */
+    ldr     r1,=0xE000ED08      /* Address for SCB_VTOR_REG */
+
+    /* First 32-bit word in image is initial stack pointer */
+    /* Second 32-bit word in image is Address of the Reset Handler */
+    
+    /* Set VTOR with vector table base address */
+    str     r0,[r1]
+    /* Load initial SP */
+    ldr     sp,[r0]
+    /* Load LR with address of the Reset Handler */
+    ldr     lr,[r0,#4]
+    /* Jump to Reset Handler. */
+    bx      lr

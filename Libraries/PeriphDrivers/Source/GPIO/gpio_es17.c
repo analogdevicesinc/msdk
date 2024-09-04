@@ -99,28 +99,30 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         gpio->pdpu_sel1 &= ~cfg->mask;
         break;
 
+    // Note: for "ps" field set 1 for weak and 0 for strong.
+    // As of 8-28-2024 most UG tables have this flipped the wrong way
     case MXC_GPIO_PAD_WEAK_PULL_UP:
         gpio->pdpu_sel0 |= cfg->mask;
         gpio->pdpu_sel1 &= ~cfg->mask;
-        gpio->pssel &= ~cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->pdpu_sel0 |= cfg->mask;
         gpio->pdpu_sel1 &= ~cfg->mask;
-        gpio->pssel |= cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_WEAK_PULL_DOWN:
         gpio->pdpu_sel0 &= ~cfg->mask;
         gpio->pdpu_sel1 |= cfg->mask;
-        gpio->pssel &= ~cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
         gpio->pdpu_sel0 &= ~cfg->mask;
         gpio->pdpu_sel1 |= cfg->mask;
-        gpio->pssel |= cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     default:

@@ -152,8 +152,8 @@ void LlInitLlInit(void)
       #if defined(INIT_EXTENDED) 
         LlExtScanMasterInit();
         LlExtInitMasterInit();
-        LlPhyMasterInit();
       #endif
+      LlPhyMasterInit();
       
       #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
         LlCisMasterInit();

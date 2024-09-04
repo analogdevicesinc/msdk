@@ -17,40 +17,12 @@
  * limitations under the License.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78002_QSPI_APS6404_H_
-#define EXAMPLES_MAX78002_QSPI_APS6404_H_
 
-#include <stdint.h>
+/* Include the bl_update binary file, plus a reference for addition into linker script */
+.section .text
+_binary_bootloader_bin_start:
+.incbin "build/buildbl/bootloader.bin"
+_binary_bootloader_bin_end:
 
-#define MFID_EXPECTED 0x0D
-#define KGD_EXPECTED 0x5D
-#define DENSITY_EXPECTED 0b010
-
-typedef struct {
-    uint8_t MFID;
-    uint8_t KGD;
-    uint8_t density;
-    int EID;
-} ram_id_t;
-
-int ram_init(void);
-
-int ram_reset(void);
-
-int ram_enter_quadmode(void);
-
-int ram_exit_quadmode(void);
-
-int ram_read_id(ram_id_t *out);
-
-int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len);
-
-int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len);
-
-int ram_write(uint32_t address, uint8_t *data, unsigned int len);
-
-int ram_write_quad(uint32_t address, uint8_t *data, unsigned int len);
-
-int benchmark_dma_overhead(unsigned int *out);
-
-#endif // EXAMPLES_MAX78002_QSPI_APS6404_H_
+.globl _binary_bootloader_bin_start
+.globl _binary_bootloader_bin_end

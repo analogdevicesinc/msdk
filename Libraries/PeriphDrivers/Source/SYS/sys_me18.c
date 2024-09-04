@@ -526,23 +526,6 @@ void MXC_SYS_RISCVShutdown(void)
     MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
 }
 
-int MXC_SYS_RISCVClockSelect(mxc_sys_riscv_clock_t clock)
-{
-    switch (clock) {
-    case MXC_SYS_RISCV_CLOCK_PCLK:
-        MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
-        break;
-    case MXC_SYS_RISCV_CLOCK_ISO:
-        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_ISO);
-        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
-        break;
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return E_NO_ERROR;
-}
-
 /* ************************************************************************** */
 uint32_t MXC_SYS_RiscVClockRate(void)
 {

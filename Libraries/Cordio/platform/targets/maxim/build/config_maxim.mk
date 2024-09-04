@@ -47,7 +47,7 @@ CFG_DEV         += DTM_RX_SCHEDULING=1
 # Set to 0 to improve RX performance, set to 16 to comply with the specification
 # and reduce chances of synchronization loss. Accuracy of the 32 kHz crystal is critical
 # to performance when using standby mode.
-CFG_DEV         += LL_WW_RX_DEVIATION_USEC=0
+CFG_DEV         += LL_WW_RX_DEVIATION_USEC=16
 
 # Third party software config
 ifneq ($(RISCV_CORE),)
