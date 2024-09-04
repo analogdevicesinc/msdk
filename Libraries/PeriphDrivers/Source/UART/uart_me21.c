@@ -18,6 +18,7 @@
  *
  ******************************************************************************/
 
+#include <math.h>
 #include "uart.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
@@ -26,7 +27,6 @@
 #include "uart_common.h"
 #include "mcr_regs.h"
 #include "dma.h"
-#include <math.h>
 
 sys_map_t uart_pin_mapping[4] = { MAP_A, MAP_A, MAP_A, MAP_A };
 /* Note(JC):               ^ Ideally I use MXC_UART_INSTANCES here...
