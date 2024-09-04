@@ -1,33 +1,35 @@
+###############################################################################
+ #
+ # Copyright (C) 2024 Analog Devices, Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ ##############################################################################
+# This file can be used to set build configuration
+# variables.  These variables are defined in a file called 
+# "Makefile" that is located next to this one.
+
+# For instructions on how to use this system, see
+# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
+
+# **********************************************************
+
 include tinyusb.mk
 
-override PROJECT := tinyusb
-
-LIB_PERIPHDRIVERS := 1
-
-# C source files
-SRCS += \
-        src/tusb.c \
-        src/common/tusb_fifo.c \
-        src/device/usbd.c \
-        src/device/usbd_control.c \
-        src/class/audio/audio_device.c \
-        src/class/bth/bth_device.c \
-        src/class/cdc/cdc_device.c \
-        src/class/dfu/dfu_device.c \
-        src/class/dfu/dfu_rt_device.c \
-        src/class/hid/hid_device.c \
-        src/class/midi/midi_device.c \
-        src/class/msc/msc_device.c \
-        src/class/net/ecm_rndis_device.c \
-        src/class/net/ncm_device.c \
-        src/class/usbtmc/usbtmc_device.c \
-        src/class/video/video_device.c \
-        src/class/vendor/vendor_device.c \
-        src/class/cdc/cdc_host.c \
-        src/class/hid/hid_host.c \
-        src/class/msc/msc_host.c \
-        src/class/vendor/vendor_host.c \
-        src/portable/mentor/musb/dcd_musb.c \
-        hw/bsp/board.c
+# NOTE: This file only gets pulled in for "standalone" builds of the TinyUSB library.
+# (i.e. running "make" from inside the TinyUSB folder) In that case, we'll build as a library.
+# Otherwise, "tinyusb.mk" is included from external projects to add the source files
+# directly to the build.
 
 override .DEFAULT_GOAL := lib
+
