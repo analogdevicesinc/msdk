@@ -46,7 +46,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
                 which requires two Init calls.  We don't want to reset because that would
                 wipe out any previous initializations.
              */
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+            if (!MXC_TMR_RevB_IsClockSourceLocked((mxc_tmr_revb_regs_t *)tmr)) {
+                MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+            }
         }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
@@ -62,7 +64,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
     case 1:
         if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+            if (!MXC_TMR_RevB_IsClockSourceLocked((mxc_tmr_revb_regs_t *)tmr)) {
+                MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+            }
         }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
@@ -78,7 +82,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
     case 2:
         if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+            if (!MXC_TMR_RevB_IsClockSourceLocked((mxc_tmr_revb_regs_t *)tmr)) {
+                MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+            }
         }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
@@ -94,7 +100,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
     case 3:
         if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+            if (!MXC_TMR_RevB_IsClockSourceLocked((mxc_tmr_revb_regs_t *)tmr)) {
+                MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+            }
         }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
@@ -110,13 +118,17 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
     case 4:
         MXC_GPIO_Config(&gpio_cfg_tmr4);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
+        if (!MXC_TMR_RevB_IsClockSourceLocked((mxc_tmr_revb_regs_t *)tmr)) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
         break;
 
     case 5:
         MXC_GPIO_Config(&gpio_cfg_tmr5);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
+        if (!MXC_TMR_RevB_IsClockSourceLocked((mxc_tmr_revb_regs_t *)tmr)) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
+        }
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
         break;
     }

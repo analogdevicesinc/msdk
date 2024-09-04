@@ -321,6 +321,11 @@ void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock)
     g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)] = lock;
 }
 
+bool MXC_UART_RevB_IsClockSourceLocked(mxc_uart_revb_regs_t *uart)
+{
+    return g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)];
+}
+
 int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCtrl,
                               int rtsThreshold)
 {
