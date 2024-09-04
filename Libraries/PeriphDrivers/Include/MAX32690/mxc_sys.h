@@ -205,11 +205,6 @@ typedef enum {
 } mxc_sys_system_clock_t;
 
 typedef enum {
-    MXC_SYS_RISCV_CLOCK_ISO, /**< Select the Internal Secondary Oscillator (ISO) as the RISCV clock source */
-    MXC_SYS_RISCV_CLOCK_PCLK /**< Select the Advanced Peripheral Bus (APB) clock as the RISCV clock source */
-} mxc_sys_riscv_clock_t;
-
-typedef enum {
     MXC_SYS_CLOCK_DIV_1 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1,
     MXC_SYS_CLOCK_DIV_2 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV2,
     MXC_SYS_CLOCK_DIV_4 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV4,
@@ -429,14 +424,6 @@ void MXC_SYS_RISCVRun(void);
  * @brief Shutdown the RISCV core 
  */
 void MXC_SYS_RISCVShutdown(void);
-
-/**
- * @brief Set the clock source for the RISC-V core.
- * 
- * @param clock The clock source to set
- * @returns 0 if successful, @ref MXC_Error_Codes on errors
- */
-int MXC_SYS_RISCVClockSelect(mxc_sys_riscv_clock_t clock);
 
 /**
  * @brief Returns the clock rate (in Hz) of the Risc-V core.

@@ -53,6 +53,15 @@ extern "C" {
 typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
 
 /**
+ * @brief   Enumeration type for RISC-V clock selection
+ *
+ */
+typedef enum {
+    MXC_LP_RISCV_CLOCK_ISO, /**< Select the Internal Secondary Oscillator (ISO) as the RISCV clock source */
+    MXC_LP_RISCV_CLOCK_PCLK /**< Select the Advanced Peripheral Bus (APB) clock as the RISCV clock source */
+} mxc_lp_riscv_clock_t;
+
+/**
  * @brief      Places the device into SLEEP mode.  This function returns once an RTC or external interrupt occur.
  */
 void MXC_LP_EnterSleepMode(void);
@@ -204,6 +213,14 @@ void MXC_LP_DisableCANWakeup(uint32_t can_idx);
  * @return     #E_NO_ERROR or error based on /ref MXC_Error_Codes
  */
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask);
+
+/**
+ * @brief Set the clock source for the RISC-V core used in Low-Power Mode.
+ *
+ * @param clock The clock source to set
+ * @returns 0 if successful, @ref MXC_Error_Codes on errors
+ */
+int MXC_LP_RISCVClockSelect(mxc_lp_riscv_clock_t clock);
 
 /**@} end of group pwrseq */
 
