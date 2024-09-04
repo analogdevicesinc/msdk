@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -24,8 +24,8 @@
  *          See the msc_mem_t structure in msc.h for function details.
  */
 
-#ifndef EXAMPLES_MAX32665_USB_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
-#define EXAMPLES_MAX32665_USB_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
+#ifndef EXAMPLES_MAX32665_USB_MAXUSB_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
+#define EXAMPLES_MAX32665_USB_MAXUSB_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
 
 #include <stdint.h>
 
@@ -41,4 +41,4 @@ uint32_t mscmem_Size(void);
 int mscmem_Read(uint32_t lba, uint8_t *buffer);
 int mscmem_Write(uint32_t lba, uint8_t *buffer);
 
-#endif // EXAMPLES_MAX32665_USB_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
+#endif // EXAMPLES_MAX32665_USB_MAXUSB_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_

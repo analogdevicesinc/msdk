@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -18,8 +18,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_USB_USB_CDCACM_DESCRIPTORS_H_
-#define EXAMPLES_MAX32665_USB_USB_CDCACM_DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32665_USB_MAXUSB_USB_CDCACM_DESCRIPTORS_H_
+#define EXAMPLES_MAX32665_USB_MAXUSB_USB_CDCACM_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -173,4 +173,4 @@ __attribute__((aligned(4))) uint8_t serial_id_desc[] = { 0x14, /* bLength */
                                                          '0',  0, '0', 0, '0', 0, '0', 0, '0', 0,
                                                          '0',  0, '0', 0, '0', 0, '1', 0 };
 
-#endif // EXAMPLES_MAX32665_USB_USB_CDCACM_DESCRIPTORS_H_
+#endif // EXAMPLES_MAX32665_USB_MAXUSB_USB_CDCACM_DESCRIPTORS_H_

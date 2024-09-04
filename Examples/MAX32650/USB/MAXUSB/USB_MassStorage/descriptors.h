@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -18,8 +18,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32650_USB_USB_MASSSTORAGE_DESCRIPTORS_H_
-#define EXAMPLES_MAX32650_USB_USB_MASSSTORAGE_DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32650_USB_MAXUSB_USB_MASSSTORAGE_DESCRIPTORS_H_
+#define EXAMPLES_MAX32650_USB_MAXUSB_USB_MASSSTORAGE_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -177,4 +177,4 @@ uint8_t serial_id_desc[] = { 26, /* bLength */
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '1', 0 };
 
-#endif // EXAMPLES_MAX32650_USB_USB_MASSSTORAGE_DESCRIPTORS_H_
+#endif // EXAMPLES_MAX32650_USB_MAXUSB_USB_MASSSTORAGE_DESCRIPTORS_H_

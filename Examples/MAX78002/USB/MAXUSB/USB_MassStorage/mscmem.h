@@ -6,7 +6,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -24,8 +24,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX78002_USB_USB_MASSSTORAGE_MSCMEM_H_
-#define EXAMPLES_MAX78002_USB_USB_MASSSTORAGE_MSCMEM_H_
+#ifndef EXAMPLES_MAX78002_USB_MAXUSB_USB_MASSSTORAGE_MSCMEM_H_
+#define EXAMPLES_MAX78002_USB_MAXUSB_USB_MASSSTORAGE_MSCMEM_H_
 
 /* **** Include Files **** */
 #include <stdint.h>
@@ -63,7 +63,7 @@ uint32_t mscmem_Size(void);
  * @param   lba     The index of the 512 byte block to read.
  * @param   buffer  A byte array of at least 512 bytes to hold the values read.
  * @returns 0 if reading is successful, non-zero if an error occurred.
- * @returns 
+ * @returns
  */
 int mscmem_Read(uint32_t lba, uint8_t *buffer);
 
@@ -72,7 +72,7 @@ int mscmem_Read(uint32_t lba, uint8_t *buffer);
  * @param   lba     The index of the 512 byte block to write.
  * @param   buffer  A byte array of at least 512 bytes holding the values to write.
  * @returns 0 if writing is successful, non-zero if an error occurred.
- * @returns 
+ * @returns
  */
 int mscmem_Write(uint32_t lba, uint8_t *buffer);
 
@@ -82,4 +82,4 @@ int mscmem_Write(uint32_t lba, uint8_t *buffer);
  */
 int mscmem_Ready(void);
 
-#endif // EXAMPLES_MAX78002_USB_USB_MASSSTORAGE_MSCMEM_H_
+#endif // EXAMPLES_MAX78002_USB_MAXUSB_USB_MASSSTORAGE_MSCMEM_H_
