@@ -224,6 +224,10 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
+    if (uart->ctrl & MXC_F_UART_CTRL_FDM) {
+        clock_freq *= 2; // x2 to account for FDM
+    }
+
     freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
 
     if (freq > 0) {
