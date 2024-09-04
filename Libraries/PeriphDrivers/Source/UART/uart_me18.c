@@ -52,7 +52,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         if (retval) {
             return retval;
         }
-    }    
+    }
 
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
