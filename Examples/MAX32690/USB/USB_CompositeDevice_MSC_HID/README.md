@@ -18,6 +18,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector. 
 -   Default EV kit hardware configuration.
+-   Connect Pin 0.7 to Pin 4.0
 
 ## Expected Output
 
