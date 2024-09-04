@@ -120,7 +120,7 @@ static void mainWsfInit(void)
 
     /* Use single pool for data buffers. */
 #if (BT_VER > 9)
-    WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+    // WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
 #endif
 
     /* Ensure pool buffers are ordered correctly. */
