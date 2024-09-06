@@ -86,6 +86,7 @@ typedef enum {
     /*32K (ERTCO) and 80K (INRO) clocks can only be used for UART3*/
     MXC_UART_ERTCO_CLK = 4,
     MXC_UART_INRO_CLK = 5,
+    MXC_UART_AOD_CLK = 6
 } mxc_uart_clock_t;
 
 /**

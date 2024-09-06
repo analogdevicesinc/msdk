@@ -173,9 +173,11 @@ static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         MXC_AFE_GPIO_Config(&gpio_cfg_extclk);
         break;
 
+#if TARGET_NUM != 32675
     case MXC_UART_ERTCO_CLK:
         return E_BAD_PARAM;
         break;
+#endif
 
     case MXC_UART_IBRO_CLK:
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);

@@ -291,19 +291,20 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
         return E_NO_ERROR; // Return with no error so Init doesn't error out if clock config is locked
     }
 
-    bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_CTRL_BCLKEN) != 0;
+    bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKEN) != 0;
 
     if (is_bclk_enabled) {
         // Shut down baud rate clock before changing clock source
-        uart->ctrl &= ~MXC_F_UART_CTRL_BCLKEN;
+        uart->ctrl &= ~MXC_F_UART_REVB_CTRL_BCLKEN;
     }
 
-    MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_BCLKSRC, clock_option << MXC_F_UART_CTRL_BCLKSRC_POS);
+    MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVB_CTRL_BCLKSRC,
+                 clock_option << MXC_F_UART_REVB_CTRL_BCLKSRC_POS);
 
     if (is_bclk_enabled) {
         // Turn the baud rate clock back on
-        uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
-        while (!(uart->ctrl & MXC_F_UART_CTRL_BCLKRDY)) {
+        uart->ctrl |= MXC_F_UART_REVB_CTRL_BCLKEN;
+        while (!(uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKRDY)) {
             continue;
         }
     }
@@ -313,7 +314,7 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
 
 unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart)
 {
-    return ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) >> MXC_F_UART_CTRL_BCLKSRC_POS);
+    return ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) >> MXC_F_UART_REVB_CTRL_BCLKSRC_POS);
 }
 
 void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock)
