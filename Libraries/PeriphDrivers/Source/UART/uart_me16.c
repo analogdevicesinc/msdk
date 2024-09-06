@@ -21,6 +21,7 @@
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
 #endif
 
+#include <math.h>
 #include "uart.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
@@ -60,17 +61,16 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
-    case MXC_UART_ERTCO_CLK:
-        // UART0 and UART2 doesn't use ERTCO
-        return E_BAD_PARAM;
-        break;
-
     case MXC_UART_IBRO_CLK:
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
         break;
 
     case MXC_UART_ERFO_CLK:
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        break;
+
+    case MXC_UART_INRO_CLK:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
         break;
 
     default:
@@ -310,15 +310,12 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
         default:
             return E_BAD_PARAM;
         }
+        break;
     default:
         return E_BAD_PARAM;
     }
-    break;
-default:
-    return E_BAD_PARAM;
-}
 
-return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
+    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
