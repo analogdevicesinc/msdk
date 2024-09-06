@@ -543,6 +543,21 @@ static void datsSetup(dmEvt_t *pMsg)
     AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
     AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(datsScanDataDisc), (uint8_t *)datsScanDataDisc);
 
+    /* add peer to the white list */
+    uint8_t addrWhite[BDA_ADDR_LEN] = { 0 };
+    addrWhite[5] = 0x00;
+    addrWhite[4] = 0x04;
+    addrWhite[3] = 0xB7;
+    addrWhite[2] = 0x03;
+    addrWhite[1] = 0xAE;
+    addrWhite[0] = 0xF6;
+    DmDevWhiteListAdd(DM_ADDR_PUBLIC, addrWhite);
+    APP_TRACE_INFO6("WhiteList Addr: %02x:%02x:%02x:%02x:%02x:%02x", addrWhite[5], addrWhite[4],
+                    addrWhite[3], addrWhite[2], addrWhite[1], addrWhite[0]);
+
+    /* set Advertising filter policy to All */
+    DmDevSetFilterPolicy(DM_FILT_POLICY_MODE_ADV, HCI_ADV_FILT_ALL);
+
     /* start advertising; automatically set connectable/discoverable mode and bondable mode */
     AppAdvStart(APP_MODE_AUTO_INIT);
 }
