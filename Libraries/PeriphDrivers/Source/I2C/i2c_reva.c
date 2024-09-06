@@ -32,6 +32,7 @@
 #include "i2c_reva.h"
 #include "dma.h"
 #include "dma_reva.h"
+#include "nvic_table.h"
 
 /* **** Variable Declaration **** */
 typedef struct {
@@ -297,8 +298,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
                           bool use_dma_rx)
 {
     int8_t i2cNum;
-    int8_t rxChannel;
-    int8_t txChannel;
+    int8_t rxChannel = -1;
+    int8_t txChannel = -1;
 
     if (i2c == NULL || dma == NULL) {
         return E_NULL_PTR;
@@ -354,6 +355,15 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
         MXC_DMA_SetChannelInterruptEn(txChannel, 0, 1);
 
         states[i2cNum].channelTx = txChannel;
+#ifdef __arm__
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(txChannel));
+#if TARGET_NUM == 32665
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel),
+                           MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
+#else
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Handler);
+#endif
+#endif
     }
 
     // Set up I2C DMA RX.
@@ -384,6 +394,15 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
 
         MXC_DMA_EnableInt(rxChannel);
         MXC_DMA_SetChannelInterruptEn(rxChannel, 0, 1);
+#ifdef __arm__
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(rxChannel));
+#if TARGET_NUM == 32665
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel),
+                           MXC_DMA_Get_DMA_Handler((mxc_dma_regs_t *)dma));
+#else
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(txChannel), MXC_DMA_Handler);
+#endif
+#endif
 
         states[i2cNum].channelRx = rxChannel;
     }
@@ -1082,8 +1101,8 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
     MXC_I2C_SetRXThreshold((mxc_i2c_regs_t *)i2c, 1);
 
     states[i2cNum].req = req;
-    states[i2cNum].writeDone = 0;
-    states[i2cNum].readDone = 0;
+    states[i2cNum].writeDone = (req->tx_len == 0);
+    states[i2cNum].readDone = (req->rx_len == 0);
 
     // If MXC_I2C_DMA_Init(...) was not already called, then configure both DMA TX/RXchannels by default.
     if (states[i2cNum].dma_initialized == false) {
@@ -1122,17 +1141,31 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
                 i2c->rxctrl1 = req->rx_len; // 0 for 256, otherwise number of bytes to read
             }
 
-            MXC_I2C_Start((mxc_i2c_regs_t *)i2c); // Start or Restart as needed
-
-            while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
-
-            i2c->fifo = ((req->addr) << 1) | 0x1; // Load the slave address with write bit set
-
 #if TARGET_NUM == 32665
             MXC_I2C_ReadRXFIFODMA((mxc_i2c_regs_t *)i2c, req->rx_buf, req->rx_len, NULL, dma);
 #else
             MXC_I2C_ReadRXFIFODMA((mxc_i2c_regs_t *)i2c, req->rx_buf, req->rx_len, NULL);
 #endif
+
+            MXC_I2C_Start((mxc_i2c_regs_t *)i2c); // Start or Restart as needed
+
+            while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
+
+            i2c->fifo = ((req->addr) << 1) | 0x1; // Load the slave address with write bit set
+            while (!((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_ACK) ||
+                     (i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_NACK_ERR))) {
+                // Wait for an ACK or NACK from the slave
+            }
+            if (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_ACK)) {
+                // If we did not get an ACK, then something went wrong.
+                // Abort the transaction and signal the user's callback
+                MXC_I2C_RevA_Stop(i2c);
+                MXC_DMA_Stop(states[i2cNum].channelRx);
+                if (states[i2cNum].req->callback != NULL) {
+                    states[i2cNum].req->callback(states[i2cNum].req, E_COMM_ERR);
+                }
+                return E_COMM_ERR;
+            }
         }
     } else {
         states[i2cNum].readDone = 1;
