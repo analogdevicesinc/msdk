@@ -26,6 +26,7 @@
 #define PAL_BB_H
 
 #include "pal_types.h"
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -77,6 +78,15 @@ enum PalBbPhy_op {
     BB_PHY_OPTIONS_BLE_S2 = 1, /*!< Always use S=2 coding when transmitting on LE Coded PHY. */
     BB_PHY_OPTIONS_BLE_S8 = 2 /*!< Always use S=8 coding when transmitting on LE Coded PHY. */
 };
+
+typedef enum
+{
+    PAL_BB_CW,
+    PAL_BB_PRBS9,
+    PAL_BB_PRBS15,
+    PAL_BB_DF1,
+    PAL_BB_DF2
+}PalBbPrbsType_t;
 
 #ifndef BB_CLK_RATE_HZ
 /*! \brief      BB clock rate in hertz. */
@@ -160,6 +170,9 @@ typedef struct {
     uint8_t patch;
     char *buildDate;
 } PalBbPhyVersion_t;
+
+
+
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
@@ -280,6 +293,53 @@ void PalBbSetProtId(uint8_t protId);
  */
 /*************************************************************************************************/
 const PalBbPhyVersion_t *PalBbGetPhyVersion(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Enable frequency generator
+ *
+ *  \param      freqKhz Frequency to transmit in KHz, Valid range 2402000 - 2500000
+ *
+ *  \param      type PRBS TYPE
+ */
+/*************************************************************************************************/
+bool PalBbEnableFgen(uint32_t freqKhz, PalBbPrbsType_t type);
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Disable frequency generator
+ *
+ */
+/*************************************************************************************************/
+void PalBbDisableFgen(void);
+/*************************************************************************************************/
+/*!
+ *  \brief      Sample an RSSI capture
+ *
+ *  \param      rssi  Pointer to rssi output.
+ *  \param      channel  RF channel to sample RSSI on.
+ *  \return     FALSE if RSSI capture times out
+ */
+/*************************************************************************************************/
+bool_t PalBbGetRssi(int8_t *rssi, uint8_t rfChannel);
+
+static inline bool PalBbIsValidPrbsType(uint8_t maybeType)
+{
+    switch (maybeType)
+    {
+    case PAL_BB_CW:
+    case PAL_BB_PRBS9:
+    case PAL_BB_PRBS15:
+    case PAL_BB_DF1:
+    case PAL_BB_DF2:
+        return true;
+    
+    default:
+        return false;
+    }
+
+
+}
 
 /*! \} */ /* PAL_BB */
 

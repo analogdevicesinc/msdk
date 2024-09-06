@@ -277,6 +277,24 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     case LHCI_OPCODE_VS_GET_RSSI:
     {
         status = LL_SUCCESS;
+
+        const uint8_t channel = pBuf[0];
+        
+
+        if(channel > LL_DTM_MAX_CHAN_IDX)
+        {
+            status = LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
+        }
+        else
+        {
+            int8_t rssi = 0;
+            bool_t timeoutOccured = PalBbGetRssi(&rssi, channel);
+            status = timeoutOccured ?  LL_ERROR_CODE_HW_FAILURE : LL_SUCCESS;
+
+            pBuf[0] = (uint8_t)rssi;
+        }
+        
+
         evtParamLen += sizeof(int8_t);
         break;
     }
@@ -286,15 +304,17 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
         if(enable)
         {
-            uint32_t frequency_khz = pBuf[3] << 16  | pBuf[2] << 16 | pBuf[2];
-            // must be between 2.402GHz and 2.5 GHz
-            if(frequency_khz < 2402000 | frequency_khz > 2500000)
-            {
-                status = LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
-            }
+            uint32_t frequency_khz = pBuf[3] << 16  | pBuf[2] << 8 | pBuf[1];
+            PalBbPrbsType_t patternType = pBuf[4];
             
-            PalBbEnableFgen(frequency_khz);
-            status = LL_SUCCESS;
+            if(!PalBbIsValidPrbsType(patternType))
+            {
+                status = LL_ERROR_CODE_CMD_DISALLOWED;
+            }
+            else{
+                const bool freqOk = PalBbEnableFgen(frequency_khz, patternType);
+                status = freqOk ? LL_SUCCESS : LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
+            }
 
         }
         else
@@ -303,8 +323,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             status = LL_SUCCESS;
         }
 
-        
-        evtParamLen += sizeof(int8_t);
         break;
     }
     case LHCI_OPCODE_VS_RESET_ADV_STATS:
@@ -346,6 +364,8 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_TX_TEST:
         case LHCI_OPCODE_VS_RESET_ADV_STATS:
         case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+        case LHCI_OPCODE_VS_GET_RSSI:
+        case LHCI_OPCODE_VS_FGEN:
 
             /* no action */
             break;
@@ -354,22 +374,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             BbBleResetTestStats();
             break;
         }
-        case LHCI_OPCODE_VS_GET_RSSI:{
-            /*
-                TODO: Needs feature in PHY
-            */
-            // PalBbEnable();
-            pBuf[0] = -10;
-            break;
-        }
-        case LHCI_OPCODE_VS_FGEN:{
-            /*
-                TODO: Needs feature in PHY
-            */
-            // PalBbEnable();
-            pBuf[0] = -10;
-            break;
-        }
+
         case LHCI_OPCODE_VS_SET_LOCAL_FEAT:
         case LHCI_OPCODE_VS_SET_DIAG_MODE:
             /* no action */
