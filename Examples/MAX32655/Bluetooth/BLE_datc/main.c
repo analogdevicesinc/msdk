@@ -66,7 +66,10 @@
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
+/*! UART TX buffer size. */
+#ifndef WSF_TRACE_BUFIO_BUFFER_SIZE
+#define WSF_TRACE_BUFIO_BUFFER_SIZE    (4 * 1024)
+#endif
 #define DEFAULT_TX_POWER 0 /* dBm */
 
 /**************************************************************************************************
@@ -215,7 +218,7 @@ int main(void)
 
     uint32_t memUsed;
     WsfCsEnter();
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), WSF_TRACE_BUFIO_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
     WsfCsExit();
 
