@@ -280,6 +280,33 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         evtParamLen += sizeof(int8_t);
         break;
     }
+    case LHCI_OPCODE_VS_FGEN:
+    {
+        uint8_t enable = pBuf[0];
+
+        if(enable)
+        {
+            uint32_t frequency_khz = pBuf[3] << 16  | pBuf[2] << 16 | pBuf[2];
+            // must be between 2.402GHz and 2.5 GHz
+            if(frequency_khz < 2402000 | frequency_khz > 2500000)
+            {
+                status = LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
+            }
+            
+            PalBbEnableFgen(frequency_khz);
+            status = LL_SUCCESS;
+
+        }
+        else
+        {
+            PalBbDisableFgen();
+            status = LL_SUCCESS;
+        }
+
+        
+        evtParamLen += sizeof(int8_t);
+        break;
+    }
     case LHCI_OPCODE_VS_RESET_ADV_STATS:
     {
         status = LL_SUCCESS;
@@ -335,7 +362,14 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             pBuf[0] = -10;
             break;
         }
-
+        case LHCI_OPCODE_VS_FGEN:{
+            /*
+                TODO: Needs feature in PHY
+            */
+            // PalBbEnable();
+            pBuf[0] = -10;
+            break;
+        }
         case LHCI_OPCODE_VS_SET_LOCAL_FEAT:
         case LHCI_OPCODE_VS_SET_DIAG_MODE:
             /* no action */
