@@ -41,6 +41,8 @@ int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div);
 
 int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock);
 
+bool MXC_ADC_RevB_IsClockSourceLocked(mxc_adc_revb_regs_t *adc);
+
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc);
 
 void MXC_ADC_RevB_EnableInt(mxc_adc_revb_regs_t *adc, uint32_t flags);

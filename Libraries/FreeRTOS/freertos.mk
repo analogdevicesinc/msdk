@@ -19,7 +19,7 @@
  ##############################################################################
 
 ################################################################################
-# This file can be included in a project makefile to build the library for the 
+# This file can be included in a project makefile to build the library for the
 # project.
 ################################################################################
 
@@ -57,11 +57,13 @@ export PROJ_LDFLAGS
 # Add to library list
 LIBS += ${RTOS_BUILD_DIR}/librtos.a
 
+# Create include list for use by other projects (i.e. TinyUSB)
+RTOS_IPATH := ${RTOS_DIR} ${RTOS_DIR}/Source/portable/$(COMPILER)/ARM_CM4F ${RTOS_DIR}/Source/include
+export RTOS_IPATH
+
 # Add to include directory list
 IPATH += $(RTOS_CONFIG_DIR)
-IPATH += ${RTOS_DIR}
-IPATH += ${RTOS_DIR}/Source/portable/$(COMPILER)/ARM_CM4F
-IPATH += ${RTOS_DIR}/Source/include
+IPATH += ${RTOS_IPATH}
 
 # Add rule to build the Driver Library
 ${RTOS_BUILD_DIR}/librtos.a: FORCE

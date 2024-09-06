@@ -136,6 +136,11 @@ void MXC_TMR_RevB_LockClockSource(mxc_tmr_revb_regs_t *tmr, bool lock)
     g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)] = lock;
 }
 
+bool MXC_TMR_RevB_IsClockSourceLocked(mxc_tmr_revb_regs_t *tmr)
+{
+    return g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)];
+}
+
 void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
                                  uint8_t clk_src)
 {
