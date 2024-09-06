@@ -298,7 +298,8 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
         uart->ctrl &= ~MXC_F_UART_REVB_CTRL_BCLKEN;
     }
 
-    MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVB_CTRL_BCLKSRC, clock_option << MXC_F_UART_REVB_CTRL_BCLKSRC_POS);
+    MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVB_CTRL_BCLKSRC,
+                 clock_option << MXC_F_UART_REVB_CTRL_BCLKSRC_POS);
 
     if (is_bclk_enabled) {
         // Turn the baud rate clock back on
