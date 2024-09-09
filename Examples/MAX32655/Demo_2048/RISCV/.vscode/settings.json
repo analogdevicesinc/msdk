@@ -76,7 +76,9 @@
         "${workspaceFolder}/build/project_defines.h"
     ],
     "files.associations": {
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "mxc_device.h": "c",
+        "uart.h": "c"
     }
 }
 

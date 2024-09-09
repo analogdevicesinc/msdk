@@ -21,7 +21,6 @@
 
 #include <stdint.h>
 #include "mxc_device.h"
-#include "nvic_table.h"
 #include "uart.h"
 
 /* **** Definitions **** */
@@ -33,7 +32,7 @@ static mxc_uart_regs_t *Controller_UART;
 
 /* **** Functions **** */
 
-void Controller_Handler(void)
+void UART0_IRQHandler(void)
 {
     MXC_UART_AsyncHandler(Controller_UART);
 }
@@ -51,7 +50,6 @@ int Controller_Init(mxc_uart_regs_t *uart, uint32_t baud)
     //  Clear if Console UART was previously set up in SystemInit.
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ((MXC_UART_GET_IDX(uart))));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ((MXC_UART_GET_IDX(uart))));
-    MXC_NVIC_SetVector(MXC_UART_GET_IRQ((MXC_UART_GET_IDX(uart))), Controller_Handler);
     NVIC_EnableIRQ(MXC_UART_GET_IRQ((MXC_UART_GET_IDX(uart))));
 
     // Initialize UART to its highest speed.

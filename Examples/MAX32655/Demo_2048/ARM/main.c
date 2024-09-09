@@ -38,8 +38,6 @@
 #include "trng.h"
 
 // Application Libraries
-#include "controller.h"
-#include "game_2048.h"
 
 /* **** Definitions **** */
 
@@ -50,9 +48,9 @@
 #define PRINT(...)
 #endif
 
-/// Controller Settings.
-// Set to its fastest supported speed (3Mbps when tested).
-#define CONTROLLER_UART_BAUD    (2000000)
+// Match the Console's baud rate to what the controller will be set to
+//  for the RISC-V as they share the same port.
+#define RISCV_CONTROLLER_BAUD (2000000)
 
 /// Semaphores
 // Should never reach here
@@ -87,104 +85,7 @@ extern mxcSemaBox_t *mxcSemaBox1; // ARM reads,  RISCV writes
 #define SEMA_ARM_MAILBOX mxcSemaBox0
 #define SEMA_RISCV_MAILBOX mxcSemaBox1
 
-mxc_uart_req_t CONTROLLER_REQ;
-uint8_t CONTROLLER_KEYPRESS;
-volatile bool KEYPRESS_READY = false;
-uint8_t KEYPRESS_INPUT_DIR;
-
-uint32_t ARM_GRID_COPY[4][4] = {0};
-
-// Select Console UART instance.
-mxc_uart_regs_t *CONTROLLER_UART = MXC_UART0;
-
 /* **** Functions **** */
-
-void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
-{
-    int error;
-
-    // Assume no keypress if error detected.
-    if (cb_error != E_NO_ERROR) {
-        CONTROLLER_KEYPRESS = 0; // NULL character
-    }
-
-    KEYPRESS_READY = true;
-
-    // User can add additional directional key switches here.
-    switch (CONTROLLER_KEYPRESS) {
-        case 'a':
-        case 0x44: // Tera term sends Character 'D' for LEFT arrow key. 
-            KEYPRESS_INPUT_DIR = INPUT_LEFT;
-            break;
-        
-        case 'd':
-        case 0x43: // Tera term sends Character 'C' for RIGHT arrow key. 
-            KEYPRESS_INPUT_DIR = INPUT_RIGHT;
-            break;
-        
-        case 'w':
-        case 0x41: // Tera term sends Character 'A' for UP arrow key. 
-            KEYPRESS_INPUT_DIR = INPUT_UP;
-            break;
-        
-        case 's':
-        case 0x42: // Tera term sends Character 'B' for DOWN arrow key. 
-            KEYPRESS_INPUT_DIR = INPUT_DOWN;
-            break;
-        
-        default:
-            KEYPRESS_READY = false;
-    }
-    
-    // Due to request struct, CONTROLLER_KEYPRESS already contains the keypress character.
-    // Send keypress to RISCV through mailbox 1.
-    //  The mailbox is 32 bits wide, but the keypress is an ASCII character (8 bits).
-    SEMA_ARM_MAILBOX->payload[0] = (CONTROLLER_KEYPRESS >> 8 * 0) & 0xFF;
-    SEMA_ARM_MAILBOX->payload[1] = 0;
-    SEMA_ARM_MAILBOX->payload[2] = 0;
-    SEMA_ARM_MAILBOX->payload[3] = 0;
-
-    PRINT("Keypress: %c - 0x%02x\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS);
-
-    // Listen for next keypress.
-    error = Controller_Start(&CONTROLLER_REQ);
-    if (error != E_NO_ERROR) {
-        PRINT("Error listening for next controller keypress: %d\n", error);
-        LED_On(LED_RED);
-    }
-}
-
-void PRINT_GRID(void)
-{
-    Game_2048_GetGrid(ARM_GRID_COPY);
-
-    // Imitate the grid is refreshing on terminal.
-    PRINT("\n\n\n\n\n\n\n\n\n\n");
-
-    for (int row = 0; row < 4; row++) {
-        PRINT("        |        |        |        \n");
-
-        for (int col = 0; col < 4; col++) {
-            if (ARM_GRID_COPY[row][col] != 0) {
-                PRINT("  %04d  ", ARM_GRID_COPY[row][col]);
-            } else {
-                PRINT("        ");
-            }
-
-            // Only print border 3 times.
-            if (col < 3) {
-                PRINT("|");
-            }
-        }
-
-        PRINT("\n        |        |        |        \n");
-
-        // Only print the row border 3 times.
-        if (row < 3) {
-            PRINT("-----------------------------------\n");
-        }
-    }
-}
 
 // *****************************************************************************
 int main(void)
@@ -199,19 +100,13 @@ int main(void)
     //     - Use IPO for System Clock for fastest speed. (Done in SystemInit)
     //     - Enable Internal Cache. (Done in SystemInit)
 
-    // Set up Controller Request Struct.
-    CONTROLLER_REQ.uart = CONTROLLER_UART;
-    CONTROLLER_REQ.txData = NULL;
-    CONTROLLER_REQ.txLen = 0;
-    CONTROLLER_REQ.rxData = &CONTROLLER_KEYPRESS;
-    CONTROLLER_REQ.rxLen = 1; // Handle 1 keypress at a time
-    CONTROLLER_REQ.callback = CONTROLLER_KEYPRESS_Callback;
-
-    // Set up player controller (PC Keyboard via Console UART).
-    error = Controller_Init(CONTROLLER_UART, CONTROLLER_UART_BAUD);
+    // Speed up console UART to match player controller baud rate which have shared ports 
+    //  (PC Keyboard via Console UART).
+    error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), RISCV_CONTROLLER_BAUD, MXC_UART_APB_CLK);
     if (error != E_NO_ERROR) {
-        MXC_ASSERT_FAIL();
-        return error;
+        PRINT("ARM: Error speeding up baud rate: %d\n", error);
+        LED_On(LED_RED);
+        while(1);
     }
 
     PRINT("\n\n*******************************************************************************\n");
@@ -248,64 +143,21 @@ int main(void)
     // Backup Delay for 1 second before starting RISCV core.
     MXC_Delay(MXC_DELAY_SEC(1));
 
+    PRINT("ARM: Starting RISC-V core and handing off major UART0 Control to RISC-V.\n\n");
+
     // Start the RISCV core.
     MXC_SYS_RISCVRun();
 
     // Wait the RISC-V core to finish startup (when it frees ARM semaphore).
-    PRINT("ARM: Waiting for RISC-V to finish startup process.\n\n");
     while (MXC_SEMA_CheckSema(SEMA_IDX_ARM) != E_NO_ERROR) {}
     MXC_SEMA_GetSema(SEMA_IDX_ARM);
 
     // Initialize mailboxes between ARM and RISCV cores.
     MXC_SEMA_InitBoxes();
 
-    PRINT("ARM: Starting Controller and Game\n");
-
-    // Start Controller.
-    error = Controller_Start(&CONTROLLER_REQ);
-    if (error != E_NO_ERROR) {
-        PRINT("ARM: Error starting the controller: %d\n", error);
-        LED_On(LED_RED);
-        while(1);
+    while(1) {
+        LED_Toggle(1);
     }
-
-    error = Game_2048_Init();
-    if (error != E_NO_ERROR) {
-        PRINT("ARM: Error starting game: %d\n", error);
-        LED_On(LED_RED);
-        while(1);
-    }
-
-    // Game_2048_PrintGrid();
-    PRINT_GRID();
-
-    while (1) {
-        // Wait for keypress.
-    
-        while (KEYPRESS_READY == false) {}
-
-        input_direction_t dir = KEYPRESS_INPUT_DIR;
-        
-        error = Game_2048_UpdateGrid(dir);
-        if (error == E_NONE_AVAIL) {
-            PRINT("Game over!\n");
-            LED_On(LED_GREEN);
-            while(1);
-        } else if (error != E_NO_ERROR) {
-            PRINT("ARM: Error updating next move: %d\n", error);
-            LED_On(LED_RED);
-            while(1);
-        }
-
-        // Game_2048_PrintGrid();
-        PRINT_GRID();
-
-        // MXC_Delay(MXC_DELAY_SEC(1));
-        KEYPRESS_READY = false;
-
-
-    }
-
 
 //     /* Signal RISC-V core to run */
 //     printf("ARM   : Signal RISC-V.\n");

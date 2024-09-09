@@ -19,6 +19,8 @@
 /* **** Includes **** */
 
 #include <stdint.h>
+#include "mxc_device.h"
+#include "uart.h"
 
 /* **** Definitions **** */
 
