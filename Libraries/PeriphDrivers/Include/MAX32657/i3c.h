@@ -153,9 +153,9 @@ struct _i3c_ccc_req_t {
 };
 
 /**
- * @brief Private SDR/I2C request structure.
+ * @brief Private SDR request structure.
  *
- * SDR/I2C read and write to an I3C target.
+ * SDR read and write to an I3C target.
  *
  */
 struct _i3c_req_t {
