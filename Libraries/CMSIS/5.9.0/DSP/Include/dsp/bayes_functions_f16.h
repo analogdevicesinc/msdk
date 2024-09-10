@@ -23,8 +23,9 @@
  * limitations under the License.
  */
 
-#ifndef _BAYES_FUNCTIONS_F16_H_
-#define _BAYES_FUNCTIONS_F16_H_
+ 
+#ifndef BAYES_FUNCTIONS_F16_H_
+#define BAYES_FUNCTIONS_F16_H_
 
 #include "arm_math_types_f16.h"
 #include "arm_math_memory.h"
@@ -34,8 +35,9 @@
 
 #include "dsp/statistics_functions_f16.h"
 
-#ifdef __cplusplus
-extern "C" {
+#ifdef   __cplusplus
+extern "C"
+{
 #endif
 
 #if defined(ARM_FLOAT16_SUPPORTED)
@@ -43,13 +45,14 @@ extern "C" {
 /**
  * @brief Instance structure for Naive Gaussian Bayesian estimator.
  */
-typedef struct {
-    uint32_t vectorDimension; /**< Dimension of vector space */
-    uint32_t numberOfClasses; /**< Number of different classes  */
-    const float16_t *theta; /**< Mean values for the Gaussians */
-    const float16_t *sigma; /**< Variances for the Gaussians */
-    const float16_t *classPriors; /**< Class prior probabilities */
-    float16_t epsilon; /**< Additive value to variances */
+typedef struct
+{
+  uint32_t vectorDimension;  /**< Dimension of vector space */
+  uint32_t numberOfClasses;  /**< Number of different classes  */
+  const float16_t *theta;          /**< Mean values for the Gaussians */
+  const float16_t *sigma;          /**< Variances for the Gaussians */
+  const float16_t *classPriors;    /**< Class prior probabilities */
+  float16_t epsilon;         /**< Additive value to variances */
 } arm_gaussian_naive_bayes_instance_f16;
 
 /**
@@ -60,15 +63,14 @@ typedef struct {
  * @param[out] *pOutputProbabilities    points to a buffer of length numberOfClasses containing estimated probabilities
  * @param[out] *pBufferB                points to a temporary buffer of length numberOfClasses
  * @return The predicted class
- *
  */
-
-uint32_t arm_gaussian_naive_bayes_predict_f16(const arm_gaussian_naive_bayes_instance_f16 *S,
-                                              const float16_t *in, float16_t *pOutputProbabilities,
-                                              float16_t *pBufferB);
+uint32_t arm_gaussian_naive_bayes_predict_f16(const arm_gaussian_naive_bayes_instance_f16 *S, 
+   const float16_t * in, 
+   float16_t *pOutputProbabilities,
+   float16_t *pBufferB);
 
 #endif /*defined(ARM_FLOAT16_SUPPORTED)*/
-#ifdef __cplusplus
+#ifdef   __cplusplus
 }
 #endif
 
