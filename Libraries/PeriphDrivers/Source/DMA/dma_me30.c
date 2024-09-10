@@ -39,7 +39,7 @@ int MXC_DMA_Init(mxc_dma_regs_t *dma)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA0);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA0);
 #if CONFIG_TRUSTED_EXECUTION_SECURE
-    // DMA1 is only accessible from Secure world.
+        // DMA1 is only accessible from Secure world.
     } else if (dma == MXC_DMA1_S && !MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA1)) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA1);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA1);

@@ -159,7 +159,7 @@ typedef enum {
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 // Type used for secure code to call non-secure code.
 #define __ns_call __attribute((cmse_nonsecure_call))
-typedef void __ns_call (*mxc_ns_call_t) (void); 
+typedef void __ns_call (*mxc_ns_call_t)(void);
 // Type used for non-secure code to call secure code.
 #define __ns_entry __attribute((cmse_nonsecure_entry))
 #endif
@@ -685,16 +685,16 @@ We may want to handle GET_IRQ better...
 #warning "Non-Secure DMA (DMA0) has no secure mapping. Please use MXC_DMA0_NS from Secure world."
 #endif
 
-#define MXC_DMA_CH_GET_IRQ(p, i)                                 \
+#define MXC_DMA_CH_GET_IRQ(p, i)                                    \
     ((IRQn_Type)(((p) == MXC_DMA0_NS && (i) == 0) ? DMA0_CH0_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 1) ? DMA0_CH1_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 0) ? DMA1_CH0_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 1) ? DMA1_CH1_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 2) ? DMA1_CH2_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 3) ? DMA1_CH3_IRQn : \
-                                                 0))
+                 ((p) == MXC_DMA1_S && (i) == 0)  ? DMA1_CH0_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 1)  ? DMA1_CH1_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 2)  ? DMA1_CH2_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 3)  ? DMA1_CH3_IRQn : \
+                                                    0))
 
 #else
 #define MXC_BASE_DMA0 MXC_BASE_DMA0_NS
@@ -705,12 +705,12 @@ We may want to handle GET_IRQ better...
 #endif
 
 /* DMA1 IRQs not usable in Non-Secure state. */
-#define MXC_DMA_CH_GET_IRQ(p, i)                                 \
+#define MXC_DMA_CH_GET_IRQ(p, i)                                    \
     ((IRQn_Type)(((p) == MXC_DMA0_NS && (i) == 0) ? DMA0_CH0_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 1) ? DMA0_CH1_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
-                                                 0))
+                                                    0))
 #endif // CONFIG_TRUSTED_EXECUTION_SECURE
 
 #define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0_NS ? 0 : (p) == MXC_BASE_DMA1_S ? 1 : -1)
@@ -875,7 +875,7 @@ We may want to handle GET_IRQ better...
      (p) == MXC_MPC_SRAM2 ? MXC_PHY_SRAM2_MEM_BASE : \
      (p) == MXC_MPC_SRAM3 ? MXC_PHY_SRAM3_MEM_BASE : \
      (p) == MXC_MPC_SRAM4 ? MXC_PHY_SRAM4_MEM_BASE : \
-                0)
+                            0)
 
 #define MXC_MPC_GET_PHY_MEM_SIZE(p)                  \
     ((p) == MXC_MPC_FLASH ? MXC_PHY_FLASH_MEM_SIZE : \
@@ -884,7 +884,7 @@ We may want to handle GET_IRQ better...
      (p) == MXC_MPC_SRAM2 ? MXC_PHY_SRAM2_MEM_SIZE : \
      (p) == MXC_MPC_SRAM3 ? MXC_PHY_SRAM3_MEM_SIZE : \
      (p) == MXC_MPC_SRAM4 ? MXC_PHY_SRAM4_MEM_SIZE : \
-                0)
+                            0)
 
 #define MXC_MPC_GET_IDX(p)      \
     ((p) == MXC_MPC_FLASH ? 0 : \
@@ -893,16 +893,16 @@ We may want to handle GET_IRQ better...
      (p) == MXC_MPC_SRAM2 ? 2 : \
      (p) == MXC_MPC_SRAM3 ? 3 : \
      (p) == MXC_MPC_SRAM4 ? 4 : \
-                -1)
+                            -1)
 
 #define MXC_MPC_FLASH_GET_BASE(i) ((i) == 0 ? MXC_MPC_FLASH : 0)
 
 #define MXC_MPC_SRAM_GET_BASE(i) \
-    ((i) == 0 ? MXC_MPC_SRAM0 : \
-     (i) == 1 ? MXC_MPC_SRAM1 : \
-     (i) == 2 ? MXC_MPC_SRAM2 : \
-     (i) == 3 ? MXC_MPC_SRAM3 : \
-     (i) == 4 ? MXC_MPC_SRAM4 : \
+    ((i) == 0 ? MXC_MPC_SRAM0 :  \
+     (i) == 1 ? MXC_MPC_SRAM1 :  \
+     (i) == 2 ? MXC_MPC_SRAM2 :  \
+     (i) == 3 ? MXC_MPC_SRAM3 :  \
+     (i) == 4 ? MXC_MPC_SRAM4 :  \
                 0)
 
 /******************************************************************************/
