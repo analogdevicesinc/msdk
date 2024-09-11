@@ -146,6 +146,8 @@ int Board_Init(void)
         return err;
     }
 
+    PB_Set_Polarity(0, PB_POLARITY_HIGH);
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
