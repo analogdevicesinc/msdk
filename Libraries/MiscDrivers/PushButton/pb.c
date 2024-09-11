@@ -42,9 +42,9 @@ int PB_Init(void)
     }
 
     if (g_pb_polarity == NULL) {
-        g_pb_polarity = malloc(num_pbs * sizeof(pb_polarity_t)); 
-        // Note we have to use malloc here because we decided to make "num_pbs" a 
-        // const variable instead of a compiler definition...        
+        g_pb_polarity = malloc(num_pbs * sizeof(pb_polarity_t));
+        // Note we have to use malloc here because we decided to make "num_pbs" a
+        // const variable instead of a compiler definition...
     }
 
     for (unsigned int i = 0; i < num_pbs; i++) {
