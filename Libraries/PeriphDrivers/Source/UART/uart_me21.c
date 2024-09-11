@@ -18,6 +18,7 @@
  *
  ******************************************************************************/
 
+#include <math.h>
 #include "uart.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
@@ -147,6 +148,10 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     }
 #endif // MSDK_NO_GPIO_CLK_INIT
 
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval)
+        return retval;
+
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
 }
 
@@ -185,79 +190,62 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t *uart)
 
 int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-    int freq;
-    int mod = 0;
-    int clkdiv = 0;
-    int div = 8;
+    int freq = 0;
+    uint32_t clock_freq = 0;
+    uint8_t aon_clk_div = 0;
 
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    // check if the uart is LPUART
-    if (uart == MXC_UART3) {
-        // OSR default value
-        uart->osr = 5;
+    // OSR default value
+    uart->osr = 5;
 
-        switch (clock) {
-        case MXC_UART_APB_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK;
-            div = (1 << (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV)) * 8;
-            clkdiv = (SystemCoreClock / div) / baud;
-            mod = (SystemCoreClock / div) % baud;
-            break;
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = PeripheralClock;
+        break;
+    case MXC_UART_EXT_CLK:
+        uart->ctrl |= MXC_F_UART_CTRL_FDM;
+        clock_freq = EXTCLK_FREQ;
+        break;
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
+    case MXC_UART_INRO_CLK:
+        uart->ctrl |= MXC_F_UART_CTRL_FDM;
+        clock_freq = INRO_FREQ;
 
-        case MXC_UART_EXT_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-            clkdiv = ((EXTCLK2_FREQ * 2) / baud);
-            mod = ((EXTCLK2_FREQ * 2) % baud);
-            break;
-
-        case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-            if (baud == 9600) {
-                clkdiv = 7;
-                mod = 0;
-            } else {
-                clkdiv = ((ERTCO_FREQ * 2) / baud);
-                mod = ((ERTCO_FREQ * 2) % baud);
-            }
-
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-            break;
-
-        case MXC_UART_INRO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK3;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-            clkdiv = ((INRO_FREQ * 2) / baud);
-            mod = ((INRO_FREQ * 2) % baud);
-
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-            break;
-
-        default:
-            return E_BAD_PARAM;
+        if (baud > 2400) {
+            uart->osr = 0;
+        } else {
+            uart->osr = 1;
         }
+        break;
+    case MXC_UART_ERTCO_CLK:
+        uart->ctrl |= MXC_F_UART_CTRL_FDM;
+        clock_freq = ERTCO_FREQ;
 
-        if (!clkdiv || mod > (baud / 2)) {
-            clkdiv++;
+        if (baud > 2400) {
+            uart->osr = 0;
+        } else {
+            uart->osr = 1;
         }
-        uart->clkdiv = clkdiv;
-
-        freq = MXC_UART_GetFrequency(uart);
-    } else {
-        freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
+        break;
+    case MXC_UART_AOD_CLK:
+        aon_clk_div = (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV) >>
+                      MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS;
+        clock_freq = PeripheralClock / (4 * (pow(2, aon_clk_div)));
+        break;
+    default:
+        return E_BAD_PARAM;
     }
+
+    if (uart->ctrl & MXC_F_UART_CTRL_FDM) {
+        clock_freq *= 2; // x2 to account for FDM
+    }
+
+    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
 
     if (freq > 0) {
         // Enable baud clock and wait for it to become ready.
@@ -364,7 +352,67 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
-    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock);
+    int error = E_NO_ERROR;
+    uint8_t clock_option = 0;
+
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+    case 1:
+    case 2:
+        // UART0-2 support PCLK and IBRO
+        switch (clock) {
+        case MXC_UART_APB_CLK:
+            clock_option = 0;
+            break;
+
+        case MXC_UART_EXT_CLK:
+            clock_option = 1;
+            break;
+
+        case MXC_UART_IBRO_CLK:
+            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            clock_option = 2;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+        break;
+
+    case 3:
+        // UART3 (LPUART0) supports IBRO and ERTCO
+        switch (clock) {
+        case MXC_UART_AOD_CLK:
+            clock_option = 0;
+            break;
+
+        case MXC_UART_EXT_CLK:
+            clock_option = 1;
+            break;
+
+        case MXC_UART_INRO_CLK:
+            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+            clock_option = 2;
+            break;
+
+        case MXC_UART_ERTCO_CLK:
+            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+            clock_option = 3;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+
+    if (error)
+        return error;
+
+    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)

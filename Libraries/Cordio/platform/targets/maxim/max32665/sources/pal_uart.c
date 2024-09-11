@@ -189,6 +189,8 @@ static sys_map_t palUartGetMap(PalUartId_t uartId)
 void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
 {
   int uartNum = palUartGetNum(id);
+  PAL_SYS_ASSERT(palUartCb[uartNum].state == PAL_UART_STATE_UNINIT);
+
   sys_map_t uartMap = palUartGetMap(id);
   int result;
   mxc_uart_regs_t *uart = MXC_UART_GET_UART(uartNum);

@@ -148,7 +148,7 @@ static inline void bbBleClrIfs(void)
 /*************************************************************************************************/
 static inline void bbBleSetTifs(void)
 {
-  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS, .ifsTime = 0, .pIfsChan = NULL };
+  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS, .ifsTime = LL_BLE_TIFS_US, .pIfsChan = NULL };
   PalBbBleSetOpParams(&opParams);
 }
 

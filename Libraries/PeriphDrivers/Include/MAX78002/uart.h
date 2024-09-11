@@ -77,15 +77,7 @@ typedef enum {
 
 /**
  * @brief      Clock settings */
-typedef enum {
-    /*For UART3 APB clock source is the 8MHz clock*/
-    MXC_UART_APB_CLK = 0,
-    MXC_UART_EXT_CLK = 1,
-    /*IBRO clock can only be used for UART 0, 1 & 2*/
-    MXC_UART_IBRO_CLK = 2,
-    /*ERTCO clock can only be used for UART3*/
-    MXC_UART_ERTCO_CLK = 4,
-} mxc_uart_clock_t;
+typedef enum { MXC_UART_APB_CLK = 0, MXC_UART_IBRO_CLK, MXC_UART_ERTCO_CLK } mxc_uart_clock_t;
 
 /**
  * @brief   The callback routine used to indicate the transaction has terminated.
@@ -248,10 +240,36 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   clock        Clock source
  *
- * @return  Actual baud rate if successful, otherwise see \ref MXC_Error_Codes 
- *          for a list of return codes.
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock);
+
+/**
+ * @brief   Gets the clock source used for the UART instance
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  The selected clock source for the UART instance
+ */
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart);
+
+/**
+ * @brief   Locks the clock source for the baud rate generator.
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+void MXC_UART_LockClockSource(mxc_uart_regs_t *uart);
+
+/**
+ * @brief   Unlocks the clock source for the baud rate generator.
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+void MXC_UART_UnlockClockSource(mxc_uart_regs_t *uart);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */

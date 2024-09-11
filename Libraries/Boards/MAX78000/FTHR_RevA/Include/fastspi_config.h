@@ -36,8 +36,10 @@
 #define FASTSPI_VSSEL MXC_GPIO_VSSEL_VDDIOH
 #define FASTSPI_PINS_MASK \
     (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9)
+
 #define FASTSPI_SS_PORT MXC_GPIO0
 #define FASTSPI_SS_PIN MXC_GPIO_PIN_10 // (SS2)
+#define FASTSPI_SS_NUM 2
 
 // (*) Required GPIO definitions:
 static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = FASTSPI_SS_PORT,

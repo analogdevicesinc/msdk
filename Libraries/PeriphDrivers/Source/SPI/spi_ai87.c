@@ -405,13 +405,13 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 
     switch (spi_num) {
     case 0:
-        reqselTx = MXC_DMA_REQUEST_SPI0TX;
-        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
         break;
 
     case 1:
-        reqselTx = MXC_DMA_REQUEST_SPI1TX;
-        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
         break;
 
     default:
@@ -444,13 +444,13 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
 
     switch (spi_num) {
     case 0:
-        reqselTx = MXC_DMA_REQUEST_SPI0TX;
-        reqselRx = MXC_DMA_REQUEST_SPI0RX;
+        reqselTx = MXC_DMA_REQUEST_SPI1TX;
+        reqselRx = MXC_DMA_REQUEST_SPI1RX;
         break;
 
     case 1:
-        reqselTx = MXC_DMA_REQUEST_SPI1TX;
-        reqselRx = MXC_DMA_REQUEST_SPI1RX;
+        reqselTx = MXC_DMA_REQUEST_SPI0TX;
+        reqselRx = MXC_DMA_REQUEST_SPI0RX;
         break;
 
     default:
@@ -475,6 +475,11 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi)
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
 {
     MXC_SPI_RevA1_AsyncHandler((mxc_spi_reva_regs_t *)spi);
+}
+
+void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state)
+{
+    MXC_SPI_RevA1_HWSSControl((mxc_spi_reva_regs_t *)spi, state);
 }
 
 /* ** SPI v2 functions to prevent build errors ** */

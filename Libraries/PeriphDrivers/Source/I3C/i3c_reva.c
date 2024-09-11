@@ -204,6 +204,21 @@ static inline int MXC_I3C_RevA_Controller_WaitForReqDone(mxc_i3c_reva_regs_t *i3
     return E_SUCCESS;
 }
 
+static inline int MXC_I3C_RevA_Controller_WaitForIdle(mxc_i3c_reva_regs_t *i3c, int timeout)
+{
+    while ((i3c->cont_status & MXC_F_I3C_REVA_CONT_STATUS_STATE) !=
+           MXC_S_I3C_REVA_CONT_STATUS_STATE_IDLE) {
+        if (timeout == 0) {
+            return E_TIME_OUT;
+        }
+        if (timeout > 0) {
+            timeout--;
+        }
+    }
+
+    return E_SUCCESS;
+}
+
 int MXC_I3C_RevA_Recover(mxc_i3c_reva_regs_t *i3c)
 {
     int retries = 3;
@@ -443,17 +458,13 @@ int MXC_I3C_RevA_SetHighKeeperMode(mxc_i3c_reva_regs_t *i3c, mxc_i3c_reva_high_k
  *                      address for I3C SDR messages.
  * @param   readCount   Maximum bytes allowed to be read from the target. Set to 0 if you wish
  *                      to allow the read until the target stops sending.
- *
- * @return  Success/Fail. E_SUCCESS if request is successful, E_BUSY if an IBI occurrs during a START,
- *          one of \ref MXC_Error_Codes otherwise.
  */
-static int MXC_I3C_RevA_ControllerRequest(mxc_i3c_reva_regs_t *i3c, uint8_t request,
-                                          mxc_i3c_reva_start_type_t type,
-                                          mxc_i3c_transfer_type_t xferType, uint8_t addr,
-                                          uint8_t readCount)
+static void MXC_I3C_RevA_Controller_Request(mxc_i3c_reva_regs_t *i3c, uint8_t request,
+                                            mxc_i3c_reva_start_type_t type,
+                                            mxc_i3c_transfer_type_t xferType, uint8_t addr,
+                                            uint8_t readCount)
 {
     uint32_t cont1;
-    int timeout = 1000;
 
     cont1 = (request << MXC_F_I3C_CONT_CTRL1_REQ_POS) | (addr << MXC_F_I3C_CONT_CTRL1_ADDR_POS) |
             (type << MXC_F_I3C_CONT_CTRL1_TYPE_POS) |
@@ -463,46 +474,40 @@ static int MXC_I3C_RevA_ControllerRequest(mxc_i3c_reva_regs_t *i3c, uint8_t requ
         cont1 |= readCount << MXC_F_I3C_CONT_CTRL1_TERM_RD_POS;
     }
 
-    i3c->cont_errwarn = MXC_F_I3C_REVA_CONT_ERRWARN_MASK;
-    MXC_I3C_RevA_Controller_ClearFlags(i3c, MXC_F_I3C_REVA_CONT_STATUS_MASK);
     i3c->cont_ctrl1 = cont1;
-
-    if (request == MXC_V_I3C_REVA_CONT_CTRL1_REQ_EMIT_START ||
-        request == MXC_V_I3C_REVA_CONT_CTRL1_REQ_PROCESS_DAA) {
-        while (!(i3c->cont_status & MXC_F_I3C_REVA_CONT_STATUS_REQ_DONE)) {
-            if (--timeout == 0) {
-                return E_TIME_OUT;
-            }
-        }
-    }
-
-    /* Check for ACK/NACK */
-    if (i3c->cont_status & MXC_F_I3C_REVA_CONT_STATUS_NACK) {
-        /* Address NACKed, exit */
-        return E_NO_RESPONSE;
-    } else if (i3c->cont_status & MXC_F_I3C_REVA_CONT_STATUS_ERRWARN) {
-        /* Error occurred, check MERRWARN register for details */
-        return MXC_I3C_RevA_Controller_GetError(i3c);
-    } else if (i3c->cont_status & MXC_F_I3C_REVA_CONT_STATUS_IBI_WON) {
-        return E_BUSY;
-    }
-
-    return E_SUCCESS;
 }
 
 int MXC_I3C_RevA_EmitStart(mxc_i3c_reva_regs_t *i3c, bool isI2C, mxc_i3c_transfer_type_t xferType,
                            uint8_t addr, uint8_t readCount)
 {
-    return MXC_I3C_RevA_ControllerRequest(i3c, MXC_V_I3C_REVA_CONT_CTRL1_REQ_EMIT_START,
-                                          isI2C ? MXC_I3C_REVA_START_TYPE_I2C :
-                                                  MXC_I3C_REVA_START_TYPE_SDR,
-                                          xferType, addr, readCount);
+    MXC_I3C_RevA_Controller_ClearError(i3c);
+    MXC_I3C_RevA_Controller_ClearFlags(i3c, MXC_F_I3C_REVA_CONT_STATUS_MASK);
+
+    MXC_I3C_RevA_Controller_Request(i3c, MXC_V_I3C_REVA_CONT_CTRL1_REQ_EMIT_START,
+                                    isI2C ? MXC_I3C_REVA_START_TYPE_I2C :
+                                            MXC_I3C_REVA_START_TYPE_SDR,
+                                    xferType, addr, readCount);
+
+    if (MXC_I3C_RevA_Controller_WaitForReqDone(i3c, 1000) < 0) {
+        return E_TIME_OUT;
+    }
+
+    return MXC_I3C_RevA_Controller_GetError(i3c);
 }
 
 int MXC_I3C_RevA_ResetTarget(mxc_i3c_reva_regs_t *i3c)
 {
-    return MXC_I3C_RevA_ControllerRequest(i3c, MXC_V_I3C_REVA_CONT_CTRL1_REQ_EXIT_RST,
-                                          MXC_I3C_REVA_START_TYPE_SDR, 0, 0, 0);
+    MXC_I3C_RevA_Controller_ClearError(i3c);
+    MXC_I3C_RevA_Controller_ClearFlags(i3c, MXC_F_I3C_REVA_CONT_STATUS_MASK);
+
+    MXC_I3C_RevA_Controller_Request(i3c, MXC_V_I3C_REVA_CONT_CTRL1_REQ_EXIT_RST,
+                                    MXC_I3C_REVA_START_TYPE_SDR, 0, 0, 0);
+
+    if (MXC_I3C_RevA_Controller_WaitForReqDone(i3c, 1000) < 0) {
+        return E_TIME_OUT;
+    }
+
+    return MXC_I3C_RevA_Controller_GetError(i3c);
 }
 
 void MXC_I3C_RevA_EmitStop(mxc_i3c_reva_regs_t *i3c)
@@ -511,8 +516,8 @@ void MXC_I3C_RevA_EmitStop(mxc_i3c_reva_regs_t *i3c)
     i3c->cont_ctrl1 &= ~(MXC_F_I3C_REVA_CONT_CTRL1_REQ | MXC_F_I3C_REVA_CONT_CTRL1_RDWR_DIR |
                          MXC_F_I3C_REVA_CONT_CTRL1_TERM_RD);
     i3c->cont_ctrl1 |= MXC_S_I3C_REVA_CONT_CTRL1_REQ_EMIT_STOP;
-    /* Wait for REQ_DONE */
-    MXC_I3C_RevA_Controller_WaitForReqDone(i3c, 1000);
+    /* Wait for IDLE state */
+    MXC_I3C_RevA_Controller_WaitForIdle(i3c, 1000);
 }
 
 void MXC_I3C_RevA_EmitI2CStop(mxc_i3c_reva_regs_t *i3c)
@@ -520,8 +525,8 @@ void MXC_I3C_RevA_EmitI2CStop(mxc_i3c_reva_regs_t *i3c)
     /* Configure MCTRL register for STOP */
     i3c->cont_ctrl1 = MXC_S_I3C_REVA_CONT_CTRL1_REQ_EMIT_STOP |
                       (1 << MXC_F_I3C_REVA_CONT_CTRL1_TYPE_POS);
-    /* Wait for REQ_DONE */
-    MXC_I3C_RevA_Controller_WaitForReqDone(i3c, 1000);
+    /* Wait for IDLE state */
+    MXC_I3C_RevA_Controller_WaitForIdle(i3c, 1000);
 }
 
 int MXC_I3C_RevA_Controller_CCC(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_reva_ccc_req_t *req)
@@ -547,7 +552,7 @@ int MXC_I3C_RevA_Controller_CCC(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_reva_ccc
         if (req->xfer_type == MXC_I3C_TRANSFER_TYPE_WRITE) {
             /* Write message */
             if (req->flags & MXC_I3C_CCC_HAS_SUB_COMMAND) {
-                i3c->cont_txfifo8 = req->sub_cmd & (req->tx_len ? 0 : (1 << 8));
+                MXC_I3C_RevA_WriteTXFIFO(i3c, &req->sub_cmd, 1, (req->tx_len == 0), 100);
             }
             if (req->tx_len) {
                 MXC_I3C_RevA_WriteTXFIFO(i3c, req->tx_buf, req->tx_len, true, 100);
@@ -572,20 +577,37 @@ err:
     return ret;
 }
 
-static int MXC_I3C_RevA_Controller_SDR(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_reva_req_t *req)
+int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_reva_req_t *req)
 {
     int ret;
+    uint8_t readCount;
+    uint16_t remaining;
 
-    ret =
-        MXC_I3C_RevA_EmitStart(i3c, false, MXC_I3C_TRANSFER_TYPE_WRITE, MXC_I3C_BROADCAST_ADDR, 0);
+    if (MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_IDLE &&
+        MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_SDR_NORM) {
+        return E_BUSY;
+    }
 
-    if (ret < 0) {
-        goto err;
+    if (req->tx_len == 0 && req->rx_len == 0) {
+        return E_BAD_PARAM;
+    }
+
+    MXC_I3C_RevA_ClearTXFIFO(i3c);
+    MXC_I3C_RevA_ClearRXFIFO(i3c);
+
+    if (!req->is_i2c) {
+        ret = MXC_I3C_RevA_EmitStart(i3c, req->is_i2c, MXC_I3C_TRANSFER_TYPE_WRITE,
+                                     MXC_I3C_BROADCAST_ADDR, 0);
+
+        if (ret < 0) {
+            goto err;
+        }
     }
 
     /* Restart with write */
     if (req->tx_len) {
-        ret = MXC_I3C_RevA_EmitStart(i3c, false, MXC_I3C_TRANSFER_TYPE_WRITE, req->target_addr, 0);
+        ret = MXC_I3C_RevA_EmitStart(i3c, req->is_i2c, MXC_I3C_TRANSFER_TYPE_WRITE,
+                                     req->target_addr, 0);
         if (ret < 0) {
             goto err;
         }
@@ -599,61 +621,14 @@ static int MXC_I3C_RevA_Controller_SDR(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_r
     }
 
     if (req->rx_len) {
-        ret = MXC_I3C_RevA_EmitStart(i3c, false, MXC_I3C_TRANSFER_TYPE_READ, req->target_addr,
-                                     req->rx_len);
-        if (ret < 0) {
-            goto err;
-        }
-
-        ret = MXC_I3C_RevA_ReadRXFIFO(i3c, req->rx_buf, req->rx_len, 100);
-        if (ret < 0) {
-            goto err;
-        }
-
-        MXC_I3C_RevA_Controller_WaitForDone(i3c, 1000);
-    }
-
-    /* Check for errors */
-    ret = MXC_I3C_RevA_Controller_GetError(i3c);
-err:
-    if (req->stop || ret != E_SUCCESS) {
-        MXC_I3C_RevA_EmitStop(i3c);
-    }
-
-    return ret;
-}
-
-static int MXC_I3C_RevA_Controller_I2C(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_reva_req_t *req)
-{
-    int ret = E_SUCCESS;
-    uint8_t readCount;
-    uint16_t remaining;
-
-    if (req->tx_len) {
-        ret = MXC_I3C_RevA_EmitStart(i3c, true, MXC_I3C_TRANSFER_TYPE_WRITE, req->target_addr, 0);
-        if (ret < 0) {
-            return ret;
-        }
-
-        ret = MXC_I3C_RevA_WriteTXFIFO(i3c, req->tx_buf, req->tx_len, true, 1000);
-        if (ret != req->tx_len) {
-            ret = MXC_I3C_RevA_Controller_GetError(i3c);
-            goto err;
-        }
-        MXC_I3C_RevA_Controller_WaitForDone(i3c, 1000);
-
-        ret = E_SUCCESS;
-    }
-
-    if (req->rx_len) {
         remaining = req->rx_len;
         while (remaining > 0) {
             readCount = (remaining < MXC_I3C_REVA_MAX_FIFO_TRANSACTION) ?
                             remaining :
                             MXC_I3C_REVA_MAX_FIFO_TRANSACTION;
 
-            ret = MXC_I3C_RevA_EmitStart(i3c, true, MXC_I3C_TRANSFER_TYPE_READ, req->target_addr,
-                                         readCount);
+            ret = MXC_I3C_RevA_EmitStart(i3c, req->is_i2c, MXC_I3C_TRANSFER_TYPE_READ,
+                                         req->target_addr, readCount);
             if (ret < 0) {
                 goto err;
             }
@@ -668,36 +643,17 @@ static int MXC_I3C_RevA_Controller_I2C(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_r
             }
         }
 
-        ret = E_SUCCESS;
+        MXC_I3C_RevA_Controller_WaitForDone(i3c, 1000);
     }
 
+    /* Check for errors */
+    ret = MXC_I3C_RevA_Controller_GetError(i3c);
 err:
     if (req->stop || ret != E_SUCCESS) {
-        MXC_I3C_RevA_EmitI2CStop(i3c);
+        MXC_I3C_RevA_EmitStop(i3c);
     }
 
     return ret;
-}
-
-int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_reva_req_t *req)
-{
-    if (MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_IDLE &&
-        MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_SDR_NORM) {
-        return E_BUSY;
-    }
-
-    if (req->tx_len == 0 && req->rx_len == 0) {
-        return E_BAD_PARAM;
-    }
-
-    MXC_I3C_RevA_ClearTXFIFO(i3c);
-    MXC_I3C_RevA_ClearRXFIFO(i3c);
-
-    if (!req->is_i2c) {
-        return MXC_I3C_RevA_Controller_SDR(i3c, req);
-    }
-
-    return MXC_I3C_RevA_Controller_I2C(i3c, req);
 }
 
 int MXC_I3C_RevA_Controller_DAA(mxc_i3c_reva_regs_t *i3c, uint8_t addr, uint8_t *pid, uint8_t *bcr,
@@ -714,8 +670,10 @@ int MXC_I3C_RevA_Controller_DAA(mxc_i3c_reva_regs_t *i3c, uint8_t addr, uint8_t 
         MXC_I3C_RevA_Controller_WaitForDone(i3c, 1000);
     }
 
-    ret = MXC_I3C_RevA_ControllerRequest(i3c, MXC_V_I3C_REVA_CONT_CTRL1_REQ_PROCESS_DAA,
-                                         MXC_I3C_REVA_START_TYPE_SDR, 0, 0, 0);
+    MXC_I3C_RevA_Controller_Request(i3c, MXC_V_I3C_REVA_CONT_CTRL1_REQ_PROCESS_DAA,
+                                    MXC_I3C_REVA_START_TYPE_SDR, 0, 0, 0);
+    ret = MXC_I3C_RevA_Controller_WaitForReqDone(i3c, 1000);
+
     if (ret == E_SUCCESS) {
         if (MXC_I3C_RevA_Controller_GetState(i3c) == MXC_V_I3C_REVA_CONT_STATUS_STATE_DAA &&
             GET_FIELD(cont_status, CONT_STATUS_WAIT)) {

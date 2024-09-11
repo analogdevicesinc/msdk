@@ -1,6 +1,6 @@
 ##############################################################################
  #
- # Copyright 2023 Analog Devices, Inc.
+ # Copyright 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  #
  ##############################################################################
 # This Makefile is used to manage the inclusion of the various
-# libraries that are available in the MaximSDK.  'include'-ing 
+# libraries that are available in the MaximSDK.  'include'-ing
 # libs.mk offers 'toggle switch' variables that can be used to
 # manage the inclusion of the available libraries.
 
@@ -59,10 +59,16 @@ endif
 # ************************
 LIB_CORDIO ?= 0
 CODED_PHY_DEMO ?= 0
+INIT_EXTENDED ?= 0
 ifeq ($(LIB_CORDIO), 1)
 # Include the Cordio Library
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
+PROJ_CFLAGS += -D__CORDIO__
+
+ifeq ($(INIT_EXTENDED),1)
+PROJ_CFLAGS += -DINIT_EXTENDED=1
+endif
 
 CHIP_REVISION ?= b
 export CHIP_REVISION
@@ -183,6 +189,16 @@ LIB_MAXUSB ?= 0
 ifeq ($(LIB_MAXUSB), 1)
 MAXUSB_DIR ?= $(LIBS_DIR)/MAXUSB
 include $(MAXUSB_DIR)/maxusb.mk
+endif
+# ************************
+
+# TinyUSB (Disabled by default)
+# ************************
+LIB_TINYUSB ?= 0
+ifeq ($(LIB_TINYUSB), 1)
+TINYUSB_DIR ?= $(LIBS_DIR)/tinyusb
+include $(TINYUSB_DIR)/tinyusb.mk
+libclean: clean.tinyusb
 endif
 # ************************
 
@@ -311,5 +327,20 @@ LIB_CLI ?= 0
 ifeq ($(LIB_CLI), 1)
 LIB_CLI_DIR ?= $(LIBS_DIR)/CLI
 include $(LIB_CLI_DIR)/CLI.mk
+endif
+# ************************
+
+# Unified Security Software (USS) (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_USS ?= 0
+ifeq ($(LIB_USS),1)
+LIB_USS_DIR ?= $(LIBS_DIR)/USS
+
+ifeq ("$(wildcard $(LIB_USS_DIR))","")
+$(error ERR_LIBNOTFOUND: USS library not found (Only available via NDA). Please install the USS package to $(LIB_USS_DIR))
+endif
+
+include $(LIB_USS_DIR)/uss.mk
 endif
 # ************************

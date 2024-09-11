@@ -51,14 +51,18 @@ zephyr_include_directories(
     ${MSDK_PERIPH_SRC_DIR}/WUT
 )
 
+if(CONFIG_ARM)
+  zephyr_library_sources(${MSDK_CMSIS_DIR}/Source/system_max32690.c)
+  zephyr_library_sources(${MSDK_PERIPH_SRC_DIR}/SYS/mxc_lock.c)
+elseif(CONFIG_RISCV)
+  zephyr_library_sources(${MSDK_CMSIS_DIR}/Source/system_riscv_max32690.c)
+endif()
+
 zephyr_library_sources(
     ./max32xxx_system.c
 
-    ${MSDK_CMSIS_DIR}/Source/system_max32690.c
-
     ${MSDK_PERIPH_SRC_DIR}/SYS/mxc_assert.c
     ${MSDK_PERIPH_SRC_DIR}/SYS/mxc_delay.c
-    ${MSDK_PERIPH_SRC_DIR}/SYS/mxc_lock.c
     ${MSDK_PERIPH_SRC_DIR}/SYS/pins_me18.c
     ${MSDK_PERIPH_SRC_DIR}/SYS/sys_me18.c
     

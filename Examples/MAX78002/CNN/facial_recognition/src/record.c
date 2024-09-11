@@ -135,17 +135,17 @@ static int font = (int)&Liberation_Sans16x16[0];
 void get_status(Person *p);
 int update_status(Person *p);
 int update_info_field(Person *p);
-void FLC0_IRQHandler();
-int init_db();
-int init_status();
+void FLC0_IRQHandler(void);
+int init_db(void);
+int init_status(void);
 int add_person(Person *p);
 void flash_to_cnn(Person *p, uint32_t cnn_location);
-void setup_irqs();
+void setup_irqs(void);
 void read_db(Person *p);
-bool check_db();
-void show_keyboard();
+bool check_db(void);
+void show_keyboard(void);
 void get_name(Person *p);
-void show_face();
+void show_face(void);
 
 /***** Functions *****/
 

@@ -753,6 +753,15 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
     }
 }
 
+void MXC_TFT_PrintFontColor(int x0, int y0, int id, text_t *str, unsigned int font_color,
+                            unsigned int fill_color)
+{
+    MXC_TFT_SetForeGroundColor(font_color);
+    g_background_color = fill_color;
+
+    MXC_TFT_PrintFont(x0, y0, id, str, NULL);
+}
+
 void MXC_TFT_Print(int x0, int y0, text_t *str, area_t *area)
 {
     MXC_TFT_PrintFont(x0, y0, (int)g_font, str, area);

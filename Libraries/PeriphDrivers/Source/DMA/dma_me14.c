@@ -177,6 +177,26 @@ mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch)
     return MXC_DMA_RevA_GetCHRegs(ch);
 }
 
+dma_handler_t MXC_DMA_Get_DMA_Handler(mxc_dma_regs_t *dma)
+{
+    if (dma == MXC_DMA0)
+        return MXC_DMA_DMA0_Handler;
+    else if (dma == MXC_DMA1)
+        return MXC_DMA_DMA1_Handler;
+    else
+        return NULL;
+}
+
+void MXC_DMA_DMA0_Handler(void)
+{
+    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t *)MXC_DMA0);
+}
+
+void MXC_DMA_DMA1_Handler(void)
+{
+    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t *)MXC_DMA1);
+}
+
 void MXC_DMA_Handler(mxc_dma_regs_t *dma)
 {
     if (MXC_DMA_GET_IDX(dma) != -1) {

@@ -27,24 +27,18 @@
 #include "nvic_table.h"
 #include "mxc_delay.h"
 
-int g_tx_channel;
-int g_rx_channel;
-int g_fill_dummy_bytes = 0;
-int g_dummy_len = 0;
-uint8_t g_dummy_byte = 0xFF;
+static int g_tx_channel;
+static int g_rx_channel;
+static int g_dummy_len = 0;
+static uint8_t g_dummy_byte = 0xFF;
 
-bool g_dma_initialized = false;
-
-uint8_t *g_rx_buffer;
-uint8_t *g_tx_buffer;
-uint32_t g_rx_len;
-uint32_t g_tx_len;
+static bool g_dma_initialized = false;
 
 static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
 static volatile bool g_master_done = 0;
 
-void DMA_TX_IRQHandler(void)
+static void DMA_TX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_tx_channel]; // Cast the pointer for readability in this ISR
@@ -60,7 +54,7 @@ void DMA_TX_IRQHandler(void)
     }
 }
 
-void DMA_RX_IRQHandler(void)
+static void DMA_RX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_rx_channel]; // Cast the pointer for readability in this ISR
@@ -73,32 +67,6 @@ void DMA_RX_IRQHandler(void)
 
     if (status & MXC_F_DMA_STATUS_BUS_ERR) { // Bus Error
         ch->status |= MXC_F_DMA_STATUS_BUS_ERR;
-    }
-}
-
-void processSPI(void)
-{
-    // Unload any SPI data that has come in
-    while (g_rx_buffer && (FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
-        *g_rx_buffer++ = FASTSPI_INSTANCE->fifo8[0];
-        g_rx_len--;
-    }
-
-    if (g_rx_len <= 0) {
-        g_rx_done = 1;
-    }
-
-    // Write any pending bytes out.
-    while (g_tx_buffer &&
-           (((FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) <
-            MXC_SPI_FIFO_DEPTH) &&
-           g_tx_len > 0) {
-        FASTSPI_INSTANCE->fifo8[0] = *g_tx_buffer++;
-        g_tx_len--;
-    }
-
-    if (g_tx_len <= 0) {
-        g_tx_done = 1;
     }
 }
 
@@ -188,11 +156,13 @@ int spi_init(void)
     fastspi_spi_pins.port->ds0 |= fastspi_spi_pins.mask;
     fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
-    FASTSPI_INSTANCE->ctrl0 =
-        (0b0100
-         << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
-        MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
-        MXC_F_SPI_CTRL0_EN; // Enable SPI
+    FASTSPI_INSTANCE->ctrl0 = MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
+                              MXC_F_SPI_CTRL0_EN; // Enable SPI
+
+    // Enable hardware slave select.  The instance number should be defined
+    // in "fastspi_config.h".
+    MXC_SETFIELD(FASTSPI_INSTANCE->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE,
+                 FASTSPI_SS_NUM << MXC_F_SPI_CTRL0_SS_ACTIVE_POS);
 
     FASTSPI_INSTANCE->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS); // Set 8 bits per character
 

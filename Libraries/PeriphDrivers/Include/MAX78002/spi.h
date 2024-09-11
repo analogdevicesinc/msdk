@@ -549,7 +549,7 @@ void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   numBytes    The threshold level to set.  This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -568,7 +568,7 @@ int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   numBytes    The threshold level to set. This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -707,6 +707,18 @@ unsigned int MXC_SPI_ReadRXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsig
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData);
+
+/**
+ * @brief   Enable/Disable HW CS control feature.
+ *
+ * Depending on the application, the user might need to manually drive the slave select pin.
+ * The SPI driver automatically drives the SS pin and this function enables/disables this
+ * feature.
+ *
+ * @param   spi             Pointer to SPI registers (selects the SPI block used.)
+ * @param   state           Non-zero values: enable HW SS mode. Zero: disable HW SS mode.
+ */
+void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state);
 //////<<< Previous Implementation
 
 /* ** DMA Functions ** */

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -45,7 +45,7 @@ typedef struct {
     int channelRx;
 } uart_revc_req_state_t;
 
-uart_revc_req_state_t states[MXC_UART_INSTANCES];
+static uart_revc_req_state_t states[MXC_UART_INSTANCES];
 
 /* **** Function Prototypes **** */
 

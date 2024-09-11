@@ -36,7 +36,111 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
-    switch (cfg->clock) {
+#ifndef MSDK_NO_GPIO_CLK_INIT
+    //enable peripheral clock and configure gpio pins
+    switch (tmr_id) {
+    case 0:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            /*  If the bit mode is set to 16A or 16B we avoid a full peripheral reset
+                because the user is probably trying to use the dual-mode timer config,
+                which requires two Init calls.  We don't want to reset because that would
+                wipe out any previous initializations.
+             */
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+        }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+
+        if (init_pins) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
+                MXC_GPIO_Config(&gpio_cfg_tmr0);
+            } else {
+                MXC_GPIO_Config(&gpio_cfg_tmr0b);
+            }
+        }
+
+        break;
+
+    case 1:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+        }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
+
+        if (init_pins) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
+                MXC_GPIO_Config(&gpio_cfg_tmr1);
+            } else {
+                MXC_GPIO_Config(&gpio_cfg_tmr1b);
+            }
+        }
+
+        break;
+
+    case 2:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+        }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
+
+        if (init_pins) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
+                MXC_GPIO_Config(&gpio_cfg_tmr2);
+            } else {
+                MXC_GPIO_Config(&gpio_cfg_tmr2b);
+            }
+        }
+
+        break;
+
+    case 3:
+        if (cfg->bitMode == MXC_TMR_BIT_MODE_32) {
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+        }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
+
+        if (init_pins) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
+                MXC_GPIO_Config(&gpio_cfg_tmr3);
+            } else {
+                MXC_GPIO_Config(&gpio_cfg_tmr3b);
+            }
+        }
+
+        break;
+
+    case 4:
+        MXC_GPIO_Config(&gpio_cfg_tmr4);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
+        break;
+
+    case 5:
+        MXC_GPIO_Config(&gpio_cfg_tmr5);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
+        break;
+    }
+#else
+    (void)init_pins;
+#endif
+
+    clockSource = MXC_TMR_SetClockSource(tmr, cfg->bitMode, cfg->clock);
+
+    return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
+}
+
+void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock)
+{
+    MXC_TMR_RevB_LockClockSource((mxc_tmr_revb_regs_t *)tmr, lock);
+}
+
+uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_clock_t clk_src)
+{
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+    uint8_t clockSource = MXC_TMR_CLK0;
+
+    switch (clk_src) {
     case MXC_TMR_ISO_CLK:
         if (tmr_id > 3) { // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
@@ -48,11 +152,12 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case MXC_TMR_IBRO_CLK:
-        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
-            return E_NOT_SUPPORTED;
+        if (tmr_id <= 3) {
+            clockSource = MXC_TMR_CLK2;
+        } else {
+            clockSource = MXC_TMR_CLK0;
         }
 
-        clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
         break;
@@ -85,82 +190,17 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
     }
 
-#ifndef MSDK_NO_GPIO_CLK_INIT
-    //enable peripheral clock and configure gpio pins
-    switch (tmr_id) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+    MXC_TMR_RevB_SetClockSource((mxc_tmr_revb_regs_t *)tmr, bit_mode, clk_src);
+    return clockSource;
+    /*  Note this function returns the actual value of the clockSource field to set because 
+        our TMR API was written extremely jankily.  The Init function accepts this register value
+        as an argument, so we need to pass that back up from this API... */
+}
 
-        if (init_pins) {
-            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr0);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr0b);
-            }
-        }
-
-        break;
-
-    case 1:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
-
-        if (init_pins) {
-            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr1);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr1b);
-            }
-        }
-
-        break;
-
-    case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
-
-        if (init_pins) {
-            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr2);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr2b);
-            }
-        }
-
-        break;
-
-    case 3:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
-
-        if (init_pins) {
-            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr3);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr3b);
-            }
-        }
-
-        break;
-
-    case 4:
-        MXC_GPIO_Config(&gpio_cfg_tmr4);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
-        break;
-
-    case 5:
-        MXC_GPIO_Config(&gpio_cfg_tmr5);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
-        break;
-    }
-#else
-    (void)init_pins;
-#endif
-
-    return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
+void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                          mxc_tmr_pres_t prescalar)
+{
+    MXC_TMR_RevB_SetPrescalar((mxc_tmr_revb_regs_t *)tmr, bit_mode, prescalar);
 }
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
