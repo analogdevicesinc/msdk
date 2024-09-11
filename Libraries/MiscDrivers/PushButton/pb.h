@@ -40,6 +40,11 @@ extern "C" {
 extern const mxc_gpio_cfg_t pb_pin[];
 extern const unsigned int num_pbs;
 
+typedef enum pb_polarity {
+    PB_POLARITY_LOW, ///< Pushing the button sends the signal LOW.  When the button is open, the signal is HIGH
+    PB_POLARITY_HIGH ///< Pushing the button sends the signal HIGH.  When the button is open, the signal is LOW.
+} pb_polarity_t;
+
 /* **** Function Prototypes **** */
 
 /**
@@ -49,6 +54,13 @@ extern const unsigned int num_pbs;
  *
  */
 int PB_Init(void);
+
+/**
+ * @brief           Set the voltage polarity of the pushbutton.
+ * @param pb        Pushbutton to configure
+ * @param polarity  Desired polarity of the push-button (i.e. what voltage level the signal goes to when the button is pushed).
+ */
+int PB_Set_Polarity(unsigned int pb, pb_polarity_t polarity);
 
 /**
  * Type alias @c pb_callback for the push button callback.
