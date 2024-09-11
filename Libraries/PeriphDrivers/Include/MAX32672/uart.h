@@ -82,11 +82,10 @@ typedef enum {
     MXC_UART_EXT_CLK = 1,
     /*8M (IBRO) and 32M (EFRO) clocks can be used for UARTs 0,1 and 2*/
     MXC_UART_IBRO_CLK = 2,
-    MXC_UART_ERFO_CLK = 3,
     /*32K (ERTCO) and 80K (INRO) clocks can only be used for UART3*/
-    MXC_UART_ERTCO_CLK = 4,
-    MXC_UART_INRO_CLK = 5,
-    MXC_UART_AOD_CLK = 6
+    MXC_UART_ERTCO_CLK = 3,
+    MXC_UART_INRO_CLK = 4,
+    MXC_UART_AOD_CLK = 5
 } mxc_uart_clock_t;
 
 /**

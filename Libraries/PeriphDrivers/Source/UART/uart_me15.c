@@ -54,35 +54,6 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         return retval;
     }
 
-    switch (clock) {
-    case MXC_UART_EXT_CLK:
-        if (uart == MXC_UART3) {
-            MXC_GPIO_Config(&gpio_cfg_lpextclk);
-        } else {
-            MXC_GPIO_Config(&gpio_cfg_hfextclk);
-        }
-        break;
-
-    case MXC_UART_ERTCO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        break;
-
-    case MXC_UART_IBRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
-
-    case MXC_UART_ERFO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
-
-    case MXC_UART_INRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-        break;
-
-    default:
-        break;
-    }
-
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_uart0);
@@ -346,6 +317,7 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             clock_option = 0;
             break;
         case MXC_UART_EXT_CLK:
+            MXC_GPIO_Config(&gpio_cfg_hfextclk);
             clock_option = 1;
             break;
         case MXC_UART_IBRO_CLK:
@@ -366,9 +338,11 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             clock_option = 0;
             break;
         case MXC_UART_EXT_CLK:
+            MXC_GPIO_Config(&gpio_cfg_lpextclk);
             clock_option = 1;
             break;
         case MXC_UART_ERTCO_CLK:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
             clock_option = 2;
             break;
         case MXC_UART_INRO_CLK:

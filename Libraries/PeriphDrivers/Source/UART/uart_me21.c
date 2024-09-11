@@ -79,35 +79,6 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         return retval;
     }
 
-    switch (clock) {
-    case MXC_UART_EXT_CLK:
-        if (uart == MXC_UART3) {
-            MXC_GPIO_Config(&gpio_cfg_lpextclk);
-        } else {
-            MXC_GPIO_Config(&gpio_cfg_hfextclk);
-        }
-        break;
-
-    case MXC_UART_ERTCO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        break;
-
-    case MXC_UART_IBRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
-
-    case MXC_UART_ERFO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
-
-    case MXC_UART_INRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-        break;
-
-    default:
-        break;
-    }
-
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
         if (current_pin_mapping == MAP_A) {
@@ -352,7 +323,7 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
-    int error = E_NO_ERROR;
+    int retval = E_NO_ERROR;
     uint8_t clock_option = 0;
 
     switch (MXC_UART_GET_IDX(uart)) {
@@ -366,11 +337,12 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             break;
 
         case MXC_UART_EXT_CLK:
+            retval = MXC_GPIO_Config(&gpio_cfg_hfextclk);
             clock_option = 1;
             break;
 
         case MXC_UART_IBRO_CLK:
-            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
             clock_option = 2;
             break;
 
@@ -387,16 +359,16 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             break;
 
         case MXC_UART_EXT_CLK:
+            retval = MXC_GPIO_Config(&gpio_cfg_lpextclk);
             clock_option = 1;
             break;
 
         case MXC_UART_INRO_CLK:
-            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
             clock_option = 2;
             break;
 
         case MXC_UART_ERTCO_CLK:
-            error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+            retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
             clock_option = 3;
             break;
 
@@ -409,8 +381,8 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
         return E_BAD_PARAM;
     }
 
-    if (error)
-        return error;
+    if (retval)
+        return retval;
 
     return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
 }
