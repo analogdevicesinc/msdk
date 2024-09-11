@@ -317,15 +317,21 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             clock_option = 0;
             break;
         case MXC_UART_EXT_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             MXC_GPIO_Config(&gpio_cfg_hfextclk);
+#endif // MSDK_NO_GPIO_CLK_INIT
             clock_option = 1;
             break;
         case MXC_UART_IBRO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif // MSDK_NO_GPIO_CLK_INIT
             clock_option = 2;
             break;
         case MXC_UART_ERFO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+#endif // MSDK_NO_GPIO_CLK_INIT
             clock_option = 3;
             break;
         default:
@@ -338,11 +344,15 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             clock_option = 0;
             break;
         case MXC_UART_EXT_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             MXC_GPIO_Config(&gpio_cfg_lpextclk);
+#endif // MSDK_NO_GPIO_CLK_INIT
             clock_option = 1;
             break;
         case MXC_UART_ERTCO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+#endif // MSDK_NO_GPIO_CLK_INIT
             clock_option = 2;
             break;
         case MXC_UART_INRO_CLK:
