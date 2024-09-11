@@ -81,7 +81,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         return retval;
     }
 
-    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
+    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
 
 int MXC_UART_Shutdown(mxc_uart_regs_t *uart)

@@ -86,7 +86,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     if (retval)
         return retval;
 
-    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
+    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
 
 int MXC_UART_Shutdown(mxc_uart_regs_t *uart)
@@ -354,6 +354,45 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
     }
 
     return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
+}
+
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
+{
+    unsigned int clock_option = MXC_UART_RevB_GetClockSource((mxc_uart_revb_regs_t *)uart);
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+    case 1:
+    case 2:
+        switch (clock_option) {
+        case 0:
+            return MXC_UART_APB_CLK;
+        case 1:
+            return MXC_UART_EXT_CLK;
+        case 2:
+            return MXC_UART_IBRO_CLK;
+        case 3:
+            return MXC_UART_ERFO_CLK;
+        default:
+            return E_BAD_STATE;
+        }
+        break;
+    case 3:
+        switch (clock_option) {
+        case 0:
+            return MXC_UART_AOD_CLK;
+        case 1:
+            return MXC_UART_EXT_CLK;
+        case 2:
+            return MXC_UART_ERTCO_CLK;
+        case 3:
+            return MXC_UART_INRO_CLK;
+        default:
+            return E_BAD_STATE;
+        }
+        break;
+    default:
+        return E_BAD_PARAM;
+    }
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
