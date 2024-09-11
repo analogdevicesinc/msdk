@@ -27,16 +27,16 @@
 #include "gcr_regs.h"
 #include "mpc.h"
 
-
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 #include "partition_max32657.h"
 
 // From linker script.
 extern uint32_t _nonsecure_start, _nonsecure_end;
 
-#define VECTOR_TABLE_START_ADDR_NS (uint32_t)(&_nonsecure_start) // Now setting the start of the vector table using a linker symbol
-#define MXC_Reset_Handler_NS (mxc_ns_call_t)*((uint32_t*)(VECTOR_TABLE_START_ADDR_NS + 4))
-#define MXC_MSP_NS *((uint32_t*)(VECTOR_TABLE_START_ADDR_NS))
+#define VECTOR_TABLE_START_ADDR_NS \
+    (uint32_t)(&_nonsecure_start) // Now setting the start of the vector table using a linker symbol
+#define MXC_Reset_Handler_NS (mxc_ns_call_t) * ((uint32_t *)(VECTOR_TABLE_START_ADDR_NS + 4))
+#define MXC_MSP_NS *((uint32_t *)(VECTOR_TABLE_START_ADDR_NS))
 #endif
 
 extern void (*const __isr_vector[])(void);
@@ -183,7 +183,6 @@ __weak void SystemInit(void)
     PinInit();
     Board_Init();
 }
-
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 /**

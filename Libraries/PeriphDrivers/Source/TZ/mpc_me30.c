@@ -39,10 +39,7 @@
 
 /**** Definitions ****/
 // Enumeration for security policy.
-typedef enum {
-    MXC_MPC_STATE_SECURE = 0,
-    MXC_MPC_STATE_NONSECURE = 1
-} mxc_mpc_state_t;
+typedef enum { MXC_MPC_STATE_SECURE = 0, MXC_MPC_STATE_NONSECURE = 1 } mxc_mpc_state_t;
 
 /**** Globals ****/
 
@@ -101,7 +98,7 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
 
         // Get the address range of the current MPC region.
         start_mpc_region_addr = curr_addr;
-        
+
         // NOTE: Project Owner/Developer must be aware of the memory settings for Secure and Non-Secure
         //  boundaries do not share an MPC block. An MPC block can only be set to one security
         //  policy (Secure or Non-Secure).
@@ -110,7 +107,8 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
             end_mpc_region_addr = phy_end_addr;
         } else {
             // -1 to get the last address of the current region.
-            end_mpc_region_addr = MXC_MPC_GET_PHY_MEM_BASE(curr_mpc) + MXC_MPC_GET_PHY_MEM_SIZE(curr_mpc) - 1;
+            end_mpc_region_addr =
+                MXC_MPC_GET_PHY_MEM_BASE(curr_mpc) + MXC_MPC_GET_PHY_MEM_SIZE(curr_mpc) - 1;
         }
 
         start_block_idx = MXC_MPC_GetBlockIdx(curr_mpc, start_mpc_region_addr);
@@ -153,12 +151,14 @@ int MXC_MPC_CheckPhyBoundaries(uint32_t start_addr, uint32_t end_addr)
     phy_end_addr = end_addr & ~(1 << 28);
 
     // Check Flash Boundaries.
-    if ((phy_start_addr >= MXC_PHY_FLASH_MEM_BASE) && (phy_end_addr < (MXC_PHY_FLASH_MEM_BASE + MXC_PHY_FLASH_MEM_SIZE))) {
+    if ((phy_start_addr >= MXC_PHY_FLASH_MEM_BASE) &&
+        (phy_end_addr < (MXC_PHY_FLASH_MEM_BASE + MXC_PHY_FLASH_MEM_SIZE))) {
         return E_NO_ERROR;
     }
 
     // Check SRAM Boundaries.
-    if ((phy_start_addr >= MXC_PHY_SRAM_MEM_BASE) && (phy_end_addr < (MXC_PHY_SRAM_MEM_BASE + MXC_PHY_SRAM_MEM_SIZE))) {
+    if ((phy_start_addr >= MXC_PHY_SRAM_MEM_BASE) &&
+        (phy_end_addr < (MXC_PHY_SRAM_MEM_BASE + MXC_PHY_SRAM_MEM_SIZE))) {
         return E_NO_ERROR;
     }
 
@@ -174,17 +174,23 @@ mxc_mpc_regs_t *MXC_MPC_GetInstance(uint32_t addr)
     //  by clearing bit 28 - indicates the security state of the address.
     phy_addr = addr & ~(1 << 28);
 
-    if ((phy_addr >= MXC_PHY_FLASH_MEM_BASE) && (phy_addr < MXC_PHY_FLASH_MEM_BASE + MXC_PHY_FLASH_MEM_SIZE)) {
+    if ((phy_addr >= MXC_PHY_FLASH_MEM_BASE) &&
+        (phy_addr < MXC_PHY_FLASH_MEM_BASE + MXC_PHY_FLASH_MEM_SIZE)) {
         return MXC_MPC_FLASH;
-    } else if ((phy_addr >= MXC_PHY_SRAM0_MEM_BASE) && (phy_addr < MXC_PHY_SRAM0_MEM_BASE + MXC_PHY_SRAM0_MEM_SIZE)) {
+    } else if ((phy_addr >= MXC_PHY_SRAM0_MEM_BASE) &&
+               (phy_addr < MXC_PHY_SRAM0_MEM_BASE + MXC_PHY_SRAM0_MEM_SIZE)) {
         return MXC_MPC_SRAM0;
-    } else if ((phy_addr >= MXC_PHY_SRAM1_MEM_BASE) && (phy_addr < MXC_PHY_SRAM1_MEM_BASE + MXC_PHY_SRAM1_MEM_SIZE)) {
+    } else if ((phy_addr >= MXC_PHY_SRAM1_MEM_BASE) &&
+               (phy_addr < MXC_PHY_SRAM1_MEM_BASE + MXC_PHY_SRAM1_MEM_SIZE)) {
         return MXC_MPC_SRAM1;
-    } else if ((phy_addr >= MXC_PHY_SRAM2_MEM_BASE) && (phy_addr < MXC_PHY_SRAM2_MEM_BASE + MXC_PHY_SRAM2_MEM_SIZE)) {
+    } else if ((phy_addr >= MXC_PHY_SRAM2_MEM_BASE) &&
+               (phy_addr < MXC_PHY_SRAM2_MEM_BASE + MXC_PHY_SRAM2_MEM_SIZE)) {
         return MXC_MPC_SRAM2;
-    } else if ((phy_addr >= MXC_PHY_SRAM3_MEM_BASE) && (phy_addr < MXC_PHY_SRAM3_MEM_BASE + MXC_PHY_SRAM3_MEM_SIZE)) {
+    } else if ((phy_addr >= MXC_PHY_SRAM3_MEM_BASE) &&
+               (phy_addr < MXC_PHY_SRAM3_MEM_BASE + MXC_PHY_SRAM3_MEM_SIZE)) {
         return MXC_MPC_SRAM3;
-    } else if ((phy_addr >= MXC_PHY_SRAM4_MEM_BASE) && (phy_addr < MXC_PHY_SRAM4_MEM_BASE + MXC_PHY_SRAM4_MEM_SIZE)) {
+    } else if ((phy_addr >= MXC_PHY_SRAM4_MEM_BASE) &&
+               (phy_addr < MXC_PHY_SRAM4_MEM_BASE + MXC_PHY_SRAM4_MEM_SIZE)) {
         return MXC_MPC_SRAM4;
     } else {
         // Addresses are located outside of memory spaces that don't have an
@@ -215,7 +221,7 @@ int MXC_MPC_GetBlockIdx(mxc_mpc_regs_t *mpc, uint32_t addr)
     block_size = 1 << ((mpc->blk_cfg & MXC_F_MPC_BLK_CFG_SIZE) + 5);
 
     // Clear bit 28 (Security State of Region) to get the physical memory address.
-    physical_addr &= ~(1<<28);
+    physical_addr &= ~(1 << 28);
 
     base = addr - start_mpc_region_addr;
     block = base / block_size;

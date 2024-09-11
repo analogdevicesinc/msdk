@@ -914,7 +914,7 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
     if (dma_instance == MXC_DMA0) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA0_Handler);
 #if CONFIG_TRUSTED_EXECUTION_SECURE
-    // Only secure code has access to Secure DMA (DMA1).
+        // Only secure code has access to Secure DMA (DMA1).
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
 #endif // CONFIG_TRUSTED_EXECUTION_SECURE

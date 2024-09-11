@@ -163,7 +163,8 @@ void MXC_SPC_PPC_ClearFlags(uint32_t flags)
 }
 
 // TODO(SW): This requires testing. ICODE
-void MXC_SPC_SetCode_NSC(bool isNSC) {
+void MXC_SPC_SetCode_NSC(bool isNSC)
+{
     if (isNSC) {
         MXC_SPC->nscidau |= MXC_F_SPC_NSCIDAU_CODE;
     } else {
@@ -171,7 +172,8 @@ void MXC_SPC_SetCode_NSC(bool isNSC) {
     }
 }
 
-void MXC_SPC_SetSRAM_NSC(bool isNSC) {
+void MXC_SPC_SetSRAM_NSC(bool isNSC)
+{
     if (isNSC) {
         MXC_SPC->nscidau |= MXC_F_SPC_NSCIDAU_SRAM;
     } else {
