@@ -19,8 +19,6 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_NSPC_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_NSPC_H_
 
-
-
 #include "mxc_device.h"
 #include "nspc_regs.h"
 
