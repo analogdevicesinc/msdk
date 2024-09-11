@@ -1071,7 +1071,7 @@ void MXC_CSI2_RevA_DMA_Handler(void)
 #ifdef GPIO_INDICATOR
             MXC_GPIO_OutToggle(indicator.port, indicator.mask);
 #endif
-            if (line_cnt > csi2_state.req->lines_per_frame) {
+            if (line_cnt >= csi2_state.req->lines_per_frame) {
                 // Frame complete
                 line_cnt = 0;
                 MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
