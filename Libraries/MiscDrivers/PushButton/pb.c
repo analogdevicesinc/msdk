@@ -57,6 +57,10 @@ int PB_Init(void)
 /******************************************************************************/
 int PB_Set_Polarity(unsigned int pb, pb_polarity_t polarity)
 {
+    if (pb >= num_pbs) {
+        return E_BAD_PARAM;
+    }
+
     g_pb_polarity[pb] = polarity;
     return E_NO_ERROR;
 }
