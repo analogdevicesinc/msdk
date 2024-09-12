@@ -504,6 +504,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)
 {
@@ -542,5 +543,6 @@ int MXC_SYS_LockDAP_Permanent(void)
     return err;
 #endif
 }
+#endif
 
 /**@} end of mxc_sys */
