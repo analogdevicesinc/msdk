@@ -162,12 +162,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA0">
-            <name>BTLE</name>
-            <description>BTLE Reset.</description>
-            <bitOffset>18</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="DMA0">
             <name>TRNG</name>
             <description>TRNG Reset.</description>
             <bitOffset>24</bitOffset>
@@ -409,14 +403,14 @@
             <bitWidth>4</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>active</name>
+                <name>ACTIVE</name>
                 <description>Active Mode.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>backup</name>
+                <name>BACKUP</name>
                 <description>Backup Mode.</description>
-                <value>9</value>
+                <value>4</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>PDM</name>
@@ -671,6 +665,18 @@
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field derivedFrom="CRC">
+            <name>AUTOCAL</name>
+            <description>Auto calibration Reset.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CRC">
+            <name>BTLE</name>
+            <description>BTLE Reset.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
@@ -706,12 +712,6 @@
             <name>AES</name>
             <description>AES Clock Disable</description>
             <bitOffset>15</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="TRNG">
-            <name>SPI</name>
-            <description>SPI Clock Disable</description>
-            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="TRNG">
@@ -806,6 +806,19 @@
         </fields>
       </register>
       <register>
+        <name>ECCCED</name>
+        <description>ECC Correctable Error Detect Register.</description>
+        <addressOffset>0x68</addressOffset>
+        <fields>
+          <field>
+            <name>FLASH</name>
+            <description>ECC Correctable Error Detect Flag for Flash. Write 1 to clear.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>ECCINTEN</name>
         <description>ECC Interrupt Enable Register</description>
         <addressOffset>0x6C</addressOffset>
@@ -813,7 +826,7 @@
           <field>
             <name>FLASH</name>
             <description>ECC Flash0 Interrupt Enable.</description>
-            <bitOffset>11</bitOffset>
+            <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -867,86 +880,86 @@
         <addressOffset>0x74</addressOffset>
         <fields>
           <field>
-            <name>TX_EN</name>
-            <description>LDOTX enable.</description>
+            <name>RF_EN</name>
+            <description>LDO RF enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_PD_EN</name>
-            <description>LDOTX Pull Down.</description>
+            <name>RF_PD_EN</name>
+            <description>LDO RF Pull Down.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_VSEL</name>
-            <description>Voltage Selection for NFC LDO</description>
+            <name>RF_VSEL</name>
+            <description>Voltage Selection for RF LDO</description>
             <bitOffset>2</bitOffset>
             <bitWidth>2</bitWidth>
           </field>
           <field>
-            <name>RX_EN</name>
-            <description>LDORX enable.</description>
+            <name>BB_EN</name>
+            <description>LDOBB enable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RX_PD_EN</name>
-            <description>LDORX Pull DOwn.</description>
+            <name>BB_PD_EN</name>
+            <description>LDO BB Pull DOwn.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RX_VSEL</name>
-            <description>LDORX Voltage Setting.</description>
+            <name>BB_VSEL</name>
+            <description>LDO BB Voltage Setting.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>2</bitWidth>
           </field>
           <field>
-            <name>RX_BP_EN</name>
-            <description>LDORX Bypass Enable.</description>
+            <name>BB_BP_EN</name>
+            <description>LDO BB Bypass Enable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RX_DISCH</name>
-            <description>LDORX Discharge.</description>
+            <name>BB_DISCH</name>
+            <description>LDO BB Discharge.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_BP_EN</name>
-            <description>LDOTX Bypass Enable.</description>
+            <name>RF_BP_EN</name>
+            <description>LDO RF Bypass Enable.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_DISCH</name>
-            <description>LDOTX Discharge.</description>
+            <name>RF_DISCH</name>
+            <description>LDO RF Discharge.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_EN_DLY</name>
-            <description>LDOTX Enable Delay.</description>
+            <name>RF_EN_DLY</name>
+            <description>LDO RF Enable Delay.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RX_EN_DLY</name>
-            <description>LDORX Enable Delay.</description>
+            <name>BB_EN_DLY</name>
+            <description>LDO BB Enable Delay.</description>
             <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RX_BP_EN_DLY</name>
-            <description>LDORX Bypass Enable Delay.</description>
+            <name>BB_BP_EN_DLY</name>
+            <description>LDO BB Bypass Enable Delay.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TX_BP_EN_DLY</name>
-            <description>LDOTX Bypass Enable Delay.</description>
+            <name>RF_BP_EN_DLY</name>
+            <description>LDO RF Bypass Enable Delay.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -964,18 +977,23 @@
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>RX_CNT</name>
-            <description>RX delay count.</description>
+            <name>BB_CNT</name>
+            <description>BB delay count.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>9</bitWidth>
           </field>
           <field>
-            <name>TX_CNT</name>
-            <description>TX delay count.</description>
+            <name>RF_CNT</name>
+            <description>RF delay count.</description>
             <bitOffset>20</bitOffset>
             <bitWidth>9</bitWidth>
           </field>
         </fields>
+      </register>
+      <register>
+        <name>GPR</name>
+        <description>General Purpose Register 0.</description>
+        <addressOffset>0x80</addressOffset>
       </register>
     </registers>
   </peripheral>

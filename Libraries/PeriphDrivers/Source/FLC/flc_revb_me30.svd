@@ -11,8 +11,9 @@
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
-      <name>Flash_Controller</name>
-      <description>Flash Controller interrupt.</description>
+      <name>FLC
+</name>
+      <description>FLC Interrupt.</description>
       <value>23</value>
     </interrupt>
     <registers>
@@ -257,58 +258,6 @@
         <fields>
           <field>
             <name>ACTRL</name>
-            <description>Access control.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>WELR0</name>
-        <description>WELR0</description>
-        <addressOffset>0x80</addressOffset>
-        <fields>
-          <field>
-            <name>WELR0</name>
-            <description>Access control.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>WELR1</name>
-        <description>WELR1</description>
-        <addressOffset>0x88</addressOffset>
-        <fields>
-          <field>
-            <name>WELR1</name>
-            <description>Access control.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>RLR0</name>
-        <description>RLR0</description>
-        <addressOffset>0x90</addressOffset>
-        <fields>
-          <field>
-            <name>RLR0</name>
-            <description>Access control.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>RLR1</name>
-        <description>RLR1</description>
-        <addressOffset>0x98</addressOffset>
-        <fields>
-          <field>
-            <name>RLR1</name>
             <description>Access control.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>

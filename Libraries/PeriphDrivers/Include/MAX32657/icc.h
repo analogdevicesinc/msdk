@@ -53,22 +53,22 @@ typedef enum {
  * @param   cid Enumeration type for Cache Id Register.
  * @retval  Returns the contents of Cache Id Register.
  */
-int MXC_ICC_ID(mxc_icc_regs_t *icc, mxc_icc_info_t cid);
+int MXC_ICC_ID(mxc_icc_info_t cid);
 
 /**
  * @brief   Enable the instruction cache controller.
  */
-void MXC_ICC_Enable(mxc_icc_regs_t *icc);
+void MXC_ICC_Enable(void);
 
 /**
  * @brief   Disable the instruction cache controller.
  */
-void MXC_ICC_Disable(mxc_icc_regs_t *icc);
+void MXC_ICC_Disable(void);
 
 /**
  * @brief   Flush the instruction cache controller.
  */
-void MXC_ICC_Flush(mxc_icc_regs_t *icc);
+void MXC_ICC_Flush(void);
 
 /**@} end of group icc */
 
