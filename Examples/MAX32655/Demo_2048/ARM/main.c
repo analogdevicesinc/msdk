@@ -34,10 +34,10 @@
 #include "sema.h"
 #include "led.h"
 #include "uart.h"
-
-#include "trng.h"
+#include "rtc.h"
 
 // Application Libraries
+#include "graphics.h"
 
 /* **** Definitions **** */
 
@@ -82,10 +82,21 @@ extern mxcSemaBox_t *mxcSemaBox1; // ARM reads,  RISCV writes
 
 // Rename boxes for readability.
 //  Imagine like real mailboxes, owner (core) sends mail (keypress) in their mailbox. 
-#define SEMA_ARM_MAILBOX mxcSemaBox0
-#define SEMA_RISCV_MAILBOX mxcSemaBox1
+#define SEMA_RISCV_MAILBOX mxcSemaBox0
+#define SEMA_ARM_MAILBOX mxcSemaBox1
+
+static uint32_t ARM_GRID_COPY[4][4] = {0};
 
 /* **** Functions **** */
+
+// void SEMA_GetGrid(void)
+// {
+//     uint32_t *grid = (uint32_t *)(SEMA_RISCV_MAILBOX->payload);
+
+//     for (int i = 0; i < 16; i++) {
+//         ARM_MAIN_GRID[i/4][i%4] = grid[i];
+//     }
+// }
 
 // *****************************************************************************
 int main(void)
@@ -93,8 +104,8 @@ int main(void)
     int error;
     // The mailbox names are pre-defined, Creating new pointers and pointing them to
     //  memory locations for easier readability.
-    // sema_arm_mailbox = mxcSemaBox0;
-    // sema_riscv_mailbox = mxcSemaBox1;
+    // SEMA_RISCV_MAILBOX = mxcSemaBox0;
+    // SEMA_ARM_MAILBOX = mxcSemaBox1;
 
     // System Initialization:
     //     - Use IPO for System Clock for fastest speed. (Done in SystemInit)
@@ -155,44 +166,71 @@ int main(void)
     // Initialize mailboxes between ARM and RISCV cores.
     MXC_SEMA_InitBoxes();
 
-    while(1) {
-        LED_Toggle(1);
+    // Signal RISCV core to run.
+    MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
+
+    // Initialize RTC.
+    MXC_RTC_Init(0, 0);
+
+    error = Graphics_Init();
+    if (error != E_NO_ERROR) {
+        PRINT("ARM: Error initializing graphics: %d\n", error);
+        LED_On(LED_RED);
+        while(1);
     }
 
-//     /* Signal RISC-V core to run */
-//     printf("ARM   : Signal RISC-V.\n");
-//     MXC_SEMA_FreeSema(NDX_RISCV);
 
-//     uint32_t cnt;
+    // for (int r = 1; r < 4; r++) {
+    //     for (int c = 0; c < 4; c++) {
+    //         Graphics_AddBlock(r, c, 2);
+    //     }
+    // }
 
-//     /* Enter LPM */
-//     while (1) {
-// #if DUAL_CORE_SYNC
-//         /* Wait */
-//         ret = MXC_SEMA_CheckSema(NDX_ARM);
-//         if (E_BUSY != ret) {
-//             MXC_SEMA_GetSema(NDX_ARM);
+    // Graphics_AddNewBlock(0, 1, 2);
 
-//             /* Do the job. */
-//             // Retrieve the data from the mailbox1
-//             cnt = mxcSemaBox1->payload[0] << (8 * 0);
-//             cnt += mxcSemaBox1->payload[1] << (8 * 1);
-//             cnt += mxcSemaBox1->payload[2] << (8 * 2);
-//             cnt += mxcSemaBox1->payload[3] << (8 * 3);
+    while (1) {
+        // Ready to receive game input.
 
-//             printf("ARM   : cnt=%d\n", cnt++);
+        // Wait for game to finish game logic.
+        while (MXC_SEMA_CheckSema(SEMA_IDX_ARM) != E_NO_ERROR) {}
 
-//             mxcSemaBox0->payload[0] = (cnt >> 8 * 0) & 0xFF;
-//             mxcSemaBox0->payload[1] = (cnt >> 8 * 1) & 0xFF;
-//             mxcSemaBox0->payload[2] = (cnt >> 8 * 2) & 0xFF;
-//             mxcSemaBox0->payload[3] = (cnt >> 8 * 3) & 0xFF;
+        MXC_SEMA_GetSema(SEMA_IDX_ARM);
 
-//             /* Do other jobs here. */
-//             MXC_Delay(MXC_DELAY_SEC(1));
+        // for (int i = 0; i < 16*4; i++) {
+        //     PRINT("%d - ", SEMA_RISCV_MAILBOX->payload[i]);
+        // }
 
-//             /* Signal */
-//             MXC_SEMA_FreeSema(NDX_RISCV);
-//         }
-// #endif
-//    }
+        PRINT("\n======\n");
+
+        // for (int x = 0; x < MAILBOX_PAYLOAD_LEN; x++) {
+        //     PRINT("ARM: %02x\n", SEMA_ARM_MAILBOX->payload[x]);
+        // }
+        int i = 0;
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                ARM_GRID_COPY[row][col] = SEMA_ARM_MAILBOX->payload[i] << (8 * 0);
+                ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+1] << (8 * 1);
+                ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+2] << (8 * 2);
+                ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+3] << (8 * 3);
+
+                PRINT("ARM: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, ARM_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
+
+                // ARM_GRID_COPY[row][col] = SEMA_RISCV_MAILBOX->payload[i] << (8 * 0);
+                // ARM_GRID_COPY[row][col] += SEMA_RISCV_MAILBOX->payload[i+1] << (8 * 1);
+                // ARM_GRID_COPY[row][col] += SEMA_RISCV_MAILBOX->payload[i+2] << (8 * 2);
+                // ARM_GRID_COPY[row][col] += SEMA_RISCV_MAILBOX->payload[i+3] << (8 * 3);
+
+                // PRINT("ARM: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, ARM_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
+                
+                i+=4;
+            }
+        }
+
+        PRINT("ARM: Direction Keypress: %c - 0x%02x\n", SEMA_ARM_MAILBOX->payload[4 * 16], SEMA_ARM_MAILBOX->payload[4 * 16]);
+
+        MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
+        // Graphics_EraseSingleBlock(0, 1, GRAPHICS_SLIDE_DIR_LEFT);
+
+        // Graphics_AddBlock(0, 0, 2);
+    }
 }

@@ -42,3 +42,5 @@ int Game_2048_UpdateGrid(input_direction_t direction);
 void Game_2048_PrintGrid(void);
 
 void Game_2048_GetGrid(uint32_t grid[4][4]);
+
+void Game_2048_GetGridMailBox(uint8_t *grid_1D_size_64B);

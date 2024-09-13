@@ -80,7 +80,9 @@
         "game_logic_2048.h": "c",
         "mxc_delay.h": "c",
         "ext_flash.h": "c",
-        "tft_ssd2119.h": "c"
+        "tft_ssd2119.h": "c",
+        "graphics.h": "c",
+        "led.h": "c"
     }
 }
 

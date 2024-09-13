@@ -84,8 +84,8 @@ extern mxcSemaBox_t *mxcSemaBox0; // ARM writes, RISCV reads
 extern mxcSemaBox_t *mxcSemaBox1; // ARM reads,  RISCV writes
 
 // Rename boxes for readability.
-#define SEMA_ARM_MAILBOX mxcSemaBox0
-#define SEMA_RISCV_MAILBOX mxcSemaBox1
+#define SEMA_RISCV_MAILBOX mxcSemaBox0
+#define SEMA_ARM_MAILBOX mxcSemaBox1
 
 mxc_uart_req_t CONTROLLER_REQ;
 uint8_t CONTROLLER_KEYPRESS;
@@ -113,22 +113,18 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
     // User can add additional directional key switches here.
     switch (CONTROLLER_KEYPRESS) {
         case 'a':
-        case 0x44: // Tera term sends Character 'D' for LEFT arrow key. 
             KEYPRESS_INPUT_DIR = INPUT_LEFT;
             break;
         
         case 'd':
-        case 0x43: // Tera term sends Character 'C' for RIGHT arrow key. 
             KEYPRESS_INPUT_DIR = INPUT_RIGHT;
             break;
         
         case 'w':
-        case 0x41: // Tera term sends Character 'A' for UP arrow key. 
             KEYPRESS_INPUT_DIR = INPUT_UP;
             break;
         
         case 's':
-        case 0x42: // Tera term sends Character 'B' for DOWN arrow key. 
             KEYPRESS_INPUT_DIR = INPUT_DOWN;
             break;
         
@@ -136,15 +132,9 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
             KEYPRESS_READY = false;
     }
     
-    // Due to request struct, CONTROLLER_KEYPRESS already contains the keypress character.
-    // Send keypress to RISCV through mailbox 1.
-    //  The mailbox is 32 bits wide, but the keypress is an ASCII character (8 bits).
-    SEMA_ARM_MAILBOX->payload[0] = (CONTROLLER_KEYPRESS >> 8 * 0) & 0xFF;
-    SEMA_ARM_MAILBOX->payload[1] = 0;
-    SEMA_ARM_MAILBOX->payload[2] = 0;
-    SEMA_ARM_MAILBOX->payload[3] = 0;
+    PRINT("RISC-V: Keypress: %c - 0x%02x Error: %d\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS, cb_error);
 
-    PRINT("RISC-V: Keypress: %c - 0x%02x\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS);
+    MXC_UART_ClearRXFIFO(MXC_UART0);
 
     // Listen for next keypress.
     error = Controller_Start(&CONTROLLER_REQ);
@@ -263,6 +253,8 @@ int main(void)
     
         while (KEYPRESS_READY == false) {}
 
+        MXC_SEMA_GetSema(SEMA_IDX_RISCV);
+
         input_direction_t dir = KEYPRESS_INPUT_DIR;
         
         error = Game_2048_UpdateGrid(dir);
@@ -279,107 +271,35 @@ int main(void)
         // Game_2048_PrintGrid();
         PRINT_GRID();
 
+        // Game_2048_GetGrid(RISCV_GRID_COPY);
+
+        // Send updated grid and keypress to RISCV through mailbox 1.
+        // Game_2048_GetGridMailBox(SEMA_ARM_WR_MAILBOX->payload);
+
+        // for (int x = 0; x < MAILBOX_PAYLOAD_LEN; x++) {
+        //     PRINT("RISCV: %02x\n", SEMA_ARM_MAILBOX->payload[x]);
+        // }
+
+        int i = 0;
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY[row][col] >> (8 * 0)) & 0xFF;
+                SEMA_ARM_MAILBOX->payload[i+1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
+                SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
+                SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
+
+                PRINT("RISCV: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, RISCV_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
+                i+=4;
+            }
+        }
+
+        SEMA_ARM_MAILBOX->payload[4 * 16] = (CONTROLLER_KEYPRESS >> (8 * 0)) & 0xFF;
+
+        MXC_Delay(500000);
+
         // MXC_Delay(MXC_DELAY_SEC(1));
         KEYPRESS_READY = false;
 
-
+        MXC_SEMA_FreeSema(SEMA_IDX_ARM);
     }
-    // /* Initialize Touch Screen controller */
-    // MXC_TS_Init();
-    // MXC_TS_Start();
-
-    // /* Display Home page */
-    // state_init();
-
-    // /* Get current time */
-    // start_time = utils_get_time_ms();
-
-    // while (1) {
-    //     /* Get current screen state */
-    //     state = state_get_current();
-
-    //     /* Check pressed touch screen key */
-    //     key = MXC_TS_GetKey();
-
-    //     if (key > 0) {
-    //         state->prcss_key(key);
-    //         start_time = utils_get_time_ms();
-    //     }
-
-    //     /* Check timer tick */
-    //     if (utils_get_time_ms() >= (start_time + state->timeout)) {
-    //         if (state->tick) {
-    //             state->tick();
-    //             start_time = utils_get_time_ms();
-    //         }
-    //     }
-    // }
-
-
-//     printf("\nRISC-V: Start.\n");
-
-// #if DUAL_CORE_SYNC
-//     MXC_SEMA_Init();
-
-//     int ret = MXC_SEMA_CheckSema(NDX_RISCV);
-//     printf("RISC-V: After init, CheckSema(%d) returned %s.\n", NDX_RISCV,
-//            ret == E_BUSY ? "BUSY" : "NOT BUSY");
-
-//     if ((MXC_SEMA_GetSema(NDX_RISCV)) == E_NO_ERROR) {
-//         printf("RISC-V: GetSema returned NOT BUSY with previous semaphore value %d.\n",
-//                MXC_SEMA->semaphores[NDX_RISCV]);
-//     } else {
-//         printf("RISC-V: GetSema returned - BUSY - with previous semaphore value %d.\n",
-//                MXC_SEMA->semaphores[NDX_RISCV]);
-//     }
-
-//     /* Init code here. */
-//     printf("RISC-V: Do initialization works here.\n");
-//     MXC_SEMA_InitBoxes();
-
-//     /* Signal ARM core to run. */
-//     printf("RISC-V: Signal ARM.\n");
-//     MXC_SEMA_FreeSema(NDX_ARM);
-// #endif
-
-//     uint32_t cnt = 0;
-
-//     /* Enter LPM */
-//     while (1) {
-// #if DUAL_CORE_SYNC
-//         /* Wait */
-//         int ret = MXC_SEMA_CheckSema(NDX_RISCV);
-//         if (E_BUSY != ret) {
-//             MXC_SEMA_GetSema(NDX_RISCV);
-
-//             /* Do the job */
-//             // Retrieve the data from the mailbox0
-//             cnt = mxcSemaBox0->payload[0] << (8 * 0);
-//             cnt += mxcSemaBox0->payload[1] << (8 * 1);
-//             cnt += mxcSemaBox0->payload[2] << (8 * 2);
-//             cnt += mxcSemaBox0->payload[3] << (8 * 3);
-
-//             printf("RISC-V: cnt=%d\n", cnt++);
-// #else
-//         printf("count = %d\n", cnt++);
-// #endif
-
-// #if DUAL_CORE_SYNC
-//             mxcSemaBox1->payload[0] = (cnt >> 8 * 0) & 0xFF;
-//             mxcSemaBox1->payload[1] = (cnt >> 8 * 1) & 0xFF;
-//             mxcSemaBox1->payload[2] = (cnt >> 8 * 2) & 0xFF;
-//             mxcSemaBox1->payload[3] = (cnt >> 8 * 3) & 0xFF;
-
-//             /* Do other jobs here */
-// #endif
-//             LED_On(LED_RED);
-//             MXC_Delay(500000);
-//             LED_Off(LED_RED);
-//             MXC_Delay(500000);
-// #if DUAL_CORE_SYNC
-//             /* Signal */
-//             MXC_SEMA_FreeSema(NDX_ARM);
-//         }
-// #endif
-//     }
 }

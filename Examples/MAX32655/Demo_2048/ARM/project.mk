@@ -18,6 +18,9 @@ RISCV_APP=../RISCV
 IPATH += ./inc
 VPATH += ./src
 
+# IPATH += resources
+# VPATH += resources
+
 
 DEV_MODE_TRACE = 1
 ifeq ($(DEV_MODE_TRACE), 1)
@@ -25,6 +28,12 @@ PROJ_CFLAGS += -DDEV_MODE_TRACE=1
 endif
 
 PROJ_CFLAGS += -UDEBUG
+
+# RISC-V ICC1 will not be used.
+# ARM_SRAM_SIZE = 0x18000
+# RISCV_SRAM_SIZE = 0x8000	# 32KB
+# DUAL_CORE_RAM_SIZE = 0x20000
+
 
 # TODO: REMOVE ME
 # MAXIM_PATH=../../../../
