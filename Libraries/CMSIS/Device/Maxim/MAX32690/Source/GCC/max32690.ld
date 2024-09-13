@@ -61,14 +61,19 @@ SECTIONS {
     .text :
     {
         _text = .;
+        . = ALIGN(4);
         KEEP(*(.isr_vector))
         EXCLUDE_FILE (*riscv.o) *(.text*)    /* program code, exclude RISCV code */
+        . = ALIGN(4);
         *(.rodata*)  /* read-only data: "const" */
 
+        . = ALIGN(4);
         KEEP(*(.init))
+        . = ALIGN(4);
         KEEP(*(.fini))
 
         /* .ctors */
+        . = ALIGN(4);
         *crtbegin.o(.ctors)
         *crtbegin?.o(.ctors)
         *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
@@ -76,6 +81,7 @@ SECTIONS {
         *(.ctors)
 
         /* .dtors */
+        . = ALIGN(4);
         *crtbegin.o(.dtors)
         *crtbegin?.o(.dtors)
         *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
@@ -83,6 +89,7 @@ SECTIONS {
         *(.dtors)
 
         /* C++ Exception handling */
+        . = ALIGN(4);
         KEEP(*(.eh_frame*))
         _etext = .;
     } > FLASH
