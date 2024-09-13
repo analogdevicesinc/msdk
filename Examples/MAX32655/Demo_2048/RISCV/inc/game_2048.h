@@ -25,6 +25,7 @@
 /**
  *  This enum is used to keep track of which direction the blocks will slide to
  *      for the main logic to handle. 
+ *  IMPORTANT: Sync these directions with the ARM core.
  */
 typedef enum {
     INPUT_UP = 0,
@@ -33,14 +34,27 @@ typedef enum {
     INPUT_RIGHT = 3,
 } input_direction_t;
 
+/**
+ *  These enums help keep track what blocks were deleted from previous grid, and
+ *      combined at new grid.
+ *  IMPORTANT: Sync these commands with the ARM core.
+ */
+typedef enum {
+    ERASE = 1,
+    COMBINE = 2,
+    UNMOVED = 3
+} block_state_t;
+
 /* **** Function Prototypes **** */
 
-int Game_2048_Init(void);
+int Game_2048_Init(uint8_t *new_block_location_idx);
 
-int Game_2048_UpdateGrid(input_direction_t direction);
+int Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx);
 
 void Game_2048_PrintGrid(void);
 
 void Game_2048_GetGrid(uint32_t grid[4][4]);
+
+void Game_2048_GetGridState(uint8_t grid_state[4][4]);
 
 void Game_2048_GetGridMailBox(uint8_t *grid_1D_size_64B);

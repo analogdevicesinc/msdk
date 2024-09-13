@@ -53,27 +53,37 @@
 //  ---|---|---|---
 //   c | d | e | f
 static uint32_t MAIN_2048_GRID[4][4];
+static uint8_t PREV_2048_GRID_STATE[4][4];
 
 /* **** Functions **** */
 
 /**
  *  Must have TRNG initialized first before calling this function.
  * 
+ *  @param  new_block_1D_idx_location       Pointer to hold the index (0-15) of the new
+ *                                          block location.
+ * 
  *  @return If true (non-zero value), new block added. If false (zero),
  *          game over.
  */
-static bool add_new_block(void)
+static bool add_new_block(bool isInit, uint8_t *new_block_1D_idx_location)
 {
     uint8_t block_2_or_4;
     uint32_t open_space_idx;
     uint32_t available_open_spaces = 0;
     uint8_t open_space_count = 0;
 
-    // Select whether a 2 or 4 block will be placed.
-    if (MXC_TRNG_RandomInt() & 0x01) {
-        block_2_or_4 = 4;
-    } else {
+    // If at the start of the new program, start with the 2 block.
+    if (isInit == true) {
         block_2_or_4 = 2;
+    } else {
+        // Select whether a 2 or 4 block will be placed.
+        //  Add more weight to 2.
+        if (MXC_TRNG_RandomInt() % 3) { // 1 or 2
+            block_2_or_4 = 2;
+        } else {    // 0
+            block_2_or_4 = 4;
+        }
     }
 
     // Find available spaces in the grid by representing the grid (2-D array)
@@ -104,16 +114,19 @@ static bool add_new_block(void)
 
     // Fill the "-th" available open space where n is variable "open_space_idx".
     // We have the 1-D array index and need to convert to 2-D array coordinate location.
+    int idx = 0;
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
             if (MAIN_2048_GRID[row][col] == 0) {
                 if (open_space_count == open_space_idx) {
                     // Found "n-th" available open space, update grid.
                     MAIN_2048_GRID[row][col] = block_2_or_4;
+                    *new_block_1D_idx_location = idx;
                     return true;
                 }
 
-                open_space_count += 1;
+                open_space_count++;
+                idx++;
             }
         }
     }
@@ -121,7 +134,7 @@ static bool add_new_block(void)
     return false;
 }
 
-int Game_2048_Init(void)
+int Game_2048_Init(uint8_t *new_block_location_idx)
 {
     int error;
 
@@ -139,14 +152,14 @@ int Game_2048_Init(void)
     }
 
     // Should never reach here since we cleared the grid earlier in the function.
-    if(add_new_block() == false) {
+    if(add_new_block(true, new_block_location_idx) == false) {
         return E_BAD_STATE;
     }
 
     return E_NO_ERROR;
 }
 
-inline static bool row_logic_left_2(void)
+inline static bool row_logic_left(void)
 {
     int prev_row[4] = {};
     bool blocks_moved = false;
@@ -160,7 +173,7 @@ inline static bool row_logic_left_2(void)
         int temp_row[4] = {0};
         int temp_col_num = 0; // Also tracks how many valid blocks there are in a row.
 
-        // Get all valid blocks to help with same-value pair logic.
+        // Get all valid blocks in column to help with same-value pair logic.
         for (int col = 0; col < 4; col++) { // Start at left of main row.
             prev_row[col] = MAIN_2048_GRID[row][col];
 
@@ -182,6 +195,16 @@ inline static bool row_logic_left_2(void)
             // Check if the single block moved left.
             if (prev_row[0] != MAIN_2048_GRID[row][0]) {
                 blocks_moved = true;
+                
+                // Represent the state of the original block location as deleted.
+                for (int col = 3; col >= 0; col--) {
+                    if (prev_row[col] != 0) {
+                        PREV_2048_GRID_STATE[row][col] = ERASE;
+                        break;
+                    }
+                }
+            } else {
+                PREV_2048_GRID_STATE[row][0] = UNMOVED;
             }
 
             continue;
@@ -193,7 +216,7 @@ inline static bool row_logic_left_2(void)
         // Start at top of temp column.
         for (int t_col = 0; t_col < 4; t_col++) {
             if (temp_row[t_col] == 0 || t_col >= temp_col_num) {
-                // Reached end of valid blocks.
+                // Reached end of valid blocks in row.
                 break;
             }
 
@@ -207,6 +230,8 @@ inline static bool row_logic_left_2(void)
                     // Combine then write to main grid.
                     MAIN_2048_GRID[row][main_grid_col] = (temp_row[t_col] * 2);
 
+                    PREV_2048_GRID_STATE[row][main_grid_col] = COMBINE;
+
                     // Because a same-value pair was combined at index "col" and "col + 1",
                     //  increment the col so that the next iteration of the for loop
                     //  will start at "col + 2" in the temp_row.
@@ -217,10 +242,19 @@ inline static bool row_logic_left_2(void)
             main_grid_col += 1;
         }
 
-        // Check if any blocks moved. If not, then don't add new button.
-        for (int col = 0; col < 4; col++) {
+        // Check if any blocks moved starting from right to left, and keep track of what blocks were moved
+        //  to delete on the display.
+        for (int col = 3; col >= 0; col--) {
             if (prev_row[col] != MAIN_2048_GRID[row][col]) {
                 blocks_moved = true;
+
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = ERASE;
+                }
+            } else if ((prev_row[col] != 0) && (prev_row[col] == MAIN_2048_GRID[row][col])) {
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = UNMOVED;
+                }
             }
         }
     }
@@ -228,7 +262,7 @@ inline static bool row_logic_left_2(void)
     return blocks_moved;
 }
 
-inline static bool row_logic_right_2(void)
+inline static bool row_logic_right(void)
 {
     int prev_row[4] = {};
     bool blocks_moved = false;
@@ -265,6 +299,16 @@ inline static bool row_logic_right_2(void)
             // Check if the single block moved right.
             if (prev_row[3] != MAIN_2048_GRID[row][3]) {
                 blocks_moved = true;
+
+                // Represent the state of the original block location as deleted.
+                for (int col = 0; col < 4; col++) {
+                    if (prev_row[col] != 0) {
+                        PREV_2048_GRID_STATE[row][col] = ERASE;
+                        break;
+                    }
+                }
+            } else {
+                PREV_2048_GRID_STATE[row][3] = UNMOVED;
             }
 
             continue;
@@ -290,6 +334,8 @@ inline static bool row_logic_right_2(void)
                     // Combine then write to main grid.
                     MAIN_2048_GRID[row][main_grid_col] = (temp_row[t_col] * 2);
 
+                    PREV_2048_GRID_STATE[row][main_grid_col] = COMBINE;
+
                     // Because a same-value pair was combined at index "col" and "col + 1",
                     //  increment the col so that the next iteration of the for loop
                     //  will start at "col + 2" in the temp_row.
@@ -300,11 +346,20 @@ inline static bool row_logic_right_2(void)
             main_grid_col -= 1;
         }
 
-        // Check if any blocks moved. If not, then don't add new button.
+        // Check if any blocks moved starting from left to right, and keep track of what blocks were moved
+        //  to delete on the display.
         for (int col = 0; col < 4; col++) {
             // Don't forget direction, start at end.
-            if (prev_row[3 - col] != MAIN_2048_GRID[row][3 - col]) {
+            if (prev_row[col] != MAIN_2048_GRID[row][col]) {
                 blocks_moved = true;
+
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = ERASE;
+                }
+            } else if ((prev_row[col] != 0) && (prev_row[col] == MAIN_2048_GRID[row][col])) {
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = UNMOVED;
+                }
             }
         }
     }
@@ -312,72 +367,7 @@ inline static bool row_logic_right_2(void)
     return blocks_moved;
 }
 
-inline static void column_logic_up_1(void)
-{
-    // Iterate through each column and run the 2048 "same-value pair" logic.
-    for (int col = 0; col < 4; col++) {
-        bool same_value_pairs_detected = false;
-
-        // Don't waste processing time if column is empty by checking if sum of all blocks in column is 0.
-        if (COLUMN_SUM(col) == 0) {
-            continue;
-        }
-
-        // Not a big difference in speeds... Using brute force for fastest times.
-        // O(n) where n is the number of rows vs O(1) brute-force.
-        // Move numbers up to clear empty spaces.
-        for (int row = 0; row < 3; row++) {
-            // If space is empty, move over next block.
-            if (MAIN_2048_GRID[row][col] == 0) {
-                // Find next available block.
-                for (int next_row = row + 1; next_row < 4; next_row++) {
-                    if (MAIN_2048_GRID[next_row][col] != 0) {
-                        MAIN_2048_GRID[row][col] = MAIN_2048_GRID[next_row][col];
-                        MAIN_2048_GRID[next_row][col] = 0; // Clear the block that was just moved.
-
-                        // Found next available block, end loop (save cycles).
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Add pairs together and remove the second block. In this case, thes econd block
-        //  is going to be bottom block within the pair because the direction is UP.
-        for (int row = 0; row < 3; row++) {
-            // The second conditional doesn't really matter because 0*2 will be 0...
-            if ((MAIN_2048_GRID[row][col] == MAIN_2048_GRID[row+1][col]) && (MAIN_2048_GRID[row][col] != 0)) {
-                MAIN_2048_GRID[row][col] *= 2;
-                MAIN_2048_GRID[row+1][col] = 0; // Clear bottom block of the pair.
-
-                same_value_pairs_detected = true;
-            }
-        }
-
-        // If there are combined numbers, then the blocks will have to be moved up again because same value pairs have
-        //  combined and cleared the bottom block. Else, save time by looping again.
-        if (same_value_pairs_detected) {
-            //  Starting at 1 this time because the blocks moved up already.
-            for (int row = 1; row < 3; row++) {
-                // If space is empty, move over next block.
-                if (MAIN_2048_GRID[row][col] == 0) {
-                    // Find next available block.
-                    for (int next_row = row + 1; next_row < 4; next_row++) {
-                        if (MAIN_2048_GRID[next_row][col] != 0) {
-                            MAIN_2048_GRID[row][col] = MAIN_2048_GRID[next_row][col];
-                            MAIN_2048_GRID[next_row][col] = 0; // Clear the block that was just moved.
-
-                            // Found next available block, end loop (save cycles).
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-inline static bool column_logic_up_2(void)
+inline static bool column_logic_up(void)
 {
     int prev_col[4] = {};
     bool blocks_moved = false;
@@ -413,6 +403,15 @@ inline static bool column_logic_up_2(void)
             // Check if the single block moved up.
             if (prev_col[0] != MAIN_2048_GRID[0][col]) {
                 blocks_moved = true;
+
+                for (int row = 3; row >= 0; row++) {
+                    if (prev_col[row] != 0) {
+                        PREV_2048_GRID_STATE[row][col] = ERASE;
+                        break;
+                    }
+                }
+            } else {
+                PREV_2048_GRID_STATE[0][col] = UNMOVED;
             }
 
             continue;
@@ -438,6 +437,8 @@ inline static bool column_logic_up_2(void)
                     // Combine then write to main grid.
                     MAIN_2048_GRID[main_grid_row][col] = (temp_column[t_row] * 2);
 
+                    PREV_2048_GRID_STATE[main_grid_row][col] = COMBINE;
+
                     // Because a same-value pair was combined at index "row" and "row + 1",
                     //  increment the row so that the next iteration of the for loop
                     //  will start at "row + 2" in the temp_column.
@@ -448,10 +449,19 @@ inline static bool column_logic_up_2(void)
             main_grid_row += 1;
         }
 
-        // Check if any blocks moved. If not, then don't add new button.
-        for (int row = 0; row < 4; row++) {
+        // Check if any blocks moved starting from bottom to top, and keep track of what blocks were moved
+        //  to delete on the display.
+        for (int row = 3; row >= 0; row--) {
             if (prev_col[row] != MAIN_2048_GRID[row][col]) {
                 blocks_moved = true;
+
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = ERASE;
+                }
+            } else if ((prev_col[row] != 0) && (prev_col[row] == MAIN_2048_GRID[row][col])) {
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = UNMOVED;
+                }
             }
         }
     }
@@ -459,7 +469,7 @@ inline static bool column_logic_up_2(void)
     return blocks_moved;
 }
 
-static bool column_logic_down_2(void)
+static bool column_logic_down(void)
 {
     int prev_col[4] = {};
     bool blocks_moved = false;
@@ -496,6 +506,16 @@ static bool column_logic_down_2(void)
             // Check if the single block moved down.
             if (prev_col[3] != MAIN_2048_GRID[3][col]) {
                 blocks_moved = true;
+
+                // Represent the state of the original block location as deleted.
+                for (int row = 0; row < 4; row++) {
+                    if (prev_col[row] != 0) {
+                        PREV_2048_GRID_STATE[row][col] = ERASE;
+                        break;
+                    }
+                }
+            } else {
+                PREV_2048_GRID_STATE[3][col] = UNMOVED;
             }
 
             continue;
@@ -521,6 +541,8 @@ static bool column_logic_down_2(void)
                     // Combine then write to main grid.
                     MAIN_2048_GRID[main_grid_row][col] = (temp_column[t_row] * 2);
 
+                    PREV_2048_GRID_STATE[main_grid_row][col] = COMBINE;
+
                     // Because a same-value pair was combined at index "row" and "row + 1",
                     //  increment the row so that the next iteration of the for loop
                     //  will start at "row + 2" in the temp_column.
@@ -533,10 +555,19 @@ static bool column_logic_down_2(void)
             main_grid_row -= 1;
         }
 
-        // Check if any blocks moved. If not, then don't add new button.
+        // Check if any blocks moved starting from bottom to top, and keep track of what blocks were moved
+        //  to delete on the display.
         for (int row = 0; row < 4; row++) {
-            if (prev_col[3 - row] != MAIN_2048_GRID[3 - row][col]) {
+            if (prev_col[row] != MAIN_2048_GRID[row][col]) {
                 blocks_moved = true;
+
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = ERASE;
+                }
+            } else if ((prev_col[row] != 0) && (prev_col[row] == MAIN_2048_GRID[row][col])) {
+                if (PREV_2048_GRID_STATE[row][col] != COMBINE) {
+                    PREV_2048_GRID_STATE[row][col] = UNMOVED;
+                }
             }
         }
     }
@@ -545,47 +576,54 @@ static bool column_logic_down_2(void)
 }
 
 
-int Game_2048_UpdateGrid(input_direction_t direction)
+int Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx)
 {
     bool blocks_moved;
+
+    // Clear grid state.
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            PREV_2048_GRID_STATE[row][col] = 0;
+        }
+    }
 
     // Run main game logic.
     switch(direction) {
         case INPUT_UP:
             printf("UP\n");
-            blocks_moved = column_logic_up_2();
+            blocks_moved = column_logic_up();
             break;
         
         case INPUT_DOWN:
             printf("DOWN\n");
-            blocks_moved = column_logic_down_2();
+            blocks_moved = column_logic_down();
             break;
 
         case INPUT_LEFT:
             printf("LEFT\n");
-            blocks_moved = row_logic_left_2();
+            blocks_moved = row_logic_left();
             break;
     
         case INPUT_RIGHT:
             printf("RIGHT\n");
-            blocks_moved = row_logic_right_2();
+            blocks_moved = row_logic_right();
             break;
         
         // Should never reach here.
         default:
-            return E_BAD_STATE;
+            return E_INVALID;
     }
 
     // Once the main game logic is done, insert a new block.
     if (blocks_moved == true) {
-        if (add_new_block() == true) {
-            return E_NO_ERROR;
+        if (add_new_block(false, new_block_1D_idx) == true) {
+            return true;
         } else {
             return E_NONE_AVAIL; // Game over.
         }
     } else {
         // nothing happened
-        return E_NO_ERROR;
+        return false;
     }
 }
 
@@ -624,6 +662,15 @@ void Game_2048_GetGrid(uint32_t grid[4][4])
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
             grid[row][col] = MAIN_2048_GRID[row][col];
+        }
+    }
+}
+
+void Game_2048_GetGridState(uint8_t grid_state[4][4])
+{
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            grid_state[row][col] = PREV_2048_GRID_STATE[row][col];
         }
     }
 }

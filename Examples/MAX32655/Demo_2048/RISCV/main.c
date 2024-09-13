@@ -78,6 +78,11 @@ typedef struct {
 #endif
 } mxcSemaBox_t;
 
+#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexs are from 0 to (16 blocks * 4 bytes) - 1.
+#define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
+#define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
+#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_KEYPRESS_IDX + 1)
+
 /* **** Globals **** */
 // Defined in sema_reva.c
 extern mxcSemaBox_t *mxcSemaBox0; // ARM writes, RISCV reads
@@ -93,11 +98,38 @@ volatile bool KEYPRESS_READY = false;
 uint8_t KEYPRESS_INPUT_DIR;
 
 uint32_t RISCV_GRID_COPY[4][4] = {0};
+uint8_t RISCV_GRID_COPY_STATE[4][4] = {0};
 
 // Select Console UART instance.
 mxc_uart_regs_t *CONTROLLER_UART = MXC_UART0;
 
 /***** Functions *****/
+
+// Must grab grid space before calling this function to have the latest
+//  grid state.
+void SendGridToARMCore(void)
+{
+    int i = MAILBOX_MAIN_GRID_IDX;
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY[row][col] >> (8 * 0)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i+1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
+
+            // PRINT("RISCV: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, RISCV_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
+            i+=4;
+        }
+    }
+
+    i = MAILBOX_MAIN_GRID_STATE_IDX;
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY_STATE[row][col] >> (8 * 0)) & 0xFF;
+            i++;
+        }
+    }
+}
 
 void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
 {
@@ -136,18 +168,18 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
 
     MXC_UART_ClearRXFIFO(MXC_UART0);
 
-    // Listen for next keypress.
-    error = Controller_Start(&CONTROLLER_REQ);
-    if (error != E_NO_ERROR) {
-        PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
-        LED_On(LED_RED);
-    }
+    // // Listen for next keypress.
+    // error = Controller_Start(&CONTROLLER_REQ);
+    // if (error != E_NO_ERROR) {
+    //     PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
+    //     LED_On(LED_RED);
+    // }
 }
 
+// Must grab grid space before calling this function to have the latest
+//  grid state.
 void PRINT_GRID(void)
 {
-    Game_2048_GetGrid(RISCV_GRID_COPY);
-
     // Imitate the grid is refreshing on terminal.
     PRINT("\n\n\n\n\n\n\n\n\n\n");
 
@@ -176,10 +208,59 @@ void PRINT_GRID(void)
     }
 }
 
+void PRINT_GRID_STATE(void)
+{
+    Game_2048_GetGridState(RISCV_GRID_COPY_STATE);
+
+    // Imitate the grid is refreshing on terminal.
+    PRINT("\n\n\n\n\n\n\n\n\n\n");
+
+    for (int row = 0; row < 4; row++) {
+        PRINT("        |        |        |        \n");
+
+        for (int col = 0; col < 4; col++) {
+            if (RISCV_GRID_COPY_STATE[row][col] != 0) {
+                PRINT("   %02d   ", RISCV_GRID_COPY_STATE[row][col]);
+            } else {
+                PRINT("        ");
+            }
+
+            // Only print border 3 times.
+            if (col < 3) {
+                PRINT("|");
+            }
+        }
+
+        PRINT("\n        |        |        |        \n");
+
+        // Only print the row border 3 times.
+        if (row < 3) {
+            PRINT("-----------------------------------\n");
+        }
+    }
+}
+
+inline void SendKeypressToARMCore(void)
+{
+    SEMA_ARM_MAILBOX->payload[MAILBOX_KEYPRESS_IDX] = (CONTROLLER_KEYPRESS >> (8 * 0)) & 0xFF;
+}
+
+inline void SendNewBlockIndexARMCore(uint8_t *new_block_idx, uint8_t did_block_move)
+{
+    SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] = (*new_block_idx >> (8 * 0)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX + 1] = (did_block_move >> (8 * 1)) & 0xFF;
+}
+
 // *****************************************************************************
 int main(void)
 {
     int error;
+    int state;
+
+    // Location of new block represented as an index for a 1-D array.
+    //  (0-15) instead of represented as a coordinate (row, col) for
+    //  easier and quicker transfer into mailbox.
+    uint8_t new_block_idx_location = 0;
 
     // Speed up UART0 (Console) baud rate as the controller and console share the same port.
     //  Plus, Console UART gets reverted to default speed (115200) during SystemInit() during both
@@ -224,7 +305,7 @@ int main(void)
     // Initialize mailboxes between ARM and RISCV cores.
     MXC_SEMA_InitBoxes();
 
-    // RISC-V startup finish startup and initializing mailboxes. Signal ARM to continue.
+    // RISCV startup and mailbox initialization is finished. Signal ARM core to continue.
     PRINT("RISC-V: Finished startup. Main UART0 control is handled by RISC-V now.\n\n");
     MXC_SEMA_FreeSema(SEMA_IDX_ARM);
 
@@ -238,68 +319,78 @@ int main(void)
         while(1);
     }
 
-    error = Game_2048_Init();
+    error = Game_2048_Init(&new_block_idx_location);
     if (error != E_NO_ERROR) {
         PRINT("RISC-V: Error starting game: %d\n", error);
         LED_On(LED_RED);
         while(1);
     }
 
-    // Game_2048_PrintGrid();
+    // Send starting grid to ARM core.
+    // This function must be called before PRINT_GRID() and SendGridToARMCore()
+    //  functions to grab the latest grid state.
+    Game_2048_GetGrid(RISCV_GRID_COPY);
+
     PRINT_GRID();
+
+    SendGridToARMCore();
+
+    SendNewBlockIndexARMCore(&new_block_idx_location, false);
+
+    // Signal ARM core to 
+    MXC_SEMA_FreeSema(SEMA_IDX_ARM);
+
+    // Wait for ARM core to finish displaying the starting grid.
+    while (MXC_SEMA_CheckSema(SEMA_IDX_RISCV) != E_NO_ERROR) {}
 
     while (1) {
         // Wait for keypress.
-    
         while (KEYPRESS_READY == false) {}
 
+        // Make sure the ARM core is finished displaying.
+        while (MXC_SEMA_CheckSema(SEMA_IDX_RISCV) != E_NO_ERROR) {}
         MXC_SEMA_GetSema(SEMA_IDX_RISCV);
 
         input_direction_t dir = KEYPRESS_INPUT_DIR;
         
-        error = Game_2048_UpdateGrid(dir);
-        if (error == E_NONE_AVAIL) {
+        state = Game_2048_UpdateGrid(dir, &new_block_idx_location);
+        if (state == E_NONE_AVAIL) {
             PRINT("Game over!\n");
             LED_On(LED_GREEN);
             while(1);
-        } else if (error != E_NO_ERROR) {
+        } else if (state != E_NO_ERROR && state != true) {
             PRINT("RISC-V: Error updating next move: %d\n", error);
             LED_On(LED_RED);
             while(1);
         }
 
-        // Game_2048_PrintGrid();
+        // This function must be called before PRINT_GRID() and SendGridToARMCore()
+        //  functions to grab the latest grid state.
+        Game_2048_GetGrid(RISCV_GRID_COPY);
+
         PRINT_GRID();
 
-        // Game_2048_GetGrid(RISCV_GRID_COPY);
+        PRINT_GRID_STATE();
 
-        // Send updated grid and keypress to RISCV through mailbox 1.
-        // Game_2048_GetGridMailBox(SEMA_ARM_WR_MAILBOX->payload);
+        SendGridToARMCore();
 
-        // for (int x = 0; x < MAILBOX_PAYLOAD_LEN; x++) {
-        //     PRINT("RISCV: %02x\n", SEMA_ARM_MAILBOX->payload[x]);
-        // }
+        SendKeypressToARMCore();
 
-        int i = 0;
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 4; col++) {
-                SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY[row][col] >> (8 * 0)) & 0xFF;
-                SEMA_ARM_MAILBOX->payload[i+1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
-                SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
-                SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
+        PRINT("RISCV: State: %d\n", state);
 
-                PRINT("RISCV: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, RISCV_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
-                i+=4;
-            }
-        }
+        SendNewBlockIndexARMCore(&new_block_idx_location, state);
 
-        SEMA_ARM_MAILBOX->payload[4 * 16] = (CONTROLLER_KEYPRESS >> (8 * 0)) & 0xFF;
-
-        MXC_Delay(500000);
-
-        // MXC_Delay(MXC_DELAY_SEC(1));
         KEYPRESS_READY = false;
 
+        // Listen for next keypress.
+        error = Controller_Start(&CONTROLLER_REQ);
+        if (error != E_NO_ERROR) {
+            PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
+            LED_On(LED_RED);
+            while(1);
+        }
+
+        // Get ARM to update the display.
         MXC_SEMA_FreeSema(SEMA_IDX_ARM);
     }
 }

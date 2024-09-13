@@ -261,8 +261,7 @@ void Graphics_CombineBlocks(int row, int col, int new_value)
     Graphics_AddBlock(row, col, new_value);
 }
 
-
-void Graphics_EraseSingleBlock(int row, int col, graphics_slide_direction_t direction)
+void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_direction_t direction)
 {
     // Forgive me for all the math who ever tries to read through the code.
     // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
@@ -271,9 +270,67 @@ void Graphics_EraseSingleBlock(int row, int col, graphics_slide_direction_t dire
 
     switch (direction) {
         case GRAPHICS_SLIDE_DIR_UP:
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    // Remove each column (x) of block left to right, pixel by pixel.
+                    for (int p_y = (BLOCK_LENGTH - 1); p_y >= 0; p_y--) {
+                        // Account for rounded corners.
+                        if ((p_y < RADIUS_FOR_CORNERS) || (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
+                            // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
+
+                            // With y and the radius, get the integral to calculate the y position.
+                            int dy = (p_y < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_y : (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_y - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
+                            int dx = 0;
+
+                            while ((dx * dx) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dy * dy))) {
+                                dx++;
+                            }
+
+                            // No negative vertical distance.
+                            if (dx > 0) {
+                                dx--;
+                            }
+
+                            MXC_TFT_DrawVerticalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
+                        
+                        } else {
+                            MXC_TFT_DrawVerticalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
+                        }
+                    }
+                }
+            }
             break;
         
         case GRAPHICS_SLIDE_DIR_DOWN:
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    // Remove each column (x) of block left to right, pixel by pixel.
+                    for (int p_y = 0; p_y < BLOCK_LENGTH; p_y++) {
+                        // Account for rounded corners.
+                        if ((p_y < RADIUS_FOR_CORNERS) || (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
+                            // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
+
+                            // With y and the radius, get the integral to calculate the y position.
+                            int dy = (p_y < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_y : (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_y - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
+                            int dx = 0;
+
+                            while ((dx * dx) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dy * dy))) {
+                                dx++;
+                            }
+
+                            // No negative vertical distance.
+                            if (dx > 0) {
+                                dx--;
+                            }
+
+                            MXC_TFT_DrawVerticalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
+                        
+                        } else {
+                            MXC_TFT_DrawVerticalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
+                        }
+                    }
+                }
+            }
             break;
         
         case GRAPHICS_SLIDE_DIR_LEFT:
@@ -284,6 +341,8 @@ void Graphics_EraseSingleBlock(int row, int col, graphics_slide_direction_t dire
                         // Account for rounded corners.
                         if ((p_x < RADIUS_FOR_CORNERS) || (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
                             // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
+
+                            // With x and the radius, get the integral to calculate the y position.
                             int dx = (p_x < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_x : (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_x - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
                             int dy = 0;
 
@@ -341,3 +400,11 @@ void Graphics_EraseSingleBlock(int row, int col, graphics_slide_direction_t dire
     }
 }
 
+void Graphics_EraseSingleBlock(int row, int col) {
+    // Forgive me for all the math who ever tries to read through the code.
+    // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
+    int x = GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * col);
+    int y = GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
+
+    MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR, RADIUS_FOR_CORNERS, F_GRID_COLOR);
+}

@@ -55,7 +55,7 @@
 /// Semaphores
 // Should never reach here
 #if (MAILBOX_SIZE == 0)
-#error "Mailbox sirrrze is 0."
+#error "Mailbox size is 0."
 #endif
 
 // Keep track for Semaphore peripheral.
@@ -74,6 +74,10 @@ typedef struct {
 #endif
 } mxcSemaBox_t;
 
+#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexs are from 0 to (16 blocks * 4 bytes) - 1.
+#define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
+#define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
+#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_KEYPRESS_IDX + 1)
 
 /* **** Globals **** */
 // Defined in sema_reva.c
@@ -86,26 +90,86 @@ extern mxcSemaBox_t *mxcSemaBox1; // ARM reads,  RISCV writes
 #define SEMA_ARM_MAILBOX mxcSemaBox1
 
 static uint32_t ARM_GRID_COPY[4][4] = {0};
+static uint8_t ARM_GRID_COPY_STATE[4][4] = {0};
+
+/**
+ *  These enums help keep track of what blocks are del
+ *  IMPORTANT: Sync these commands with the RISCV core.
+ */
+typedef enum {
+    ERASE = 1,
+    COMBINE = 2,
+    UNMOVED = 3
+} block_state_t;
 
 /* **** Functions **** */
 
-// void SEMA_GetGrid(void)
-// {
-//     uint32_t *grid = (uint32_t *)(SEMA_RISCV_MAILBOX->payload);
+void ReceiveGridFromRISCVCore(void)
+{
+    int i = MAILBOX_MAIN_GRID_IDX;
 
-//     for (int i = 0; i < 16; i++) {
-//         ARM_MAIN_GRID[i/4][i%4] = grid[i];
-//     }
-// }
+    // Grid state.
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            ARM_GRID_COPY[row][col] = SEMA_ARM_MAILBOX->payload[i] << (8 * 0);
+            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+1] << (8 * 1);
+            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+2] << (8 * 2);
+            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+3] << (8 * 3);
+
+            i+=4;
+        }
+    }
+
+    // Grid status (unmoved/delete/combine).
+    i = MAILBOX_MAIN_GRID_STATE_IDX;
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            ARM_GRID_COPY_STATE[row][col] = SEMA_ARM_MAILBOX->payload[i] << (8 * 0);
+
+            i++;
+        }
+    }
+}
+
+graphics_slide_direction_t ReceiveDirectionFromRISCVCore(void)
+{
+    // Add more direction keys here.
+    switch (SEMA_ARM_MAILBOX->payload[MAILBOX_KEYPRESS_IDX]) {
+        // UP
+        case 'w':
+            return GRAPHICS_SLIDE_DIR_UP;
+        
+        // DOWN
+        case 's':
+            return GRAPHICS_SLIDE_DIR_DOWN;
+        
+        // LEFT
+        case 'a':
+            return GRAPHICS_SLIDE_DIR_LEFT;
+        
+        // RIGHT
+        case 'd':
+            return GRAPHICS_SLIDE_DIR_RIGHT;
+        
+        default:
+            return -1;
+    }
+}
+
+bool ReceiveNewBlockLocationFromRISCVCore(uint8_t *row, uint8_t *col)
+{
+    *row = (SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] / 4);
+    *col = (SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] % 4);
+
+    return SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX + 1];
+}
 
 // *****************************************************************************
 int main(void)
 {
     int error;
-    // The mailbox names are pre-defined, Creating new pointers and pointing them to
-    //  memory locations for easier readability.
-    // SEMA_RISCV_MAILBOX = mxcSemaBox0;
-    // SEMA_ARM_MAILBOX = mxcSemaBox1;
+    uint8_t row, col;
+    graphics_slide_direction_t direction;
 
     // System Initialization:
     //     - Use IPO for System Clock for fastest speed. (Done in SystemInit)
@@ -179,58 +243,64 @@ int main(void)
         while(1);
     }
 
+    // Wait for Game logic to finish initializing on RISCV.
+    while (MXC_SEMA_CheckSema(SEMA_IDX_ARM) != E_NO_ERROR) {}
+    MXC_SEMA_GetSema(SEMA_IDX_ARM);
 
-    // for (int r = 1; r < 4; r++) {
-    //     for (int c = 0; c < 4; c++) {
-    //         Graphics_AddBlock(r, c, 2);
-    //     }
-    // }
+    // Get starting grid to keep ARM and RISCV grid copies in sync.
+    ReceiveGridFromRISCVCore();
 
-    // Graphics_AddNewBlock(0, 1, 2);
+    ReceiveNewBlockLocationFromRISCVCore(&row, &col);
 
+    Graphics_AddNewBlock(row, col, ARM_GRID_COPY[row][col]);
+
+    // Signal RISC-V to start waiting for keypresses.
+    MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
+    
     while (1) {
-        // Ready to receive game input.
-
-        // Wait for game to finish game logic.
+        // Wait for RISCV to finish updating the grid.
         while (MXC_SEMA_CheckSema(SEMA_IDX_ARM) != E_NO_ERROR) {}
-
         MXC_SEMA_GetSema(SEMA_IDX_ARM);
 
-        // for (int i = 0; i < 16*4; i++) {
-        //     PRINT("%d - ", SEMA_RISCV_MAILBOX->payload[i]);
-        // }
+        // Get the updated grid then display.
+        ReceiveGridFromRISCVCore();
 
-        PRINT("\n======\n");
+        direction = ReceiveDirectionFromRISCVCore();
 
-        // for (int x = 0; x < MAILBOX_PAYLOAD_LEN; x++) {
-        //     PRINT("ARM: %02x\n", SEMA_ARM_MAILBOX->payload[x]);
-        // }
-        int i = 0;
+        // Erase blocks that are moving.
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                ARM_GRID_COPY[row][col] = SEMA_ARM_MAILBOX->payload[i] << (8 * 0);
-                ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+1] << (8 * 1);
-                ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+2] << (8 * 2);
-                ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+3] << (8 * 3);
-
-                PRINT("ARM: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, ARM_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
-
-                // ARM_GRID_COPY[row][col] = SEMA_RISCV_MAILBOX->payload[i] << (8 * 0);
-                // ARM_GRID_COPY[row][col] += SEMA_RISCV_MAILBOX->payload[i+1] << (8 * 1);
-                // ARM_GRID_COPY[row][col] += SEMA_RISCV_MAILBOX->payload[i+2] << (8 * 2);
-                // ARM_GRID_COPY[row][col] += SEMA_RISCV_MAILBOX->payload[i+3] << (8 * 3);
-
-                // PRINT("ARM: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, ARM_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
-                
-                i+=4;
+                if (ARM_GRID_COPY_STATE[row][col] == 1) {
+                    Graphics_EraseSingleBlock(row, col);
+                }
             }
         }
 
-        PRINT("ARM: Direction Keypress: %c - 0x%02x\n", SEMA_ARM_MAILBOX->payload[4 * 16], SEMA_ARM_MAILBOX->payload[4 * 16]);
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                PRINT("ARM: r:%d c:%d state:%d\n", row, col, ARM_GRID_COPY_STATE[row][col]);
+            }
+        }
 
+        // Add new blocks.
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                if (ARM_GRID_COPY_STATE[row][col] == COMBINE) {
+                    Graphics_CombineBlocks(row, col, ARM_GRID_COPY[row][col]);
+                } else if (ARM_GRID_COPY[row][col] != 0 && ARM_GRID_COPY_STATE[row][col] != UNMOVED) {
+                    Graphics_AddBlock(row, col, ARM_GRID_COPY[row][col]);
+                    PRINT("Redraw?\n");
+                }
+            }
+        }
+
+        // If blocks moved, Add new block after all the grid updated.
+        if (ReceiveNewBlockLocationFromRISCVCore(&row, &col)) {
+            LED_Toggle(1);
+            Graphics_AddNewBlock(row, col, ARM_GRID_COPY[row][col]);
+        }
+
+        // Signal RISC-V Core that it's ready for the next grid state.
         MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
-        // Graphics_EraseSingleBlock(0, 1, GRAPHICS_SLIDE_DIR_LEFT);
-
-        // Graphics_AddBlock(0, 0, 2);
     }
 }

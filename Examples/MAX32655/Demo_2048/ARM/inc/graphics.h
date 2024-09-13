@@ -95,11 +95,16 @@
 #define FORMATTED_RGB_BLOCK_COLOR(block)    FORMAT_RGB565_TO_PACKET(RGB_BLOCK_COLOR(block))
 
 
+/**
+ *  This enum is used to keep track of which direction the blocks will slide to
+ *      for the graphics.
+ *  IMPORTANT: Sync these directions with the RISCV core.
+ */
 typedef enum {
-    GRAPHICS_SLIDE_DIR_LEFT,
-    GRAPHICS_SLIDE_DIR_RIGHT,
-    GRAPHICS_SLIDE_DIR_UP,
-    GRAPHICS_SLIDE_DIR_DOWN
+    GRAPHICS_SLIDE_DIR_UP = 0,
+    GRAPHICS_SLIDE_DIR_DOWN = 1,
+    GRAPHICS_SLIDE_DIR_LEFT = 2,
+    GRAPHICS_SLIDE_DIR_RIGHT = 3,
 } graphics_slide_direction_t;
 
 /* **** Function Prototypes **** */
@@ -112,4 +117,6 @@ void Graphics_AddBlock(int row, int col, int value);
 
 void Graphics_CombineBlocks(int row, int col, int new_value);
 
-void Graphics_EraseSingleBlock(int row, int col, graphics_slide_direction_t direction);
+void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_direction_t direction);
+
+void Graphics_EraseSingleBlock(int row, int col);
