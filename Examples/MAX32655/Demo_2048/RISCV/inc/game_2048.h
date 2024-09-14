@@ -40,16 +40,29 @@ typedef enum {
  *  IMPORTANT: Sync these commands with the ARM core.
  */
 typedef enum {
+    EMPTY = 0,
     ERASE = 1,
     COMBINE = 2,
     UNMOVED = 3
 } block_state_t;
 
+/**
+ *  These enums help track the state of the end game..
+ *  IMPORTANT: Sync these commands with the ARM core.
+ */
+typedef enum {
+    IN_PROGRESS = 0,
+    GAME_OVER = 1,
+    WINNER = 2,
+} game_state_t;
+
 /* **** Function Prototypes **** */
 
 int Game_2048_Init(uint8_t *new_block_location_idx);
 
-int Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx);
+game_state_t Game_2048_CheckState(void);
+
+bool Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx);
 
 void Game_2048_PrintGrid(void);
 

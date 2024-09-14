@@ -53,20 +53,26 @@
 //  ---|---|---|---
 //   c | d | e | f
 static uint32_t MAIN_2048_GRID[4][4];
-static uint8_t PREV_2048_GRID_STATE[4][4];
+static block_state_t PREV_2048_GRID_STATE[4][4];
+
+static game_state_t GAME_STATE;
+
+static uint16_t AVAILABLE_EMPTY_BLOCKS_NUM;
 
 /* **** Functions **** */
 
 /**
  *  Must have TRNG initialized first before calling this function.
  * 
+ *  @param  is_init                         True/False if a new block is added during
+ *                                          initialization when grid is first created.
  *  @param  new_block_1D_idx_location       Pointer to hold the index (0-15) of the new
  *                                          block location.
  * 
  *  @return If true (non-zero value), new block added. If false (zero),
  *          game over.
  */
-static bool add_new_block(bool isInit, uint8_t *new_block_1D_idx_location)
+static bool add_new_block(bool is_init, uint8_t *new_block_1D_idx_location)
 {
     uint8_t block_2_or_4;
     uint32_t open_space_idx;
@@ -74,7 +80,7 @@ static bool add_new_block(bool isInit, uint8_t *new_block_1D_idx_location)
     uint8_t open_space_count = 0;
 
     // If at the start of the new program, start with the 2 block.
-    if (isInit == true) {
+    if (is_init == true) {
         block_2_or_4 = 2;
     } else {
         // Select whether a 2 or 4 block will be placed.
@@ -105,6 +111,9 @@ static bool add_new_block(bool isInit, uint8_t *new_block_1D_idx_location)
         }
     }
 
+    // This should be the only place that this variable is written to.
+    AVAILABLE_EMPTY_BLOCKS_NUM = available_open_spaces;
+
     // No available space, game over.
     if (available_open_spaces == 0) {
         return false;
@@ -112,7 +121,7 @@ static bool add_new_block(bool isInit, uint8_t *new_block_1D_idx_location)
 
     open_space_idx = (MXC_TRNG_RandomInt() % available_open_spaces);
 
-    // Fill the "-th" available open space where n is variable "open_space_idx".
+    // Fill the "n-th" available open space where n is variable "open_space_idx".
     // We have the 1-D array index and need to convert to 2-D array coordinate location.
     int idx = 0;
     for (int row = 0; row < 4; row++) {
@@ -122,15 +131,21 @@ static bool add_new_block(bool isInit, uint8_t *new_block_1D_idx_location)
                     // Found "n-th" available open space, update grid.
                     MAIN_2048_GRID[row][col] = block_2_or_4;
                     *new_block_1D_idx_location = idx;
+
+                    // Decrement as a new block was just filled into the function.
+                    AVAILABLE_EMPTY_BLOCKS_NUM--;
                     return true;
                 }
 
                 open_space_count++;
-                idx++;
             }
+            idx++;
         }
     }
 
+    // Added for build warning.
+    //  Shouldn't reach here as there's a check earlier in the function that checks if there
+    //  are any available spaces to save time from iterating through the for loop.
     return false;
 }
 
@@ -156,12 +171,13 @@ int Game_2048_Init(uint8_t *new_block_location_idx)
         return E_BAD_STATE;
     }
 
+    GAME_STATE = IN_PROGRESS;
+
     return E_NO_ERROR;
 }
 
 inline static bool row_logic_left(void)
 {
-    int prev_row[4] = {};
     bool blocks_moved = false;
 
     for (int row = 0; row < 4; row++) {
@@ -170,7 +186,8 @@ inline static bool row_logic_left(void)
             continue;
         }
 
-        int temp_row[4] = {0};
+        uint32_t prev_row[4] = {0};
+        uint32_t temp_row[4] = {0};
         int temp_col_num = 0; // Also tracks how many valid blocks there are in a row.
 
         // Get all valid blocks in column to help with same-value pair logic.
@@ -196,7 +213,8 @@ inline static bool row_logic_left(void)
             if (prev_row[0] != MAIN_2048_GRID[row][0]) {
                 blocks_moved = true;
                 
-                // Represent the state of the original block location as deleted.
+                // Represent the state of the original block location as deleted for
+                //  display.
                 for (int col = 3; col >= 0; col--) {
                     if (prev_row[col] != 0) {
                         PREV_2048_GRID_STATE[row][col] = ERASE;
@@ -264,7 +282,6 @@ inline static bool row_logic_left(void)
 
 inline static bool row_logic_right(void)
 {
-    int prev_row[4] = {};
     bool blocks_moved = false;
 
     for (int row = 0; row < 4; row++) {
@@ -273,7 +290,8 @@ inline static bool row_logic_right(void)
             continue;
         }
 
-        int temp_row[4] = {0};
+        uint32_t prev_row[4] = {0};
+        uint32_t temp_row[4] = {0};
         int temp_col_num = 0; // Also tracks how many valid blocks there are in a row.
 
         // Get all valid blocks to help with same-value pair logic.
@@ -369,7 +387,6 @@ inline static bool row_logic_right(void)
 
 inline static bool column_logic_up(void)
 {
-    int prev_col[4] = {};
     bool blocks_moved = false;
 
     for (int col = 0; col < 4; col++) {
@@ -378,7 +395,8 @@ inline static bool column_logic_up(void)
             continue;
         }
 
-        int temp_column[4] = {0};
+        uint32_t prev_col[4] = {0};
+        uint32_t temp_column[4] = {0};
         int temp_row_num = 0; // Also tracks how many valid blocks there are.
 
         // Get all valid blocks to help with same-value pair logic.
@@ -404,12 +422,13 @@ inline static bool column_logic_up(void)
             if (prev_col[0] != MAIN_2048_GRID[0][col]) {
                 blocks_moved = true;
 
-                for (int row = 3; row >= 0; row++) {
+                for (int row = 3; row >= 0; row--) {
                     if (prev_col[row] != 0) {
                         PREV_2048_GRID_STATE[row][col] = ERASE;
                         break;
                     }
                 }
+
             } else {
                 PREV_2048_GRID_STATE[0][col] = UNMOVED;
             }
@@ -471,16 +490,17 @@ inline static bool column_logic_up(void)
 
 static bool column_logic_down(void)
 {
-    int prev_col[4] = {};
     bool blocks_moved = false;
     
     for (int col = 0; col < 4; col++) {
+        
         // Don't waste processing time if column is empty by checking if sum of all blocks in column is 0.
         if (COLUMN_SUM(col) == 0) {
             continue;
         }
 
-        int temp_column[4] = {0};
+        uint32_t prev_col[4] = {0};
+        uint32_t temp_column[4] = {0};
         int temp_row_num = 0; // Also tracks how many valid blocks there are in column.
 
         // Get all valid blocks to help with same-value pair logic.
@@ -575,8 +595,48 @@ static bool column_logic_down(void)
     return blocks_moved;
 }
 
+game_state_t Game_2048_CheckState(void)
+{
+    // Check if there's a 2048 block.
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            if (MAIN_2048_GRID[row][col] == 2048) {
+                return WINNER;
+            }
+        }
+    }
 
-int Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx)
+    // Check if the new block that was just added filled in the
+    //  last available empty block.
+    if (AVAILABLE_EMPTY_BLOCKS_NUM == 0) {
+        // If so, check if there are any swipes that can still be made before calling game over.
+        //  This can be done by checking if there are any same-value pairs next to each other.
+        // Check if a row has same value pair.
+        for (int r = 0; r < 4; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (MAIN_2048_GRID[r][c] == MAIN_2048_GRID[r][c+1]) {
+                    return IN_PROGRESS;
+                }
+            }
+        }
+
+        // Check if a column has a same-value pair.
+        for (int c = 0; c < 4; c++) {
+            for (int r = 0; r < 3; r++) {
+                if (MAIN_2048_GRID[r][c] == MAIN_2048_GRID[r+1][c]) {
+                    return IN_PROGRESS;
+                }
+            }
+        }
+
+        // If it reaches here, then there were no same-value pairs and no more moves can be made
+        return GAME_OVER;
+    } else {
+        return IN_PROGRESS;
+    }
+}
+
+bool Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx)
 {
     bool blocks_moved;
 
@@ -611,18 +671,20 @@ int Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx)
         
         // Should never reach here.
         default:
-            return E_INVALID;
+            return false;
     }
 
     // Once the main game logic is done, insert a new block.
     if (blocks_moved == true) {
         if (add_new_block(false, new_block_1D_idx) == true) {
+            // Successfully added new block.
             return true;
         } else {
-            return E_NONE_AVAIL; // Game over.
+            // New block could not be added, nothing happened.
+            return false;
         }
     } else {
-        // nothing happened
+        // Blocks didn't move.
         return false;
     }
 }

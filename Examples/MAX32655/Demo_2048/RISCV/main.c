@@ -81,7 +81,9 @@ typedef struct {
 #define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexs are from 0 to (16 blocks * 4 bytes) - 1.
 #define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
 #define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
-#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_KEYPRESS_IDX + 1)
+#define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
+#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
+#define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
 
 /* **** Globals **** */
 // Defined in sema_reva.c
@@ -105,59 +107,50 @@ mxc_uart_regs_t *CONTROLLER_UART = MXC_UART0;
 
 /***** Functions *****/
 
-// Must grab grid space before calling this function to have the latest
-//  grid state.
-void SendGridToARMCore(void)
-{
-    int i = MAILBOX_MAIN_GRID_IDX;
-    for (int row = 0; row < 4; row++) {
-        for (int col = 0; col < 4; col++) {
-            SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY[row][col] >> (8 * 0)) & 0xFF;
-            SEMA_ARM_MAILBOX->payload[i+1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
-            SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
-            SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
-
-            // PRINT("RISCV: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, RISCV_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
-            i+=4;
-        }
-    }
-
-    i = MAILBOX_MAIN_GRID_STATE_IDX;
-    for (int row = 0; row < 4; row++) {
-        for (int col = 0; col < 4; col++) {
-            SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY_STATE[row][col] >> (8 * 0)) & 0xFF;
-            i++;
-        }
-    }
-}
-
 void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
 {
     int error;
 
-    // Assume no keypress if error detected.
+    // No keypress if error detected.
     if (cb_error != E_NO_ERROR) {
-        CONTROLLER_KEYPRESS = 0; // NULL character
-    }
+        PRINT("RISCV: Error listening to keypress: %d\n", cb_error);
+        PRINT("RISCV: Try again.\n");
 
-    KEYPRESS_READY = true;
+        CONTROLLER_KEYPRESS = 0; // NULL character
+        KEYPRESS_READY = false;
+
+        MXC_UART_ClearRXFIFO(MXC_UART0);
+
+        // Listen for next keypress.
+        error = Controller_Start(&CONTROLLER_REQ);
+        if (error != E_NO_ERROR) {
+            PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
+            LED_On(LED_RED);
+        }
+
+        return;
+    }
 
     // User can add additional directional key switches here.
     switch (CONTROLLER_KEYPRESS) {
         case 'a':
             KEYPRESS_INPUT_DIR = INPUT_LEFT;
+            KEYPRESS_READY = true;
             break;
         
         case 'd':
             KEYPRESS_INPUT_DIR = INPUT_RIGHT;
+            KEYPRESS_READY = true;
             break;
         
         case 'w':
             KEYPRESS_INPUT_DIR = INPUT_UP;
+            KEYPRESS_READY = true;
             break;
         
         case 's':
             KEYPRESS_INPUT_DIR = INPUT_DOWN;
+            KEYPRESS_READY = true;
             break;
         
         default:
@@ -165,15 +158,6 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
     }
     
     PRINT("RISC-V: Keypress: %c - 0x%02x Error: %d\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS, cb_error);
-
-    MXC_UART_ClearRXFIFO(MXC_UART0);
-
-    // // Listen for next keypress.
-    // error = Controller_Start(&CONTROLLER_REQ);
-    // if (error != E_NO_ERROR) {
-    //     PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
-    //     LED_On(LED_RED);
-    // }
 }
 
 // Must grab grid space before calling this function to have the latest
@@ -240,15 +224,46 @@ void PRINT_GRID_STATE(void)
     }
 }
 
+// Must grab grid space before calling this function to have the latest
+//  grid state.
+void SendGridToARMCore(void)
+{
+    int i = MAILBOX_MAIN_GRID_IDX;
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY[row][col] >> (8 * 0)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i+1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
+
+            // PRINT("RISCV: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, RISCV_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
+            i+=4;
+        }
+    }
+
+    i = MAILBOX_MAIN_GRID_STATE_IDX;
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY_STATE[row][col] >> (8 * 0)) & 0xFF;
+            i++;
+        }
+    }
+}
+
 inline void SendKeypressToARMCore(void)
 {
     SEMA_ARM_MAILBOX->payload[MAILBOX_KEYPRESS_IDX] = (CONTROLLER_KEYPRESS >> (8 * 0)) & 0xFF;
 }
 
-inline void SendNewBlockIndexARMCore(uint8_t *new_block_idx, uint8_t did_block_move)
+void SendNewBlockIndexToARMCore(uint8_t *new_block_idx, uint8_t did_block_move_or_is_init)
 {
+    SEMA_ARM_MAILBOX->payload[MAILBOX_IF_BLOCK_MOVED_IDX] = (did_block_move_or_is_init >> (8 * 0)) & 0xFF;
     SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] = (*new_block_idx >> (8 * 0)) & 0xFF;
-    SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX + 1] = (did_block_move >> (8 * 1)) & 0xFF;
+}
+
+void SendGameStateToARMCore(game_state_t state)
+{
+    SEMA_ARM_MAILBOX->payload[MAILBOX_GAME_STATE_IDX] = (state >> (8 * 0)) & 0xFF;
 }
 
 // *****************************************************************************
@@ -335,7 +350,9 @@ int main(void)
 
     SendGridToARMCore();
 
-    SendNewBlockIndexARMCore(&new_block_idx_location, false);
+    SendNewBlockIndexToARMCore(&new_block_idx_location, true);
+
+    SendGameStateToARMCore(Game_2048_CheckState());
 
     // Signal ARM core to 
     MXC_SEMA_FreeSema(SEMA_IDX_ARM);
@@ -354,15 +371,14 @@ int main(void)
         input_direction_t dir = KEYPRESS_INPUT_DIR;
         
         state = Game_2048_UpdateGrid(dir, &new_block_idx_location);
-        if (state == E_NONE_AVAIL) {
-            PRINT("Game over!\n");
-            LED_On(LED_GREEN);
-            while(1);
-        } else if (state != E_NO_ERROR && state != true) {
-            PRINT("RISC-V: Error updating next move: %d\n", error);
-            LED_On(LED_RED);
-            while(1);
+        if (state == true) {
+            PRINT("RISC-V: Blocks moved.\n");
+        } else {
+            PRINT("RISC-V: Blocks did not move.\n");
         }
+
+        // Check state of game.
+        game_state_t game_state = Game_2048_CheckState();
 
         // This function must be called before PRINT_GRID() and SendGridToARMCore()
         //  functions to grab the latest grid state.
@@ -376,21 +392,40 @@ int main(void)
 
         SendKeypressToARMCore();
 
-        PRINT("RISCV: State: %d\n", state);
+        SendGameStateToARMCore(game_state);
 
-        SendNewBlockIndexARMCore(&new_block_idx_location, state);
+        SendNewBlockIndexToARMCore(&new_block_idx_location, state);
 
         KEYPRESS_READY = false;
 
+        // Check if game is finished.
+        if (game_state == WINNER) {
+            // Signal ARM to finish final display update.
+            MXC_SEMA_FreeSema(SEMA_IDX_ARM);
+
+            PRINT("RISCV: Congratulations, you win!\n");
+            PRINT("RISCV: Ending game.\n");
+
+            while(1);
+        } else if (game_state == GAME_OVER) {
+            // Signal ARM to finish final display update.
+            MXC_SEMA_FreeSema(SEMA_IDX_ARM);
+
+            PRINT("RISCV: Game Over. Nice try! Better luck next time.\n");
+            PRINT("RISCV: Ending game.\n");
+            while(1);
+        }
+
+        PRINT("GAME STATE: %d\n", game_state);
+
         // Listen for next keypress.
+        MXC_UART_ClearRXFIFO(MXC_UART0);
+
         error = Controller_Start(&CONTROLLER_REQ);
         if (error != E_NO_ERROR) {
             PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
             LED_On(LED_RED);
             while(1);
         }
-
-        // Get ARM to update the display.
-        MXC_SEMA_FreeSema(SEMA_IDX_ARM);
     }
 }
