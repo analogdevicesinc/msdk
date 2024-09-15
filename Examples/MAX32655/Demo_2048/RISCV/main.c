@@ -158,6 +158,11 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
         
         default:
             KEYPRESS_READY = false;
+            error = Controller_Start(&CONTROLLER_REQ);
+            if (error != E_NO_ERROR) {
+                PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
+                LED_On(LED_RED);
+            }
     }
     
     PRINT("RISC-V: Keypress: %c - 0x%02x Error: %d\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS, cb_error);
@@ -272,6 +277,9 @@ void SendGameStateToARMCore(game_state_t state)
 void SendMovesCountToARMCore(uint32_t moves_count)
 {
     SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX] = (moves_count >> (8 * 0)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+1] = (moves_count >> (8 * 1)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+2] = (moves_count >> (8 * 2)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+3] = (moves_count >> (8 * 3)) & 0xFF;
 }
 
 // *****************************************************************************

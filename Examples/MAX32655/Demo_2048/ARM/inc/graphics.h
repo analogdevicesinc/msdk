@@ -66,6 +66,11 @@
 #define MOVES_DIGIT1_OFFSET_X(width)    (MOVES_DIGITS_OFFSET_X + (MOVES_DIGIT_WIDTH * 2) + (MOVES_DIGIT_WIDTH / 2) - (width - 2))
 #define MOVES_DIGIT0_OFFSET_X(width)    (MOVES_DIGITS_OFFSET_X + (MOVES_DIGIT_WIDTH * 3) + (MOVES_DIGIT_WIDTH / 2) - (width - 2))
 
+// Position settings for Game Over and You Win boxes,
+#define GAME_OVER_BOX_OFFSET_X          (GRID_OFFSET_X + ((SCREEN_WIDTH - GRID_OFFSET_X) / 2) - (GAME_OVER_BOX_WIDTH / 2))
+#define GAME_OVER_BOX_OFFSET_Y          (GRID_OFFSET_Y + ((SCREEN_HEIGHT - GRID_OFFSET_Y) / 2) - (GAME_OVER_BOX_HEIGHT / 2))
+#define YOU_WIN_BOX_OFFSET_X            (GRID_OFFSET_X + ((SCREEN_WIDTH - GRID_OFFSET_X) / 2) - (YOU_WIN_BOX_WIDTH / 2))
+#define YOU_WIN_BOX_OFFSET_Y            (GRID_OFFSET_Y + ((SCREEN_HEIGHT - GRID_OFFSET_Y) / 2) - (YOU_WIN_BOX_HEIGHT / 2))
 
 // Colors 16-bit RGB565.
 #define RGB565_WHITE                    (0xFFFF)
@@ -152,3 +157,7 @@ void Graphics_EraseSingleBlock(int row, int col);
 void Graphics_SetTime(uint32_t total_seconds);
 
 void Graphics_UpdateMovesCount(uint32_t moves_count);
+
+void Graphics_DisplayGameOver(void);
+
+void Graphics_DisplayYouWin(void);

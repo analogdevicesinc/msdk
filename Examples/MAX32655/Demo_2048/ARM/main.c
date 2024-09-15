@@ -195,7 +195,12 @@ game_state_t ReceiveGameStateFromRISCVCore(void)
 
 uint32_t ReceiveMovesCountFromRISCVCore(void)
 {
-    return SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX];
+    uint32_t moves_count = 0;
+    moves_count = SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX] << (8 * 0);
+    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+1] << (8 * 1);
+    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+2] << (8 * 2);
+    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+3] << (8 * 3);
+    return moves_count;
 }
 
 // *****************************************************************************
@@ -347,6 +352,7 @@ int main(void)
 
             // Increment moves counter if blocks moved.
             MOVES_COUNT = ReceiveMovesCountFromRISCVCore();
+            PRINT("Moves: %d\n", MOVES_COUNT);
             if (prev_moves_count != MOVES_COUNT) {
                 Graphics_UpdateMovesCount(MOVES_COUNT);
                 prev_moves_count = MOVES_COUNT;
@@ -378,10 +384,20 @@ int main(void)
             if (game_state == WINNER) {
                 PRINT("ARM: Congratulations, you win!\n");
                 PRINT("ARM: Ending game.\n");
+
+                // Give some time for user to look at grid before drawing the popup.
+                MXC_Delay(MXC_DELAY_MSEC(750));
+                Graphics_DisplayYouWin();
+
                 while(1);
             } else if (game_state == GAME_OVER) {
                 PRINT("ARM: Game Over. Nice try! Better luck next time.\n");
                 PRINT("ARM: Ending game.\n");
+
+                // Give some time for user to look at grid before drawing the popup.
+                MXC_Delay(MXC_DELAY_MSEC(750));
+                Graphics_DisplayGameOver();
+
                 while(1);
             }
 

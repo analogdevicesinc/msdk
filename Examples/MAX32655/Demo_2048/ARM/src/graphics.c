@@ -28,6 +28,7 @@
 #include "clear_sans_bold_scaled_block_digits.h"
 #include "clear_sans_bold_game_text.h"
 #include "cfs_logo.h"
+#include "end_game_text.h"
 
 #include "led.h"
 
@@ -534,4 +535,14 @@ void Graphics_UpdateMovesCount(uint32_t moves_count)
         MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit3)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit3), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit3), RGB565_BLACK, RGB565_WHITE);
         prev_moves_digit3 = digit3;
     }
+}
+
+void Graphics_DisplayGameOver(void)
+{
+    MXC_TFT_DrawBitmap(GAME_OVER_BOX_OFFSET_X, GAME_OVER_BOX_OFFSET_Y, GAME_OVER_BOX_WIDTH, GAME_OVER_BOX_HEIGHT, game_over);
+}
+
+void Graphics_DisplayYouWin(void)
+{
+    MXC_TFT_DrawBitmap(YOU_WIN_BOX_OFFSET_X, YOU_WIN_BOX_OFFSET_Y, YOU_WIN_BOX_WIDTH, YOU_WIN_BOX_HEIGHT, you_win);
 }
