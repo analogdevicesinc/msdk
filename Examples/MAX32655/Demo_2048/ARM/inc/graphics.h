@@ -46,16 +46,28 @@
 #define GAME_LOGO_OFFSET_X              (CFS_LOGO_OFFSET_X + (GRID_OFFSET_X - BLOCK_LENGTH) / 2)
 #define GAME_LOGO_OFFSET_Y              (80)
 
+// Position settings for timer.
 #define TIME_OFFSET_Y                   (215)
-#define TIME_COLON_OFFSET_X             (CFS_LOGO_OFFSET_X + (GRID_OFFSET_X / 2) - (GAME_TEXT_DIGIT_COLON_WIDTH / 2))
+#define TIME_COLON_OFFSET_X             (CFS_LOGO_OFFSET_X + (GRID_OFFSET_X / 2) - 1)
 #define TIME_DIGIT_WIDTH                (15)        // Max width of digit is 15 pixels
 #define TIME_DIGIT3_OFFSET_X(width)     ((TIME_COLON_OFFSET_X - (TIME_DIGIT_WIDTH * 2)) + ((TIME_DIGIT_WIDTH / 2) - (width / 2) - 1) - (GAME_TEXT_DIGIT_COLON_WIDTH / 2))
 #define TIME_DIGIT2_OFFSET_X(width)     ((TIME_COLON_OFFSET_X - (TIME_DIGIT_WIDTH * 1)) + ((TIME_DIGIT_WIDTH / 2) - (width / 2) - 1) - (GAME_TEXT_DIGIT_COLON_WIDTH / 2))
 #define TIME_DIGIT1_OFFSET_X(width)     ((TIME_COLON_OFFSET_X + (GAME_TEXT_DIGIT_COLON_WIDTH * 2)) + ((TIME_DIGIT_WIDTH / 2) - (width / 2)) - 1)
 #define TIME_DIGIT0_OFFSET_X(width)     ((TIME_COLON_OFFSET_X + (GAME_TEXT_DIGIT_COLON_WIDTH * 2) + TIME_DIGIT_WIDTH) + ((TIME_DIGIT_WIDTH / 2) - (width / 2)) - 1)
 
-// Colors
+// Position settings for moves counter.
+#define MOVES_DIGITS_OFFSET_Y           (160)
+#define MOVES_TEXT_OFFSET_Y             (MOVES_DIGITS_OFFSET_Y + GAME_TEXT_DIGITS_HEIGHT + 4) // 4 seemed to be appropriate number of pxiels for spacing.
+#define MOVES_DIGIT_WIDTH               (15)        // Max width of digit is 15 pixels.
+#define MOVES_DIGITS_OFFSET_X           ((GRID_OFFSET_X / 2) - MOVES_DIGIT_WIDTH - (MOVES_DIGIT_WIDTH / 2))
+#define MOVES_TEXT_OFFSET_X             ((GRID_OFFSET_X / 2) - (GAME_TEXT_MOVES_WIDTH / 2) + 4)
+#define MOVES_DIGIT3_OFFSET_X(width)    (MOVES_DIGITS_OFFSET_X + (MOVES_DIGIT_WIDTH * 0) + (MOVES_DIGIT_WIDTH / 2) - (width - 2))
+#define MOVES_DIGIT2_OFFSET_X(width)    (MOVES_DIGITS_OFFSET_X + (MOVES_DIGIT_WIDTH * 1) + (MOVES_DIGIT_WIDTH / 2) - (width - 2))
+#define MOVES_DIGIT1_OFFSET_X(width)    (MOVES_DIGITS_OFFSET_X + (MOVES_DIGIT_WIDTH * 2) + (MOVES_DIGIT_WIDTH / 2) - (width - 2))
+#define MOVES_DIGIT0_OFFSET_X(width)    (MOVES_DIGITS_OFFSET_X + (MOVES_DIGIT_WIDTH * 3) + (MOVES_DIGIT_WIDTH / 2) - (width - 2))
 
+
+// Colors 16-bit RGB565.
 #define RGB565_WHITE                    (0xFFFF)
 #define RGB565_BLACK                    (0x0000)
 #define RGB565_DARK_GRAY                (0x3084)
@@ -138,3 +150,5 @@ void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_directio
 void Graphics_EraseSingleBlock(int row, int col);
 
 void Graphics_SetTime(uint32_t total_seconds);
+
+void Graphics_UpdateMovesCount(uint32_t moves_count);

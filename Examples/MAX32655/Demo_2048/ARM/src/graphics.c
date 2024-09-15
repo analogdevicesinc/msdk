@@ -36,9 +36,12 @@
 
 /* **** Globals **** */
 
-static int prev_digit1 = 0;
-static int prev_digit2 = 0;
-static int prev_digit3 = 0;
+static int prev_timer_digit1 = 0;
+static int prev_timer_digit2 = 0;
+static int prev_timer_digit3 = 0;
+static int prev_moves_digit1 = 0;
+static int prev_moves_digit2 = 0;
+static int prev_moves_digit3 = 0;
 
 /* **** Functions **** */
 
@@ -76,7 +79,11 @@ int Graphics_Init(void)
     MXC_TFT_DrawBitmapMask(dx, dy, BLOCK_2048_DIGIT_PX_WIDTH, BLOCK_2048_DIGIT_PX_HEIGHT, block_2048, RGB565_BLACK, RGB565_BLOCK_2048);
 
     // Draw move counter.
-    
+    MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT1_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT2_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(MOVES_TEXT_OFFSET_X, MOVES_TEXT_OFFSET_Y, GAME_TEXT_MOVES_WIDTH, GAME_TEXT_MOVES_HEIGHT, game_text_moves, RGB565_BLACK, RGB565_WHITE);
 
     // Draw timer.
     MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
@@ -458,33 +465,73 @@ void Graphics_SetTime(uint32_t total_seconds)
     }
 
     // Update timer on display.
-    MXC_TFT_DrawFastRect(TIME_DIGIT0_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);    
+    MXC_TFT_DrawFastRect(TIME_DIGIT0_OFFSET_X(TIME_DIGIT_WIDTH), TIME_OFFSET_Y, TIME_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);    
     MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit0), RGB565_BLACK, RGB565_WHITE);
 
     // Don't waste time on re-writing the same digits.
     // Changes every 10 seconds.
-    if (prev_digit1 != digit1) {
-        MXC_TFT_DrawFastRect(TIME_DIGIT1_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+    if (prev_timer_digit1 != digit1) {
+        MXC_TFT_DrawFastRect(TIME_DIGIT1_OFFSET_X(TIME_DIGIT_WIDTH), TIME_OFFSET_Y, TIME_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
         MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT1_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit1)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit1), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit1), RGB565_BLACK, RGB565_WHITE);
-        prev_digit1 = digit1;
+        prev_timer_digit1 = digit1;
     }
 
     // Changes every 60 seconds.
-    if (prev_digit2 != digit2) {
-        MXC_TFT_DrawFastRect(TIME_DIGIT2_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+    if (prev_timer_digit2 != digit2) {
+        MXC_TFT_DrawFastRect(TIME_DIGIT2_OFFSET_X(TIME_DIGIT_WIDTH), TIME_OFFSET_Y, TIME_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
         MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT2_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit2)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit2), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit2), RGB565_BLACK, RGB565_WHITE);
-        prev_digit2 = digit2;
+        prev_timer_digit2 = digit2;
     }
 
     // Changes every 600 seoncds.
-    if (prev_digit3 != digit3) {
-        MXC_TFT_DrawFastRect(TIME_DIGIT2_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+    if (prev_timer_digit3 != digit3) {
+        MXC_TFT_DrawFastRect(TIME_DIGIT3_OFFSET_X(TIME_DIGIT_WIDTH), TIME_OFFSET_Y, TIME_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
         MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit3)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit3), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit3), RGB565_BLACK, RGB565_WHITE);
-        prev_digit3 = digit3;
+        prev_timer_digit3 = digit3;
     }
 }
 
 void Graphics_UpdateMovesCount(uint32_t moves_count)
 {
+    // Convert total time to minutes:seconds (mm:ss)
+    int digit0, digit1, digit2, digit3;
     
+    // The max possible seconds is 5999, which yields 99m:59s.
+    if (moves_count >= 9999) {
+        digit0 = 9;
+        digit1 = 9;
+        digit2 = 9;
+        digit3 = 9;
+    } else {
+        digit0 = (moves_count % 10);
+        digit1 = ((moves_count / 10) % 10);
+        digit2 = ((moves_count / 100) % 10);
+        digit3 = ((moves_count / 1000) % 10);
+    }
+
+    // Update timer on display.
+    MXC_TFT_DrawFastRect(MOVES_DIGIT0_OFFSET_X(MOVES_DIGIT_WIDTH), MOVES_DIGITS_OFFSET_Y, MOVES_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);    
+    MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit0)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit0), RGB565_BLACK, RGB565_WHITE);
+
+    // Don't waste time on re-writing the same digits.
+    // Changes every 10 seconds.
+    if (prev_moves_digit1 != digit1) {
+        MXC_TFT_DrawFastRect(MOVES_DIGIT1_OFFSET_X(MOVES_DIGIT_WIDTH), MOVES_DIGITS_OFFSET_Y, MOVES_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+        MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT1_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit1)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit1), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit1), RGB565_BLACK, RGB565_WHITE);
+        prev_moves_digit1 = digit1;
+    }
+
+    // Changes every 60 seconds.
+    if (prev_moves_digit2 != digit2) {
+        MXC_TFT_DrawFastRect(MOVES_DIGIT2_OFFSET_X(MOVES_DIGIT_WIDTH), MOVES_DIGITS_OFFSET_Y, MOVES_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+        MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT2_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit2)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit2), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit2), RGB565_BLACK, RGB565_WHITE);
+        prev_moves_digit2 = digit2;
+    }
+
+    // Changes every 600 seoncds.
+    if (prev_moves_digit3 != digit3) {
+        MXC_TFT_DrawFastRect(MOVES_DIGIT3_OFFSET_X(MOVES_DIGIT_WIDTH), MOVES_DIGITS_OFFSET_Y, MOVES_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+        MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit3)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit3), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit3), RGB565_BLACK, RGB565_WHITE);
+        prev_moves_digit3 = digit3;
+    }
 }

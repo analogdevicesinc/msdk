@@ -80,7 +80,7 @@ typedef struct {
 #define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
 #define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
 #define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
-#define MAILBOX_MOVE_COUNT_IDX              (MAILBOX_GAME_STATE_IDX + 1)
+#define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
 
 /**
  *  These enums help keep track of what blocks were erased,
@@ -117,6 +117,8 @@ extern mxcSemaBox_t *mxcSemaBox1; // ARM reads,  RISCV writes
 
 uint32_t ARM_GRID_COPY[4][4] = {0};
 block_state_t ARM_GRID_COPY_STATE[4][4] = {0};
+
+uint32_t MOVES_COUNT = 0;
 
 /* **** Functions **** */
 
@@ -189,6 +191,11 @@ bool ReceiveNewBlockLocationFromRISCVCore(uint16_t *row, uint16_t *col)
 game_state_t ReceiveGameStateFromRISCVCore(void)
 {
     return SEMA_ARM_MAILBOX->payload[MAILBOX_GAME_STATE_IDX];
+}
+
+uint32_t ReceiveMovesCountFromRISCVCore(void)
+{
+    return SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX];
 }
 
 // *****************************************************************************
@@ -303,8 +310,9 @@ int main(void)
         while(1);
     }
 
-    int prev_seconds = 0;
-    int seconds = 0;
+    uint32_t prev_seconds = 0;
+    uint32_t seconds = 0;
+    int prev_moves_count = MOVES_COUNT; // Should start as 0.
     while (1) {
         // Update timer.
         MXC_RTC_GetSeconds(&seconds);
@@ -313,7 +321,7 @@ int main(void)
             prev_seconds = seconds;
         }
 
-        // Wait for RISCV to finish updating the grid.
+        // Update grid when RISCV signals ARM it's ready.
         if (MXC_SEMA_CheckSema(SEMA_IDX_ARM) == E_NO_ERROR) {
             MXC_SEMA_GetSema(SEMA_IDX_ARM);
 
@@ -336,6 +344,13 @@ int main(void)
             bool new_block_added;
             // If blocks moved, Add new block after all the grid updated.
             new_block_added = ReceiveNewBlockLocationFromRISCVCore(&new_block_row, &new_block_col);
+
+            // Increment moves counter if blocks moved.
+            MOVES_COUNT = ReceiveMovesCountFromRISCVCore();
+            if (prev_moves_count != MOVES_COUNT) {
+                Graphics_UpdateMovesCount(MOVES_COUNT);
+                prev_moves_count = MOVES_COUNT;
+            }
 
             // Add new blocks.
             for (int row = 0; row < 4; row++) {

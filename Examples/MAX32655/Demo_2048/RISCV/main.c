@@ -84,7 +84,7 @@ typedef struct {
 #define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
 #define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
 #define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
-#define MAILBOX_MOVE_COUNT_IDX              (MAILBOX_GAME_STATE_IDX + 1)
+#define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
 
 /* **** Globals **** */
 // Defined in sema_reva.c
@@ -102,6 +102,8 @@ uint8_t KEYPRESS_INPUT_DIR;
 
 uint32_t RISCV_GRID_COPY[4][4] = {0};
 uint8_t RISCV_GRID_COPY_STATE[4][4] = {0};
+
+uint32_t MOVES_COUNT = 0;
 
 // Select Console UART instance.
 mxc_uart_regs_t *CONTROLLER_UART = MXC_UART0;
@@ -267,9 +269,9 @@ void SendGameStateToARMCore(game_state_t state)
     SEMA_ARM_MAILBOX->payload[MAILBOX_GAME_STATE_IDX] = (state >> (8 * 0)) & 0xFF;
 }
 
-void SendMoveCountToARMCore(uint32_t move_count)
+void SendMovesCountToARMCore(uint32_t moves_count)
 {
-    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVE_COUNT_IDX] = (move_count >> (8 * 0)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX] = (moves_count >> (8 * 0)) & 0xFF;
 }
 
 // *****************************************************************************
@@ -379,6 +381,7 @@ int main(void)
         state = Game_2048_UpdateGrid(dir, &new_block_idx_location);
         if (state == true) {
             PRINT("RISC-V: Blocks moved.\n");
+            SendMovesCountToARMCore(++MOVES_COUNT);
         } else {
             PRINT("RISC-V: Blocks did not move.\n");
         }
