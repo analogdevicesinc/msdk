@@ -29,6 +29,7 @@
 #define SCREEN_HEIGHT                   (240)
 
 // TODO(SW): Automatically calculate these sizes based on screen dimensions.
+// Set the dimensions of all the models.
 #define GRID_OFFSET_X                   (80)
 #define GRID_OFFSET_Y                   (0)
 #define GRID_LENGTH                     (224)
@@ -38,6 +39,20 @@
 #define BLOCK_SPACING                   (4) // spacing between edge of "grid to block" and "block to block".
 
 #define RADIUS_FOR_CORNERS              (3)
+
+#define CFS_LOGO_OFFSET_X               (4)
+#define CFS_LOGO_OFFSET_Y               (0)
+
+#define GAME_LOGO_OFFSET_X              (CFS_LOGO_OFFSET_X + (GRID_OFFSET_X - BLOCK_LENGTH) / 2)
+#define GAME_LOGO_OFFSET_Y              (80)
+
+#define TIME_OFFSET_Y                   (215)
+#define TIME_COLON_OFFSET_X             (CFS_LOGO_OFFSET_X + (GRID_OFFSET_X / 2) - (GAME_TEXT_DIGIT_COLON_WIDTH / 2))
+#define TIME_DIGIT_WIDTH                (15)        // Max width of digit is 15 pixels
+#define TIME_DIGIT3_OFFSET_X(width)     ((TIME_COLON_OFFSET_X - (TIME_DIGIT_WIDTH * 2)) + ((TIME_DIGIT_WIDTH / 2) - (width / 2) - 1) - (GAME_TEXT_DIGIT_COLON_WIDTH / 2))
+#define TIME_DIGIT2_OFFSET_X(width)     ((TIME_COLON_OFFSET_X - (TIME_DIGIT_WIDTH * 1)) + ((TIME_DIGIT_WIDTH / 2) - (width / 2) - 1) - (GAME_TEXT_DIGIT_COLON_WIDTH / 2))
+#define TIME_DIGIT1_OFFSET_X(width)     ((TIME_COLON_OFFSET_X + (GAME_TEXT_DIGIT_COLON_WIDTH * 2)) + ((TIME_DIGIT_WIDTH / 2) - (width / 2)) - 1)
+#define TIME_DIGIT0_OFFSET_X(width)     ((TIME_COLON_OFFSET_X + (GAME_TEXT_DIGIT_COLON_WIDTH * 2) + TIME_DIGIT_WIDTH) + ((TIME_DIGIT_WIDTH / 2) - (width / 2)) - 1)
 
 // Colors
 
@@ -60,6 +75,7 @@
 #define RGB565_BLOCK_1024               (0xEE27)
 #define RGB565_BLOCK_2048               (0xEE05)
 
+// Unused, but left here if anyone wants to expand features.
 #define RGB565_BLOCK_4096               (0xFDF7)
 #define RGB565_BLOCK_8192               (0xF38E)
 #define RGB565_BLOCK_16384              (0xFC58)
@@ -120,3 +136,5 @@ void Graphics_CombineBlocks(int row, int col, int new_value);
 void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_direction_t direction);
 
 void Graphics_EraseSingleBlock(int row, int col);
+
+void Graphics_SetTime(uint32_t total_seconds);

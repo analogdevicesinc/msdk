@@ -80,6 +80,7 @@ typedef struct {
 #define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
 #define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
 #define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
+#define MAILBOX_MOVE_COUNT_IDX              (MAILBOX_GAME_STATE_IDX + 1)
 
 /**
  *  These enums help keep track of what blocks were erased,
@@ -261,7 +262,11 @@ int main(void)
     MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
 
     // Initialize RTC.
-    MXC_RTC_Init(0, 0);
+    if (MXC_RTC_Init(0, 0) != E_NO_ERROR) {
+        PRINT("ARM: Error initializing RTC: %d\n", error);
+        LED_On(LED_RED);
+        while(1);
+    }
 
     error = Graphics_Init();
     if (error != E_NO_ERROR) {
@@ -290,66 +295,83 @@ int main(void)
 
     // Signal RISC-V to start waiting for keypresses.
     MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
-    
+
+    // Start timer.
+    if (MXC_RTC_Start() != E_NO_ERROR) {
+        PRINT("ARM: Error starting timer: %d\n", error);
+        LED_On(LED_RED);
+        while(1);
+    }
+
+    int prev_seconds = 0;
+    int seconds = 0;
     while (1) {
-        // Wait for RISCV to finish updating the grid.
-        while (MXC_SEMA_CheckSema(SEMA_IDX_ARM) != E_NO_ERROR) {}
-        MXC_SEMA_GetSema(SEMA_IDX_ARM);
-
-        // Get the updated grid then display.
-        ReceiveGridFromRISCVCore();
-
-        direction = ReceiveDirectionFromRISCVCore();
-
-        // Erase blocks that are moving.
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 4; col++) {
-                if (ARM_GRID_COPY_STATE[row][col] == 1) {
-                    Graphics_EraseSingleBlock(row, col);
-                }
-            }
+        // Update timer.
+        MXC_RTC_GetSeconds(&seconds);
+        if (prev_seconds != seconds) {
+            Graphics_SetTime(seconds);
+            prev_seconds = seconds;
         }
 
-        // Pre-set these values as invalid locations.
-        new_block_row = 0xFFFF, new_block_col = 0xFFFF;
-        bool new_block_added;
-        // If blocks moved, Add new block after all the grid updated.
-        new_block_added = ReceiveNewBlockLocationFromRISCVCore(&new_block_row, &new_block_col);
+        // Wait for RISCV to finish updating the grid.
+        if (MXC_SEMA_CheckSema(SEMA_IDX_ARM) == E_NO_ERROR) {
+            MXC_SEMA_GetSema(SEMA_IDX_ARM);
 
-        // Add new blocks.
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 4; col++) {
-                if (ARM_GRID_COPY_STATE[row][col] == COMBINE) {
-                    Graphics_CombineBlocks(row, col, ARM_GRID_COPY[row][col]);
-                } else if (ARM_GRID_COPY[row][col] != 0 && ARM_GRID_COPY_STATE[row][col] != UNMOVED) {
-                    // Don't draw newly spawned block.
-                    //  new_block_row and new_block_col will be set to 0xFFFF for invalid
-                    //  location if new block was not added.
-                    if ((row != new_block_row) || (col != new_block_col)) {
-                        Graphics_AddBlock(row, col, ARM_GRID_COPY[row][col]);
+            // Get the updated grid then display.
+            ReceiveGridFromRISCVCore();
+
+            direction = ReceiveDirectionFromRISCVCore();
+
+            // Erase blocks that are moving.
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 4; col++) {
+                    if (ARM_GRID_COPY_STATE[row][col] == 1) {
+                        Graphics_EraseSingleBlock(row, col);
                     }
                 }
             }
-        }
-        
-        // Add new block with spawn animation.
-        if (new_block_added == true) {
-            Graphics_AddNewBlock(new_block_row, new_block_col, ARM_GRID_COPY[new_block_row][new_block_col]);
-        }
 
-        game_state = ReceiveGameStateFromRISCVCore();
-        // Check if game is finished.
-        if (game_state == WINNER) {
-            PRINT("ARM: Congratulations, you win!\n");
-            PRINT("ARM: Ending game.\n");
-            while(1);
-        } else if (game_state == GAME_OVER) {
-            PRINT("ARM: Game Over. Nice try! Better luck next time.\n");
-            PRINT("ARM: Ending game.\n");
-            while(1);
-        }
+            // Pre-set these values as invalid locations.
+            new_block_row = 0xFFFF, new_block_col = 0xFFFF;
+            bool new_block_added;
+            // If blocks moved, Add new block after all the grid updated.
+            new_block_added = ReceiveNewBlockLocationFromRISCVCore(&new_block_row, &new_block_col);
 
-        // Signal RISC-V Core that it's ready for the next grid state.
-        MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
+            // Add new blocks.
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 4; col++) {
+                    if (ARM_GRID_COPY_STATE[row][col] == COMBINE) {
+                        Graphics_CombineBlocks(row, col, ARM_GRID_COPY[row][col]);
+                    } else if (ARM_GRID_COPY[row][col] != 0 && ARM_GRID_COPY_STATE[row][col] != UNMOVED) {
+                        // Don't draw newly spawned block.
+                        //  new_block_row and new_block_col will be set to 0xFFFF for invalid
+                        //  location if new block was not added.
+                        if ((row != new_block_row) || (col != new_block_col)) {
+                            Graphics_AddBlock(row, col, ARM_GRID_COPY[row][col]);
+                        }
+                    }
+                }
+            }
+            
+            // Add new block with spawn animation.
+            if (new_block_added == true) {
+                Graphics_AddNewBlock(new_block_row, new_block_col, ARM_GRID_COPY[new_block_row][new_block_col]);
+            }
+
+            game_state = ReceiveGameStateFromRISCVCore();
+            // Check if game is finished.
+            if (game_state == WINNER) {
+                PRINT("ARM: Congratulations, you win!\n");
+                PRINT("ARM: Ending game.\n");
+                while(1);
+            } else if (game_state == GAME_OVER) {
+                PRINT("ARM: Game Over. Nice try! Better luck next time.\n");
+                PRINT("ARM: Ending game.\n");
+                while(1);
+            }
+
+            // Signal RISC-V Core that it's ready for the next grid state.
+            MXC_SEMA_FreeSema(SEMA_IDX_RISCV);
+        }
     }
 }

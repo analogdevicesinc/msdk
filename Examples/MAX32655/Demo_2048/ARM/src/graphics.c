@@ -25,21 +25,20 @@
 #include "tft_ssd2119.h"
 
 #include "graphics.h"
-
-#include "clear_sans_bold_num.h"
+#include "clear_sans_bold_scaled_block_digits.h"
+#include "clear_sans_bold_game_text.h"
+#include "cfs_logo.h"
 
 #include "led.h"
 
 
 /* **** Definitions **** */
 
-// #define ANIMATION_DELAY(block_num)      ()   
-
-
 /* **** Globals **** */
 
-// Keep copy of grid.
-// static uint32_t MAIN_GRID[4][4] = {0};
+static int prev_digit1 = 0;
+static int prev_digit2 = 0;
+static int prev_digit3 = 0;
 
 /* **** Functions **** */
 
@@ -55,6 +54,36 @@ int Graphics_Init(void)
 
     // Clear display.
     MXC_TFT_DrawFastRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, F_BACKGROUND_COLOR);
+
+    // Draw CFS Logo.
+    MXC_TFT_DrawBitmap(CFS_LOGO_OFFSET_X, CFS_LOGO_OFFSET_Y, CFS_LOGO_WIDTH, CFS_LOGO_HEIGHT, cfs_logo);
+
+    // Draw Game Logo.
+    // Forgive me for all the math who ever tries to read through the code.
+    // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
+    int x = GAME_LOGO_OFFSET_X;
+    int y = GAME_LOGO_OFFSET_Y;
+
+    // Math is to center the digits printed to the newly created block.
+    int dx = x + (BLOCK_LENGTH / 2) - (BLOCK_2048_DIGIT_PX_WIDTH / 2);
+    int dy = y + (BLOCK_LENGTH / 2) - (BLOCK_2048_DIGIT_PX_HEIGHT / 2);
+
+    // Draw block.
+    MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(RGB565_BLOCK_2048), RADIUS_FOR_CORNERS, F_BACKGROUND_COLOR);
+
+    // Draw digits.
+    // 0x0000 is RGB color BLACK (background of digit) which will be masked out to match color of block.
+    MXC_TFT_DrawBitmapMask(dx, dy, BLOCK_2048_DIGIT_PX_WIDTH, BLOCK_2048_DIGIT_PX_HEIGHT, block_2048, RGB565_BLACK, RGB565_BLOCK_2048);
+
+    // Draw move counter.
+    
+
+    // Draw timer.
+    MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT1_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(TIME_COLON_OFFSET_X, TIME_OFFSET_Y, GAME_TEXT_DIGIT_COLON_WIDTH, GAME_TEXT_DIGITS_HEIGHT, game_text_colon, RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT2_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
+    MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
 
     // Draw grid.
     MXC_TFT_DrawRoundedRect(GRID_OFFSET_X + GRID_SPACING, GRID_OFFSET_Y + GRID_SPACING, GRID_LENGTH, GRID_LENGTH, F_GRID_COLOR, RADIUS_FOR_CORNERS, F_BACKGROUND_COLOR);
@@ -407,4 +436,55 @@ void Graphics_EraseSingleBlock(int row, int col) {
     int y = GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
 
     MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR, RADIUS_FOR_CORNERS, F_GRID_COLOR);
+}
+
+void Graphics_SetTime(uint32_t total_seconds)
+{
+    // Convert total time to minutes:seconds (mm:ss)
+    int digit0, digit1, digit2, digit3;
+    
+    // The max possible seconds is 5999, which yields 99m:59s.
+    if (total_seconds >= 5999) {
+        digit0 = 9;
+        digit1 = 5;
+        digit2 = 9;
+        digit3 = 9;
+    } else {
+        digit0 = (total_seconds % 10);
+        digit1 = ((total_seconds - digit0) % 60) / 10;
+
+        digit2 = ((total_seconds - (digit1 * 10) - digit0) / 60) % 10;
+        digit3 = ((total_seconds - (digit1 * 10) - digit0) / 60) / 10;
+    }
+
+    // Update timer on display.
+    MXC_TFT_DrawFastRect(TIME_DIGIT0_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);    
+    MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit0), RGB565_BLACK, RGB565_WHITE);
+
+    // Don't waste time on re-writing the same digits.
+    // Changes every 10 seconds.
+    if (prev_digit1 != digit1) {
+        MXC_TFT_DrawFastRect(TIME_DIGIT1_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+        MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT1_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit1)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit1), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit1), RGB565_BLACK, RGB565_WHITE);
+        prev_digit1 = digit1;
+    }
+
+    // Changes every 60 seconds.
+    if (prev_digit2 != digit2) {
+        MXC_TFT_DrawFastRect(TIME_DIGIT2_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+        MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT2_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit2)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit2), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit2), RGB565_BLACK, RGB565_WHITE);
+        prev_digit2 = digit2;
+    }
+
+    // Changes every 600 seoncds.
+    if (prev_digit3 != digit3) {
+        MXC_TFT_DrawFastRect(TIME_DIGIT2_OFFSET_X(16), TIME_OFFSET_Y, 16, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
+        MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit3)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit3), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit3), RGB565_BLACK, RGB565_WHITE);
+        prev_digit3 = digit3;
+    }
+}
+
+void Graphics_UpdateMovesCount(uint32_t moves_count)
+{
+    
 }
