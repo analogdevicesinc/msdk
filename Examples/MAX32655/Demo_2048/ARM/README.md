@@ -21,7 +21,7 @@ This project only supports the MAX32655EVKIT as it has the 320x240 TFT Display.
 If using the MAX32655EVKIT (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Open an terminal application on the PC and connect to the EV kit's console UART at 2000000, 8-N-1.
 -   Close jumper JP2 (LED0 EN).
 -   Close jumper JP3 (LED1 EN).
 

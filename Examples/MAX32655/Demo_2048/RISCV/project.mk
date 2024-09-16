@@ -23,3 +23,7 @@ PROJ_CFLAGS += -DDEV_MODE_TRACE=1
 endif
 
 MAILBOX_SIZE = 226
+
+ifeq ($(BOARD),FTHR_Apps_P1)
+$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's not supported on the MAX32650FTHR)
+endif
