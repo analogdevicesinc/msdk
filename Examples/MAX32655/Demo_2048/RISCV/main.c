@@ -244,7 +244,6 @@ void SendGridToARMCore(void)
             SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
             SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
 
-            // PRINT("RISCV: r:%d c:%d i:%d := %d - %02x %02x %02x %02x\n", row, col, i, RISCV_GRID_COPY[row][col], SEMA_ARM_MAILBOX->payload[i], SEMA_ARM_MAILBOX->payload[i+1], SEMA_ARM_MAILBOX->payload[i+2], SEMA_ARM_MAILBOX->payload[i+3]);
             i+=4;
         }
     }
@@ -397,13 +396,12 @@ int main(void)
         // Check state of game.
         game_state_t game_state = Game_2048_CheckState();
 
-        // This function must be called before PRINT_GRID() and SendGridToARMCore()
+        // These functions must be called before PRINT_GRID() and SendGridToARMCore()
         //  functions to grab the latest grid state.
         Game_2048_GetGrid(RISCV_GRID_COPY);
+        Game_2048_GetGridState(RISCV_GRID_COPY_STATE);
 
         PRINT_GRID();
-
-        PRINT_GRID_STATE();
 
         SendGridToARMCore();
 
@@ -432,8 +430,6 @@ int main(void)
             PRINT("RISCV: Ending game.\n");
             while(1);
         }
-
-        PRINT("GAME STATE: %d\n", game_state);
 
         // Listen for next keypress.
         MXC_UART_ClearRXFIFO(MXC_UART0);

@@ -85,7 +85,8 @@
         "led.h": "c",
         "clear_sans_bold_game_text.h": "c",
         "cfs_logo.h": "c",
-        "clear_sans_bold_scaled_block_digits.h": "c"
+        "clear_sans_bold_scaled_block_digits.h": "c",
+        "type_traits": "c"
     }
 }
 

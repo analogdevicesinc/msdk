@@ -34,6 +34,16 @@
 
 /* **** Definitions **** */
 
+// Focus on top left corner of the top left block in the grid to help with visualize calculating the coordinates.
+#define BLOCK_X_POSITION(col)   (GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * (col)))
+#define BLOCK_Y_POSITION(row)   (GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * (row)))
+// Math is to center the digits printed to the newly created block.
+#define DIGIT_CENTER_X_POSITION(x, value)   (x + (BLOCK_LENGTH / 2) - (BLOCK_DIGIT_PX_WIDTH(value) / 2))
+#define DIGIT_CENTER_Y_POSITION(y, value)   (y + (BLOCK_LENGTH / 2) - (BLOCK_DIGIT_PX_HEIGHT(value) / 2))
+
+// Test out delays so that it's not too slow and not too fast for human eye.
+#define COMBINE_BLOCKS_ANIMATE_MAX_DELAY_MS        (15)
+
 /* **** Globals **** */
 
 static int prev_timer_digit1 = 0;
@@ -107,20 +117,21 @@ int Graphics_Init(void)
 void Graphics_AddNewBlock(int row, int col, int block_2_4)
 {
     // 6 is chosen based on animation/display refresh rate speed to the naked eye.
-    for (int i = 0; i < 6; i++) {
+    for (int frame_i = 0; frame_i < 6; frame_i++) {
         // Forgive the unreadability.
         //  The math calculates where each block needs to be drawn as its animated to grow from small to big.
 
         // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
-        int x = ((BLOCK_LENGTH / 2) - (i * 5)) + GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * col);
-        int y = ((BLOCK_LENGTH / 2) - (i * 5)) + GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
+        int x = ((BLOCK_LENGTH / 2) - (frame_i * 5)) + GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * col);
+        int y = ((BLOCK_LENGTH / 2) - (frame_i * 5)) + GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
 
-        MXC_TFT_DrawRoundedRect(x, y, ((i * 10) > BLOCK_LENGTH) ? BLOCK_LENGTH : ((i * 10) + 1), ((i * 10) > BLOCK_LENGTH) ? BLOCK_LENGTH : ((i * 10) + 1), FORMAT_RGB565_TO_PACKET(RGB_BLOCK_COLOR(block_2_4)), RADIUS_FOR_CORNERS, ((i * 10) > BLOCK_LENGTH) ? F_EMPTY_BLOCK_COLOR : F_GRID_COLOR);
+        // Increase the block size by 10 pixels
+        MXC_TFT_DrawRoundedRect(x, y, ((frame_i * 10) > BLOCK_LENGTH) ? BLOCK_LENGTH : ((frame_i * 10) + 1), ((frame_i * 10) > BLOCK_LENGTH) ? BLOCK_LENGTH : ((frame_i * 10) + 1), FORMAT_RGB565_TO_PACKET(RGB_BLOCK_COLOR(block_2_4)), RADIUS_FOR_CORNERS, ((frame_i * 10) > BLOCK_LENGTH) ? F_EMPTY_BLOCK_COLOR : F_GRID_COLOR);
         
         // Don't delay when empty space is fully filled.
-        if (i < 5) {
+        if (frame_i < 5) {
             // Minimum speed visual for human eye while also being fast and not laggy.
-            MXC_Delay(MXC_DELAY_MSEC(15));
+            MXC_Delay(MXC_DELAY_MSEC(20));
         }
     }
 
@@ -142,10 +153,8 @@ void Graphics_AddNewBlock(int row, int col, int block_2_4)
 // Mainly used for sliding blocks to a new location.
 inline void Graphics_AddBlock(int row, int col, int value)
 {
-    // Forgive me for all the math who ever tries to read through the code.
-    // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
-    int x = GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * col);
-    int y = GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
+    int x = BLOCK_X_POSITION(col);
+    int y = BLOCK_Y_POSITION(row);
 
     // Math is to center the digits printed to the newly created block.
     int dx = x + (BLOCK_LENGTH / 2) - (BLOCK_DIGIT_PX_WIDTH(value) / 2);
@@ -256,16 +265,12 @@ inline void Graphics_AddBlock(int row, int col, int value)
     }
 }
 
-void Graphics_CombineBlocks(int row, int col, int new_value)
+void Graphics_CombineSingleBlock(int row, int col, int new_value)
 {
-    // Forgive me for all the math who ever tries to read through the code.
-    // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
-    int x = GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * col);
-    int y = GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
+    int x = BLOCK_X_POSITION(col);
+    int y = BLOCK_Y_POSITION(row);
 
     MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(new_value), RADIUS_FOR_CORNERS, F_GRID_COLOR);
-
-    MXC_Delay(MXC_DELAY_MSEC(2));
 
     // Animate the blow up.
     // 4 is the amount of pixels between each block. That's the extent that the block will temporarily expand.   
@@ -297,40 +302,243 @@ void Graphics_CombineBlocks(int row, int col, int new_value)
     Graphics_AddBlock(row, col, new_value);
 }
 
-void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_direction_t direction)
+// TODO(SW): Definitely could be optimized and more readable. Not enough time and wrote this late at night.
+//  Helper function for "_CombineBlocks function which draws the outer borders of the block with width matching the 'radius'
+//  @param  x               X coordinate of the block.
+//  @param  y               Y coordinate of the block.
+//  @param  frame_i         Current frame of the animation.
+//  @param  current_length  Length of block at current frame.
+//  @param  f_color         Formatted color code of outer border.
+//  @param  radius          Radius ofrounded cornewrs and width of block. 
+static void graphics_helper_CombineBlocks(uint32_t x, uint32_t y, int frame_i, uint32_t current_length, uint32_t f_color, uint32_t radius)
 {
-    // Forgive me for all the math who ever tries to read through the code.
-    // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
-    int x = GRID_OFFSET_X + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * col);
-    int y = GRID_OFFSET_Y + GRID_SPACING + BLOCK_SPACING + ((BLOCK_LENGTH + BLOCK_SPACING) * row);
+    // Draw top horizontal lines.
+    for (int p_y = 0; p_y < radius; p_y++) {
+        // Find the starting x position using pythagorean theorem.
+        int dx = 0;
+        int dy = radius - p_y;
 
+        while ((dx * dx) < ((radius * radius) - (dy * dy))) {
+            dx++;
+        }
+
+        // No negative horizontal distance.
+        if (dx > 0) {
+            dx--;
+        }
+
+        MXC_TFT_DrawHorizontalLine(x - frame_i + radius - dx, y - frame_i + p_y, current_length - (2 * (radius - dx)), f_color);
+    }
+
+    // Draw bottom horizontal lines.
+    for (int p_y = (current_length - radius); p_y < current_length; p_y++) {
+        // Find the starting x position using pythagorean theorem.
+        int dx = 0;
+        int dy = p_y - (current_length - radius - 1);
+
+        while ((dx * dx) < ((radius * radius) - (dy * dy))) {
+            dx++;
+        }
+
+        // No negative horizontal distance.
+        if (dx > 0) {
+            dx--;
+        }
+
+        MXC_TFT_DrawHorizontalLine(x - frame_i + radius - dx, y - frame_i + p_y, current_length - (2 * (radius - dx)), f_color);
+    }
+
+    // Draw left vertical lines.
+    for (int p_x = 0; p_x < radius; p_x++) {
+        // Find the starting x position using pythagorean theorem.
+        int dx = radius - p_x;
+        int dy = 0;
+
+        while ((dy * dy) < ((radius * radius) - (dx * dx))) {
+            dy++;
+        }
+
+        // No negative horizontal distance.
+        if (dy > 0) {
+            dy--;
+        }
+
+        MXC_TFT_DrawVerticalLine(x - frame_i + p_x, y - frame_i + radius - dy, current_length - (2 * (radius - dy)), f_color);
+    }
+
+    // Draw right vertical lines.
+    for (int p_x = (current_length - radius); p_x < current_length; p_x++) {
+        // Find the starting x position using pythagorean theorem.
+        int dx = p_x - (current_length - radius - 1);
+        int dy = 0;
+
+        while ((dy * dy) < ((radius * radius) - (dx * dx))) {
+            dy++;
+        }
+
+        // No negative horizontal distance.
+        if (dy > 0) {
+            dy--;
+        }
+
+        MXC_TFT_DrawVerticalLine(x - frame_i + p_x, y - frame_i + radius - dy, current_length - (2 * (radius - dy)), f_color);
+    }
+}
+
+//  Helper function for "_CombineBlocks function which removes the corners of the blocks outside of 'radius' boundary.
+//  @param  x               X coordinate of the block.
+//  @param  y               Y coordinate of the block.
+//  @param  frame_i         Current frame of the animation.
+//  @param  current_length  Length of block at current frame.
+//  @param  f_color         Formatted color code of outer border.
+//  @param  radius          Radius ofrounded cornewrs and width of block. 
+static void graphics_helper_eraseCorners(uint32_t x, uint32_t y, int frame_i, uint32_t current_length, uint32_t f_color, uint32_t radius)
+{
+    for (int p_y = 0; p_y < BLOCK_LENGTH; p_y++) {
+        for (int p_x = 0; p_x < BLOCK_LENGTH; p_x++) {
+            // Calculate distance from the corner.
+            int dx = (p_x < radius) ? radius - p_x : (p_x >= current_length - radius) ? p_x - (current_length - radius - 1) : 0;
+            int dy = (p_y < radius) ? radius - p_y : (p_y >= current_length - radius) ? p_y - (current_length - radius - 1) : 0;
+
+            // Use pythagorean theorem to map coordinates, square not necessary when comparing with r.
+            if (((dx * dx) + (dy * dy)) > (radius * radius)) {
+                MXC_TFT_WritePixel(x + p_x, y + p_y, 1, 1, f_color);
+            }
+
+            // Skip x points that aren't within corners.
+            if (p_x >= radius && p_x < (current_length - radius)) {
+                p_x = current_length - radius - 1;
+            }
+        }
+
+        // Skip x points that aren't within corners.
+        if (p_y >= radius && p_y < (current_length - radius)) {
+            p_y = current_length - radius - 1;
+        }
+    }
+}
+
+void Graphics_CombineBlocks(uint32_t grid[4][4], block_state_t grid_state[4][4])
+{
+    // Animate the blow up.
+    // 4 is the amount of pixels between each block. That's the extent that the block will temporarily expand.
+    for (int frame_i = 0; frame_i < BLOCK_SPACING + 1; frame_i++) {
+        int combine_count = 0;
+
+        // Go through each block that is going to be combined and draw a single blow up frame.
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                if (grid_state[row][col] == COMBINE) {
+                    // Only draw out edges when expanding to save time.
+                    combine_count++;
+
+                    uint32_t x = BLOCK_X_POSITION(col);
+                    uint32_t y = BLOCK_Y_POSITION(row);
+
+                    if (frame_i == 0) {
+                        // Draw entire block for first frame.
+                        MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMATTED_RGB_BLOCK_COLOR(grid[row][col]), RADIUS_FOR_CORNERS, F_GRID_COLOR);
+                    } else {
+                        graphics_helper_CombineBlocks(x, y, frame_i, BLOCK_LENGTH + (2 * frame_i), FORMATTED_RGB_BLOCK_COLOR(grid[row][col]), RADIUS_FOR_CORNERS);
+                    } 
+                }
+            }
+        }
+
+        // If no blocks combined, don't waste computation time and exit.
+        if (combine_count == 0) {
+            return;
+        }
+
+        MXC_Delay(MXC_DELAY_MSEC(COMBINE_BLOCKS_ANIMATE_MAX_DELAY_MS));
+    }
+
+    // Animate the shrink down.
+    for (int frame_i = BLOCK_SPACING - 1; frame_i >= 0; frame_i--) {
+        int combine_count = 0;
+
+        // Go through each block that is going to be combined and shrink the block
+        //  one pixel at a time.
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                if (grid_state[row][col] == COMBINE) {
+                    combine_count++;
+
+                    uint32_t x = BLOCK_X_POSITION(col);
+                    uint32_t y = BLOCK_Y_POSITION(row);
+
+                    // Erase outer edges.
+                    MXC_TFT_DrawHorizontalLine(x - (frame_i + 1), y - (frame_i + 1), BLOCK_LENGTH + (2 * (frame_i + 1)), F_GRID_COLOR);
+                    MXC_TFT_DrawVerticalLine(x - (frame_i + 1), y - (frame_i + 1), BLOCK_LENGTH + (2 * (frame_i + 1)), F_GRID_COLOR);
+
+                    MXC_TFT_DrawHorizontalLine(x - (frame_i + 1), y + BLOCK_LENGTH + (2 * (frame_i + 1)) - (frame_i + 1) - 1, BLOCK_LENGTH + (2 * (frame_i + 1)), F_GRID_COLOR);
+                    MXC_TFT_DrawVerticalLine(x + BLOCK_LENGTH + (2 * (frame_i + 1)) - (frame_i + 1) - 1, y - (frame_i + 1), BLOCK_LENGTH + (2 * (frame_i + 1)), F_GRID_COLOR);
+
+                    // Erase corners.
+                    graphics_helper_eraseCorners(x - frame_i, y - frame_i, frame_i, BLOCK_LENGTH + (2 * (frame_i)), F_GRID_COLOR, RADIUS_FOR_CORNERS);
+
+                    // Draw digit in last frame.
+                    if ((frame_i) == 0) {
+                        // graphics_helper_CombineBlocks(x, y, 0, BLOCK_LENGTH, FORMATTED_RGB_BLOCK_COLOR(grid[row][col]), RADIUS_FOR_CORNERS);
+
+                        // Blocks 2 and 4 are the only ones with inverted digit colors because of their block color.
+                        //  However, Block 2 will nevber be a combined block.
+                        if (grid[row][col] == 4) {
+                            MXC_TFT_DrawBitmapInvertedMask(DIGIT_CENTER_X_POSITION(x, grid[row][col]), DIGIT_CENTER_Y_POSITION(y, grid[row][col]), BLOCK_DIGIT_PX_WIDTH(grid[row][col]), BLOCK_DIGIT_PX_HEIGHT(grid[row][col]), BLOCK_DIGIT_PTR(grid[row][col]), RGB565_BLACK, RGB_BLOCK_COLOR(grid[row][col]));
+                        } else {
+                            MXC_TFT_DrawBitmapMask(DIGIT_CENTER_X_POSITION(x, grid[row][col]), DIGIT_CENTER_Y_POSITION(y, grid[row][col]), BLOCK_DIGIT_PX_WIDTH(grid[row][col]), BLOCK_DIGIT_PX_HEIGHT(grid[row][col]), BLOCK_DIGIT_PTR(grid[row][col]), RGB565_BLACK, RGB_BLOCK_COLOR(grid[row][col]));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add delay so the shrink down is visual to human eye,
+        //  except for the last frame.
+        if (frame_i != 0) {
+            MXC_Delay(MXC_DELAY_MSEC(COMBINE_BLOCKS_ANIMATE_MAX_DELAY_MS));
+        }
+    }
+}
+
+void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_direction_t direction)
+{
     switch (direction) {
         case GRAPHICS_SLIDE_DIR_UP:
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    // Remove each column (x) of block left to right, pixel by pixel.
-                    for (int p_y = (BLOCK_LENGTH - 1); p_y >= 0; p_y--) {
-                        // Account for rounded corners.
-                        if ((p_y < RADIUS_FOR_CORNERS) || (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
-                            // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
+            // Start from bottom row to top row (column order doesn't matter).
+            // This for-loop keeps track of the localized y position of where the horizontal line is drawn.
+            //  A horizontal line of 1-pixel wide, and of color of empty block, is drawn to represent
+            //  the block being erased, and this is done through the entire block.
+            for (int p_y = (BLOCK_LENGTH - 1); p_y >= 0; p_y--) {
+                // These two for-loops iterate through each block in the
+                //  grid (bottom row to top row, columns direction - don't care) and
+                //  erases a horizontal line (1-pixel wide)
+                for (int row = 3; row >= 0; row--) {
+                    for (int col = 0; col < 4; col++) {
+                        if (grid_state[row][col] == ERASE) {
+                            int x = BLOCK_X_POSITION(col);
+                            int y = BLOCK_Y_POSITION(row);
 
-                            // With y and the radius, get the integral to calculate the y position.
-                            int dy = (p_y < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_y : (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_y - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
-                            int dx = 0;
+                            // Account for rounded corners.
+                            if ((p_y < RADIUS_FOR_CORNERS) || (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
+                                // Find the starting x position using pythagorean theorem.
+                                int dx = 0;
+                                int dy = (p_y < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_y : (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_y - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
 
-                            while ((dx * dx) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dy * dy))) {
-                                dx++;
+                                while ((dx * dx) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dy * dy))) {
+                                    dx++;
+                                }
+
+                                // No negative horizontal distance.
+                                if (dx > 0) {
+                                    dx--;
+                                }
+
+                                MXC_TFT_DrawHorizontalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
+                            
+                            } else {
+                                MXC_TFT_DrawHorizontalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
-
-                            // No negative vertical distance.
-                            if (dx > 0) {
-                                dx--;
-                            }
-
-                            MXC_TFT_DrawVerticalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
-                        
-                        } else {
-                            MXC_TFT_DrawVerticalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                         }
                     }
                 }
@@ -338,31 +546,40 @@ void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_directio
             break;
         
         case GRAPHICS_SLIDE_DIR_DOWN:
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    // Remove each column (x) of block left to right, pixel by pixel.
-                    for (int p_y = 0; p_y < BLOCK_LENGTH; p_y++) {
-                        // Account for rounded corners.
-                        if ((p_y < RADIUS_FOR_CORNERS) || (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
-                            // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
+            // Start from top row to bottom row (column order doesn't matter).
+            // This for-loop keeps track of the localized y position of where the horizontal line is drawn.
+            //  A horizontal line of 1-pixel wide, and of color of empty block, is drawn to represent
+            //  the block being erased, and this is done through the entire block.
+            for (int p_y = 0; p_y < BLOCK_LENGTH; p_y++) {
+                // These two for-loops iterate through each block in the
+                //  grid (top row to bottom row, columns direction - don't care) and
+                //  erases a horizontal line (1-pixel wide)
+                for (int row = 0; row < 4; row++) {
+                    for (int col = 0; col < 4; col++) {
+                        if (grid_state[row][col] == ERASE) {
+                            int x = BLOCK_X_POSITION(col);
+                            int y = BLOCK_Y_POSITION(row);
 
-                            // With y and the radius, get the integral to calculate the y position.
-                            int dy = (p_y < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_y : (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_y - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
-                            int dx = 0;
+                            // Account for rounded corners.
+                            if ((p_y < RADIUS_FOR_CORNERS) || (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
+                                // Find the starting x position using pythagorean theorem.
+                                int dx = 0;
+                                int dy = (p_y < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_y : (p_y >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_y - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
 
-                            while ((dx * dx) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dy * dy))) {
-                                dx++;
+                                while ((dx * dx) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dy * dy))) {
+                                    dx++;
+                                }
+
+                                // No negative horizontal distance.
+                                if (dx > 0) {
+                                    dx--;
+                                }
+
+                                MXC_TFT_DrawHorizontalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
+                            
+                            } else {
+                                MXC_TFT_DrawHorizontalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
-
-                            // No negative vertical distance.
-                            if (dx > 0) {
-                                dx--;
-                            }
-
-                            MXC_TFT_DrawVerticalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
-                        
-                        } else {
-                            MXC_TFT_DrawVerticalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                         }
                     }
                 }
@@ -370,31 +587,40 @@ void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_directio
             break;
         
         case GRAPHICS_SLIDE_DIR_LEFT:
-            for (int c = 0; c < 4; c++) {
-                for (int r = 0; r < 4; r++) {
-                    // Remove each column (x) of block left to right, pixel by pixel.
-                    for (int p_x = (BLOCK_LENGTH - 1); p_x >= 0; p_x--) {
-                        // Account for rounded corners.
-                        if ((p_x < RADIUS_FOR_CORNERS) || (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
-                            // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
+            // Start from right column to left column (row order doesn't matter).
+            // This for-loop keeps track of the localized x position of where the vertical line is drawn.
+            //  A vertical line of 1-pixel wide, and of color of empty block, is drawn to represent
+            //  the block being erased, and this is done through the entire block.
+            for (int p_x = (BLOCK_LENGTH - 1); p_x >= 0; p_x--) {
+                // These two for-loops iterate through each block in the
+                //  grid (right column to left column, rows direction - don't care) and
+                //  erases a vertical line (1-pixel wide)
+                for (int col = 3; col >= 0; col--) {
+                    for (int row = 0; row < 4; row++) {
+                        if (grid_state[row][col] == ERASE) {
+                            int x = BLOCK_X_POSITION(col);
+                            int y = BLOCK_Y_POSITION(row);
 
-                            // With x and the radius, get the integral to calculate the y position.
-                            int dx = (p_x < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_x : (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_x - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
-                            int dy = 0;
+                            // Account for rounded corners.
+                            if ((p_x < RADIUS_FOR_CORNERS) || (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
+                                // Find the starting y position using pythagorean theorem.
+                                int dx = (p_x < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_x : (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_x - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
+                                int dy = 0;
 
-                            while ((dy * dy) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dx * dx))) {
-                                dy++;
+                                while ((dy * dy) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dx * dx))) {
+                                    dy++;
+                                }
+
+                                // No negative vertical distance.
+                                if (dy > 0) {
+                                    dy--;
+                                }
+
+                                MXC_TFT_DrawVerticalLine(x + p_x, y + RADIUS_FOR_CORNERS - dy, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dy)), F_EMPTY_BLOCK_COLOR);
+                            
+                            } else {
+                                MXC_TFT_DrawVerticalLine(x + p_x, y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
-
-                            // No negative vertical distance.
-                            if (dy > 0) {
-                                dy--;
-                            }
-
-                            MXC_TFT_DrawVerticalLine(x + p_x, y + RADIUS_FOR_CORNERS - dy, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dy)), F_EMPTY_BLOCK_COLOR);
-                        
-                        } else {
-                            MXC_TFT_DrawVerticalLine(x + p_x, y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                         }
                     }
                 }
@@ -402,33 +628,45 @@ void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_directio
             break;
         
         case GRAPHICS_SLIDE_DIR_RIGHT:
-            for (int c = 0; c < 4; c++) {
-                for (int r = 0; r < 4; r++) {
-                    // Remove each column (x) of block left to right, pixel by pixel.
-                    for (int p_x = 0; p_x < BLOCK_LENGTH; p_x++) {
-                        // Account for rounded corners.
-                        if ((p_x < RADIUS_FOR_CORNERS) || (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
-                            // Find the starting y position using pythagorean theorem and knowing the max y distance is the radius of the rounded corner.
-                            int dx = (p_x < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_x : (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_x - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
-                            int dy = 0;
+            // Start from left column to right column (row order doesn't matter).
+            // This for-loop keeps track of the localized x position of where the vertical line is drawn.
+            //  A vertical line of 1-pixel wide, and of color of empty block, is drawn to represent
+            //  the block being erased, and this is done through the entire block.
+            for (int p_x = 0; p_x < BLOCK_LENGTH; p_x++) {
+                // These two for-loops iterate through each block in the
+                //  grid (right column to left column, rows direction - don't care) and
+                //  erases a vertical line (1-pixel wide)
+                for (int col = 0; col < 4; col++) {
+                    for (int row = 0; row < 4; row++) {
+                        if (grid_state[row][col] == ERASE) {
+                            int x = BLOCK_X_POSITION(col);
+                            int y = BLOCK_Y_POSITION(row);
 
-                            while ((dy * dy) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dx * dx))) {
-                                dy++;
+                            // Account for rounded corners.
+                            if ((p_x < RADIUS_FOR_CORNERS) || (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS))) {
+                                // Find the starting y position using pythagorean theorem.
+                                int dx = (p_x < RADIUS_FOR_CORNERS) ? RADIUS_FOR_CORNERS - p_x : (p_x >= (BLOCK_LENGTH - RADIUS_FOR_CORNERS)) ? p_x - (BLOCK_LENGTH - RADIUS_FOR_CORNERS - 1) : 0;
+                                int dy = 0;
+
+                                while ((dy * dy) < ((RADIUS_FOR_CORNERS * RADIUS_FOR_CORNERS) - (dx * dx))) {
+                                    dy++;
+                                }
+
+                                // No negative vertical distance.
+                                if (dy > 0) {
+                                    dy--;
+                                }
+
+                                MXC_TFT_DrawVerticalLine(x + p_x, y + RADIUS_FOR_CORNERS - dy, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dy)), F_EMPTY_BLOCK_COLOR);
+                            
+                            } else {
+                                MXC_TFT_DrawVerticalLine(x + p_x, y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
-
-                            // No negative vertical distance.
-                            if (dy > 0) {
-                                dy--;
-                            }
-
-                            MXC_TFT_DrawVerticalLine(x + p_x, y + RADIUS_FOR_CORNERS - dy, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dy)), F_EMPTY_BLOCK_COLOR);
-                        
-                        } else {
-                            MXC_TFT_DrawVerticalLine(x + p_x, y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                         }
                     }
                 }
             }
+
             break;
         
         default:

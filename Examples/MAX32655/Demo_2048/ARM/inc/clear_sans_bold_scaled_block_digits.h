@@ -343,3 +343,16 @@ __flash uint16_t block_2048[] = {
                                             : (block) == 1024 ? BLOCK_1024_DIGIT_PX_HEIGHT \
                                             : (block) == 2048 ? BLOCK_2048_DIGIT_PX_HEIGHT \
                                             : BLOCK_2_DIGIT_PX_HEIGHT)
+
+#define BLOCK_DIGIT_PTR(block)          ((block) == 2 ? block_2 \
+                                            : (block) == 4 ? block_4 \
+                                            : (block) == 8 ? block_8 \
+                                            : (block) == 16 ? block_16 \
+                                            : (block) == 32 ? block_32 \
+                                            : (block) == 64 ? block_64 \
+                                            : (block) == 128 ? block_128 \
+                                            : (block) == 256 ? block_256 \
+                                            : (block) == 512 ? block_512 \
+                                            : (block) == 1024 ? block_1024 \
+                                            : (block) == 2048 ? block_2048 \
+                                            : NULL)

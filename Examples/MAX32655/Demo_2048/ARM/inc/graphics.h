@@ -127,6 +127,30 @@
 
 #define FORMATTED_RGB_BLOCK_COLOR(block)    FORMAT_RGB565_TO_PACKET(RGB_BLOCK_COLOR(block))
 
+/**
+ *  These enums help keep track of what blocks were erased,
+ *      combined, or didn't move to help optimize and select
+ *      the animation of for the display.
+ *  IMPORTANT: Sync these commands with the RISCV core.
+ */
+typedef enum {
+    EMPTY = 0,
+    ERASE = 1,
+    COMBINE = 2,
+    UNMOVED = 3
+} block_state_t;
+
+/**
+ *  These enums help keep track of the game state.
+ *  IMPORTANT: Sync these commands with the RISCV core.
+ */
+typedef enum {
+    IN_PROGRESS = 0,
+    GAME_OVER = 1,
+    WINNER = 2,
+} game_state_t;
+
+/* **** Function Prototypes **** */
 
 /**
  *  This enum is used to keep track of which direction the blocks will slide to
@@ -171,16 +195,36 @@ void Graphics_AddNewBlock(int row, int col, int block_2_4);
 void Graphics_AddBlock(int row, int col, int value);
 
 /**
- * @brief   Draws the new combined block (including blow-up animation). This
- *          function is used when a same-value pair is combined.
+ * @brief   Draws a new combined block (including blow-up/shrink-down animation).
  *
  * @param   row         Row number (indexed 0).
  * @param   col         Column number (indexed 0).
  * @param   new_value   Value of combined block to draw on grid.
  */
-void Graphics_CombineBlocks(int row, int col, int new_value);
+void Graphics_CombineSingleBlock(int row, int col, int new_value);
 
-void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_direction_t direction);
+/**
+ * @brief   Draws all blocks that were combined. This function not only draws the combined blocks,
+ *          but also draws the blow-up/shrink-down animation. This function should be called
+ *          after all the blocks that moved to their final locations (Graphics_AddBlock())
+ *          have been drawn to display.
+ *
+ * @param   grid        Pointer to main 2048 grid (2-D array) which holds the current positions
+ *                      of all valid blocks.
+ * @param   grid_state  Pointer to grid state (2-D array) which holds the state of the blocks that
+ *                      needs to combined.
+ */
+void Graphics_CombineBlocks(uint32_t grid[4][4], block_state_t grid_state[4][4]);
+
+/**
+ * @brief   Erases all moving blocks from the grid. This function is used before
+ *          drawing the blocks that moved to their final location.
+ *
+ * @param   grid_state  Pointer to grid (2-D array) which holds the state of the blocks that
+ *                      needs to be erased because they're moving.
+ * @param   direction   Direction that the blocks are moving to.
+ */
+void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_direction_t direction);
 
 /**
  * @brief   Erases the the block from the grid. This function is mainly used

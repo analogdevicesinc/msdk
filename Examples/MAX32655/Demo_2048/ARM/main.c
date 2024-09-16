@@ -82,29 +82,6 @@ typedef struct {
 #define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
 #define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
 
-/**
- *  These enums help keep track of what blocks were erased,
- *      combined, or didn't move to help optimize and select
- *      the animation of for the display.
- *  IMPORTANT: Sync these commands with the RISCV core.
- */
-typedef enum {
-    EMPTY = 0,
-    ERASE = 1,
-    COMBINE = 2,
-    UNMOVED = 3
-} block_state_t;
-
-/**
- *  These enums help keep track of the game state.
- *  IMPORTANT: Sync these commands with the RISCV core.
- */
-typedef enum {
-    IN_PROGRESS = 0,
-    GAME_OVER = 1,
-    WINNER = 2,
-} game_state_t;
-
 /* **** Globals **** */
 // Defined in sema_reva.c
 extern mxcSemaBox_t *mxcSemaBox0; // ARM writes, RISCV reads
@@ -335,14 +312,8 @@ int main(void)
 
             direction = ReceiveDirectionFromRISCVCore();
 
-            // Erase blocks that are moving.
-            for (int row = 0; row < 4; row++) {
-                for (int col = 0; col < 4; col++) {
-                    if (ARM_GRID_COPY_STATE[row][col] == 1) {
-                        Graphics_EraseSingleBlock(row, col);
-                    }
-                }
-            }
+            // Erase blocks that are moving before drawing theem at their final location.
+            Graphics_EraseBlocks(ARM_GRID_COPY_STATE, direction);
 
             // Pre-set these values as invalid locations.
             new_block_row = 0xFFFF, new_block_col = 0xFFFF;
@@ -352,7 +323,6 @@ int main(void)
 
             // Increment moves counter if blocks moved.
             MOVES_COUNT = ReceiveMovesCountFromRISCVCore();
-            PRINT("Moves: %d\n", MOVES_COUNT);
             if (prev_moves_count != MOVES_COUNT) {
                 Graphics_UpdateMovesCount(MOVES_COUNT);
                 prev_moves_count = MOVES_COUNT;
@@ -361,9 +331,7 @@ int main(void)
             // Add new blocks.
             for (int row = 0; row < 4; row++) {
                 for (int col = 0; col < 4; col++) {
-                    if (ARM_GRID_COPY_STATE[row][col] == COMBINE) {
-                        Graphics_CombineBlocks(row, col, ARM_GRID_COPY[row][col]);
-                    } else if (ARM_GRID_COPY[row][col] != 0 && ARM_GRID_COPY_STATE[row][col] != UNMOVED) {
+                    if ((ARM_GRID_COPY[row][col]) != 0 && (ARM_GRID_COPY_STATE[row][col] != UNMOVED) && (ARM_GRID_COPY_STATE[row][col] != COMBINE)) {
                         // Don't draw newly spawned block.
                         //  new_block_row and new_block_col will be set to 0xFFFF for invalid
                         //  location if new block was not added.
@@ -373,6 +341,9 @@ int main(void)
                     }
                 }
             }
+
+            // Add combined blocks.
+            Graphics_CombineBlocks(ARM_GRID_COPY, ARM_GRID_COPY_STATE);
             
             // Add new block with spawn animation.
             if (new_block_added == true) {
