@@ -74,19 +74,6 @@
     ],
     "C_Cpp.default.forcedInclude": [
         "${workspaceFolder}/build/project_defines.h"
-    ],
-    "files.associations": {
-        "mxc_device.h": "c",
-        "game_logic_2048.h": "c",
-        "mxc_delay.h": "c",
-        "ext_flash.h": "c",
-        "tft_ssd2119.h": "c",
-        "graphics.h": "c",
-        "led.h": "c",
-        "clear_sans_bold_game_text.h": "c",
-        "cfs_logo.h": "c",
-        "clear_sans_bold_scaled_block_digits.h": "c",
-        "type_traits": "c"
-    }
+    ]
 }
 

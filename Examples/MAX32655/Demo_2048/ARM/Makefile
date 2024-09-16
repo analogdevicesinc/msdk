@@ -100,7 +100,7 @@ $(info Loaded project.mk)
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH := ../../../
+DEPTH := ../../../../
 MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
@@ -370,7 +370,7 @@ endif
 
 all:
 # 	Extend the functionality of the "all" recipe here
-	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+	$(PREFIX)-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
