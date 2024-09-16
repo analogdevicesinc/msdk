@@ -50,7 +50,7 @@
 
 // Match the Console's baud rate to what the controller will be set to
 //  for the RISC-V as they share the same port.
-#define RISCV_CONTROLLER_BAUD (2000000)
+#define RISCV_CONTROLLER_BAUD (115200)
 
 /// Semaphores
 // Should never reach here
@@ -74,7 +74,7 @@ typedef struct {
 #endif
 } mxcSemaBox_t;
 
-#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexs are from 0 to (16 blocks * 4 bytes) - 1.
+#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexes are from 0 to (16 blocks * 4 bytes) - 1.
 #define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
 #define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
 #define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)

@@ -39,6 +39,7 @@
 // Application Libraries
 #include "controller.h"
 #include "game_2048.h"
+#include "ipc_defines.h"
 
 /***** Definitions *****/
 
@@ -50,41 +51,12 @@
 #endif
 
 /// Controller Settings.
-// Set to its fastest supported speed (3Mbps when tested).
+// Change UART speeds here, if needed. 115200 was more than enough, but users
+//  have the option to increase the speed here.
 // UART speed up is set at the beginning of BOTH ARM and RISC-V main code
 //  because SystemInit for both cores default the UART baud rate to
-//  115200. 
-#define CONTROLLER_UART_BAUD    (2000000)
-
-/// Semaphores
-// Should never reach here
-#if (MAILBOX_SIZE == 0)
-#error "Mailbox size is 0."
-#endif
-
-// Keep track for Semaphore peripheral.
-#define SEMA_IDX_ARM (0)
-#define SEMA_IDX_RISCV (1)
-
-#define MAILBOX_OVERHEAD (2 * sizeof(uint16_t))
-#define MAILBOX_PAYLOAD_LEN (MAILBOX_SIZE - MAILBOX_OVERHEAD)
-typedef struct {
-    uint16_t readLocation;
-    uint16_t writeLocation;
-#if (MAILBOX_SIZE == 0)
-    uint8_t payload[1];
-#else
-    uint8_t payload[MAILBOX_PAYLOAD_LEN];
-#endif
-} mxcSemaBox_t;
-
-#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexs are from 0 to (16 blocks * 4 bytes) - 1.
-#define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
-#define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
-#define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
-#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
-#define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
-#define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
+//  115200.
+#define CONTROLLER_UART_BAUD    (115200)
 
 /* **** Globals **** */
 // Defined in sema_reva.c
