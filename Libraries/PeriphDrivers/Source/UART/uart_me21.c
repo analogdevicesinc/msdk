@@ -69,8 +69,8 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
+#ifndef MSDK_NO_GPIO_CLK_INIT
     sys_map_t current_pin_mapping = MXC_UART_GetPinMapping(uart);
 
     retval = MXC_UART_Shutdown(uart);

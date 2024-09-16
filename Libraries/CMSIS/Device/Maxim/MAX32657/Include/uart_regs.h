@@ -162,12 +162,8 @@ typedef struct {
 #define MXC_F_UART_CTRL_CLK_SEL                        ((uint32_t)(0x3UL << MXC_F_UART_CTRL_CLK_SEL_POS)) /**< CTRL_CLK_SEL Mask */
 #define MXC_V_UART_CTRL_CLK_SEL_PERIPHERAL_CLOCK       ((uint32_t)0x0UL) /**< CTRL_CLK_SEL_PERIPHERAL_CLOCK Value */
 #define MXC_S_UART_CTRL_CLK_SEL_PERIPHERAL_CLOCK       (MXC_V_UART_CTRL_CLK_SEL_PERIPHERAL_CLOCK << MXC_F_UART_CTRL_CLK_SEL_POS) /**< CTRL_CLK_SEL_PERIPHERAL_CLOCK Setting */
-#define MXC_V_UART_CTRL_CLK_SEL_EXTERNAL_CLOCK         ((uint32_t)0x1UL) /**< CTRL_CLK_SEL_EXTERNAL_CLOCK Value */
-#define MXC_S_UART_CTRL_CLK_SEL_EXTERNAL_CLOCK         (MXC_V_UART_CTRL_CLK_SEL_EXTERNAL_CLOCK << MXC_F_UART_CTRL_CLK_SEL_POS) /**< CTRL_CLK_SEL_EXTERNAL_CLOCK Setting */
-#define MXC_V_UART_CTRL_CLK_SEL_CLK2                   ((uint32_t)0x2UL) /**< CTRL_CLK_SEL_CLK2 Value */
-#define MXC_S_UART_CTRL_CLK_SEL_CLK2                   (MXC_V_UART_CTRL_CLK_SEL_CLK2 << MXC_F_UART_CTRL_CLK_SEL_POS) /**< CTRL_CLK_SEL_CLK2 Setting */
-#define MXC_V_UART_CTRL_CLK_SEL_CLK3                   ((uint32_t)0x3UL) /**< CTRL_CLK_SEL_CLK3 Value */
-#define MXC_S_UART_CTRL_CLK_SEL_CLK3                   (MXC_V_UART_CTRL_CLK_SEL_CLK3 << MXC_F_UART_CTRL_CLK_SEL_POS) /**< CTRL_CLK_SEL_CLK3 Setting */
+#define MXC_V_UART_CTRL_CLK_SEL_CLK1                   ((uint32_t)0x1UL) /**< CTRL_CLK_SEL_CLK1 Value */
+#define MXC_S_UART_CTRL_CLK_SEL_CLK1                   (MXC_V_UART_CTRL_CLK_SEL_CLK1 << MXC_F_UART_CTRL_CLK_SEL_POS) /**< CTRL_CLK_SEL_CLK1 Setting */
 
 #define MXC_F_UART_CTRL_CLK_RDY_POS                    19 /**< CTRL_CLK_RDY Position */
 #define MXC_F_UART_CTRL_CLK_RDY                        ((uint32_t)(0x1UL << MXC_F_UART_CTRL_CLK_RDY_POS)) /**< CTRL_CLK_RDY Mask */

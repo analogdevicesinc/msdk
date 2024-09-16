@@ -90,7 +90,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CTRLR_MODE</name>
+            <name>CONT_MODE</name>
             <description>Controller Mode Enable.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -757,7 +757,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CTRLR_DONE</name>
+            <name>CONT_DONE</name>
             <description>Controller Done, set when SPI Controller has completed any transactions.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
@@ -974,7 +974,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CTRLR_DONE</name>
+            <name>CONT_DONE</name>
             <description>Controller Done interrupt enable.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>

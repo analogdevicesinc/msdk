@@ -154,7 +154,7 @@ typedef enum {
     MXC_GPIO_PAD_PULL_UP, /**< Set pad to strong pull-up */
     MXC_GPIO_PAD_PULL_DOWN, /**< Set pad to strong pull-down */
     MXC_GPIO_PAD_WEAK_PULL_UP, /**< Set pad to weak pull-up */
-    MXC_GPIO_PAD_WEAK_PULL_DOWN, /**< Set pad to weak pull-down */
+    MXC_GPIO_PAD_WEAK_PULL_DOWN /**< Set pad to weak pull-down */
 } mxc_gpio_pad_t;
 
 /**

@@ -59,11 +59,17 @@ typedef enum {
         MXC_S_DMA_CTRL_REQUEST_MEMTOMEM, ///< Memory to Memory DMA Request Selection
     MXC_DMA_REQUEST_SPIRX = MXC_S_DMA_CTRL_REQUEST_SPIRX, ///< SPI Receive DMA Request Selection
     MXC_DMA_REQUEST_UARTRX = MXC_S_DMA_CTRL_REQUEST_UARTRX, ///< UART Receive DMA Request Selection
-    MXC_DMA_REQUEST_I3CRX = MXC_S_DMA_CTRL_REQUEST_I3CRX, ///< I3C Receive DMA Request Selection
+    MXC_DMA_REQUEST_I3CRX_CONT =
+        MXC_S_DMA_CTRL_REQUEST_I3CRX_CONT, ///< I3C Receive Controller DMA Request Selection
+    MXC_DMA_REQUEST_I3CRX_TARG =
+        MXC_S_DMA_CTRL_REQUEST_I3CRX_TARG, ///< I3C Receive Target DMA Request Selection
     MXC_DMA_REQUEST_AESRX = MXC_S_DMA_CTRL_REQUEST_AESRX, ///< AES Receive DMA Request Selection
     MXC_DMA_REQUEST_SPITX = MXC_S_DMA_CTRL_REQUEST_SPITX, ///< SPI Transmit DMA Request Selection
     MXC_DMA_REQUEST_UARTTX = MXC_S_DMA_CTRL_REQUEST_UARTTX, ///< UART Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I3CTX = MXC_S_DMA_CTRL_REQUEST_I3CTX, ///< I3C Transmit DMA Request Selection
+    MXC_DMA_REQUEST_I3CTX_CONT =
+        MXC_S_DMA_CTRL_REQUEST_I3CTX_CONT, ///< I3C Transmit Controller DMA Request Selection
+    MXC_DMA_REQUEST_I3CTX_TARG =
+        MXC_S_DMA_CTRL_REQUEST_I3CTX_TARG, ///< I3C Transmit Target DMA Request Selection
     MXC_DMA_REQUEST_CRCTX = MXC_S_DMA_CTRL_REQUEST_CRCTX, ///< CRC Transmit DMA Request Selection */
     MXC_DMA_REQUEST_AESTX = MXC_S_DMA_CTRL_REQUEST_AESTX, ///< AES Transmit DMA Request Selection
 } mxc_dma_reqsel_t;

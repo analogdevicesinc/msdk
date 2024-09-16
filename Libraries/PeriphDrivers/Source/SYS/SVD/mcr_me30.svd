@@ -11,14 +11,20 @@
     </addressBlock>
     <registers>
       <register>
-        <name>ECCEN</name>
-        <description>ECC Enable Register</description>
-        <addressOffset>0x00</addressOffset>
+        <name>RST</name>
+        <description>Reset Register.</description>
+        <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>FLASH</name>
-            <description>ECC Flash Enable.</description>
+            <name>BOOST</name>
+            <description>Reset BOOST Controller.</description>
             <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ</name>
+            <description>Reset RSTZ Controller.</description>
+            <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -34,12 +40,6 @@
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field>
-            <name>PDOWN_EN</name>
-            <description>Power Down Output Enable.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
@@ -48,92 +48,61 @@
         <addressOffset>0x10</addressOffset>
         <fields>
           <field>
-            <name>ERTCO_EN</name>
-            <description>Enable ERTCO 4KHz.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
+            <name>CLKSEL</name>
+            <description>Clock select for RTC, WUTs, and Timers.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ERTCO</name>
+                <description>ERTCO as clock source.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>INRO</name>
+                <description>INRO as clock source.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXTCLK</name>
+                <description>P0.12 div 8 as clock source.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>ERTCO_32KHZ_EN</name>
             <description>Enable ERTCO 32KHz while ERTCO_EN.</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>GPIO1_CTRL</name>
-        <description>GPIO1 Pin Control Register.</description>
-        <addressOffset>0x20</addressOffset>
-        <fields>
-          <field>
-            <name>P1_0_OUT</name>
-            <description>GPIO1 Pin 0 Data Output.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>P1_0_OUTEN</name>
-            <description>GPIO1 Pin 0 Output Enable.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>P1_0_PUPEN</name>
-            <description>GPIO1 Pin 0 Pull-up Enable.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>P1_0_IN</name>
-            <description>GPIO1 Pin 0 Input Status.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>P1_1_OUT</name>
-            <description>GPIO1 Pin 1 Data Output.</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>P1_1_OUTEN</name>
-            <description>GPIO1 Pin 1 Output Enable.</description>
+            <name>ERTCO_EN</name>
+            <description>Enable ERTCO 4KHz.</description>
             <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>P1_1_PUPEN</name>
-            <description>GPIO1 Pin 1 Pull-up Enable.</description>
-            <bitOffset>6</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>P1_1_IN</name>
-            <description>GPIO1 Pin 1 Input Status.</description>
-            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>RTCTRIM</name>
-        <description>User RTC Trim Register.</description>
-        <addressOffset>0x24</addressOffset>
-        <fields>
-          <field>
-            <name>X2</name>
-            <description>RTC X2 Trim.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>5</bitWidth>
-          </field>
-          <field>
-            <name>X1</name>
-            <description>RTC X1 Trim.</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>5</bitWidth>
-          </field>
-        </fields>
+        <name>BBREG0</name>
+        <description>Battery Back Reg0.</description>
+        <addressOffset>0x30</addressOffset>
+      </register>
+      <register>
+        <name>BBREG1</name>
+        <description>Battery Back Reg1.</description>
+        <addressOffset>0x34</addressOffset>
+      </register>
+      <register>
+        <name>BBDATA0</name>
+        <description>Battery Back Data0 Register.</description>
+        <addressOffset>0x40</addressOffset>
+      </register>
+      <register>
+        <name>BBDATA1</name>
+        <description>Battery Back Data1 Register.</description>
+        <addressOffset>0x44</addressOffset>
       </register>
     </registers>
   </peripheral>

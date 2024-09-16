@@ -84,6 +84,24 @@ void SystemInit(void);
  */
 void SystemCoreClockUpdate(void);
 
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+/**
+ * @brief This function is called in Secure code just before control
+ *  is transferred to non-secure world. Only available when
+ *  trustzone feature is used.
+ *
+ * You may over-ride this function in your program by defining a custom
+ *  NonSecure_Init(), but care should be taken to reproduce the initialization
+ *  steps to non-secure code.
+ * 
+ * Caller must be aware of configuring MPC, SPC, and NSPC before this
+ *  function is called.
+ * 
+ * @return  Should not return if successful. If Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int NonSecure_Init(void);
+#endif
+
 #ifdef __cplusplus
 }
 #endif

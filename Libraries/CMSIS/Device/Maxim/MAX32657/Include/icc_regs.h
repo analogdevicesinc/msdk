@@ -84,8 +84,8 @@ typedef struct {
     __R  uint32_t rsv_0x104_0x1ff[63];
     __IO uint32_t way;                  /**< <tt>\b 0x0200:</tt> ICC WAY Register */
     __IO uint32_t regctrl;              /**< <tt>\b 0x0204:</tt> ICC REGCTRL Register */
-    __IO mxc_icc_reg_regs_t region[15]; /**< <tt>\b 0x0208:</tt> ICC REGION Register */
-    __R  uint32_t rsv_0x244_0x2ff[47];
+    __IO mxc_icc_reg_regs_t region[4];  /**< <tt>\b 0x0208:</tt> ICC REGION Register */
+    __R  uint32_t rsv_0x228_0x2ff[54];
     __IO uint32_t pfmctrl;              /**< <tt>\b 0x0300:</tt> ICC PFMCTRL Register */
     __IO uint32_t pfmcnt;               /**< <tt>\b 0x0304:</tt> ICC PFMCNT Register */
     __R  uint32_t rsv_0x308_0x6ff[254];
@@ -164,7 +164,13 @@ typedef struct {
  * @{
  */
 #define MXC_F_ICC_WAY_WAY_POS                          0 /**< WAY_WAY Position */
-#define MXC_F_ICC_WAY_WAY                              ((uint32_t)(0x1UL << MXC_F_ICC_WAY_WAY_POS)) /**< WAY_WAY Mask */
+#define MXC_F_ICC_WAY_WAY                              ((uint32_t)(0x7UL << MXC_F_ICC_WAY_WAY_POS)) /**< WAY_WAY Mask */
+#define MXC_V_ICC_WAY_WAY_1                            ((uint32_t)0x1UL) /**< WAY_WAY_1 Value */
+#define MXC_S_ICC_WAY_WAY_1                            (MXC_V_ICC_WAY_WAY_1 << MXC_F_ICC_WAY_WAY_POS) /**< WAY_WAY_1 Setting */
+#define MXC_V_ICC_WAY_WAY_2                            ((uint32_t)0x2UL) /**< WAY_WAY_2 Value */
+#define MXC_S_ICC_WAY_WAY_2                            (MXC_V_ICC_WAY_WAY_2 << MXC_F_ICC_WAY_WAY_POS) /**< WAY_WAY_2 Setting */
+#define MXC_V_ICC_WAY_WAY_4                            ((uint32_t)0x4UL) /**< WAY_WAY_4 Value */
+#define MXC_S_ICC_WAY_WAY_4                            (MXC_V_ICC_WAY_WAY_4 << MXC_F_ICC_WAY_WAY_POS) /**< WAY_WAY_4 Setting */
 
 /**@} end of group ICC_WAY_Register */
 
