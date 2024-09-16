@@ -142,22 +142,75 @@ typedef enum {
 
 /* **** Function Prototypes **** */
 
+/**
+ * @brief   Initializes the Graphics of the 2048 Game Demo.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int Graphics_Init(void);
 
+/**
+ * @brief   Draw the new block (2 or 4) spawn animation on the grid. This
+ *          function runs when the existing grid has finished updating and
+ *          a new block needs to be drawn.
+ *
+ * @param   row         Row number (indexed 0).
+ * @param   col         Column number (indexed 0).
+ * @param   block_2_4   Pass in 2 for Block 2 spawn, 4 for Block 4 spawn.
+ */
 void Graphics_AddNewBlock(int row, int col, int block_2_4);
 
+/**
+ * @brief   Draws a block on the grid (no animation). This function is
+ *          is mainly used for re-drawing existing blocks when they're moved.
+ *
+ * @param   row         Row number (indexed 0).
+ * @param   col         Column number (indexed 0).
+ * @param   value       Value of block to draw on grid.
+ */
 void Graphics_AddBlock(int row, int col, int value);
 
+/**
+ * @brief   Draws the new combined block (including blow-up animation). This
+ *          function is used when a same-value pair is combined.
+ *
+ * @param   row         Row number (indexed 0).
+ * @param   col         Column number (indexed 0).
+ * @param   new_value   Value of combined block to draw on grid.
+ */
 void Graphics_CombineBlocks(int row, int col, int new_value);
 
 void Graphics_EraseSingleBlockAnimated(int row, int col, graphics_slide_direction_t direction);
 
+/**
+ * @brief   Erases the the block from the grid. This function is mainly used
+ *          when blocks are moving which need to be erased, then redrawned.
+ *
+ * @param   row         Row number (indexed 0).
+ * @param   col         Column number (indexed 0).
+ */
 void Graphics_EraseSingleBlock(int row, int col);
 
+/**
+ * @brief   Update the timer on the display.
+ *
+ * @param   total_seconds   The current total second value of RTC.
+ */
 void Graphics_SetTime(uint32_t total_seconds);
 
+/**
+ * @brief   Update the moves counter on the display.
+ *
+ * @param   moves_count The number of moves that have been executed.
+ */
 void Graphics_UpdateMovesCount(uint32_t moves_count);
 
+/**
+ * @brief   Draws the "game over" box popup when game is finished.
+ */
 void Graphics_DisplayGameOver(void);
 
+/**
+ * @brief   Draws the "you win" box popup when game is finished.
+ */
 void Graphics_DisplayYouWin(void);

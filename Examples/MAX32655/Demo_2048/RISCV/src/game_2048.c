@@ -736,17 +736,3 @@ void Game_2048_GetGridState(uint8_t grid_state[4][4])
         }
     }
 }
-
-void Game_2048_GetGridMailBox(uint8_t *grid_1D_size_64B)
-{
-    int i = 0;
-    for (int row = 0; row < 4; row++) {
-        for (int col = 0; col < 4; col++) {
-            grid_1D_size_64B[i++] = (MAIN_2048_GRID[row][col] >> 8 * 0) & 0xFF;
-            grid_1D_size_64B[i++] = (MAIN_2048_GRID[row][col] >> 8 * 1) & 0xFF;
-            grid_1D_size_64B[i++] = (MAIN_2048_GRID[row][col] >> 8 * 2) & 0xFF;
-            grid_1D_size_64B[i++] = (MAIN_2048_GRID[row][col] >> 8 * 3) & 0xFF;
-        }
-    }
-}
-

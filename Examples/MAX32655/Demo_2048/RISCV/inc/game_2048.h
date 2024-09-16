@@ -58,16 +58,50 @@ typedef enum {
 
 /* **** Function Prototypes **** */
 
+/**
+ * @brief   Initializes the game logic for 2048.
+ *
+ * @param   new_block_location_idx  Pointer which holds 1-D index location of where
+ *                                  the starting blcok would spawn.
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int Game_2048_Init(uint8_t *new_block_location_idx);
 
+/**
+ * @brief   Get the state of the game (in progress, game over, or win).
+ * 
+ * @return  State of game..
+ */
 game_state_t Game_2048_CheckState(void);
 
+/**
+ * @brief   Update the grid.
+ *
+ * @param   direction           The direction that all the blocks slide to.
+ * @param   new_block_1D_idx    Pointer which holds 1-D index location of where
+ *                                  the new blcok would spawn.
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 bool Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx);
 
+/**
+ * @brief   Prints the grid to the terminal.
+ */
 void Game_2048_PrintGrid(void);
 
+/**
+ * @brief   Gets the current grid.
+ * 
+ * @param   grid    Pointer to 2-D array to hold the current grid.
+ */
 void Game_2048_GetGrid(uint32_t grid[4][4]);
 
+/**
+ * @brief   Gets the current grid state which tells you what blocks
+ *          were deleted, unmoved, or combined.
+ * 
+ * @param   grid    Pointer to 2-D array to hold the current grid state.
+ */
 void Game_2048_GetGridState(uint8_t grid_state[4][4]);
-
-void Game_2048_GetGridMailBox(uint8_t *grid_1D_size_64B);
