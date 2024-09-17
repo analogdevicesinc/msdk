@@ -16,6 +16,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32655_DEMO_2048_ARM_INC_CLEAR_SANS_BOLD_SCALED_BLOCK_DIGITS_H_
+#define EXAMPLES_MAX32655_DEMO_2048_ARM_INC_CLEAR_SANS_BOLD_SCALED_BLOCK_DIGITS_H_
+
 // clang-format off
 
 /* **** Includes **** */
@@ -356,3 +359,5 @@ __flash uint16_t block_2048[] = {
                                             : (block) == 1024 ? block_1024 \
                                             : (block) == 2048 ? block_2048 \
                                             : NULL)
+
+#endif // EXAMPLES_MAX32655_DEMO_2048_ARM_INC_CLEAR_SANS_BOLD_SCALED_BLOCK_DIGITS_H_

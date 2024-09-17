@@ -16,6 +16,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32655_DEMO_2048_ARM_INC_GRAPHICS_H_
+#define EXAMPLES_MAX32655_DEMO_2048_ARM_INC_GRAPHICS_H_
+
 /* **** Includes **** */
 
 #include <stdint.h>
@@ -258,3 +261,5 @@ void Graphics_DisplayGameOver(void);
  * @brief   Draws the "you win" box popup when game is finished.
  */
 void Graphics_DisplayYouWin(void);
+
+#endif // EXAMPLES_MAX32655_DEMO_2048_ARM_INC_GRAPHICS_H_

@@ -16,6 +16,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_CONTROLLER_H_
+#define EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_CONTROLLER_H_
+
 /* **** Includes **** */
 
 #include <stdint.h>
@@ -45,3 +48,5 @@ int Controller_Init(mxc_uart_regs_t *uart, uint32_t baud);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int Controller_Start(mxc_uart_req_t *req);
+
+#endif // EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_CONTROLLER_H_

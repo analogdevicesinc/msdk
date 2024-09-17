@@ -167,7 +167,7 @@ int Game_2048_Init(uint8_t *new_block_location_idx)
     }
 
     // Should never reach here since we cleared the grid earlier in the function.
-    if(add_new_block(true, new_block_location_idx) == false) {
+    if (add_new_block(true, new_block_location_idx) == false) {
         return E_BAD_STATE;
     }
 
@@ -208,11 +208,11 @@ inline static bool row_logic_left(void)
         // If there's only one valid block, don't bother with the same-value pair logic.
         if (temp_col_num == 1) {
             MAIN_2048_GRID[row][0] = temp_row[0];
-    
+
             // Check if the single block moved left.
             if (prev_row[0] != MAIN_2048_GRID[row][0]) {
                 blocks_moved = true;
-                
+
                 // Represent the state of the original block location as deleted for
                 //  display.
                 for (int col = 3; col >= 0; col--) {
@@ -491,9 +491,8 @@ inline static bool column_logic_up(void)
 static bool column_logic_down(void)
 {
     bool blocks_moved = false;
-    
+
     for (int col = 0; col < 4; col++) {
-        
         // Don't waste processing time if column is empty by checking if sum of all blocks in column is 0.
         if (COLUMN_SUM(col) == 0) {
             continue;
@@ -653,7 +652,7 @@ bool Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx
             printf("UP\n");
             blocks_moved = column_logic_up();
             break;
-        
+
         case INPUT_DOWN:
             printf("DOWN\n");
             blocks_moved = column_logic_down();
@@ -663,12 +662,12 @@ bool Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx
             printf("LEFT\n");
             blocks_moved = row_logic_left();
             break;
-    
+
         case INPUT_RIGHT:
             printf("RIGHT\n");
             blocks_moved = row_logic_right();
             break;
-        
+
         // Should never reach here.
         default:
             return false;

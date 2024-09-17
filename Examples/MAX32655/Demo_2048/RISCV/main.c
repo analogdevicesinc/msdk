@@ -112,31 +112,30 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
             KEYPRESS_INPUT_DIR = INPUT_LEFT;
             KEYPRESS_READY = true;
             break;
-        
+
         case 'd':
             KEYPRESS_INPUT_DIR = INPUT_RIGHT;
             KEYPRESS_READY = true;
             break;
-        
+
         case 'w':
             KEYPRESS_INPUT_DIR = INPUT_UP;
             KEYPRESS_READY = true;
             break;
-        
+
         case 's':
             KEYPRESS_INPUT_DIR = INPUT_DOWN;
             KEYPRESS_READY = true;
             break;
-        
+
         default:
             KEYPRESS_READY = false;
             error = Controller_Start(&CONTROLLER_REQ);
             if (error != E_NO_ERROR) {
-                PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
-                LED_On(LED_RED);
+                PRINT("RISC-V: Invalid Keypress: %c\n", CONTROLLER_KEYPRESS);
             }
     }
-    
+
     PRINT("RISC-V: Keypress: %c - 0x%02x Error: %d\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS, cb_error);
 }
 
@@ -271,7 +270,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         PRINT("RISC-V: Error speeding up baud rate: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     // Set up Controller Request Struct.
@@ -292,14 +291,14 @@ int main(void)
     if (error != E_NO_ERROR) {
         PRINT("RISC-V: Semaphore for RISC-V core is busy: %d\n", error);
         LED_On(LED_GREEN);
-        while(1);
+        while (1) {}
     }
 
     error = MXC_SEMA_GetSema(SEMA_IDX_RISCV);
     if (error != E_NO_ERROR) {
         PRINT("RISC-V: Semaphore is busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_RISCV]);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     } else {
         PRINT("RISC-V: Semaphore is not busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_RISCV]);
     }
@@ -318,14 +317,14 @@ int main(void)
     if (error != E_NO_ERROR) {
         PRINT("RISC-V: Error starting the controller: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     error = Game_2048_Init(&new_block_idx_location);
     if (error != E_NO_ERROR) {
         PRINT("RISC-V: Error starting game: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     // Send starting grid to ARM core.
@@ -365,7 +364,7 @@ int main(void)
             PRINT("RISC-V: Blocks did not move.\n");
         }
 
-        // Check state of game.
+        // Get the state of the game after finishing latest move.
         game_state_t game_state = Game_2048_CheckState();
 
         // These functions must be called before PRINT_GRID() and SendGridToARMCore()
@@ -393,14 +392,14 @@ int main(void)
             PRINT("RISCV: Congratulations, you win!\n");
             PRINT("RISCV: Ending game.\n");
 
-            while(1);
+            while (1) {}
         } else if (game_state == GAME_OVER) {
             // Signal ARM to finish final display update.
             MXC_SEMA_FreeSema(SEMA_IDX_ARM);
 
             PRINT("RISCV: Game Over. Nice try! Better luck next time.\n");
             PRINT("RISCV: Ending game.\n");
-            while(1);
+            while (1) {}
         }
 
         // Listen for next keypress.
@@ -410,7 +409,7 @@ int main(void)
         if (error != E_NO_ERROR) {
             PRINT("RISC-V: Error listening for next controller keypress: %d\n", error);
             LED_On(LED_RED);
-            while(1);
+            while (1) {}
         }
 
         // Signal ARM to update display.

@@ -16,6 +16,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_GAME_2048_H_
+#define EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_GAME_2048_H_
+
 /* **** Includes **** */
 
 #include <stdint.h>
@@ -105,3 +108,5 @@ void Game_2048_GetGrid(uint32_t grid[4][4]);
  * @param   grid    Pointer to 2-D array to hold the current grid state.
  */
 void Game_2048_GetGridState(uint8_t grid_state[4][4]);
+
+#endif // EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_GAME_2048_H_

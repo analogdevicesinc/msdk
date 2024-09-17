@@ -16,8 +16,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_IPC_DEFINES_H_
-#define EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_IPC_DEFINES_H_
+#ifndef EXAMPLES_MAX32655_DEMO_2048_ARM_INC_IPC_DEFINES_H_
+#define EXAMPLES_MAX32655_DEMO_2048_ARM_INC_IPC_DEFINES_H_
 
 /* **** Includes **** */
 
@@ -25,7 +25,7 @@
 
 /* **** Definitions **** */
 
-// These should match with the ARM core's copy of ipc_defines.h
+// These should match with the RISC-V core's copy of ipc_defines.h
 
 /// Semaphores
 // Should never reach here
@@ -57,4 +57,4 @@ typedef struct {
 #define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
 #define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
 
-#endif // EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_IPC_DEFINES_H_
+#endif // EXAMPLES_MAX32655_DEMO_2048_ARM_INC_IPC_DEFINES_H_

@@ -103,7 +103,7 @@ int Graphics_Init(void)
     MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT3_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(0), RGB565_BLACK, RGB565_WHITE);
 
     // Draw grid.
-    MXC_TFT_DrawRoundedRect(GRID_OFFSET_X + GRID_SPACING, GRID_OFFSET_Y + GRID_SPACING, GRID_LENGTH, GRID_LENGTH, F_GRID_COLOR, RADIUS_FOR_CORNERS, F_BACKGROUND_COLOR);
+    MXC_TFT_DrawRect(GRID_OFFSET_X + GRID_SPACING, GRID_OFFSET_Y + GRID_SPACING, GRID_LENGTH, GRID_LENGTH, F_GRID_COLOR);
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
             // Focusing on top left corner of the top left block in the grid to help with visualizing the coordinates and calculations.
@@ -127,7 +127,7 @@ void Graphics_AddNewBlock(int row, int col, int block_2_4)
 
         // Increase the block size by 10 pixels
         MXC_TFT_DrawRoundedRect(x, y, ((frame_i * 10) > BLOCK_LENGTH) ? BLOCK_LENGTH : ((frame_i * 10) + 1), ((frame_i * 10) > BLOCK_LENGTH) ? BLOCK_LENGTH : ((frame_i * 10) + 1), FORMAT_RGB565_TO_PACKET(RGB_BLOCK_COLOR(block_2_4)), RADIUS_FOR_CORNERS, ((frame_i * 10) > BLOCK_LENGTH) ? F_EMPTY_BLOCK_COLOR : F_GRID_COLOR);
-        
+
         // Don't delay when empty space is fully filled.
         if (frame_i < 5) {
             // Minimum speed visual for human eye while also being fast and not laggy.
@@ -223,7 +223,7 @@ inline void Graphics_AddBlock(int row, int col, int value)
             // 0x0000 is RGB color BLACK (background of digit) which will be masked out to match color of block.
             MXC_TFT_DrawBitmapMask(dx, dy, BLOCK_DIGIT_PX_WIDTH(value), BLOCK_DIGIT_PX_HEIGHT(value), block_128, RGB565_BLACK, RGB565_BLOCK_128);
             break;
-        
+
         case 256:
             // Draw block.
             MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(RGB565_BLOCK_256), RADIUS_FOR_CORNERS, F_GRID_COLOR);
@@ -232,7 +232,7 @@ inline void Graphics_AddBlock(int row, int col, int value)
             // 0x0000 is RGB color BLACK (background of digit) which will be masked out to match color of block.
             MXC_TFT_DrawBitmapMask(dx, dy, BLOCK_DIGIT_PX_WIDTH(value), BLOCK_DIGIT_PX_HEIGHT(value), block_256, RGB565_BLACK, RGB565_BLOCK_256);
             break;
-        
+
         case 512:
             // Draw block.
             MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(RGB565_BLOCK_512), RADIUS_FOR_CORNERS, F_GRID_COLOR);
@@ -241,7 +241,7 @@ inline void Graphics_AddBlock(int row, int col, int value)
             // 0x0000 is RGB color BLACK (background of digit) which will be masked out to match color of block.
             MXC_TFT_DrawBitmapMask(dx, dy, BLOCK_DIGIT_PX_WIDTH(value), BLOCK_DIGIT_PX_HEIGHT(value), block_512, RGB565_BLACK, RGB565_BLOCK_512);
             break;
-        
+
         case 1024:
             // Draw block.
             MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(RGB565_BLOCK_1024), RADIUS_FOR_CORNERS, F_GRID_COLOR);
@@ -250,7 +250,7 @@ inline void Graphics_AddBlock(int row, int col, int value)
             // 0x0000 is RGB color BLACK (background of digit) which will be masked out to match color of block.
             MXC_TFT_DrawBitmapMask(dx, dy, BLOCK_DIGIT_PX_WIDTH(value), BLOCK_DIGIT_PX_HEIGHT(value), block_1024, RGB565_BLACK, RGB565_BLOCK_1024);
             break;
-        
+
         case 2048:
             // Draw block.
             MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(RGB565_BLOCK_2048), RADIUS_FOR_CORNERS, F_GRID_COLOR);
@@ -273,7 +273,7 @@ void Graphics_CombineSingleBlock(int row, int col, int new_value)
     MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMAT_RGB565_TO_PACKET(new_value), RADIUS_FOR_CORNERS, F_GRID_COLOR);
 
     // Animate the blow up.
-    // 4 is the amount of pixels between each block. That's the extent that the block will temporarily expand.   
+    // 4 is the amount of pixels between each block. That's the extent that the block will temporarily expand.
     for (int i = 0; i < BLOCK_SPACING + 1; i++) {
         MXC_TFT_DrawRoundedRect(x - i, y - i, BLOCK_LENGTH + (2*i), BLOCK_LENGTH + (2*i), FORMATTED_RGB_BLOCK_COLOR(new_value), RADIUS_FOR_CORNERS, F_GRID_COLOR);
 
@@ -309,7 +309,7 @@ void Graphics_CombineSingleBlock(int row, int col, int new_value)
 //  @param  frame_i         Current frame of the animation.
 //  @param  current_length  Length of block at current frame.
 //  @param  f_color         Formatted color code of outer border.
-//  @param  radius          Radius ofrounded cornewrs and width of block. 
+//  @param  radius          Radius ofrounded cornewrs and width of block.
 static void graphics_helper_CombineBlocks(uint32_t x, uint32_t y, int frame_i, uint32_t current_length, uint32_t f_color, uint32_t radius)
 {
     // Draw top horizontal lines.
@@ -391,7 +391,7 @@ static void graphics_helper_CombineBlocks(uint32_t x, uint32_t y, int frame_i, u
 //  @param  frame_i         Current frame of the animation.
 //  @param  current_length  Length of block at current frame.
 //  @param  f_color         Formatted color code of outer border.
-//  @param  radius          Radius ofrounded cornewrs and width of block. 
+//  @param  radius          Radius ofrounded cornewrs and width of block.
 static void graphics_helper_eraseCorners(uint32_t x, uint32_t y, int frame_i, uint32_t current_length, uint32_t f_color, uint32_t radius)
 {
     for (int p_y = 0; p_y < BLOCK_LENGTH; p_y++) {
@@ -440,7 +440,7 @@ void Graphics_CombineBlocks(uint32_t grid[4][4], block_state_t grid_state[4][4])
                         MXC_TFT_DrawRoundedRect(x, y, BLOCK_LENGTH, BLOCK_LENGTH, FORMATTED_RGB_BLOCK_COLOR(grid[row][col]), RADIUS_FOR_CORNERS, F_GRID_COLOR);
                     } else {
                         graphics_helper_CombineBlocks(x, y, frame_i, BLOCK_LENGTH + (2 * frame_i), FORMATTED_RGB_BLOCK_COLOR(grid[row][col]), RADIUS_FOR_CORNERS);
-                    } 
+                    }
                 }
             }
         }
@@ -535,7 +535,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                                 }
 
                                 MXC_TFT_DrawHorizontalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
-                            
+
                             } else {
                                 MXC_TFT_DrawHorizontalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
@@ -544,7 +544,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                 }
             }
             break;
-        
+
         case GRAPHICS_SLIDE_DIR_DOWN:
             // Start from top row to bottom row (column order doesn't matter).
             // This for-loop keeps track of the localized y position of where the horizontal line is drawn.
@@ -576,7 +576,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                                 }
 
                                 MXC_TFT_DrawHorizontalLine(x + RADIUS_FOR_CORNERS - dx, y + p_y, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dx)), F_EMPTY_BLOCK_COLOR);
-                            
+
                             } else {
                                 MXC_TFT_DrawHorizontalLine(x, y + p_y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
@@ -585,7 +585,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                 }
             }
             break;
-        
+
         case GRAPHICS_SLIDE_DIR_LEFT:
             // Start from right column to left column (row order doesn't matter).
             // This for-loop keeps track of the localized x position of where the vertical line is drawn.
@@ -617,7 +617,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                                 }
 
                                 MXC_TFT_DrawVerticalLine(x + p_x, y + RADIUS_FOR_CORNERS - dy, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dy)), F_EMPTY_BLOCK_COLOR);
-                            
+
                             } else {
                                 MXC_TFT_DrawVerticalLine(x + p_x, y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
@@ -626,7 +626,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                 }
             }
             break;
-        
+
         case GRAPHICS_SLIDE_DIR_RIGHT:
             // Start from left column to right column (row order doesn't matter).
             // This for-loop keeps track of the localized x position of where the vertical line is drawn.
@@ -658,7 +658,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
                                 }
 
                                 MXC_TFT_DrawVerticalLine(x + p_x, y + RADIUS_FOR_CORNERS - dy, BLOCK_LENGTH - (2 * (RADIUS_FOR_CORNERS - dy)), F_EMPTY_BLOCK_COLOR);
-                            
+
                             } else {
                                 MXC_TFT_DrawVerticalLine(x + p_x, y, BLOCK_LENGTH, F_EMPTY_BLOCK_COLOR);
                             }
@@ -668,7 +668,7 @@ void Graphics_EraseBlocks(block_state_t grid_state[4][4], graphics_slide_directi
             }
 
             break;
-        
+
         default:
             return;
     }
@@ -687,7 +687,7 @@ void Graphics_SetTime(uint32_t total_seconds)
 {
     // Convert total time to minutes:seconds (mm:ss)
     int digit0, digit1, digit2, digit3;
-    
+
     // The max possible seconds is 5999, which yields 99m:59s.
     if (total_seconds >= 5999) {
         digit0 = 9;
@@ -703,7 +703,7 @@ void Graphics_SetTime(uint32_t total_seconds)
     }
 
     // Update timer on display.
-    MXC_TFT_DrawRect(TIME_DIGIT0_OFFSET_X(TIME_DIGIT_WIDTH), TIME_OFFSET_Y, TIME_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);    
+    MXC_TFT_DrawRect(TIME_DIGIT0_OFFSET_X(TIME_DIGIT_WIDTH), TIME_OFFSET_Y, TIME_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
     MXC_TFT_DrawBitmapInvertedMask(TIME_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit0)), TIME_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit0), RGB565_BLACK, RGB565_WHITE);
 
     // Don't waste time on re-writing the same digits.
@@ -733,7 +733,7 @@ void Graphics_UpdateMovesCount(uint32_t moves_count)
 {
     // Convert total time to minutes:seconds (mm:ss)
     int digit0, digit1, digit2, digit3;
-    
+
     // The max possible seconds is 5999, which yields 99m:59s.
     if (moves_count >= 9999) {
         digit0 = 9;
@@ -748,7 +748,7 @@ void Graphics_UpdateMovesCount(uint32_t moves_count)
     }
 
     // Update timer on display.
-    MXC_TFT_DrawRect(MOVES_DIGIT0_OFFSET_X(MOVES_DIGIT_WIDTH), MOVES_DIGITS_OFFSET_Y, MOVES_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);    
+    MXC_TFT_DrawRect(MOVES_DIGIT0_OFFSET_X(MOVES_DIGIT_WIDTH), MOVES_DIGITS_OFFSET_Y, MOVES_DIGIT_WIDTH, GAME_TEXT_DIGITS_HEIGHT, F_BACKGROUND_COLOR);
     MXC_TFT_DrawBitmapInvertedMask(MOVES_DIGIT0_OFFSET_X(GAME_TEXT_DIGIT_WIDTH(digit0)), MOVES_DIGITS_OFFSET_Y, GAME_TEXT_DIGIT_WIDTH(digit0), GAME_TEXT_DIGITS_HEIGHT, GAME_TEXT_DIGIT_PTR(digit0), RGB565_BLACK, RGB565_WHITE);
 
     // Don't waste time on re-writing the same digits.

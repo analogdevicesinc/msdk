@@ -38,6 +38,7 @@
 
 // Application Libraries
 #include "graphics.h"
+#include "ipc_defines.h"
 
 /* **** Definitions **** */
 
@@ -51,36 +52,6 @@
 // Match the Console's baud rate to what the controller will be set to
 //  for the RISC-V as they share the same port.
 #define RISCV_CONTROLLER_BAUD (115200)
-
-/// Semaphores
-// Should never reach here
-#if (MAILBOX_SIZE == 0)
-#error "Mailbox size is 0."
-#endif
-
-// Keep track for Semaphore peripheral.
-#define SEMA_IDX_ARM (0)
-#define SEMA_IDX_RISCV (1)
-
-#define MAILBOX_OVERHEAD (2 * sizeof(uint16_t))
-#define MAILBOX_PAYLOAD_LEN (MAILBOX_SIZE - MAILBOX_OVERHEAD)
-typedef struct {
-    uint16_t readLocation;
-    uint16_t writeLocation;
-#if (MAILBOX_SIZE == 0)
-    uint8_t payload[1];
-#else
-    uint8_t payload[MAILBOX_PAYLOAD_LEN];
-#endif
-} mxcSemaBox_t;
-
-#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexes are from 0 to (16 blocks * 4 bytes) - 1.
-#define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
-#define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
-#define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
-#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
-#define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
-#define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
 
 /* **** Globals **** */
 // Defined in sema_reva.c
@@ -133,19 +104,19 @@ graphics_slide_direction_t ReceiveDirectionFromRISCVCore(void)
         // UP
         case 'w':
             return GRAPHICS_SLIDE_DIR_UP;
-        
+
         // DOWN
         case 's':
             return GRAPHICS_SLIDE_DIR_DOWN;
-        
+
         // LEFT
         case 'a':
             return GRAPHICS_SLIDE_DIR_LEFT;
-        
+
         // RIGHT
         case 'd':
             return GRAPHICS_SLIDE_DIR_RIGHT;
-        
+
         default:
             return -1;
     }
@@ -198,7 +169,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         PRINT("ARM: Error speeding up baud rate: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     PRINT("\n\n*******************************************************************************\n");
@@ -220,14 +191,14 @@ int main(void)
     if (error != E_NO_ERROR) {
         PRINT("ARM: Semaphore for ARM core is busy: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     error = MXC_SEMA_GetSema(SEMA_IDX_ARM);
     if (error != E_NO_ERROR) {
         PRINT("ARM: Semaphore is busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_ARM]);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     } else {
         PRINT("ARM: Semaphore is not busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_ARM]);
     }
@@ -254,14 +225,14 @@ int main(void)
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) {
         PRINT("ARM: Error initializing RTC: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     error = Graphics_Init();
     if (error != E_NO_ERROR) {
         PRINT("ARM: Error initializing graphics: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     // Wait for Game logic to finish initializing on RISCV.
@@ -277,7 +248,7 @@ int main(void)
     if (game_state != IN_PROGRESS) {
         PRINT("ARM: Error starting game.\n");
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     Graphics_AddNewBlock(new_block_row, new_block_col, ARM_GRID_COPY[new_block_row][new_block_col]);
@@ -289,7 +260,7 @@ int main(void)
     if (MXC_RTC_Start() != E_NO_ERROR) {
         PRINT("ARM: Error starting timer: %d\n", error);
         LED_On(LED_RED);
-        while(1);
+        while (1) {}
     }
 
     uint32_t prev_seconds = 0;
@@ -360,7 +331,7 @@ int main(void)
                 MXC_Delay(MXC_DELAY_MSEC(750));
                 Graphics_DisplayYouWin();
 
-                while(1);
+                while (1) {}
             } else if (game_state == GAME_OVER) {
                 PRINT("ARM: Game Over. Nice try! Better luck next time.\n");
                 PRINT("ARM: Ending game.\n");
@@ -369,7 +340,7 @@ int main(void)
                 MXC_Delay(MXC_DELAY_MSEC(750));
                 Graphics_DisplayGameOver();
 
-                while(1);
+                while (1) {}
             }
 
             // Signal RISC-V Core that it's ready for the next grid state.
