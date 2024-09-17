@@ -340,7 +340,7 @@ int main(void)
 
     SendGameStateToARMCore(Game_2048_CheckState());
 
-    // Signal ARM core to 
+    // Signal ARM core to display initial grid.
     MXC_SEMA_FreeSema(SEMA_IDX_ARM);
 
     // Wait for ARM core to finish displaying the starting grid.
