@@ -42,12 +42,7 @@ typedef enum {
  *      combined at new grid.
  *  IMPORTANT: Sync these commands with the ARM core.
  */
-typedef enum {
-    EMPTY = 0,
-    ERASE = 1,
-    COMBINE = 2,
-    UNMOVED = 3
-} block_state_t;
+typedef enum { EMPTY = 0, ERASE = 1, COMBINE = 2, UNMOVED = 3 } block_state_t;
 
 /**
  *  These enums help track the state of the end game..

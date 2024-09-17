@@ -56,7 +56,7 @@
 // UART speed up is set at the beginning of BOTH ARM and RISC-V main code
 //  because SystemInit for both cores default the UART baud rate to
 //  115200.
-#define CONTROLLER_UART_BAUD    (115200)
+#define CONTROLLER_UART_BAUD (115200)
 
 /* **** Globals **** */
 // Defined in sema_reva.c
@@ -72,8 +72,8 @@ uint8_t CONTROLLER_KEYPRESS;
 volatile bool KEYPRESS_READY = false;
 uint8_t KEYPRESS_INPUT_DIR;
 
-uint32_t RISCV_GRID_COPY[4][4] = {0};
-uint8_t RISCV_GRID_COPY_STATE[4][4] = {0};
+uint32_t RISCV_GRID_COPY[4][4] = { 0 };
+uint8_t RISCV_GRID_COPY_STATE[4][4] = { 0 };
 
 uint32_t MOVES_COUNT = 0;
 
@@ -108,35 +108,36 @@ void CONTROLLER_KEYPRESS_Callback(mxc_uart_req_t *req, int cb_error)
 
     // User can add additional directional key switches here.
     switch (CONTROLLER_KEYPRESS) {
-        case 'a':
-            KEYPRESS_INPUT_DIR = INPUT_LEFT;
-            KEYPRESS_READY = true;
-            break;
+    case 'a':
+        KEYPRESS_INPUT_DIR = INPUT_LEFT;
+        KEYPRESS_READY = true;
+        break;
 
-        case 'd':
-            KEYPRESS_INPUT_DIR = INPUT_RIGHT;
-            KEYPRESS_READY = true;
-            break;
+    case 'd':
+        KEYPRESS_INPUT_DIR = INPUT_RIGHT;
+        KEYPRESS_READY = true;
+        break;
 
-        case 'w':
-            KEYPRESS_INPUT_DIR = INPUT_UP;
-            KEYPRESS_READY = true;
-            break;
+    case 'w':
+        KEYPRESS_INPUT_DIR = INPUT_UP;
+        KEYPRESS_READY = true;
+        break;
 
-        case 's':
-            KEYPRESS_INPUT_DIR = INPUT_DOWN;
-            KEYPRESS_READY = true;
-            break;
+    case 's':
+        KEYPRESS_INPUT_DIR = INPUT_DOWN;
+        KEYPRESS_READY = true;
+        break;
 
-        default:
-            KEYPRESS_READY = false;
-            error = Controller_Start(&CONTROLLER_REQ);
-            if (error != E_NO_ERROR) {
-                PRINT("RISC-V: Invalid Keypress: %c\n", CONTROLLER_KEYPRESS);
-            }
+    default:
+        KEYPRESS_READY = false;
+        error = Controller_Start(&CONTROLLER_REQ);
+        if (error != E_NO_ERROR) {
+            PRINT("RISC-V: Invalid Keypress: %c\n", CONTROLLER_KEYPRESS);
+        }
     }
 
-    PRINT("RISC-V: Keypress: %c - 0x%02x Error: %d\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS, cb_error);
+    PRINT("RISC-V: Keypress: %c - 0x%02x Error: %d\n", CONTROLLER_KEYPRESS, CONTROLLER_KEYPRESS,
+          cb_error);
 }
 
 // Must grab grid space before calling this function to have the latest
@@ -211,11 +212,11 @@ void SendGridToARMCore(void)
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
             SEMA_ARM_MAILBOX->payload[i] = (RISCV_GRID_COPY[row][col] >> (8 * 0)) & 0xFF;
-            SEMA_ARM_MAILBOX->payload[i+1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
-            SEMA_ARM_MAILBOX->payload[i+2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
-            SEMA_ARM_MAILBOX->payload[i+3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i + 1] = (RISCV_GRID_COPY[row][col] >> (8 * 1)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i + 2] = (RISCV_GRID_COPY[row][col] >> (8 * 2)) & 0xFF;
+            SEMA_ARM_MAILBOX->payload[i + 3] = (RISCV_GRID_COPY[row][col] >> (8 * 3)) & 0xFF;
 
-            i+=4;
+            i += 4;
         }
     }
 
@@ -235,7 +236,8 @@ inline void SendKeypressToARMCore(void)
 
 void SendNewBlockIndexToARMCore(uint8_t *new_block_idx, uint8_t did_block_move_or_is_init)
 {
-    SEMA_ARM_MAILBOX->payload[MAILBOX_IF_BLOCK_MOVED_IDX] = (did_block_move_or_is_init >> (8 * 0)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_IF_BLOCK_MOVED_IDX] = (did_block_move_or_is_init >> (8 * 0)) &
+                                                            0xFF;
     SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] = (*new_block_idx >> (8 * 0)) & 0xFF;
 }
 
@@ -247,9 +249,9 @@ void SendGameStateToARMCore(game_state_t state)
 void SendMovesCountToARMCore(uint32_t moves_count)
 {
     SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX] = (moves_count >> (8 * 0)) & 0xFF;
-    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+1] = (moves_count >> (8 * 1)) & 0xFF;
-    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+2] = (moves_count >> (8 * 2)) & 0xFF;
-    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+3] = (moves_count >> (8 * 3)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 1] = (moves_count >> (8 * 1)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 2] = (moves_count >> (8 * 2)) & 0xFF;
+    SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 3] = (moves_count >> (8 * 3)) & 0xFF;
 }
 
 // *****************************************************************************
@@ -296,11 +298,13 @@ int main(void)
 
     error = MXC_SEMA_GetSema(SEMA_IDX_RISCV);
     if (error != E_NO_ERROR) {
-        PRINT("RISC-V: Semaphore is busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_RISCV]);
+        PRINT("RISC-V: Semaphore is busy - with previous value: %d\n\n",
+              MXC_SEMA->semaphores[SEMA_IDX_RISCV]);
         LED_On(LED_RED);
         while (1) {}
     } else {
-        PRINT("RISC-V: Semaphore is not busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_RISCV]);
+        PRINT("RISC-V: Semaphore is not busy - with previous value: %d\n\n",
+              MXC_SEMA->semaphores[SEMA_IDX_RISCV]);
     }
 
     // Initialize mailboxes between ARM and RISCV cores.
@@ -355,7 +359,7 @@ int main(void)
         MXC_SEMA_GetSema(SEMA_IDX_RISCV);
 
         input_direction_t dir = KEYPRESS_INPUT_DIR;
-        
+
         state = Game_2048_UpdateGrid(dir, &new_block_idx_location);
         if (state == true) {
             PRINT("RISC-V: Blocks moved.\n");

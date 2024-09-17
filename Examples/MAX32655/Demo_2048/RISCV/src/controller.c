@@ -16,7 +16,6 @@
  *
  ******************************************************************************/
 
-
 /* **** Includes **** */
 
 #include <stdint.h>
@@ -24,7 +23,6 @@
 #include "uart.h"
 
 /* **** Definitions **** */
-
 
 /* **** Globals **** */
 
@@ -74,5 +72,3 @@ int Controller_Start(mxc_uart_req_t *req)
 
     return E_NO_ERROR;
 }
-
-
