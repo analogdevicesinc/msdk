@@ -113,6 +113,7 @@ void MXC_TFT_ClearScreen(void);
  */
 void MXC_TFT_FillRect(area_t *area, int color);
 
+
 /**
  * @brief      Draws an image that's already been formatted for the
  *              9-bit SPI transactions.
@@ -166,8 +167,7 @@ void MXC_TFT_DrawBitmapInverted(int px_x, int px_y, int width, int height, uint1
  * @param      original_color   16-bit RGB565 color code to be replaced on bitmap.
  * @param      mask             New 16-bit RGB565 color code that replaces the original color.
  */
-void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t *image,
-                            uint16_t original_color, uint16_t mask);
+void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t *image, uint16_t original_color, uint16_t mask);
 
 /**
  * @brief      Draws an inverted color, raw bitmap (RGB565 16-bit color codes) to display with a single RGB565 color replaced
@@ -184,8 +184,7 @@ void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t 
  * @param      original_color   16-bit RGB565 color code to be replaced on bitmap.
  * @param      mask             New 16-bit RGB565 color code that replaces the original color.
  */
-void MXC_TFT_DrawBitmapInvertedMask(int px_x, int px_y, int width, int height, uint16_t *image,
-                                    uint16_t original_color, uint16_t mask);
+void MXC_TFT_DrawBitmapInvertedMask(int px_x, int px_y, int width, int height, uint16_t *image, uint16_t original_color, uint16_t mask);
 
 /**
  * @brief      Draws a single-pixel height, horizontal line.
@@ -229,6 +228,7 @@ void MXC_TFT_DrawRect(int pixelX, int pixelY, int width, int height, uint32_t co
  */
 void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t color);
 
+
 /**
  * @brief      Draws a rectangle with rounded corners.
  *
@@ -240,8 +240,7 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
  * @param      radius           Radius of corners (how much you want rounded off).
  * @param      background_color Formatted color code in two 9-bit packets (not raw 16-bit RGB565 code).
  */
-void MXC_TFT_DrawRoundedRect(int pixelX, int pixelY, int width, int height, uint32_t color,
-                             int radius, uint32_t background_color);
+void MXC_TFT_DrawRoundedRect(int pixelX, int pixelY, int width, int height, uint32_t color, int radius, uint32_t background_color);
 
 /**
  * @brief      Draw a bitmap

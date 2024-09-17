@@ -40,14 +40,19 @@
 
 /* Maximum Transmission Unit (in bytes) of the network, including Ethernet header */
 #ifndef CFG_TUD_NET_MTU
-#define CFG_TUD_NET_MTU 1514
+#define CFG_TUD_NET_MTU           1514
 #endif
 
+
 // Table 4.3 Data Class Interface Protocol Codes
-typedef enum { NCM_DATA_PROTOCOL_NETWORK_TRANSFER_BLOCK = 0x01 } ncm_data_interface_protocol_code_t;
+typedef enum
+{
+  NCM_DATA_PROTOCOL_NETWORK_TRANSFER_BLOCK = 0x01
+} ncm_data_interface_protocol_code_t;
+
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 //--------------------------------------------------------------------+
@@ -85,16 +90,16 @@ extern uint8_t tud_network_mac_address[6];
 //--------------------------------------------------------------------+
 // INTERNAL USBD-CLASS DRIVER API
 //--------------------------------------------------------------------+
-void netd_init(void);
-bool netd_deinit(void);
-void netd_reset(uint8_t rhport);
-uint16_t netd_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len);
-bool netd_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
-bool netd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes);
-void netd_report(uint8_t *buf, uint16_t len);
+void     netd_init            (void);
+bool     netd_deinit          (void);
+void     netd_reset           (uint8_t rhport);
+uint16_t netd_open            (uint8_t rhport, tusb_desc_interface_t const * itf_desc, uint16_t max_len);
+bool     netd_control_xfer_cb (uint8_t rhport, uint8_t stage, tusb_control_request_t const * request);
+bool     netd_xfer_cb         (uint8_t rhport, uint8_t ep_addr, xfer_result_t result, uint32_t xferred_bytes);
+void     netd_report          (uint8_t *buf, uint16_t len);
 
 #ifdef __cplusplus
-}
+ }
 #endif
 
 #endif /* _TUSB_NET_DEVICE_H_ */

@@ -46,7 +46,7 @@ extern "C" {
 
 // mutex is only needed for RTOS
 // for OS None, we don't get preempted
-#define CFG_FIFO_MUTEX OSAL_MUTEX_REQUIRED
+#define CFG_FIFO_MUTEX      OSAL_MUTEX_REQUIRED
 
 /* Write/Read index is always in the range of:
  *      0 .. 2*depth-1
@@ -104,93 +104,92 @@ extern "C" {
  *      | R | 1 | 2 | W | 4 | 5 |
  */
 typedef struct {
-    uint8_t *buffer; // buffer pointer
-    uint16_t depth; // max items
+  uint8_t* buffer          ; // buffer pointer
+  uint16_t depth           ; // max items
 
-    struct TU_ATTR_PACKED {
-        uint16_t item_size : 15; // size of each item
-        bool overwritable : 1; // ovwerwritable when full
-    };
+  struct TU_ATTR_PACKED {
+    uint16_t item_size : 15; // size of each item
+    bool overwritable  : 1 ; // ovwerwritable when full
+  };
 
-    volatile uint16_t wr_idx; // write index
-    volatile uint16_t rd_idx; // read index
+  volatile uint16_t wr_idx ; // write index
+  volatile uint16_t rd_idx ; // read index
 
 #if OSAL_MUTEX_REQUIRED
-    osal_mutex_t mutex_wr;
-    osal_mutex_t mutex_rd;
+  osal_mutex_t mutex_wr;
+  osal_mutex_t mutex_rd;
 #endif
 
 } tu_fifo_t;
 
 typedef struct {
-    uint16_t len_lin; ///< linear length in item size
-    uint16_t len_wrap; ///< wrapped length in item size
-    void *ptr_lin; ///< linear part start pointer
-    void *ptr_wrap; ///< wrapped part start pointer
+  uint16_t len_lin  ; ///< linear length in item size
+  uint16_t len_wrap ; ///< wrapped length in item size
+  void * ptr_lin    ; ///< linear part start pointer
+  void * ptr_wrap   ; ///< wrapped part start pointer
 } tu_fifo_buffer_info_t;
 
-#define TU_FIFO_INIT(_buffer, _depth, _type, _overwritable)             \
-    {                                                                   \
-        .buffer = _buffer, .depth = _depth, .item_size = sizeof(_type), \
-        .overwritable = _overwritable,                                  \
-    }
+#define TU_FIFO_INIT(_buffer, _depth, _type, _overwritable){\
+  .buffer               = _buffer,                          \
+  .depth                = _depth,                           \
+  .item_size            = sizeof(_type),                    \
+  .overwritable         = _overwritable,                    \
+}
 
-#define TU_FIFO_DEF(_name, _depth, _type, _overwritable) \
-    uint8_t _name##_buf[_depth * sizeof(_type)];         \
+#define TU_FIFO_DEF(_name, _depth, _type, _overwritable)                      \
+    uint8_t _name##_buf[_depth*sizeof(_type)];                                \
     tu_fifo_t _name = TU_FIFO_INIT(_name##_buf, _depth, _type, _overwritable)
 
 bool tu_fifo_set_overwritable(tu_fifo_t *f, bool overwritable);
 bool tu_fifo_clear(tu_fifo_t *f);
-bool tu_fifo_config(tu_fifo_t *f, void *buffer, uint16_t depth, uint16_t item_size,
-                    bool overwritable);
+bool tu_fifo_config(tu_fifo_t *f, void* buffer, uint16_t depth, uint16_t item_size, bool overwritable);
 
 #if OSAL_MUTEX_REQUIRED
-TU_ATTR_ALWAYS_INLINE static inline void tu_fifo_config_mutex(tu_fifo_t *f, osal_mutex_t wr_mutex,
-                                                              osal_mutex_t rd_mutex)
-{
-    f->mutex_wr = wr_mutex;
-    f->mutex_rd = rd_mutex;
+TU_ATTR_ALWAYS_INLINE static inline
+void tu_fifo_config_mutex(tu_fifo_t *f, osal_mutex_t wr_mutex, osal_mutex_t rd_mutex) {
+  f->mutex_wr = wr_mutex;
+  f->mutex_rd = rd_mutex;
 }
 #else
 #define tu_fifo_config_mutex(_f, _wr_mutex, _rd_mutex)
 #endif
 
-bool tu_fifo_write(tu_fifo_t *f, void const *p_data);
-uint16_t tu_fifo_write_n(tu_fifo_t *f, void const *p_data, uint16_t n);
+bool     tu_fifo_write                  (tu_fifo_t* f, void const * p_data);
+uint16_t tu_fifo_write_n                (tu_fifo_t* f, void const * p_data, uint16_t n);
 #ifdef TUP_MEM_CONST_ADDR
-uint16_t tu_fifo_write_n_const_addr_full_words(tu_fifo_t *f, const void *data, uint16_t n);
+uint16_t tu_fifo_write_n_const_addr_full_words    (tu_fifo_t* f, const void * data, uint16_t n);
 #endif
 
-bool tu_fifo_read(tu_fifo_t *f, void *p_buffer);
-uint16_t tu_fifo_read_n(tu_fifo_t *f, void *p_buffer, uint16_t n);
+bool     tu_fifo_read                   (tu_fifo_t* f, void * p_buffer);
+uint16_t tu_fifo_read_n                 (tu_fifo_t* f, void * p_buffer, uint16_t n);
 #ifdef TUP_MEM_CONST_ADDR
-uint16_t tu_fifo_read_n_const_addr_full_words(tu_fifo_t *f, void *buffer, uint16_t n);
+uint16_t tu_fifo_read_n_const_addr_full_words     (tu_fifo_t* f, void * buffer, uint16_t n);
 #endif
 
-bool tu_fifo_peek(tu_fifo_t *f, void *p_buffer);
-uint16_t tu_fifo_peek_n(tu_fifo_t *f, void *p_buffer, uint16_t n);
+bool     tu_fifo_peek                   (tu_fifo_t* f, void * p_buffer);
+uint16_t tu_fifo_peek_n                 (tu_fifo_t* f, void * p_buffer, uint16_t n);
 
-uint16_t tu_fifo_count(tu_fifo_t *f);
-uint16_t tu_fifo_remaining(tu_fifo_t *f);
-bool tu_fifo_empty(tu_fifo_t *f);
-bool tu_fifo_full(tu_fifo_t *f);
-bool tu_fifo_overflowed(tu_fifo_t *f);
-void tu_fifo_correct_read_pointer(tu_fifo_t *f);
+uint16_t tu_fifo_count                  (tu_fifo_t* f);
+uint16_t tu_fifo_remaining              (tu_fifo_t* f);
+bool     tu_fifo_empty                  (tu_fifo_t* f);
+bool     tu_fifo_full                   (tu_fifo_t* f);
+bool     tu_fifo_overflowed             (tu_fifo_t* f);
+void     tu_fifo_correct_read_pointer   (tu_fifo_t* f);
 
-TU_ATTR_ALWAYS_INLINE static inline uint16_t tu_fifo_depth(tu_fifo_t *f)
-{
-    return f->depth;
+TU_ATTR_ALWAYS_INLINE static inline
+uint16_t tu_fifo_depth(tu_fifo_t* f) {
+  return f->depth;
 }
 
 // Pointer modifications intended to be used in combinations with DMAs.
 // USE WITH CARE - NO SAFETY CHECKS CONDUCTED HERE! NOT MUTEX PROTECTED!
 void tu_fifo_advance_write_pointer(tu_fifo_t *f, uint16_t n);
-void tu_fifo_advance_read_pointer(tu_fifo_t *f, uint16_t n);
+void tu_fifo_advance_read_pointer (tu_fifo_t *f, uint16_t n);
 
 // If you want to read/write from/to the FIFO by use of a DMA, you may need to conduct two copies
 // to handle a possible wrapping part. These functions deliver a pointer to start
 // reading/writing from/to and a valid linear length along which no wrap occurs.
-void tu_fifo_get_read_info(tu_fifo_t *f, tu_fifo_buffer_info_t *info);
+void tu_fifo_get_read_info (tu_fifo_t *f, tu_fifo_buffer_info_t *info);
 void tu_fifo_get_write_info(tu_fifo_t *f, tu_fifo_buffer_info_t *info);
 
 #ifdef __cplusplus

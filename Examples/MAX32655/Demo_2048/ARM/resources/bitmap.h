@@ -14,7 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- ******************************************************************************/
+ ******************************************************************************/																     
+
 
 #ifndef EXAMPLES_MAX32655_DEMO_2048_ARM_RESOURCES_BITMAP_H_
 #define EXAMPLES_MAX32655_DEMO_2048_ARM_RESOURCES_BITMAP_H_
@@ -22,9 +23,10 @@
 // bitmaps id
 
 // fonts id
-#define urw_gothic_12_grey_bg_white 0
-#define urw_gothic_12_white_bg_grey 1
-#define urw_gothic_13_grey_bg_white 2
-#define urw_gothic_13_white_bg_grey 3
+#define    urw_gothic_12_grey_bg_white                        0
+#define    urw_gothic_12_white_bg_grey                        1
+#define    urw_gothic_13_grey_bg_white                        2
+#define    urw_gothic_13_white_bg_grey                        3
+
 
 #endif // EXAMPLES_MAX32655_DEMO_2048_ARM_RESOURCES_BITMAP_H_

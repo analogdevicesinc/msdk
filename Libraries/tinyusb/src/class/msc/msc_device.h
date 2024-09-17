@@ -31,7 +31,7 @@
 #include "msc.h"
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 //--------------------------------------------------------------------+
@@ -39,13 +39,13 @@ extern "C" {
 //--------------------------------------------------------------------+
 
 #if !defined(CFG_TUD_MSC_EP_BUFSIZE) & defined(CFG_TUD_MSC_BUFSIZE)
-// TODO warn user to use new name later on
-// #warning CFG_TUD_MSC_BUFSIZE is renamed to CFG_TUD_MSC_EP_BUFSIZE, please update to use the new name
-#define CFG_TUD_MSC_EP_BUFSIZE CFG_TUD_MSC_BUFSIZE
+  // TODO warn user to use new name later on
+  // #warning CFG_TUD_MSC_BUFSIZE is renamed to CFG_TUD_MSC_EP_BUFSIZE, please update to use the new name
+  #define CFG_TUD_MSC_EP_BUFSIZE  CFG_TUD_MSC_BUFSIZE
 #endif
 
 #ifndef CFG_TUD_MSC_EP_BUFSIZE
-#error CFG_TUD_MSC_EP_BUFSIZE must be defined, value of a block size should work well, the more the better
+  #error CFG_TUD_MSC_EP_BUFSIZE must be defined, value of a block size should work well, the more the better
 #endif
 
 TU_VERIFY_STATIC(CFG_TUD_MSC_EP_BUFSIZE < UINT16_MAX, "Size is not correct");
@@ -55,8 +55,7 @@ TU_VERIFY_STATIC(CFG_TUD_MSC_EP_BUFSIZE < UINT16_MAX, "Size is not correct");
 //--------------------------------------------------------------------+
 
 // Set SCSI sense response
-bool tud_msc_set_sense(uint8_t lun, uint8_t sense_key, uint8_t add_sense_code,
-                       uint8_t add_sense_qualifier);
+bool tud_msc_set_sense(uint8_t lun, uint8_t sense_key, uint8_t add_sense_code, uint8_t add_sense_qualifier);
 
 //--------------------------------------------------------------------+
 // Application Callbacks (WEAK is optional)
@@ -74,8 +73,7 @@ bool tud_msc_set_sense(uint8_t lun, uint8_t sense_key, uint8_t add_sense_code,
 //
 //   - read < 0       : Indicate application error e.g invalid address. This request will be STALLed
 //                      and return failed status in command status wrapper phase.
-int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void *buffer,
-                          uint32_t bufsize);
+int32_t tud_msc_read10_cb (uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize);
 
 // Invoked when received SCSI WRITE10 command
 // - Address = lba * BLOCK_SIZE + offset
@@ -91,13 +89,11 @@ int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void *buff
 //                       and return failed status in command status wrapper phase.
 //
 // TODO change buffer to const uint8_t*
-int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t *buffer,
-                           uint32_t bufsize);
+int32_t tud_msc_write10_cb (uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize);
 
 // Invoked when received SCSI_CMD_INQUIRY
 // Application fill vendor id, product id and revision with string up to 8, 16, 4 characters respectively
-void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16],
-                        uint8_t product_rev[4]);
+void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]);
 
 // Invoked when received Test Unit Ready command.
 // return true allowing host to read/write this LUN e.g SD card inserted
@@ -105,7 +101,7 @@ bool tud_msc_test_unit_ready_cb(uint8_t lun);
 
 // Invoked when received SCSI_CMD_READ_CAPACITY_10 and SCSI_CMD_READ_FORMAT_CAPACITY to determine the disk size
 // Application update block count and block size
-void tud_msc_capacity_cb(uint8_t lun, uint32_t *block_count, uint16_t *block_size);
+void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size);
 
 /**
  * Invoked when received an SCSI command not in built-in list below.
@@ -123,7 +119,7 @@ void tud_msc_capacity_cb(uint8_t lun, uint32_t *block_count, uint16_t *block_siz
  * \retval      negative    Indicate error e.g unsupported command, tinyusb will \b STALL the corresponding
  *                          endpoint and return failed status in command status wrapper phase.
  */
-int32_t tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void *buffer, uint16_t bufsize);
+int32_t tud_msc_scsi_cb (uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize);
 
 /*------------- Optional callbacks -------------*/
 
@@ -133,15 +129,13 @@ TU_ATTR_WEAK uint8_t tud_msc_get_maxlun_cb(void);
 // Invoked when received Start Stop Unit command
 // - Start = 0 : stopped power mode, if load_eject = 1 : unload disk storage
 // - Start = 1 : active mode, if load_eject = 1 : load disk storage
-TU_ATTR_WEAK bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start,
-                                        bool load_eject);
+TU_ATTR_WEAK bool tud_msc_start_stop_cb(uint8_t lun, uint8_t power_condition, bool start, bool load_eject);
 
 //Invoked when we receive the Prevent / Allow Medium Removal command
-TU_ATTR_WEAK bool tud_msc_prevent_allow_medium_removal_cb(uint8_t lun, uint8_t prohibit_removal,
-                                                          uint8_t control);
+TU_ATTR_WEAK bool tud_msc_prevent_allow_medium_removal_cb(uint8_t lun, uint8_t prohibit_removal, uint8_t control);
 
 // Invoked when received REQUEST_SENSE
-TU_ATTR_WEAK int32_t tud_msc_request_sense_cb(uint8_t lun, void *buffer, uint16_t bufsize);
+TU_ATTR_WEAK int32_t tud_msc_request_sense_cb(uint8_t lun, void* buffer, uint16_t bufsize);
 
 // Invoked when Read10 command is complete
 TU_ATTR_WEAK void tud_msc_read10_complete_cb(uint8_t lun);
@@ -158,15 +152,15 @@ TU_ATTR_WEAK bool tud_msc_is_writable_cb(uint8_t lun);
 //--------------------------------------------------------------------+
 // Internal Class Driver API
 //--------------------------------------------------------------------+
-void mscd_init(void);
-bool mscd_deinit(void);
-void mscd_reset(uint8_t rhport);
-uint16_t mscd_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len);
-bool mscd_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *p_request);
-bool mscd_xfer_cb(uint8_t rhport, uint8_t ep_addr, xfer_result_t event, uint32_t xferred_bytes);
+void     mscd_init            (void);
+bool     mscd_deinit          (void);
+void     mscd_reset           (uint8_t rhport);
+uint16_t mscd_open            (uint8_t rhport, tusb_desc_interface_t const * itf_desc, uint16_t max_len);
+bool     mscd_control_xfer_cb (uint8_t rhport, uint8_t stage, tusb_control_request_t const * p_request);
+bool     mscd_xfer_cb         (uint8_t rhport, uint8_t ep_addr, xfer_result_t event, uint32_t xferred_bytes);
 
 #ifdef __cplusplus
-}
+ }
 #endif
 
 #endif /* _TUSB_MSC_DEVICE_H_ */

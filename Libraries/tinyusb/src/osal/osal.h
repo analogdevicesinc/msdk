@@ -28,47 +28,45 @@
 #define _TUSB_OSAL_H_
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 #include "common/tusb_common.h"
 
-typedef void (*osal_task_func_t)(void *);
+typedef void (*osal_task_func_t)( void * );
 
 // Timeout
-#define OSAL_TIMEOUT_NOTIMEOUT (0) // Return immediately
-#define OSAL_TIMEOUT_NORMAL (10) // Default timeout
-#define OSAL_TIMEOUT_WAIT_FOREVER (UINT32_MAX) // Wait forever
-#define OSAL_TIMEOUT_CONTROL_XFER OSAL_TIMEOUT_WAIT_FOREVER
+#define OSAL_TIMEOUT_NOTIMEOUT     (0)          // Return immediately
+#define OSAL_TIMEOUT_NORMAL        (10)         // Default timeout
+#define OSAL_TIMEOUT_WAIT_FOREVER  (UINT32_MAX) // Wait forever
+#define OSAL_TIMEOUT_CONTROL_XFER  OSAL_TIMEOUT_WAIT_FOREVER
 
 // Mutex is required when using a preempted RTOS or MCU has multiple cores
 #if (CFG_TUSB_OS == OPT_OS_NONE) && !TUP_MCU_MULTIPLE_CORE
-#define OSAL_MUTEX_REQUIRED 0
-#define OSAL_MUTEX_DEF(_name) \
-uint8_t:                      \
-    0
+  #define OSAL_MUTEX_REQUIRED   0
+  #define OSAL_MUTEX_DEF(_name) uint8_t :0
 #else
-#define OSAL_MUTEX_REQUIRED 1
-#define OSAL_MUTEX_DEF(_name) osal_mutex_def_t _name
+  #define OSAL_MUTEX_REQUIRED   1
+  #define OSAL_MUTEX_DEF(_name) osal_mutex_def_t _name
 #endif
 
 // OS thin implementation
 #if CFG_TUSB_OS == OPT_OS_NONE
-#include "osal_none.h"
+  #include "osal_none.h"
 #elif CFG_TUSB_OS == OPT_OS_FREERTOS
-#include "osal_freertos.h"
+  #include "osal_freertos.h"
 #elif CFG_TUSB_OS == OPT_OS_MYNEWT
-#include "osal_mynewt.h"
+  #include "osal_mynewt.h"
 #elif CFG_TUSB_OS == OPT_OS_PICO
-#include "osal_pico.h"
+  #include "osal_pico.h"
 #elif CFG_TUSB_OS == OPT_OS_RTTHREAD
-#include "osal_rtthread.h"
+  #include "osal_rtthread.h"
 #elif CFG_TUSB_OS == OPT_OS_RTX4
-#include "osal_rtx4.h"
+  #include "osal_rtx4.h"
 #elif CFG_TUSB_OS == OPT_OS_CUSTOM
-#include "tusb_os_custom.h" // implemented by application
+  #include "tusb_os_custom.h" // implemented by application
 #else
-#error OS is not supported yet
+  #error OS is not supported yet
 #endif
 
 //--------------------------------------------------------------------+
@@ -95,7 +93,7 @@ uint8_t:                      \
 //--------------------------------------------------------------------+
 
 #ifdef __cplusplus
-}
+ }
 #endif
 
 #endif /* _TUSB_OSAL_H_ */

@@ -27,7 +27,7 @@
 #define _TUSB_CONFIG_H_
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 // board_test example is special example that doesn't enable device or host stack
@@ -41,21 +41,21 @@ extern "C" {
 
 // defined by compiler flags for flexibility
 #ifndef CFG_TUSB_MCU
-#error CFG_TUSB_MCU must be defined
+  #error CFG_TUSB_MCU must be defined
 #endif
 
 #ifndef CFG_TUSB_OS
-#define CFG_TUSB_OS OPT_OS_NONE
+  #define CFG_TUSB_OS               OPT_OS_NONE
 #endif
 
 // Espressif IDF requires "freertos/" prefix in include path
 #if TUP_MCU_ESPRESSIF
-#define CFG_TUSB_OS_INC_PATH freertos /
+#define CFG_TUSB_OS_INC_PATH  freertos/
 #endif
 
 // This example only test LED & GPIO, disable both device and host stack
-#define CFG_TUD_ENABLED 0
-#define CFG_TUH_ENABLED 0
+#define CFG_TUD_ENABLED   0
+#define CFG_TUH_ENABLED   0
 
 // CFG_TUSB_DEBUG is defined by compiler in DEBUG build
 // #define CFG_TUSB_DEBUG           0
@@ -72,11 +72,11 @@ extern "C" {
 #endif
 
 #ifndef CFG_TUSB_MEM_ALIGN
-#define CFG_TUSB_MEM_ALIGN __attribute__((aligned(4)))
+#define CFG_TUSB_MEM_ALIGN          __attribute__ ((aligned(4)))
 #endif
 
 #ifdef __cplusplus
-}
+ }
 #endif
 
 #endif /* _TUSB_CONFIG_H_ */

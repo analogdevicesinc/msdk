@@ -29,19 +29,19 @@
 #define TU_FTDI_VID 0x0403
 
 // Commands
-#define FTDI_SIO_RESET 0 /* Reset the port */
-#define FTDI_SIO_MODEM_CTRL 1 /* Set the modem control register */
-#define FTDI_SIO_SET_FLOW_CTRL 2 /* Set flow control register */
-#define FTDI_SIO_SET_BAUD_RATE 3 /* Set baud rate */
-#define FTDI_SIO_SET_DATA 4 /* Set the data characteristics of the port */
-#define FTDI_SIO_GET_MODEM_STATUS 5 /* Retrieve current value of modem status register */
-#define FTDI_SIO_SET_EVENT_CHAR 6 /* Set the event character */
-#define FTDI_SIO_SET_ERROR_CHAR 7 /* Set the error character */
-#define FTDI_SIO_SET_LATENCY_TIMER 9 /* Set the latency timer */
-#define FTDI_SIO_GET_LATENCY_TIMER 0x0a /* Get the latency timer */
-#define FTDI_SIO_SET_BITMODE 0x0b /* Set bitbang mode */
-#define FTDI_SIO_READ_PINS 0x0c /* Read immediate value of pins */
-#define FTDI_SIO_READ_EEPROM 0x90 /* Read EEPROM */
+#define FTDI_SIO_RESET             	0    /* Reset the port */
+#define FTDI_SIO_MODEM_CTRL        	1    /* Set the modem control register */
+#define FTDI_SIO_SET_FLOW_CTRL     	2    /* Set flow control register */
+#define FTDI_SIO_SET_BAUD_RATE     	3    /* Set baud rate */
+#define FTDI_SIO_SET_DATA          	4    /* Set the data characteristics of the port */
+#define FTDI_SIO_GET_MODEM_STATUS  	5    /* Retrieve current value of modem status register */
+#define FTDI_SIO_SET_EVENT_CHAR    	6    /* Set the event character */
+#define FTDI_SIO_SET_ERROR_CHAR    	7    /* Set the error character */
+#define FTDI_SIO_SET_LATENCY_TIMER 	9    /* Set the latency timer */
+#define FTDI_SIO_GET_LATENCY_TIMER 	0x0a /* Get the latency timer */
+#define FTDI_SIO_SET_BITMODE       	0x0b /* Set bitbang mode */
+#define FTDI_SIO_READ_PINS         	0x0c /* Read immediate value of pins */
+#define FTDI_SIO_READ_EEPROM       	0x90 /* Read EEPROM */
 
 /* FTDI_SIO_RESET */
 #define FTDI_SIO_RESET_SIO 0
@@ -90,10 +90,10 @@
 
 #define FTDI_SIO_SET_DTR_MASK 0x1
 #define FTDI_SIO_SET_DTR_HIGH ((FTDI_SIO_SET_DTR_MASK << 8) | 1)
-#define FTDI_SIO_SET_DTR_LOW ((FTDI_SIO_SET_DTR_MASK << 8) | 0)
+#define FTDI_SIO_SET_DTR_LOW  ((FTDI_SIO_SET_DTR_MASK << 8) | 0)
 #define FTDI_SIO_SET_RTS_MASK 0x2
 #define FTDI_SIO_SET_RTS_HIGH ((FTDI_SIO_SET_RTS_MASK << 8) | 2)
-#define FTDI_SIO_SET_RTS_LOW ((FTDI_SIO_SET_RTS_MASK << 8) | 0)
+#define FTDI_SIO_SET_RTS_LOW  ((FTDI_SIO_SET_RTS_MASK << 8) | 0)
 
 /*
  * ControlValue
@@ -156,15 +156,15 @@
  */
 
 /* FTDI_SIO_SET_DATA */
-#define FTDI_SIO_SET_DATA_PARITY_NONE (0x0 << 8)
-#define FTDI_SIO_SET_DATA_PARITY_ODD (0x1 << 8)
-#define FTDI_SIO_SET_DATA_PARITY_EVEN (0x2 << 8)
-#define FTDI_SIO_SET_DATA_PARITY_MARK (0x3 << 8)
-#define FTDI_SIO_SET_DATA_PARITY_SPACE (0x4 << 8)
-#define FTDI_SIO_SET_DATA_STOP_BITS_1 (0x0 << 11)
-#define FTDI_SIO_SET_DATA_STOP_BITS_15 (0x1 << 11)
-#define FTDI_SIO_SET_DATA_STOP_BITS_2 (0x2 << 11)
-#define FTDI_SIO_SET_BREAK (0x1 << 14)
+#define FTDI_SIO_SET_DATA_PARITY_NONE	(0x0 << 8)
+#define FTDI_SIO_SET_DATA_PARITY_ODD	(0x1 << 8)
+#define FTDI_SIO_SET_DATA_PARITY_EVEN	(0x2 << 8)
+#define FTDI_SIO_SET_DATA_PARITY_MARK	(0x3 << 8)
+#define FTDI_SIO_SET_DATA_PARITY_SPACE	(0x4 << 8)
+#define FTDI_SIO_SET_DATA_STOP_BITS_1	(0x0 << 11)
+#define FTDI_SIO_SET_DATA_STOP_BITS_15	(0x1 << 11)
+#define FTDI_SIO_SET_DATA_STOP_BITS_2	(0x2 << 11)
+#define FTDI_SIO_SET_BREAK		(0x1 << 14)
 
 /*
  * BmRequestType:  0100 0000B
@@ -229,18 +229,18 @@
 * B7	Error in RCVR FIFO
 *
 */
-#define FTDI_RS0_CTS (1 << 4)
-#define FTDI_RS0_DSR (1 << 5)
-#define FTDI_RS0_RI (1 << 6)
-#define FTDI_RS0_RLSD (1 << 7)
+#define FTDI_RS0_CTS	(1 << 4)
+#define FTDI_RS0_DSR	(1 << 5)
+#define FTDI_RS0_RI	(1 << 6)
+#define FTDI_RS0_RLSD	(1 << 7)
 
-#define FTDI_RS_DR 1
-#define FTDI_RS_OE (1 << 1)
-#define FTDI_RS_PE (1 << 2)
-#define FTDI_RS_FE (1 << 3)
-#define FTDI_RS_BI (1 << 4)
-#define FTDI_RS_THRE (1 << 5)
-#define FTDI_RS_TEMT (1 << 6)
-#define FTDI_RS_FIFO (1 << 7)
+#define FTDI_RS_DR	1
+#define FTDI_RS_OE	(1<<1)
+#define FTDI_RS_PE	(1<<2)
+#define FTDI_RS_FE	(1<<3)
+#define FTDI_RS_BI	(1<<4)
+#define FTDI_RS_THRE	(1<<5)
+#define FTDI_RS_TEMT	(1<<6)
+#define FTDI_RS_FIFO	(1<<7)
 
 #endif //TUSB_FTDI_SIO_H

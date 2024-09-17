@@ -1261,12 +1261,11 @@ void MXC_TFT_DrawBitmap(int px_x, int px_y, int width, int height, uint16_t *ima
 
     displaySub(area->x, area->y, w, h);
 
-    int i = 0;
+    int i  = 0;
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++) {
             // g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF) << 16) | (uint32_t)((image[i] & 0xFF00) >> 8));
-            g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF)) |
-                         (uint32_t)((image[i] & 0xFF00) << 8));
+            g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF)) | (uint32_t)((image[i] & 0xFF00) << 8));
             spi_transmit((uint16_t *)g_fifo, 2);
             i += 1;
         }
@@ -1302,11 +1301,10 @@ void MXC_TFT_DrawBitmapInverted(int px_x, int px_y, int width, int height, uint1
 
     displaySub(area->x, area->y, w, h);
 
-    int i = 0;
+    int i  = 0;
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++) {
-            g_fifo[0] = (0x01000100 | ((uint32_t)(~image[i] & 0x00FF) << 16) |
-                         (uint32_t)((~image[i] & 0xFF00) >> 8));
+            g_fifo[0] = (0x01000100 | ((uint32_t)(~image[i] & 0x00FF) << 16) | (uint32_t)((~image[i] & 0xFF00) >> 8));
             spi_transmit((uint16_t *)g_fifo, 2);
             i += 1;
         }
@@ -1315,8 +1313,7 @@ void MXC_TFT_DrawBitmapInverted(int px_x, int px_y, int width, int height, uint1
     __enable_irq();
 }
 
-void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t *image,
-                            uint16_t original_color, uint16_t mask)
+void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t *image, uint16_t original_color, uint16_t mask)
 {
     area_t _area;
     area_t *area;
@@ -1343,15 +1340,13 @@ void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t 
 
     displaySub(area->x, area->y, w, h);
 
-    int i = 0;
+    int i  = 0;
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++) {
             if (image[i] == original_color) {
-                g_fifo[0] = (0x01000100 | ((uint32_t)(mask & 0x00FF) << 16) |
-                             (uint32_t)((mask & 0xFF00) >> 8));
+                g_fifo[0] = (0x01000100 | ((uint32_t)(mask & 0x00FF) << 16) | (uint32_t)((mask & 0xFF00) >> 8));
             } else {
-                g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF) << 16) |
-                             (uint32_t)((image[i] & 0xFF00) >> 8));
+                g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF) << 16) | (uint32_t)((image[i] & 0xFF00) >> 8));
             }
             spi_transmit((uint16_t *)g_fifo, 2);
             i += 1;
@@ -1361,8 +1356,7 @@ void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t 
     __enable_irq();
 }
 
-void MXC_TFT_DrawBitmapInvertedMask(int px_x, int px_y, int width, int height, uint16_t *image,
-                                    uint16_t original_color, uint16_t mask)
+void MXC_TFT_DrawBitmapInvertedMask(int px_x, int px_y, int width, int height, uint16_t *image, uint16_t original_color, uint16_t mask)
 {
     area_t _area;
     area_t *area;
@@ -1389,15 +1383,13 @@ void MXC_TFT_DrawBitmapInvertedMask(int px_x, int px_y, int width, int height, u
 
     displaySub(area->x, area->y, w, h);
 
-    int i = 0;
+    int i  = 0;
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++) {
             if (image[i] == original_color) {
-                g_fifo[0] = (0x01000100 | ((uint32_t)(mask & 0x00FF) << 16) |
-                             (uint32_t)((mask & 0xFF00) >> 8));
+                g_fifo[0] = (0x01000100 | ((uint32_t)(mask & 0x00FF) << 16) | (uint32_t)((mask & 0xFF00) >> 8));
             } else {
-                g_fifo[0] = (0x01000100 | ((uint32_t)(~image[i] & 0x00FF) << 16) |
-                             (uint32_t)((~image[i] & 0xFF00) >> 8));
+                g_fifo[0] = (0x01000100 | ((uint32_t)(~image[i] & 0x00FF) << 16) | (uint32_t)((~image[i] & 0xFF00) >> 8));
             }
             spi_transmit((uint16_t *)g_fifo, 2);
             i += 1;
@@ -1604,8 +1596,7 @@ void MXC_TFT_PrintPalette(void)
     }
 }
 
-void MXC_TFT_DrawRoundedRect(int pixelX, int pixelY, int width, int height, uint32_t color,
-                             int radius, uint32_t background_color)
+void MXC_TFT_DrawRoundedRect(int pixelX, int pixelY, int width, int height, uint32_t color, int radius, uint32_t background_color)
 {
     area_t _area;
     area_t *area;

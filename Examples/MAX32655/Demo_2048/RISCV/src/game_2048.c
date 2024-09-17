@@ -35,12 +35,8 @@
 #define PRINT(...)
 #endif
 
-#define COLUMN_SUM(col)                                                          \
-    ((MAIN_2048_GRID[0][col] + MAIN_2048_GRID[1][col] + MAIN_2048_GRID[2][col] + \
-      MAIN_2048_GRID[3][col]))
-#define ROW_SUM(row)                                                             \
-    ((MAIN_2048_GRID[row][0] + MAIN_2048_GRID[row][1] + MAIN_2048_GRID[row][2] + \
-      MAIN_2048_GRID[row][3]))
+#define COLUMN_SUM(col)     ((MAIN_2048_GRID[0][col] + MAIN_2048_GRID[1][col] + MAIN_2048_GRID[2][col] + MAIN_2048_GRID[3][col]))
+#define ROW_SUM(row)        ((MAIN_2048_GRID[row][0] + MAIN_2048_GRID[row][1] + MAIN_2048_GRID[row][2] + MAIN_2048_GRID[row][3]))
 
 /* **** Globals **** */
 
@@ -91,7 +87,7 @@ static bool add_new_block(bool is_init, uint8_t *new_block_1D_idx_location)
         //  Add more weight to 2.
         if (MXC_TRNG_RandomInt() % 3) { // 1 or 2
             block_2_or_4 = 2;
-        } else { // 0
+        } else {    // 0
             block_2_or_4 = 4;
         }
     }
@@ -110,7 +106,7 @@ static bool add_new_block(bool is_init, uint8_t *new_block_1D_idx_location)
     //      ---|---|---|---             ------|-------|-------|------
     //       c | d | e | f              (3,0) | (3,1) | (3,2) | (3,3)
     for (int i = 0; i < 16; i++) {
-        if (MAIN_2048_GRID[i / 4][i % 4] == 0) {
+        if (MAIN_2048_GRID[i/4][i%4] == 0) {
             available_open_spaces += 1;
         }
     }
@@ -190,8 +186,8 @@ inline static bool row_logic_left(void)
             continue;
         }
 
-        uint32_t prev_row[4] = { 0 };
-        uint32_t temp_row[4] = { 0 };
+        uint32_t prev_row[4] = {0};
+        uint32_t temp_row[4] = {0};
         int temp_col_num = 0; // Also tracks how many valid blocks there are in a row.
 
         // Get all valid blocks in column to help with same-value pair logic.
@@ -294,8 +290,8 @@ inline static bool row_logic_right(void)
             continue;
         }
 
-        uint32_t prev_row[4] = { 0 };
-        uint32_t temp_row[4] = { 0 };
+        uint32_t prev_row[4] = {0};
+        uint32_t temp_row[4] = {0};
         int temp_col_num = 0; // Also tracks how many valid blocks there are in a row.
 
         // Get all valid blocks to help with same-value pair logic.
@@ -399,8 +395,8 @@ inline static bool column_logic_up(void)
             continue;
         }
 
-        uint32_t prev_col[4] = { 0 };
-        uint32_t temp_column[4] = { 0 };
+        uint32_t prev_col[4] = {0};
+        uint32_t temp_column[4] = {0};
         int temp_row_num = 0; // Also tracks how many valid blocks there are.
 
         // Get all valid blocks to help with same-value pair logic.
@@ -502,8 +498,8 @@ static bool column_logic_down(void)
             continue;
         }
 
-        uint32_t prev_col[4] = { 0 };
-        uint32_t temp_column[4] = { 0 };
+        uint32_t prev_col[4] = {0};
+        uint32_t temp_column[4] = {0};
         int temp_row_num = 0; // Also tracks how many valid blocks there are in column.
 
         // Get all valid blocks to help with same-value pair logic.
@@ -617,7 +613,7 @@ game_state_t Game_2048_CheckState(void)
         // Check if a row has same value pair.
         for (int r = 0; r < 4; r++) {
             for (int c = 0; c < 3; c++) {
-                if (MAIN_2048_GRID[r][c] == MAIN_2048_GRID[r][c + 1]) {
+                if (MAIN_2048_GRID[r][c] == MAIN_2048_GRID[r][c+1]) {
                     return IN_PROGRESS;
                 }
             }
@@ -626,7 +622,7 @@ game_state_t Game_2048_CheckState(void)
         // Check if a column has a same-value pair.
         for (int c = 0; c < 4; c++) {
             for (int r = 0; r < 3; r++) {
-                if (MAIN_2048_GRID[r][c] == MAIN_2048_GRID[r + 1][c]) {
+                if (MAIN_2048_GRID[r][c] == MAIN_2048_GRID[r+1][c]) {
                     return IN_PROGRESS;
                 }
             }
@@ -651,30 +647,30 @@ bool Game_2048_UpdateGrid(input_direction_t direction, uint8_t *new_block_1D_idx
     }
 
     // Run main game logic.
-    switch (direction) {
-    case INPUT_UP:
-        printf("UP\n");
-        blocks_moved = column_logic_up();
-        break;
+    switch(direction) {
+        case INPUT_UP:
+            printf("UP\n");
+            blocks_moved = column_logic_up();
+            break;
 
-    case INPUT_DOWN:
-        printf("DOWN\n");
-        blocks_moved = column_logic_down();
-        break;
+        case INPUT_DOWN:
+            printf("DOWN\n");
+            blocks_moved = column_logic_down();
+            break;
 
-    case INPUT_LEFT:
-        printf("LEFT\n");
-        blocks_moved = row_logic_left();
-        break;
+        case INPUT_LEFT:
+            printf("LEFT\n");
+            blocks_moved = row_logic_left();
+            break;
 
-    case INPUT_RIGHT:
-        printf("RIGHT\n");
-        blocks_moved = row_logic_right();
-        break;
+        case INPUT_RIGHT:
+            printf("RIGHT\n");
+            blocks_moved = row_logic_right();
+            break;
 
-    // Should never reach here.
-    default:
-        return false;
+        // Should never reach here.
+        default:
+            return false;
     }
 
     // Once the main game logic is done, insert a new block.

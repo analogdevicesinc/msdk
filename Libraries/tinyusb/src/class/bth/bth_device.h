@@ -34,11 +34,11 @@
 // Class Driver Configuration
 //--------------------------------------------------------------------+
 #ifndef CFG_TUD_BTH_EVENT_EPSIZE
-#define CFG_TUD_BTH_EVENT_EPSIZE 16
+#define CFG_TUD_BTH_EVENT_EPSIZE     16
 #endif
 
 #ifndef CFG_TUD_BTH_DATA_EPSIZE
-#define CFG_TUD_BTH_DATA_EPSIZE 64
+#define CFG_TUD_BTH_DATA_EPSIZE      64
 #endif
 
 // Allow BTH class to work in historically compatibility mode where the bRequest is always 0xe0.
@@ -47,14 +47,15 @@
 #define CFG_TUD_BTH_HISTORICAL_COMPATIBLE 0
 #endif
 
-typedef struct TU_ATTR_PACKED {
-    uint16_t op_code;
-    uint8_t param_length;
-    uint8_t param[255];
+typedef struct TU_ATTR_PACKED
+{
+  uint16_t op_code;
+  uint8_t param_length;
+  uint8_t param[255];
 } bt_hci_cmd_t;
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 //--------------------------------------------------------------------+
@@ -102,15 +103,15 @@ bool tud_bt_acl_data_send(void *acl_data, uint16_t data_len);
 //--------------------------------------------------------------------+
 // Internal Class Driver API
 //--------------------------------------------------------------------+
-void btd_init(void);
-bool btd_deinit(void);
-void btd_reset(uint8_t rhport);
-uint16_t btd_open(uint8_t rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len);
-bool btd_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
-bool btd_xfer_cb(uint8_t rhport, uint8_t edpt_addr, xfer_result_t result, uint32_t xferred_bytes);
+void     btd_init            (void);
+bool     btd_deinit          (void);
+void     btd_reset           (uint8_t rhport);
+uint16_t btd_open            (uint8_t rhport, tusb_desc_interface_t const * itf_desc, uint16_t max_len);
+bool     btd_control_xfer_cb (uint8_t rhport, uint8_t stage, tusb_control_request_t const *request);
+bool     btd_xfer_cb         (uint8_t rhport, uint8_t edpt_addr, xfer_result_t result, uint32_t xferred_bytes);
 
 #ifdef __cplusplus
-}
+ }
 #endif
 
 #endif /* _TUSB_BTH_DEVICE_H_ */

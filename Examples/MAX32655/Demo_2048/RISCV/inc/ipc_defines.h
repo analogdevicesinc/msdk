@@ -49,13 +49,12 @@ typedef struct {
 #endif
 } mxcSemaBox_t;
 
-#define MAILBOX_MAIN_GRID_IDX (0) // Main grid indexes are from 0 to (16 blocks * 4 bytes) - 1.
-#define MAILBOX_MAIN_GRID_STATE_IDX \
-    (4 * 16) // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
-#define MAILBOX_KEYPRESS_IDX ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
-#define MAILBOX_IF_BLOCK_MOVED_IDX (MAILBOX_KEYPRESS_IDX + 1)
-#define MAILBOX_NEW_BLOCK_LOCATION_IDX (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
-#define MAILBOX_GAME_STATE_IDX (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
-#define MAILBOX_MOVES_COUNT_IDX (MAILBOX_GAME_STATE_IDX + 1)
+#define MAILBOX_MAIN_GRID_IDX               (0)     // Main grid indexes are from 0 to (16 blocks * 4 bytes) - 1.
+#define MAILBOX_MAIN_GRID_STATE_IDX         (4 * 16)   // Indexes are from (4 bytes * 16) to ((4 bytes * 16) + (1 byte * 16)))
+#define MAILBOX_KEYPRESS_IDX                ((4 * 16) + (1 * 16)) // All indexes before are for the main grids.
+#define MAILBOX_IF_BLOCK_MOVED_IDX          (MAILBOX_KEYPRESS_IDX + 1)
+#define MAILBOX_NEW_BLOCK_LOCATION_IDX      (MAILBOX_IF_BLOCK_MOVED_IDX + 1)
+#define MAILBOX_GAME_STATE_IDX              (MAILBOX_NEW_BLOCK_LOCATION_IDX + 1)
+#define MAILBOX_MOVES_COUNT_IDX             (MAILBOX_GAME_STATE_IDX + 1)
 
 #endif // EXAMPLES_MAX32655_DEMO_2048_RISCV_INC_IPC_DEFINES_H_

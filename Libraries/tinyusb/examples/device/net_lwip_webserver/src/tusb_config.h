@@ -38,12 +38,12 @@ extern "C" {
 
 // RHPort number used for device can be defined by board.mk, default to port 0
 #ifndef BOARD_TUD_RHPORT
-#define BOARD_TUD_RHPORT 0
+  #define BOARD_TUD_RHPORT 0
 #endif
 
 // RHPort max operational speed can defined by board.mk
 #ifndef BOARD_TUD_MAX_SPEED
-#define BOARD_TUD_MAX_SPEED OPT_MODE_DEFAULT_SPEED
+  #define BOARD_TUD_MAX_SPEED OPT_MODE_DEFAULT_SPEED
 #endif
 
 //--------------------------------------------------------------------
@@ -52,15 +52,15 @@ extern "C" {
 
 // defined by compiler flags for flexibility
 #ifndef CFG_TUSB_MCU
-#error CFG_TUSB_MCU must be defined
+  #error CFG_TUSB_MCU must be defined
 #endif
 
 #ifndef CFG_TUSB_OS
-#define CFG_TUSB_OS OPT_OS_NONE
+  #define CFG_TUSB_OS OPT_OS_NONE
 #endif
 
 #ifndef CFG_TUSB_DEBUG
-#define CFG_TUSB_DEBUG 0
+  #define CFG_TUSB_DEBUG 0
 #endif
 
 // Enable Device stack
@@ -77,25 +77,25 @@ extern "C" {
  * - CFG_TUSB_MEM_ALIGN   : __attribute__ ((aligned(4)))
  */
 #ifndef CFG_TUSB_MEM_SECTION
-#define CFG_TUSB_MEM_SECTION
+  #define CFG_TUSB_MEM_SECTION
 #endif
 
 #ifndef CFG_TUSB_MEM_ALIGN
-#define CFG_TUSB_MEM_ALIGN __attribute__((aligned(4)))
+  #define CFG_TUSB_MEM_ALIGN __attribute__((aligned(4)))
 #endif
 
 // Use different configurations to test all net devices (also due to resource limitations)
 #if TU_CHECK_MCU(OPT_MCU_LPC15XX, OPT_MCU_LPC40XX, OPT_MCU_LPC51UXX, OPT_MCU_LPC54)
-#define USE_ECM 1
+  #define USE_ECM 1
 #elif TU_CHECK_MCU(OPT_MCU_SAMD21, OPT_MCU_SAML21, OPT_MCU_SAML22)
-#define USE_ECM 1
+  #define USE_ECM 1
 #elif TU_CHECK_MCU(OPT_MCU_STM32F0, OPT_MCU_STM32F1)
-#define USE_ECM 1
+  #define USE_ECM 1
 #elif TU_CHECK_MCU(OPT_MCU_MAX32690, OPT_MCU_MAX32650, OPT_MCU_MAX32666, OPT_MCU_MAX78002)
-#define USE_ECM 1
+  #define USE_ECM 1
 #else
-#define USE_ECM 0
-#define INCLUDE_IPERF
+  #define USE_ECM 0
+  #define INCLUDE_IPERF
 #endif
 
 //--------------------------------------------------------------------
@@ -112,12 +112,12 @@ extern "C" {
 
 // Number of NCM transfer blocks for reception side
 #ifndef CFG_TUD_NCM_OUT_NTB_N
-#define CFG_TUD_NCM_OUT_NTB_N 1
+  #define CFG_TUD_NCM_OUT_NTB_N 1
 #endif
 
 // Number of NCM transfer blocks for transmission side
 #ifndef CFG_TUD_NCM_IN_NTB_N
-#define CFG_TUD_NCM_IN_NTB_N 1
+  #define CFG_TUD_NCM_IN_NTB_N 1
 #endif
 
 //--------------------------------------------------------------------
@@ -125,15 +125,15 @@ extern "C" {
 //--------------------------------------------------------------------
 
 #ifndef CFG_TUD_ENDPOINT0_SIZE
-#define CFG_TUD_ENDPOINT0_SIZE 64
+  #define CFG_TUD_ENDPOINT0_SIZE 64
 #endif
 
 //------------- CLASS -------------//
 
 // Network class has 2 drivers: ECM/RNDIS and NCM.
 // Only one of the drivers can be enabled
-#define CFG_TUD_ECM_RNDIS USE_ECM
-#define CFG_TUD_NCM (1 - CFG_TUD_ECM_RNDIS)
+#define CFG_TUD_ECM_RNDIS     USE_ECM
+#define CFG_TUD_NCM           (1 - CFG_TUD_ECM_RNDIS)
 
 #ifdef __cplusplus
 }
