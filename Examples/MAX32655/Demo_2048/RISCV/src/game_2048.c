@@ -48,7 +48,7 @@
 //  Did not choose to create defines for the size of the grid because
 //  2048 is played on 4x4 grid.
 // When using the grid as a single dimensional array, these are the
-//  the indexes assigned to each of the 16 squares.
+//  the indices assigned to each of the 16 squares.
 //   0 | 1 | 2 | 3
 //  ---|---|---|---
 //   4 | 5 | 6 | 7
@@ -100,7 +100,7 @@ static bool add_new_block(bool is_init, uint8_t *new_block_1D_idx_location)
     //  as a 1-D array.
     //      Locations of main           Locations of main
     //      grid represented            grid represented as
-    //      as indexes for              coordinates (row,col)
+    //      as indices for              coordinates (row,col)
     //      1-D array:                  for 2-D array:
     //       0 | 1 | 2 | 3              (0,0) | (0,1) | (0,2) | (0,3)
     //      ---|---|---|---             ------|-------|-------|------

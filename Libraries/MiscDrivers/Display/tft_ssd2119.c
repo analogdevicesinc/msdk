@@ -1264,7 +1264,6 @@ void MXC_TFT_DrawBitmap(int px_x, int px_y, int width, int height, uint16_t *ima
     int i = 0;
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++) {
-            // g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF) << 16) | (uint32_t)((image[i] & 0xFF00) >> 8));
             g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF)) |
                          (uint32_t)((image[i] & 0xFF00) << 8));
             spi_transmit((uint16_t *)g_fifo, 2);
