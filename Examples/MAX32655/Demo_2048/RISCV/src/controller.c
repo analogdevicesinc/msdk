@@ -50,7 +50,8 @@ int Controller_Init(mxc_uart_regs_t *uart, uint32_t baud)
     NVIC_DisableIRQ(MXC_UART_GET_IRQ((MXC_UART_GET_IDX(uart))));
     NVIC_EnableIRQ(MXC_UART_GET_IRQ((MXC_UART_GET_IDX(uart))));
 
-    // Initialize UART to its highest speed.
+    // This will re-initialize the console UART since the controller
+    //  and console share the same UART port.
     error = MXC_UART_Init(uart, baud, MXC_UART_APB_CLK);
     if (error != E_NO_ERROR) {
         return error;
