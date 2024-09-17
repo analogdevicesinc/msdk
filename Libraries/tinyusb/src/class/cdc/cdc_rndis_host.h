@@ -36,26 +36,27 @@
 #include "cdc_rndis.h"
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 //--------------------------------------------------------------------+
 // INTERNAL RNDIS-CDC Driver API
 //--------------------------------------------------------------------+
 typedef struct {
-  OSAL_SEM_DEF(semaphore_notification);
-  osal_semaphore_handle_t sem_notification_hdl;  // used to wait on notification pipe
-  uint32_t max_xfer_size; // got from device's msg initialize complete
-  uint8_t mac_address[6];
-}rndish_data_t;
+    OSAL_SEM_DEF(semaphore_notification);
+    osal_semaphore_handle_t sem_notification_hdl; // used to wait on notification pipe
+    uint32_t max_xfer_size; // got from device's msg initialize complete
+    uint8_t mac_address[6];
+} rndish_data_t;
 
 void rndish_init(void);
 bool rndish_open_subtask(uint8_t dev_addr, cdch_data_t *p_cdc);
-void rndish_xfer_isr(cdch_data_t *p_cdc, pipe_handle_t pipe_hdl, xfer_result_t event, uint32_t xferred_bytes);
+void rndish_xfer_isr(cdch_data_t *p_cdc, pipe_handle_t pipe_hdl, xfer_result_t event,
+                     uint32_t xferred_bytes);
 void rndish_close(uint8_t dev_addr);
 
 #ifdef __cplusplus
- }
+}
 #endif
 
 #endif /* _TUSB_CDC_RNDIS_HOST_H_ */

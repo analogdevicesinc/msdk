@@ -28,7 +28,7 @@
 #define _TUSB_H_
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 //--------------------------------------------------------------------+
@@ -40,91 +40,90 @@
 
 //------------- TypeC -------------//
 #if CFG_TUC_ENABLED
-  #include "typec/usbc.h"
+#include "typec/usbc.h"
 #endif
 
 //------------- HOST -------------//
 #if CFG_TUH_ENABLED
-  #include "host/usbh.h"
+#include "host/usbh.h"
 
-  #if CFG_TUH_HID
-    #include "class/hid/hid_host.h"
-  #endif
+#if CFG_TUH_HID
+#include "class/hid/hid_host.h"
+#endif
 
-  #if CFG_TUH_MSC
-    #include "class/msc/msc_host.h"
-  #endif
+#if CFG_TUH_MSC
+#include "class/msc/msc_host.h"
+#endif
 
-  #if CFG_TUH_CDC
-    #include "class/cdc/cdc_host.h"
-  #endif
+#if CFG_TUH_CDC
+#include "class/cdc/cdc_host.h"
+#endif
 
-  #if CFG_TUH_VENDOR
-    #include "class/vendor/vendor_host.h"
-  #endif
+#if CFG_TUH_VENDOR
+#include "class/vendor/vendor_host.h"
+#endif
 #else
-  #ifndef tuh_int_handler
-  #define tuh_int_handler(...)
-  #endif
+#ifndef tuh_int_handler
+#define tuh_int_handler(...)
+#endif
 #endif
 
 //------------- DEVICE -------------//
 #if CFG_TUD_ENABLED
-  #include "device/usbd.h"
+#include "device/usbd.h"
 
-  #if CFG_TUD_HID
-    #include "class/hid/hid_device.h"
-  #endif
-
-  #if CFG_TUD_CDC
-    #include "class/cdc/cdc_device.h"
-  #endif
-
-  #if CFG_TUD_MSC
-    #include "class/msc/msc_device.h"
-  #endif
-
-  #if CFG_TUD_AUDIO
-    #include "class/audio/audio_device.h"
-  #endif
-
-  #if CFG_TUD_VIDEO
-    #include "class/video/video_device.h"
-  #endif
-
-  #if CFG_TUD_MIDI
-    #include "class/midi/midi_device.h"
-  #endif
-
-  #if CFG_TUD_VENDOR
-    #include "class/vendor/vendor_device.h"
-  #endif
-
-  #if CFG_TUD_USBTMC
-    #include "class/usbtmc/usbtmc_device.h"
-  #endif
-
-  #if CFG_TUD_DFU_RUNTIME
-    #include "class/dfu/dfu_rt_device.h"
-  #endif
-
-  #if CFG_TUD_DFU
-    #include "class/dfu/dfu_device.h"
-  #endif
-
-  #if CFG_TUD_ECM_RNDIS || CFG_TUD_NCM
-    #include "class/net/net_device.h"
-  #endif
-
-  #if CFG_TUD_BTH
-    #include "class/bth/bth_device.h"
-  #endif
-#else
-  #ifndef tud_int_handler
-  #define tud_int_handler(...)
-  #endif
+#if CFG_TUD_HID
+#include "class/hid/hid_device.h"
 #endif
 
+#if CFG_TUD_CDC
+#include "class/cdc/cdc_device.h"
+#endif
+
+#if CFG_TUD_MSC
+#include "class/msc/msc_device.h"
+#endif
+
+#if CFG_TUD_AUDIO
+#include "class/audio/audio_device.h"
+#endif
+
+#if CFG_TUD_VIDEO
+#include "class/video/video_device.h"
+#endif
+
+#if CFG_TUD_MIDI
+#include "class/midi/midi_device.h"
+#endif
+
+#if CFG_TUD_VENDOR
+#include "class/vendor/vendor_device.h"
+#endif
+
+#if CFG_TUD_USBTMC
+#include "class/usbtmc/usbtmc_device.h"
+#endif
+
+#if CFG_TUD_DFU_RUNTIME
+#include "class/dfu/dfu_rt_device.h"
+#endif
+
+#if CFG_TUD_DFU
+#include "class/dfu/dfu_device.h"
+#endif
+
+#if CFG_TUD_ECM_RNDIS || CFG_TUD_NCM
+#include "class/net/net_device.h"
+#endif
+
+#if CFG_TUD_BTH
+#include "class/bth/bth_device.h"
+#endif
+#else
+#ifndef tud_int_handler
+#define tud_int_handler(...)
+#endif
+#endif
 
 //--------------------------------------------------------------------+
 // APPLICATION API
@@ -142,7 +141,7 @@ bool tusb_inited(void);
 // bool tusb_teardown(void);
 
 #ifdef __cplusplus
- }
+}
 #endif
 
 #endif /* _TUSB_H_ */

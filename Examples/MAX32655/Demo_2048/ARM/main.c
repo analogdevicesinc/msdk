@@ -59,12 +59,12 @@ extern mxcSemaBox_t *mxcSemaBox0; // ARM writes, RISCV reads
 extern mxcSemaBox_t *mxcSemaBox1; // ARM reads,  RISCV writes
 
 // Rename boxes for readability.
-//  Imagine like real mailboxes, owner (core) sends mail (keypress) in their mailbox. 
+//  Imagine like real mailboxes, owner (core) sends mail (keypress) in their mailbox.
 #define SEMA_RISCV_MAILBOX mxcSemaBox0
 #define SEMA_ARM_MAILBOX mxcSemaBox1
 
-uint32_t ARM_GRID_COPY[4][4] = {0};
-block_state_t ARM_GRID_COPY_STATE[4][4] = {0};
+uint32_t ARM_GRID_COPY[4][4] = { 0 };
+block_state_t ARM_GRID_COPY_STATE[4][4] = { 0 };
 
 uint32_t MOVES_COUNT = 0;
 
@@ -78,11 +78,11 @@ void ReceiveGridFromRISCVCore(void)
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
             ARM_GRID_COPY[row][col] = SEMA_ARM_MAILBOX->payload[i] << (8 * 0);
-            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+1] << (8 * 1);
-            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+2] << (8 * 2);
-            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i+3] << (8 * 3);
+            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i + 1] << (8 * 1);
+            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i + 2] << (8 * 2);
+            ARM_GRID_COPY[row][col] += SEMA_ARM_MAILBOX->payload[i + 3] << (8 * 3);
 
-            i+=4;
+            i += 4;
         }
     }
 
@@ -101,24 +101,24 @@ graphics_slide_direction_t ReceiveDirectionFromRISCVCore(void)
 {
     // Add more direction keys here.
     switch (SEMA_ARM_MAILBOX->payload[MAILBOX_KEYPRESS_IDX]) {
-        // UP
-        case 'w':
-            return GRAPHICS_SLIDE_DIR_UP;
+    // UP
+    case 'w':
+        return GRAPHICS_SLIDE_DIR_UP;
 
-        // DOWN
-        case 's':
-            return GRAPHICS_SLIDE_DIR_DOWN;
+    // DOWN
+    case 's':
+        return GRAPHICS_SLIDE_DIR_DOWN;
 
-        // LEFT
-        case 'a':
-            return GRAPHICS_SLIDE_DIR_LEFT;
+    // LEFT
+    case 'a':
+        return GRAPHICS_SLIDE_DIR_LEFT;
 
-        // RIGHT
-        case 'd':
-            return GRAPHICS_SLIDE_DIR_RIGHT;
+    // RIGHT
+    case 'd':
+        return GRAPHICS_SLIDE_DIR_RIGHT;
 
-        default:
-            return -1;
+    default:
+        return -1;
     }
 }
 
@@ -145,9 +145,9 @@ uint32_t ReceiveMovesCountFromRISCVCore(void)
 {
     uint32_t moves_count = 0;
     moves_count = SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX] << (8 * 0);
-    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+1] << (8 * 1);
-    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+2] << (8 * 2);
-    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX+3] << (8 * 3);
+    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 1] << (8 * 1);
+    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 2] << (8 * 2);
+    moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 3] << (8 * 3);
     return moves_count;
 }
 
@@ -163,7 +163,7 @@ int main(void)
     //     - Use IPO for System Clock for fastest speed. (Done in SystemInit)
     //     - Enable Internal Cache. (Done in SystemInit)
 
-    // Speed up console UART to match player controller baud rate which have shared ports 
+    // Speed up console UART to match player controller baud rate which have shared ports
     //  (PC Keyboard via Console UART).
     error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), RISCV_CONTROLLER_BAUD, MXC_UART_APB_CLK);
     if (error != E_NO_ERROR) {
@@ -173,7 +173,7 @@ int main(void)
     }
 
     PRINT("\n\n*******************************************************************************\n");
-   
+
     // ARM Initialization.
     PRINT("ARM: Starting ARM Initialization.\n\n");
 
@@ -185,7 +185,7 @@ int main(void)
 
     // Prepare ARM semaphore.
     MXC_SEMA_Init();
-    
+
     // Check status of ARM semaphore.
     error = MXC_SEMA_CheckSema(SEMA_IDX_ARM);
     if (error != E_NO_ERROR) {
@@ -196,11 +196,13 @@ int main(void)
 
     error = MXC_SEMA_GetSema(SEMA_IDX_ARM);
     if (error != E_NO_ERROR) {
-        PRINT("ARM: Semaphore is busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_ARM]);
+        PRINT("ARM: Semaphore is busy - with previous value: %d\n\n",
+              MXC_SEMA->semaphores[SEMA_IDX_ARM]);
         LED_On(LED_RED);
         while (1) {}
     } else {
-        PRINT("ARM: Semaphore is not busy - with previous value: %d\n\n", MXC_SEMA->semaphores[SEMA_IDX_ARM]);
+        PRINT("ARM: Semaphore is not busy - with previous value: %d\n\n",
+              MXC_SEMA->semaphores[SEMA_IDX_ARM]);
     }
 
     // Backup Delay for 1 second before starting RISCV core.
@@ -302,7 +304,9 @@ int main(void)
             // Add new blocks.
             for (int row = 0; row < 4; row++) {
                 for (int col = 0; col < 4; col++) {
-                    if ((ARM_GRID_COPY[row][col]) != 0 && (ARM_GRID_COPY_STATE[row][col] != UNMOVED) && (ARM_GRID_COPY_STATE[row][col] != COMBINE)) {
+                    if ((ARM_GRID_COPY[row][col]) != 0 &&
+                        (ARM_GRID_COPY_STATE[row][col] != UNMOVED) &&
+                        (ARM_GRID_COPY_STATE[row][col] != COMBINE)) {
                         // Don't draw newly spawned block.
                         //  new_block_row and new_block_col will be set to 0xFFFF for invalid
                         //  location if new block was not added.
@@ -315,10 +319,11 @@ int main(void)
 
             // Add combined blocks.
             Graphics_CombineBlocks(ARM_GRID_COPY, ARM_GRID_COPY_STATE);
-            
+
             // Add new block with spawn animation.
             if (new_block_added == true) {
-                Graphics_AddNewBlock(new_block_row, new_block_col, ARM_GRID_COPY[new_block_row][new_block_col]);
+                Graphics_AddNewBlock(new_block_row, new_block_col,
+                                     ARM_GRID_COPY[new_block_row][new_block_col]);
             }
 
             game_state = ReceiveGameStateFromRISCVCore();
