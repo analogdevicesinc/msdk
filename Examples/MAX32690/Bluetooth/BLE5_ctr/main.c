@@ -144,18 +144,20 @@ static void mainWsfInit(void)
     /* Calculate how much memory we will need for the LL initialization */
     WsfCsEnter();
 
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            /* Not significant yet, only being used for memory size requirement calculation. */
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            /* Not significant yet, only being used for memory size requirement calculation. */
-                            .freeMemAvail = WsfHeapCountAvailable() };
+    LlInitRtCfg_t llCfg = {
+        .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .freeMemAvail = WsfHeapCountAvailable()
+    };
 
     llmemUsed = LlInitSetBbRtCfg(llCfg.pBbRtCfg, llCfg.wlSizeCfg, llCfg.rlSizeCfg, llCfg.plSizeCfg,
-                         llCfg.pFreeMem, llCfg.freeMemAvail);
+                                 llCfg.pFreeMem, llCfg.freeMemAvail);
 
     llCfg.pFreeMem += llmemUsed;
     llCfg.freeMemAvail -= llmemUsed;
@@ -195,7 +197,7 @@ static void mainWsfInit(void)
     llCfg.freeMemAvail = WsfHeapCountAvailable();
 
     /* Run the initialization with properly set the free memory pointers */
-    if(llmemUsed != LlInitControllerInit(&llCfg)) {
+    if (llmemUsed != LlInitControllerInit(&llCfg)) {
         WSF_ASSERT(0);
     }
 
