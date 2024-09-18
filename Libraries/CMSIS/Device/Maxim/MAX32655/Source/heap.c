@@ -104,7 +104,7 @@ The structure fields contain the following information:
               so on) be released by malloc_trim(3).
 */
 
-struct mallinfo mallinfo (void)
+struct mallinfo mallinfo(void)
 {
     struct mallinfo temp_mallinfo;
 
