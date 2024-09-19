@@ -43,9 +43,9 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock, sys_map_t map)
 {
-#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     retval = MXC_UART_Shutdown(uart);
     if (retval) {
         return retval;

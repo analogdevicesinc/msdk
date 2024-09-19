@@ -28,7 +28,7 @@ PROJ_AFLAGS += -DSRAM_ORIGIN=0x20000000
 # Will work with small MAILBOX_SIZE, cores will experience more interrupts
 # and higher communication latency.
 # Minimum value is 16
-MAILBOX_SIZE = 64
+MAILBOX_SIZE ?= 64
 
 ifneq ($(RISCV_CORE),)
 # RISCV core
