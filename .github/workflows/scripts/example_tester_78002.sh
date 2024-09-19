@@ -55,15 +55,14 @@ function init() {
 	then
 		make -C $Path/$testName distclean
 
-		if [[$1 = "ADC" || $1 = "UART" ]];
-		then
-				make -j -C $Path/$testName METHOD=$2
-		elif [[ $1 = "SPI_v2"]];
-		then
-			make -j -C $Path/SPI MXC_SPI_VERSION=$2
+		if [[ $1 == "ADC" || $1 == "UART" ]]; then
+    		make -j -C "$Path/$testName" METHOD="$2"
+		elif [[ $1 == "SPI_v2" ]]; then
+    		make -j -C "$Path/SPI" MXC_SPI_VERSION="$2"
 		else
-			make -j -C $Path/$testName
+    		make -j -C "$Path/$testName"
 		fi
+
 	fi
 
 	if [[ $testName != Library_Generate && $testName != Library_Use ]]
