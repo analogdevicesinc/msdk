@@ -1,12 +1,12 @@
 #! /usr/bin/bash
 
 <<"CONFIGURATION"
-The following is the configuration for hardware (max32690): 
-remove JP7(RX_EN) and install JP8(TX_EN) headers
+The following is the configuration for hardware (max78002): 
+Close jumper (RX - P0.0) and (TX - P0.1) at Headers JP23 (UART 0 EN).
 Install headers JP9 and JP10 to SDA and SCL respectively.
-You must connect P1.8->P2.8 (SCL) and P1.7->P2.7 (SCL).
-Connect pins P2.12->P1.9 for UART test
-connect MISO (P2.27) and MOSI (P2.28) pins
+You must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SDA)
+Connect P0.12 to P1.1. Connect P0.13 to P1.0. for UART test
+Connect P0.21 (MOSI) to P0.22 (MISO).
 Apply an input voltage between 0 and 1.25V to pin labeled 0 of the JH6 (Analog) header. for ADC
 CONFIGURATION
 
@@ -15,12 +15,11 @@ CONFIGURATION
 baudRate=115200
 timeLimit=5
 timeLimitICC=30 #ICC needs around 20s to finish the test
-boardVersion=max32690
-#boardName=max32690-1
+boardVersion=max78002
+#boardName=max78002-1
 boardName=$1
 uartPort=$(resource_manager -g $boardName.console_port)
 target_uc=$(resource_manager -g $boardName.target)
-#MAXIM_PATH=/home/jcai/Workspace/msdk
 Path=$MAXIM_PATH/Examples/$target_uc
 
 # variable for testing purpose
@@ -38,7 +37,6 @@ result_SPI_V2_POLLING='not tested' #this is only for max32690
 result_SPI_V2_INTERRUPT='not tested' #this is only for max32690
 result_SPI_V2_DMA='not tested' #this is only for max32690
 result_ICC='not tested'
-result_Hash='not tested'
 result_DMA='not tested'
 result_CRC='not tested'
 result_ADC_POLLING='not tested'
@@ -127,7 +125,6 @@ function test_UART() {
 	fi
 	
 	printf "Test result for UART_INTERRUPT: $result_UART_INTERRUPT\n"
-: '
 	init UART DMA
 
 	# start testing the output
@@ -140,7 +137,6 @@ function test_UART() {
 	fi
 	
 	printf "Test result for UART_DMA: $result_UART_DMA\n"
-'
 }
 
 function test_TRNG() {
@@ -275,21 +271,6 @@ function test_ICC() {
 	
 }
 
-function test_Hash() {
-	init Hash
-
-	# start testing the output
-	grep "Example Succeeded" $tempFile
-	if [[ $? -eq 0 ]];
-	then
-		result_Hash='pass'
-	else
-		result_Hash='fail'
-	fi
-	
-	printf "Test result for Hash: $result_Hash\n"
-	
-}
 
 function test_DMA() {
 	init DMA
@@ -447,7 +428,6 @@ function summary() {
 		printf "Test result for SPI_v2_DMA: $result_SPI_V2_DMA\n"
 	fi
 	printf "Test result for ICC: $result_ICC\n"
-	printf "Test result for Hash: $result_Hash\n"
 	printf "Test result for DMA: $result_DMA\n"
 	printf "Test result for CRC: $result_CRC\n"
 	printf "Test result for ADC_POLLING: $result_ADC_POLLING\n"
@@ -468,13 +448,12 @@ function main() {
 	test_Hello_World
 	test_Hello_World_Cpp
 	test_TRNG
-	#test_I2C
+	test_I2C
 	test_SPI
 	if [[ $boardVersion = max32690 ]]
 	then
 		test_SPI_V2
 	fi
-	test_Hash
 	test_DMA
 	test_CRC
 	test_ADC
@@ -501,7 +480,6 @@ if [[ $result_UART_INTERRUPT = "fail" ||
     $result_SPI_V2_INTERRUPT = "fail" || # Only for max32690
     $result_SPI_V2_DMA = "fail" ||       # Only for max32690
     $result_ICC = "fail" ||
-    $result_Hash = "fail" ||
     $result_DMA = "fail" ||
     $result_CRC = "fail" ||
     $result_ADC_POLLING = "fail" ||
