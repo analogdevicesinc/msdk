@@ -245,7 +245,7 @@ int main(void)
     };
 
     llmemUsed = LlInitSetBbRtCfg(llCfg.pBbRtCfg, llCfg.wlSizeCfg, llCfg.rlSizeCfg, llCfg.plSizeCfg,
-                                llCfg.pFreeMem, llCfg.freeMemAvail);
+                                 llCfg.pFreeMem, llCfg.freeMemAvail);
 
     llCfg.pFreeMem += llmemUsed;
     llCfg.freeMemAvail -= llmemUsed;
@@ -268,7 +268,6 @@ int main(void)
     if (llmemUsed != LlInit(&llCfg)) {
         WSF_ASSERT(0);
     }
-
 
     WsfCsExit();
 
