@@ -57,8 +57,8 @@ function init() {
 
 		if [[ $1 == "ADC" || $1 == "UART" ]]; then
     		make -j -C "$Path/$testName" METHOD="$2"
-		elif [[ $1 == "SPI_v2" ]]; then
-    		make -j -C "$Path/SPI" MXC_SPI_VERSION="$2"
+		elif [[ $1 == "SPI" ]]; then
+    		make -j -C "$Path/$testName" MXC_SPI_VERSION="$2"
 		else
     		make -j -C "$Path/$testName"
 		fi
@@ -171,7 +171,7 @@ function test_I2C() {
 }
 
 function test_SPI() {
-	init SPI
+	init SPI v1
 
 	# start testing the output
 	grep "16 Bits Transaction Successful" $tempFile
@@ -184,10 +184,11 @@ function test_SPI() {
 	
 	printf "Test result for SPI: $result_SPI\n"
 	
+	
 }
 
 function test_SPI_V2() {
-	init SPI_v2 v2
+	init SPI v2
 
 	# start testing the output
 	grep "16 Bits Transaction Successful" $tempFile
