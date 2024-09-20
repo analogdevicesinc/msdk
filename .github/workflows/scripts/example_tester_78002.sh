@@ -31,7 +31,6 @@ result_HelloWorld_Cpp='not tested'
 result_TRNG='not tested'
 result_I2C='not tested'
 result_SPI='not tested'
-result_SPI_V2='not tested'
 result_ICC='not tested'
 result_DMA='not tested'
 result_CRC='not tested'
@@ -57,8 +56,6 @@ function init() {
 
 		if [[ $1 == "ADC" || $1 == "UART" ]]; then
     		make -j -C "$Path/$testName" METHOD="$2"
-		elif [[ $1 == "SPI" ]]; then
-    		make -j -C "$Path/$testName" MXC_SPI_VERSION="$2"
 		else
     		make -j -C "$Path/$testName"
 		fi
@@ -171,7 +168,7 @@ function test_I2C() {
 }
 
 function test_SPI() {
-	init SPI v1
+	init SPI
 
 	# start testing the output
 	grep "16 Bits Transaction Successful" $tempFile
@@ -187,21 +184,6 @@ function test_SPI() {
 	
 }
 
-function test_SPI_V2() {
-	init SPI v2
-
-	# start testing the output
-	grep "16 Bits Transaction Successful" $tempFile
-	if [[ $? -eq 0 ]];
-	then
-		result_SPI_V2='pass'
-	else
-		result_SPI_V2='fail'
-	fi
-	
-	printf "Test result for SPI_v2: $result_SPI_V2\n"
-	
-}
 function test_ICC() {
 	init ICC
 
@@ -366,7 +348,6 @@ function summary() {
 	printf "Test result for TRNG: $result_TRNG\n"
 	printf "Test result for I2C: $result_I2C\n"
 	printf "Test result for SPI: $result_SPI\n"
-	printf "Test result for SPI_v2: $result_SPI_V2\n"
 	printf "Test result for ICC: $result_ICC\n"
 	printf "Test result for DMA: $result_DMA\n"
 	printf "Test result for CRC: $result_CRC\n"
@@ -390,9 +371,6 @@ function main() {
 	test_TRNG
 	test_I2C
 	test_SPI
-
-	test_SPI_V2
-
 	test_DMA
 	test_CRC
 	test_ADC
@@ -413,7 +391,6 @@ if [[ $result_UART_INTERRUPT = "fail" ||
     $result_TRNG = "fail" ||
     $result_I2C = "fail" ||
  	$result_SPI = "fail" ||
-    $result_SPI_V2 = "fail" ||
     $result_ICC = "fail" ||
     $result_DMA = "fail" ||
     $result_CRC = "fail" ||
