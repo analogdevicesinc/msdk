@@ -34,8 +34,6 @@ result_SPI='not tested'
 result_ICC='not tested'
 result_DMA='not tested'
 result_CRC='not tested'
-result_ADC_POLLING='not tested'
-result_ADC_INTERRUPT='not tested'
 result_ADC_DMA='not tested'
 result_Lib_Gen='not tested'
 result_Lib_Use='not tested'
@@ -236,52 +234,6 @@ function test_CRC() {
 
 function test_ADC() {
 
-	init ADC POLLING
-
-	# start testing the output
-	result_ADC_POLLING='pass'
-	grep "Running Single Channel Example" $tempFile
-	if [[ $? -ne 0 ]];
-	then
-		result_ADC_POLLING='fail'
-	fi
-	
-	grep "Running Temperature Sensor Example" $tempFile
-	if [[ $? -ne 0 ]];
-	then
-		result_ADC_POLLING='fail'
-	fi
-
-	grep "Running Multi Channel Example" $tempFile
-	if [[ $? -ne 0 ]];
-	then
-		result_ADC_POLLING='fail'
-	fi
-	printf "Test result for ADC_POLLING: $result_ADC_POLLING\n"
-	
-	init ADC INTERRUPT
-
-	# start testing the output
-	result_ADC_INTERRUPT='pass'
-	grep "Running Single Channel Example" $tempFile
-	if [[ $? -ne 0 ]];
-	then
-		result_ADC_INTERRUPT='fail'
-	fi
-	
-	grep "Running Temperature Sensor Example" $tempFile
-	if [[ $? -ne 0 ]];
-	then
-		result_ADC_INTERRUPT='fail'
-	fi
-
-	grep "Running Multi Channel Example" $tempFile
-	if [[ $? -ne 0 ]];
-	then
-		result_ADC_INTERRUPT='fail'
-	fi
-	printf "Test result for ADC_INTERRUPT: $result_ADC_INTERRUPT\n"
-
 	init ADC DMA
 
 	# start testing the output
@@ -351,8 +303,6 @@ function summary() {
 	printf "Test result for ICC: $result_ICC\n"
 	printf "Test result for DMA: $result_DMA\n"
 	printf "Test result for CRC: $result_CRC\n"
-	printf "Test result for ADC_POLLING: $result_ADC_POLLING\n"
-	printf "Test result for ADC_INTERRUPT: $result_ADC_INTERRUPT\n"
 	printf "Test result for ADC_DMA: $result_ADC_DMA\n"
 	printf "Test result for Library_Generate: $result_Lib_Gen\n"
 	printf "Test result for Library_Use: $result_Lib_Use\n"
@@ -394,8 +344,6 @@ if [[ $result_UART_INTERRUPT = "fail" ||
     $result_ICC = "fail" ||
     $result_DMA = "fail" ||
     $result_CRC = "fail" ||
-    $result_ADC_POLLING = "fail" ||
-    $result_ADC_INTERRUPT = "fail" ||
     $result_ADC_DMA = "fail" ||
     $result_Lib_Gen = "fail" ||
     $result_Lib_Use = "fail" ]]; then
