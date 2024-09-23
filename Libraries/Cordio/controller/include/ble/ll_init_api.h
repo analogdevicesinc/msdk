@@ -93,6 +93,7 @@ uint32_t LlInitControllerInit(LlInitRtCfg_t *pCfg);
 uint32_t LlInitSetBbRtCfg(const BbRtCfg_t *pBbRtCfg, const uint8_t wlSizeCfg, const uint8_t rlSizeCfg,
                           const uint8_t plSizeCfg, uint8_t *pFreeMem, uint32_t freeMemAvail);
 uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t freeMemAvail);
+uint32_t LlInitSetRtCfg(LlInitRtCfg_t *pLlInitRtCfg);
 void LlInitBbInit(void);
 void LlInitSchInit(void);
 void LlInitLlInit(void);
@@ -100,7 +101,6 @@ void LlInitChciTrInit(uint16_t maxAclLen, uint16_t maxIsoLen);
 void LlInitLhciInit(void);
 void LlMathSetSeed(const uint32_t *pSeed);
 void LlInitLhciHandler(void);
-uint32_t LlInitMemConfig(LlInitRtCfg_t *pLlInitRtCfg);
 
 
 /*! \} */    /* LL_INIT_API */
