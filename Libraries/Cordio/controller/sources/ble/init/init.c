@@ -339,3 +339,24 @@ uint32_t LlInit(LlInitRtCfg_t *pCfg)
 
   return totalMemUsed;
 }
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Set LL and BB runtime configurations.
+ *
+ *  \param  pCfg    Runtime configuration.
+ *
+ *  \return Memory used.
+ */
+/*************************************************************************************************/
+uint32_t LlInitMemConfig(LlInitRtCfg_t *pCfg)
+{
+  uint32_t memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
+                                 pCfg->pFreeMem, pCfg->freeMemAvail);
+
+  pCfg->pFreeMem += memUsed;
+  pCfg->freeMemAvail -= memUsed;
+
+  memUsed += LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
+  return memUsed;
+}

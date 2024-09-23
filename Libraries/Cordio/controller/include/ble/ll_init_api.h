@@ -100,6 +100,8 @@ void LlInitChciTrInit(uint16_t maxAclLen, uint16_t maxIsoLen);
 void LlInitLhciInit(void);
 void LlMathSetSeed(const uint32_t *pSeed);
 void LlInitLhciHandler(void);
+uint32_t LlInitMemConfig(LlInitRtCfg_t *pLlInitRtCfg);
+
 
 /*! \} */    /* LL_INIT_API */
 
