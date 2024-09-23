@@ -9,9 +9,7 @@ Please include a summary of the changes and related issues. Please also include 
 - [ ] (Optional) Link any related GitHub issues [using a keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
 - [ ] (Optional) Provide info on any relevant functional testing/validation.  For API changes or significant features, this is not optional.
 
-
-
-___
+_______________________________________________________________________________
 
 > [!WARNING]
 > This is a template. Delete everything below the line when submitting a pull request.
