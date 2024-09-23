@@ -152,7 +152,12 @@ typedef enum {
 #define __Vendor_SysTickConfig 0U /**< Is 1 if different SysTick counter is used */
 
 #include <core_cm33.h>
+#if (__CM_CMSIS_VERSION == 0x60000)
+/* If CMSIS version 6.0 use cmsis_gcc_m.h */
+#include <cmsis_gcc_m.h>
+#else
 #include <cmsis_gcc.h>
+#endif
 #include <arm_cmse.h>
 
 #if defined(__GNUC__)
