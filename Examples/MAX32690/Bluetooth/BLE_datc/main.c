@@ -264,7 +264,6 @@ int main(void)
         WSF_ASSERT(0);
     }
 
-
     WsfCsExit();
 
     bdAddr_t bdAddr;
