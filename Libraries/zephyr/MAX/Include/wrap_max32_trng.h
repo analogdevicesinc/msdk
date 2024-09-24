@@ -46,7 +46,7 @@ static inline int Wrap_MXC_TRNG_RandomInt_NonBlocking(uint32_t *data)
  */
 #elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
     (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
+    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
 
 static inline int Wrap_MXC_TRNG_RandomInt_NonBlocking(uint32_t *data)
 {
