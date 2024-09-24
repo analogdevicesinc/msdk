@@ -119,8 +119,8 @@ static void mainWsfInit(void)
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
-#if (BT_VER > 9)
-    WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+#if (BT_VER > 9) && INIT_FEAT_ISO
+    mainLlRtCfg.maxIsoSduLen = mainLlRtCfg.maxAclLen;
 #endif
 
     /* Ensure pool buffers are ordered correctly. */
