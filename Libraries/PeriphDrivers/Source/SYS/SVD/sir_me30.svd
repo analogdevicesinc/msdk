@@ -14,7 +14,7 @@
       <register>
         <name>SISTAT</name>
         <description>System Initialization Status Register.</description>
-        <addressOffset>0x00</addressOffset>
+        <addressOffset>0x000</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
@@ -62,13 +62,39 @@
       <register>
         <name>ADDR</name>
         <description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
-        <addressOffset>0x04</addressOffset>
+        <addressOffset>0x004</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
             <name>ERRADDR</name>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BTLELDO_BB</name>
+        <description>BTLE LDO TRIM BB Register.</description>
+        <addressOffset>0x01C</addressOffset>
+        <fields>
+          <field>
+            <name>TRIM</name>
+            <description>Target 0.9V. VDDA BB Voltage Trim.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BTLELDO_RF</name>
+        <description>BTLE LDO TRIM RF Register.</description>
+        <addressOffset>0x002C</addressOffset>
+        <fields>
+          <field>
+            <name>TRIM</name>
+            <description>Target 0.9V. VDDA RF Voltage Trim.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>5</bitWidth>
           </field>
         </fields>
       </register>

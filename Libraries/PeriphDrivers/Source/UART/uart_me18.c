@@ -44,7 +44,6 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
     if (!MXC_UART_RevB_IsClockSourceLocked((mxc_uart_revb_regs_t *)uart)) {
@@ -54,6 +53,7 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         }
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_uart0);
@@ -78,11 +78,11 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     default:
         return E_BAD_PARAM;
     }
+#endif
 
     retval = MXC_UART_SetClockSource(uart, clock);
     if (retval)
         return retval;
-#endif
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
