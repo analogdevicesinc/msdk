@@ -18,15 +18,17 @@
  *
  ******************************************************************************/
 
-BOOTLOADER_ORIGIN = 0x10000000;
-BOOTLOADER_LEN = 0x4000;
-FLASH_SECTION_LEN = 0x40000 - BOOTLOADER_LEN;
+/* Note: Flash 0 page size is 16KB (0x4000). Flash 1 page size is 8KB (0x2000) */
+BOOTLOADER_ORIGIN = 0x10000000;                         /* Bootloader resides in page 0 */
+BOOTLOADER_LEN = 0x8000;                                /* 2 Flash 0 pages length (total 32KB) */
+FLASH0_SECTION_LEN = 0x300000 - BOOTLOADER_LEN;         /* 3MB - 2 pages (16KB/page) */
+FLASH1_SECTION_LEN = 0x40000;                           /* 256KB */
 FLASH0_ORIGIN = BOOTLOADER_ORIGIN + BOOTLOADER_LEN;
 
 MEMORY {
     FLASH      (rx) : ORIGIN = BOOTLOADER_ORIGIN,   LENGTH = BOOTLOADER_LEN
-    FLASH0     (rx) : ORIGIN = FLASH0_ORIGIN,       LENGTH = FLASH_SECTION_LEN
-    FLASH1     (rx) : ORIGIN = 0x10300000,          LENGTH = FLASH_SECTION_LEN
+    FLASH0     (rx) : ORIGIN = FLASH0_ORIGIN,       LENGTH = FLASH0_SECTION_LEN
+    FLASH1     (rx) : ORIGIN = 0x10300000,          LENGTH = FLASH1_SECTION_LEN
     SRAM      (rwx) : ORIGIN = 0x20000000,          LENGTH = 0x20000
 }
 
@@ -50,14 +52,14 @@ SECTIONS {
     .flash0 (NOLOAD) :
     {
         _flash0 = ALIGN(., 4); 
-        . = . + FLASH_SECTION_LEN;
+        . = . + FLASH0_SECTION_LEN;
         _eflash0 = ALIGN(., 4);
     } > FLASH0
 
     .flash1 (NOLOAD) :
     {
         _flash1 = ALIGN(., 4); 
-        . = . + FLASH_SECTION_LEN;
+        . = . + FLASH1_SECTION_LEN;
         _eflash1 = ALIGN(., 4);
     } > FLASH1
 
