@@ -38,6 +38,25 @@
 #define MXC_UART_REVB_ERRINT_FL \
     (MXC_F_UART_REVB_INT_FL_RX_FERR | MXC_F_UART_REVB_INT_FL_RX_PAR | MXC_F_UART_REVB_INT_FL_RX_OV)
 
+#if CONFIG_TRUSTED_EXECUTION_SECURE
+#ifndef MXC_DMA0
+// TrustZone support to keep up with naming convention.
+//  For ME30, non-secure DMA (DMA0) is accessible from Secure code using non-secure mapping.
+//  Undecorated MXC_DMA0 definition for secure code is not defined as the undecorated
+//  definitions corresponds with the security attribution of an address.
+// Because there is no secure mapping for DMA0, following ARM naming convention, it's
+//  recommend that secure code use the definition with '_NS' suffix (MXC_DMA0_NS).
+// Placing this here to limit scope of this definition to this file.
+#define MXC_DMA0 MXC_DMA0_NS
+#endif
+#else
+#ifndef MXC_DMA1
+// Non-Secure world can not access Secure DMA (DMA1).
+// Placing this here to limit scope of this definition to this file.
+#define MXC_DMA1 NULL
+#endif
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
+
 /* **** Variable Declaration **** */
 static void *AsyncTxRequests[MXC_UART_INSTANCES];
 static void *AsyncRxRequests[MXC_UART_INSTANCES];
@@ -291,19 +310,20 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
         return E_NO_ERROR; // Return with no error so Init doesn't error out if clock config is locked
     }
 
-    bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_CTRL_BCLKEN) != 0;
+    bool is_bclk_enabled = (uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKEN) != 0;
 
     if (is_bclk_enabled) {
         // Shut down baud rate clock before changing clock source
-        uart->ctrl &= ~MXC_F_UART_CTRL_BCLKEN;
+        uart->ctrl &= ~MXC_F_UART_REVB_CTRL_BCLKEN;
     }
 
-    MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_BCLKSRC, clock_option << MXC_F_UART_CTRL_BCLKSRC_POS);
+    MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVB_CTRL_BCLKSRC,
+                 clock_option << MXC_F_UART_REVB_CTRL_BCLKSRC_POS);
 
     if (is_bclk_enabled) {
         // Turn the baud rate clock back on
-        uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
-        while (!(uart->ctrl & MXC_F_UART_CTRL_BCLKRDY)) {
+        uart->ctrl |= MXC_F_UART_REVB_CTRL_BCLKEN;
+        while (!(uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKRDY)) {
             continue;
         }
     }
@@ -313,12 +333,17 @@ int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_optio
 
 unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart)
 {
-    return ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) >> MXC_F_UART_CTRL_BCLKSRC_POS);
+    return ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) >> MXC_F_UART_REVB_CTRL_BCLKSRC_POS);
 }
 
 void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock)
 {
     g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)] = lock;
+}
+
+bool MXC_UART_RevB_IsClockSourceLocked(mxc_uart_revb_regs_t *uart)
+{
+    return g_is_clock_locked[MXC_UART_GET_IDX((mxc_uart_regs_t *)uart)];
 }
 
 int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCtrl,
@@ -863,10 +888,12 @@ void MXC_UART_RevA_DMA0_Handler(void)
     MXC_DMA_Handler(MXC_DMA0);
 }
 
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 void MXC_UART_RevA_DMA1_Handler(void)
 {
     MXC_DMA_Handler(MXC_DMA1);
 }
+#endif
 
 #endif
 
@@ -875,6 +902,7 @@ DMA instance.
 */
 void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned int channel)
 {
+// Add RISCV support here for future parts with more than one DMA instance.
 #ifdef __arm__
 #if (TARGET_NUM == 32657)
     NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(dma_instance, channel));
@@ -885,8 +913,11 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
     if (dma_instance == MXC_DMA0) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA0_Handler);
+#if CONFIG_TRUSTED_EXECUTION_SECURE
+        // Only secure code has access to Secure DMA (DMA1).
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
+#endif // CONFIG_TRUSTED_EXECUTION_SECURE
     }
 #else
     NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));
@@ -894,10 +925,6 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
     // Only one DMA instance, we can point direct to MXC_DMA_Handler
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_DMA_Handler);
 #endif // MXC_DMA_INSTANCES > 1
-
-#else
-    // TODO(JC): RISC-V
-
 #endif // __arm__
 }
 

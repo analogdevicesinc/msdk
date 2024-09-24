@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!--BOOST-->
+    <name>BOOST</name>
+    <description>Boost Controller</description>
+    <baseAddress>0x40004C00</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>BOOST</name>
+      <value>46</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>DISABLE</name>
+        <description>Boost Disable Register.</description>
+        <addressOffset>0x000</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DIS</name>
+            <description>This bit allows softwaree to disable the boost regulator for the VDD18 supply.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VREGCTRL</name>
+        <description>Boost Voltage Regulator Control Register.</description>
+        <addressOffset>0x004</addressOffset>
+        <fields>
+          <field>
+            <name>SET</name>
+            <description>Sets the target voltage for the boost regulator output.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IPEAK</name>
+        <description>Low Side FET Peak Current Register.</description>
+        <addressOffset>0x008</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>SET</name>
+            <description>Sets the peak current threshold for the regulator.</description>
+            <bitRange>[2:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MAXTON</name>
+        <description>Maximum Low Side FET Time-On Register.</description>
+        <addressOffset>0x00C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>THD</name>
+            <description>Sets a threshold for when time-on out toggles.</description>
+            <bitRange>[3:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ILOAD</name>
+        <description>Boost Cycle Count Register.</description>
+        <addressOffset>0x010</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>CNT</name>
+            <description>Indicates the last load cycle count value.</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ALERT</name>
+        <description>Boost Cycle Count Alert Register.</description>
+        <addressOffset>0x014</addressOffset>
+        <fields>
+          <field>
+            <name>THD</name>
+            <description>Determines the threshold for when the boost alert interruptis fired.</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RDY</name>
+        <description>Boost Output Ready Register.</description>
+        <addressOffset>0x018</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>OUT</name>
+            <description>Indicates ready out status for boost regulator.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ZXCAL</name>
+        <description>Zero Cross Calibration Register.</description>
+        <addressOffset>0x01C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>VAL</name>
+            <description>Read back of auto-calibration values.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>Boost Alert Interrupt Enable Register.</description>
+        <addressOffset>0x020</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ALERT</name>
+            <description>Boost alert enable/</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>Boost Alert Interrupt Status Register.</description>
+        <addressOffset>0x024</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ALERT</name>
+            <description>Boost alert has occurred.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--Boost Controller-->
+</device>

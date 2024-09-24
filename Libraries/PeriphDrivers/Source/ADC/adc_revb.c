@@ -130,6 +130,11 @@ int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock)
     }
 }
 
+bool MXC_ADC_RevB_IsClockSourceLocked(mxc_adc_revb_regs_t *adc)
+{
+    return g_is_clock_locked;
+}
+
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc)
 {
     if (async_callback != NULL) {

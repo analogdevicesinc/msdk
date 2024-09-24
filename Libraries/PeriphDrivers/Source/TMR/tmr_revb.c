@@ -63,7 +63,7 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 
     MXC_TMR_RevB_SetClockSource(tmr, cfg->bitMode, clk_src);
-    MXC_TMR_RevB_SetPrescalar(tmr, cfg->bitMode, clk_src);
+    MXC_TMR_RevB_SetPrescalar(tmr, cfg->bitMode, cfg->pres);
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
@@ -136,6 +136,11 @@ void MXC_TMR_RevB_LockClockSource(mxc_tmr_revb_regs_t *tmr, bool lock)
     g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)] = lock;
 }
 
+bool MXC_TMR_RevB_IsClockSourceLocked(mxc_tmr_revb_regs_t *tmr)
+{
+    return g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)];
+}
+
 void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
                                  uint8_t clk_src)
 {
@@ -176,6 +181,11 @@ void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq)
     int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
+
+    // If the clock source is locked, don't update the frequency either, as we will
+    // have rejected the configuration update too in MXC_TMR_RevB_SetClockSource.
+    if (g_is_clock_locked[tmr_id])
+        return;
 
     tmr_clksrc[tmr_id].configured = true;
     tmr_clksrc[tmr_id].freq = clksrc_freq;
@@ -221,7 +231,8 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     while (!(tmr->intfl & (MXC_F_TMR_REVB_INTFL_WRDONE_A << timerOffset))) {}
 
     tmr->cmp = (cfg->cmp_cnt << timerOffset);
-#if TARGET_NUM == 32655 || TARGET_NUM == 78000 || TARGET_NUM == 32690 || TARGET_NUM == 78002
+#if TARGET_NUM == 32655 || TARGET_NUM == 32657 || TARGET_NUM == 78000 || TARGET_NUM == 32690 || \
+    TARGET_NUM == 78002
     tmr->ctrl1 &= ~(MXC_F_TMR_REVB_CTRL1_OUTEN_A << timerOffset);
 #else
     tmr->ctrl1 |= (MXC_F_TMR_REVB_CTRL1_OUTEN_A << timerOffset);

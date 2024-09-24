@@ -91,9 +91,10 @@ typedef struct {
     __IO uint32_t apbsec;               /**< <tt>\b 0x0120:</tt> SPC APBSEC Register */
     __R  uint32_t rsv_0x124_0x15f[15];
     __IO uint32_t apbpriv;              /**< <tt>\b 0x0160:</tt> SPC APBPRIV Register */
-    __R  uint32_t rsv_0x164_0x17f[7];
+    __R  uint32_t rsv_0x164_0x16f[3];
+    __IO uint32_t ahbmpriv;             /**< <tt>\b 0x0170:</tt> SPC AHBMPRIV Register */
+    __R  uint32_t rsv_0x174_0x17f[3];
     __IO uint32_t gpio0;                /**< <tt>\b 0x0180:</tt> SPC GPIO0 Register */
-    __IO uint32_t gpio1;                /**< <tt>\b 0x0184:</tt> SPC GPIO1 Register */
 } mxc_spc_regs_t;
 
 /* Register offsets for module SPC */
@@ -114,8 +115,8 @@ typedef struct {
 #define MXC_R_SPC_M33LOCK                  ((uint32_t)0x00000090UL) /**< Offset from SPC Base Address: <tt> 0x0090</tt> */
 #define MXC_R_SPC_APBSEC                   ((uint32_t)0x00000120UL) /**< Offset from SPC Base Address: <tt> 0x0120</tt> */
 #define MXC_R_SPC_APBPRIV                  ((uint32_t)0x00000160UL) /**< Offset from SPC Base Address: <tt> 0x0160</tt> */
+#define MXC_R_SPC_AHBMPRIV                 ((uint32_t)0x00000170UL) /**< Offset from SPC Base Address: <tt> 0x0170</tt> */
 #define MXC_R_SPC_GPIO0                    ((uint32_t)0x00000180UL) /**< Offset from SPC Base Address: <tt> 0x0180</tt> */
-#define MXC_R_SPC_GPIO1                    ((uint32_t)0x00000184UL) /**< Offset from SPC Base Address: <tt> 0x0184</tt> */
 /**@} end of group spc_registers */
 
 /**
@@ -199,7 +200,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_PPC_STATUS_APBPPC_POS                0 /**< PPC_STATUS_APBPPC Position */
-#define MXC_F_SPC_PPC_STATUS_APBPPC                    ((uint32_t)(0x3UL << MXC_F_SPC_PPC_STATUS_APBPPC_POS)) /**< PPC_STATUS_APBPPC Mask */
+#define MXC_F_SPC_PPC_STATUS_APBPPC                    ((uint32_t)(0xFUL << MXC_F_SPC_PPC_STATUS_APBPPC_POS)) /**< PPC_STATUS_APBPPC Mask */
 
 /**@} end of group SPC_PPC_STATUS_Register */
 
@@ -210,7 +211,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_PPC_INTCLR_APBPPC_POS                0 /**< PPC_INTCLR_APBPPC Position */
-#define MXC_F_SPC_PPC_INTCLR_APBPPC                    ((uint32_t)(0x3UL << MXC_F_SPC_PPC_INTCLR_APBPPC_POS)) /**< PPC_INTCLR_APBPPC Mask */
+#define MXC_F_SPC_PPC_INTCLR_APBPPC                    ((uint32_t)(0xFUL << MXC_F_SPC_PPC_INTCLR_APBPPC_POS)) /**< PPC_INTCLR_APBPPC Mask */
 
 /**@} end of group SPC_PPC_INTCLR_Register */
 
@@ -221,7 +222,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_PPC_INTEN_APBPPC_POS                 0 /**< PPC_INTEN_APBPPC Position */
-#define MXC_F_SPC_PPC_INTEN_APBPPC                     ((uint32_t)(0x3UL << MXC_F_SPC_PPC_INTEN_APBPPC_POS)) /**< PPC_INTEN_APBPPC Mask */
+#define MXC_F_SPC_PPC_INTEN_APBPPC                     ((uint32_t)(0xFUL << MXC_F_SPC_PPC_INTEN_APBPPC_POS)) /**< PPC_INTEN_APBPPC Mask */
 
 /**@} end of group SPC_PPC_INTEN_Register */
 
@@ -270,6 +271,64 @@ typedef struct {
  */
 #define MXC_F_SPC_APBSEC_PERIPH_POS                    0 /**< APBSEC_PERIPH Position */
 #define MXC_F_SPC_APBSEC_PERIPH                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_SPC_APBSEC_PERIPH_POS)) /**< APBSEC_PERIPH Mask */
+#define MXC_V_SPC_APBSEC_PERIPH_GCR                    ((uint32_t)0x1UL) /**< APBSEC_PERIPH_GCR Value */
+#define MXC_S_SPC_APBSEC_PERIPH_GCR                    (MXC_V_SPC_APBSEC_PERIPH_GCR << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_GCR Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_SIR                    ((uint32_t)0x2UL) /**< APBSEC_PERIPH_SIR Value */
+#define MXC_S_SPC_APBSEC_PERIPH_SIR                    (MXC_V_SPC_APBSEC_PERIPH_SIR << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_SIR Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_FCR                    ((uint32_t)0x4UL) /**< APBSEC_PERIPH_FCR Value */
+#define MXC_S_SPC_APBSEC_PERIPH_FCR                    (MXC_V_SPC_APBSEC_PERIPH_FCR << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_FCR Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_WDT                    ((uint32_t)0x8UL) /**< APBSEC_PERIPH_WDT Value */
+#define MXC_S_SPC_APBSEC_PERIPH_WDT                    (MXC_V_SPC_APBSEC_PERIPH_WDT << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_WDT Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_AES                    ((uint32_t)0x10UL) /**< APBSEC_PERIPH_AES Value */
+#define MXC_S_SPC_APBSEC_PERIPH_AES                    (MXC_V_SPC_APBSEC_PERIPH_AES << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_AES Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_AESKEYS                ((uint32_t)0x20UL) /**< APBSEC_PERIPH_AESKEYS Value */
+#define MXC_S_SPC_APBSEC_PERIPH_AESKEYS                (MXC_V_SPC_APBSEC_PERIPH_AESKEYS << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_AESKEYS Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_CRC                    ((uint32_t)0x40UL) /**< APBSEC_PERIPH_CRC Value */
+#define MXC_S_SPC_APBSEC_PERIPH_CRC                    (MXC_V_SPC_APBSEC_PERIPH_CRC << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_CRC Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_GPIO0                  ((uint32_t)0x80UL) /**< APBSEC_PERIPH_GPIO0 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_GPIO0                  (MXC_V_SPC_APBSEC_PERIPH_GPIO0 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_GPIO0 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TMR0                   ((uint32_t)0x100UL) /**< APBSEC_PERIPH_TMR0 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TMR0                   (MXC_V_SPC_APBSEC_PERIPH_TMR0 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TMR0 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TMR1                   ((uint32_t)0x200UL) /**< APBSEC_PERIPH_TMR1 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TMR1                   (MXC_V_SPC_APBSEC_PERIPH_TMR1 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TMR1 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TMR2                   ((uint32_t)0x400UL) /**< APBSEC_PERIPH_TMR2 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TMR2                   (MXC_V_SPC_APBSEC_PERIPH_TMR2 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TMR2 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TMR3                   ((uint32_t)0x800UL) /**< APBSEC_PERIPH_TMR3 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TMR3                   (MXC_V_SPC_APBSEC_PERIPH_TMR3 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TMR3 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TMR4                   ((uint32_t)0x1000UL) /**< APBSEC_PERIPH_TMR4 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TMR4                   (MXC_V_SPC_APBSEC_PERIPH_TMR4 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TMR4 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TMR5                   ((uint32_t)0x2000UL) /**< APBSEC_PERIPH_TMR5 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TMR5                   (MXC_V_SPC_APBSEC_PERIPH_TMR5 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TMR5 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_I3C                    ((uint32_t)0x4000UL) /**< APBSEC_PERIPH_I3C Value */
+#define MXC_S_SPC_APBSEC_PERIPH_I3C                    (MXC_V_SPC_APBSEC_PERIPH_I3C << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_I3C Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_UART                   ((uint32_t)0x8000UL) /**< APBSEC_PERIPH_UART Value */
+#define MXC_S_SPC_APBSEC_PERIPH_UART                   (MXC_V_SPC_APBSEC_PERIPH_UART << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_UART Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_SPI                    ((uint32_t)0x10000UL) /**< APBSEC_PERIPH_SPI Value */
+#define MXC_S_SPC_APBSEC_PERIPH_SPI                    (MXC_V_SPC_APBSEC_PERIPH_SPI << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_SPI Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TRNG                   ((uint32_t)0x20000UL) /**< APBSEC_PERIPH_TRNG Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TRNG                   (MXC_V_SPC_APBSEC_PERIPH_TRNG << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TRNG Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_BTLE_DBB               ((uint32_t)0x40000UL) /**< APBSEC_PERIPH_BTLE_DBB Value */
+#define MXC_S_SPC_APBSEC_PERIPH_BTLE_DBB               (MXC_V_SPC_APBSEC_PERIPH_BTLE_DBB << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_BTLE_DBB Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_BTLE_RFFE              ((uint32_t)0x80000UL) /**< APBSEC_PERIPH_BTLE_RFFE Value */
+#define MXC_S_SPC_APBSEC_PERIPH_BTLE_RFFE              (MXC_V_SPC_APBSEC_PERIPH_BTLE_RFFE << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_BTLE_RFFE Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_RSTZ                   ((uint32_t)0x100000UL) /**< APBSEC_PERIPH_RSTZ Value */
+#define MXC_S_SPC_APBSEC_PERIPH_RSTZ                   (MXC_V_SPC_APBSEC_PERIPH_RSTZ << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_RSTZ Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_BOOST                  ((uint32_t)0x200000UL) /**< APBSEC_PERIPH_BOOST Value */
+#define MXC_S_SPC_APBSEC_PERIPH_BOOST                  (MXC_V_SPC_APBSEC_PERIPH_BOOST << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_BOOST Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_TRIMSIR                ((uint32_t)0x400000UL) /**< APBSEC_PERIPH_TRIMSIR Value */
+#define MXC_S_SPC_APBSEC_PERIPH_TRIMSIR                (MXC_V_SPC_APBSEC_PERIPH_TRIMSIR << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_TRIMSIR Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_RTC                    ((uint32_t)0x1000000UL) /**< APBSEC_PERIPH_RTC Value */
+#define MXC_S_SPC_APBSEC_PERIPH_RTC                    (MXC_V_SPC_APBSEC_PERIPH_RTC << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_RTC Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_WUT0                   ((uint32_t)0x2000000UL) /**< APBSEC_PERIPH_WUT0 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_WUT0                   (MXC_V_SPC_APBSEC_PERIPH_WUT0 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_WUT0 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_WUT1                   ((uint32_t)0x4000000UL) /**< APBSEC_PERIPH_WUT1 Value */
+#define MXC_S_SPC_APBSEC_PERIPH_WUT1                   (MXC_V_SPC_APBSEC_PERIPH_WUT1 << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_WUT1 Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_PWRSEQ                 ((uint32_t)0x8000000UL) /**< APBSEC_PERIPH_PWRSEQ Value */
+#define MXC_S_SPC_APBSEC_PERIPH_PWRSEQ                 (MXC_V_SPC_APBSEC_PERIPH_PWRSEQ << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_PWRSEQ Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_MCR                    ((uint32_t)0x10000000UL) /**< APBSEC_PERIPH_MCR Value */
+#define MXC_S_SPC_APBSEC_PERIPH_MCR                    (MXC_V_SPC_APBSEC_PERIPH_MCR << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_MCR Setting */
+#define MXC_V_SPC_APBSEC_PERIPH_ALL                    ((uint32_t)0x1F7FFFFFUL) /**< APBSEC_PERIPH_ALL Value */
+#define MXC_S_SPC_APBSEC_PERIPH_ALL                    (MXC_V_SPC_APBSEC_PERIPH_ALL << MXC_F_SPC_APBSEC_PERIPH_POS) /**< APBSEC_PERIPH_ALL Setting */
 
 /**@} end of group SPC_APBSEC_Register */
 
@@ -281,8 +340,77 @@ typedef struct {
  */
 #define MXC_F_SPC_APBPRIV_PERIPH_POS                   0 /**< APBPRIV_PERIPH Position */
 #define MXC_F_SPC_APBPRIV_PERIPH                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SPC_APBPRIV_PERIPH_POS)) /**< APBPRIV_PERIPH Mask */
+#define MXC_V_SPC_APBPRIV_PERIPH_GCR                   ((uint32_t)0x1UL) /**< APBPRIV_PERIPH_GCR Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_GCR                   (MXC_V_SPC_APBPRIV_PERIPH_GCR << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_GCR Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_SIR                   ((uint32_t)0x2UL) /**< APBPRIV_PERIPH_SIR Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_SIR                   (MXC_V_SPC_APBPRIV_PERIPH_SIR << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_SIR Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_FCR                   ((uint32_t)0x4UL) /**< APBPRIV_PERIPH_FCR Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_FCR                   (MXC_V_SPC_APBPRIV_PERIPH_FCR << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_FCR Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_WDT                   ((uint32_t)0x8UL) /**< APBPRIV_PERIPH_WDT Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_WDT                   (MXC_V_SPC_APBPRIV_PERIPH_WDT << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_WDT Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_AES                   ((uint32_t)0x10UL) /**< APBPRIV_PERIPH_AES Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_AES                   (MXC_V_SPC_APBPRIV_PERIPH_AES << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_AES Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_AESKEYS               ((uint32_t)0x20UL) /**< APBPRIV_PERIPH_AESKEYS Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_AESKEYS               (MXC_V_SPC_APBPRIV_PERIPH_AESKEYS << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_AESKEYS Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_CRC                   ((uint32_t)0x40UL) /**< APBPRIV_PERIPH_CRC Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_CRC                   (MXC_V_SPC_APBPRIV_PERIPH_CRC << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_CRC Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_GPIO0                 ((uint32_t)0x80UL) /**< APBPRIV_PERIPH_GPIO0 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_GPIO0                 (MXC_V_SPC_APBPRIV_PERIPH_GPIO0 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_GPIO0 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TMR0                  ((uint32_t)0x100UL) /**< APBPRIV_PERIPH_TMR0 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TMR0                  (MXC_V_SPC_APBPRIV_PERIPH_TMR0 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TMR0 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TMR1                  ((uint32_t)0x200UL) /**< APBPRIV_PERIPH_TMR1 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TMR1                  (MXC_V_SPC_APBPRIV_PERIPH_TMR1 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TMR1 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TMR2                  ((uint32_t)0x400UL) /**< APBPRIV_PERIPH_TMR2 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TMR2                  (MXC_V_SPC_APBPRIV_PERIPH_TMR2 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TMR2 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TMR3                  ((uint32_t)0x800UL) /**< APBPRIV_PERIPH_TMR3 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TMR3                  (MXC_V_SPC_APBPRIV_PERIPH_TMR3 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TMR3 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TMR4                  ((uint32_t)0x1000UL) /**< APBPRIV_PERIPH_TMR4 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TMR4                  (MXC_V_SPC_APBPRIV_PERIPH_TMR4 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TMR4 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TMR5                  ((uint32_t)0x2000UL) /**< APBPRIV_PERIPH_TMR5 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TMR5                  (MXC_V_SPC_APBPRIV_PERIPH_TMR5 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TMR5 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_I3C                   ((uint32_t)0x4000UL) /**< APBPRIV_PERIPH_I3C Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_I3C                   (MXC_V_SPC_APBPRIV_PERIPH_I3C << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_I3C Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_UART                  ((uint32_t)0x8000UL) /**< APBPRIV_PERIPH_UART Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_UART                  (MXC_V_SPC_APBPRIV_PERIPH_UART << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_UART Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_SPI                   ((uint32_t)0x10000UL) /**< APBPRIV_PERIPH_SPI Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_SPI                   (MXC_V_SPC_APBPRIV_PERIPH_SPI << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_SPI Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TRNG                  ((uint32_t)0x20000UL) /**< APBPRIV_PERIPH_TRNG Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TRNG                  (MXC_V_SPC_APBPRIV_PERIPH_TRNG << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TRNG Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_BTLE_DBB              ((uint32_t)0x40000UL) /**< APBPRIV_PERIPH_BTLE_DBB Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_BTLE_DBB              (MXC_V_SPC_APBPRIV_PERIPH_BTLE_DBB << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_BTLE_DBB Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_BTLE_RFFE             ((uint32_t)0x80000UL) /**< APBPRIV_PERIPH_BTLE_RFFE Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_BTLE_RFFE             (MXC_V_SPC_APBPRIV_PERIPH_BTLE_RFFE << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_BTLE_RFFE Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_RSTZ                  ((uint32_t)0x100000UL) /**< APBPRIV_PERIPH_RSTZ Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_RSTZ                  (MXC_V_SPC_APBPRIV_PERIPH_RSTZ << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_RSTZ Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_BOOST                 ((uint32_t)0x200000UL) /**< APBPRIV_PERIPH_BOOST Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_BOOST                 (MXC_V_SPC_APBPRIV_PERIPH_BOOST << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_BOOST Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_TRIMSIR               ((uint32_t)0x400000UL) /**< APBPRIV_PERIPH_TRIMSIR Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_TRIMSIR               (MXC_V_SPC_APBPRIV_PERIPH_TRIMSIR << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_TRIMSIR Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_RTC                   ((uint32_t)0x1000000UL) /**< APBPRIV_PERIPH_RTC Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_RTC                   (MXC_V_SPC_APBPRIV_PERIPH_RTC << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_RTC Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_WUT0                  ((uint32_t)0x2000000UL) /**< APBPRIV_PERIPH_WUT0 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_WUT0                  (MXC_V_SPC_APBPRIV_PERIPH_WUT0 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_WUT0 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_WUT1                  ((uint32_t)0x4000000UL) /**< APBPRIV_PERIPH_WUT1 Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_WUT1                  (MXC_V_SPC_APBPRIV_PERIPH_WUT1 << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_WUT1 Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_PWRSEQ                ((uint32_t)0x8000000UL) /**< APBPRIV_PERIPH_PWRSEQ Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_PWRSEQ                (MXC_V_SPC_APBPRIV_PERIPH_PWRSEQ << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_PWRSEQ Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_MCR                   ((uint32_t)0x10000000UL) /**< APBPRIV_PERIPH_MCR Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_MCR                   (MXC_V_SPC_APBPRIV_PERIPH_MCR << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_MCR Setting */
+#define MXC_V_SPC_APBPRIV_PERIPH_ALL                   ((uint32_t)0x1F7FFFFFUL) /**< APBPRIV_PERIPH_ALL Value */
+#define MXC_S_SPC_APBPRIV_PERIPH_ALL                   (MXC_V_SPC_APBPRIV_PERIPH_ALL << MXC_F_SPC_APBPRIV_PERIPH_POS) /**< APBPRIV_PERIPH_ALL Setting */
 
 /**@} end of group SPC_APBPRIV_Register */
+
+/**
+ * @ingroup  spc_registers
+ * @defgroup SPC_AHBMPRIV SPC_AHBMPRIV
+ * @brief    AHB Privileged/Non-privileged Secure DMA Access.
+ * @{
+ */
+#define MXC_F_SPC_AHBMPRIV_DMA_POS                     0 /**< AHBMPRIV_DMA Position */
+#define MXC_F_SPC_AHBMPRIV_DMA                         ((uint32_t)(0x1UL << MXC_F_SPC_AHBMPRIV_DMA_POS)) /**< AHBMPRIV_DMA Mask */
+
+/**@} end of group SPC_AHBMPRIV_Register */
 
 /**
  * @ingroup  spc_registers
@@ -291,20 +419,9 @@ typedef struct {
  * @{
  */
 #define MXC_F_SPC_GPIO0_PINS_POS                       0 /**< GPIO0_PINS Position */
-#define MXC_F_SPC_GPIO0_PINS                           ((uint32_t)(0xFFFUL << MXC_F_SPC_GPIO0_PINS_POS)) /**< GPIO0_PINS Mask */
+#define MXC_F_SPC_GPIO0_PINS                           ((uint32_t)(0x3FFFUL << MXC_F_SPC_GPIO0_PINS_POS)) /**< GPIO0_PINS Mask */
 
 /**@} end of group SPC_GPIO0_Register */
-
-/**
- * @ingroup  spc_registers
- * @defgroup SPC_GPIO1 SPC_GPIO1
- * @brief    Secure GPIO1 Configuration Register.
- * @{
- */
-#define MXC_F_SPC_GPIO1_PINS_POS                       0 /**< GPIO1_PINS Position */
-#define MXC_F_SPC_GPIO1_PINS                           ((uint32_t)(0x3UL << MXC_F_SPC_GPIO1_PINS_POS)) /**< GPIO1_PINS Mask */
-
-/**@} end of group SPC_GPIO1_Register */
 
 #ifdef __cplusplus
 }

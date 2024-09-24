@@ -21,10 +21,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mxc_sys.h"
+#include "mxc_errors.h"
 #include "max32657.h"
 #include "system_max32657.h"
-#include "partition_max32657.h"
 #include "gcr_regs.h"
+#include "mpc.h"
+
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#include "partition_max32657.h"
+
+// From linker script.
+extern uint32_t _nonsecure_start, _nonsecure_end;
+
+#define VECTOR_TABLE_START_ADDR_NS \
+    (uint32_t)(&_nonsecure_start) // Now setting the start of the vector table using a linker symbol
+#define MXC_Reset_Handler_NS (mxc_ns_call_t) * ((uint32_t *)(VECTOR_TABLE_START_ADDR_NS + 4))
+#define MXC_MSP_NS *((uint32_t *)(VECTOR_TABLE_START_ADDR_NS))
+#endif
 
 extern void (*const __isr_vector[])(void);
 
@@ -84,7 +97,8 @@ __weak void SystemCoreClockUpdate(void)
     SystemCoreClock = base_freq >> div;
 }
 
-/* This function is called before C runtime initialization and can be
+/**
+ * This function is called before C runtime initialization and can be
  * implemented by the application for early initializations. If a value other
  * than '0' is returned, the C runtime initialization will be skipped.
  *
@@ -95,12 +109,11 @@ __weak void SystemCoreClockUpdate(void)
 __weak int PreInit(void)
 {
     /* Do nothing */
-    // TODO(JC): No SIMO on this device, confirm nothing needs to be done here.
-    //     (SW): Correct, different power HW.
     return 0;
 }
 
-/* This function is called before the Board_Init function.  This weak 
+/**
+ * This function is called before the Board_Init function.  This weak 
  * implementation does nothing, but you may over-ride this function in your 
  * program if you want to configure the state of all pins prior to the 
  * application running.  This is useful when using external tools (like a
@@ -118,7 +131,8 @@ __weak int Board_Init(void)
     return 0;
 }
 
-/* This function is called just before control is transferred to main().
+/**
+ * This function is called just before control is transferred to main().
  *
  * You may over-ride this function in your program by defining a custom
  *  SystemInit(), but care should be taken to reproduce the initialization
@@ -135,19 +149,20 @@ __weak void SystemInit(void)
     SCB->CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
 #endif /* __FPU_PRESENT check */
 
-    /* 
-        Enable Unaligned Access Trapping to throw an exception when there is an
-        unaligned memory access while unaligned access support is disabled.
-
-        Note: ARMv8-M without the Main Extension disables unaligned access by default.
-    */
+    /**
+     *  Enable Unaligned Access Trapping to throw an exception when there is an
+     *  unaligned memory access while unaligned access support is disabled.
+     *
+     *  Note: ARMv8-M without the Main Extension disables unaligned access by default.
+     */
 #if defined(UNALIGNED_SUPPORT_DISABLE) || defined(__ARM_FEATURE_UNALIGNED)
     SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
 #endif
 
     /* Security Extension Features */
-#if IS_SECURE_ENVIRONMENT
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     /* Settings for TrustZone SAU setup are defined in partitions_max32657.h */
+    /* Set up secure and non-secure regions with SAU. */
     TZ_SAU_Setup();
 #endif /* TrustZone */
 
@@ -168,3 +183,64 @@ __weak void SystemInit(void)
     PinInit();
     Board_Init();
 }
+
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+/**
+ * This function is called in Secure code just before control
+ *  is transferred to non-secure world. Only available when
+ *  trustzone feature is used.
+ *
+ * You may over-ride this function in your program by defining a custom
+ *  NonSecure_Init(), but care should be taken to reproduce the initialization
+ *  steps to non-secure code.
+ * 
+ * Caller must be aware of configuring MPC, SPC, and NSPC before this
+ *  function is called.
+ * 
+ * Function should never return if successful.
+ */
+__weak int NonSecure_Init(void)
+{
+    int error;
+    mxc_ns_call_t Reset_Handler_NS;
+
+    // Secure world must enable FPU for non-secure world. (Turned off by default).
+#if (__FPU_PRESENT == 1U)
+    /* Enable FPU - coprocessor slots 10 & 11 full access */
+    SCB_NS->CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
+#endif /* __FPU_PRESENT check */
+
+    // Setup Non-Secure vector table.
+    //  Global symbols defined in Libraries/CMSIS/Device/Maxim/MAX32657/Source/GCC/nonsecure_load.S
+    //  indicates the beginning of the nonsecure image, which starts at the vector table.
+    SCB_NS->VTOR = VECTOR_TABLE_START_ADDR_NS;
+
+    // Setup Non-Secure Main Stack Pointer (MSP_NS).
+    //  Start of vector table contains top of stack value.
+    __TZ_set_MSP_NS(MXC_MSP_NS);
+
+    // Get Non-Secure Reset_Handler.
+    Reset_Handler_NS = MXC_Reset_Handler_NS;
+
+    // Set MPCs for Non-Secure region.
+    //  (Not setting up Secure regions as, by default, MPC regions are set as secure on startup).
+    error = MXC_MPC_SetNonSecure((uint32_t)(&_nonsecure_start), (uint32_t)(&_nonsecure_end));
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    // Lock MPCs.
+    MXC_MPC_Lock(MXC_MPC_FLASH);
+    MXC_MPC_Lock(MXC_MPC_SRAM0);
+    MXC_MPC_Lock(MXC_MPC_SRAM1);
+    MXC_MPC_Lock(MXC_MPC_SRAM2);
+    MXC_MPC_Lock(MXC_MPC_SRAM3);
+    MXC_MPC_Lock(MXC_MPC_SRAM4);
+
+    // Start Non-Secure code.
+    Reset_Handler_NS();
+
+    // Should not reach here if switching to non-secure world was successful.
+    return E_FAIL;
+}
+#endif
