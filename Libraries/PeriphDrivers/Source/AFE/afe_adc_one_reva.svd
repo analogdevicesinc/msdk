@@ -700,9 +700,16 @@
         <fields>
           <field>
             <name>REV_ID</name>
-            <description>Description not included</description>
+            <description>Revision ID.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>3</bitWidth>
+            <bitWidth>5</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>ADC_SEL</name>
+            <description>ADC Selected.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
             <access>read-only</access>
           </field>
         </fields>
