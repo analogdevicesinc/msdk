@@ -19,7 +19,7 @@
  ******************************************************************************/
 
 /* Note: Flash 0 page size is 16KB (0x4000). Flash 1 page size is 8KB (0x2000) */
-BOOTLOADER_ORIGIN = 0x10000000;                         /* Bootloader resides in page 0 */
+BOOTLOADER_ORIGIN = 0x10000000;                         /* Bootloader resides in Flash 0 */
 BOOTLOADER_LEN = 0x8000;                                /* 2 Flash 0 pages length (total 32KB) */
 FLASH0_SECTION_LEN = 0x300000 - BOOTLOADER_LEN;         /* 3MB - 2 pages (16KB/page) */
 FLASH1_SECTION_LEN = 0x40000;                           /* 256KB */
