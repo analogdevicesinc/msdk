@@ -182,6 +182,11 @@ void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // If the clock source is locked, don't update the frequency either, as we will
+    // have rejected the configuration update too in MXC_TMR_RevB_SetClockSource.
+    if (g_is_clock_locked[tmr_id])
+        return;
+
     tmr_clksrc[tmr_id].configured = true;
     tmr_clksrc[tmr_id].freq = clksrc_freq;
 }
