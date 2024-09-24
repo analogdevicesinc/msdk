@@ -63,9 +63,9 @@ function init() {
 
 		if [[ $1 = "SPI" || $1 = "SPI_v2" || $1 = "ADC" || $1 = "UART" ]];
 		then
-			make -C $Path/$testName METHOD=$2
+			make -j -C $Path/$testName METHOD=$2
 		else
-			make -C $Path/$testName
+			make -j -C $Path/$testName
 		fi
 	fi
 

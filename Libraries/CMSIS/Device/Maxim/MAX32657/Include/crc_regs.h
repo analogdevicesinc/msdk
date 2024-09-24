@@ -78,7 +78,6 @@ typedef struct {
         __IO uint16_t datain16;         /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
         __IO uint8_t  datain8;          /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
     };
-    __R  uint8_t  rsv_0x5_0x7[3];
     __IO uint32_t poly;                 /**< <tt>\b 0x0008:</tt> CRC POLY Register */
     __IO uint32_t val;                  /**< <tt>\b 0x000C:</tt> CRC VAL Register */
 } mxc_crc_regs_t;

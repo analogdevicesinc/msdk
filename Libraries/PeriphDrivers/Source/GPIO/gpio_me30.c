@@ -87,12 +87,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return E_NO_ERROR;
     }
 
-    // Configure the vssel
-    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
     if (error != E_NO_ERROR) {
@@ -100,7 +94,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     }
 
     // Configure the pad
-    // TODO(ME30): "ps" (weak vs strong pull-up/down select) register field missing
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
         gpio->padctrl0 &= ~cfg->mask;
@@ -112,25 +105,25 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     case MXC_GPIO_PAD_WEAK_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
         gpio->padctrl1 &= ~cfg->mask;
-        // gpio->ps |= cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
         gpio->padctrl1 &= ~cfg->mask;
-        // gpio->ps &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_WEAK_PULL_DOWN:
         gpio->padctrl0 &= ~cfg->mask;
         gpio->padctrl1 |= cfg->mask;
-        // gpio->ps |= cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
         gpio->padctrl0 &= ~cfg->mask;
         gpio->padctrl1 |= cfg->mask;
-        // gpio->ps &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     default:
@@ -226,7 +219,7 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 /* ************************************************************************** */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
-    return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
+    return E_NOT_SUPPORTED;
 }
 
 /* ************************************************************************** */

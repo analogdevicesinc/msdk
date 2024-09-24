@@ -11,20 +11,20 @@
     </addressBlock>
     <registers>
       <register>
-        <name>FCTRL0</name>
-        <description>Register 0.</description>
+        <name>CTRL</name>
+        <description>Function Control 0 Register.</description>
         <addressOffset>0x00</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>BTLELDO_TX</name>
-            <description>BTLE LDO TX Trim.</description>
+            <name>BTLELDO_RF</name>
+            <description>BTLE LDO RF Trim.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
           <field>
-            <name>BTLELDO_RX</name>
-            <description>BTLE LDO RX Trim.</description>
+            <name>BTLELDO_BB</name>
+            <description>BTLE LDO BB Trim.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
@@ -67,13 +67,13 @@
         </fields>
       </register>
       <register>
-        <name>FCTRL1</name>
-        <description>Register 1.</description>
+        <name>AUTOCAL0</name>
+        <description>Automatic Calibration 0 Register.</description>
         <addressOffset>0x04</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>AC_EN</name>
+            <name>EN</name>
             <description>Auto-calibration Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -91,7 +91,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AC_RUN</name>
+            <name>RUN</name>
             <description>Autocalibration Run.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -157,7 +157,7 @@
             <bitWidth>12</bitWidth>
           </field>
           <field>
-            <name>AC_TRIM_OUT</name>
+            <name>TRIM_OUT</name>
             <description>IPO Auto Calibration Trim</description>
             <bitOffset>23</bitOffset>
             <bitWidth>9</bitWidth>
@@ -165,13 +165,13 @@
         </fields>
       </register>
       <register>
-        <name>FCTRL2</name>
-        <description>Register 2.</description>
+        <name>AUTOCAL1</name>
+        <description>Automatic Calibration 1 Register.</description>
         <addressOffset>0x08</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>AC_INIT_TRIM</name>
+            <name>INIT_TRIM</name>
             <description>IPO Trim Automatic Calibration Initial Trim.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>9</bitWidth>
@@ -179,19 +179,19 @@
         </fields>
       </register>
       <register>
-        <name>FCTRL3</name>
-        <description>Register 3.</description>
+        <name>AUTOCAL2</name>
+        <description>Automatic Calibration 2 Register.</description>
         <addressOffset>0x0C</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>AC_RUNTIME</name>
+            <name>RUNTIME</name>
             <description>IPO Trim Autocal Run Time</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>AC_DIV</name>
+            <name>DIV</name>
             <description>IPO Trim Automatic Calibration Divide Factor.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>13</bitWidth>
@@ -248,7 +248,126 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>INTFL</name>
+        <description>Interrupt Flag Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ERTOC_RDY</name>
+            <description>ERTCO 32K Ready.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FRQCNT</name>
+            <description>Frequency Counter Interrupt Flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ERTOC_RDY</name>
+            <description>ERTCO 32K Ready Interrupt Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FRQCNT</name>
+            <description>Frequency Counter Interrupt Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FRQCNTCTRL</name>
+        <description>Frequency Counter Control Register.</description>
+        <addressOffset>0x28</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>START</name>
+            <description>Start Compare.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CMP_CLKSEL</name>
+            <description>Compared Clock Select.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>RTC</name>
+                <description>RTC.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXT_GPIO</name>
+                <description>External GPIO.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>INRO</name>
+                <description>INRO.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FRQCNTCMP</name>
+        <description>Frequency Counter Compared Target Register.</description>
+        <addressOffset>0x2C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TARGET</name>
+            <description>Compared Clock Target.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>REFCLK</name>
+        <description>Reference Clock Result Register.</description>
+        <addressOffset>0x30</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>RESULT</name>
+            <description>Reference Clock Result.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>20</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CMPCLK</name>
+        <description>Compared Clock Result Register.</description>
+        <addressOffset>0x34</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>RESULT</name>
+            <description>Compared Clock Result.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
-  <!-- NBBFC: Non Battery-Backed Function Control -->
+  <!--FCR: Function Control Registers.-->
 </device>
