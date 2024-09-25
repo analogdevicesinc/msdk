@@ -118,6 +118,10 @@ static void mainLoadConfiguration(void)
 /*************************************************************************************************/
 static void mainWsfInit(void)
 {
+    uint32_t llmemUsed, memUsed;
+
+    mainLoadConfiguration();
+
     /* +12 for message headroom, + 2 event header, +255 maximum parameter length. */
     const uint16_t maxRptBufSize = 12 + 2 + 255;
 
@@ -126,8 +130,8 @@ static void mainWsfInit(void)
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
-#if (BT_VER > 9)
-    WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+#if (BT_VER > 9) && INIT_FEAT_ISO
+    mainLlRtCfg.maxIsoSduLen = mainLlRtCfg.maxAclLen;
 #endif
 
     /* Ensure pool buffers are ordered correctly. */
@@ -144,24 +148,61 @@ static void mainWsfInit(void)
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
-    /* Initial buffer configuration. */
-    uint16_t memUsed;
+    /* Calculate how much memory we will need for the LL initialization */
     WsfCsEnter();
-    memUsed = WsfBufInit(numPools, poolDesc);
+
+    LlInitRtCfg_t llCfg = {
+        .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .freeMemAvail = WsfHeapCountAvailable()
+    };
+
+    llmemUsed = LlInitSetRtCfg(&llCfg);
+
+    WsfCsExit();
+
+    /* Initial buffer configuration. */
+    WsfCsEnter();
+    memUsed = WsfBufCalcSize(numPools, poolDesc);
     WsfHeapAlloc(memUsed);
+    WsfBufInit(numPools, poolDesc);
     WsfCsExit();
 
     WsfOsInit();
     WsfTimerInit();
+
 #if (WSF_TRACE_ENABLED == TRUE)
     WsfCsEnter();
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
+    WsfHeapAlloc(PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfCsExit();
 
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
 #endif
+
+    /* Complete the LL initialization */
+    WsfCsEnter();
+
+    /* Allocate the memory */
+    WsfHeapAlloc(llmemUsed);
+
+    /* Set the free memory pointers */
+    llCfg.pFreeMem = WsfHeapGetFreeStartAddress();
+    llCfg.freeMemAvail = WsfHeapCountAvailable();
+
+    /* Run the initialization with properly set the free memory pointers */
+    if (llmemUsed != LlInitControllerInit(&llCfg)) {
+        WSF_ASSERT(0);
+    }
+
+    WsfCsExit();
 }
 
 /*************************************************************************************************/
@@ -171,7 +212,7 @@ static void mainWsfInit(void)
  *  \return TRUE if there is token pending.
  */
 /*************************************************************************************************/
-static bool_t mainCheckServiceTokens(void)
+static bool mainCheckServiceTokens(void)
 {
     bool_t eventPending = FALSE;
 
@@ -256,30 +297,7 @@ void setInterruptPriority(void)
 /*************************************************************************************************/
 int main(void)
 {
-    uint32_t memUsed;
-
-    mainLoadConfiguration();
     mainWsfInit();
-
-#if (WSF_TRACE_ENABLED == TRUE)
-    WsfCsEnter();
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
-    WsfCsExit();
-#endif
-
-    WsfCsEnter();
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            .freeMemAvail = WsfHeapCountAvailable() };
-
-    memUsed = LlInitControllerInit(&llCfg);
-    WsfHeapAlloc(memUsed);
-    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));

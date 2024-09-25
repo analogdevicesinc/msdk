@@ -156,13 +156,7 @@ static void mainWsfInit(void)
         .freeMemAvail = WsfHeapCountAvailable()
     };
 
-    llmemUsed = LlInitSetBbRtCfg(llCfg.pBbRtCfg, llCfg.wlSizeCfg, llCfg.rlSizeCfg, llCfg.plSizeCfg,
-                                 llCfg.pFreeMem, llCfg.freeMemAvail);
-
-    llCfg.pFreeMem += llmemUsed;
-    llCfg.freeMemAvail -= llmemUsed;
-
-    llmemUsed += LlInitSetLlRtCfg(llCfg.pLlRtCfg, llCfg.pFreeMem, llCfg.freeMemAvail);
+    llmemUsed = LlInitSetRtCfg(&llCfg);
 
     WsfCsExit();
 

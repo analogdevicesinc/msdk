@@ -225,13 +225,7 @@ int main(void)
         .freeMemAvail = WsfHeapCountAvailable()
     };
 
-    llmemUsed = LlInitSetBbRtCfg(llCfg.pBbRtCfg, llCfg.wlSizeCfg, llCfg.rlSizeCfg, llCfg.plSizeCfg,
-                                 llCfg.pFreeMem, llCfg.freeMemAvail);
-
-    llCfg.pFreeMem += llmemUsed;
-    llCfg.freeMemAvail -= llmemUsed;
-
-    llmemUsed += LlInitSetLlRtCfg(llCfg.pLlRtCfg, llCfg.pFreeMem, llCfg.freeMemAvail);
+    llmemUsed = LlInitSetRtCfg(&llCfg);
 
 #if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
     WsfTraceEnable(TRUE);
