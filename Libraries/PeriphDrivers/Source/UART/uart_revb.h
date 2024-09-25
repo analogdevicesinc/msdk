@@ -66,6 +66,7 @@ int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCt
 int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_option);
 unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart);
 void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock);
+bool MXC_UART_RevB_IsClockSourceLocked(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_GetActive(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_AbortTransmission(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ReadCharacterRaw(mxc_uart_revb_regs_t *uart);

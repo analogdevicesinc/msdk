@@ -41,6 +41,7 @@ typedef enum {
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src);
 void MXC_TMR_RevB_LockClockSource(mxc_tmr_revb_regs_t *tmr, bool lock);
+bool MXC_TMR_RevB_IsClockSourceLocked(mxc_tmr_revb_regs_t *tmr);
 void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
                                  uint8_t clk_src);
 void MXC_TMR_RevB_SetPrescalar(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,

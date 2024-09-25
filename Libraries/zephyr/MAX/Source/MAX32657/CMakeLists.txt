@@ -39,7 +39,7 @@ zephyr_include_directories(
     ${MSDK_PERIPH_SRC_DIR}/DMA
     ${MSDK_PERIPH_SRC_DIR}/FLC
     ${MSDK_PERIPH_SRC_DIR}/GPIO
-    ${MSDK_PERIPH_SRC_DIR}/I2C
+    ${MSDK_PERIPH_SRC_DIR}/I3C
     ${MSDK_PERIPH_SRC_DIR}/ICC
     ${MSDK_PERIPH_SRC_DIR}/LP
     ${MSDK_PERIPH_SRC_DIR}/RTC
@@ -97,10 +97,10 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_I2C_MAX32)
+if (CONFIG_I3C_MAX32)
 zephyr_library_sources(
-    ${MSDK_PERIPH_SRC_DIR}/I2C/i2c_me30.c
-    ${MSDK_PERIPH_SRC_DIR}/I2C/i2c_reva.c
+    ${MSDK_PERIPH_SRC_DIR}/I3C/i3c_me30.c
+    ${MSDK_PERIPH_SRC_DIR}/I3C/i3c_reva.c
 )
 endif()
 

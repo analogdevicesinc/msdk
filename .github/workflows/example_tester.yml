@@ -51,7 +51,7 @@ env:
   MAXIM_PATH: ''
   
 jobs:
-  Example_Tests:
+  Example_Tests_MAX32690:
     # The type of runner that the job will run on
     runs-on: [self-hosted]
     if: github.event.pull_request.draft == false
@@ -89,6 +89,43 @@ jobs:
           lock: false
           all_owned: true
 
+  Example_Tests_MAX78002:
+    # The type of runner that the job will run on
+    runs-on: [self-hosted]
+    if: github.event.pull_request.draft == false
+    
+
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+          repository: analogdevicesinc/msdk
+          fetch-depth: 0
+      
+      - name: Set MAXIM_PATH
+        run: |
+          echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
+          printenv
+
+      - name: Lock Boards
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          boards: |
+            max78002_board_ex
+          lock: true
+          timeout: 900 # Attempt to lock for an hour
+
+      - name: run_example_test
+        run: |
+          bash .github/workflows/scripts/example_tester_78002.sh max78002_board_ex
+          
+      - name: Unlock Boards
+        if: always()
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          lock: false
+          all_owned: true
   
 
  

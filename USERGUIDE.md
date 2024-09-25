@@ -1791,6 +1791,7 @@ The following variables can be used to enable the [available libraries](#librari
 | `LIB_LITTLEFS`         | Include the littleFS library                               | This option toggles the ["Little File System"](https://github.com/littlefs-project/littlefs) library - a small filesystem library designed for microcontrollers.  Set to `0` to disable or `1` to enable. |
 | `LIB_LWIP`             | Include the lwIP library                                   |                                                              |
 | `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
+| `LIB_TINY_USB`         | Include the TinyUSB library                                | This option toggles the inclusion of the TinyUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
 | `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
 | `LIB_CLI`             | Include the MSDK's built-in CLI library                     | This option toggles the MSDK's built-in CLI library, which can be used to process received commands over UART. |
 | `LIB_USS`             | Include the USS Library                                     | This option toggles the Unified Security Software library.  It is only available via NDA. |
@@ -2128,11 +2129,19 @@ The following table matches external part numbers to internal die types.  This i
 
 The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder for each microcontroller.
 
-Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) for more detailed documentation on the library functions and usage.
+Please refer to the [CMSIS-DSP official documentation](https://arm-software.github.io/CMSIS-DSP/v1.16.2/index.html) for more detailed documentation on the library functions and usage.
 
 #### CMSIS-DSP Supported Parts
 
 - All microcontrollers with a Cortex M4 core are supported.
+
+#### CMSIS-DSP Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `CMSIS_DSP_VERSION`    | (Optional) Set the CMSIS-DSP version to use.               | Defaults to `1.16.2`, which is currently the only supported version. |
+
 
 ---
 
@@ -2153,13 +2162,27 @@ The Cordio library warrants its own separate documentation. See the **[Cordio BL
 
 ### MAXUSB
 
-The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC.
+The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC.  MAXUSB provides a finer level of control of USB events and classes than TinyUSB.
 
 #### MAXUSB Supported Parts
 
 - MAX32570
 - MAX32650
 - MAX32655 and MAX32656
+- MAX32665-MAX32666
+- MAX32690
+- MAX78002
+
+---
+
+### TinyUSB
+
+The TinyUSB library provides a high-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC. **[TinyUSB](https://github.com/hathach/tinyusb) provides a cross-platform USB stack for embedded systems, with a higher level of abstraction than MAXUSB,
+supporting most standard USB device classes.
+
+#### TinyUSB Supported Parts
+
+- MAX32650
 - MAX32665-MAX32666
 - MAX32690
 - MAX78002

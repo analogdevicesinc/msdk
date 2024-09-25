@@ -9,7 +9,7 @@ the main flash section is erased and replaced with the update image. If no valid
 is identified, the Bootloader will boot the exiting image in the main flash space.
 
 __0x10000000__: Bootloader  
-__0x10004000__: Main flash space  
+__0x10008000__: Main flash space  
 __0x10300000__: Update flash space
 
 ## Software

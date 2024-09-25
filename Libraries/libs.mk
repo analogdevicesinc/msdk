@@ -1,6 +1,6 @@
 ##############################################################################
  #
- # Copyright 2023 Analog Devices, Inc.
+ # Copyright 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  #
  ##############################################################################
 # This Makefile is used to manage the inclusion of the various
-# libraries that are available in the MaximSDK.  'include'-ing 
+# libraries that are available in the MaximSDK.  'include'-ing
 # libs.mk offers 'toggle switch' variables that can be used to
 # manage the inclusion of the available libraries.
 
@@ -189,6 +189,16 @@ LIB_MAXUSB ?= 0
 ifeq ($(LIB_MAXUSB), 1)
 MAXUSB_DIR ?= $(LIBS_DIR)/MAXUSB
 include $(MAXUSB_DIR)/maxusb.mk
+endif
+# ************************
+
+# TinyUSB (Disabled by default)
+# ************************
+LIB_TINYUSB ?= 0
+ifeq ($(LIB_TINYUSB), 1)
+TINYUSB_DIR ?= $(LIBS_DIR)/tinyusb
+include $(TINYUSB_DIR)/tinyusb.mk
+libclean: clean.tinyusb
 endif
 # ************************
 

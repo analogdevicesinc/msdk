@@ -21,11 +21,15 @@ PROJ_CFLAGS+=-DMAX32520_A2
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
+Universal instructions on building this project can be found in the **[MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)**.
+
+NOTE: This SCP Applet example project cannot be flashed and debugged like a regular example.  It must be sent to the ROM bootloader using the SCP protocol.  The MSDK offers Secure Bootloader Tools (SBT) in the `Tools/SBT` folder, and the `send_scp` utility is used to send the SCP packets to the device.
+
+See the [Secure Boot Tools User Guide](https://pdfserv.maximintegrated.com/en/an/ug7637-secure-boot-tools.pdf) for additional documentation.
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+This project targets `scpa` builds by default (see [project.mk](project.mk)), which generates SCP packets for the application in the `build/scp_packets` folder.
 
 ## Required Connections
 
@@ -33,9 +37,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Open a console (Powershell or bash) then send scp packages to device.
 
 ## Expected Output
-    `
-    send_scp -c <YOUR_PARTNUMBER> -i UART -s <COMPORT>  scp_packets\packet.list"
-    `
+```
+$ send_scp -c <YOUR_PARTNUMBER> -i UART -s <COMPORT> build/scp_packets/packet.list
+
 [====================================================                    ]  73%
 
 
@@ -112,3 +116,4 @@ Please wait, reading data...            <br />
 Disconnected !                          <br />
 SCP session OK                          <br />
 
+```

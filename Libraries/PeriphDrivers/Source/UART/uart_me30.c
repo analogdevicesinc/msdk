@@ -103,6 +103,7 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t *uart)
 int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int freq;
+    uint32_t clock_freq = 0;
 
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
@@ -112,7 +113,25 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
-    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
+    // Default OSR
+    uart->osr = 5;
+
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clock_freq = PeripheralClock;
+        break;
+    case MXC_UART_IBRO_CLK:
+        clock_freq = IBRO_FREQ;
+        break;
+    case MXC_UART_ERTCO_CLK:
+        clock_freq = ERTCO_FREQ;
+        break;
+    default:
+        return E_BAD_PARAM;
+    }
+
+    // TODO(JC): Update this call for ME30
+    freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, clock_freq, baud);
 
     if (freq > 0) {
         // Enable baud clock and wait for it to become ready.

@@ -23,8 +23,11 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
+Connect a MAXPICO or other supported Debug adapter to the SWD Connector.
+-   Note: Debug adapters other than the MAXPICO may not route the UART signals to the SWD connector. On MAX32690FTHR and AD-APARD32690-SL boards, this may limit your ability to access to serial port.
+
 If using the MAX32690EVKIT:
--   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Connect a USB cable between the PC and the CN2 (USB/PWR - UART) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP5 (LED1 EN).
@@ -36,7 +39,6 @@ If using the MAX32690FTHR:
 
 If using the AD-APARD32690-SL:
 -   Connect a USB cable between the PC and the P10 (USB-C) connector.
--   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
 -   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
 
 ## Expected Output

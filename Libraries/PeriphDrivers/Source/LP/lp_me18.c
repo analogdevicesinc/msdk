@@ -280,4 +280,21 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
     return E_NO_ERROR;
 }
 
+int MXC_LP_RISCVClockSelect(mxc_lp_riscv_clock_t clock)
+{
+    switch (clock) {
+    case MXC_LP_RISCV_CLOCK_PCLK:
+        MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+        break;
+    case MXC_LP_RISCV_CLOCK_ISO:
+        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_ISO);
+        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+        break;
+    default:
+        return E_BAD_PARAM;
+    }
+
+    return E_NO_ERROR;
+}
+
 #endif // __riscv
