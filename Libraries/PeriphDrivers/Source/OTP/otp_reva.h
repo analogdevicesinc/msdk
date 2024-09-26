@@ -33,6 +33,8 @@ extern "C" {
 
 int MXC_OTP_RevA_Init(mxc_otp_reva_regs_t *otp, mxc_otp_clkdiv_t pclkdiv);
 
+int MXC_OTP_RevA_PowerDown(mxc_otp_reva_regs_t *otp);
+
 int MXC_OTP_RevA_IsLocked(mxc_otp_reva_regs_t *otp);
 
 void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t *otp);
