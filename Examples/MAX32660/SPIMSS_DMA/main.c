@@ -100,7 +100,7 @@ void spimss_callback(mxc_spimss_req_t *req, int error_code)
     }
 }
 
-int main()
+int main(void)
 {
     int i = 0;
     int ret_val = 0;

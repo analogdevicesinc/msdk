@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,32 +44,16 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
-    retval = MXC_UART_Shutdown(uart);
-
-    if (retval) {
-        return retval;
+    if (!MXC_UART_RevB_IsClockSourceLocked((mxc_uart_revb_regs_t *)uart)) {
+        retval = MXC_UART_Shutdown(uart);
+        if (retval) {
+            return retval;
+        }
     }
 
-    switch (clock) {
-    case MXC_UART_ERTCO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        break;
-
-    case MXC_UART_IBRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
-
-    case MXC_UART_ERFO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
-
-    default:
-        break;
-    }
-
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_uart0);
@@ -95,9 +78,13 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     default:
         return E_BAD_PARAM;
     }
-#endif
+#endif // MSDK_NO_GPIO_CLK_INIT
 
-    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, (mxc_uart_revb_clock_t)clock);
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval)
+        return retval;
+
+    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, MXC_UART_GetClockSource(uart));
 }
 
 int MXC_UART_Shutdown(mxc_uart_regs_t *uart)
@@ -151,7 +138,6 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         uart->osr = 5;
 
         switch (clock) {
-        case MXC_UART_APB_CLK:
         case MXC_UART_IBRO_CLK:
             clkdiv = ((IBRO_FREQ) / baud);
             mod = ((IBRO_FREQ) % baud);
@@ -236,7 +222,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
         return E_BAD_PARAM;
     }
 
-    // check if UARt is LP UART
+    // check if UART is LP UART
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
             periphClock = ERTCO_FREQ * 2;
@@ -328,7 +314,109 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
-    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, (mxc_uart_revb_clock_t)clock);
+    int retval = E_NO_ERROR;
+    uint8_t clock_option = 0;
+    int idx = MXC_UART_GET_IDX(uart);
+    if (idx < 0)
+        return E_BAD_PARAM;
+
+    // The following interprets table 12-1 from the MAX78002 UG.
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+    case 1:
+    case 2:
+        // UART0-2 support PCLK, ERFO, & IBRO
+        switch (clock) {
+        case MXC_UART_APB_CLK:
+            clock_option = 0;
+            break;
+
+        case MXC_UART_ERFO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
+            retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+#endif // MSDK_NO_GPIO_CLK_INIT
+            clock_option = 1;
+            break;
+
+        case MXC_UART_IBRO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
+            retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif // MSDK_NO_GPIO_CLK_INIT
+            clock_option = 2;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+        break;
+    case 3:
+        // UART3 (LPUART0) supports IBRO and ERTCO
+        switch (clock) {
+        case MXC_UART_IBRO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
+            retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif // MSDK_NO_GPIO_CLK_INIT
+            clock_option = 0;
+            break;
+
+        case MXC_UART_ERTCO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
+            retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+#endif // MSDK_NO_GPIO_CLK_INIT
+            clock_option = 1;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+
+    if (retval)
+        return retval;
+
+    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock_option);
+}
+
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
+{
+    unsigned int clock_option = MXC_UART_RevB_GetClockSource((mxc_uart_revb_regs_t *)uart);
+    switch (MXC_UART_GET_IDX(uart)) {
+    case 0:
+    case 1:
+    case 2:
+        switch (clock_option) {
+        case 0:
+            return MXC_UART_APB_CLK;
+        case 1:
+            return MXC_UART_ERFO_CLK;
+        case 2:
+            return MXC_UART_IBRO_CLK;
+        default:
+            return E_BAD_STATE;
+        }
+        break;
+    case 3:
+        switch (clock_option) {
+        case 0:
+            return MXC_UART_IBRO_CLK;
+        case 1:
+            return MXC_UART_ERTCO_CLK;
+        default:
+            return E_BAD_STATE;
+        }
+        break;
+    default:
+        return E_BAD_PARAM;
+    }
+}
+
+void MXC_UART_LockClockSource(mxc_uart_regs_t *uart, bool lock)
+{
+    return MXC_UART_RevB_LockClockSource((mxc_uart_revb_regs_t *)uart, lock);
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
@@ -405,7 +493,8 @@ int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned
         break;
     }
 
-    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, bytes, len, callback, config);
+    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t *)uart, MXC_DMA, bytes, len, callback,
+                                       config);
 }
 
 unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -447,7 +536,8 @@ int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, const unsigned char *bytes, u
         break;
     }
 
-    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, bytes, len, callback, config);
+    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t *)uart, MXC_DMA, bytes, len, callback,
+                                        config);
 }
 
 unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -522,7 +612,7 @@ int MXC_UART_TransactionAsync(mxc_uart_req_t *req)
 
 int MXC_UART_TransactionDMA(mxc_uart_req_t *req)
 {
-    return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req);
+    return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req, MXC_DMA);
 }
 
 int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +27,16 @@
 #include "gpio_common.h"
 
 /* **** Functions **** */
+// NOTE(JC): This function doesn't actually seem to be used anywhere.  The MEXX parts re-implement this...
+// TODO(JC): Consolidate to actually use this (would help with code repetition) but psMask seems dubious
 int MXC_GPIO_RevB_Config(const mxc_gpio_cfg_t *cfg, uint8_t psMask)
 {
     mxc_gpio_regs_t *gpio = cfg->port;
+
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
 
     // Set the GPIO type
     switch (cfg->func) {
@@ -71,29 +77,25 @@ int MXC_GPIO_RevB_Config(const mxc_gpio_cfg_t *cfg, uint8_t psMask)
     }
 
     // Configure the pad
+    // Note: for "ps" field set 1 for weak and 0 for strong.
+    // As of 8-28-2024 most UG tables have this flipped the wrong way
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
         gpio->padctrl0 &= ~cfg->mask;
         gpio->padctrl1 &= ~cfg->mask;
-        if (psMask == MXC_GPIO_PS_PULL_SELECT) {
-            gpio->ps &= ~cfg->mask;
-        }
+        gpio->ps &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
         gpio->padctrl1 &= ~cfg->mask;
-        if (psMask == MXC_GPIO_PS_PULL_SELECT) {
-            gpio->ps |= cfg->mask;
-        }
+        gpio->ps &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
         gpio->padctrl0 &= ~cfg->mask;
         gpio->padctrl1 |= cfg->mask;
-        if (psMask == MXC_GPIO_PS_PULL_SELECT) {
-            gpio->ps &= ~cfg->mask;
-        }
+        gpio->ps |= cfg->mask;
         break;
 
     default:
@@ -199,6 +201,11 @@ uint32_t MXC_GPIO_RevB_GetFlags(mxc_gpio_regs_t *port)
 
 int MXC_GPIO_RevB_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
     // Configure the vssel
     switch (vssel) {
     case MXC_GPIO_VSSEL_VDDIO:

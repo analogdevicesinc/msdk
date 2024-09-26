@@ -1,3 +1,23 @@
+###############################################################################
+#
+# Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+# Analog Devices, Inc.),
+# Copyright (C) 2023-2024 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+##############################################################################
+
 name: Build_Examples
 
 concurrency: 
@@ -29,13 +49,34 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Update the submodules below, doing so here will convert ssh to https
           submodules: false
           fetch-depth: 0
           ref: '${{ github.event.pull_request.head.ref }}'
           repository: '${{ github.event.pull_request.head.repo.full_name }}'
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **.c
+            **.h
+            **.S
+            **.s
+            **.a
+            **.cpp
+            **.mk
+            **/Makefile
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo ${ALL_CHANGED_FILES} > changed_files
+          cat changed_files
 
       - name: Check watch files
         id: check_watch        
@@ -202,7 +243,7 @@ jobs:
           # Set MAXIM_PATH to limit warnings
           export MAXIM_PATH=$(pwd)
 
-          python .github/workflows/scripts/build.py
+          python .github/workflows/scripts/build.py --change_file changed_files
 
   Regression_Test_Make_3_81:
     runs-on:

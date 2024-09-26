@@ -1,7 +1,7 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
  # Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
  # is proprietary to Analog Devices, Inc. and its licensors.
  #
@@ -98,3 +98,6 @@ IPATH += ${MAXUSB_DIR}/include/dbg_log
 # Add rule to build the Driver Library
 ${MAXUSB_BUILD_DIR}/maxusb.a: FORCE
 	$(MAKE) -C ${MAXUSB_DIR} lib BUILD_DIR=${MAXUSB_BUILD_DIR}
+
+query.maxusb:
+	@$(MAKE) -C ${MAXUSB_DIR} query QUERY_VAR="${QUERY_VAR}"

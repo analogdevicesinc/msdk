@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +32,7 @@
 #include "spixf.h"
 #include "tft_st7735.h"
 #include "uart.h"
+#include "icc.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -103,6 +103,9 @@ __weak void GPIO2_IRQHandler(void)
 /******************************************************************************/
 int Board_Init(void)
 {
+    //Disable to prevent cache bug
+    MXC_ICC_Disable(MXC_ICC0);
+
     int err;
 
     // Enable GPIO
@@ -188,7 +191,6 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
     }
 
     MXC_GPIO_OutClr(tft_cs.port, tft_cs.mask); // Assert chip select (active low)
-    MXC_Delay(10);
 
     for (int i = 0; i < count; i++) {
         tx_byte = datain[i];
@@ -211,15 +213,14 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
                 tx_byte = tx_byte << 1;
             }
 
-            for (int k = 0; k < 2; k++) {}
+            for (volatile int k = 0; k < 2; k++) {}
 
             tft_clk.port->out_set = tft_clk.mask; // Clk high
 
-            for (int k = 0; k < 2; k++) {}
+            for (volatile int k = 0; k < 2; k++) {}
         }
     }
 
-    MXC_Delay(10);
     MXC_GPIO_OutSet(tft_cs.port, tft_cs.mask); // De-assert chip select (active low)
 
     return;

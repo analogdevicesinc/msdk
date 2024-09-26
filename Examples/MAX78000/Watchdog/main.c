@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +66,7 @@ volatile int interrupt_count = 0;
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdogHandler()
+void watchdogHandler(void)
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
 
@@ -89,7 +88,7 @@ void WDT0_IRQHandler(void)
     watchdogHandler();
 }
 // *****************************************************************************
-void MXC_WDT_Setup()
+void MXC_WDT_Setup(void)
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_ResetTimer(MXC_WDT0);
@@ -99,7 +98,7 @@ void MXC_WDT_Setup()
     MXC_WDT_Enable(MXC_WDT0);
 }
 
-void SW1_Callback()
+void SW1_Callback(void)
 {
     printf("\nEnabling Timeout Interrupt...\n");
     MXC_WDT_Disable(MXC_WDT0);
@@ -119,7 +118,7 @@ void SW1_Callback()
     PB_RegisterCallback(0, NULL);
 }
 
-void SW2_Callback()
+void SW2_Callback(void)
 {
     printf("What happens if the watchdog is reset too early?\n");
     sw2_pressed = 1;

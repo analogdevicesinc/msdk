@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -278,6 +277,23 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
     }
 
     MXC_GCR->pm |= mask;
+    return E_NO_ERROR;
+}
+
+int MXC_LP_RISCVClockSelect(mxc_lp_riscv_clock_t clock)
+{
+    switch (clock) {
+    case MXC_LP_RISCV_CLOCK_PCLK:
+        MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+        break;
+    case MXC_LP_RISCV_CLOCK_ISO:
+        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_ISO);
+        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
+        break;
+    default:
+        return E_BAD_PARAM;
+    }
+
     return E_NO_ERROR;
 }
 

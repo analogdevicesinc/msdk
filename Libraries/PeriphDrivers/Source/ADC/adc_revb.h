@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +22,7 @@
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_ADC_ADC_REVB_H_
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "adc.h"
 #include "adc_revb_regs.h"
 
@@ -34,6 +34,14 @@
 #include "mxc_lock.h"
 
 int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req);
+
+int MXC_ADC_RevB_SetClockSource(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock_source);
+
+int MXC_ADC_RevB_SetClockDiv(mxc_adc_revb_regs_t *adc, mxc_adc_clkdiv_t div);
+
+int MXC_ADC_RevB_LockClockSource(mxc_adc_revb_regs_t *adc, bool lock);
+
+bool MXC_ADC_RevB_IsClockSourceLocked(mxc_adc_revb_regs_t *adc);
 
 int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc);
 

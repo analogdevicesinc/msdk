@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,12 +42,12 @@ int MXC_TRNG_Init(void)
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_EnableInt()
+void MXC_TRNG_EnableInt(void)
 {
     MXC_TRNG_RevB_EnableInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
-void MXC_TRNG_DisableInt()
+void MXC_TRNG_DisableInt(void)
 {
     MXC_TRNG_RevB_DisableInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }

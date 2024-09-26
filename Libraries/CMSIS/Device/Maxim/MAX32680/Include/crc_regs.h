@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,8 +77,8 @@ typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0000:</tt> CRC CTRL Register */
     union {
         __IO uint32_t datain32;         /**< <tt>\b 0x0004:</tt> CRC DATAIN32 Register */
-        __IO uint16_t datain16[2];      /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
-        __IO uint8_t  datain8[4];       /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
+        __IO uint16_t datain16;         /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
+        __IO uint8_t  datain8;          /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
     };
     __IO uint32_t poly;                 /**< <tt>\b 0x0008:</tt> CRC POLY Register */
     __IO uint32_t val;                  /**< <tt>\b 0x000C:</tt> CRC VAL Register */

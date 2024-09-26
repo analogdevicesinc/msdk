@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,24 +27,18 @@
 #include "nvic_table.h"
 #include "mxc_delay.h"
 
-int g_tx_channel;
-int g_rx_channel;
-int g_fill_dummy_bytes = 0;
-int g_dummy_len = 0;
-uint8_t g_dummy_byte = 0xFF;
+static int g_tx_channel;
+static int g_rx_channel;
+static int g_dummy_len = 0;
+static uint8_t g_dummy_byte = 0xFF;
 
-bool g_dma_initialized = false;
-
-uint8_t *g_rx_buffer;
-uint8_t *g_tx_buffer;
-uint32_t g_rx_len;
-uint32_t g_tx_len;
+static bool g_dma_initialized = false;
 
 static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
 static volatile bool g_master_done = 0;
 
-void DMA_TX_IRQHandler()
+static void DMA_TX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_tx_channel]; // Cast the pointer for readability in this ISR
@@ -61,7 +54,7 @@ void DMA_TX_IRQHandler()
     }
 }
 
-void DMA_RX_IRQHandler()
+static void DMA_RX_IRQHandler(void)
 {
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_rx_channel]; // Cast the pointer for readability in this ISR
@@ -77,33 +70,7 @@ void DMA_RX_IRQHandler()
     }
 }
 
-void processSPI()
-{
-    // Unload any SPI data that has come in
-    while (g_rx_buffer && (FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
-        *g_rx_buffer++ = FASTSPI_INSTANCE->fifo8[0];
-        g_rx_len--;
-    }
-
-    if (g_rx_len <= 0) {
-        g_rx_done = 1;
-    }
-
-    // Write any pending bytes out.
-    while (g_tx_buffer &&
-           (((FASTSPI_INSTANCE->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) <
-            MXC_SPI_FIFO_DEPTH) &&
-           g_tx_len > 0) {
-        FASTSPI_INSTANCE->fifo8[0] = *g_tx_buffer++;
-        g_tx_len--;
-    }
-
-    if (g_tx_len <= 0) {
-        g_tx_done = 1;
-    }
-}
-
-void FastSPI_IRQHandler()
+void FastSPI_IRQHandler(void)
 {
     uint32_t status = FASTSPI_INSTANCE->intfl;
 
@@ -121,7 +88,7 @@ void FastSPI_IRQHandler()
     }
 }
 
-int _dma_init()
+int _dma_init(void)
 {
     if (g_dma_initialized)
         return E_NO_ERROR;
@@ -172,7 +139,7 @@ int _dma_init()
     return E_NO_ERROR;
 }
 
-int spi_init()
+int spi_init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
@@ -189,11 +156,13 @@ int spi_init()
     fastspi_spi_pins.port->ds0 |= fastspi_spi_pins.mask;
     fastspi_spi_pins.port->ds1 |= fastspi_spi_pins.mask;
 
-    FASTSPI_INSTANCE->ctrl0 =
-        (0b0100
-         << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS2 <-- TODO(Jake): Improve this when other drivers are added
-        MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
-        MXC_F_SPI_CTRL0_EN; // Enable SPI
+    FASTSPI_INSTANCE->ctrl0 = MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
+                              MXC_F_SPI_CTRL0_EN; // Enable SPI
+
+    // Enable hardware slave select.  The instance number should be defined
+    // in "fastspi_config.h".
+    MXC_SETFIELD(FASTSPI_INSTANCE->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE,
+                 FASTSPI_SS_NUM << MXC_F_SPI_CTRL0_SS_ACTIVE_POS);
 
     FASTSPI_INSTANCE->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS); // Set 8 bits per character
 
@@ -327,12 +296,12 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     return E_SUCCESS;
 }
 
-int spi_exit_quadmode()
+int spi_exit_quadmode(void)
 {
     return MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_STANDARD);
 }
 
-int spi_enter_quadmode()
+int spi_enter_quadmode(void)
 {
     return MXC_SPI_SetWidth(FASTSPI_INSTANCE, SPI_WIDTH_QUAD);
 }

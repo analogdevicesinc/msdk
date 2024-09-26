@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -54,6 +53,7 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_me18.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me18.c
 
+
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_me18.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_revb.c
@@ -66,6 +66,8 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CTB
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_me18.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_reva.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_common.c
+
+
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me18.c
@@ -127,8 +129,18 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SEMA/sema_me18.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SEMA/sema_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPI
+export MXC_SPI_VERSION
+ifeq ($(MXC_SPI_VERSION),v1)
+# SPI v1 (Legacy) Implementation
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_me18.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva1.c
+else
+ifeq ($(MXC_SPI_VERSION),v2)
+# SPI v2 Implementation
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_me18_v2.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva2.c
+endif
+endif
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPIXF
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIXF/spixf_me18.c

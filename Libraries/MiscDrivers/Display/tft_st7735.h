@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -217,7 +216,7 @@ void MXC_TFT_ResetCursor(void);
  *
  * @param       x0              x location on screen
  * @param       y0              y location on screen
- * @param       fon_id          Font number
+ * @param       font_id         Font number ID
  * @param       str             String which will be display
  * @param       area            Location of printf outputs
  */

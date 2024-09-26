@@ -255,6 +255,12 @@ extern "C" {
 #define LHCI_LEN_CMD_STATUS_EVT 0xFF
 
 /* Packetcraft vendor specific OCF range is 0x3C0-0x3FF */
+#define LHCI_OPCODE_VS_WRITE_FLASH\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C0) /*!< Write data to flash opcode. */
+#define LHCI_OPCODE_VS_PAGE_ERASE\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C1) /*!< MEMORY erase opcode. */
+#define LHCI_OPCODE_VS_DEVICE_RESET\
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3C2) /*!< Device system_reset opcode. */
 #define LHCI_OPCODE_VS_SET_SCAN_CH_MAP \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3E0) /*!< Set Scan Channel Map opcode. */
 #define LHCI_OPCODE_VS_SET_EVENT_MASK \
@@ -369,10 +375,10 @@ extern "C" {
 #define LHCI_OPCODE_VS_GET_RSSI     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x306) /*!<Vendor specific Get RSSI*/
-#define LHCI_OPCODE_VS_PHY_EN     \
+#define LHCI_OPCODE_VS_RESET_ADV_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x307) /*!<Vendor specific Get RSSI*/
-#define LHCI_OPCODE_VS_PHY_DIS     \
+#define LHCI_OPCODE_VS_RESET_SCAN_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
                0x308) /*!<Vendor specific Get RSSI*/
 /* Vendor specific event masks. */

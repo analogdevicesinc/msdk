@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,9 +68,9 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
 unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
 {
     if (MXC_GCR->pckdiv & MXC_F_GCR_PCKDIV_SDHCFRQ) {
-        return SystemCoreClock >> 2; // Div by 4
+        return HIRC96_FREQ >> 2; // Div by 4
     } else {
-        return SystemCoreClock >> 1; // Div by 2
+        return HIRC96_FREQ >> 1; // Div by 2
     }
 }
 

@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -20,7 +19,7 @@
  ##############################################################################
 
 ################################################################################
-# This file can be included in a project makefile to build the library for the 
+# This file can be included in a project makefile to build the library for the
 # project.
 ################################################################################
 
@@ -58,13 +57,17 @@ export PROJ_LDFLAGS
 # Add to library list
 LIBS += ${RTOS_BUILD_DIR}/librtos.a
 
+# Create include list for use by other projects (i.e. TinyUSB)
+RTOS_IPATH := ${RTOS_DIR} ${RTOS_DIR}/Source/portable/$(COMPILER)/ARM_CM4F ${RTOS_DIR}/Source/include
+export RTOS_IPATH
+
 # Add to include directory list
 IPATH += $(RTOS_CONFIG_DIR)
-IPATH += ${RTOS_DIR}
-IPATH += ${RTOS_DIR}/Source/portable/$(COMPILER)/ARM_CM4F
-IPATH += ${RTOS_DIR}/Source/include
+IPATH += ${RTOS_IPATH}
 
 # Add rule to build the Driver Library
 ${RTOS_BUILD_DIR}/librtos.a: FORCE
 	$(MAKE) -C ${RTOS_DIR} lib BUILD_DIR=${RTOS_BUILD_DIR}
-
+	
+query.freertos:
+	@$(MAKE) -C ${RTOS_DIR} query QUERY_VAR="${QUERY_VAR}"

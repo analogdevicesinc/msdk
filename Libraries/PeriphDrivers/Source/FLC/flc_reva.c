@@ -5,10 +5,9 @@
  */
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +30,8 @@
 #include "mxc_sys.h"
 #include "flc_reva.h"
 #include "flc.h"
+
+// TODO(CM33): Check for secure vs non-secure accesses here.
 
 /**
  * @ingroup flc
@@ -406,10 +407,13 @@ int MXC_FLC_RevA_ClearFlags(uint32_t mask)
 //******************************************************************************
 int MXC_FLC_RevA_UnlockInfoBlock(mxc_flc_reva_regs_t *flc, uint32_t address)
 {
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0) || \
+    (TARGET_NUM != 32657)
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
     }
+#endif
 
     /* Make sure the info block is locked */
     flc->actrl = 0x1234;
@@ -425,10 +429,13 @@ int MXC_FLC_RevA_UnlockInfoBlock(mxc_flc_reva_regs_t *flc, uint32_t address)
 //******************************************************************************
 int MXC_FLC_RevA_LockInfoBlock(mxc_flc_reva_regs_t *flc, uint32_t address)
 {
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0) || \
+    (TARGET_NUM != 32657)
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
     }
+#endif
 
     flc->actrl = 0xDEADBEEF;
     return E_NO_ERROR;

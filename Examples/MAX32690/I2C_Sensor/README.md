@@ -29,6 +29,13 @@ If using the MAX32690FTHR:
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   You must connect P2.8 (SCL), P2.7 (SDA), VDD and GND to corresponding pins of MAX31889 EVKIT_A board (via J1 header).
 
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
+-   You must connect P0.31 (SCL), P0.30 (SDA), VDD and GND to corresponding pins of MAX31889 EVKIT_A board (via P13).
+
+
 ## Expected Output
 
 ```

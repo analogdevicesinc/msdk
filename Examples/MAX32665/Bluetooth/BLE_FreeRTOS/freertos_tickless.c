@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +41,7 @@
 #include "pal_timer.h"
 #include "pal_uart.h"
 #include "pal_bb.h"
+#include "wsf_trace.h"
 
 #define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
 #define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
@@ -240,6 +240,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     /* Disable SysTick */
+
     SysTick->CTRL &= ~(SysTick_CTRL_ENABLE_Msk);
 
     /* Enable wakeup from WUT */
@@ -291,10 +292,10 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
-
-            /* Shutdown BB hardware */
-            PalBbDisable();
         }
+
+        /* Shutdown BB hardware */
+        PalBbDisable();
 
         LED_Off(SLEEP_LED);
         LED_Off(DEEPSLEEP_LED);
@@ -304,12 +305,11 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 
+        /* Enable and restore the BB hardware */
+        PalBbEnable();
+        PalBbRestore();
+
         if (schTimerActive) {
-            /* Enable and restore the BB hardware */
-            PalBbEnable();
-
-            PalBbRestore();
-
             /* Restore the BB counter */
             MXC_WUT_RestoreBBClock(BB_CLK_RATE_HZ);
 

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +23,7 @@
 
 #include "crc.h"
 #include "crc_reva_regs.h"
+#include "dma.h"
 
 /***** CRC Definitions *****/
 /**
@@ -42,7 +42,7 @@ typedef struct _mxc_crc_reva_req_t {
  */
 typedef enum { CRC_REVA_LSB_FIRST, CRC_REVA_MSB_FIRST } mxc_crc_reva_bitorder_t;
 
-int MXC_CRC_RevA_Init(mxc_crc_reva_regs_t *crc);
+int MXC_CRC_RevA_Init(mxc_crc_reva_regs_t *crc, mxc_dma_regs_t *dma);
 int MXC_CRC_RevA_Shutdown(mxc_crc_reva_regs_t *crc);
 int MXC_CRC_RevA_Handler(int ch, int error);
 void MXC_CRC_RevA_SetDirection(mxc_crc_reva_regs_t *crc, mxc_crc_reva_bitorder_t bitOrder);

@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -445,6 +444,28 @@ int MXC_DMA_Stop(int ch);
  * @return     NULL if an unused or invalid channel handle, or a valid pointer otherwise
  */
 mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
+
+typedef void (*dma_handler_t)(void);
+/**
+ * @brief      Get the appropriate "hard" DMA handler for the specified DMA instance.
+ *             @ref MXC_DMA_DMA0_Handler or @ref MXC_DMA_DMA1_Handler.
+ *             Mostly used by internal drivers.
+ */
+dma_handler_t MXC_DMA_Get_DMA_Handler(mxc_dma_regs_t *dma);
+
+/**
+ * @brief      Interrupt handler function for DMA0
+ * @details    Used by some internal drivers that automatically assign DMA handlers.
+ *             This is equivalent to "MXC_DMA_Handler(MXC_DMA0);"
+ */
+void MXC_DMA_DMA0_Handler(void);
+
+/**
+ * @brief      Interrupt handler function for DMA0
+ * @details    Used by some internal drivers that automatically assign DMA handlers.
+ *             This is equivalent to "MXC_DMA_Handler(MXC_DMA1);"
+ */
+void MXC_DMA_DMA1_Handler(void);
 
 /**
  * @brief      Interrupt handler function

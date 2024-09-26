@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -406,7 +405,7 @@ void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   numBytes    The threshold level to set. This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -434,7 +433,7 @@ unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   numBytes    The threshold level to set.  This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */

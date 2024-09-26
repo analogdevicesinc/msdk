@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -471,7 +470,7 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t *dma, void *dest, void *src, int len
     mxc_dma_srcdst_t transfer;
     int channel;
 
-#if TARGET_NUM == 32665
+#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
     channel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
 #else
     channel = MXC_DMA_AcquireChannel();
@@ -501,7 +500,11 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t *dma, void *dest, void *src, int len
         return retval;
     }
 
+#if (TARGET_NUM == 32657)
+    retval = MXC_DMA_EnableInt((mxc_dma_regs_t *)dma, channel);
+#else
     retval = MXC_DMA_EnableInt(channel);
+#endif
 
     if (retval != E_NO_ERROR) {
         return retval;
@@ -536,7 +539,7 @@ int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t *dma, mxc_dma_config_t config,
 {
     int retval, channel;
 
-#if TARGET_NUM == 32665
+#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
     channel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
 #else
     channel = MXC_DMA_AcquireChannel();
@@ -554,7 +557,11 @@ int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t *dma, mxc_dma_config_t config,
         return retval;
     }
 
+#if (TARGET_NUM == 32657)
+    retval = MXC_DMA_EnableInt((mxc_dma_regs_t *)dma, channel);
+#else
     retval = MXC_DMA_EnableInt(channel);
+#endif
 
     if (retval != E_NO_ERROR) {
         return retval;

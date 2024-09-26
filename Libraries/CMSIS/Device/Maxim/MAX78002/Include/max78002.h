@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -677,6 +676,15 @@ typedef enum {
 #define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
 #define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
 #define MXC_USBHS_MAX_PACKET 512
+
+/** @brief USB clock source options */
+typedef enum {
+    MXC_USB_CLOCK_SYS_DIV_10 = 0, ///< SYS_CLK divded by 10
+    MXC_USB_CLOCK_EXTCLK = 1, ///< External clock input
+    MXC_USB_CLOCK_ERFO = 2 ///< External RF Oscillator input
+} _mxc_usb_clock_t;
+
+#define mxc_usb_clock_t _mxc_usb_clock_t
 
 /******************************************************************************/
 /*                                                                       SDHC */

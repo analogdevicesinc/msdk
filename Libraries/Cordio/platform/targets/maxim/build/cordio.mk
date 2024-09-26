@@ -126,6 +126,7 @@ endif
 # re-built for each application
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_uart.c
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_sys.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_rtc.c
 
 # This will let us enable/disable trace messaging by application
 APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c

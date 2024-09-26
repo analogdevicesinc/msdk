@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,12 +35,12 @@ The libc implementation from GCC 11+ depends on _getpid and _kill in some places
 There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
 we implement stub functions that return an error code to resolve linker warnings.
 */
-int _getpid(void)
+__weak int _getpid(void)
 {
     return E_NOT_SUPPORTED;
 }
 
-int _kill(void)
+__weak int _kill(void)
 {
     return E_NOT_SUPPORTED;
 }
@@ -116,6 +115,17 @@ __weak int PreInit(void)
     return 0;
 }
 
+/* This function is called before the Board_Init function.  This weak 
+ * implementation does nothing, but you may over-ride this function in your 
+ * program if you want to configure the state of all pins prior to the 
+ * application running.  This is useful when using external tools (like a
+ * Pin Mux configuration tool) that generate code to initialize the pins.
+ */
+__weak void PinInit(void)
+{
+    /* Do nothing */
+}
+
 /* This function can be implemented by the application to initialize the board */
 __weak int Board_Init(void)
 {
@@ -155,5 +165,6 @@ __weak void SystemInit(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 
+    PinInit();
     Board_Init();
 }

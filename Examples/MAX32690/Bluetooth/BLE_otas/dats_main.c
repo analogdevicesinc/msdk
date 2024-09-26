@@ -119,7 +119,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    INIT_SECURITY /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -195,15 +195,8 @@ static const uint8_t datsAdvDataDisc[] = {
 };
 
 /*! scan data, discoverable mode */
-static const uint8_t datsScanDataDisc[] = {
-    /*! device name */
-    5, /*! length */
-    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'O',
-    'T',
-    'A',
-    'S'
-};
+static const uint8_t deviceName[] = ADV_NAME;
+static uint8_t datsScanDataDisc[sizeof(deviceName) + 2];
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
@@ -458,6 +451,10 @@ static void datsSetup(dmEvt_t *pMsg)
     /* Initialize control information */
     datsCb.restoringResList = FALSE;
 
+    memcpy(&datsScanDataDisc[2], deviceName, sizeof(deviceName));
+    datsScanDataDisc[0] = sizeof(deviceName);
+    datsScanDataDisc[1] = DM_ADV_TYPE_LOCAL_NAME;
+
     /* set advertising and scan response data for discoverable mode */
     AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
     AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc),
@@ -678,7 +675,7 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
     AppGetBdAddr(addr);
     APP_TRACE_INFO6("MAC Addr: %02x:%02x:%02x:%02x:%02x:%02x", addr[5], addr[4], addr[3], addr[2],
                     addr[1], addr[0]);
-    APP_TRACE_INFO1("Adv local name: %s", &datsScanDataDisc[2]);
+    APP_TRACE_INFO1("Adv local name: %s", deviceName);
 
     /* store handler ID */
     datsCb.handlerId = handlerId;

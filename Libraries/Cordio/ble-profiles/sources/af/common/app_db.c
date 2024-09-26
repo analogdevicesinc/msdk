@@ -953,7 +953,7 @@ void AppDbSetPeerRpao(appDbHdl_t hdl, bool_t peerRpao)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
+bool_t AppDbNvmStorePeerRpao(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -962,7 +962,11 @@ void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
+    return WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
+  }else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -975,16 +979,20 @@ void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCccTbl(appDbHdl_t hdl)
+bool_t AppDbNvmStoreCccTbl(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
-
+  
   if (recIndex != APP_DB_INDEX_INVALID)
   {
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_CCC_TBL_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cccTbl, sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cccTbl, sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
+  }else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -997,7 +1005,7 @@ void AppDbNvmStoreCccTbl(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreHdlList(appDbHdl_t hdl)
+bool_t AppDbNvmStoreHdlList(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1006,11 +1014,18 @@ void AppDbNvmStoreHdlList(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_HDL_LIST_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->hdlList, sizeof(uint16_t) * APP_DB_HDL_LIST_LEN, NULL);
+    bool_t writeOk = WsfNvmWriteData(nvmId, (uint8_t*) &pRec->hdlList, sizeof(uint16_t) * APP_DB_HDL_LIST_LEN, NULL);
+    if(!writeOk){
+      return FALSE;
+    }
 
     nvmId = DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, &pRec->discStatus, sizeof(uint8_t), NULL);
+    return WsfNvmWriteData(nvmId, &pRec->discStatus, sizeof(uint8_t), NULL);
+  }else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1023,7 +1038,7 @@ void AppDbNvmStoreHdlList(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl)
+bool_t AppDbNvmStorePeerSignCounter(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1032,7 +1047,12 @@ void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_SIGN_CTR_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerSignCounter, sizeof(uint32_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerSignCounter, sizeof(uint32_t), NULL);
+  }
+  else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1045,7 +1065,7 @@ void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl)
+bool_t AppDbNvmStorePeerAddrRes(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1054,7 +1074,12 @@ void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerAddrRes, sizeof(bool_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerAddrRes, sizeof(bool_t), NULL);
+  }
+  else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1067,7 +1092,7 @@ void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl)
+bool_t AppDbNvmStoreChangeAwareState(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1076,7 +1101,11 @@ void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_CAS_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->changeAwareState, sizeof(uint8_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->changeAwareState, sizeof(uint8_t), NULL);
+  }else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1089,7 +1118,7 @@ void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
+bool_t AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1098,7 +1127,12 @@ void AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_CSF_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) pRec->csf, ATT_CSF_LEN, NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) pRec->csf, ATT_CSF_LEN, NULL);
+  }
+  else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1111,7 +1145,7 @@ void AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
+bool_t AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1120,7 +1154,12 @@ void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
+  }
+  else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1133,7 +1172,7 @@ void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreDbHash(appDbHdl_t hdl)
+bool_t AppDbNvmStoreDbHash(appDbHdl_t hdl)
 {
   uint8_t recIndex = appDbFindIndx(hdl);
 
@@ -1142,7 +1181,12 @@ void AppDbNvmStoreDbHash(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_HASH_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
+    return WsfNvmWriteData(nvmId, pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
+  }
+  else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 
@@ -1155,7 +1199,7 @@ void AppDbNvmStoreDbHash(appDbHdl_t hdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppDbNvmStoreBond(appDbHdl_t hdl)
+bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
 {
   uint8_t i = appDbFindIndx(hdl);
 
@@ -1169,41 +1213,82 @@ void AppDbNvmStoreBond(appDbHdl_t hdl)
 
       /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
       /*  - First ensure valid FALSE before writing parameters. */
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+      bool_t writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+
+      if(!writeOk){
+        return FALSE;
+      }
+
 
       /* Write record parameters. */
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+      if(!writeOk){
+        return FALSE;
+      }
 
       if (pRec->keyValidMask & DM_KEY_LOCAL_LTK)
       {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
+        writeOk =  WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
+        if(!writeOk){
+        return FALSE;
+        }
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
+        if(!writeOk){
+          return FALSE;
+        }
       }
 
       if (pRec->keyValidMask & DM_KEY_PEER_LTK)
       {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
+        if(!writeOk){
+          return FALSE;
+        }
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
+        if(!writeOk){
+          return FALSE;
+        }
       }
 
       if (pRec->keyValidMask & DM_KEY_IRK)
       {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t*) &pRec->peerIrk, sizeof(dmSecIrk_t), NULL);
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t*) &pRec->peerIrk, sizeof(dmSecIrk_t), NULL);
+        if(!writeOk){
+        return FALSE;
+        }
       }
 
       if (pRec->keyValidMask & DM_KEY_CSRK)
       {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t*) &pRec->peerCsrk, sizeof(dmSecCsrk_t), NULL);
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t*) &pRec->peerCsrk, sizeof(dmSecCsrk_t), NULL);
+        if(!writeOk){
+          return FALSE;
+        }
       }
 
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
-
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
+      if(!writeOk){
+        return FALSE;
+      }
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
+      if(!writeOk){
+        return FALSE;
+      }
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
+      if(!writeOk){
+        return FALSE;
+      }
       /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
       /*  - Second set valid TRUE after writing parameters. */
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &pRec->valid, sizeof(bool_t), NULL);
+      return WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &pRec->valid, sizeof(bool_t), NULL);
     }
+
+    return TRUE;
+  }
+  else
+  {
+    APP_TRACE_INFO0("Invalid record index!");
+    return FALSE;
   }
 }
 

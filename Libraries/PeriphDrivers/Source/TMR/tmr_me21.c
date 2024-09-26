@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,14 +25,14 @@
 
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 {
-    uint8_t tmr_id;
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
     uint8_t clockSource = MXC_TMR_CLK0;
 
     if (cfg == NULL) {
         return E_NULL_PTR;
     }
 
-    MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
+    MXC_ASSERT(tmr_id >= 0);
 
     switch (cfg->clock) {
     case MXC_TMR_EXT_CLK:
@@ -41,7 +40,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
-    case MXC_TMR_32K_CLK:
+    case MXC_TMR_ERTCO_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -51,7 +50,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
         break;
 
-    case MXC_TMR_80K_CLK:
+    case MXC_TMR_INRO_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -61,7 +60,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ);
         break;
 
-    case MXC_TMR_8M_CLK:
+    case MXC_TMR_IBRO_CLK:
         if (tmr_id > 3) { // TImers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -71,7 +70,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
         break;
 
-    case MXC_TMR_32M_CLK:
+    case MXC_TMR_ERFO_CLK:
         if (tmr_id > 3) { // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
@@ -179,8 +178,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 {
-    uint8_t tmr_id;
-    MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+
+    MXC_ASSERT(tmr_id >= 0);
 
     MXC_TMR_RevB_Shutdown((mxc_tmr_revb_regs_t *)tmr);
 
@@ -252,11 +252,11 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = (PeripheralClock / 4);
             break;
 
-        case MXC_TMR_32K_CLK:
+        case MXC_TMR_ERTCO_CLK:
             clockFrequency = ERTCO_FREQ;
             break;
 
-        case MXC_TMR_80K_CLK:
+        case MXC_TMR_INRO_CLK:
             clockFrequency = INRO_FREQ;
             break;
 
@@ -269,11 +269,11 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = PeripheralClock;
             break;
 
-        case MXC_TMR_8M_CLK:
+        case MXC_TMR_IBRO_CLK:
             clockFrequency = IBRO_FREQ;
             break;
 
-        case MXC_TMR_32M_CLK:
+        case MXC_TMR_ERFO_CLK:
             clockFrequency = ERFO_FREQ; // Note: Could vary between 16-32Mhz.  ERFO_FREQ should be
                 // overridden for custom designs.
             break;

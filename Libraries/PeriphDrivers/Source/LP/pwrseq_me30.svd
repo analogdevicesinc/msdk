@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>PWRSEQ</name>
+    <description>Power Sequencer / Low Power Control Register.</description>
+    <baseAddress>0x40006800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>LPCTRL</name>
+        <description>Low Power Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>SRAMRET_EN</name>
+            <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>BG_DIS</name>
+            <description>Bandgap OFF. This controls the System Bandgap in DeepSleep mode.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>on</name>
+                <description>Bandgap is always ON.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>off</name>
+                <description>Bandgap is OFF in DeepSleep mode (default).</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RETLDO_EN</name>
+            <description>Retention LDO Enable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LDO_EN_DLY</name>
+            <description>Core LDO Enable Delay.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable delay LDO power up to smooth LDO voltage drop.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LPWKFL_CLR</name>
+            <description>LP wakeup flag register clear.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPWKFL0</name>
+        <description>Low Power I/O Wakeup Status Register 0. This register indicates the low power wakeup status for GPIO0.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>PINS</name>
+            <description>Wakeup Flags.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPWKEN0</name>
+        <description>Low Power I/O Wakeup Enable Register 0. This register enables low power wakeup functionality for GPIO0.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>PINS</name>
+            <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPPWST</name>
+        <description>Low Power Peripheral Wakeup Status Register.</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>
+          <field>
+            <name>BACKUP</name>
+            <description>BACKUP Wakeful Flag.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RESET</name>
+            <description>Reset Detected Wakeup Flag.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GP0</name>
+        <description>General Purpose Register 0</description>
+        <addressOffset>0x48</addressOffset>
+      </register>
+      <register>
+        <name>GP1</name>
+        <description>General Purpose Register 1</description>
+        <addressOffset>0x4C</addressOffset>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- PWRSEQ: Power sequencer          -->
+</device>

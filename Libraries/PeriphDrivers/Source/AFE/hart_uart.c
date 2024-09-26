@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -174,9 +173,11 @@ static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         MXC_AFE_GPIO_Config(&gpio_cfg_extclk);
         break;
 
+#if TARGET_NUM != 32675
     case MXC_UART_ERTCO_CLK:
         return E_BAD_PARAM;
         break;
+#endif
 
     case MXC_UART_IBRO_CLK:
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
@@ -644,9 +645,9 @@ int hart_clock_enable(void)
     pPTG->intfl = 0x01;
 
     //enable ISO before enabling ERFO
-    MXC_GCR->btleldoctrl |= (MXC_F_GCR_BTLELDOCTRL_LDOTXEN | MXC_F_GCR_BTLELDOCTRL_LDORXEN |
-                             MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0 | MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL1 |
-                             MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0 | MXC_F_GCR_BTLELDOCTRL_LDORXVSEL1);
+    MXC_GCR->btleldoctrl |=
+        (MXC_F_GCR_BTLELDOCTRL_LDORFEN | MXC_F_GCR_BTLELDOCTRL_LDOBBEN |
+         MXC_S_GCR_BTLELDOCTRL_LDORFVSEL_0_9 | MXC_S_GCR_BTLELDOCTRL_LDOBBVSEL_0_9);
 
     MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ISO_EN;
 
@@ -1303,7 +1304,7 @@ void hart_cd_isr(void *cbdata)
     }
 }
 
-int hart_uart_check_for_receive()
+int hart_uart_check_for_receive(void)
 {
     // NOTE: RTS is placed into receive mode by hart_uart_send
     // Receive mode is default operation for the HART UART

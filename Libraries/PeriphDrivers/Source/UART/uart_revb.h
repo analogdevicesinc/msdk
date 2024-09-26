@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,15 +55,18 @@ struct _mxc_uart_revb_req_t {
 int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_revb_clock_t clock);
 int MXC_UART_RevB_Shutdown(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ReadyForSleep(mxc_uart_revb_regs_t *uart);
-int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int baud,
-                               mxc_uart_revb_clock_t clock);
+int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int input_clock_freq,
+                               unsigned int baud);
 int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_SetDataSize(mxc_uart_revb_regs_t *uart, int dataSize);
 int MXC_UART_RevB_SetStopBits(mxc_uart_revb_regs_t *uart, mxc_uart_stop_t stopBits);
 int MXC_UART_RevB_SetParity(mxc_uart_revb_regs_t *uart, mxc_uart_parity_t parity);
 int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t *uart, mxc_uart_flow_t flowCtrl,
                               int rtsThreshold);
-int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, mxc_uart_revb_clock_t clock);
+int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t *uart, uint8_t clock_option);
+unsigned int MXC_UART_RevB_GetClockSource(mxc_uart_revb_regs_t *uart);
+void MXC_UART_RevB_LockClockSource(mxc_uart_revb_regs_t *uart, bool lock);
+bool MXC_UART_RevB_IsClockSourceLocked(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_GetActive(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_AbortTransmission(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ReadCharacterRaw(mxc_uart_revb_regs_t *uart);
@@ -75,14 +77,15 @@ int MXC_UART_RevB_Read(mxc_uart_revb_regs_t *uart, uint8_t *buffer, int *len);
 int MXC_UART_RevB_Write(mxc_uart_revb_regs_t *uart, const uint8_t *byte, int *len);
 unsigned int MXC_UART_RevB_ReadRXFIFO(mxc_uart_revb_regs_t *uart, unsigned char *bytes,
                                       unsigned int len);
-int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, unsigned char *bytes, unsigned int len,
+int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                unsigned char *bytes, unsigned int len,
                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetRXFIFOAvailable(mxc_uart_revb_regs_t *uart);
 unsigned int MXC_UART_RevB_WriteTXFIFO(mxc_uart_revb_regs_t *uart, const unsigned char *bytes,
                                        unsigned int len);
-int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, const unsigned char *bytes,
-                                 unsigned int len, mxc_uart_dma_complete_cb_t callback,
-                                 mxc_dma_config_t config);
+int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t *uart, mxc_dma_regs_t *dma,
+                                 const unsigned char *bytes, unsigned int len,
+                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetTXFIFOAvailable(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ClearRXFIFO(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_ClearTXFIFO(mxc_uart_revb_regs_t *uart);
@@ -98,7 +101,7 @@ unsigned int MXC_UART_RevB_GetStatus(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_Busy(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_Transaction(mxc_uart_revb_req_t *req);
 int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req);
-int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req);
+int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma);
 int MXC_UART_RevB_AbortAsync(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart);
 int MXC_UART_RevB_AsyncStop(mxc_uart_revb_regs_t *uart);

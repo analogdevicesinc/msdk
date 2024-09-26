@@ -7,8 +7,8 @@ Below is a list of the supported commands:
 * stop: Ends the example.
 * read: Reads data from a file and prints it to the terminal.
 * write: Writes data to a file and can optionally create the file to write to if it does not already exist.
-* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes occur somewhat evenly across most filesystem blocks. 
-	
+* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes occur somewhat evenly across most filesystem blocks.
+
 Enter "help" in the command line to see more details on the usage of each of the commands including what arguments/options need to be specified to successfully execute each command.
 
 ## Software
@@ -33,6 +33,11 @@ If using the MAX32690EVKIT:
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+If using the AD-APARD32690-SL:
+-   Connect a USB cable between the PC and the P10 (USB-C) connector.
+-   Connect a MAXPICO Debug adapter to P9 (SWD Connector)
+-   Open a terminal application on the PC and connect to the MAXPICO's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

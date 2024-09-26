@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -35,26 +34,10 @@
  #
  ##############################################################################
 
-# This is the name of the build output file
-PROJECT_NAME=libPeriphDriver
-
 # Specify the project variant.
-ifeq "$(MFLOAT_ABI)" "hardfp"
-PROJECT_VARIANT=hardfp
-else
-ifeq "$(MFLOAT_ABI)" "hard"
-PROJECT_VARIANT=hardfp
-else
-PROJECT_VARIANT=softfp
-endif
-endif
+PERIPH_DRIVER_LIB_FILENAME ?= libPeriphDriver_$(MFLOAT_ABI)
 
-# Use these to specify the project.
-ifeq "$(PROJECT_VARIANT)" ""
-override PROJECT=$(PROJECT_NAME)
-else
-override PROJECT=$(PROJECT_NAME)_$(PROJECT_VARIANT)
-endif
+override PROJECT = $(PERIPH_DRIVER_LIB_FILENAME)
 
 ifeq "$(TARGET)" ""
 $(error TARGET must be specified)

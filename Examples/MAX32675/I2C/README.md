@@ -19,6 +19,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   You must connect P0.18 to P0.6 (SCL) and P0.19 to P0.7 (SCL).
 
+If using the MAX32675 RevB:
+-	Close I2C pull-up jumpers JP25 and JP26
+
 ## Expected Output
 ```
 ******** I2C SLAVE ASYNC TRANSACTION TEST *********

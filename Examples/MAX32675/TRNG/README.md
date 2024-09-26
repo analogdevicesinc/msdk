@@ -11,7 +11,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+The TRNG is disabled for MAX32675 Revision B, so this example will fail to run for those parts.
 
 ## Required Connections
 

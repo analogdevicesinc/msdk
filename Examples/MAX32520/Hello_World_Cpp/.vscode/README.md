@@ -5,11 +5,11 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 ## Quick Links
 
 * [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
-* [VSCode-Maxim Github](https://github.com/Analog-Devices-MSDK/VSCode-Maxim)
+* [VSCode-Maxim Github](https://github.com/analogdevicesinc/VSCode-Maxim)
 
 ## Introduction
 
-VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/Analog-Devices-MSDK/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
+VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/analogdevicesinc/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
 
 The following features are supported:
 
@@ -37,7 +37,7 @@ See the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/#vis
 
 ## Issue Tracker
 
-Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/issues) tracker on Github.
+Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/analogdevicesinc/VSCode-Maxim/issues) tracker on Github.
 
 New issues should contain _at minimum_ the following information:
 

@@ -32,6 +32,8 @@ Coremark
 CRC
 CTB_AES
 DMA
+Dual_Core_Sync/Dual_core_sync_arm
+Dual_Core_Sync/Dual_core_sync_riscv
 EEPROM_Emulator
 Flash
 Flash_CLI
@@ -55,6 +57,7 @@ RTC_Backup
 RV_ARM_Loader
 SCPA_OTP_Dump
 SPI
+SPI_v2
 Temp_Monitor
 TFT_Demo
 TMR

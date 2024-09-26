@@ -7,10 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,11 +130,11 @@ typedef struct {
  * @brief    BTLE LDO Trim register.
  * @{
  */
-#define MXC_F_SIR_BTLE_LDO_TRIM_TX_POS                 0 /**< BTLE_LDO_TRIM_TX Position */
-#define MXC_F_SIR_BTLE_LDO_TRIM_TX                     ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_TX_POS)) /**< BTLE_LDO_TRIM_TX Mask */
+#define MXC_F_SIR_BTLE_LDO_TRIM_RF_POS                 0 /**< BTLE_LDO_TRIM_RF Position */
+#define MXC_F_SIR_BTLE_LDO_TRIM_RF                     ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_RF_POS)) /**< BTLE_LDO_TRIM_RF Mask */
 
-#define MXC_F_SIR_BTLE_LDO_TRIM_RX_POS                 5 /**< BTLE_LDO_TRIM_RX Position */
-#define MXC_F_SIR_BTLE_LDO_TRIM_RX                     ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_RX_POS)) /**< BTLE_LDO_TRIM_RX Mask */
+#define MXC_F_SIR_BTLE_LDO_TRIM_BB_POS                 5 /**< BTLE_LDO_TRIM_BB Position */
+#define MXC_F_SIR_BTLE_LDO_TRIM_BB                     ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_BB_POS)) /**< BTLE_LDO_TRIM_BB Mask */
 
 /**@} end of group SIR_BTLE_LDO_TRIM_Register */
 

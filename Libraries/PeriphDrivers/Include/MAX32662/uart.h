@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,6 +144,11 @@ struct _mxc_uart_req_t {
  * 
  * These parameters can be modified after initialization using low level functions
  * 
+ * @note    On default this function enables UART peripheral clock.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *          By this flag this function will remove clock and gpio related codes from file.
+ * 
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   baud         The requested clock frequency. The actual clock frequency
  *                       will be returned by the function if successful.
@@ -251,6 +255,15 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
  *          for a list of return codes.
  */
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock);
+
+/**
+ * @brief   Gets the clock source used for the UART instance
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  The selected clock source for the UART instance
+ */
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */

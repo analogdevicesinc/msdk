@@ -38,6 +38,9 @@
 #include "wsf_trace.h"
 #include "util/bstream.h"
 #include "bb_ble_api.h"
+#include "flc.h"
+#include "wsf_timer.h"
+#include "pal_uart.h"
 #include <string.h>
 
 /**************************************************************************************************
@@ -64,6 +67,14 @@
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
+//this is the callback function to the Msg
+wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
+void device_reset(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    NVIC_SystemReset();
+    return;
+}
 
 /*************************************************************************************************/
 /*!
@@ -82,13 +93,64 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    uint32_t channel = 0;
-    
 
     /* Decode and consume command packet. */
 
     switch (pHdr->opCode) {
         /* --- extended device commands --- */
+        
+
+    case LHCI_OPCODE_VS_DEVICE_RESET: {
+        LlReset();
+
+        myTimerHandlerId = WsfOsSetNextHandler(device_reset);
+        myTimer.handlerId = myTimerHandlerId;
+
+        /*This delay is necessary here to let UART transfer the status back to hci*/
+        WsfTimerStartMs(&myTimer, 5000);
+
+        break;
+    }
+
+    case LHCI_OPCODE_VS_PAGE_ERASE: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
+        LL_TRACE_INFO1("Erase flash memory at address: %x", addr);
+        if (addr % MXC_FLASH_PAGE_SIZE)
+        {
+            status = HCI_ERR_INVALID_PARAM; 
+        }
+        else
+        {
+            int error = MXC_FLC_PageErase(addr);
+       
+            if (error == E_NO_ERROR || error == E_BAD_PARAM) {
+                LL_TRACE_INFO0("Done");
+            
+            }
+            else{
+                LL_TRACE_ERR0("Failed");
+                status = HCI_ERR_HARDWARE_FAILURE;
+            }
+        }
+        break;
+    
+    }
+
+    case LHCI_OPCODE_VS_WRITE_FLASH: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
+        int error = E_NO_ERROR;
+
+        error = MXC_FLC_Write(addr, (uint32_t) (pHdr->len - 4), (uint32_t*) pBuf);
+
+        if (error != E_NO_ERROR) {
+                LL_TRACE_ERR1("Writing to flash memory Failed! Error code: %d", error);
+                status = HCI_ERR_HARDWARE_FAILURE;
+        }
+        
+        break;
+    }    
 
     case LHCI_OPCODE_VS_SET_OP_FLAGS: {
         uint32_t flags;
@@ -215,20 +277,19 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     case LHCI_OPCODE_VS_GET_RSSI:
     {
         status = LL_SUCCESS;
-        channel = pBuf[0];
         evtParamLen += sizeof(int8_t);
         break;
     }
-    case LHCI_OPCODE_VS_PHY_EN:
+    case LHCI_OPCODE_VS_RESET_ADV_STATS:
     {
         status = LL_SUCCESS;
-        PalBbEnable();
+        BbBleResetAdvStats();
         break;
     }
-    case LHCI_OPCODE_VS_PHY_DIS:
+    case LHCI_OPCODE_VS_RESET_SCAN_STATS:
     {
         status = LL_SUCCESS;
-        PalBbDisable();
+        BbBleResetScanStats();
         break;
     }
 
@@ -256,9 +317,8 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_REG_WRITE:
         case LHCI_OPCODE_VS_RX_TEST:
         case LHCI_OPCODE_VS_TX_TEST:
-        case LHCI_OPCODE_VS_PHY_EN:
-        case LHCI_OPCODE_VS_PHY_DIS:
-
+        case LHCI_OPCODE_VS_RESET_ADV_STATS:
+        case LHCI_OPCODE_VS_RESET_SCAN_STATS:
 
             /* no action */
             break;
@@ -271,6 +331,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             /*
                 TODO: Needs feature in PHY
             */
+            // PalBbEnable();
             pBuf[0] = -10;
             break;
         }

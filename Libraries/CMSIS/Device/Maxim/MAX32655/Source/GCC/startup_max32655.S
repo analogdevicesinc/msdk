@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -401,7 +400,9 @@ Reset_Handler:
     def_irq_handler BTLE_RX_AES_IRQHandler       /* 0x42  0x0108  66: BTLE RX AES Done */
     def_irq_handler BTLE_INV_APB_ADDR_IRQHandler /* 0x43  0x010C  67: BTLE Invalid APB Address*/
     def_irq_handler BTLE_IQ_DATA_VALID_IRQHandler/* 0x44  0x0110  68: BTLE IQ Data Valid */
-    def_irq_handler WUT0_IRQHandler              /* 0x45  0x0114  69: Wake up timer */
+    #ifndef __CORDIO__
+    def_irq_handler WUT0_IRQHandler              /* 0x45  0x0114  69: Wake up timer, The PAL layer has a weak declaration. This avoids the situation of double weak*/
+    #endif
     def_irq_handler GPIOWAKE_IRQHandler          /* 0x46  0x0118  70: GPIO Wakeup */
     def_irq_handler RSV55_IRQHandler             /* 0x47  0x011C  71: Reserved */
     def_irq_handler SPI0_IRQHandler              /* 0x48  0x0120  72: SPI0 */

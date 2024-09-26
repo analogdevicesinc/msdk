@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +64,7 @@ extern const mxc_gpio_cfg_t N01S830HA_hold_pin;
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during initialization.
  */
-extern int spi_init();
+extern int spi_init(void);
 
 /**
  * @brief Transmits and receives data using the SPI module.
@@ -97,7 +96,7 @@ extern int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rx
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode exit process.
  */
-extern int spi_exit_quadmode();
+extern int spi_exit_quadmode(void);
 
 /**
  * @brief Enters the quad mode for SPI (Serial Peripheral Interface) communication.
@@ -109,7 +108,7 @@ extern int spi_exit_quadmode();
  * @return An integer status code. 0 indicates success, while a non-zero value
  *         indicates an error during the quad mode entry process.
  */
-extern int spi_enter_quadmode();
+extern int spi_enter_quadmode(void);
 
 // =======================================================================================
 
@@ -123,7 +122,7 @@ extern int spi_enter_quadmode();
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_init();
+int N01S830HA_init(void);
 
 /**
  * @brief Enter Quad Mode for the N01S830HA SRAM.
@@ -133,7 +132,7 @@ int N01S830HA_init();
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_enter_quadmode();
+int N01S830HA_enter_quadmode(void);
 
 /**
  * @brief Exit Quad Mode for the N01S830HA SRAM.
@@ -142,7 +141,7 @@ int N01S830HA_enter_quadmode();
  *
  * @return 0 on success, or an error code on failure.
  */
-int N01S830HA_exit_quadmode();
+int N01S830HA_exit_quadmode(void);
 
 /**
  * @brief Read data from the N01S830HA SRAM.

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +20,7 @@
 
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB "ROM" */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256kB "FLASH" */
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 376K /* 384kB "FLASH" - reserved last page used by bootloader */
     SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x000BE000 /* 760kB SRAM */
 
     XIP_0 (rx)   : ORIGIN = 0x08000000, LENGTH = 0x00010000

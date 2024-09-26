@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,49 +34,63 @@
 const mxc_gpio_cfg_t gpio_cfg_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_23), MXC_GPIO_FUNC_IN,
                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
+/* Note: The ME18 has assigned the same alternate function to multiple pins.  Therefore, when I2C is
+ * enabled it will be enabled on both sets of pins simultaneously.  The ME18 driver layer also does
+ * this intentionally so that either set of pins can be used.  Users should ensure the unused pin set
+ * is left unconnected.
+ *
+ * See MAX32690 Rev A2 Errata #16
+ * https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf 
+ * */
 const mxc_gpio_cfg_t gpio_cfg_i2c0 = { MXC_GPIO2, (MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8), MXC_GPIO_FUNC_ALT1,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+const mxc_gpio_cfg_t gpio_cfg_i2c0a = { MXC_GPIO0, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31), MXC_GPIO_FUNC_ALT1,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_i2c1 = { MXC_GPIO0, (MXC_GPIO_PIN_11 | MXC_GPIO_PIN_12), MXC_GPIO_FUNC_ALT1,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+const mxc_gpio_cfg_t gpio_cfg_i2c1a = { MXC_GPIO2, (MXC_GPIO_PIN_17 | MXC_GPIO_PIN_18), MXC_GPIO_FUNC_ALT1,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_i2c2 = { MXC_GPIO1, (MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8), MXC_GPIO_FUNC_ALT3,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+const mxc_gpio_cfg_t gpio_cfg_i2c2c = { MXC_GPIO0, (MXC_GPIO_PIN_13 | MXC_GPIO_PIN_14), MXC_GPIO_FUNC_ALT3,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
 const mxc_gpio_cfg_t gpio_cfg_uart0 = { MXC_GPIO2, (MXC_GPIO_PIN_11 | MXC_GPIO_PIN_12), MXC_GPIO_FUNC_ALT1,
-                                        MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                        MXC_GPIO_PAD_WEAK_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart0_flow = { MXC_GPIO2, (MXC_GPIO_PIN_9 | MXC_GPIO_PIN_10), MXC_GPIO_FUNC_ALT1,
-                                             MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                             MXC_GPIO_PAD_WEAK_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable = { MXC_GPIO2, (MXC_GPIO_PIN_9 | MXC_GPIO_PIN_10), MXC_GPIO_FUNC_IN,
-                                                     MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                                     MXC_GPIO_PAD_WEAK_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart1 = { MXC_GPIO2, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_16), MXC_GPIO_FUNC_ALT1,
-                                        MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                        MXC_GPIO_PAD_WEAK_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart1_flow = { MXC_GPIO2, (MXC_GPIO_PIN_13 | MXC_GPIO_PIN_15),
-                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_PULL_UP,
+                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_WEAK_PULL_UP,
                                              MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable = { MXC_GPIO2, (MXC_GPIO_PIN_13 | MXC_GPIO_PIN_15),
-                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP,
+                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP,
                                                      MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart2 = { MXC_GPIO1, (MXC_GPIO_PIN_9 | MXC_GPIO_PIN_10),
-                                        MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_PULL_UP,
+                                        MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_WEAK_PULL_UP,
                                         MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart2_flow = { MXC_GPIO1, (MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8),
-                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_PULL_UP,
+                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_WEAK_PULL_UP,
                                              MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable = { MXC_GPIO1, (MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8),
-                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP,
+                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP,
                                                      MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart3 = { MXC_GPIO3, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1),
-                                        MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_PULL_UP,
+                                        MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_WEAK_PULL_UP,
                                         MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart3_flow = { MXC_GPIO3, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3),
-                                             MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_PULL_UP,
+                                             MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_WEAK_PULL_UP,
                                              MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable = { MXC_GPIO3, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3),
-                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP,
+                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP,
                                                      MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
-const mxc_gpio_cfg_t antenna_ctrl0 = { MXC_GPIO2, (MXC_GPIO_PIN_17), MXC_GPIO_FUNC_ALT2,
+const mxc_gpio_cfg_t antenna_ctrl0 = { MXC_GPIO2, (MXC_GPIO_PIN_18), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
-const mxc_gpio_cfg_t antenna_ctrl1 = { MXC_GPIO2, (MXC_GPIO_PIN_18), MXC_GPIO_FUNC_ALT2,
+const mxc_gpio_cfg_t antenna_ctrl1 = { MXC_GPIO2, (MXC_GPIO_PIN_17), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t antenna_ctrl2 = { MXC_GPIO2, (MXC_GPIO_PIN_20), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
@@ -253,7 +266,7 @@ const mxc_gpio_cfg_t gpio_cfg_can1 = { MXC_GPIO2, (MXC_GPIO_PIN_24 | MXC_GPIO_PI
 
 // SPI v2 Pin Definitions
 const mxc_gpio_cfg_t gpio_cfg_spi0_standard = { MXC_GPIO2, (MXC_GPIO_PIN_27 | MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29),
-                                                MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+                                                MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_spi0_3wire = { MXC_GPIO2, (MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29), MXC_GPIO_FUNC_ALT2,
                                              MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_spi0_dual = { MXC_GPIO2, (MXC_GPIO_PIN_27 | MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29), MXC_GPIO_FUNC_ALT1,

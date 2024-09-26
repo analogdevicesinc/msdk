@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +25,9 @@
 #include "mxc_sys.h"
 #include "wdt.h"
 #include "wdt_revb.h"
+
+static bool g_is_clock_locked[MXC_CFG_WDT_INSTANCES] = { [0 ... MXC_CFG_WDT_INSTANCES - 1] =
+                                                             false };
 
 /* **** Functions **** */
 
@@ -126,6 +128,10 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt)
 
 int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
 {
+    if (g_is_clock_locked[MXC_WDT_GET_IDX(wdt)]) {
+        return E_NO_ERROR; // Return no error so that Init doesn't failed if called after this function
+    }
+
     const uint8_t clock_source_num = 8;
     uint8_t idx = 0;
     uint8_t instance = 0;
@@ -152,5 +158,11 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
 
     MXC_WDT_RevB_SetClockSource((mxc_wdt_revb_regs_t *)wdt, idx);
 
+    return E_NO_ERROR;
+}
+
+int MXC_WDT_LockClockSource(mxc_wdt_regs_t *wdt, bool lock)
+{
+    g_is_clock_locked[MXC_WDT_GET_IDX(wdt)] = lock;
     return E_NO_ERROR;
 }

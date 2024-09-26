@@ -2,7 +2,7 @@
 
 Bluetooth version 5.2 controller, accepts HCI commands via Serial Port.
 
-Refer to the [BLE5_ctr](../../../Libraries/Cordio/docs/Applications/BLE5_ctr.md) documentation in the Cordio Library.
+Refer to the [BLE5_ctr](../../../../Libraries/Cordio/docs/Applications/BLE5_ctr.md) documentation in the Cordio Library.
 
 ## Software
 

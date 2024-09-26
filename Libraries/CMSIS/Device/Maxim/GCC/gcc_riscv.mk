@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -18,6 +17,70 @@
  # limitations under the License.
  #
  ##############################################################################
+
+################################################################################
+# Detect whether we're working from the Github repo or not.
+# If so, attempt to update the version number files every time we build.
+
+ifeq "$(PYTHON_CMD)" ""
+# Try python
+ifneq "$(wildcard $(MAXIM_PATH)/.git)" ""
+
+PYTHON_VERSION := $(shell python --version)
+ifneq ($(.SHELLSTATUS),0)
+PYTHON_CMD := none
+else
+PYTHON_CMD := python
+endif
+
+# Try python3
+ifeq "$(PYTHON_CMD)" "none"
+PYTHON_VERSION := $(shell python3 --version)
+ifneq ($(.SHELLSTATUS),0)
+PYTHON_CMD := none
+else
+PYTHON_CMD := python
+endif
+endif
+
+# Export PYTHON_CMD so we don't check for it again unnecessarily
+export PYTHON_CMD
+endif
+
+# Run script
+ifneq "$(PYTHON_CMD)" "none"
+UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
+else
+$(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif
+endif
+
+ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
+endif
+################################################################################
+
+SUPPRESS_HELP ?= 0
+ifeq "$(SUPPRESS_HELP)" "0"
+ifneq "$(HELP_COMPLETE)" "1"
+
+$(info ****************************************************************************)
+$(info * Analog Devices MSDK)
+ifneq "$(MSDK_VERSION_STRING)" ""
+$(info * $(MSDK_VERSION_STRING))
+endif
+$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
+$(info * - Get Support: https://www.analog.com/support/technical-support.html)
+$(info * - Report Issues: https://github.com/analogdevicesinc/msdk/issues)
+$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
+$(info ****************************************************************************)
+# export HELP_COMPLETE so that it's only printed once.
+HELP_COMPLETE = 1
+export HELP_COMPLETE
+endif
+endif
+
+################################################################################
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
@@ -54,7 +117,7 @@ UNAME_RESULT := $(shell uname -s 2>&1)
 # variable will still be set to Windows_NT since we configure
 # MSYS2 to inherit from Windows by default.
 # Here we'll attempt to call uname (only present on MSYS2)
-# while routing stderr -> stdout to avoid throwing an error 
+# while routing stderr -> stdout to avoid throwing an error
 # if uname can't be found.
 ifneq ($(findstring CYGWIN, $(UNAME_RESULT)), )
 CYGWIN=True
@@ -181,7 +244,7 @@ GCCVERSIONGTEQ4 := 1
 # GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
 # ifeq "$(GCCVERSIONGTEQ4)" "0"
 # GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
-	
+
 # ifeq "$(GCCVERSIONGTEQ4)" "1"
 # GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
 # endif
@@ -292,6 +355,8 @@ CXXFLAGS += \
 
 C_WARNINGS_AS_ERRORS ?= implicit-function-declaration
 CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
+CFLAGS += -Wstrict-prototypes
+# ^ Add strict-prototypes after CXX_FLAGS so it's only added for C builds
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
@@ -302,7 +367,7 @@ CFLAGS += -Werror=$(C_WARNINGS_AS_ERRORS)
 # ifeq "$(RISCV_NOT_COMPRESSED)" ""
 # LDFLAGS=-march=rv32imafdc
 # else
-# LDFLAGS=-march=rv32imafd 
+# LDFLAGS=-march=rv32imafd
 # endif
 # ----
 
@@ -311,7 +376,8 @@ LDFLAGS+=-Xlinker --gc-sections       \
       -nostartfiles 	\
 	  -march=$(MARCH) 	\
 	  -mabi=$(MABI)		\
-      -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
+      -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map \
+      -Xlinker --print-memory-usage
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
@@ -322,7 +388,6 @@ ifeq "$(RISCV_RWX_SEGMENTS_SUPPORTED)" "" # ------------------------------------
 # be on the path, and that's how we invoke the linker for our implicit rules
 LINKER_OPTIONS := $(shell $(CC) -Xlinker --help)
 ifneq "$(findstring --no-warn-rwx-segments,$(LINKER_OPTIONS))" ""
-$(error test)
 RISCV_RWX_SEGMENTS_SUPPORTED := 1
 else
 RISCV_RWX_SEGMENTS_SUPPORTED := 0
@@ -618,19 +683,24 @@ $(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
 
-#################################################################################
-SUPPRESS_HELP ?= 0
-ifeq "$(SUPPRESS_HELP)" "0"
-ifneq "$(HELP_COMPLETE)" "1"
-$(info ****************************************************************************)
-$(info * Analog Devices MSDK)
-$(info * - User Guide: https://analogdevicesinc.github.io/msdk/USERGUIDE/)
-$(info * - Get Support: https://www.analog.com/support/technical-support.html)
-$(info * - Report Issues: https://github.com/Analog-Devices-MSDK/msdk/issues)
-$(info * - Contributing: https://analogdevicesinc.github.io/msdk/CONTRIBUTING/)
-$(info ****************************************************************************)
-# export HELP_COMPLETE so that it's only printed once.
-HELP_COMPLETE = 1
-export HELP_COMPLETE
+################################################################################
+# Add a rule for querying the value of any Makefile variable.  This is useful for
+# IDEs when they need to figure out include paths, value of the target, etc. for a
+# project
+# Set QUERY_VAR to the variable to inspect.
+# The output must be parsed, since other Makefiles may print additional info strings.
+# The relevant content will be on its own line, and separated by an '=' character.
+# Ex: make query QUERY_VAR=TARGET
+# will return
+# TARGET=MAXxxxxx
+ifeq "$(MAKECMDGOALS)" "query"
+SUPPRESS_HELP := 1
 endif
+.PHONY: query
+query:
+	@echo
+ifneq "$(QUERY_VAR)" ""
+		$(foreach QUERY_VAR,$(QUERY_VAR),$(info $(QUERY_VAR)=$($(QUERY_VAR))))
+else
+		$(MAKE) debug
 endif

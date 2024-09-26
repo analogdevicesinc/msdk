@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,7 +121,7 @@ typedef enum {
     RSV51_IRQn, /* 0x43  0x010C  67: Reserved */
     RSV52_IRQn, /* 0x44  0x0110  68: Reserved */
     RSV53_IRQn, /* 0x45  0x0114  69: Reserved */
-    RSV54_IRQn, /* 0x46  0x0118  70: Reserved */
+    GPIOWAKE_IRQn, /* 0x46  0x0118  70: GPIOWAKE */
     RSV55_IRQn, /* 0x47  0x011C  71: Reserved */
     RSV56_IRQn, /* 0x48  0x0120  72: Reserved */
     WDT1_IRQn, /* 0x49  0x0124  73: Watchdog 1 */

@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -233,10 +232,10 @@ void temperature_average(float temperature)
 
     if (temp_samples == SAMPLE_AVG) {
         average = sum / SAMPLE_AVG;
-        printf("Average = %0.2fC\n", average);
+        printf("Average = %0.2fC\n", (double)average);
 
         for (loop_counter = 0; loop_counter < SAMPLE_AVG; loop_counter++) {
-            printf("%0.2fC ", TEMP_SAMPLES[loop_counter]);
+            printf("%0.2fC ", (double)TEMP_SAMPLES[loop_counter]);
             if (loop_counter == 15) {
                 printf("\n");
             }

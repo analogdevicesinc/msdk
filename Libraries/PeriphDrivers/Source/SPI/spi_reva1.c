@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -779,7 +778,7 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
     if (states[spi_num].hw_ss_control && !req->ssDeassert) {
         spi->ctrl0 = (spi->ctrl0 & ~MXC_F_SPI_REVA_CTRL0_START) | MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         // Note: Setting 0 to START bit to avoid race condition and duplicated starts.
-        // See https://github.com/Analog-Devices-MSDK/msdk/issues/713
+        // See https://github.com/analogdevicesinc/msdk/issues/713
     }
 
     retval = MXC_SPI_RevA1_TransHandler(spi, req);
@@ -953,7 +952,7 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     // for non-MT mode do this setup every time, for MT mode only first time
     if ((states[spi_num].mtMode == 0) ||
         ((states[spi_num].mtMode == 1) && (states[spi_num].mtFirstTrans == 1))) {
-#if TARGET_NUM == 32665
+#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
         MXC_DMA_Init(dma);
         states[spi_num].channelTx = MXC_DMA_AcquireChannel(dma);
         states[spi_num].channelRx = MXC_DMA_AcquireChannel(dma);
@@ -1008,9 +1007,15 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     //tx
-    if (req->txData != NULL && !tx_is_complete) {
+    if (req->txData != NULL && req->txLen && !tx_is_complete) {
         MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
+
+#if (TARGET_NUM == 32657)
+        MXC_DMA_EnableInt(dma, states[spi_num].channelTx);
+#else
         MXC_DMA_EnableInt(states[spi_num].channelTx);
+#endif
+
         config.reqsel = (mxc_dma_reqsel_t)reqselTx;
         config.ch = states[spi_num].channelTx;
         advConfig.ch = states[spi_num].channelTx;
@@ -1048,9 +1053,15 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     // rx
-    if (req->rxData != NULL && !rx_is_complete) {
+    if (req->rxData != NULL && req->rxLen && !rx_is_complete) {
         MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
+
+#if (TARGET_NUM == 32657)
+        MXC_DMA_EnableInt(dma, states[spi_num].channelRx);
+#else
         MXC_DMA_EnableInt(states[spi_num].channelRx);
+#endif
+
         config.reqsel = (mxc_dma_reqsel_t)reqselRx;
         config.ch = states[spi_num].channelRx;
         config.srcinc_en = 0;
@@ -1096,11 +1107,11 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     }
 
     // Manually run TX/RX callbacks if the FIFO pre-load already completed that portion of the transaction
-    if (tx_is_complete) {
+    if (req->txData != NULL && req->txLen && tx_is_complete) {
         MXC_SPI_RevA1_DMACallback(states[spi_num].channelTx, E_NO_ERROR);
     }
 
-    if (rx_is_complete) {
+    if (req->rxData != NULL && req->rxLen && rx_is_complete) {
         MXC_SPI_RevA1_DMACallback(states[spi_num].channelRx, E_NO_ERROR);
     }
 
@@ -1161,7 +1172,7 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     // for non-MT mode do this setup every time, for MT mode only first time
     if ((states[spi_num].mtMode == 0) ||
         ((states[spi_num].mtMode == 1) && (states[spi_num].mtFirstTrans == 1))) {
-#if TARGET_NUM == 32665
+#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
         MXC_DMA_Init(dma);
         states[spi_num].channelTx = MXC_DMA_AcquireChannel(dma);
         states[spi_num].channelRx = MXC_DMA_AcquireChannel(dma);
@@ -1181,8 +1192,14 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
 
         MXC_DMA_SetCallback(states[spi_num].channelTx, MXC_SPI_RevA1_DMACallback);
         MXC_DMA_SetCallback(states[spi_num].channelRx, MXC_SPI_RevA1_DMACallback);
+
+#if (TARGET_NUM == 32657)
+        MXC_DMA_EnableInt(dma, states[spi_num].channelTx);
+        MXC_DMA_EnableInt(dma, states[spi_num].channelRx);
+#else
         MXC_DMA_EnableInt(states[spi_num].channelTx);
         MXC_DMA_EnableInt(states[spi_num].channelRx);
+#endif
     }
 
     bits = MXC_SPI_GetDataSize((mxc_spi_regs_t *)req->spi);

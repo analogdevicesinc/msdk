@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,12 +123,12 @@ void MXC_TS_GetXY(unsigned int *x, unsigned int *y);
  * @brief       Returns true if there is a touchscreen event pending,
  *              otherwise returns false.
  */
-int MXC_TS_GetTSEvent();
+int MXC_TS_GetTSEvent(void);
 
 /**
  * @brief      Clears the pending touchscreen event flag.
  */
-void MXC_TS_ClearTSEvent();
+void MXC_TS_ClearTSEvent(void);
 
 /**
  * @brief      Register a button

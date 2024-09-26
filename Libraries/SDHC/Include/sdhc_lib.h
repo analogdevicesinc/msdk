@@ -6,10 +6,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,7 +123,10 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
 
 /* ************************************************************************** */
 int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
-
+/* ************************************************************************** */
+void MXC_SDHC_Set_Default_DataWidth(mxc_sdhc_data_width width);
+/* ************************************************************************** */
+mxc_sdhc_data_width MXC_SDHC_Get_Default_DataWidth(void);
 
 /**@} end of group sdhc */
 

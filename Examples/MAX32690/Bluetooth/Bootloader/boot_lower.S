@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +31,7 @@
 /* Boot from the lower flash array */
 Boot_Lower:
 
-    ldr     r0,=0x10004000      /* Address for main flash image */
+    ldr     r0,=0x10008000      /* Address for main flash image */
     ldr     r1,=0xE000ED08      /* Address for SCB_VTOR_REG */
 
     /* First 32-bit word in image is initial stack pointer */

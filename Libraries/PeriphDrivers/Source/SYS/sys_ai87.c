@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +75,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     uint32_t _usn_32[MXC_SYS_USN_CHECKSUM_LEN / 4];
     // ^ Declare as uint32_t to preserve mem alignment
     uint8_t *_usn_8 = (uint8_t *)_usn_32;
-    memset(_usn_8, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    memset(_usn_8, 0, MXC_SYS_USN_LEN);
 
     _usn_8[0] = (infoblock[0] & 0x007F8000) >> 15;
     _usn_8[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -501,6 +500,25 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     SystemCoreClockUpdate();
 
     return E_NO_ERROR;
+}
+
+/* ************************************************************************** */
+void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
+{
+    /* Return if this setting is already current */
+    if (div == MXC_SYS_GetClockDiv()) {
+        return;
+    }
+
+    MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_DIV, div);
+
+    SystemCoreClockUpdate();
+}
+
+/* ************************************************************************** */
+mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
+{
+    return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
 }
 
 /* ************************************************************************** */

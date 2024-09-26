@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -193,7 +192,7 @@ int mipi_camera_sleep(int sleep);
  * the received data in time for each new row.
  * @return 0 (E_NO_ERROR) on a successful capture of a full frame, non-zero @ref MXC_Error_Codes on failure.
  */
-int mipi_camera_capture();
+int mipi_camera_capture(void);
 
 /**
  * @brief Retrieve the current camera settings

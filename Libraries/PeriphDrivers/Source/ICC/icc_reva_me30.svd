@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>ICC</name>
+    <description>Instruction Cache Controller Registers</description>
+    <baseAddress>0x4002A000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>INFO</name>
+        <description>Cache ID Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <access>read-only</access>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>RELNUM</name>
+            <description>Release Number. Identifies the RTL release version.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>PARTNUM</name>
+            <description>Part Number. This field reflects the value of C_ID_PART_NUMBER configuration parameter.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>ID</name>
+            <description>Cache ID. This field reflects the value of the C_ID_CACHEID configuration parameter.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SZ</name>
+        <description>Memory Configuration Register.</description>
+        <addressOffset>0x0004</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x00080008</resetValue>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>CCH</name>
+            <description>Cache Size. Indicates total size in Kbytes of cache.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>MEM</name>
+            <description>Main Memory Size. Indicates the total size, in units of 128 Kbytes, of code memory accessible to the cache controller.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>Cache Control and Status Register.</description>
+        <addressOffset>0x0100</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Cache Enable. Controls whether the cache is bypassed or is in use. Changing the state of this bit will cause the instruction cache to be flushed and its contents invalidated.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Cache Bypassed. Instruction data is stored in the line fill buffer but is not written to main cache memory array.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Cache Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDY</name>
+            <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>notReady</name>
+                <description>Not Ready.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WAY</name>
+        <description>Cache Way Control Register.</description>
+        <addressOffset>0x0200</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>WAY</name>
+            <description>Number of cache way, default is always 2. Allowed values are 1,2,4.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1</name>
+                <description>1</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>2</name>
+                <description>2</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4</name>
+                <description>4</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>REGCTRL</name>
+        <description>Regional Control Register.</description>
+        <addressOffset>0x0204</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable the regional high andlow bound compare, cache the data only if the TAG content between the high and low bound.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>EXC</name>
+            <description>Cache the data only if the TAG content is excluded in the high and low bound.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <cluster>
+        <dim>4</dim>
+        <dimIncrement>8</dimIncrement>
+        <name>REGION[%s]</name>
+        <description>Regional Low and High Bound Registers.</description>
+        <headerStructName>icc_reg</headerStructName>
+        <addressOffset>0x0208</addressOffset>
+        <size>64</size>
+        <access>read-write</access>
+        <register>
+          <name>LBOUND</name>
+          <description>Regional Low Bound Register.</description>
+          <addressOffset>0x0000</addressOffset>
+          <clusterName>reg</clusterName>
+          <size>32</size>
+          <fields>
+            <field>
+              <name>BOUND</name>
+              <description>Low Bound.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>HBOUND</name>
+          <description>DMA Channel Status Register.</description>
+          <addressOffset>0x004</addressOffset>
+          <clusterName>reg</clusterName>
+          <size>32</size>
+          <fields>
+            <field>
+              <name>BOUND</name>
+              <description>High Bound.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </cluster>
+      <register>
+        <name>PFMCTRL</name>
+        <description>Performance Control Register.</description>
+        <addressOffset>0x0300</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable performance counter. Clear to 0 when AHB access counter reach 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PFMCNT</name>
+        <description>Performance Counter Register.</description>
+        <addressOffset>0x0304</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>CNT</name>
+            <description>Write the total AHB access counter. Read the current performance hit count.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INVALIDATE</name>
+        <description>Invalidate All Registers.</description>
+        <addressOffset>0x0700</addressOffset>
+        <access>read-write</access>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>INVALID</name>
+            <description>Invalidate.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- ICC: Instruction Cache Controller Registers-->
+</device>

@@ -5,10 +5,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,15 +141,21 @@ typedef enum {
  * @brief      Peripheral Clock settings 
  */
 typedef enum {
-    MXC_TMR_APB_CLK = 0,
-    MXC_TMR_EXT_CLK,
+    MXC_TMR_APB_CLK = 0, /**< PCLK */
+    MXC_TMR_EXT_CLK = 1, /**< External Clock */
+    MXC_TMR_ISO_CLK = 2, /**< 60MHz Clock */
+    MXC_TMR_IBRO_CLK = 3, /**< 7.3728MHz Clock */
+    MXC_TMR_ERTCO_CLK = 4, /**< 32.768KHz Clock */
+    MXC_TMR_INRO_CLK = 5, /**< 8-30KHz Clock */
+
+    // Legacy names
     /*8M and 60M clocks can be used for Timers 0,1,2 and 3*/
-    MXC_TMR_60M_CLK,
-    MXC_TMR_8M_CLK,
+    MXC_TMR_60M_CLK = MXC_TMR_ISO_CLK,
+    MXC_TMR_8M_CLK = MXC_TMR_IBRO_CLK,
     /*32K clock can be used for Timers 0,1,2,3 and 4*/
-    MXC_TMR_32K_CLK,
+    MXC_TMR_32K_CLK = MXC_TMR_ERTCO_CLK,
     /*8K and EXT clocks can only be used for Timers 4 and 5*/
-    MXC_TMR_8K_CLK,
+    MXC_TMR_8K_CLK = MXC_TMR_INRO_CLK,
 } mxc_tmr_clock_t;
 
 /**
@@ -185,6 +190,33 @@ typedef void (*mxc_tmr_complete_t)(int error);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins);
+
+/**
+ * @brief   Lock the clock source for the specified timer instance.  If the clock source is locked,
+ *          @ref MXC_TMR_SetClockSource will have no effect.
+ * @param   tmr  Pointer to timer instance
+ * @param   lock Whether to lock the clock source or not.  Set to true to lock, false to unlock
+ */
+void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock);
+
+/**
+ * @brief   Set the clock source for the specified timer instance.  Note this API will have no effect
+ *          if the clock source has been locked via @ref MXC_TMR_LockClockSource
+ * @param   tmr  Pointer to timer instance
+ * @param   bit_mode Bit mode of the TMR module.
+ * @param   clk_src Desired clock source.
+ */
+uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_clock_t clk_src);
+
+/**
+ * @brief   Set the input clock prescalar for the specified timer instance.
+ * @param   tmr  Pointer to timer instance
+ * @param   bit_mode Bit mode of the TMR module.
+ * @param   prescalar Desired clock source prescalar.
+ */
+void MXC_TMR_SetPrescalar(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                          mxc_tmr_pres_t prescalar);
 
 /**
  * @brief   Shutdown timer module clock.

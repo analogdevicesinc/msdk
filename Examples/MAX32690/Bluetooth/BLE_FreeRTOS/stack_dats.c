@@ -189,22 +189,6 @@ static void mainWsfInit(void)
 
 /*************************************************************************************************/
 /*!
-*  \fn     WUT_IRQHandler
-*
-*  \brief  WUY interrupt handler.
-*
-*  \return None.
-*/
-/*************************************************************************************************/
-void WUT0_IRQHandler(void)
-{
-    MXC_WUT_IntClear();
-    NVIC_ClearPendingIRQ(WUT0_IRQn);
-    MXC_WUT_Handler();
-}
-
-/*************************************************************************************************/
-/*!
 *  \fn     wutTrimCb
 *
 *  \brief  Callback function for the WUT 32 kHz crystal trim.

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>MCR</name>
+    <description>Misc Control.</description>
+    <baseAddress>0x40006C00</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>RST</name>
+        <description>Reset Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>BOOST</name>
+            <description>Reset BOOST Controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ</name>
+            <description>Reset RSTZ Controller.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OUTEN</name>
+        <description>Output Enable Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>SQWOUT_EN</name>
+            <description>Square Wave Output Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>Control Register</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>CLKSEL</name>
+            <description>Clock select for RTC, WUTs, and Timers.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ERTCO</name>
+                <description>ERTCO as clock source.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>INRO</name>
+                <description>INRO as clock source.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXTCLK</name>
+                <description>P0.12 div 8 as clock source.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERTCO_32KHZ_EN</name>
+            <description>Enable ERTCO 32KHz while ERTCO_EN.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERTCO_EN</name>
+            <description>Enable ERTCO 4KHz.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BBREG0</name>
+        <description>Battery Back Reg0.</description>
+        <addressOffset>0x30</addressOffset>
+      </register>
+      <register>
+        <name>BBREG1</name>
+        <description>Battery Back Reg1.</description>
+        <addressOffset>0x34</addressOffset>
+      </register>
+      <register>
+        <name>BBDATA0</name>
+        <description>Battery Back Data0 Register.</description>
+        <addressOffset>0x40</addressOffset>
+      </register>
+      <register>
+        <name>BBDATA1</name>
+        <description>Battery Back Data1 Register.</description>
+        <addressOffset>0x44</addressOffset>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- MCR: Misc Control Registers.-->
+</device>

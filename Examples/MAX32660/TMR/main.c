@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +38,8 @@
 #include "led.h"
 
 /***** Definitions *****/
-#define MAX_TICKS pow(2, 32)
+#define MAX_TICKS 4294967296
+// 2^32
 
 // Parameters for PWM output
 #define FREQ 1000 // (Hz)
@@ -73,12 +73,12 @@ int maxTicks = (int)MAX_TICKS;
 volatile int TMR_FLAG = 0;
 
 /***** Functions *****/
-void PWMTimer()
+void PWMTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, 1, FREQ);
-    unsigned int dutyTicks = periodTicks / 100 * 50;
+    unsigned int dutyTicks = periodTicks * (DUTY_CYCLE / 100.0f);
 
     //Configure PWM GPIO Pin
     mxc_gpio_cfg_t pwmOut;
@@ -118,14 +118,14 @@ void PWMTimer()
 }
 
 // Toggles GPIO when continuous timer repeats
-void ContinuousTimerHandler()
+void ContinuousTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     LED_Toggle(0);
 }
 
-void ContinuousTimer()
+void ContinuousTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
@@ -153,14 +153,14 @@ void ContinuousTimer()
     printf("Continuous timer started.\n\n");
 }
 
-void OneshotTimerHandler()
+void OneshotTimerHandler(void)
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(OST_TIMER);
     TMR_FLAG = 1;
 }
 
-void OneshotTimer()
+void OneshotTimer(void)
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;

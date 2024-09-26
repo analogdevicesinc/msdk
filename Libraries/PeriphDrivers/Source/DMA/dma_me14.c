@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -176,6 +175,26 @@ int MXC_DMA_Stop(int ch)
 mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch)
 {
     return MXC_DMA_RevA_GetCHRegs(ch);
+}
+
+dma_handler_t MXC_DMA_Get_DMA_Handler(mxc_dma_regs_t *dma)
+{
+    if (dma == MXC_DMA0)
+        return MXC_DMA_DMA0_Handler;
+    else if (dma == MXC_DMA1)
+        return MXC_DMA_DMA1_Handler;
+    else
+        return NULL;
+}
+
+void MXC_DMA_DMA0_Handler(void)
+{
+    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t *)MXC_DMA0);
+}
+
+void MXC_DMA_DMA1_Handler(void)
+{
+    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t *)MXC_DMA1);
 }
 
 void MXC_DMA_Handler(mxc_dma_regs_t *dma)

@@ -63,6 +63,8 @@
   Local Variables
 **************************************************************************************************/
 /*! \brief      Control block. */
+
+
 static struct {
   PalUartState_t state;
   mxc_uart_req_t readReq;
@@ -82,37 +84,43 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
+void UART_CommonHandler(mxc_uart_regs_t *uart)
+{
+  const int32_t err = MXC_UART_AsyncHandler(uart);
+
+  if(err == E_INVALID)
+  {
+    const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
+    
+    if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
+    {
+      MXC_UART_ClearRXFIFO(uart);
+    }
+    else
+    {
+      PAL_SYS_ASSERT(err == E_NO_ERROR);
+    }
+  }
+}
 void UART0_IRQHandler(void)
 {
-  int result0;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result0 = MXC_UART_AsyncHandler(MXC_UART0);
-  (void)result0;
-  PAL_SYS_ASSERT(result0 == 0);
+  UART_CommonHandler(MXC_UART0);
 }
 void UART1_IRQHandler(void)
 {
-  int result1;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result1 = MXC_UART_AsyncHandler(MXC_UART1);
-  (void)result1;
-  PAL_SYS_ASSERT(result1 == 0);
+  UART_CommonHandler(MXC_UART1);
 }
 void UART2_IRQHandler(void)
-{
-  int result2;
+{  
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result2 = MXC_UART_AsyncHandler(MXC_UART2);
-  (void)result2;
-  PAL_SYS_ASSERT(result2 == 0);
+  UART_CommonHandler(MXC_UART2);
 }
 void UART3_IRQHandler(void)
 {
-  int result3;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result3 = MXC_UART_AsyncHandler(MXC_UART3);
-  (void)result3;
-  PAL_SYS_ASSERT(result3 == 0);
+  UART_CommonHandler(MXC_UART3);
 }
 
 /*************************************************************************************************/
@@ -159,12 +167,11 @@ void RISCV_IRQHandler(void)
 /*************************************************************************************************/
 void palUartCallback(mxc_uart_req_t* req, int error)
 {
-  int i;
-  for(i = 0; i < PAL_UARTS; i++) {
+  for(int i = 0; i < PAL_UARTS; i++) {
     /* Find the corresponding rqeuest and call the callback */
     if(req == &palUartCb[i].readReq) {
       if(palUartCb[i].rdCback != NULL) {
-        palUartCb[i].rdCback();
+          palUartCb[i].rdCback();
       }
       return;
     }
@@ -172,7 +179,8 @@ void palUartCallback(mxc_uart_req_t* req, int error)
     if(req == &palUartCb[i].writeReq) {
       palUartCb[i].state = PAL_UART_STATE_READY;
       if(palUartCb[i].wrCback != NULL) {
-        palUartCb[i].wrCback();
+          palUartCb[i].wrCback();
+        
       }
       return;
     }
@@ -280,6 +288,9 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
 
   uartNum = palUartGetNum(id);
 
+
+  PAL_SYS_ASSERT(palUartCb[uartNum].state == PAL_UART_STATE_UNINIT);
+
   /* Save the callback */
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
@@ -302,6 +313,10 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   if(pCfg->hwFlow) {
     MXC_UART_SetFlowCtrl(MXC_UART_GET_UART(uartNum), MXC_UART_FLOW_EN, 1);
   }
+  
+  const IRQn_Type uartIrqn = MXC_UART_GET_IRQ(uartNum);
+  NVIC_ClearPendingIRQ(uartIrqn);
+  NVIC_EnableIRQ(uartIrqn); 
 
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
 }
@@ -384,8 +399,6 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
   palUartCb[uartNum].readReq.txLen      = 0;
   palUartCb[uartNum].readReq.callback   = palUartCallback;
 
-  NVIC_DisableIRQ(irqn);
-
   /* Start the read */
   result = MXC_UART_TransactionAsync(&palUartCb[uartNum].readReq);
   (void)result;
@@ -424,8 +437,6 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 
   uartNum = palUartGetNum(id);
   irqn = MXC_UART_GET_IRQ(uartNum);
-
-  NVIC_DisableIRQ(irqn);
 
   palUartCb[uartNum].state = PAL_UART_STATE_BUSY;
 

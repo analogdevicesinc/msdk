@@ -26,6 +26,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Connect P0.7 on header JH1 to the SDA line of the I2C Bus.
 -   Connect two EEPROM IC's to the I2C Bus.
 
+If using the MAX32675 RevB:
+-	Close I2C pull-up jumpers JP25 and JP26
+
 ## Expected Output
 
 The Console UART of the device will output these messages:

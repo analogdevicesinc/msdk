@@ -1,7 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +36,10 @@
 #define FASTSPI_VSSEL MXC_GPIO_VSSEL_VDDIOH
 #define FASTSPI_PINS_MASK \
     (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9)
+
 #define FASTSPI_SS_PORT MXC_GPIO0
 #define FASTSPI_SS_PIN MXC_GPIO_PIN_10 // (SS2)
+#define FASTSPI_SS_NUM 2
 
 // (*) Required GPIO definitions:
 static const mxc_gpio_cfg_t fastspi_ss_pin = { .port = FASTSPI_SS_PORT,

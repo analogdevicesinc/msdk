@@ -48,7 +48,7 @@ bbSnifferFn_t bbSnifferOutTbl[BB_SNIFFER_OUTPUT_TOTAL_METHODS] =
 };
 
 /*! brief   Sniffer VS get packet function placeholder. */
-static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec();
+static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec(void);
 
 /*! brief   Sniffer get packet table. */
 bbSnifferGetPktFn_t bbSnifferGetPktTbl[BB_SNIFFER_OUTPUT_TOTAL_METHODS] =
@@ -70,7 +70,7 @@ bbSnifferCtx_t bbSnifferCtx;
  *
  */
 /*************************************************************************************************/
-static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec()
+static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec(void)
 {
   BbBleSnifferHciCtx_t * pHci = &bbSnifferCtx.outputCtx.hci;
 

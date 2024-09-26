@@ -1,9 +1,8 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,7 +197,9 @@ typedef enum {
 #define MXC_FLASH0_MEM_BASE 0x10000000UL
 #define MXC_FLASH_MEM_BASE MXC_FLASH0_MEM_BASE
 #define MXC_FLASH_PAGE_SIZE 0x00002000UL
-#define MXC_FLASH_MEM_SIZE 0x00060000UL
+#define MXC_FLASH_MEM_SIZE (0x00060000UL - MXC_FLASH_PAGE_SIZE)
+// ^ Last page of flash is used by the bootloader and cannot be used by app code.
+// Furthermore, it appears that using this page will brick the device...
 #define MXC_INFO0_MEM_BASE 0x10800000UL
 #define MXC_INFO_MEM_BASE MXC_INFO0_MEM_BASE
 #define MXC_INFO_MEM_SIZE 0x00004000UL
