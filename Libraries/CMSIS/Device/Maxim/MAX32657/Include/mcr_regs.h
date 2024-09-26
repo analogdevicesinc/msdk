@@ -129,20 +129,20 @@ typedef struct {
  * @brief    Control Register
  * @{
  */
-#define MXC_F_MCR_CTRL_CLKSEL_32K_POS                  0 /**< CTRL_CLKSEL_32K Position */
-#define MXC_F_MCR_CTRL_CLKSEL_32K                      ((uint32_t)(0x3UL << MXC_F_MCR_CTRL_CLKSEL_32K_POS)) /**< CTRL_CLKSEL_32K Mask */
-#define MXC_V_MCR_CTRL_CLKSEL_32K_ERTCO                ((uint32_t)0x0UL) /**< CTRL_CLKSEL_32K_ERTCO Value */
-#define MXC_S_MCR_CTRL_CLKSEL_32K_ERTCO                (MXC_V_MCR_CTRL_CLKSEL_32K_ERTCO << MXC_F_MCR_CTRL_CLKSEL_32K_POS) /**< CTRL_CLKSEL_32K_ERTCO Setting */
-#define MXC_V_MCR_CTRL_CLKSEL_32K_INRO                 ((uint32_t)0x1UL) /**< CTRL_CLKSEL_32K_INRO Value */
-#define MXC_S_MCR_CTRL_CLKSEL_32K_INRO                 (MXC_V_MCR_CTRL_CLKSEL_32K_INRO << MXC_F_MCR_CTRL_CLKSEL_32K_POS) /**< CTRL_CLKSEL_32K_INRO Setting */
-#define MXC_V_MCR_CTRL_CLKSEL_32K_EXTCLK               ((uint32_t)0x2UL) /**< CTRL_CLKSEL_32K_EXTCLK Value */
-#define MXC_S_MCR_CTRL_CLKSEL_32K_EXTCLK               (MXC_V_MCR_CTRL_CLKSEL_32K_EXTCLK << MXC_F_MCR_CTRL_CLKSEL_32K_POS) /**< CTRL_CLKSEL_32K_EXTCLK Setting */
+#define MXC_F_MCR_CTRL_CLKSEL_POS                      0 /**< CTRL_CLKSEL Position */
+#define MXC_F_MCR_CTRL_CLKSEL                          ((uint32_t)(0x3UL << MXC_F_MCR_CTRL_CLKSEL_POS)) /**< CTRL_CLKSEL Mask */
+#define MXC_V_MCR_CTRL_CLKSEL_ERTCO                    ((uint32_t)0x0UL) /**< CTRL_CLKSEL_ERTCO Value */
+#define MXC_S_MCR_CTRL_CLKSEL_ERTCO                    (MXC_V_MCR_CTRL_CLKSEL_ERTCO << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_ERTCO Setting */
+#define MXC_V_MCR_CTRL_CLKSEL_INRO_DIV4                ((uint32_t)0x1UL) /**< CTRL_CLKSEL_INRO_DIV4 Value */
+#define MXC_S_MCR_CTRL_CLKSEL_INRO_DIV4                (MXC_V_MCR_CTRL_CLKSEL_INRO_DIV4 << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_INRO_DIV4 Setting */
+#define MXC_V_MCR_CTRL_CLKSEL_RTC_IN_DIV8              ((uint32_t)0x2UL) /**< CTRL_CLKSEL_RTC_IN_DIV8 Value */
+#define MXC_S_MCR_CTRL_CLKSEL_RTC_IN_DIV8              (MXC_V_MCR_CTRL_CLKSEL_RTC_IN_DIV8 << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_RTC_IN_DIV8 Setting */
 
-#define MXC_F_MCR_CTRL_CLK32K_EN_POS                   3 /**< CTRL_CLK32K_EN Position */
-#define MXC_F_MCR_CTRL_CLK32K_EN                       ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_CLK32K_EN_POS)) /**< CTRL_CLK32K_EN Mask */
+#define MXC_F_MCR_CTRL_ERTCO32K_EN_POS                 3 /**< CTRL_ERTCO32K_EN Position */
+#define MXC_F_MCR_CTRL_ERTCO32K_EN                     ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO32K_EN_POS)) /**< CTRL_ERTCO32K_EN Mask */
 
-#define MXC_F_MCR_CTRL_RTC4K_EN_POS                    5 /**< CTRL_RTC4K_EN Position */
-#define MXC_F_MCR_CTRL_RTC4K_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_RTC4K_EN_POS)) /**< CTRL_RTC4K_EN Mask */
+#define MXC_F_MCR_CTRL_ERTCO_EN_POS                    5 /**< CTRL_ERTCO_EN Position */
+#define MXC_F_MCR_CTRL_ERTCO_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_EN_POS)) /**< CTRL_ERTCO_EN Mask */
 
 /**@} end of group MCR_CTRL_Register */
 

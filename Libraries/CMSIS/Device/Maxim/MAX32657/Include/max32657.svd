@@ -6352,8 +6352,8 @@
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>CLKSEL_32K</name>
-       <description>32KHz Clock Select for the system.</description>
+       <name>CLKSEL</name>
+       <description>Clcok Select for the RTC, System, WUT, and Timer.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>2</bitWidth>
        <enumeratedValues>
@@ -6363,26 +6363,26 @@
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>INRO</name>
+         <name>INRO_DIV4</name>
          <description>INRO as clock source.</description>
          <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>EXTCLK</name>
+         <name>RTC_IN_DIV8</name>
          <description>P0.12 div 8 as clock source.</description>
          <value>2</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>CLK32K_EN</name>
-       <description>Enable the 32KHz peripheral clock.</description>
+       <name>ERTCO32K_EN</name>
+       <description>Enable the 32KHz ERTCO.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RTC4K_EN</name>
-       <description>Enable the 4KHz RTC Clock.</description>
+       <name>ERTCO_EN</name>
+       <description>Enable the ERTCO.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
