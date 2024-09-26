@@ -1,5 +1,11 @@
 var NAVTREEINDEX26 =
 {
+"pt__regs_8h.html":[1,30,4],
+"ptg__regs_8h.html":[1,31,9],
+"pwrseq__regs_8h.html":[1,6,0,7],
+"rtc__regs_8h.html":[1,14,0,8],
+"scn__regs_8h.html":[1,15,0,13],
+"sema__regs_8h.html":[1,33,7],
 "sfcc__regs_8h.html":[1,16,0,5],
 "sir__regs_8h.html":[1,34,5],
 "skbd__regs_8h.html":[1,17,0,9],

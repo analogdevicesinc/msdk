@@ -14,7 +14,14 @@ var group__tmr =
       [ "MXC_TMR_BIT_MODE_16A", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa26ba84d2eb7c0d256e1e03c58700d651", null ],
       [ "MXC_TMR_BIT_MODE_16B", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc", null ]
     ] ],
-    [ "mxc_tmr_clock_t", "group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83", null ],
+    [ "mxc_tmr_clock_t", "group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83", [
+      [ "MXC_TMR_APB_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c", null ],
+      [ "MXC_TMR_EXT_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95", null ],
+      [ "MXC_TMR_IBRO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ad825f3061c9c76171593073b0c9836ca", null ],
+      [ "MXC_TMR_ERFO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ac4d6e7462baa07e87ab488a7a1f7104c", null ],
+      [ "MXC_TMR_ERTCO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7888a0fe5d4d13110962a8590306fbab", null ],
+      [ "MXC_TMR_INRO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83aed958a14716626e7cabe68c8268533d3", null ]
+    ] ],
     [ "mxc_tmr_mode_t", "group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da", [
       [ "MXC_TMR_MODE_ONESHOT", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6b11b6cafb392b67e1641097778dc986", null ],
       [ "MXC_TMR_MODE_CONTINUOUS", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daabcd9d29e94609eb514b54fb00f27eb9b", null ],

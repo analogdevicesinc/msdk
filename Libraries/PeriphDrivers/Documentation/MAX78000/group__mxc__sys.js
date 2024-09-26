@@ -181,7 +181,7 @@ var group__mxc__sys =
     [ "MXC_SYS_RiscVClockRate", "group__mxc__sys.html#ga8b24f60556c4e4e462880531469832dd", null ],
     [ "MXC_SYS_RISCVRun", "group__mxc__sys.html#gaa9b682fe5a36592da64762ede1596674", null ],
     [ "MXC_SYS_RISCVShutdown", "group__mxc__sys.html#gade6c0a19b4b4d1bea136501724cc4ae6", null ],
-    [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga05ea0d4c5465ee7061ea1d3c2ffc3e22", null ],
+    [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga8c7f04d1f3e8b9ff4e8ba50d0db6bb27", null ],
     [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a", null ],
     [ "MXC_SYS_SetClockDiv", "group__mxc__sys.html#ga7443406c13f225d18a3023cc39e20265", null ]
 ];

@@ -150,6 +150,8 @@ Functions</h2></td></tr>
 <tr class="separator:gad82681e5605833e6740fb100287e10f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaecbe7aecad1314fcd831c6b2d663b41e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt.html#gaecbe7aecad1314fcd831c6b2d663b41e">MXC_WDT_SetClockSource</a> (<a class="el" href="group__wdt__registers.html#structmxc__wdt__regs__t">mxc_wdt_regs_t</a> *wdt, <a class="el" href="group__wdt.html#gace077805288ea487ce3f4e8a631b94c6">mxc_wdt_clock_t</a> clock_source)</td></tr>
 <tr class="separator:gaecbe7aecad1314fcd831c6b2d663b41e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc99434b07129305bf11ce1f0bcde493"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__wdt.html#gadc99434b07129305bf11ce1f0bcde493">MXC_WDT_LockClockSource</a> (<a class="el" href="group__wdt__registers.html#structmxc__wdt__regs__t">mxc_wdt_regs_t</a> *wdt, bool lock)</td></tr>
+<tr class="separator:gadc99434b07129305bf11ce1f0bcde493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -539,6 +541,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gadc99434b07129305bf11ce1f0bcde493" name="gadc99434b07129305bf11ce1f0bcde493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc99434b07129305bf11ce1f0bcde493">&#9670;&nbsp;</a></span>MXC_WDT_LockClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_WDT_LockClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__wdt__registers.html#structmxc__wdt__regs__t">mxc_wdt_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>wdt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lock</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lock the input clock source for the WDT. The clock source must be unlocked to be set again. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wdt</td><td>Pointer to watchdog registers. </td></tr>
+    <tr><td class="paramname">lock</td><td>Whether to lock the clock source. Set to true to lock, false to unlock. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga9d9b340687177f4f4d6e2949fece4bd7" name="ga9d9b340687177f4f4d6e2949fece4bd7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga9d9b340687177f4f4d6e2949fece4bd7">&#9670;&nbsp;</a></span>MXC_WDT_ResetTimer()</h2>
 
@@ -708,7 +747,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

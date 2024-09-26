@@ -1035,6 +1035,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <p>Initialize and enable SPI peripheral. </p>
 <p >This function initializes everything necessary to call a SPI transaction function. Some parameters are set to defaults as follows: SPI Mode - 0 SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)</p>
 <p >These parameters can be modified after initialization using low level functions</p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables I2C peripheral clock and i2c gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
@@ -1405,7 +1406,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
-    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 8 inclusive.</td></tr>
+    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 30 inclusive.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1483,7 +1484,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
-    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 8 inclusive.</td></tr>
+    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 30 inclusive.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1726,7 +1727,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:52 for MAX32660 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:52 for MAX32660 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

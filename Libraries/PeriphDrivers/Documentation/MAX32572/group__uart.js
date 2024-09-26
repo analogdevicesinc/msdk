@@ -41,6 +41,7 @@ var group__uart =
     [ "MXC_UART_DMACallback", "group__uart.html#ga256350715ed900f67d05e7a29f8632fc", null ],
     [ "MXC_UART_EnableInt", "group__uart.html#ga3258382626c1fe0e71771d53eb09fcca", null ],
     [ "MXC_UART_GetActive", "group__uart.html#ga724bb717925ccf2f4c4643a9d9949315", null ],
+    [ "MXC_UART_GetClockSource", "group__uart.html#ga6c4fe847b59821c23c6c2bec343c8f72", null ],
     [ "MXC_UART_GetFlags", "group__uart.html#ga59d00ccf6ed8d09e32a11768d711b2cb", null ],
     [ "MXC_UART_GetFrequency", "group__uart.html#gadce4a857e97b46b185b8a1cd52c4f810", null ],
     [ "MXC_UART_GetRXDMAChannel", "group__uart.html#ga8d50d63b25df5fc82d066a881d84d733", null ],

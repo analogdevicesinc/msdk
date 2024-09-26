@@ -21,7 +21,7 @@ var group__aes =
       [ "MXC_AES_256BITS", "group__aes.html#gga7ae14b6ee44f485c303b025277668514aee84a9c3ded1228aca568cb7cc74c588", null ]
     ] ],
     [ "MXC_AES_ClearFlags", "group__aes.html#gaee1f689b75092fa165007741a415c8cf", null ],
-    [ "MXC_AES_ClearPORKey", "group__aes.html#ga7d22428231f2ec99644b523a259a8f89", null ],
+    [ "MXC_AES_ClearPORKey", "group__aes.html#ga9a8d46084bfa8a59674504586f8c094c", null ],
     [ "MXC_AES_CopyPORKeyToKeyRegisters", "group__aes.html#ga7de14a083c74d23882ac8523024f077c", null ],
     [ "MXC_AES_Decrypt", "group__aes.html#ga6ce4b1b555a19c9d4058aa1c90976ee1", null ],
     [ "MXC_AES_DecryptAsync", "group__aes.html#gadf553ec6fb6972e2b8ee34b837c2207d", null ],
@@ -37,7 +37,7 @@ var group__aes =
     [ "MXC_AES_GenericAsync", "group__aes.html#gab92f95d0f85f64c41143efdb3f93383e", null ],
     [ "MXC_AES_GetFlags", "group__aes.html#ga235792b773b90b35b7392136323b4bf3", null ],
     [ "MXC_AES_GetKeySize", "group__aes.html#ga121e533166f83392e2f6be3dbdd30d9b", null ],
-    [ "MXC_AES_HasPORKey", "group__aes.html#ga031e3ea5e8ba2c6df53715d69949e428", null ],
+    [ "MXC_AES_HasPORKey", "group__aes.html#gafa54a71b3b23aa9a4668946a9fd189c9", null ],
     [ "MXC_AES_Init", "group__aes.html#ga6fd4f68e1c1501a3d662e534b53cb722", null ],
     [ "MXC_AES_IsBusy", "group__aes.html#ga6fd9217368589c79669e2cf838c2d307", null ],
     [ "MXC_AES_RXDMAConfig", "group__aes.html#gac7aa2ebf3db2341380bc50063b4361e5", null ],

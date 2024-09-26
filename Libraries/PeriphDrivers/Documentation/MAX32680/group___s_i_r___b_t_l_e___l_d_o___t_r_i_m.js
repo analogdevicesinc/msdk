@@ -1,7 +1,7 @@
 var group___s_i_r___b_t_l_e___l_d_o___t_r_i_m =
 [
-    [ "MXC_F_SIR_BTLE_LDO_TRIM_RX", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#ga93ef43b623fdad67c44f85aeb03e51dc", null ],
-    [ "MXC_F_SIR_BTLE_LDO_TRIM_RX_POS", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#ga1e2268ad657bb1959e4d5c933a3271bb", null ],
-    [ "MXC_F_SIR_BTLE_LDO_TRIM_TX", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#ga07eee8455fcfcd47a6e4373777bb2a46", null ],
-    [ "MXC_F_SIR_BTLE_LDO_TRIM_TX_POS", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#ga5ab017ec32adc19c9a911be419704a10", null ]
+    [ "MXC_F_SIR_BTLE_LDO_TRIM_BB", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#ga3902d85cacb0aa2c388fb483001b8dc1", null ],
+    [ "MXC_F_SIR_BTLE_LDO_TRIM_BB_POS", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#ga05d97dafa824e4f3f44d96fcf9c4fa6d", null ],
+    [ "MXC_F_SIR_BTLE_LDO_TRIM_RF", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#gaa8b659e146224a9180b9818787f7b465", null ],
+    [ "MXC_F_SIR_BTLE_LDO_TRIM_RF_POS", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html#gaf50a9f6a59fb6e11e09577b7cb6f473b", null ]
 ];

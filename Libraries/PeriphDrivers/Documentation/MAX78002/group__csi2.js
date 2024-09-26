@@ -134,8 +134,8 @@ var group__csi2 =
       [ "MXC_CSI2_PAD_CDRX_PN_L3", "group__csi2.html#gga432c633fa93a084f9018680c989225a7a667f6dbdd1e6513eb0cf772d122fda6a", null ],
       [ "MXC_CSI2_PAD_CDRX_PN_L4", "group__csi2.html#gga432c633fa93a084f9018680c989225a7a77346ae060ba089a8bc382e4ba8fe72b", null ]
     ] ],
-    [ "MXC_CSI2_CaptureFrame", "group__csi2.html#ga1a89e1f701493409413fa0dc52fa4bc1", null ],
-    [ "MXC_CSI2_CaptureFrameDMA", "group__csi2.html#gaa6bb1f4f7cf974eb38b69f91990b456b", null ],
+    [ "MXC_CSI2_CaptureFrame", "group__csi2.html#gaa4e8f3e89285046454d344986726a3aa", null ],
+    [ "MXC_CSI2_CaptureFrameDMA", "group__csi2.html#ga079d2e6e479c8bbfb7769281bc273a69", null ],
     [ "MXC_CSI2_CTRL_ClearFlags", "group__csi2.html#ga7c8eff31f13963d63bb13c357439913b", null ],
     [ "MXC_CSI2_CTRL_Config", "group__csi2.html#ga9729dd230b2a6a2082f777b8ee067d7f", null ],
     [ "MXC_CSI2_CTRL_DisableInt", "group__csi2.html#ga9a77ce1c33daa260997fdc47843fcab8", null ],

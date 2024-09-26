@@ -13,7 +13,12 @@ var group__uart =
     ] ],
     [ "mxc_uart_complete_cb_t", "group__uart.html#gadaac5c21698f033b0c6e6efb23feba7a", null ],
     [ "mxc_uart_dma_complete_cb_t", "group__uart.html#gab4fd61ab1f4adc924521ecce8d8f9630", null ],
-    [ "mxc_uart_clock_t", "group__uart.html#ga7445f1b48110715c38070749e0952235", null ],
+    [ "mxc_uart_clock_t", "group__uart.html#ga7445f1b48110715c38070749e0952235", [
+      [ "MXC_UART_APB_CLK", "group__uart.html#gga7445f1b48110715c38070749e0952235a15df2d582a67731185909b9df791cedd", null ],
+      [ "MXC_UART_ERFO_CLK", "group__uart.html#gga7445f1b48110715c38070749e0952235a48a03c294909abc5527cdd894170e526", null ],
+      [ "MXC_UART_IBRO_CLK", "group__uart.html#gga7445f1b48110715c38070749e0952235a4c530c23754c4b0bf45b505e1da68d3e", null ],
+      [ "MXC_UART_ERTCO_CLK", "group__uart.html#gga7445f1b48110715c38070749e0952235a5432950fd2aec0494e0bba5c698291c1", null ]
+    ] ],
     [ "mxc_uart_flow_t", "group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c", [
       [ "MXC_UART_FLOW_DIS", "group__uart.html#ggab136978025cdaf5f7f65c0e9ecc0950ca8f0dfb5e2a08764b3e13e2c39e051deb", null ],
       [ "MXC_UART_FLOW_EN", "group__uart.html#ggab136978025cdaf5f7f65c0e9ecc0950ca20637767ed7bf94c436e3bebef94a2e7", null ]
@@ -43,6 +48,7 @@ var group__uart =
     [ "MXC_UART_GetActive", "group__uart.html#ga724bb717925ccf2f4c4643a9d9949315", null ],
     [ "MXC_UART_GetAsyncRXCount", "group__uart.html#ga11ea066a51c2abbfabb2998b41017be8", null ],
     [ "MXC_UART_GetAsyncTXCount", "group__uart.html#gacb94f3a1b1db38ee0074a02d81bd9bbb", null ],
+    [ "MXC_UART_GetClockSource", "group__uart.html#ga6c4fe847b59821c23c6c2bec343c8f72", null ],
     [ "MXC_UART_GetFlags", "group__uart.html#ga59d00ccf6ed8d09e32a11768d711b2cb", null ],
     [ "MXC_UART_GetFrequency", "group__uart.html#gadce4a857e97b46b185b8a1cd52c4f810", null ],
     [ "MXC_UART_GetRXDMAChannel", "group__uart.html#ga8d50d63b25df5fc82d066a881d84d733", null ],
@@ -53,6 +59,7 @@ var group__uart =
     [ "MXC_UART_GetTXFIFOAvailable", "group__uart.html#ga4d26cb8508423a52afb05195b917e1f2", null ],
     [ "MXC_UART_GetTXThreshold", "group__uart.html#gaf72976d58f7956fe746b994ec5aad745", null ],
     [ "MXC_UART_Init", "group__uart.html#ga10bbe120db1810fd44558f7177b94fef", null ],
+    [ "MXC_UART_LockClockSource", "group__uart.html#ga0a9efa5dcc05fa5c80befcb1909e9868", null ],
     [ "MXC_UART_Read", "group__uart.html#ga2d56d88b91d8407f611671b5fb94539b", null ],
     [ "MXC_UART_ReadCharacter", "group__uart.html#ga6ab7c853437b7e94c10b116affd99663", null ],
     [ "MXC_UART_ReadCharacterRaw", "group__uart.html#ga5128672adc1a7880f77da128753ead73", null ],

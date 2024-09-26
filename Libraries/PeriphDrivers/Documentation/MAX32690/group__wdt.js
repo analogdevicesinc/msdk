@@ -41,6 +41,7 @@ var group__wdt =
     [ "MXC_WDT_GetIntFlag", "group__wdt.html#ga12467c52fd011a002b1f9c0efa11d7db", null ],
     [ "MXC_WDT_GetResetFlag", "group__wdt.html#gae2acf5376e6ebc5b4ffce66625c8b61c", null ],
     [ "MXC_WDT_Init", "group__wdt.html#ga688d639163a55fdecf149f39543210ca", null ],
+    [ "MXC_WDT_LockClockSource", "group__wdt.html#gadc99434b07129305bf11ce1f0bcde493", null ],
     [ "MXC_WDT_ResetTimer", "group__wdt.html#ga9d9b340687177f4f4d6e2949fece4bd7", null ],
     [ "MXC_WDT_SetClockSource", "group__wdt.html#gaecbe7aecad1314fcd831c6b2d663b41e", null ],
     [ "MXC_WDT_SetIntPeriod", "group__wdt.html#ga186a18f3f76e3138e5dfe243cca1ff11", null ],

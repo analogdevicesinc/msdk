@@ -57,7 +57,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Cordio BLE User Guide</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Cordio BLE User Guide</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#supported-features">Supported Features</a>
         <ul>
@@ -95,9 +95,23 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#wireless-stack-framework">Wireless Stack Framework</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#platform-adaption-layer">Platform Adaption Layer</a>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_assert">WSF_ASSERT:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_cs">WSF_CS:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_buf">WSF_BUF:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_msg">WSF_MSG:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_timer">WSF_TIMER:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_trace">WSF_TRACE:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wsf_nvm">WSF_NVM:</a>
     </li>
         </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#platform-adaption-layer">Platform Adaption Layer</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#attribute-protocol">Attribute Protocol</a>
     </li>
@@ -384,8 +398,288 @@ TRACE = 1
 <li>Trace and assert diagnostic services.</li>
 <li>Security interfaces for encryption and random number generation.</li>
 </ul>
-<h4 id="platform-adaption-layer">Platform Adaption Layer</h4>
+<h4 id="wsf_assert">WSF_ASSERT:</h4>
+<ol>
+<li>First thing is to set the MACRO:</li>
+</ol>
+<pre><code class="language-c">#define WSF_ASSERT_ENABLED TRUE
+</code></pre>
+<ol>
+<li>Call WSF_ASSERT</li>
+</ol>
+<pre><code class="language-c">WSF_ASSERT(exp);
+</code></pre>
+<p>If exp != true, perform an assert action.</p>
+<h4 id="wsf_cs">WSF_CS:</h4>
+<p>Put WsfCsEnter() and WsfCsExit() around the critical section: </p>
+<pre><code class="language-c">WsfCsEnter();
+/*************critical section*************/
+memUsed = WsfBufInit(numPools, poolDesc);
+WsfHeapAlloc(memUsed);
+/*******************************************/
+WsfCsExit();
+</code></pre>
+<p>Inside the critial section, all IRQ Interrupts will be disabled. No other codes will be executed inside critial section. </p>
+<h4 id="wsf_buf">WSF_BUF:</h4>
+<ol>
+<li>Initialize and validate the Buf memory</li>
+</ol>
+<p>Note: it should be surrounded by critical section to prevent any interrupt corrupting the allocate process</p>
+<pre><code class="language-c">/* Initial buffer configuration. */
+WsfCsEnter();
+memUsed = WsfBufInit(numPools, poolDesc);
+WsfHeapAlloc(memUsed);
+WsfCsExit();
+</code></pre>
+<ol>
+<li>Allocate the memory with size</li>
+</ol>
+<pre><code class="language-c">pointer = WsfBufAlloc(size);
+
+// initialize the data pointed by pointer to zero
+memset(pointer, 0, size);
+</code></pre>
+<p>pointer: Pointer to allocated buffer or NULL if allocation fails.
+size: Length of buffer to allocate. </p>
+<ol>
+<li>Free the buffer memory</li>
+</ol>
+<pre><code class="language-c">WsfBufFree(pointer)
+</code></pre>
+<p>pBuf: Buffer to free.</p>
+<h4 id="wsf_msg">WSF_MSG:</h4>
+<ol>
+<li>Allocate a data message buffer to be sent with WsfMsgSend()</li>
+</ol>
+<pre><code class="language-c">char* pMsg = MsgWsfMsgDataAlloc(uint16_t len, uint8_t tailroom);
+</code></pre>
+<p>len: Message length in bytes.</p>
+<p>tailroom: Tailroom length in bytes.</p>
+<ol>
+<li>Set up the event handler</li>
+</ol>
+<pre><code class="language-c">//this is the callback to the timer
+void wsfEventHandler_t(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    //do stuff
+
+}
+
+wsfHandlerId_t handlerId;
+handlerId = WsfOsSetNextHandler(wsfEventHandler_t);
+</code></pre>
+<ol>
+<li>Send a message to an event handler</li>
+</ol>
+<pre><code class="language-c">
+WsfMsgSend(handlerId, pMsg);
+</code></pre>
+<p>handlerId: Event handler ID.</p>
+<p>pMsg: Pointer to message buffer.</p>
+<ol>
+<li>Free a message buffer allocated with MsgWsfMsgDataAlloc().</li>
+</ol>
+<pre><code class="language-c">WsfMsgFree(pMsg)
+</code></pre>
+<h4 id="wsf_timer">WSF_TIMER:</h4>
+<ol>
+<li>Define a timer globally</li>
+</ol>
+<pre><code class="language-c">wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
+</code></pre>
+<ol>
+<li>Define callback to timer</li>
+</ol>
+<pre><code class="language-c">
+//this is the callback to the timer
+void myTimerHandlerCB(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    uint32_t delayStart_ms = 500;
+    //do stuff
+    //kick off timer again
+     WsfTimerStartMs(&amp;myTimer, delayStart_ms);
+
+}
+</code></pre>
+<ol>
+<li>Initialize timer handler and start timer</li>
+</ol>
+<pre><code class="language-c">
+//some where you have to set up the timer
+/* Setup the erase handler */
+myTimerHandlerId = WsfOsSetNextHandler(myTimerHandlerCB);
+myTimer.handlerId = myTimerHandlerId;
+
+// somewhere you have to start the timer
+WsfTimerStartMs(&amp;myTimer, 100);
+</code></pre>
+<h4 id="wsf_trace">WSF_TRACE:</h4>
+<ol>
+<li>First thing is to set the WSF_TRACE_ENABLED or WSF_TOKEN_ENABLED MACRO:</li>
+</ol>
+<pre><code class="language-c">// set one of the following below depending on your need
+WSF_TRACE_ENABLED=TRUE
+WSF_TOKEN_ENABLED=TRUE
+</code></pre>
+<ol>
+<li>Call the corresponding Macro</li>
+</ol>
+<pre><code class="language-c">WSF_TRACE_INFO0(&quot;print the message you want&quot;);
+APP_TRACE_INFO0(&quot;print the message you want&quot;);
+</code></pre>
+<h4 id="wsf_nvm">WSF_NVM:</h4>
+<ol>
+<li>Initialize the WSF NVM</li>
+</ol>
+<pre><code class="language-c">WsfNvmInit(void);
+</code></pre>
+<ol>
+<li>Setup callback function</li>
+</ol>
+<pre><code class="language-c">
+// setup different callback function depending on your need
+void callBack(bool status)
+{
+    // doing stuffs
+}
+</code></pre>
+<ol>
+<li>Call read/write/erase functions: </li>
+</ol>
+<pre><code class="language-c">
+// read data
+uint8_t pDataR[10];
+status = WsfNvmReadData(id, pDataR,10, callBack);
+
+// write data
+const uint8_t pDataW[10] = {0};
+status = WsfNvmWriteData(id, pDataW, 10, callBack);
+
+// erase data
+status WsfNvmEraseData(id, callBack);
+
+// erase all data
+WsfNvmEraseDataAll(callBack);
+</code></pre>
+<p>status(bool): TRUE if NVM operation is successful, FALSE otherwise.</p>
+<ol>
+<li>After reading, writing, and deleting data, there will be fragment inside the memory. We can call WsfNvmDefragment() function to defragment the NVM:
+Only used when:</li>
+<li>Storage is full</li>
+<li>A record has been deleted</li>
+</ol>
+<p>Note: copyBuf must be at least the size of WSF NVM allocated flash.</p>
+<pre><code class="language-c">// copyBuf must be at least the size of WSF NVM allocated flash.
+if ( WsfNvmIsFull() )
+{
+    status =  WsfNvmDefragment(copyBuf, size);
+}
+
+</code></pre>
+<h3 id="platform-adaption-layer">Platform Adaption Layer</h3>
 <p>The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system-level functions such as sleep and memory management. </p>
+<p><em>MAX32655:</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Peripheral</strong></th>
+<th><strong>Use</strong></th>
+<th><strong>Configurable</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPIO0</td>
+<td>pal_btn</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>GPIO1</td>
+<td>pal_led  pal_sys  pal_timer pal_uart pal_rtc</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>TIMER0-1</td>
+<td>pal_sys pal_timer</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UART0-3</td>
+<td>pal_sys pal_uart</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p><em>MAX32665:</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Peripheral</strong></th>
+<th><strong>Use</strong></th>
+<th><strong>Configurable</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPIO0</td>
+<td>pal_btn</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>GPIO1</td>
+<td>pal_led  pal_sys  pal_timer pal_uart pal_rtc</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>TIMER0-1</td>
+<td>pal_sys pal_timer</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UART0-2</td>
+<td>pal_sys pal_uart</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>DMA0-8</td>
+<td>pal_sys pal_uart</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p><em>MAX32690:</em></p>
+<table>
+<thead>
+<tr>
+<th><strong>Peripheral</strong></th>
+<th><strong>Use</strong></th>
+<th><strong>Configurable</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPIO0</td>
+<td>pal_btn</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>GPIO1</td>
+<td>pal_led  pal_sys  pal_timer pal_uart pal_rtc</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>TIMER0-1</td>
+<td>pal_sys pal_timer</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>UART0-3</td>
+<td>pal_sys pal_uart</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
 <h3 id="attribute-protocol">Attribute Protocol</h3>
 <p>The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and the attribute protocol server (ATTS).</p>
 <p>ATTC implements all attribute protocol client features and is designed to meet the client requirements of the generic attribute profile. ATTC can support multiple simultaneous connections to different servers.</p>

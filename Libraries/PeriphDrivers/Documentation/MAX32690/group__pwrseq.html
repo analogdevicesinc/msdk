@@ -101,6 +101,8 @@ Modules</h2></td></tr>
 Enumerations</h2></td></tr>
 <tr class="memitem:ga428cd955ec855f628fc24392a67ecebb"><td class="memItemLeft" align="right" valign="top"><a id="ga428cd955ec855f628fc24392a67ecebb" name="ga428cd955ec855f628fc24392a67ecebb"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pwrseq.html#ga428cd955ec855f628fc24392a67ecebb">mxc_lp_ovr_t</a> </td></tr>
 <tr class="separator:ga428cd955ec855f628fc24392a67ecebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaba690d6ae20f2a39a5b4134924ab8194"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pwrseq.html#gaba690d6ae20f2a39a5b4134924ab8194">mxc_lp_riscv_clock_t</a> </td></tr>
+<tr class="separator:gaba690d6ae20f2a39a5b4134924ab8194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -165,8 +167,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_LP_DisableWUTAlar
 <tr class="separator:ga924214e79e9fea795709d29ebb141858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadd2c669905153cc460ab63ec93593f4e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pwrseq.html#gadd2c669905153cc460ab63ec93593f4e">MXC_LP_ConfigDeepSleepClocks</a> (uint32_t mask)</td></tr>
 <tr class="separator:gadd2c669905153cc460ab63ec93593f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14057bbb67f85d681d0a0d2d17d970f7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pwrseq.html#ga14057bbb67f85d681d0a0d2d17d970f7">MXC_LP_RISCVClockSelect</a> (<a class="el" href="group__pwrseq.html#gaba690d6ae20f2a39a5b4134924ab8194">mxc_lp_riscv_clock_t</a> clock)</td></tr>
+<tr class="separator:ga14057bbb67f85d681d0a0d2d17d970f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="gaba690d6ae20f2a39a5b4134924ab8194" name="gaba690d6ae20f2a39a5b4134924ab8194"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaba690d6ae20f2a39a5b4134924ab8194">&#9670;&nbsp;</a></span>mxc_lp_riscv_clock_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__pwrseq.html#gaba690d6ae20f2a39a5b4134924ab8194">mxc_lp_riscv_clock_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enumeration type for RISC-V clock selection. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaba690d6ae20f2a39a5b4134924ab8194a36eac1af796cd1c1436eb68c4dae0d83" name="ggaba690d6ae20f2a39a5b4134924ab8194a36eac1af796cd1c1436eb68c4dae0d83"></a>MXC_LP_RISCV_CLOCK_ISO&#160;</td><td class="fielddoc"><p >Select the Internal Secondary Oscillator (ISO) as the RISCV clock source </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggaba690d6ae20f2a39a5b4134924ab8194a882db9ddb8dfcfd8a69c8b0d18c8e5a2" name="ggaba690d6ae20f2a39a5b4134924ab8194a882db9ddb8dfcfd8a69c8b0d18c8e5a2"></a>MXC_LP_RISCV_CLOCK_PCLK&#160;</td><td class="fielddoc"><p >Select the Advanced Peripheral Bus (APB) clock as the RISCV clock source </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gafc72801a23b9d57627a4b4ade155c672" name="gafc72801a23b9d57627a4b4ade155c672"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gafc72801a23b9d57627a4b4ade155c672">&#9670;&nbsp;</a></span>MXC_LP_BandgapIsOn()</h2>
@@ -426,6 +453,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_LP_DisableWUTAlar
 
 </div>
 </div>
+<a id="ga14057bbb67f85d681d0a0d2d17d970f7" name="ga14057bbb67f85d681d0a0d2d17d970f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga14057bbb67f85d681d0a0d2d17d970f7">&#9670;&nbsp;</a></span>MXC_LP_RISCVClockSelect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_LP_RISCVClockSelect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__pwrseq.html#gaba690d6ae20f2a39a5b4134924ab8194">mxc_lp_riscv_clock_t</a>&#160;</td>
+          <td class="paramname"><em>clock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the clock source for the RISC-V core used in Low-Power Mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clock</td><td>The clock source to set </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> on errors </dd></dl>
+
+</div>
+</div>
 <a id="ga7b8a93fe1df6a0798d2b25b797cf4365" name="ga7b8a93fe1df6a0798d2b25b797cf4365"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7b8a93fe1df6a0798d2b25b797cf4365">&#9670;&nbsp;</a></span>MXC_LP_SetOVR()</h2>
 
@@ -457,7 +511,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_LP_DisableWUTAlar
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -17,6 +17,10 @@ var group__tmr =
     [ "mxc_tmr_clock_t", "group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83", [
       [ "MXC_TMR_APB_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c", null ],
       [ "MXC_TMR_EXT_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95", null ],
+      [ "MXC_TMR_IBRO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ad825f3061c9c76171593073b0c9836ca", null ],
+      [ "MXC_TMR_ERFO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ac4d6e7462baa07e87ab488a7a1f7104c", null ],
+      [ "MXC_TMR_ERTCO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7888a0fe5d4d13110962a8590306fbab", null ],
+      [ "MXC_TMR_INRO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83aed958a14716626e7cabe68c8268533d3", null ],
       [ "MXC_TMR_8M_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a8c49d82e4e665ce187bcee0f09003bd9", null ],
       [ "MXC_TMR_32M_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a999f90b8cd5ae1c4ed8e5f6d8331c799", null ],
       [ "MXC_TMR_32K_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a77166cf5e8a3d9cba01c8aed258707eb", null ],

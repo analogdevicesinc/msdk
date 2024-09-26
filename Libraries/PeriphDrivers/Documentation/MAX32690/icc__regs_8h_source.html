@@ -90,107 +90,106 @@ $(document).ready(function(){initNavTree('icc__regs_8h_source.html',''); initRes
 <a href="icc__regs_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/******************************************************************************</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * (now owned by Analog Devices, Inc.),</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * is proprietary to Analog Devices, Inc. and its licensors.</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> ******************************************************************************/</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_ICC_REGS_H_</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_ICC_REGS_H_</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">/* **** Includes **** */</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#if defined (__ICCARM__)</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">  #pragma system_include</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#if defined (__CC_ARM)</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">  #pragma anon_unions</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">    If types are not defined elsewhere (CMSIS) define them here</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#ifndef __IO</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#define __IO volatile</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#ifndef __I</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#define __I  volatile const</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#ifndef __O</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#define __O  volatile</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#ifndef __R</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#define __R  volatile const</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">/* **** Definitions **** */</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="group__icc__registers.html">   77</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8">   78</a></span>    __I  uint32_t <a class="code hl_variable" href="group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8">info</a>;                 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902">   79</a></span>    __I  uint32_t <a class="code hl_variable" href="group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902">sz</a>;                   </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    __R  uint32_t rsv_0x8_0xff[62];</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3">   81</a></span>    __IO uint32_t <a class="code hl_variable" href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3">ctrl</a>;                 </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    __R  uint32_t rsv_0x104_0x6ff[383];</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932">   83</a></span>    __IO uint32_t <a class="code hl_variable" href="group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932">invalidate</a>;           </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>} <a class="code hl_struct" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a>;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">/* Register offsets for module ICC */</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga87934addf07aded35eba04a760476b7d">   93</a></span><span class="preprocessor">#define MXC_R_ICC_INFO                     ((uint32_t)0x00000000UL) </span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga538d778fd9cde0c8a72c7c83be5ce016">   94</a></span><span class="preprocessor">#define MXC_R_ICC_SZ                       ((uint32_t)0x00000004UL) </span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga1ff49c8a4ca7789518c21a8899bbc091">   95</a></span><span class="preprocessor">#define MXC_R_ICC_CTRL                     ((uint32_t)0x00000100UL) </span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga5d51fe18aeb87876d9ce4727650655ac">   96</a></span><span class="preprocessor">#define MXC_R_ICC_INVALIDATE               ((uint32_t)0x00000700UL) </span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga3a94d47b7f42bebed65ac6fe68668423">  105</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_RELNUM_POS                      0 </span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga21a7abc95a922d4ae6bf4b59767019c4">  106</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_RELNUM                          ((uint32_t)(0x3FUL &lt;&lt; MXC_F_ICC_INFO_RELNUM_POS)) </span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga5a2284062ebee65b2e0ae6a5bf928b23">  108</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_PARTNUM_POS                     6 </span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga408d83a1d45c075997f297a2dc822111">  109</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_PARTNUM                         ((uint32_t)(0xFUL &lt;&lt; MXC_F_ICC_INFO_PARTNUM_POS)) </span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#gae651950f46e048e35fe9b35bf4cfaecd">  111</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_ID_POS                          10 </span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga94359fc1f1e2c0a91ecd4291630be9ab">  112</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_ID                              ((uint32_t)(0x3FUL &lt;&lt; MXC_F_ICC_INFO_ID_POS)) </span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#ga3db282db688b509eb18ab58510390b6a">  122</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_CCH_POS                           0 </span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#ga47295f58045e4dab562ac7ad68c69be3">  123</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_CCH                               ((uint32_t)(0xFFFFUL &lt;&lt; MXC_F_ICC_SZ_CCH_POS)) </span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#gab14116a987366eb323a0b16dd7753dda">  125</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_MEM_POS                           16 </span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#ga75e866017cfe63c19595273faea656cd">  126</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_MEM                               ((uint32_t)(0xFFFFUL &lt;&lt; MXC_F_ICC_SZ_MEM_POS)) </span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga1726101159107f96e7dba4a2e81a5ffd">  136</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_EN_POS                          0 </span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga8a3188b3c9f01ac5d308108c21b6008a">  137</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_EN                              ((uint32_t)(0x1UL &lt;&lt; MXC_F_ICC_CTRL_EN_POS)) </span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga5ab77339d2266327df3cc154e70168b5">  139</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_RDY_POS                         16 </span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga83fc19da19ebfc135beb4ef1641f0678">  140</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_RDY                             ((uint32_t)(0x1UL &lt;&lt; MXC_F_ICC_CTRL_RDY_POS)) </span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_v_a_l_i_d_a_t_e.html#gaedf3f77103ae77b9bc5b1a02f1e16e35">  150</a></span><span class="preprocessor">#define MXC_F_ICC_INVALIDATE_INVALID_POS               0 </span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_v_a_l_i_d_a_t_e.html#ga4477e4c172460406e58633b262cb6ce4">  151</a></span><span class="preprocessor">#define MXC_F_ICC_INVALIDATE_INVALID                   ((uint32_t)(0xFFFFFFFFUL &lt;&lt; MXC_F_ICC_INVALIDATE_INVALID_POS)) </span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_ICC_REGS_H_</span></div>
-<div class="ttc" id="agroup__icc__registers_html_a0dfb0826afc4f581891cf5cc970c4902"><div class="ttname"><a href="group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902">mxc_icc_regs_t::sz</a></div><div class="ttdeci">__I uint32_t sz</div><div class="ttdef"><b>Definition:</b> icc_regs.h:79</div></div>
-<div class="ttc" id="agroup__icc__registers_html_a4d6b29337a6769bf23915e8600d5adb8"><div class="ttname"><a href="group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8">mxc_icc_regs_t::info</a></div><div class="ttdeci">__I uint32_t info</div><div class="ttdef"><b>Definition:</b> icc_regs.h:78</div></div>
-<div class="ttc" id="agroup__icc__registers_html_a5f3ab705a4a67b17dcc04560cef193f3"><div class="ttname"><a href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3">mxc_icc_regs_t::ctrl</a></div><div class="ttdeci">__IO uint32_t ctrl</div><div class="ttdef"><b>Definition:</b> icc_regs.h:81</div></div>
-<div class="ttc" id="agroup__icc__registers_html_af614ad0651176983fbfa1a1b34a74932"><div class="ttname"><a href="group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932">mxc_icc_regs_t::invalidate</a></div><div class="ttdeci">__IO uint32_t invalidate</div><div class="ttdef"><b>Definition:</b> icc_regs.h:83</div></div>
-<div class="ttc" id="agroup__icc__registers_html_structmxc__icc__regs__t"><div class="ttname"><a href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a></div><div class="ttdef"><b>Definition:</b> icc_regs.h:77</div></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by </span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * Analog Devices, Inc.),</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Copyright (C) 2023-2024 Analog Devices, Inc.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_ICC_REGS_H_</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_ICC_REGS_H_</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/* **** Includes **** */</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#if defined (__ICCARM__)</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">  #pragma system_include</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#if defined (__CC_ARM)</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">  #pragma anon_unions</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">    If types are not defined elsewhere (CMSIS) define them here</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#ifndef __IO</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#define __IO volatile</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#ifndef __I</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#define __I  volatile const</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#ifndef __O</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define __O  volatile</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#ifndef __R</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#define __R  volatile const</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">/* **** Definitions **** */</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="group__icc__registers.html">   76</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8">   77</a></span>    __I  uint32_t <a class="code hl_variable" href="group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8">info</a>;                 </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902">   78</a></span>    __I  uint32_t <a class="code hl_variable" href="group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902">sz</a>;                   </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    __R  uint32_t rsv_0x8_0xff[62];</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3">   80</a></span>    __IO uint32_t <a class="code hl_variable" href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3">ctrl</a>;                 </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    __R  uint32_t rsv_0x104_0x6ff[383];</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932">   82</a></span>    __IO uint32_t <a class="code hl_variable" href="group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932">invalidate</a>;           </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <a class="code hl_struct" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">/* Register offsets for module ICC */</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga87934addf07aded35eba04a760476b7d">   92</a></span><span class="preprocessor">#define MXC_R_ICC_INFO                     ((uint32_t)0x00000000UL) </span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga538d778fd9cde0c8a72c7c83be5ce016">   93</a></span><span class="preprocessor">#define MXC_R_ICC_SZ                       ((uint32_t)0x00000004UL) </span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga1ff49c8a4ca7789518c21a8899bbc091">   94</a></span><span class="preprocessor">#define MXC_R_ICC_CTRL                     ((uint32_t)0x00000100UL) </span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="group___i_c_c___register___offsets.html#ga5d51fe18aeb87876d9ce4727650655ac">   95</a></span><span class="preprocessor">#define MXC_R_ICC_INVALIDATE               ((uint32_t)0x00000700UL) </span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga3a94d47b7f42bebed65ac6fe68668423">  104</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_RELNUM_POS                      0 </span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga21a7abc95a922d4ae6bf4b59767019c4">  105</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_RELNUM                          ((uint32_t)(0x3FUL &lt;&lt; MXC_F_ICC_INFO_RELNUM_POS)) </span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga5a2284062ebee65b2e0ae6a5bf928b23">  107</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_PARTNUM_POS                     6 </span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga408d83a1d45c075997f297a2dc822111">  108</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_PARTNUM                         ((uint32_t)(0xFUL &lt;&lt; MXC_F_ICC_INFO_PARTNUM_POS)) </span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#gae651950f46e048e35fe9b35bf4cfaecd">  110</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_ID_POS                          10 </span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_f_o.html#ga94359fc1f1e2c0a91ecd4291630be9ab">  111</a></span><span class="preprocessor">#define MXC_F_ICC_INFO_ID                              ((uint32_t)(0x3FUL &lt;&lt; MXC_F_ICC_INFO_ID_POS)) </span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#ga3db282db688b509eb18ab58510390b6a">  121</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_CCH_POS                           0 </span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#ga47295f58045e4dab562ac7ad68c69be3">  122</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_CCH                               ((uint32_t)(0xFFFFUL &lt;&lt; MXC_F_ICC_SZ_CCH_POS)) </span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#gab14116a987366eb323a0b16dd7753dda">  124</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_MEM_POS                           16 </span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="group___i_c_c___s_z.html#ga75e866017cfe63c19595273faea656cd">  125</a></span><span class="preprocessor">#define MXC_F_ICC_SZ_MEM                               ((uint32_t)(0xFFFFUL &lt;&lt; MXC_F_ICC_SZ_MEM_POS)) </span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga1726101159107f96e7dba4a2e81a5ffd">  135</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_EN_POS                          0 </span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga8a3188b3c9f01ac5d308108c21b6008a">  136</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_EN                              ((uint32_t)(0x1UL &lt;&lt; MXC_F_ICC_CTRL_EN_POS)) </span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga5ab77339d2266327df3cc154e70168b5">  138</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_RDY_POS                         16 </span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="group___i_c_c___c_t_r_l.html#ga83fc19da19ebfc135beb4ef1641f0678">  139</a></span><span class="preprocessor">#define MXC_F_ICC_CTRL_RDY                             ((uint32_t)(0x1UL &lt;&lt; MXC_F_ICC_CTRL_RDY_POS)) </span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_v_a_l_i_d_a_t_e.html#gaedf3f77103ae77b9bc5b1a02f1e16e35">  149</a></span><span class="preprocessor">#define MXC_F_ICC_INVALIDATE_INVALID_POS               0 </span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="group___i_c_c___i_n_v_a_l_i_d_a_t_e.html#ga4477e4c172460406e58633b262cb6ce4">  150</a></span><span class="preprocessor">#define MXC_F_ICC_INVALIDATE_INVALID                   ((uint32_t)(0xFFFFFFFFUL &lt;&lt; MXC_F_ICC_INVALIDATE_INVALID_POS)) </span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>}</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_ICC_REGS_H_</span></div>
+<div class="ttc" id="agroup__icc__registers_html_a0dfb0826afc4f581891cf5cc970c4902"><div class="ttname"><a href="group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902">mxc_icc_regs_t::sz</a></div><div class="ttdeci">__I uint32_t sz</div><div class="ttdef"><b>Definition:</b> icc_regs.h:78</div></div>
+<div class="ttc" id="agroup__icc__registers_html_a4d6b29337a6769bf23915e8600d5adb8"><div class="ttname"><a href="group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8">mxc_icc_regs_t::info</a></div><div class="ttdeci">__I uint32_t info</div><div class="ttdef"><b>Definition:</b> icc_regs.h:77</div></div>
+<div class="ttc" id="agroup__icc__registers_html_a5f3ab705a4a67b17dcc04560cef193f3"><div class="ttname"><a href="group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3">mxc_icc_regs_t::ctrl</a></div><div class="ttdeci">__IO uint32_t ctrl</div><div class="ttdef"><b>Definition:</b> icc_regs.h:80</div></div>
+<div class="ttc" id="agroup__icc__registers_html_af614ad0651176983fbfa1a1b34a74932"><div class="ttname"><a href="group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932">mxc_icc_regs_t::invalidate</a></div><div class="ttdeci">__IO uint32_t invalidate</div><div class="ttdef"><b>Definition:</b> icc_regs.h:82</div></div>
+<div class="ttc" id="agroup__icc__registers_html_structmxc__icc__regs__t"><div class="ttname"><a href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a></div><div class="ttdef"><b>Definition:</b> icc_regs.h:76</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_e7fa9f9ff84ec6f18f923fb2418bfd4b.html">CMSIS</a></li><li class="navelem"><a class="el" href="dir_74a1ad929b9bc221910eda5e657bf53e.html">Device</a></li><li class="navelem"><a class="el" href="dir_2735d35371771e96c24dd0c1d026f345.html">Maxim</a></li><li class="navelem"><a class="el" href="dir_41f5b21bc3057491f33bb1e5f1b6721e.html">MAX32690</a></li><li class="navelem"><a class="el" href="dir_01da8a36c88079bb806b53d7124a4b5a.html">Include</a></li><li class="navelem"><a class="el" href="icc__regs_8h.html">icc_regs.h</a></li>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:16 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:16 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -12,18 +12,18 @@ var group___a_f_e___a_d_c___o_n_e___c_t_r_l =
     [ "MXC_F_AFE_ADC_ONE_CTRL_REFBUFP_EN_POS", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga2a46eea80bbd2a1719b98dbfd5210f9e", null ],
     [ "MXC_F_AFE_ADC_ONE_CTRL_U_BN", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#gabb79ddc18ef6af17718a71e794f79d8b", null ],
     [ "MXC_F_AFE_ADC_ONE_CTRL_U_BN_POS", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga54c7d5ad74bf7817339ab3bf69a020df", null ],
+    [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_AIN0P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga2611dc77fb311f17b33126c350aeae51", null ],
+    [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_AIN0P_AND_AIN1N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga4d770ac9deaf966acb6f61ced8b6ff87", null ],
     [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_AVDD_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga20158e4c86450e1e00dc41f10182752d", null ],
     [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_REF0P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#gad79d9c4bf10c02de503a751edb758617", null ],
     [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_REF0P_AND_REF0N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga76d32883b38478b1d94d0cd84dee1d5a", null ],
     [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_REF1P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#gabd020d8ea8a0962856f288db25283fa4", null ],
     [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_REF1P_AND_REF1N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga5ce346471d3ce5510d4255fc02c272c0", null ],
-    [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_REF2P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga14d088c356f7c4d6aed305bb82cacf79", null ],
-    [ "MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_REF2P_AND_REF2N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#gaf69e66e526dd57a3bee97b25c48a1eec", null ],
+    [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_AIN0P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga01acacb3f41416b48773be19278767bf", null ],
+    [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_AIN0P_AND_AIN1N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga6fbcfdc0c8f3c5d8706d090fdcb272c5", null ],
     [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_AVDD_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga87888f872b42e28466c4b74503272b49", null ],
     [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF0P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga019c8f3c87002f2e7eef0dd511c25955", null ],
     [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF0P_AND_REF0N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#gafb0d5e8ab3e7e98186f8be5762f2cc41", null ],
     [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF1P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#gae7e38885e95679b186570f6a6c7a81b1", null ],
-    [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF1P_AND_REF1N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga97d86b113a8a457af7d437b26349302f", null ],
-    [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF2P_AND_AGND", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga7157610e6161e32d24c7d04a8275dba9", null ],
-    [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF2P_AND_REF2N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga11e7ebb1ff9c56b952c2948b7cd0cfb4", null ]
+    [ "MXC_V_AFE_ADC_ONE_CTRL_REF_SEL_REF1P_AND_REF1N", "group___a_f_e___a_d_c___o_n_e___c_t_r_l.html#ga97d86b113a8a457af7d437b26349302f", null ]
 ];

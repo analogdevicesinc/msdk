@@ -113,13 +113,19 @@ Enumerations</h2></td></tr>
 <tr class="separator:gaa24c4c54f7c5e0ffef2d410c75e3c0ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa0d647d7ed191977d06968a0594b9eeb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#gaa0d647d7ed191977d06968a0594b9eeb">mxc_tmr_unit_t</a> </td></tr>
 <tr class="separator:gaa0d647d7ed191977d06968a0594b9eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga58901bfa21b78eb6ab4a702cc4f6ae83"><td class="memItemLeft" align="right" valign="top"><a id="ga58901bfa21b78eb6ab4a702cc4f6ae83" name="ga58901bfa21b78eb6ab4a702cc4f6ae83"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">mxc_tmr_clock_t</a> </td></tr>
+<tr class="memitem:ga58901bfa21b78eb6ab4a702cc4f6ae83"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">mxc_tmr_clock_t</a> </td></tr>
 <tr class="separator:ga58901bfa21b78eb6ab4a702cc4f6ae83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga58d5a6df87c13d13fb759fc35e5e72a8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga58d5a6df87c13d13fb759fc35e5e72a8">MXC_TMR_Init</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, <a class="el" href="group__tmr.html#structmxc__tmr__cfg__t">mxc_tmr_cfg_t</a> *cfg, bool init_pins)</td></tr>
 <tr class="separator:ga58d5a6df87c13d13fb759fc35e5e72a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e503ef7aaa769b3a69709cac121d32d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga4e503ef7aaa769b3a69709cac121d32d">MXC_TMR_LockClockSource</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, bool lock)</td></tr>
+<tr class="separator:ga4e503ef7aaa769b3a69709cac121d32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga48ec3b0e2cc8d3636d152ebdb714dde2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga48ec3b0e2cc8d3636d152ebdb714dde2">MXC_TMR_SetClockSource</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, <a class="el" href="group__tmr.html#gaa24c4c54f7c5e0ffef2d410c75e3c0ea">mxc_tmr_bit_mode_t</a> bit_mode, <a class="el" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">mxc_tmr_clock_t</a> clk_src)</td></tr>
+<tr class="separator:ga48ec3b0e2cc8d3636d152ebdb714dde2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa129d0c77f92dc098945cc6b6cd58af0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#gaa129d0c77f92dc098945cc6b6cd58af0">MXC_TMR_SetPrescalar</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, <a class="el" href="group__tmr.html#gaa24c4c54f7c5e0ffef2d410c75e3c0ea">mxc_tmr_bit_mode_t</a> bit_mode, <a class="el" href="group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3">mxc_tmr_pres_t</a> prescalar)</td></tr>
+<tr class="separator:gaa129d0c77f92dc098945cc6b6cd58af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2d67231e90c7b452e8e20951c0d72469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga2d67231e90c7b452e8e20951c0d72469">MXC_TMR_Shutdown</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr)</td></tr>
 <tr class="separator:ga2d67231e90c7b452e8e20951c0d72469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9f7f78e2fdf6baee8c12430c0825eafe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga9f7f78e2fdf6baee8c12430c0825eafe">MXC_TMR_Start</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr)</td></tr>
@@ -319,6 +325,36 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa26ba84d2eb7c0d256e1e03c58700d651" name="ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa26ba84d2eb7c0d256e1e03c58700d651"></a>MXC_TMR_BIT_MODE_16A&#160;</td><td class="fielddoc"><p >Timer Mode Lower 16 bit </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc" name="ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc"></a>MXC_TMR_BIT_MODE_16B&#160;</td><td class="fielddoc"><p >Timer Mode Upper 16 bit </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ga58901bfa21b78eb6ab4a702cc4f6ae83" name="ga58901bfa21b78eb6ab4a702cc4f6ae83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga58901bfa21b78eb6ab4a702cc4f6ae83">&#9670;&nbsp;</a></span>mxc_tmr_clock_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">mxc_tmr_clock_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Peripheral Clock settings. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c" name="gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c"></a>MXC_TMR_APB_CLK&#160;</td><td class="fielddoc"><p >PCLK </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95" name="gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95"></a>MXC_TMR_EXT_CLK&#160;</td><td class="fielddoc"><p >External Clock </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga58901bfa21b78eb6ab4a702cc4f6ae83a12daec68abbbaf37d2c93a8ef5e616ef" name="gga58901bfa21b78eb6ab4a702cc4f6ae83a12daec68abbbaf37d2c93a8ef5e616ef"></a>MXC_TMR_ISO_CLK&#160;</td><td class="fielddoc"><p >60MHz Clock </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga58901bfa21b78eb6ab4a702cc4f6ae83ad825f3061c9c76171593073b0c9836ca" name="gga58901bfa21b78eb6ab4a702cc4f6ae83ad825f3061c9c76171593073b0c9836ca"></a>MXC_TMR_IBRO_CLK&#160;</td><td class="fielddoc"><p >7.3728MHz Clock </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga58901bfa21b78eb6ab4a702cc4f6ae83a7888a0fe5d4d13110962a8590306fbab" name="gga58901bfa21b78eb6ab4a702cc4f6ae83a7888a0fe5d4d13110962a8590306fbab"></a>MXC_TMR_ERTCO_CLK&#160;</td><td class="fielddoc"><p >32.768KHz Clock </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga58901bfa21b78eb6ab4a702cc4f6ae83aed958a14716626e7cabe68c8268533d3" name="gga58901bfa21b78eb6ab4a702cc4f6ae83aed958a14716626e7cabe68c8268533d3"></a>MXC_TMR_INRO_CLK&#160;</td><td class="fielddoc"><p >8-30KHz Clock </p>
 </td></tr>
 </table>
 
@@ -931,6 +967,87 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga4e503ef7aaa769b3a69709cac121d32d" name="ga4e503ef7aaa769b3a69709cac121d32d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e503ef7aaa769b3a69709cac121d32d">&#9670;&nbsp;</a></span>MXC_TMR_LockClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_TMR_LockClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>tmr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lock</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lock the clock source for the specified timer instance. If the clock source is locked, <a class="el" href="group__tmr.html#ga48ec3b0e2cc8d3636d152ebdb714dde2">MXC_TMR_SetClockSource</a> will have no effect. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tmr</td><td>Pointer to timer instance </td></tr>
+    <tr><td class="paramname">lock</td><td>Whether to lock the clock source or not. Set to true to lock, false to unlock </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga48ec3b0e2cc8d3636d152ebdb714dde2" name="ga48ec3b0e2cc8d3636d152ebdb714dde2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga48ec3b0e2cc8d3636d152ebdb714dde2">&#9670;&nbsp;</a></span>MXC_TMR_SetClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t MXC_TMR_SetClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>tmr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__tmr.html#gaa24c4c54f7c5e0ffef2d410c75e3c0ea">mxc_tmr_bit_mode_t</a>&#160;</td>
+          <td class="paramname"><em>bit_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">mxc_tmr_clock_t</a>&#160;</td>
+          <td class="paramname"><em>clk_src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the clock source for the specified timer instance. Note this API will have no effect if the clock source has been locked via <a class="el" href="group__tmr.html#ga4e503ef7aaa769b3a69709cac121d32d">MXC_TMR_LockClockSource</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tmr</td><td>Pointer to timer instance </td></tr>
+    <tr><td class="paramname">bit_mode</td><td>Bit mode of the TMR module. </td></tr>
+    <tr><td class="paramname">clk_src</td><td>Desired clock source. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gaa43ca41ee1a4f223572c621229039c14" name="gaa43ca41ee1a4f223572c621229039c14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa43ca41ee1a4f223572c621229039c14">&#9670;&nbsp;</a></span>MXC_TMR_SetCompare()</h2>
 
@@ -1000,6 +1117,50 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
     <tr><td class="paramname">cnt</td><td>New count. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaa129d0c77f92dc098945cc6b6cd58af0" name="gaa129d0c77f92dc098945cc6b6cd58af0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa129d0c77f92dc098945cc6b6cd58af0">&#9670;&nbsp;</a></span>MXC_TMR_SetPrescalar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_TMR_SetPrescalar </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>tmr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__tmr.html#gaa24c4c54f7c5e0ffef2d410c75e3c0ea">mxc_tmr_bit_mode_t</a>&#160;</td>
+          <td class="paramname"><em>bit_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3">mxc_tmr_pres_t</a>&#160;</td>
+          <td class="paramname"><em>prescalar</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the input clock prescalar for the specified timer instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tmr</td><td>Pointer to timer instance </td></tr>
+    <tr><td class="paramname">bit_mode</td><td>Bit mode of the TMR module. </td></tr>
+    <tr><td class="paramname">prescalar</td><td>Desired clock source prescalar. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1351,7 +1512,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

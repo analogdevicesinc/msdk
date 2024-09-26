@@ -1730,6 +1730,10 @@
         <topic label="vssel" href="group__gpio.html#a717b92819b1b33b48303b9f819510eb7"/>
       </topic>
       <topic label="mxc_gpio_callback_fn" href="group__gpio.html#gacf8ba5a444349caba7cdbe2861ca06b0"/>
+      <topic label="mxc_gpio_config_lock_t" href="group__gpio.html#ga223b0de136d1427c05c661b1b2f1b8b8">
+        <topic label="MXC_GPIO_CONFIG_UNLOCKED" href="group__gpio.html#gga223b0de136d1427c05c661b1b2f1b8b8a910638c4741a5c7ef72c1ed587d9f510"/>
+        <topic label="MXC_GPIO_CONFIG_LOCKED" href="group__gpio.html#gga223b0de136d1427c05c661b1b2f1b8b8a09ceee924c4b845ac50eadf4f0680c49"/>
+      </topic>
       <topic label="mxc_gpio_drvstr_t" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">
         <topic label="MXC_GPIO_DRVSTR_0" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a693b43114c62adc1c8c3ddd100ba4e03"/>
         <topic label="MXC_GPIO_DRVSTR_1" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a61a7eee49be32e156bbf95152e5c5e1f"/>
@@ -1769,6 +1773,7 @@
       <topic label="MXC_GPIO_Config" href="group__gpio.html#ga0d26c61a9e47c6b9824ba453c702ca2c"/>
       <topic label="MXC_GPIO_DisableInt" href="group__gpio.html#ga686faf01d860135ff6fedecb80ec09f7"/>
       <topic label="MXC_GPIO_EnableInt" href="group__gpio.html#ga3a040873cbd5575341c4afa415f9ef4c"/>
+      <topic label="MXC_GPIO_GetConfigLock" href="group__gpio.html#ga460e266ab1fcda468818134f4824bc9e"/>
       <topic label="MXC_GPIO_GetFlags" href="group__gpio.html#ga22364077384b494cbee39b5abd355e47"/>
       <topic label="MXC_GPIO_GetWakeEn" href="group__gpio.html#ga6e08685c79836b62652ea85c583ed406"/>
       <topic label="MXC_GPIO_Handler" href="group__gpio.html#gae3606e5c2b0e93254e117e3c3dac4b9e"/>
@@ -1782,6 +1787,7 @@
       <topic label="MXC_GPIO_OutToggle" href="group__gpio.html#ga756e913d214298748f0107c0f10b6a5d"/>
       <topic label="MXC_GPIO_RegisterCallback" href="group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1"/>
       <topic label="MXC_GPIO_Reset" href="group__gpio.html#ga9a03d0668d588a08fcdf6462a672f539"/>
+      <topic label="MXC_GPIO_SetConfigLock" href="group__gpio.html#gaf0293e334bc917716066603e490ffa66"/>
       <topic label="MXC_GPIO_SetDriveStrength" href="group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2"/>
       <topic label="MXC_GPIO_SetVSSEL" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549"/>
       <topic label="MXC_GPIO_SetWakeEn" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f"/>
@@ -5561,12 +5567,12 @@
       <topic label="MXC_SPIXF_SetCmdValue" href="group__spixf.html#ga6e08047e1aa47c83c52afea0888c486b"/>
       <topic label="MXC_SPIXF_SetCmdWidth" href="group__spixf.html#ga5b049fe7d3c264eb16f16d6f67480d3d"/>
       <topic label="MXC_SPIXF_SetDataWidth" href="group__spixf.html#ga3eaac32b9797b22792892a03a4f417f3"/>
-      <topic label="MXC_SPIXF_SetIoctrlSCLKDriveHigh" href="group__spixf.html#ga31a5598b033bd382584b5a128db4751e"/>
-      <topic label="MXC_SPIXF_SetIoctrlSCLKDriveLow" href="group__spixf.html#ga0ee69d9cfe5cba31fe1ef5f11e8803e0"/>
-      <topic label="MXC_SPIXF_SetIoctrlSDIODriveHigh" href="group__spixf.html#gab1ef523eb29322cffdb7acb3f78830c4"/>
-      <topic label="MXC_SPIXF_SetIoctrlSDIODriveLow" href="group__spixf.html#ga5871f131f63611e03922682c37c1e1e4"/>
-      <topic label="MXC_SPIXF_SetIoctrlSSDriveHigh" href="group__spixf.html#gac658a6cac75c7e561a41461dd270c552"/>
-      <topic label="MXC_SPIXF_SetIoctrlSSDriveLow" href="group__spixf.html#ga46e9f49558b12422dd7c5101cec6901b"/>
+      <topic label="MXC_SPIXF_SetIoctrlSCLKDriveHigh" href="group__spixf.html#ga1b8358c4c6af712f644c6a98eed78ed9"/>
+      <topic label="MXC_SPIXF_SetIoctrlSCLKDriveLow" href="group__spixf.html#gad29c459e467219bc893b28d6cf7cc0d2"/>
+      <topic label="MXC_SPIXF_SetIoctrlSDIODriveHigh" href="group__spixf.html#ga6592874070bcdc3eadd9f5895388fbcd"/>
+      <topic label="MXC_SPIXF_SetIoctrlSDIODriveLow" href="group__spixf.html#gae4c164f335cfedc6f8eb8678073fba74"/>
+      <topic label="MXC_SPIXF_SetIoctrlSSDriveHigh" href="group__spixf.html#ga97dbbf571c66f466ad614873f6e93e0b"/>
+      <topic label="MXC_SPIXF_SetIoctrlSSDriveLow" href="group__spixf.html#ga4177ab0b7e2e1ccda81b519d4da00ada"/>
       <topic label="MXC_SPIXF_SetMode" href="group__spixf.html#ga694bbacb286d42fdaee1de92c456b9fa"/>
       <topic label="MXC_SPIXF_SetModeClk" href="group__spixf.html#gaf0d078a5151daa4a90877f37f664e6eb"/>
       <topic label="MXC_SPIXF_SetModeData" href="group__spixf.html#ga2ed86e86fa4c4e067dd8b3695dfb6cb9"/>
@@ -6802,15 +6808,15 @@
           <topic label="data" href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84"/>
         </topic>
       </topic>
-      <topic label="MXC_TRNG_DisableInt" href="group__trng.html#gaaa27e6216364d229b9057ca0ec397be6"/>
-      <topic label="MXC_TRNG_EnableInt" href="group__trng.html#ga00879c803aa074d2ad2c35c64c952665"/>
+      <topic label="MXC_TRNG_DisableInt" href="group__trng.html#ga902005ae5ceafa4bda84c3ad109fe87c"/>
+      <topic label="MXC_TRNG_EnableInt" href="group__trng.html#gadfab448512f5c2d4a634a3b186326bb8"/>
       <topic label="MXC_TRNG_GenerateKey" href="group__trng.html#ga8fae44c897140b9a42da9ae812963259"/>
       <topic label="MXC_TRNG_Handler" href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20"/>
-      <topic label="MXC_TRNG_Init" href="group__trng.html#ga037c7026df5669c2970ed1a0b33a526b"/>
+      <topic label="MXC_TRNG_Init" href="group__trng.html#ga3f2ec1a1efcca6654c33d5a6f7327a2c"/>
       <topic label="MXC_TRNG_Random" href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b"/>
       <topic label="MXC_TRNG_RandomAsync" href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608"/>
       <topic label="MXC_TRNG_RandomInt" href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4"/>
-      <topic label="MXC_TRNG_Shutdown" href="group__trng.html#gad08a1a7f1c9ac9daf5db0a9d93170713"/>
+      <topic label="MXC_TRNG_Shutdown" href="group__trng.html#ga1355b3896c5c7589a29b9364d54db85d"/>
     </topic>
     <topic label="UART" href="group__uart.html">
       <topic label="UART_Registers" href="group__uart__registers.html">

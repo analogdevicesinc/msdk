@@ -10,7 +10,7 @@ var group__flc =
     [ "MXC_FLC_DisableInt", "group__flc.html#gacd5723a6d7273850061b8e4cc7a94439", null ],
     [ "MXC_FLC_EnableInt", "group__flc.html#gac2d98bf97e6b2b94cd2ea149758ac8fb", null ],
     [ "MXC_FLC_GetFlags", "group__flc.html#gab237155e3b0c9a017f04e1a8bed88eae", null ],
-    [ "MXC_FLC_Init", "group__flc.html#ga4c1f5379efb47ddf1a8a39389585164e", null ],
+    [ "MXC_FLC_Init", "group__flc.html#ga4438a5935d39b83da4233347eae6d6f7", null ],
     [ "MXC_FLC_LockInfoBlock", "group__flc.html#gad0243464f9a1567d1f4abaabf60cf012", null ],
     [ "MXC_FLC_MassErase", "group__flc.html#ga3817e0275b8951c3422aec75d2f28214", null ],
     [ "MXC_FLC_PageErase", "group__flc.html#gaaf5fd272e07d05fc0795aa973084aa50", null ],

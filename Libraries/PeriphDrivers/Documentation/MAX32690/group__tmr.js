@@ -14,7 +14,15 @@ var group__tmr =
       [ "MXC_TMR_BIT_MODE_16A", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa26ba84d2eb7c0d256e1e03c58700d651", null ],
       [ "MXC_TMR_BIT_MODE_16B", "group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc", null ]
     ] ],
-    [ "mxc_tmr_clock_t", "group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83", null ],
+    [ "mxc_tmr_clock_t", "group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83", [
+      [ "MXC_TMR_APB_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c", null ],
+      [ "MXC_TMR_EXT_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95", null ],
+      [ "MXC_TMR_ISO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a12daec68abbbaf37d2c93a8ef5e616ef", null ],
+      [ "MXC_TMR_IBRO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ad825f3061c9c76171593073b0c9836ca", null ],
+      [ "MXC_TMR_ERTCO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7888a0fe5d4d13110962a8590306fbab", null ],
+      [ "MXC_TMR_INRO_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83aed958a14716626e7cabe68c8268533d3", null ],
+      [ "MXC_TMR_IBRO_DIV8_CLK", "group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ab281fa148b505150d4c066f7f852311b", null ]
+    ] ],
     [ "mxc_tmr_mode_t", "group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da", [
       [ "MXC_TMR_MODE_ONESHOT", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6b11b6cafb392b67e1641097778dc986", null ],
       [ "MXC_TMR_MODE_CONTINUOUS", "group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daabcd9d29e94609eb514b54fb00f27eb9b", null ],
@@ -61,8 +69,11 @@ var group__tmr =
     [ "MXC_TMR_GetTicks", "group__tmr.html#ga281c3247623b970a7265340796d7fe14", null ],
     [ "MXC_TMR_GetTime", "group__tmr.html#ga17ce01e32c05bbca3c52c2ff6e20ad95", null ],
     [ "MXC_TMR_Init", "group__tmr.html#ga58d5a6df87c13d13fb759fc35e5e72a8", null ],
+    [ "MXC_TMR_LockClockSource", "group__tmr.html#ga4e503ef7aaa769b3a69709cac121d32d", null ],
+    [ "MXC_TMR_SetClockSource", "group__tmr.html#ga48ec3b0e2cc8d3636d152ebdb714dde2", null ],
     [ "MXC_TMR_SetCompare", "group__tmr.html#gaa43ca41ee1a4f223572c621229039c14", null ],
     [ "MXC_TMR_SetCount", "group__tmr.html#ga8b6dc7b49cb169a2357bdee1a59543b3", null ],
+    [ "MXC_TMR_SetPrescalar", "group__tmr.html#gaa129d0c77f92dc098945cc6b6cd58af0", null ],
     [ "MXC_TMR_SetPWM", "group__tmr.html#ga3b5c29727e46f47978286b2afd0c3e8a", null ],
     [ "MXC_TMR_Shutdown", "group__tmr.html#ga2d67231e90c7b452e8e20951c0d72469", null ],
     [ "MXC_TMR_Start", "group__tmr.html#ga9f7f78e2fdf6baee8c12430c0825eafe", null ],

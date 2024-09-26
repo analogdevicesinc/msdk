@@ -203,12 +203,14 @@ var group__mxc__sys =
     [ "MXC_SYS_RESET_WDT1", "group__mxc__sys.html#ggac071c2b6609556ddac3ebfe47f5f47baa969da85f7e00c3564b429ebe5d7fa1b9", null ],
     [ "MXC_SYS_Clock_Select", "group__mxc__sys.html#gaf6df4c39ab9a4c5af755e2d755c60e85", null ],
     [ "MXC_SYS_Clock_Timeout", "group__mxc__sys.html#gaf5115262631f2f7fae795e13a5edc406", null ],
+    [ "MXC_SYS_ClockCalibrate", "group__mxc__sys.html#ga27fd86cee02a95755e5c54b9a25c9960", null ],
     [ "MXC_SYS_ClockDisable", "group__mxc__sys.html#ga33a7f8ed8b0bdba5f7aa384d9bf724e8", null ],
     [ "MXC_SYS_ClockEnable", "group__mxc__sys.html#ga4bf023e4d14f3da1aa6ab8bc69fac570", null ],
     [ "MXC_SYS_ClockSourceDisable", "group__mxc__sys.html#ga8b51d6ddaf401e0232b75c0364e1d1bd", null ],
     [ "MXC_SYS_ClockSourceEnable", "group__mxc__sys.html#gae281e8f30ddaa90d30ba423c84f9b993", null ],
     [ "MXC_SYS_Crit_Enter", "group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44", null ],
     [ "MXC_SYS_Crit_Exit", "group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0", null ],
+    [ "MXC_SYS_GetClockDiv", "group__mxc__sys.html#gaf97d7a9daa7beb54ff5c3e169d9c7ab5", null ],
     [ "MXC_SYS_GetUSN", "group__mxc__sys.html#ga64494ce7b5aa5ee70e716f6a02f30d81", null ],
     [ "MXC_SYS_In_Crit_Section", "group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229", null ],
     [ "MXC_SYS_IsClockEnabled", "group__mxc__sys.html#ga99851205dae88b405f598e68fe984943", null ],
@@ -217,6 +219,8 @@ var group__mxc__sys =
     [ "MXC_SYS_RiscVClockRate", "group__mxc__sys.html#ga8b24f60556c4e4e462880531469832dd", null ],
     [ "MXC_SYS_RISCVRun", "group__mxc__sys.html#gaa9b682fe5a36592da64762ede1596674", null ],
     [ "MXC_SYS_RISCVShutdown", "group__mxc__sys.html#gade6c0a19b4b4d1bea136501724cc4ae6", null ],
-    [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga05ea0d4c5465ee7061ea1d3c2ffc3e22", null ],
-    [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a", null ]
+    [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga8c7f04d1f3e8b9ff4e8ba50d0db6bb27", null ],
+    [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a", null ],
+    [ "MXC_SYS_SetBypass", "group__mxc__sys.html#ga456d6f32bd2a60284d17381da71a1da7", null ],
+    [ "MXC_SYS_SetClockDiv", "group__mxc__sys.html#ga7443406c13f225d18a3023cc39e20265", null ]
 ];

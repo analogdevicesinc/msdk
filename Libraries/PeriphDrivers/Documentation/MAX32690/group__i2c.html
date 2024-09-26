@@ -1308,8 +1308,9 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
       </table>
 </div><div class="memdoc">
 
-<p>Initialize and enable I2C peripheral. </p>
-<dl class="section note"><dt>Note</dt><dd>On default this function enables I2C peripheral clock and i2c gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file</dd></dl>
+<p>Initialize and enable I2C peripheral. Note the ME18 assigns the same alternate function to multiple sets of pins. The drivers will enable both sets so that either can be used. Users should ensure the unused set is left unconnected. </p>
+<p >See MAX32690 Rev A2 Errata #16: <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf">https://www.analog.com/media/en/technical-documentation/data-sheets/max32690_a2_errata_rev2.pdf</a></p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables I2C peripheral clock and i2c gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used.) </td></tr>
@@ -1771,7 +1772,7 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 </div><div class="memdoc">
 
 <p>Reset the I2C peripheral. </p>
-<dl class="section note"><dt>Note</dt><dd>The peripheral will need to be initialized with <a class="el" href="group__i2c.html#gaffa36a7ab08e0f222bb7a9c305d2eca6" title="Initialize and enable I2C peripheral.">MXC_I2C_Init()</a> before use</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The peripheral will need to be initialized with <a class="el" href="group__i2c.html#gaffa36a7ab08e0f222bb7a9c305d2eca6" title="Initialize and enable I2C peripheral. Note the ME18 assigns the same alternate function to multiple s...">MXC_I2C_Init()</a> before use</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used.)</td></tr>
@@ -2388,7 +2389,7 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

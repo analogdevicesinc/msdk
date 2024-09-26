@@ -90,76 +90,75 @@ $(document).ready(function(){initNavTree('flc_8h_source.html',''); initResizable
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/******************************************************************************</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * (now owned by Analog Devices, Inc.),</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * is proprietary to Analog Devices, Inc. and its licensors.</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> ******************************************************************************/</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/* **** Includes **** */</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &quot;<a class="code" href="flc__regs_8h.html">flc_regs.h</a>&quot;</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">/***** Definitions *****/</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="group__flc.html#gad726ec4ae8a020fffe03fafaf0ff08a9">   48</a></span><span class="preprocessor">#define MXC_FLASH_PAGE_MASK ~(MXC_FLASH_PAGE_SIZE - 1)</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="group__flc.html#gafd2d64053cfb7718540dabced58857f4">   51</a></span><span class="preprocessor">#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((uint32_t)page * MXC_FLASH_PAGE_SIZE))</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">/***** Function Prototypes *****/</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="group__flc.html#ga4438a5935d39b83da4233347eae6d6f7">   59</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga4438a5935d39b83da4233347eae6d6f7">MXC_FLC_Init</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="group__flc.html#ga851aa87519fefc63fc277f911a55f33f">   67</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga851aa87519fefc63fc277f911a55f33f">MXC_FLC_Busy</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="group__flc.html#ga3817e0275b8951c3422aec75d2f28214">   73</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga3817e0275b8951c3422aec75d2f28214">MXC_FLC_MassErase</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="group__flc.html#gaaf5fd272e07d05fc0795aa973084aa50">   80</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gaaf5fd272e07d05fc0795aa973084aa50">MXC_FLC_PageErase</a>(uint32_t address);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="group__flc.html#ga5994dccf72508c3ef7eda8998755878c">   90</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__flc.html#ga5994dccf72508c3ef7eda8998755878c">MXC_FLC_Read</a>(<span class="keywordtype">int</span> address, <span class="keywordtype">void</span> *buffer, <span class="keywordtype">int</span> len);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="group__flc.html#gaaa83caff02ab53aa09ab12b48c5a1239">  100</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gaaa83caff02ab53aa09ab12b48c5a1239">MXC_FLC_Write</a>(uint32_t address, uint32_t length, uint32_t *buffer);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="group__flc.html#ga2e3e0fa3a9a80fa12cf43e461983ca1e">  109</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga2e3e0fa3a9a80fa12cf43e461983ca1e">MXC_FLC_Write32</a>(uint32_t address, uint32_t data);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="group__flc.html#ga6211660734559601f026ef184b65a6e4">  118</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga6211660734559601f026ef184b65a6e4">MXC_FLC_Write128</a>(uint32_t address, uint32_t *data);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="group__flc.html#gac2d98bf97e6b2b94cd2ea149758ac8fb">  126</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gac2d98bf97e6b2b94cd2ea149758ac8fb">MXC_FLC_EnableInt</a>(uint32_t flags);</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="group__flc.html#gacd5723a6d7273850061b8e4cc7a94439">  134</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gacd5723a6d7273850061b8e4cc7a94439">MXC_FLC_DisableInt</a>(uint32_t flags);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="group__flc.html#gab237155e3b0c9a017f04e1a8bed88eae">  140</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gab237155e3b0c9a017f04e1a8bed88eae">MXC_FLC_GetFlags</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="group__flc.html#gac1be050abb30820d378f242576a26cd9">  149</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gac1be050abb30820d378f242576a26cd9">MXC_FLC_ClearFlags</a>(uint32_t flags);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="group__flc.html#gaac19ba67e8c861997820691c44918a78">  156</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gaac19ba67e8c861997820691c44918a78">MXC_FLC_UnlockInfoBlock</a>(uint32_t address);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="group__flc.html#gad0243464f9a1567d1f4abaabf60cf012">  163</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gad0243464f9a1567d1f4abaabf60cf012">MXC_FLC_LockInfoBlock</a>(uint32_t address);</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by </span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Analog Devices, Inc.),</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * Copyright (C) 2023-2024 Analog Devices, Inc.</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/* **** Includes **** */</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &quot;<a class="code" href="flc__regs_8h.html">flc_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/***** Definitions *****/</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="group__flc.html#gad726ec4ae8a020fffe03fafaf0ff08a9">   47</a></span><span class="preprocessor">#define MXC_FLASH_PAGE_MASK ~(MXC_FLASH_PAGE_SIZE - 1)</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="group__flc.html#gafd2d64053cfb7718540dabced58857f4">   50</a></span><span class="preprocessor">#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((uint32_t)page * MXC_FLASH_PAGE_SIZE))</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">/***** Function Prototypes *****/</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="group__flc.html#ga4438a5935d39b83da4233347eae6d6f7">   58</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga4438a5935d39b83da4233347eae6d6f7">MXC_FLC_Init</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="group__flc.html#ga851aa87519fefc63fc277f911a55f33f">   66</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga851aa87519fefc63fc277f911a55f33f">MXC_FLC_Busy</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="group__flc.html#ga3817e0275b8951c3422aec75d2f28214">   72</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga3817e0275b8951c3422aec75d2f28214">MXC_FLC_MassErase</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group__flc.html#gaaf5fd272e07d05fc0795aa973084aa50">   79</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gaaf5fd272e07d05fc0795aa973084aa50">MXC_FLC_PageErase</a>(uint32_t address);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="group__flc.html#ga5994dccf72508c3ef7eda8998755878c">   89</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__flc.html#ga5994dccf72508c3ef7eda8998755878c">MXC_FLC_Read</a>(<span class="keywordtype">int</span> address, <span class="keywordtype">void</span> *buffer, <span class="keywordtype">int</span> len);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="group__flc.html#gaaa83caff02ab53aa09ab12b48c5a1239">   99</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gaaa83caff02ab53aa09ab12b48c5a1239">MXC_FLC_Write</a>(uint32_t address, uint32_t length, uint32_t *buffer);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="group__flc.html#ga2e3e0fa3a9a80fa12cf43e461983ca1e">  108</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga2e3e0fa3a9a80fa12cf43e461983ca1e">MXC_FLC_Write32</a>(uint32_t address, uint32_t data);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="group__flc.html#ga6211660734559601f026ef184b65a6e4">  117</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#ga6211660734559601f026ef184b65a6e4">MXC_FLC_Write128</a>(uint32_t address, uint32_t *data);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="group__flc.html#gac2d98bf97e6b2b94cd2ea149758ac8fb">  125</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gac2d98bf97e6b2b94cd2ea149758ac8fb">MXC_FLC_EnableInt</a>(uint32_t flags);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="group__flc.html#gacd5723a6d7273850061b8e4cc7a94439">  133</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gacd5723a6d7273850061b8e4cc7a94439">MXC_FLC_DisableInt</a>(uint32_t flags);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="group__flc.html#gab237155e3b0c9a017f04e1a8bed88eae">  139</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gab237155e3b0c9a017f04e1a8bed88eae">MXC_FLC_GetFlags</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="group__flc.html#gac1be050abb30820d378f242576a26cd9">  148</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gac1be050abb30820d378f242576a26cd9">MXC_FLC_ClearFlags</a>(uint32_t flags);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="group__flc.html#gaac19ba67e8c861997820691c44918a78">  155</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gaac19ba67e8c861997820691c44918a78">MXC_FLC_UnlockInfoBlock</a>(uint32_t address);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="group__flc.html#gad0243464f9a1567d1f4abaabf60cf012">  162</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__flc.html#gad0243464f9a1567d1f4abaabf60cf012">MXC_FLC_LockInfoBlock</a>(uint32_t address);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>}</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_</span></div>
 <div class="ttc" id="aflc__regs_8h_html"><div class="ttname"><a href="flc__regs_8h.html">flc_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the FLC Peripheral Module.</div></div>
 <div class="ttc" id="agroup__flc_html_ga2e3e0fa3a9a80fa12cf43e461983ca1e"><div class="ttname"><a href="group__flc.html#ga2e3e0fa3a9a80fa12cf43e461983ca1e">MXC_FLC_Write32</a></div><div class="ttdeci">int MXC_FLC_Write32(uint32_t address, uint32_t data)</div><div class="ttdoc">Writes the specified 32-bit value to flash.</div></div>
 <div class="ttc" id="agroup__flc_html_ga3817e0275b8951c3422aec75d2f28214"><div class="ttname"><a href="group__flc.html#ga3817e0275b8951c3422aec75d2f28214">MXC_FLC_MassErase</a></div><div class="ttdeci">int MXC_FLC_MassErase(void)</div><div class="ttdoc">Erases the entire flash array.</div></div>
@@ -181,7 +180,7 @@ $(document).ready(function(){initNavTree('flc_8h_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_7e706e2ddc2451d8dedddaedfab11dd4.html">MAX32650</a></li><li class="navelem"><b>flc.h</b></li>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:45 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:45 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

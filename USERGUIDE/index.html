@@ -53,7 +53,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">MSDK User Guide</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">MSDK User Guide</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
         <ul>
@@ -209,7 +209,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#project-creation">Project Creation</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#option-1-copying-a-pre-made-project">Option 1.  Copying a Pre-Made Project</a>
+    <li class="toctree-l4"><a class="reference internal" href="#option-1-copying-a-pre-made-project">Option 1. Copying a Pre-Made Project</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#option-2-injecting">Option 2 - Injecting</a>
     </li>
@@ -283,7 +283,7 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-the-linker">Build Variables for the Linker</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-arm-cortex-m4-cores">Build Variables for Arm Cortex-M4 Cores</a>
+    <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-arm-cores">Build Variables for Arm Cores</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-risc-v-cores">Build Variables for RISC-V Cores</a>
     </li>
@@ -333,6 +333,8 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#cmsis-dsp-supported-parts">CMSIS-DSP Supported Parts</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cmsis-dsp-build-variables">CMSIS-DSP Build Variables</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#cordio-bluetooth-low-energy">Cordio Bluetooth Low Energy</a>
@@ -344,6 +346,12 @@
     <li class="toctree-l3"><a class="reference internal" href="#maxusb">MAXUSB</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#maxusb-supported-parts">MAXUSB Supported Parts</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tinyusb">TinyUSB</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#tinyusb-supported-parts">TinyUSB Supported Parts</a>
     </li>
         </ul>
     </li>
@@ -364,6 +372,8 @@
     <li class="toctree-l3"><a class="reference internal" href="#freertos">FreeRTOS</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#freertos-supported-parts">FreeRTOS Supported Parts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#freertos-build-variables">FreeRTOS Build Variables</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#freertos-plus">FreeRTOS-Plus</a>
     </li>
@@ -388,6 +398,8 @@
     <li class="toctree-l3"><a class="reference internal" href="#max32650-examples">MAX32650 Examples</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#max32655-examples">MAX32655 Examples</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#max32657-examples">MAX32657 Examples</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#max32660-examples">MAX32660 Examples</a>
     </li>
@@ -429,6 +441,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#spi-v2-library">SPI v2 Library</a>
         <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#spi-v2-supported-parts">SPI v2 Supported Parts</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#porting-projects-to-use-spi-v2">Porting Projects to use SPI v2</a>
     </li>
         </ul>
@@ -646,6 +660,7 @@
 <p><a href="https://www.analog.com/en/products/max32690.html"><strong>MAX32690</strong></a>:  Arm Cortex-M4 with FPU Microcontroller and Bluetooth LE 5 for Industrial and Wearables</p>
 <ul>
 <li><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html">MAX32690EVKIT</a></li>
+<li><a href="https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/ad-apard32690-sl.html">AD-APARD32690-SL</a></li>
 </ul>
 </li>
 </ul>
@@ -791,7 +806,7 @@ On MacOS, the installer is distributed inside a .dmg disk image file. Double-cli
 <p><img alt="Figure 8" src="../res/Fig8.jpg" /></p>
 </li>
 <li>
-<p>You should now see the contents of the installation directory populated with the MSDK.  </p>
+<p>You should now see the contents of the installation directory populated with the MSDK.</p>
 <p><img alt="Figure 10" src="../res/Fig10.jpg" /></p>
 <details class="warning" open="open">
 <summary>⚠️ <strong>Warning</strong></summary>
@@ -864,14 +879,14 @@ Options:
 <p>Follow the installer's command-line instructions to accept licenses and confirm installation size.</p>
 <details class="note">
 <summary>ℹ️ <strong>Note: Unattended Installations</strong></summary>
-<p>You can run the installer without any user input by auto-accepting all licenses, messages, and input. </p>
+<p>You can run the installer without any user input by auto-accepting all licenses, messages, and input.</p>
 <pre class="codehilite"><code class="language-shell">sudo ./MaximMicrosSDK_linux.run in --root ~/MaximSDK --accept-licenses --accept-messages --confirm-command
 </code></pre>
 
 </details>
 </li>
 <li>
-<p>(Ubuntu and MacOS) Change ownership of the installation folder with: </p>
+<p>(Ubuntu and MacOS) Change ownership of the installation folder with:</p>
 <pre class="codehilite"><code class="language-shell">sudo chown -R $(whoami):$(whoami) &lt;MSDK installation folder&gt;
 </code></pre>
 
@@ -1005,7 +1020,7 @@ drwxr-xr-x 112 username     username        12288 Jul 13 20:41 installerResource
 </ul>
 <h3 id="getting-started-with-visual-studio-code">Getting Started with Visual Studio Code</h3>
 <p>The MSDK includes Visual Studio Code ("VS Code") support through the <a href="https://github.com/MaximIntegratedTechSupport/VSCode-Maxim">VSCode-Maxim</a> project.</p>
-<p>This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in <a href="https://www.analog.com/en/education/education-library/videos/6313212752112.html">"Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"</a>. </p>
+<p>This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in <a href="https://www.analog.com/en/education/education-library/videos/6313212752112.html">"Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"</a>.</p>
 <p>For complete documentation, see the <a href="#visual-studio-code">Visual Studio Code</a> section of this User Guide.</p>
 <h4 id="setup-vs-code">Setup (VS Code)</h4>
 <p>The setup below only needs to be done once per MSDK <a href="#installation">installation</a>.</p>
@@ -1080,7 +1095,7 @@ For example, you might set <code>"MAXIM_PATH":"C:/MaximSDK"</code> on Windows an
 <p><img alt="Figure 16" src="../res/Fig16.jpg" /></p>
 </li>
 <li>
-<p>Set the <strong>Board Support Package</strong> to match your evaluation platform. In VS Code, this is done by editing the <code>.vscode/settings.json</code> file and setting the <code>"board"</code>  project configuration option.  </p>
+<p>Set the <strong>Board Support Package</strong> to match your evaluation platform. In VS Code, this is done by editing the <code>.vscode/settings.json</code> file and setting the <code>"board"</code>  project configuration option.</p>
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note</strong></summary>
 <p>See <a href="#board-support-packages">Board Support Packages</a> for more details and a table of values.</p>
@@ -1136,7 +1151,7 @@ For example, you might set <code>"MAXIM_PATH":"C:/MaximSDK"</code> on Windows an
 <hr />
 <h3 id="getting-started-with-eclipse">Getting Started with Eclipse</h3>
 <h4 id="setup-eclipse">Setup (Eclipse)</h4>
-<p>The only setup required to use Eclipse is to ensure that the "Eclipse" component has been selected during the <a href="#installation">MSDK installation</a>. If the MSDK is already installed, Eclipse can be retrieved using the <a href="#maintenance">Maintenance Tool</a>.  </p>
+<p>The only setup required to use Eclipse is to ensure that the "Eclipse" component has been selected during the <a href="#installation">MSDK installation</a>. If the MSDK is already installed, Eclipse can be retrieved using the <a href="#maintenance">Maintenance Tool</a>.</p>
 <p>This section is an Eclipse "quick-start" that walks through creating, building, and running a project. For complete documentation, see the <a href="#eclipse">Eclipse</a> section of this User Guide.</p>
 <h4 id="building-and-running-a-project-eclipse">Building and Running a Project (Eclipse)</h4>
 <ol>
@@ -1211,7 +1226,7 @@ For example, you might set <code>"MAXIM_PATH":"C:/MaximSDK"</code> on Windows an
 <p>This command can also be added to shell startup scripts (<code>~/.bashrc</code>, <code>~/.zshrc</code>, etc.) to automate the environment setup.</p>
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note: Automatic Updates</strong></summary>
-<p><code>setenv.sh</code> will automatically check for available updates to the MSDK.  This can be permanently disabled by following its prompt on startup, or by deleting/moving the <code>updates.sh</code> script in the root directory of the MSDK installation. </p>
+<p><code>setenv.sh</code> will automatically check for available updates to the MSDK.  This can be permanently disabled by following its prompt on startup, or by deleting/moving the <code>updates.sh</code> script in the root directory of the MSDK installation.</p>
 <p><img alt="Figure 51" src="../res/Fig51.jpg" /></p>
 </details>
 <h6 id="manual-setup">Manual Setup</h6>
@@ -1461,7 +1476,7 @@ shutdown command invoked
 <h4 id="arm-core-debugging">Arm Core Debugging</h4>
 <ol>
 <li>
-<p>Run the <strong><code>flash</code></strong>  <a href="#build-tasks">build task</a>.  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.  </p>
+<p>Run the <strong><code>flash</code></strong>  <a href="#build-tasks">build task</a>.  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.</p>
 <p><strong>Flashing does not happen automatically when launching the debugger</strong>. This is an intentional design choice for VS Code to allow the debugger to quickly restart the program under debug without a lengthy re-flash procedure.</p>
 <p><img alt="Figure 19" src="../res/Fig19.jpg" /></p>
 </li>
@@ -1525,7 +1540,7 @@ shutdown command invoked
 </ol>
 <p>See the <a href="https://github.com/Marus/cortex-debug/wiki/Disassembly-Debugging">Cortex-Debug Wiki</a> for more details.</p>
 <h4 id="dual-core-debugging">Dual Core Debugging</h4>
-<p>For microcontrollers with <em>both</em> an Arm M4 and a RISC-V core, the <em>GDB (RISC-V)</em> launch profile is provided to enable RISC-V debugging. </p>
+<p>For microcontrollers with <em>both</em> an Arm M4 and a RISC-V core, the <em>GDB (RISC-V)</em> launch profile is provided to enable RISC-V debugging.</p>
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note</strong></summary>
 <p>The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the <code>-riscv</code> suffix in the project's folder name.</p>
@@ -1572,7 +1587,7 @@ shutdown command invoked
 </li>
 </ol>
 <h3 id="project-settings">Project Settings</h3>
-<p><code>.vscode/settings.json</code> is the main project configuration file.  Values set here are parsed into the other .json config files.  </p>
+<p><code>.vscode/settings.json</code> is the main project configuration file.  Values set here are parsed into the other .json config files.</p>
 <p><strong>When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -&gt; Reload Window (or alternatively restarted completely) to force a re-parse.</strong></p>
 <p><img alt="Reload Window" src="https://raw.githubusercontent.com/analogdevicesinc/VSCode-Maxim/main/img/reload_window.JPG" /></p>
 <p>The default project configuration should work for most use cases as long as <a href="#target"><code>"target"</code></a> and <a href="#board"><code>"board"</code></a> are set correctly.</p>
@@ -1583,7 +1598,7 @@ shutdown command invoked
 <p>The following configuration options are available:</p>
 <h4 id="maxim_path"><code>"MAXIM_PATH"</code></h4>
 <ul>
-<li>This option must point to the root installation directory of the MSDK.  </li>
+<li>This option must point to the root installation directory of the MSDK.</li>
 <li>It should be placed in the <em>global</em> user settings.json file during first-time VSCode-Maxim setup.  See <a href="#getting-started-with-visual-studio-code">Getting Started with Visual Studio Code</a>.</li>
 </ul>
 <h4 id="target"><code>"target"</code></h4>
@@ -1608,7 +1623,7 @@ shutdown command invoked
 </ul>
 <h4 id="program_file"><code>"program_file"</code></h4>
 <ul>
-<li>Sets the name of the file to flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  </li>
+<li>Sets the name of the file to flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.</li>
 <li>File extension must be included.</li>
 <li>Default value: <code>"${config:project_name}.elf"</code></li>
 </ul>
@@ -1698,7 +1713,7 @@ shutdown command invoked
 <p>To add additional search paths :</p>
 <ol>
 <li>
-<p>Open the <code>.vscode/settings.json</code> file.  </p>
+<p>Open the <code>.vscode/settings.json</code> file.</p>
 </li>
 <li>
 <p>Add the include path(s) to the <code>C_Cpp.default.includePath</code> list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.</p>
@@ -1709,7 +1724,7 @@ shutdown command invoked
 </ol>
 <h3 id="project-creation">Project Creation</h3>
 <h4 id="option-1-copying-a-pre-made-project">Option 1.  Copying a Pre-Made Project</h4>
-<p>Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.  </p>
+<p>Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.</p>
 <p>The release package for this project (Located at <code>Tools/VSCode-Maxim</code> in the MSDK) contains a <code>New_Project</code> folder designed for such purposes. Additionally, any of the VS Code-enabled Example projects can be copied from the MSDK.</p>
 <ol>
 <li>
@@ -1846,10 +1861,10 @@ shutdown command invoked
 <h3 id="building-a-project">Building a Project</h3>
 <ol>
 <li>
-<p>Ensure that the Eclipse is set to the <strong>C/C++ perspective</strong> (top right).  </p>
+<p>Ensure that the Eclipse is set to the <strong>C/C++ perspective</strong> (top right).</p>
 </li>
 <li>
-<p>Select the correct project in the <strong>Launch Configuration</strong> dropdown. </p>
+<p>Select the correct project in the <strong>Launch Configuration</strong> dropdown.</p>
 </li>
 <li>
 <p>Use the <strong>Build</strong> hammer button (top left) to build the project.</p>
@@ -1914,7 +1929,7 @@ shutdown command invoked
 <li>
 <p>To <em>persistently</em> the BSP, set the <strong><code>BOARD</code></strong> <em><a href="#build-configuration-variables">Build Configuration Variable</a></em> by editing the <strong>project.mk</strong> that can be found inside each project.</p>
 <pre class="codehilite"><code class="language-makefile"># This file can be used to set build configuration
-# variables. These variables are defined in a file called 
+# variables. These variables are defined in a file called
 # &quot;Makefile&quot; that is located next to this one.
 
 # For instructions on how to use this system, see
@@ -1970,7 +1985,7 @@ BOARD=FTHR_RevA # Set the BSP for the MAX78000FTHR
 </details>
 <ol>
 <li>
-<p><a href="#building-on-the-command-line">Build</a> the project.  </p>
+<p><a href="#building-on-the-command-line">Build</a> the project.</p>
 </li>
 <li>
 <p>Connect a debug adapter between the host PC and the evaluation platform. For more detailed instructions on this hardware setup, refer to the evaluation platform's Datasheet and Quick-Start Guide, which are available on its <a href="https://analog.com">analog.com</a> product page.</p>
@@ -2032,13 +2047,13 @@ shutdown command invoked
 <summary><strong>ℹ️ <code>-s $MAXIM_PATH/Tools/OpenOCD/scripts</code></strong></summary>
 This option tells OpenOCD to search the <code>Tools/OpenOCD/scripts</code> folder of the MSDK installation for files.<details class="warning" open="open">
 <summary><strong>⚠️ Warning: Windows</strong></summary>
-On Windows you should use <code>%MAXIM_PATH%</code> (Command Prompt) or <code>$env:MAXIM_PATH</code> (PowerShell) to dereference the <code>MAXIM_PATH</code> environment variable </details>
+On Windows you should use <code>%MAXIM_PATH%</code> (Command Prompt) or <code>$env:MAXIM_PATH</code> (PowerShell) to dereference the <code>MAXIM_PATH</code> environment variable</details>
 </details>
 </li>
 <li>
 <details class="note" open="open">
 <summary><strong>ℹ️ <code>-f target/&lt;target&gt;.cfg</code></strong></summary>
-<p>This option loads an OpenOCD config file for the <em>target microcontroller</em>.  Supported options can be found in the <code>Tools/OpenOCD/scripts/target</code> folder.  </p>
+<p>This option loads an OpenOCD config file for the <em>target microcontroller</em>.  Supported options can be found in the <code>Tools/OpenOCD/scripts/target</code> folder.</p>
 <details class="warning" open="open">
 <summary>⚠️<strong>Change <code>&lt;target&gt;</code> to match the target micro</strong></summary>
 </details>
@@ -2100,7 +2115,7 @@ Info : Listening on port 4444 for telnet connections
 <p><a href="#flashing-on-the-command-line">Flash</a> the program using the <strong>Flash and Hold</strong> command above.</p>
 </li>
 <li>
-<p>Launch an <strong><em>new</em> separate terminal</strong>. </p>
+<p>Launch an <strong><em>new</em> separate terminal</strong>.</p>
 <details class="warning" open="open">
 <summary>⚠️ On <strong>Windows</strong>, use the MinGW shortcut or <code>Tools/MSYS2/msys.bat</code> file to launch the MSYS2 terminal.</summary>
 </details>
@@ -2196,7 +2211,7 @@ Breakpoint 1, main () at main.c:62
 
 </li>
 <li>
-<p>(Optional) Continue exercising the debugger. </p>
+<p>(Optional) Continue exercising the debugger.</p>
 </li>
 <li>
 <p>Quit GDB.</p>
@@ -2355,7 +2370,7 @@ VARIABLE+=VALUE2
 <p>For example, to enable hardware floating-point acceleration for a project, the <strong><code>MFLOAT_ABI</code></strong> configuration variable can be used with a value of <strong><code>hard</code></strong>. The contents of <strong>project.mk</strong> might then look as follows:</p>
 <p>(<em>Inside project.mk</em>)</p>
 <pre class="codehilite"><code class="language-make"># This file can be used to set build configuration
-# variables. These variables are defined in a file called 
+# variables. These variables are defined in a file called
 # &quot;Makefile&quot; that is located next to this one.
 
 # For instructions on how to use this system, see
@@ -2520,7 +2535,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 </tr>
 </tbody>
 </table>
-<h4 id="build-variables-for-arm-cortex-m4-cores">Build Variables for Arm Cortex-M4 Cores</h4>
+<h4 id="build-variables-for-arm-cores">Build Variables for Arm Cores</h4>
 <p>The following build variables are used to control options specific to the Arm Cortex-M4 core available.  They are available on all microcontrollers, and for all projects unless that project is built for a RISC-V core.</p>
 <table>
 <thead>
@@ -2545,6 +2560,16 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td><code>DEFAULT_WARNING_FLAGS</code></td>
 <td>Override the default warning flags</td>
 <td>Default flags controlling warning output are added in <code>Libraries/CMSIS/Device/Maxim/GCC/gcc.mk</code>.  These can be disabled entirely by setting this variable to empty (<code>DEFAULT_OPTIMIZE_FLAGS=</code>).</td>
+</tr>
+<tr>
+<td><code>MCPU</code></td>
+<td>Set the processor type</td>
+<td>Set the target ARM processor.  Directly maps to <code>-mcpu</code> under <a href="https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html">ARM Options</a>.  This flag is handled by the MSDK and not typically changed manually.</td>
+</tr>
+<tr>
+<td><code>MFPU</code></td>
+<td>Set the FPU architecture</td>
+<td>Set the floating point unit (FPU) architecture.  Directly maps to <code>-mfpu</code> under <a href="https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html">ARM Options</a>.  This flag is handled by the MSDK and not typically changed manually.</td>
 </tr>
 </tbody>
 </table>
@@ -2643,6 +2668,11 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td>This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to <code>0</code> to disable or <code>1</code> to enable.</td>
 </tr>
 <tr>
+<td><code>LIB_TINY_USB</code></td>
+<td>Include the TinyUSB library</td>
+<td>This option toggles the inclusion of the TinyUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to <code>0</code> to disable or <code>1</code> to enable.</td>
+</tr>
+<tr>
 <td><code>LIB_SDHC</code></td>
 <td>Include the SDHC library</td>
 <td>This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the <a href="http://elm-chan.org/fsw/ff/00index_e.html">FatFS</a> library, which implements a generic FAT filesystem.</td>
@@ -2651,6 +2681,11 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td><code>LIB_CLI</code></td>
 <td>Include the MSDK's built-in CLI library</td>
 <td>This option toggles the MSDK's built-in CLI library, which can be used to process received commands over UART.</td>
+</tr>
+<tr>
+<td><code>LIB_USS</code></td>
+<td>Include the USS Library</td>
+<td>This option toggles the Unified Security Software library.  It is only available via NDA.</td>
 </tr>
 </tbody>
 </table>
@@ -2735,7 +2770,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 </table>
 <h2 id="board-support-packages">Board Support Packages</h2>
 <p>The MSDK supports multiple parts and evaluation platforms (see <a href="#supported-parts">supported parts</a>) through <strong>"Board Support Packages" (BSPs)</strong>. For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.</p>
-<p>The role of a <em>BSP</em> is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms. The BSP abstraction layer also improves code portability to custom devices.  </p>
+<p>The role of a <em>BSP</em> is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms. The BSP abstraction layer also improves code portability to custom devices.</p>
 <details class="note" open="open">
 <summary>ℹ️ <strong>Note</strong></summary>
 <p>The first task when opening or creating any project is to ensure the BSP is set correctly.</p>
@@ -2851,6 +2886,11 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td><code>EvKit_V1</code></td>
 </tr>
 <tr>
+<td><a href="https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/ad-apard32690-sl.html">AD-APARD32690-SL</a></td>
+<td><code>MAX32690</code></td>
+<td><code>APARD</code></td>
+</tr>
+<tr>
 <td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html">MAX78000EVKIT</a></td>
 <td><code>MAX78000</code></td>
 <td><code>EvKit_V1</code></td>
@@ -2889,7 +2929,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 * implemented by the application for early initializations. If a value other
 * than '0' is returned, the C runtime initialization will be skipped.
 *
-* You may over-ride this function in your program by defining a custom 
+* You may over-ride this function in your program by defining a custom
 *  PreInit(), but care should be taken to reproduce the initialization steps
 *  or a non-functional system may result.
 */
@@ -2908,7 +2948,7 @@ __weak int Board_Init(void)
 
 /* This function is called just before control is transferred to main().
 *
-* You may over-ride this function in your program by defining a custom 
+* You may over-ride this function in your program by defining a custom
 *  SystemInit(), but care should be taken to reproduce the initialization
 *  steps or a non-functional system may result.
 */
@@ -2948,7 +2988,7 @@ __weak void SystemInit(void)
 
 <p>The name of the BSP's root folder will be the string used with the <code>BOARD</code> <a href="#build-configuration-variables">build configuration variable</a> to select it for a project.  In the example above, one would use <code>BOARD = CustomBSP</code> to select it as the active BSP.</p>
 <h4 id="bsp-search-directory">BSP Search Directory</h4>
-<p>By default, the MSDK searches for BSPs in the <code>Libraries/Boards</code> folder for each microcontroller.  This can be changed using the <code>BSP_SEARCH_DIR</code> <a href="#build-configuration-variables">build configuration variable</a>, which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the <code>BOARD</code> variable in its search path.  </p>
+<p>By default, the MSDK searches for BSPs in the <code>Libraries/Boards</code> folder for each microcontroller.  This can be changed using the <code>BSP_SEARCH_DIR</code> <a href="#build-configuration-variables">build configuration variable</a>, which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the <code>BOARD</code> variable in its search path.</p>
 <p>For example, the configuration...</p>
 <pre class="codehilite"><code class="language-makefile"># project.mk
 
@@ -3103,7 +3143,7 @@ int main(void)
 </ul>
 </li>
 </ul>
-<p>The <em><strong>implementation</strong></em> files are further organized based on <em><strong>die type</strong></em> and <strong><em>hardware revision</em></strong>. This is worth noting when browsing or debugging through the drivers.  </p>
+<p>The <em><strong>implementation</strong></em> files are further organized based on <em><strong>die type</strong></em> and <strong><em>hardware revision</em></strong>. This is worth noting when browsing or debugging through the drivers.</p>
 <ul>
 <li>
 <p>The <strong><em>die type</em></strong> files follow the <strong><code>_ESXX</code></strong> , <strong><code>_MEXX</code></strong> , or <strong><code>_AIXX</code></strong> naming convention.</p>
@@ -3112,7 +3152,7 @@ int main(void)
 </ul>
 </li>
 <li>
-<p>The <strong><em>hardware revision</em></strong> files follow the <strong><code>_revX</code></strong> naming convention.  </p>
+<p>The <strong><em>hardware revision</em></strong> files follow the <strong><code>_revX</code></strong> naming convention.</p>
 <ul>
 <li>These files contain the <em>pure</em> driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.</li>
 </ul>
@@ -3196,11 +3236,33 @@ int main(void)
 <hr />
 <h3 id="cmsis-dsp">CMSIS-DSP</h3>
 <p>The CMSIS-DSP library provides a suite of common <strong>Digital Signal Processing <em>(DSP)</em></strong> functions that take advantage of hardware accelerated <em>Floating Point Unit (FPU)</em> available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the <strong>ARM-DSP</strong> <a href="https://github.com/analogdevicesinc/msdk/tree/main/Examples">Examples</a> folder for each microcontroller.</p>
-<p>Please refer to the <a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html">CMSIS-DSP official documentation</a> for more detailed documentation on the library functions and usage.</p>
+<p>Please refer to the <a href="https://arm-software.github.io/CMSIS-DSP/v1.16.2/index.html">CMSIS-DSP official documentation</a> for more detailed documentation on the library functions and usage.</p>
 <h4 id="cmsis-dsp-supported-parts">CMSIS-DSP Supported Parts</h4>
 <ul>
 <li>All microcontrollers with a Cortex M4 core are supported.</li>
 </ul>
+<h4 id="cmsis-dsp-build-variables">CMSIS-DSP Build Variables</h4>
+<table>
+<thead>
+<tr>
+<th>Configuration Variable</th>
+<th>Description</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>CMSIS_DSP_VERSION</code></td>
+<td>(Optional) Set the CMSIS-DSP version to use.</td>
+<td>Defaults to <code>1.16.2</code>, which is currently the only supported version.</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h3 id="cordio-bluetooth-low-energy">Cordio Bluetooth Low Energy</h3>
 <p>The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for microcontrollers with an integrated BLE controller.</p>
@@ -3214,12 +3276,23 @@ int main(void)
 </ul>
 <hr />
 <h3 id="maxusb">MAXUSB</h3>
-<p>The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC.</p>
+<p>The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC.  MAXUSB provides a finer level of control of USB events and classes than TinyUSB.</p>
 <h4 id="maxusb-supported-parts">MAXUSB Supported Parts</h4>
 <ul>
 <li>MAX32570</li>
 <li>MAX32650</li>
 <li>MAX32655 and MAX32656</li>
+<li>MAX32665-MAX32666</li>
+<li>MAX32690</li>
+<li>MAX78002</li>
+</ul>
+<hr />
+<h3 id="tinyusb">TinyUSB</h3>
+<p>The TinyUSB library provides a high-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC. **<a href="https://github.com/hathach/tinyusb">TinyUSB</a> provides a cross-platform USB stack for embedded systems, with a higher level of abstraction than MAXUSB,
+supporting most standard USB device classes.</p>
+<h4 id="tinyusb-supported-parts">TinyUSB Supported Parts</h4>
+<ul>
+<li>MAX32650</li>
 <li>MAX32665-MAX32666</li>
 <li>MAX32690</li>
 <li>MAX78002</li>
@@ -3294,6 +3367,23 @@ int main(void)
 <p><a href="https://www.freertos.org/index.html">FreeRTOS</a> is a Real-Time Operating System (RTOS), which offers basic abstractions for multi-tasking and an OS layer specifically targeted at embedded systems with real-time requirements.  The MSDK maintains an official support layer for the FreeRTOS kernel.  Official documentation can be found on the <a href="https://www.freertos.org/index.html">FreeRTOS website</a>.</p>
 <h4 id="freertos-supported-parts">FreeRTOS Supported Parts</h4>
 <p>FreeRTOS is supported by all parts in the MSDK.  See the <code>FreeRTOSDemo</code> example application.</p>
+<h4 id="freertos-build-variables">FreeRTOS Build Variables</h4>
+<table>
+<thead>
+<tr>
+<th>Configuration Variable</th>
+<th>Description</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FREERTOS_HEAP_TYPE</code></td>
+<td>Specify the method of heap allocation to use for the FreeRTOS API</td>
+<td>FreeRTOS provides options for the heap management alogirthms to optimize for memory size, speed, and risk of heap fragmentation. For more details, visit the <a href="https://www.freertos.org/a00111.html">FreeRTOS MemMang Docs</a>.  Acceptable values are <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, or <code>5</code>. The default value is <code>4</code> for heap_4.</td>
+</tr>
+</tbody>
+</table>
 <h4 id="freertos-plus">FreeRTOS-Plus</h4>
 <p><a href="https://www.freertos.org/FreeRTOS-Plus/index.html">FreeRTOS-Plus</a> is an additional library that implements addon functionality for the FreeRTOS kernel.  The MSDK maintains support for some, but not all, available addons.</p>
 <ul>
@@ -3368,11 +3458,6 @@ int main(void)
 <td>MAX32655<br>MAX32665<br>MAX32680<br>MAX32690</td>
 </tr>
 <tr>
-<td><strong>BLE_fcc</strong></td>
-<td>BLE project with simple serial console for FCC testing</td>
-<td>MAX32655<br>MAX32665<br>MAX32690</td>
-</tr>
-<tr>
 <td><strong>BLE_fit</strong></td>
 <td>Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.</td>
 <td>MAX32655<br>MAX32665<br>MAX32690</td>
@@ -3443,6 +3528,16 @@ int main(void)
 <td>MAX32665<br>MAX32672</td>
 </tr>
 <tr>
+<td><strong>Dual_core_sync_arm</strong></td>
+<td>A basic getting started program for the RISCV, run from the ARM</td>
+<td>MAX32655<br>MAX32690</td>
+</tr>
+<tr>
+<td><strong>Dual_core_sync_riscv</strong></td>
+<td>Dual-core synchronization demo code for RISC-V core.</td>
+<td>MAX32655<br>MAX32690</td>
+</tr>
+<tr>
 <td><strong>ECC</strong></td>
 <td>Demonstration of SRAM Error Correcting Code (ECC) features</td>
 <td>MAX32665<br>MAX78000<br>MAX78002</td>
@@ -3495,7 +3590,7 @@ int main(void)
 <tr>
 <td><strong>Hello_World</strong></td>
 <td>Hello World!</td>
-<td>MAX32520<br>MAX32650<br>MAX32655<br>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32675<br>MAX32680<br>MAX32690<br>MAX78000<br>MAX78002</td>
+<td>MAX32520<br>MAX32650<br>MAX32655<br>MAX32657<br>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32675<br>MAX32680<br>MAX32690<br>MAX78000<br>MAX78002</td>
 </tr>
 <tr>
 <td><strong>Hello_World-riscv</strong></td>
@@ -3531,6 +3626,11 @@ int main(void)
 <td><strong>I2S_DMA</strong></td>
 <td>I2S DMA Receiver Example</td>
 <td>MAX78000<br>MAX78002</td>
+</tr>
+<tr>
+<td><strong>I2S_DMA_Target</strong></td>
+<td>Main for I2S CODEC loopback</td>
+<td>MAX32690<br>MAX78000</td>
 </tr>
 <tr>
 <td><strong>ICC</strong></td>
@@ -3613,6 +3713,11 @@ int main(void)
 <td>MAX32650<br>MAX32665<br>MAX78002</td>
 </tr>
 <tr>
+<td><strong>SDHC_FTHR</strong></td>
+<td>read and write sdhc</td>
+<td>MAX32655<br>MAX78000</td>
+</tr>
+<tr>
 <td><strong>SDHC_Raw</strong></td>
 <td>read and write sdhc</td>
 <td>MAX32650<br>MAX32665<br>MAX78002</td>
@@ -3673,6 +3778,11 @@ int main(void)
 <td>MAX32650<br>MAX32655<br>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32675<br>MAX32680<br>MAX32690<br>MAX78000<br>MAX78002</td>
 </tr>
 <tr>
+<td><strong>UART_DMA</strong></td>
+<td>Main for UART with DMA example.</td>
+<td>MAX32650<br>MAX32655<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32690<br>MAX78000</td>
+</tr>
+<tr>
 <td><strong>UART_Wakeup</strong></td>
 <td>LP Serial Character Wake Up Example</td>
 <td>MAX32660<br>MAX32662</td>
@@ -3718,14 +3828,34 @@ int main(void)
 <td>MAX32650<br>MAX32655<br>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32675<br>MAX32680<br>MAX32690<br>MAX78000<br>MAX78002</td>
 </tr>
 <tr>
+<td><strong>cdc_msc</strong></td>
+<td>Empty Description</td>
+<td>MAX32650<br>MAX32665<br>MAX32690<br>MAX78002</td>
+</tr>
+<tr>
+<td><strong>cdc_msc_freertos</strong></td>
+<td>Empty Description</td>
+<td>MAX32650<br>MAX32665<br>MAX32690<br>MAX78002</td>
+</tr>
+<tr>
 <td><strong>facial_recognition</strong></td>
 <td>MAX78000 Feather Facial Recognition Demo</td>
 <td>MAX78000<br>MAX78002</td>
 </tr>
 <tr>
+<td><strong>hid_composite</strong></td>
+<td>Empty Description</td>
+<td>MAX32650<br>MAX32665<br>MAX32690<br>MAX78002</td>
+</tr>
+<tr>
 <td><strong>kws20_demo</strong></td>
 <td>Main for KWS20</td>
 <td>MAX78000<br>MAX78002</td>
+</tr>
+<tr>
+<td><strong>msc_dual_lun</strong></td>
+<td>Empty Description</td>
+<td>MAX32650<br>MAX32665<br>MAX32690<br>MAX78002</td>
 </tr>
 <tr>
 <td><strong>src</strong></td>
@@ -3794,6 +3924,11 @@ int main(void)
 <td><em>Local:</em><code>Examples/MAX32650/CLCD</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/CLCD">link</a></td>
 </tr>
 <tr>
+<td><strong>CLCD_FreeRTOS</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX32650/CLCD_FreeRTOS</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/CLCD_FreeRTOS">link</a></td>
+</tr>
+<tr>
 <td><strong>EMCC</strong></td>
 <td>External Memory Cache Controller (EMCC) using SPID, writing to external SRAM</td>
 <td><em>Local:</em><code>Examples/MAX32650/EMCC</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32650/EMCC">link</a></td>
@@ -3822,19 +3957,19 @@ int main(void)
 </thead>
 <tbody>
 <tr>
+<td><strong>ARM</strong></td>
+<td>ARM Core portion of the 2048 Game.</td>
+<td><em>Local:</em><code>Examples/MAX32655/Demo_2048/ARM</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Demo_2048/ARM">link</a></td>
+</tr>
+<tr>
 <td><strong>BLE_fit_FreeRTOS</strong></td>
 <td>BLE_fit_FreeRTOS</td>
 <td><em>Local:</em><code>Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Bluetooth/BLE_fit_FreeRTOS">link</a></td>
 </tr>
 <tr>
-<td><strong>Dual_core_sync_arm</strong></td>
-<td>A basic getting started program for the RISCV, run from the ARM</td>
-<td><em>Local:</em><code>Examples/MAX32655/Dual_core_sync/Dual_core_sync_arm</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Dual_core_sync/Dual_core_sync_arm">link</a></td>
-</tr>
-<tr>
-<td><strong>Dual_core_sync_riscv</strong></td>
-<td>Dual-core synchronization demo code for RISC-V core.</td>
-<td><em>Local:</em><code>Examples/MAX32655/Dual_core_sync/Dual_core_sync_riscv</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Dual_core_sync/Dual_core_sync_riscv">link</a></td>
+<td><strong>BLT</strong></td>
+<td>Bluetooth data server that advertises as "OTAS" and accepts connection requests.</td>
+<td><em>Local:</em><code>Examples/MAX32655/Bluetooth/BLE_HCI_DFU/BLT</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Bluetooth/BLE_HCI_DFU/BLT">link</a></td>
 </tr>
 <tr>
 <td><strong>External_Flash</strong></td>
@@ -3850,6 +3985,39 @@ int main(void)
 <td><strong>I2C_Sensor_ADT7420</strong></td>
 <td>I2C generic sensor Example</td>
 <td><em>Local:</em><code>Examples/MAX32655/I2C_Sensor_ADT7420</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/I2C_Sensor_ADT7420">link</a></td>
+</tr>
+<tr>
+<td><strong>RISCV</strong></td>
+<td>RISCV Portion of the 2048 Game.</td>
+<td><em>Local:</em><code>Examples/MAX32655/Demo_2048/RISCV</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Demo_2048/RISCV">link</a></td>
+</tr>
+<tr>
+<td><strong>Second_App</strong></td>
+<td>Bluetooth data server that advertises as "OTAS" and accepts connection requests.</td>
+<td><em>Local:</em><code>Examples/MAX32655/Bluetooth/BLE_HCI_DFU/Second_App</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32655/Bluetooth/BLE_HCI_DFU/Second_App">link</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="max32657-examples">MAX32657 Examples</h3>
+<p>In addition to the <a href="#common-examples">Common Examples</a>, the following examples are available specifically for the MAX32657.</p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Description</th>
+<th>MSDK Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NonSecure</strong></td>
+<td>Hello World - Non-Secure.</td>
+<td><em>Local:</em><code>Examples/MAX32657/Hello_World_TZ/NonSecure</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32657/Hello_World_TZ/NonSecure">link</a></td>
+</tr>
+<tr>
+<td><strong>Secure</strong></td>
+<td>Hello World - Secure.</td>
+<td><em>Local:</em><code>Examples/MAX32657/Hello_World_TZ/Secure</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32657/Hello_World_TZ/Secure">link</a></td>
 </tr>
 </tbody>
 </table>
@@ -3921,6 +4089,11 @@ int main(void)
 <td><em>Local:</em><code>Examples/MAX32665/Bluetooth/BLE_LR_Peripheral</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/Bluetooth/BLE_LR_Peripheral">link</a></td>
 </tr>
 <tr>
+<td><strong>Core0</strong></td>
+<td>The main application for Core 0.</td>
+<td><em>Local:</em><code>Examples/MAX32665/Dual_Core/Core0</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/Dual_Core/Core0">link</a></td>
+</tr>
+<tr>
 <td><strong>HTMR</strong></td>
 <td>Configures and starts the HTMR and demonstrates the use of the alarms.</td>
 <td><em>Local:</em><code>Examples/MAX32665/HTMR</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32665/HTMR">link</a></td>
@@ -3981,6 +4154,11 @@ int main(void)
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><strong>ADC_DMA_RMS</strong></td>
+<td>Empty Description</td>
+<td><em>Local:</em><code>Examples/MAX32672/ADC_DMA_RMS</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32672/ADC_DMA_RMS">link</a></td>
+</tr>
 <tr>
 <td><strong>Comparator</strong></td>
 <td>ADC comparator example</td>
@@ -4050,6 +4228,11 @@ int main(void)
 <td>Bootloader</td>
 <td><em>Local:</em><code>Examples/MAX32690/Bluetooth/Bootloader</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32690/Bluetooth/Bootloader">link</a></td>
 </tr>
+<tr>
+<td><strong>SPI_v2</strong></td>
+<td>SPI Controller Demo</td>
+<td><em>Local:</em><code>Examples/MAX32690/SPI_v2</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX32690/SPI_v2">link</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="max78000-examples">MAX78000 Examples</h3>
@@ -4072,16 +4255,6 @@ int main(void)
 <td><strong>I2C_ADXL343</strong></td>
 <td>Empty Description</td>
 <td><em>Local:</em><code>Examples/MAX78000/I2C_ADXL343</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/I2C_ADXL343">link</a></td>
-</tr>
-<tr>
-<td><strong>I2S_DMA_Target</strong></td>
-<td>Main for I2S CODEC loopback</td>
-<td><em>Local:</em><code>Examples/MAX78000/I2S_DMA_Target</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/I2S_DMA_Target">link</a></td>
-</tr>
-<tr>
-<td><strong>SDHC_FTHR</strong></td>
-<td>read and write sdhc</td>
-<td><em>Local:</em><code>Examples/MAX78000/SDHC_FTHR</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78000/SDHC_FTHR">link</a></td>
 </tr>
 <tr>
 <td><strong>SDHC_weights</strong></td>
@@ -4259,7 +4432,7 @@ int main(void)
 <tr>
 <td><strong>USB_MassStorage_ThroughPut</strong></td>
 <td>USB Mass Storage Class example</td>
-<td><em>Local:</em><code>Examples/MAX78002/USB/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/USB/USB_MassStorage_ThroughPut">link</a></td>
+<td><em>Local:</em><code>Examples/MAX78002/USB/MAXUSB/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/analogdevicesinc/msdk/tree/release/Examples/MAX78002/USB/MAXUSB/USB_MassStorage_ThroughPut">link</a></td>
 </tr>
 <tr>
 <td><strong>cifar-100-effnet2</strong></td>
@@ -4362,7 +4535,7 @@ It’s important to note some fundamental limitations of debugging the MSDK's su
 </li>
 </ol>
 <h4 id="how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed">How to Unlock a Microcontroller That Can No Longer Be Programmed</h4>
-<p>The <a href="#debug-limitations">debug limitations</a> of the MSDK's supported parts may make some devices difficult to connect to if bad firmware has been flashed.  In such cases, the device can attempt to be recovered from the “locked out” firmware by mass erasing the application code from the flash memory bank.  Note that this does not always work.  Success will depend on a small window being available for the debugger to connect immediately after reset. </p>
+<p>The <a href="#debug-limitations">debug limitations</a> of the MSDK's supported parts may make some devices difficult to connect to if bad firmware has been flashed.  In such cases, the device can attempt to be recovered from the “locked out” firmware by mass erasing the application code from the flash memory bank.  Note that this does not always work.  Success will depend on a small window being available for the debugger to connect immediately after reset.</p>
 <p>Before following the procedure below, ensure that you have updated the PICO debugger firmware to the latest version. See <a href="#updating-the-max32625pico-pico-debug-adapter-firmware">Updating the MAX32625PICO (PICO) Debug Adapter Firmware</a></p>
 <h5 id="unlock-with-vs-code">Unlock with VS Code</h5>
 <p>For VS Code users, the <code>"erase flash"</code> <a href="#build-tasks">build task</a> can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.</p>
@@ -4444,6 +4617,12 @@ It’s important to note some fundamental limitations of debugging the MSDK's su
 <li>Still supports SPI v1 function prototypes for backwards-compatibility.</li>
 <li>Bug fixes from the SPI v1 API.</li>
 </ul>
+<h4 id="spi-v2-supported-parts">SPI v2 Supported Parts</h4>
+<ul>
+<li>MAX32572</li>
+<li>MAX32690</li>
+<li>MAX78002</li>
+</ul>
 <h4 id="porting-projects-to-use-spi-v2">Porting Projects to use SPI v2</h4>
 <p>The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set the <code>MXC_SPI_VERSION</code> <a href="#build-configuration-variables">build configuration variable</a> to <code>v2</code> (case sensitive) use the SPI v2 API.</p>
 <p>This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference being the SPI DMA interrupt handling (see <a href="#spi-dma-interrupt-handling">SPI DMA Interrupt Handling</a> section below for more info).</p>
@@ -4451,22 +4630,22 @@ It’s important to note some fundamental limitations of debugging the MSDK's su
 <h5 id="spi-init-function">SPI Init Function</h5>
 <p>The input parameters for the <code>MXC_SPI_Init(...)</code> function were updated in SPI v2 to allow for more user-selectable options during initialization. This should not cause any errors or behavioral differences with the <code>MXC_SPI_Init(...)</code> function when switching between SPI v1 and SPI v2 builds as the input parameters were essentially re-mapped to more descriptive names.</p>
 <p>SPI v1:</p>
-<pre class="codehilite"><code class="language-c">int MXC_SPI_Init(mxc_spi_regs_t *spi, 
-                int masterMode, 
-                int quadModeUsed, 
-                int numSlaves, 
-                unsigned ssPolarity, 
-                unsigned int hz, 
+<pre class="codehilite"><code class="language-c">int MXC_SPI_Init(mxc_spi_regs_t *spi,
+                int masterMode,
+                int quadModeUsed,
+                int numSlaves,
+                unsigned ssPolarity,
+                unsigned int hz,
                 mxc_spi_pins_t pins)
 </code></pre>
 
 <p>SPI v2:</p>
-<pre class="codehilite"><code class="language-c">int MXC_SPI_Init(mxc_spi_regs_t *spi, 
-                mxc_spi_type_t controller_target, 
-                mxc_spi_interface_t if_mode, 
-                int numTargets, 
-                uint8_t ts_active_pol_mask, 
-                uint32_t freq, 
+<pre class="codehilite"><code class="language-c">int MXC_SPI_Init(mxc_spi_regs_t *spi,
+                mxc_spi_type_t controller_target,
+                mxc_spi_interface_t if_mode,
+                int numTargets,
+                uint8_t ts_active_pol_mask,
+                uint32_t freq,
                 mxc_spi_pins_t pins)
 </code></pre>
 
@@ -4551,7 +4730,7 @@ void DMA_RX_IRQHandler(void)
 }
 </code></pre>
 
-<p>The SPI v1 API requires <code>MXC_DMA_Handler()</code> to be called in the TX and RX DMA Channel interrupt handlers. Following the generic vector names used in the previous section, the SPI v2 supplies its own TX/RX DMA Handler processing functions (<code>MXC_SPI_DMA_RX_Handler(...)</code> and <code>MXC_SPI_DMA_RX_Handler(...)</code>) that must be called within their appropriate DMA channel interrupt handlers. </p>
+<p>The SPI v1 API requires <code>MXC_DMA_Handler()</code> to be called in the TX and RX DMA Channel interrupt handlers. Following the generic vector names used in the previous section, the SPI v2 supplies its own TX/RX DMA Handler processing functions (<code>MXC_SPI_DMA_RX_Handler(...)</code> and <code>MXC_SPI_DMA_RX_Handler(...)</code>) that must be called within their appropriate DMA channel interrupt handlers.</p>
               
             </div>
           </div><footer>

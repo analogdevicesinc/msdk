@@ -2,6 +2,10 @@ var group__pwrseq =
 [
     [ "PWRSEQ_Registers", "group__pwrseq__registers.html", "group__pwrseq__registers" ],
     [ "mxc_lp_ovr_t", "group__pwrseq.html#ga428cd955ec855f628fc24392a67ecebb", null ],
+    [ "mxc_lp_riscv_clock_t", "group__pwrseq.html#gaba690d6ae20f2a39a5b4134924ab8194", [
+      [ "MXC_LP_RISCV_CLOCK_ISO", "group__pwrseq.html#ggaba690d6ae20f2a39a5b4134924ab8194a36eac1af796cd1c1436eb68c4dae0d83", null ],
+      [ "MXC_LP_RISCV_CLOCK_PCLK", "group__pwrseq.html#ggaba690d6ae20f2a39a5b4134924ab8194a882db9ddb8dfcfd8a69c8b0d18c8e5a2", null ]
+    ] ],
     [ "MXC_LP_BandgapIsOn", "group__pwrseq.html#gafc72801a23b9d57627a4b4ade155c672", null ],
     [ "MXC_LP_BandgapOff", "group__pwrseq.html#ga960db8332ff4373bbff4bf7ec01511bf", null ],
     [ "MXC_LP_BandgapOn", "group__pwrseq.html#ga0d3b3d7516a1df984fb5c978753af58d", null ],
@@ -25,5 +29,6 @@ var group__pwrseq =
     [ "MXC_LP_EnterPowerDownMode", "group__pwrseq.html#gacb2506005ae70c62dbf484ad733723dc", null ],
     [ "MXC_LP_EnterSleepMode", "group__pwrseq.html#gade48c6aae021a798a082c9e3ff143e50", null ],
     [ "MXC_LP_EnterStandbyMode", "group__pwrseq.html#ga6ac0edd342a999a54a4370a55ea13867", null ],
+    [ "MXC_LP_RISCVClockSelect", "group__pwrseq.html#ga14057bbb67f85d681d0a0d2d17d970f7", null ],
     [ "MXC_LP_SetOVR", "group__pwrseq.html#ga7b8a93fe1df6a0798d2b25b797cf4365", null ]
 ];

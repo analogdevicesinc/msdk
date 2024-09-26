@@ -208,6 +208,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga276dd82fa052f27cbc8d44101905f30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac14dbfc876d9d2342d1158b910a65b78"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gac14dbfc876d9d2342d1158b910a65b78">MXC_SPI_SetDefaultTXData</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, unsigned int defaultTXData)</td></tr>
 <tr class="separator:gac14dbfc876d9d2342d1158b910a65b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9df08a8b18d74c3c9a06ca5a328398d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaf9df08a8b18d74c3c9a06ca5a328398d">MXC_SPI_HWSSControl</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, int state)</td></tr>
+<tr class="separator:gaf9df08a8b18d74c3c9a06ca5a328398d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5d6132a2bfc754c950bd7083bec8561b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga5d6132a2bfc754c950bd7083bec8561b">MXC_SPI_DMA_Init</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)</td></tr>
 <tr class="separator:ga5d6132a2bfc754c950bd7083bec8561b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga156db190ebf27068466d2bcc7c8f6e62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga156db190ebf27068466d2bcc7c8f6e62">MXC_SPI_DMA_GetInitialized</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
@@ -1459,6 +1461,44 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gaf9df08a8b18d74c3c9a06ca5a328398d" name="gaf9df08a8b18d74c3c9a06ca5a328398d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf9df08a8b18d74c3c9a06ca5a328398d">&#9670;&nbsp;</a></span>MXC_SPI_HWSSControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_SPI_HWSSControl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable/Disable HW CS control feature. </p>
+<p >Depending on the application, the user might need to manually drive the slave select pin. The SPI driver automatically drives the SS pin and this function enables/disables this feature.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">state</td><td>Non-zero values: enable HW SS mode. Zero: disable HW SS mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga06f41ee71f978fd9ae872238d26fef28" name="ga06f41ee71f978fd9ae872238d26fef28"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga06f41ee71f978fd9ae872238d26fef28">&#9670;&nbsp;</a></span>MXC_SPI_Init()</h2>
 
@@ -2049,7 +2089,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 8 inclusive.</td></tr>
+    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 30 inclusive.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2165,7 +2205,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 8 inclusive.</td></tr>
+    <tr><td class="paramname">numBytes</td><td>The threshold level to set. This value must be between 0 and 30 inclusive.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2482,7 +2522,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

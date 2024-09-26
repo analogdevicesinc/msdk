@@ -172,6 +172,13 @@ Functions</h2></td></tr>
 <tr class="separator:gac4096ee4e50eab71c4b1416ea7261e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7df462131ad5fc9c6a6c55e0e5818f73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__dma__registers.html#structmxc__dma__ch__regs__t">mxc_dma_ch_regs_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#ga7df462131ad5fc9c6a6c55e0e5818f73">MXC_DMA_GetCHRegs</a> (int ch)</td></tr>
 <tr class="separator:ga7df462131ad5fc9c6a6c55e0e5818f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gada0f5c1d09741cea0c221ca246fe0e24"><td class="memItemLeft" align="right" valign="top"><a id="gada0f5c1d09741cea0c221ca246fe0e24" name="gada0f5c1d09741cea0c221ca246fe0e24"></a>
+dma_handler_t&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_DMA_Get_DMA_Handler</b> (mxc_dma_regs_t *dma)</td></tr>
+<tr class="separator:gada0f5c1d09741cea0c221ca246fe0e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad59d7fe1568d5d27fd94f0e188d37c3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#gad59d7fe1568d5d27fd94f0e188d37c3f">MXC_DMA_DMA0_Handler</a> (void)</td></tr>
+<tr class="separator:gad59d7fe1568d5d27fd94f0e188d37c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa86c81eeecd9a56335ac1523b626e27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#gafa86c81eeecd9a56335ac1523b626e27">MXC_DMA_DMA1_Handler</a> (void)</td></tr>
+<tr class="separator:gafa86c81eeecd9a56335ac1523b626e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3c6f6435f289fd6f9d7be55ea70309e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#ga3c6f6435f289fd6f9d7be55ea70309e0">MXC_DMA_Handler</a> (mxc_dma_regs_t *dma)</td></tr>
 <tr class="separator:ga3c6f6435f289fd6f9d7be55ea70309e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaca6dc59081250c75c74eedac0f3b88e3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#gaca6dc59081250c75c74eedac0f3b88e3">MXC_DMA_MemCpy</a> (mxc_dma_regs_t *dma, void *dest, void *src, int len, <a class="el" href="group__dma.html#gac179dfe4c1cf1b660432ced769ea6ec7">mxc_dma_complete_cb_t</a> callback)</td></tr>
@@ -835,6 +842,48 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 
 </div>
 </div>
+<a id="gad59d7fe1568d5d27fd94f0e188d37c3f" name="gad59d7fe1568d5d27fd94f0e188d37c3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad59d7fe1568d5d27fd94f0e188d37c3f">&#9670;&nbsp;</a></span>MXC_DMA_DMA0_Handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_DMA_DMA0_Handler </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupt handler function for DMA0. </p>
+<p >Used by some internal drivers that automatically assign DMA handlers. This is equivalent to "MXC_DMA_Handler(MXC_DMA0);" </p>
+
+</div>
+</div>
+<a id="gafa86c81eeecd9a56335ac1523b626e27" name="gafa86c81eeecd9a56335ac1523b626e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafa86c81eeecd9a56335ac1523b626e27">&#9670;&nbsp;</a></span>MXC_DMA_DMA1_Handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_DMA_DMA1_Handler </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupt handler function for DMA0. </p>
+<p >Used by some internal drivers that automatically assign DMA handlers. This is equivalent to "MXC_DMA_Handler(MXC_DMA1);" </p>
+
+</div>
+</div>
 <a id="ga38006a9d82d5e9e7c789a5aed86ea32d" name="ga38006a9d82d5e9e7c789a5aed86ea32d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga38006a9d82d5e9e7c789a5aed86ea32d">&#9670;&nbsp;</a></span>MXC_DMA_DoTransfer()</h2>
 
@@ -1346,7 +1395,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:58 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:59 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

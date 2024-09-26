@@ -1825,8 +1825,8 @@
         <topic label="MXC_CSI2_PAD_CDRX_PN_L3" href="group__csi2.html#gga432c633fa93a084f9018680c989225a7a667f6dbdd1e6513eb0cf772d122fda6a"/>
         <topic label="MXC_CSI2_PAD_CDRX_PN_L4" href="group__csi2.html#gga432c633fa93a084f9018680c989225a7a77346ae060ba089a8bc382e4ba8fe72b"/>
       </topic>
-      <topic label="MXC_CSI2_CaptureFrame" href="group__csi2.html#ga1a89e1f701493409413fa0dc52fa4bc1"/>
-      <topic label="MXC_CSI2_CaptureFrameDMA" href="group__csi2.html#gaa6bb1f4f7cf974eb38b69f91990b456b"/>
+      <topic label="MXC_CSI2_CaptureFrame" href="group__csi2.html#gaa4e8f3e89285046454d344986726a3aa"/>
+      <topic label="MXC_CSI2_CaptureFrameDMA" href="group__csi2.html#ga079d2e6e479c8bbfb7769281bc273a69"/>
       <topic label="MXC_CSI2_CTRL_ClearFlags" href="group__csi2.html#ga7c8eff31f13963d63bb13c357439913b"/>
       <topic label="MXC_CSI2_CTRL_Config" href="group__csi2.html#ga9729dd230b2a6a2082f777b8ee067d7f"/>
       <topic label="MXC_CSI2_CTRL_DisableInt" href="group__csi2.html#ga9a77ce1c33daa260997fdc47843fcab8"/>
@@ -2190,7 +2190,7 @@
       <topic label="MXC_DMA_GetCHRegs" href="group__dma.html#ga7df462131ad5fc9c6a6c55e0e5818f73"/>
       <topic label="MXC_DMA_GetSrcDst" href="group__dma.html#ga02765dc397360c3c803df5d851b5f695"/>
       <topic label="MXC_DMA_GetSrcReload" href="group__dma.html#gae2dfa05453b55bc7379102c407f05235"/>
-      <topic label="MXC_DMA_Handler" href="group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6"/>
+      <topic label="MXC_DMA_Handler" href="group__dma.html#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d"/>
       <topic label="MXC_DMA_Init" href="group__dma.html#ga54d16d68250df9b7a99c2ab1cfd7c975"/>
       <topic label="MXC_DMA_MemCpy" href="group__dma.html#gafe7fe8d66927bef5f74347087dcd59bd"/>
       <topic label="MXC_DMA_ReleaseChannel" href="group__dma.html#ga7f4a2a29bbd6d59fa07b9298d08608c3"/>
@@ -2344,7 +2344,7 @@
       <topic label="MXC_FLC_DisableInt" href="group__flc.html#gacd5723a6d7273850061b8e4cc7a94439"/>
       <topic label="MXC_FLC_EnableInt" href="group__flc.html#gac2d98bf97e6b2b94cd2ea149758ac8fb"/>
       <topic label="MXC_FLC_GetFlags" href="group__flc.html#gab237155e3b0c9a017f04e1a8bed88eae"/>
-      <topic label="MXC_FLC_Init" href="group__flc.html#ga4c1f5379efb47ddf1a8a39389585164e"/>
+      <topic label="MXC_FLC_Init" href="group__flc.html#ga4438a5935d39b83da4233347eae6d6f7"/>
       <topic label="MXC_FLC_LockInfoBlock" href="group__flc.html#gad0243464f9a1567d1f4abaabf60cf012"/>
       <topic label="MXC_FLC_MassErase" href="group__flc.html#ga3817e0275b8951c3422aec75d2f28214"/>
       <topic label="MXC_FLC_PageErase" href="group__flc.html#gaaf5fd272e07d05fc0795aa973084aa50"/>
@@ -2701,6 +2701,10 @@
         <topic label="vssel" href="group__gpio.html#a717b92819b1b33b48303b9f819510eb7"/>
       </topic>
       <topic label="mxc_gpio_callback_fn" href="group__gpio.html#gacf8ba5a444349caba7cdbe2861ca06b0"/>
+      <topic label="mxc_gpio_config_lock_t" href="group__gpio.html#ga223b0de136d1427c05c661b1b2f1b8b8">
+        <topic label="MXC_GPIO_CONFIG_UNLOCKED" href="group__gpio.html#gga223b0de136d1427c05c661b1b2f1b8b8a910638c4741a5c7ef72c1ed587d9f510"/>
+        <topic label="MXC_GPIO_CONFIG_LOCKED" href="group__gpio.html#gga223b0de136d1427c05c661b1b2f1b8b8a09ceee924c4b845ac50eadf4f0680c49"/>
+      </topic>
       <topic label="mxc_gpio_drvstr_t" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">
         <topic label="MXC_GPIO_DRVSTR_0" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a693b43114c62adc1c8c3ddd100ba4e03"/>
         <topic label="MXC_GPIO_DRVSTR_1" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a61a7eee49be32e156bbf95152e5c5e1f"/>
@@ -2742,6 +2746,7 @@
       <topic label="MXC_GPIO_Config" href="group__gpio.html#ga0d26c61a9e47c6b9824ba453c702ca2c"/>
       <topic label="MXC_GPIO_DisableInt" href="group__gpio.html#ga686faf01d860135ff6fedecb80ec09f7"/>
       <topic label="MXC_GPIO_EnableInt" href="group__gpio.html#ga3a040873cbd5575341c4afa415f9ef4c"/>
+      <topic label="MXC_GPIO_GetConfigLock" href="group__gpio.html#ga460e266ab1fcda468818134f4824bc9e"/>
       <topic label="MXC_GPIO_GetFlags" href="group__gpio.html#ga22364077384b494cbee39b5abd355e47"/>
       <topic label="MXC_GPIO_GetWakeEn" href="group__gpio.html#ga6e08685c79836b62652ea85c583ed406"/>
       <topic label="MXC_GPIO_Handler" href="group__gpio.html#gae3606e5c2b0e93254e117e3c3dac4b9e"/>
@@ -2755,6 +2760,7 @@
       <topic label="MXC_GPIO_OutToggle" href="group__gpio.html#ga756e913d214298748f0107c0f10b6a5d"/>
       <topic label="MXC_GPIO_RegisterCallback" href="group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1"/>
       <topic label="MXC_GPIO_Reset" href="group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345"/>
+      <topic label="MXC_GPIO_SetConfigLock" href="group__gpio.html#gaf0293e334bc917716066603e490ffa66"/>
       <topic label="MXC_GPIO_SetDriveStrength" href="group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2"/>
       <topic label="MXC_GPIO_SetVSSEL" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549"/>
       <topic label="MXC_GPIO_SetWakeEn" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f"/>
@@ -3772,6 +3778,7 @@
       <topic label="MXC_SYS_ClockSourceEnable" href="group__mxc__sys.html#gae281e8f30ddaa90d30ba423c84f9b993"/>
       <topic label="MXC_SYS_Crit_Enter" href="group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44"/>
       <topic label="MXC_SYS_Crit_Exit" href="group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0"/>
+      <topic label="MXC_SYS_GetClockDiv" href="group__mxc__sys.html#gaf97d7a9daa7beb54ff5c3e169d9c7ab5"/>
       <topic label="MXC_SYS_GetUSN" href="group__mxc__sys.html#ga64494ce7b5aa5ee70e716f6a02f30d81"/>
       <topic label="MXC_SYS_In_Crit_Section" href="group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229"/>
       <topic label="MXC_SYS_IsClockEnabled" href="group__mxc__sys.html#ga99851205dae88b405f598e68fe984943"/>
@@ -3780,8 +3787,9 @@
       <topic label="MXC_SYS_RiscVClockRate" href="group__mxc__sys.html#ga8b24f60556c4e4e462880531469832dd"/>
       <topic label="MXC_SYS_RISCVRun" href="group__mxc__sys.html#gaa9b682fe5a36592da64762ede1596674"/>
       <topic label="MXC_SYS_RISCVShutdown" href="group__mxc__sys.html#gade6c0a19b4b4d1bea136501724cc4ae6"/>
-      <topic label="MXC_SYS_RTCClockDisable" href="group__mxc__sys.html#ga05ea0d4c5465ee7061ea1d3c2ffc3e22"/>
+      <topic label="MXC_SYS_RTCClockDisable" href="group__mxc__sys.html#ga8c7f04d1f3e8b9ff4e8ba50d0db6bb27"/>
       <topic label="MXC_SYS_RTCClockEnable" href="group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a"/>
+      <topic label="MXC_SYS_SetClockDiv" href="group__mxc__sys.html#ga7443406c13f225d18a3023cc39e20265"/>
     </topic>
     <topic label="1-Wire Master (OWM)" href="group__owm.html">
       <topic label="OWM_Registers" href="group__owm__registers.html">
@@ -5087,6 +5095,7 @@
       <topic label="MXC_SPI_GetTXThreshold" href="group__spi.html#ga3fa6c3821155ce8782390638f2632a86"/>
       <topic label="MXC_SPI_GetWidth" href="group__spi.html#ga88101bd57a262e6719d5b497a692d528"/>
       <topic label="MXC_SPI_Handler" href="group__spi.html#ga68ec0bb5be7e56ed9f64ae1d66d054dd"/>
+      <topic label="MXC_SPI_HWSSControl" href="group__spi.html#gaf9df08a8b18d74c3c9a06ca5a328398d"/>
       <topic label="MXC_SPI_Init" href="group__spi.html#ga06f41ee71f978fd9ae872238d26fef28"/>
       <topic label="MXC_SPI_MasterTransaction" href="group__spi.html#gaefbd13c12a7d9fbaef9595df2cd6c308"/>
       <topic label="MXC_SPI_MasterTransactionAsync" href="group__spi.html#ga6c9da2bba6624ca85e0aaafc94bad2f6"/>
@@ -5374,6 +5383,12 @@
         <topic label="MXC_TMR_BIT_MODE_16B" href="group__tmr.html#ggaa24c4c54f7c5e0ffef2d410c75e3c0eaa277f1ecdb922f7240e094f311a2cc6dc"/>
       </topic>
       <topic label="mxc_tmr_clock_t" href="group__tmr.html#ga58901bfa21b78eb6ab4a702cc4f6ae83">
+        <topic label="MXC_TMR_APB_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c"/>
+        <topic label="MXC_TMR_EXT_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95"/>
+        <topic label="MXC_TMR_ISO_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a12daec68abbbaf37d2c93a8ef5e616ef"/>
+        <topic label="MXC_TMR_IBRO_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ad825f3061c9c76171593073b0c9836ca"/>
+        <topic label="MXC_TMR_ERTCO_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7888a0fe5d4d13110962a8590306fbab"/>
+        <topic label="MXC_TMR_INRO_CLK" href="group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83aed958a14716626e7cabe68c8268533d3"/>
       </topic>
       <topic label="mxc_tmr_mode_t" href="group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da">
         <topic label="MXC_TMR_MODE_ONESHOT" href="group__tmr.html#ggaa4b41159cb2e0fc8fcfb3c258f2972daa6b11b6cafb392b67e1641097778dc986"/>
@@ -5421,8 +5436,11 @@
       <topic label="MXC_TMR_GetTicks" href="group__tmr.html#ga281c3247623b970a7265340796d7fe14"/>
       <topic label="MXC_TMR_GetTime" href="group__tmr.html#ga17ce01e32c05bbca3c52c2ff6e20ad95"/>
       <topic label="MXC_TMR_Init" href="group__tmr.html#ga58d5a6df87c13d13fb759fc35e5e72a8"/>
+      <topic label="MXC_TMR_LockClockSource" href="group__tmr.html#ga4e503ef7aaa769b3a69709cac121d32d"/>
+      <topic label="MXC_TMR_SetClockSource" href="group__tmr.html#ga48ec3b0e2cc8d3636d152ebdb714dde2"/>
       <topic label="MXC_TMR_SetCompare" href="group__tmr.html#gaa43ca41ee1a4f223572c621229039c14"/>
       <topic label="MXC_TMR_SetCount" href="group__tmr.html#ga8b6dc7b49cb169a2357bdee1a59543b3"/>
+      <topic label="MXC_TMR_SetPrescalar" href="group__tmr.html#gaa129d0c77f92dc098945cc6b6cd58af0"/>
       <topic label="MXC_TMR_SetPWM" href="group__tmr.html#ga3b5c29727e46f47978286b2afd0c3e8a"/>
       <topic label="MXC_TMR_Shutdown" href="group__tmr.html#ga2d67231e90c7b452e8e20951c0d72469"/>
       <topic label="MXC_TMR_Start" href="group__tmr.html#ga9f7f78e2fdf6baee8c12430c0825eafe"/>
@@ -5466,16 +5484,16 @@
           <topic label="status" href="group__trng__registers.html#af65ae05bcce5786d892c6a2bd1141292"/>
         </topic>
       </topic>
-      <topic label="MXC_TRNG_DisableInt" href="group__trng.html#gaaa27e6216364d229b9057ca0ec397be6"/>
-      <topic label="MXC_TRNG_EnableInt" href="group__trng.html#ga00879c803aa074d2ad2c35c64c952665"/>
+      <topic label="MXC_TRNG_DisableInt" href="group__trng.html#ga902005ae5ceafa4bda84c3ad109fe87c"/>
+      <topic label="MXC_TRNG_EnableInt" href="group__trng.html#gadfab448512f5c2d4a634a3b186326bb8"/>
       <topic label="MXC_TRNG_GenerateKey" href="group__trng.html#ga8fae44c897140b9a42da9ae812963259"/>
       <topic label="MXC_TRNG_Handler" href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20"/>
       <topic label="MXC_TRNG_HealthTest" href="group__trng.html#ga40bf6fe2703a407833185f834ea5d529"/>
-      <topic label="MXC_TRNG_Init" href="group__trng.html#ga037c7026df5669c2970ed1a0b33a526b"/>
+      <topic label="MXC_TRNG_Init" href="group__trng.html#ga3f2ec1a1efcca6654c33d5a6f7327a2c"/>
       <topic label="MXC_TRNG_Random" href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b"/>
       <topic label="MXC_TRNG_RandomAsync" href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608"/>
       <topic label="MXC_TRNG_RandomInt" href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4"/>
-      <topic label="MXC_TRNG_Shutdown" href="group__trng.html#gad08a1a7f1c9ac9daf5db0a9d93170713"/>
+      <topic label="MXC_TRNG_Shutdown" href="group__trng.html#ga1355b3896c5c7589a29b9364d54db85d"/>
     </topic>
     <topic label="UART" href="group__uart.html">
       <topic label="UART_Registers" href="group__uart__registers.html">
@@ -5704,6 +5722,7 @@
       <topic label="MXC_UART_DMACallback" href="group__uart.html#ga256350715ed900f67d05e7a29f8632fc"/>
       <topic label="MXC_UART_EnableInt" href="group__uart.html#ga3258382626c1fe0e71771d53eb09fcca"/>
       <topic label="MXC_UART_GetActive" href="group__uart.html#ga724bb717925ccf2f4c4643a9d9949315"/>
+      <topic label="MXC_UART_GetClockSource" href="group__uart.html#ga6c4fe847b59821c23c6c2bec343c8f72"/>
       <topic label="MXC_UART_GetFlags" href="group__uart.html#ga59d00ccf6ed8d09e32a11768d711b2cb"/>
       <topic label="MXC_UART_GetFrequency" href="group__uart.html#gadce4a857e97b46b185b8a1cd52c4f810"/>
       <topic label="MXC_UART_GetRXDMAChannel" href="group__uart.html#ga8d50d63b25df5fc82d066a881d84d733"/>
@@ -5714,6 +5733,7 @@
       <topic label="MXC_UART_GetTXFIFOAvailable" href="group__uart.html#ga4d26cb8508423a52afb05195b917e1f2"/>
       <topic label="MXC_UART_GetTXThreshold" href="group__uart.html#gaf72976d58f7956fe746b994ec5aad745"/>
       <topic label="MXC_UART_Init" href="group__uart.html#ga10bbe120db1810fd44558f7177b94fef"/>
+      <topic label="MXC_UART_LockClockSource" href="group__uart.html#gae8bc7bbd7c7f8bb16c165fa9ff24022a"/>
       <topic label="MXC_UART_Read" href="group__uart.html#ga2d56d88b91d8407f611671b5fb94539b"/>
       <topic label="MXC_UART_ReadCharacter" href="group__uart.html#ga6ab7c853437b7e94c10b116affd99663"/>
       <topic label="MXC_UART_ReadCharacterRaw" href="group__uart.html#ga5128672adc1a7880f77da128753ead73"/>
@@ -5735,6 +5755,7 @@
       <topic label="MXC_UART_Transaction" href="group__uart.html#ga5d377cae041f2db6ae76d1d07063e89f"/>
       <topic label="MXC_UART_TransactionAsync" href="group__uart.html#gaccf1c584dc51fa9a66ba135b8e74b69b"/>
       <topic label="MXC_UART_TransactionDMA" href="group__uart.html#ga3630c344a93e1013c0b5a5b6bfc3e1cf"/>
+      <topic label="MXC_UART_UnlockClockSource" href="group__uart.html#gaa73429d3ebbf54b04f64bfac93bf60c9"/>
       <topic label="MXC_UART_Write" href="group__uart.html#ga9300624bb5e3a0ed187af85ea2ea7ea1"/>
       <topic label="MXC_UART_WriteCharacter" href="group__uart.html#gae87f1974fe9253684a4a22bf63f19f5d"/>
       <topic label="MXC_UART_WriteCharacterRaw" href="group__uart.html#ga502dc967866e68ae8c27826fb170ffc1"/>

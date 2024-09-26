@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"group__owm__registers.html#a3bb3ae3f634e0aaa7f9292a06a4b241a":[1,16,0,8,2],
+"group__owm__registers.html#a4043deaf58b8c69a3d760825df5d9074":[1,16,0,8,5],
+"group__owm__registers.html#a4453916c4f7486c75d155d8992ea4c08":[1,16,0,8,0],
+"group__owm__registers.html#aa7b605f1ea192fc201ac18d7bf42a783":[1,16,0,8,1],
+"group__owm__registers.html#ac739c97e3dfed1c05d96249bc00d2578":[1,16,0,8,4],
 "group__owm__registers.html#structmxc__owm__regs__t":[1,16,0,8],
 "group__pt__registers.html":[1,34],
 "group__pt__registers.html#a2949fe4a3abbab17d8f16ea7449c81cd":[1,34,5,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX17 =
 "group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af81d265e20049a145b1b62a36bee2928":[1,20,5,0],
 "group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409afda490db41f7d68dffcd82768608e271":[1,20,5,2],
 "group__spi.html#struct__mxc__spi__pins__t":[1,20,1],
-"group__spi.html#struct__mxc__spi__req__t":[1,20,2],
-"group__spi__registers.html":[1,20,0],
-"group__spi__registers.html#a01beaa79871f6d4fa5ac69f6e29ab45d":[1,20,0,16,1],
-"group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7":[1,20,0,16,11],
-"group__spi__registers.html#a180fb4301217e58b8b04d69910d55e7d":[1,20,0,16,12],
-"group__spi__registers.html#a2111734d9cad2c32f9f0a899ae9077f0":[1,20,0,16,5]
+"group__spi.html#struct__mxc__spi__req__t":[1,20,2]
 };

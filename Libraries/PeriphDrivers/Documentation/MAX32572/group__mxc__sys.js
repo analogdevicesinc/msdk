@@ -180,6 +180,6 @@ var group__mxc__sys =
     [ "MXC_SYS_In_Crit_Section", "group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229", null ],
     [ "MXC_SYS_IsClockEnabled", "group__mxc__sys.html#ga99851205dae88b405f598e68fe984943", null ],
     [ "MXC_SYS_Reset_Periph", "group__mxc__sys.html#gad29f8c0ad27ccb5905322a5fe96a127c", null ],
-    [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga05ea0d4c5465ee7061ea1d3c2ffc3e22", null ],
+    [ "MXC_SYS_RTCClockDisable", "group__mxc__sys.html#ga8c7f04d1f3e8b9ff4e8ba50d0db6bb27", null ],
     [ "MXC_SYS_RTCClockEnable", "group__mxc__sys.html#ga6e20ebe0cc89e530c1c1553eef46077a", null ]
 ];

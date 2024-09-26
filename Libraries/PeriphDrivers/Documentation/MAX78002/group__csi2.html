@@ -156,10 +156,10 @@ Functions</h2></td></tr>
 <tr class="separator:ga950c62c22ad9a134ef701c49d958f456"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga35fc977447e0e3db1aa9fcce61fc995a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga35fc977447e0e3db1aa9fcce61fc995a">MXC_CSI2_Stop</a> (void)</td></tr>
 <tr class="separator:ga35fc977447e0e3db1aa9fcce61fc995a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1a89e1f701493409413fa0dc52fa4bc1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga1a89e1f701493409413fa0dc52fa4bc1">MXC_CSI2_CaptureFrame</a> (int num_data_lanes)</td></tr>
-<tr class="separator:ga1a89e1f701493409413fa0dc52fa4bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6bb1f4f7cf974eb38b69f91990b456b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gaa6bb1f4f7cf974eb38b69f91990b456b">MXC_CSI2_CaptureFrameDMA</a> ()</td></tr>
-<tr class="separator:gaa6bb1f4f7cf974eb38b69f91990b456b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa4e8f3e89285046454d344986726a3aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gaa4e8f3e89285046454d344986726a3aa">MXC_CSI2_CaptureFrame</a> (void)</td></tr>
+<tr class="separator:gaa4e8f3e89285046454d344986726a3aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga079d2e6e479c8bbfb7769281bc273a69"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga079d2e6e479c8bbfb7769281bc273a69">MXC_CSI2_CaptureFrameDMA</a> (void)</td></tr>
+<tr class="separator:ga079d2e6e479c8bbfb7769281bc273a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa25bd54e04c2a917b60d87719ea3369b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gaa25bd54e04c2a917b60d87719ea3369b">MXC_CSI2_SetLaneCtrlSource</a> (<a class="el" href="group__csi2.html#structmxc__csi2__lane__src__t">mxc_csi2_lane_src_t</a> *src)</td></tr>
 <tr class="separator:gaa25bd54e04c2a917b60d87719ea3369b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga29f89837f37b5631c1fb1b0848b78200"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga29f89837f37b5631c1fb1b0848b78200">MXC_CSI2_GetLaneCtrlSource</a> (<a class="el" href="group__csi2.html#structmxc__csi2__lane__src__t">mxc_csi2_lane_src_t</a> *src)</td></tr>
@@ -824,8 +824,8 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga1a89e1f701493409413fa0dc52fa4bc1" name="ga1a89e1f701493409413fa0dc52fa4bc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1a89e1f701493409413fa0dc52fa4bc1">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrame()</h2>
+<a id="gaa4e8f3e89285046454d344986726a3aa" name="gaa4e8f3e89285046454d344986726a3aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa4e8f3e89285046454d344986726a3aa">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -833,26 +833,21 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
         <tr>
           <td class="memname">int MXC_CSI2_CaptureFrame </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>num_data_lanes</em></td><td>)</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Capture an image frame using DMA. Same as MXC_CSI2_CaptureFrameDMA. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">num_data_lanes</td><td>Number of data lanes used. </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section note"><dt>Note</dt><dd>API changed on 7-8-2024 to remove 'num_data_lanes' as an argument. Set 'num_lanes' in <a class="el" href="group__csi2.html#structmxc__csi2__ctrl__cfg__t">mxc_csi2_ctrl_cfg_t</a> instead, which is passed to <a class="el" href="group__csi2.html#ga6d216885a5c942c5c9343e39ca6f133c">MXC_CSI2_Init</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if everything is successful. </dd></dl>
 
 </div>
 </div>
-<a id="gaa6bb1f4f7cf974eb38b69f91990b456b" name="gaa6bb1f4f7cf974eb38b69f91990b456b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa6bb1f4f7cf974eb38b69f91990b456b">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrameDMA()</h2>
+<a id="ga079d2e6e479c8bbfb7769281bc273a69" name="ga079d2e6e479c8bbfb7769281bc273a69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga079d2e6e479c8bbfb7769281bc273a69">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrameDMA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -860,6 +855,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
         <tr>
           <td class="memname">int MXC_CSI2_CaptureFrameDMA </td>
           <td>(</td>
+          <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -2066,7 +2062,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

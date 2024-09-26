@@ -90,81 +90,80 @@ $(document).ready(function(){initNavTree('trng_8h_source.html',''); initResizabl
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/******************************************************************************</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * (now owned by Analog Devices, Inc.),</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * is proprietary to Analog Devices, Inc. and its licensors.</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> ******************************************************************************/</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TRNG_H_</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TRNG_H_</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/* **** Includes **** */</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;<a class="code" href="trng__regs_8h.html">trng_regs.h</a>&quot;</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/* IN ADDITION TO THIS HEADER, FCL WILL BE SUPPORTED AND PROVIDED IN BINARY FORM */</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">/***** Function Prototypes *****/</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">typedef</span> void (*mxc_trng_complete_t)(<span class="keywordtype">void</span> *req, <span class="keywordtype">int</span> result);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">/* ************************************************************************* */</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">/* Global Control/Configuration functions                                    */</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">/* ************************************************************************* */</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="group__trng.html#ga037c7026df5669c2970ed1a0b33a526b">   60</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#ga037c7026df5669c2970ed1a0b33a526b">MXC_TRNG_Init</a>();</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="group__trng.html#ga00879c803aa074d2ad2c35c64c952665">   66</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga00879c803aa074d2ad2c35c64c952665">MXC_TRNG_EnableInt</a>();</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="group__trng.html#gaaa27e6216364d229b9057ca0ec397be6">   72</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#gaaa27e6216364d229b9057ca0ec397be6">MXC_TRNG_DisableInt</a>();</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group__trng.html#gad08a1a7f1c9ac9daf5db0a9d93170713">   79</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#gad08a1a7f1c9ac9daf5db0a9d93170713">MXC_TRNG_Shutdown</a>();</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20">   85</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20">MXC_TRNG_Handler</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">/* ************************************************************************* */</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">/* True Random Number Generator (TRNG) functions                             */</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">/* ************************************************************************* */</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4">   96</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4">MXC_TRNG_RandomInt</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b">  106</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b">MXC_TRNG_Random</a>(uint8_t *data, uint32_t len);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608">  117</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608">MXC_TRNG_RandomAsync</a>(uint8_t *data, uint32_t len, mxc_trng_complete_t callback);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="group__trng.html#ga8fae44c897140b9a42da9ae812963259">  122</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga8fae44c897140b9a42da9ae812963259">MXC_TRNG_GenerateKey</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TRNG_H_</span></div>
-<div class="ttc" id="agroup__trng_html_ga00879c803aa074d2ad2c35c64c952665"><div class="ttname"><a href="group__trng.html#ga00879c803aa074d2ad2c35c64c952665">MXC_TRNG_EnableInt</a></div><div class="ttdeci">void MXC_TRNG_EnableInt()</div><div class="ttdoc">Enable TRNG Interrupts.</div></div>
-<div class="ttc" id="agroup__trng_html_ga037c7026df5669c2970ed1a0b33a526b"><div class="ttname"><a href="group__trng.html#ga037c7026df5669c2970ed1a0b33a526b">MXC_TRNG_Init</a></div><div class="ttdeci">int MXC_TRNG_Init()</div><div class="ttdoc">Enable portions of the TRNG.</div></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by </span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * Analog Devices, Inc.),</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2023-2024 Analog Devices, Inc.</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TRNG_H_</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TRNG_H_</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/* **** Includes **** */</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &quot;<a class="code" href="trng__regs_8h.html">trng_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">/* IN ADDITION TO THIS HEADER, FCL WILL BE SUPPORTED AND PROVIDED IN BINARY FORM */</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">/***** Function Prototypes *****/</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">typedef</span> void (*mxc_trng_complete_t)(<span class="keywordtype">void</span> *req, <span class="keywordtype">int</span> result);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">/* ************************************************************************* */</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">/* Global Control/Configuration functions                                    */</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">/* ************************************************************************* */</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="group__trng.html#ga3f2ec1a1efcca6654c33d5a6f7327a2c">   59</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#ga3f2ec1a1efcca6654c33d5a6f7327a2c">MXC_TRNG_Init</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="group__trng.html#gadfab448512f5c2d4a634a3b186326bb8">   65</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#gadfab448512f5c2d4a634a3b186326bb8">MXC_TRNG_EnableInt</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="group__trng.html#ga902005ae5ceafa4bda84c3ad109fe87c">   71</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga902005ae5ceafa4bda84c3ad109fe87c">MXC_TRNG_DisableInt</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="group__trng.html#ga1355b3896c5c7589a29b9364d54db85d">   78</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#ga1355b3896c5c7589a29b9364d54db85d">MXC_TRNG_Shutdown</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20">   84</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20">MXC_TRNG_Handler</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">/* ************************************************************************* */</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">/* True Random Number Generator (TRNG) functions                             */</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">/* ************************************************************************* */</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4">   95</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4">MXC_TRNG_RandomInt</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b">  105</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b">MXC_TRNG_Random</a>(uint8_t *data, uint32_t len);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608">  116</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608">MXC_TRNG_RandomAsync</a>(uint8_t *data, uint32_t len, mxc_trng_complete_t callback);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="group__trng.html#ga8fae44c897140b9a42da9ae812963259">  121</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="group__trng.html#ga8fae44c897140b9a42da9ae812963259">MXC_TRNG_GenerateKey</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TRNG_H_</span></div>
 <div class="ttc" id="agroup__trng_html_ga10f51f746ce73e6c8f57a462d9a98c20"><div class="ttname"><a href="group__trng.html#ga10f51f746ce73e6c8f57a462d9a98c20">MXC_TRNG_Handler</a></div><div class="ttdeci">void MXC_TRNG_Handler(void)</div><div class="ttdoc">This function should be called from the TRNG ISR Handler when using Async functions.</div></div>
+<div class="ttc" id="agroup__trng_html_ga1355b3896c5c7589a29b9364d54db85d"><div class="ttname"><a href="group__trng.html#ga1355b3896c5c7589a29b9364d54db85d">MXC_TRNG_Shutdown</a></div><div class="ttdeci">int MXC_TRNG_Shutdown(void)</div><div class="ttdoc">Disable and reset portions of the TRNG.</div></div>
+<div class="ttc" id="agroup__trng_html_ga3f2ec1a1efcca6654c33d5a6f7327a2c"><div class="ttname"><a href="group__trng.html#ga3f2ec1a1efcca6654c33d5a6f7327a2c">MXC_TRNG_Init</a></div><div class="ttdeci">int MXC_TRNG_Init(void)</div><div class="ttdoc">Enable portions of the TRNG.</div></div>
 <div class="ttc" id="agroup__trng_html_ga4c6705e7343a0a70428f5d2f2b4fa608"><div class="ttname"><a href="group__trng.html#ga4c6705e7343a0a70428f5d2f2b4fa608">MXC_TRNG_RandomAsync</a></div><div class="ttdeci">void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callback)</div><div class="ttdoc">Get a random number of length len, do not block while generating data.</div></div>
 <div class="ttc" id="agroup__trng_html_ga8fae44c897140b9a42da9ae812963259"><div class="ttname"><a href="group__trng.html#ga8fae44c897140b9a42da9ae812963259">MXC_TRNG_GenerateKey</a></div><div class="ttdeci">void MXC_TRNG_GenerateKey(void)</div><div class="ttdoc">Generate an AES key and transfer to the AES block.</div></div>
+<div class="ttc" id="agroup__trng_html_ga902005ae5ceafa4bda84c3ad109fe87c"><div class="ttname"><a href="group__trng.html#ga902005ae5ceafa4bda84c3ad109fe87c">MXC_TRNG_DisableInt</a></div><div class="ttdeci">void MXC_TRNG_DisableInt(void)</div><div class="ttdoc">Disable TRNG Interrupts.</div></div>
 <div class="ttc" id="agroup__trng_html_ga92de47260995c00a08df008cf84a2c6b"><div class="ttname"><a href="group__trng.html#ga92de47260995c00a08df008cf84a2c6b">MXC_TRNG_Random</a></div><div class="ttdeci">int MXC_TRNG_Random(uint8_t *data, uint32_t len)</div><div class="ttdoc">Get a random number of length len.</div></div>
-<div class="ttc" id="agroup__trng_html_gaaa27e6216364d229b9057ca0ec397be6"><div class="ttname"><a href="group__trng.html#gaaa27e6216364d229b9057ca0ec397be6">MXC_TRNG_DisableInt</a></div><div class="ttdeci">void MXC_TRNG_DisableInt()</div><div class="ttdoc">Disable TRNG Interrupts.</div></div>
-<div class="ttc" id="agroup__trng_html_gad08a1a7f1c9ac9daf5db0a9d93170713"><div class="ttname"><a href="group__trng.html#gad08a1a7f1c9ac9daf5db0a9d93170713">MXC_TRNG_Shutdown</a></div><div class="ttdeci">int MXC_TRNG_Shutdown()</div><div class="ttdoc">Disable and reset portions of the TRNG.</div></div>
+<div class="ttc" id="agroup__trng_html_gadfab448512f5c2d4a634a3b186326bb8"><div class="ttname"><a href="group__trng.html#gadfab448512f5c2d4a634a3b186326bb8">MXC_TRNG_EnableInt</a></div><div class="ttdeci">void MXC_TRNG_EnableInt(void)</div><div class="ttdoc">Enable TRNG Interrupts.</div></div>
 <div class="ttc" id="agroup__trng_html_gaf93dc6f9fcd63bce53c6395253ee2ee4"><div class="ttname"><a href="group__trng.html#gaf93dc6f9fcd63bce53c6395253ee2ee4">MXC_TRNG_RandomInt</a></div><div class="ttdeci">int MXC_TRNG_RandomInt(void)</div><div class="ttdoc">Get a random number.</div></div>
 <div class="ttc" id="atrng__regs_8h_html"><div class="ttname"><a href="trng__regs_8h.html">trng_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.</div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -173,7 +172,7 @@ $(document).ready(function(){initNavTree('trng_8h_source.html',''); initResizabl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_7e706e2ddc2451d8dedddaedfab11dd4.html">MAX32650</a></li><li class="navelem"><b>trng.h</b></li>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:45 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:45 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

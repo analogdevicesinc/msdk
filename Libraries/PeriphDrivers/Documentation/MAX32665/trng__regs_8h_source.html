@@ -90,110 +90,109 @@ $(document).ready(function(){initNavTree('trng__regs_8h_source.html',''); initRe
 <a href="trng__regs_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/******************************************************************************</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * (now owned by Analog Devices, Inc.),</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * is proprietary to Analog Devices, Inc. and its licensors.</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * You may obtain a copy of the License at</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * limitations under the License.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> ******************************************************************************/</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_TRNG_REGS_H_</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_TRNG_REGS_H_</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">/* **** Includes **** */</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#if defined (__ICCARM__)</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">  #pragma system_include</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#if defined (__CC_ARM)</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">  #pragma anon_unions</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">    If types are not defined elsewhere (CMSIS) define them here</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#ifndef __IO</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#define __IO volatile</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#ifndef __I</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#define __I  volatile const</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#ifndef __O</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#define __O  volatile</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#ifndef __R</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#define __R  volatile const</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">/* **** Definitions **** */</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="group__trng__registers.html">   77</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2">   78</a></span>    __IO uint32_t <a class="code hl_variable" href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2">cn</a>;                   </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a">   79</a></span>    __I  uint32_t <a class="code hl_variable" href="group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a">st</a>;                   </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84">   80</a></span>    __I  uint32_t <a class="code hl_variable" href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84">data</a>;                 </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>} <a class="code hl_struct" href="group__trng__registers.html#structmxc__trng__regs__t">mxc_trng_regs_t</a>;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">/* Register offsets for module TRNG */</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="group___t_r_n_g___register___offsets.html#ga3acde9d3a21d126cdcc56d6ef86f190b">   90</a></span><span class="preprocessor">#define MXC_R_TRNG_CN                      ((uint32_t)0x00000000UL) </span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="group___t_r_n_g___register___offsets.html#ga87952429e4977df494843efdc514a9a7">   91</a></span><span class="preprocessor">#define MXC_R_TRNG_ST                      ((uint32_t)0x00000004UL) </span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="group___t_r_n_g___register___offsets.html#ga7811d6bd5fbf1c77c1e6c429519046c1">   92</a></span><span class="preprocessor">#define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) </span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga64e52000bc0212ed73cde5cc21fd2fd2">  101</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_ODHT_POS                         0 </span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gad3bbdb498a3dcc2652e8e1b4ea516fed">  102</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_ODHT                             ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_ODHT_POS)) </span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga8cc5262380cf5ffcc97cfc9db73f36c8">  104</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 </span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga3e55f1bca20c764e3525b749a5c530c9">  105</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_RND_IRQ_EN_POS)) </span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gab0deb2103596fd82298dff090a54f737">  107</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_HEALTH_EN_POS                    2 </span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gae56a9490befc04d1c8406ab5126fb954">  108</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_HEALTH_EN                        ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_HEALTH_EN_POS)) </span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga587c2e7c1a128956954c54ca4921847e">  110</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEU_POS                    3 </span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga87f734553d3696961c688938edfa74f2">  111</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEU                        ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_AESKG_MEU_POS)) </span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gaf9b98c386a5a28e5145711e6f6896734">  113</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 </span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga4a1779d00029683833a13febb8c55951">  114</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) </span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gab284cff1dd40bfd60b3554f14681bad5">  116</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTA_POS               5 </span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga8aedd622e1b6870bfb8df07a1b87daf2">  117</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTA                   ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_AESKG_MEMPROTA_POS)) </span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga14050a02fb6fd9faa0bbbe5444809a1c">  128</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_RND_RDY_POS                      0 </span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga310447d747068db4501bb63f07184ea6">  129</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_RND_RDY                          ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_RND_RDY_POS)) </span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga07477f821e28ebb2553dbb1f153d7cce">  131</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_ODHTS_POS                        1 </span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gae901774a4a7a8746e39af6ed59b1c2ad">  132</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_ODHTS                            ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_ODHTS_POS)) </span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gad699712cf3f6d5faffd9d82a3f2b7a1d">  134</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_HTS_POS                          2 </span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gabab04cf93f3be4a31bba5defd6790eff">  135</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_HTS                              ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_HTS_POS)) </span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga5cc296454e89013ccc844560b7ab11e0">  137</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_SRCFAIL_POS                      3 </span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga5e73ab4a6ef5119509e3bca8feaeccdb">  138</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_SRCFAIL                          ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_SRCFAIL_POS)) </span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga82e3d514e93bf5969c48164f874872a0">  140</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_AESKGD_MEU_S_POS                 4 </span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gabec5fdfdee8bdecbbb9f9e6d31a8f2ae">  141</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_AESKGD_MEU_S                     ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_AESKGD_MEU_S_POS)) </span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="group___t_r_n_g___d_a_t_a.html#gac8bfc1089ce8b740a0319db9e58730ce">  152</a></span><span class="preprocessor">#define MXC_F_TRNG_DATA_DATA_POS                       0 </span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="group___t_r_n_g___d_a_t_a.html#ga2b95ab681860946f5d210d67a8742490">  153</a></span><span class="preprocessor">#define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL &lt;&lt; MXC_F_TRNG_DATA_DATA_POS)) </span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_TRNG_REGS_H_</span></div>
-<div class="ttc" id="agroup__trng__registers_html_a15a466a054c956c4aff9b4d5ae90b4c2"><div class="ttname"><a href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2">mxc_trng_regs_t::cn</a></div><div class="ttdeci">__IO uint32_t cn</div><div class="ttdef"><b>Definition:</b> trng_regs.h:78</div></div>
-<div class="ttc" id="agroup__trng__registers_html_a447ee92b40e1e0d8006d65d3cf735d84"><div class="ttname"><a href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84">mxc_trng_regs_t::data</a></div><div class="ttdeci">__I uint32_t data</div><div class="ttdef"><b>Definition:</b> trng_regs.h:80</div></div>
-<div class="ttc" id="agroup__trng__registers_html_ac667b3b0eae4081dc5667115fbbcd52a"><div class="ttname"><a href="group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a">mxc_trng_regs_t::st</a></div><div class="ttdeci">__I uint32_t st</div><div class="ttdef"><b>Definition:</b> trng_regs.h:79</div></div>
-<div class="ttc" id="agroup__trng__registers_html_structmxc__trng__regs__t"><div class="ttname"><a href="group__trng__registers.html#structmxc__trng__regs__t">mxc_trng_regs_t</a></div><div class="ttdef"><b>Definition:</b> trng_regs.h:77</div></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by </span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"> * Analog Devices, Inc.),</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * Copyright (C) 2023-2024 Analog Devices, Inc.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * You may obtain a copy of the License at</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * See the License for the specific language governing permissions and</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * limitations under the License.</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_TRNG_REGS_H_</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_TRNG_REGS_H_</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/* **** Includes **** */</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#if defined (__ICCARM__)</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">  #pragma system_include</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#if defined (__CC_ARM)</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">  #pragma anon_unions</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">    If types are not defined elsewhere (CMSIS) define them here</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#ifndef __IO</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#define __IO volatile</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#ifndef __I</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#define __I  volatile const</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#ifndef __O</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define __O  volatile</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#ifndef __R</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#define __R  volatile const</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">/* **** Definitions **** */</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="group__trng__registers.html">   76</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2">   77</a></span>    __IO uint32_t <a class="code hl_variable" href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2">cn</a>;                   </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a">   78</a></span>    __I  uint32_t <a class="code hl_variable" href="group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a">st</a>;                   </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84">   79</a></span>    __I  uint32_t <a class="code hl_variable" href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84">data</a>;                 </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>} <a class="code hl_struct" href="group__trng__registers.html#structmxc__trng__regs__t">mxc_trng_regs_t</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">/* Register offsets for module TRNG */</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="group___t_r_n_g___register___offsets.html#ga3acde9d3a21d126cdcc56d6ef86f190b">   89</a></span><span class="preprocessor">#define MXC_R_TRNG_CN                      ((uint32_t)0x00000000UL) </span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="group___t_r_n_g___register___offsets.html#ga87952429e4977df494843efdc514a9a7">   90</a></span><span class="preprocessor">#define MXC_R_TRNG_ST                      ((uint32_t)0x00000004UL) </span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="group___t_r_n_g___register___offsets.html#ga7811d6bd5fbf1c77c1e6c429519046c1">   91</a></span><span class="preprocessor">#define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) </span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga64e52000bc0212ed73cde5cc21fd2fd2">  100</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_ODHT_POS                         0 </span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gad3bbdb498a3dcc2652e8e1b4ea516fed">  101</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_ODHT                             ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_ODHT_POS)) </span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga8cc5262380cf5ffcc97cfc9db73f36c8">  103</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 </span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga3e55f1bca20c764e3525b749a5c530c9">  104</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_RND_IRQ_EN_POS)) </span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gab0deb2103596fd82298dff090a54f737">  106</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_HEALTH_EN_POS                    2 </span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gae56a9490befc04d1c8406ab5126fb954">  107</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_HEALTH_EN                        ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_HEALTH_EN_POS)) </span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga587c2e7c1a128956954c54ca4921847e">  109</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEU_POS                    3 </span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga87f734553d3696961c688938edfa74f2">  110</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEU                        ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_AESKG_MEU_POS)) </span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gaf9b98c386a5a28e5145711e6f6896734">  112</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 </span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga4a1779d00029683833a13febb8c55951">  113</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) </span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#gab284cff1dd40bfd60b3554f14681bad5">  115</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTA_POS               5 </span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="group___t_r_n_g___c_n.html#ga8aedd622e1b6870bfb8df07a1b87daf2">  116</a></span><span class="preprocessor">#define MXC_F_TRNG_CN_AESKG_MEMPROTA                   ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_CN_AESKG_MEMPROTA_POS)) </span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga14050a02fb6fd9faa0bbbe5444809a1c">  127</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_RND_RDY_POS                      0 </span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga310447d747068db4501bb63f07184ea6">  128</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_RND_RDY                          ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_RND_RDY_POS)) </span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga07477f821e28ebb2553dbb1f153d7cce">  130</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_ODHTS_POS                        1 </span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gae901774a4a7a8746e39af6ed59b1c2ad">  131</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_ODHTS                            ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_ODHTS_POS)) </span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gad699712cf3f6d5faffd9d82a3f2b7a1d">  133</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_HTS_POS                          2 </span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gabab04cf93f3be4a31bba5defd6790eff">  134</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_HTS                              ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_HTS_POS)) </span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga5cc296454e89013ccc844560b7ab11e0">  136</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_SRCFAIL_POS                      3 </span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga5e73ab4a6ef5119509e3bca8feaeccdb">  137</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_SRCFAIL                          ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_SRCFAIL_POS)) </span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#ga82e3d514e93bf5969c48164f874872a0">  139</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_AESKGD_MEU_S_POS                 4 </span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="group___t_r_n_g___s_t.html#gabec5fdfdee8bdecbbb9f9e6d31a8f2ae">  140</a></span><span class="preprocessor">#define MXC_F_TRNG_ST_AESKGD_MEU_S                     ((uint32_t)(0x1UL &lt;&lt; MXC_F_TRNG_ST_AESKGD_MEU_S_POS)) </span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="group___t_r_n_g___d_a_t_a.html#gac8bfc1089ce8b740a0319db9e58730ce">  151</a></span><span class="preprocessor">#define MXC_F_TRNG_DATA_DATA_POS                       0 </span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="group___t_r_n_g___d_a_t_a.html#ga2b95ab681860946f5d210d67a8742490">  152</a></span><span class="preprocessor">#define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL &lt;&lt; MXC_F_TRNG_DATA_DATA_POS)) </span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>}</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_TRNG_REGS_H_</span></div>
+<div class="ttc" id="agroup__trng__registers_html_a15a466a054c956c4aff9b4d5ae90b4c2"><div class="ttname"><a href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2">mxc_trng_regs_t::cn</a></div><div class="ttdeci">__IO uint32_t cn</div><div class="ttdef"><b>Definition:</b> trng_regs.h:77</div></div>
+<div class="ttc" id="agroup__trng__registers_html_a447ee92b40e1e0d8006d65d3cf735d84"><div class="ttname"><a href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84">mxc_trng_regs_t::data</a></div><div class="ttdeci">__I uint32_t data</div><div class="ttdef"><b>Definition:</b> trng_regs.h:79</div></div>
+<div class="ttc" id="agroup__trng__registers_html_ac667b3b0eae4081dc5667115fbbcd52a"><div class="ttname"><a href="group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a">mxc_trng_regs_t::st</a></div><div class="ttdeci">__I uint32_t st</div><div class="ttdef"><b>Definition:</b> trng_regs.h:78</div></div>
+<div class="ttc" id="agroup__trng__registers_html_structmxc__trng__regs__t"><div class="ttname"><a href="group__trng__registers.html#structmxc__trng__regs__t">mxc_trng_regs_t</a></div><div class="ttdef"><b>Definition:</b> trng_regs.h:76</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_e7fa9f9ff84ec6f18f923fb2418bfd4b.html">CMSIS</a></li><li class="navelem"><a class="el" href="dir_74a1ad929b9bc221910eda5e657bf53e.html">Device</a></li><li class="navelem"><a class="el" href="dir_2735d35371771e96c24dd0c1d026f345.html">Maxim</a></li><li class="navelem"><a class="el" href="dir_47adca39a28ae90518c1c01efa52461b.html">MAX32665</a></li><li class="navelem"><a class="el" href="dir_2e01352d2a686e5c19314f8e02092ed6.html">Include</a></li><li class="navelem"><a class="el" href="trng__regs_8h.html">trng_regs.h</a></li>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:58 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:58 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

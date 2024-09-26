@@ -1,5 +1,10 @@
 var NAVTREEINDEX12 =
 {
+"group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84":[1,24,5,1],
+"group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a":[1,24,5,2],
+"group__trng__registers.html#structmxc__trng__regs__t":[1,24,5],
+"group__uart.html":[1,16],
+"group__uart.html#a03c054bb486fb65133eb9f6849266fb1":[1,16,1,5],
 "group__uart.html#a043f0f3e53b8233dca0b9446b9c36ccd":[1,16,1,3],
 "group__uart.html#a1490246c0470b7a850eb417d3c7f6e13":[1,16,1,7],
 "group__uart.html#a204f0cb05dab7675aa7b7f7a2fd0e886":[1,16,1,4],

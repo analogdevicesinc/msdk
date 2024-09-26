@@ -1,5 +1,13 @@
 var NAVTREEINDEX20 =
 {
+"group___u_s_b_h_s___i_n_t_r_i_n.html":[1,41,3],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga0af75a716484f666215c54aa8e2d549e":[1,41,3,23],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga0bce48d88b2be1b1b3fd5370905ba2e2":[1,41,3,11],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga12b7e5f8935a3e79c44985d220ce8a49":[1,41,3,30],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga1d2760cd15929446553d78c4228f82f0":[1,41,3,14],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga1ea5c0bb04afbbaf300b76d442f80aac":[1,41,3,1],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga3e8e0d4e9bdccece864fb7c7314f4cd3":[1,41,3,22],
+"group___u_s_b_h_s___i_n_t_r_i_n.html#ga47014d111d4a009fb97209642d208f70":[1,41,3,2],
 "group___u_s_b_h_s___i_n_t_r_i_n.html#ga4a8093aeabf31387dd49ae2c085e154a":[1,41,3,8],
 "group___u_s_b_h_s___i_n_t_r_i_n.html#ga4c6196b4da9e491ffc67b40b5843e0a2":[1,41,3,7],
 "group___u_s_b_h_s___i_n_t_r_i_n.html#ga4ce45421ad093d7cbb354ff823335bd4":[1,41,3,6],
@@ -241,13 +249,5 @@ var NAVTREEINDEX20 =
 "group___u_s_b_h_s___register___offsets.html#ga3e4265c6f489900bfb0d55196fc2e94f":[1,41,0,67],
 "group___u_s_b_h_s___register___offsets.html#ga3fddc20fbf4fabab68a52c2d2cf8a562":[1,41,0,77],
 "group___u_s_b_h_s___register___offsets.html#ga42b6eb3efd616b28e228091082bbee48":[1,41,0,35],
-"group___u_s_b_h_s___register___offsets.html#ga43eff5977c4119936f7b96bb64b7184c":[1,41,0,51],
-"group___u_s_b_h_s___register___offsets.html#ga44f1daf93d6f070b49dfa30575e34d5c":[1,41,0,42],
-"group___u_s_b_h_s___register___offsets.html#ga5242f20c3ecdf9e1b732d685f71a40cd":[1,41,0,15],
-"group___u_s_b_h_s___register___offsets.html#ga5e5823f52579e62f10153e30966345cf":[1,41,0,49],
-"group___u_s_b_h_s___register___offsets.html#ga60185ab0fd411df8de28c33ad680ace3":[1,41,0,8],
-"group___u_s_b_h_s___register___offsets.html#ga67b6a542fe84337cc7e4e66a793617d5":[1,41,0,61],
-"group___u_s_b_h_s___register___offsets.html#ga6d7887843fa37675349e336d1b6f10cc":[1,41,0,62],
-"group___u_s_b_h_s___register___offsets.html#ga6f23d08b71d17a7538497491b4bb40a5":[1,41,0,22],
-"group___u_s_b_h_s___register___offsets.html#ga7339980763d67bbccb6a7f83c6053ea2":[1,41,0,30]
+"group___u_s_b_h_s___register___offsets.html#ga43eff5977c4119936f7b96bb64b7184c":[1,41,0,51]
 };

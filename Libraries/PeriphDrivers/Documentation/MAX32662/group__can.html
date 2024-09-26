@@ -1051,6 +1051,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>data_sz</b></td></
 </div><div class="memdoc">
 
 <p>Initializes CAN event callbacks. </p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables CAN peripheral clock and CAN gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">can_idx</td><td>Index of the CAN peripheral to initialize </td></tr>
@@ -1347,6 +1348,7 @@ The structure pointed to by 'req' must remain unchanged and in scope until the T
 </div><div class="memdoc">
 
 <p>Configure CAN object. </p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables CAN gpio pins. if you wish to manage gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">can_idx</td><td>Index of CAN peripheral instance </td></tr>
@@ -1465,6 +1467,7 @@ The structure pointed to by 'req' must remain unchanged and in scope until the T
 </div><div class="memdoc">
 
 <p>Change Power state of the CAN peripherals. </p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables CAN peripheral clock. if you wish to manage clock related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">can_idx</td><td>Index of CAN peripheral to alter power settings for </td></tr>
@@ -1764,6 +1767,7 @@ The structure pointed to by 'req' must remain unchanged and in scope until the T
 </div><div class="memdoc">
 
 <p>Free CAN resources (does not reset or disable CAN peripherals) </p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables CAN peripheral clock. if you wish to manage clock related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">can_idx</td><td>Index of CAN peripheral to un-initialize (shutdown)</td></tr>
@@ -1832,7 +1836,7 @@ The structure pointed to by 'req' must remain unchanged and in scope until the T
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:55 for MAX32662 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:55 for MAX32662 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -119,7 +119,7 @@ Enumerations</h2></td></tr>
 <tr class="separator:ga7bea3ce501d2c4b9841ee2292f4cb350"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab136978025cdaf5f7f65c0e9ecc0950c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c">mxc_uart_flow_t</a> </td></tr>
 <tr class="separator:gab136978025cdaf5f7f65c0e9ecc0950c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7445f1b48110715c38070749e0952235"><td class="memItemLeft" align="right" valign="top"><a id="ga7445f1b48110715c38070749e0952235" name="ga7445f1b48110715c38070749e0952235"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a> </td></tr>
+<tr class="memitem:ga7445f1b48110715c38070749e0952235"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a> </td></tr>
 <tr class="separator:ga7445f1b48110715c38070749e0952235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -144,6 +144,10 @@ Functions</h2></td></tr>
 <tr class="separator:gaef819588401eaf694c2527306f39c166"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6ae308768f43f08d99184d2a7e40b90d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga6ae308768f43f08d99184d2a7e40b90d">MXC_UART_SetClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart, <a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a> clock)</td></tr>
 <tr class="separator:ga6ae308768f43f08d99184d2a7e40b90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6c4fe847b59821c23c6c2bec343c8f72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga6c4fe847b59821c23c6c2bec343c8f72">MXC_UART_GetClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
+<tr class="separator:ga6c4fe847b59821c23c6c2bec343c8f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a9efa5dcc05fa5c80befcb1909e9868"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga0a9efa5dcc05fa5c80befcb1909e9868">MXC_UART_LockClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart, bool lock)</td></tr>
+<tr class="separator:ga0a9efa5dcc05fa5c80befcb1909e9868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga724bb717925ccf2f4c4643a9d9949315"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga724bb717925ccf2f4c4643a9d9949315">MXC_UART_GetActive</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
 <tr class="separator:ga724bb717925ccf2f4c4643a9d9949315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabcad53d7f1842f4b7619e2282b9ffc39"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gabcad53d7f1842f4b7619e2282b9ffc39">MXC_UART_AbortTransmission</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
@@ -350,6 +354,32 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga7445f1b48110715c38070749e0952235" name="ga7445f1b48110715c38070749e0952235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7445f1b48110715c38070749e0952235">&#9670;&nbsp;</a></span>mxc_uart_clock_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clock settings. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga7445f1b48110715c38070749e0952235a15df2d582a67731185909b9df791cedd" name="gga7445f1b48110715c38070749e0952235a15df2d582a67731185909b9df791cedd"></a>MXC_UART_APB_CLK&#160;</td><td class="fielddoc"><p >Use the APB clock. Can only be used for UART 0, 1 &amp; 2. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga7445f1b48110715c38070749e0952235a48a03c294909abc5527cdd894170e526" name="gga7445f1b48110715c38070749e0952235a48a03c294909abc5527cdd894170e526"></a>MXC_UART_ERFO_CLK&#160;</td><td class="fielddoc"><p >Use the ERFO. Can only be used for UART 0, 1 &amp; 2. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga7445f1b48110715c38070749e0952235a4c530c23754c4b0bf45b505e1da68d3e" name="gga7445f1b48110715c38070749e0952235a4c530c23754c4b0bf45b505e1da68d3e"></a>MXC_UART_IBRO_CLK&#160;</td><td class="fielddoc"><p >Use the IBRO. Can be used for all UART instances. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga7445f1b48110715c38070749e0952235a5432950fd2aec0494e0bba5c698291c1" name="gga7445f1b48110715c38070749e0952235a5432950fd2aec0494e0bba5c698291c1"></a>MXC_UART_ERTCO_CLK&#160;</td><td class="fielddoc"><p >Use the ERTCO. Can only be used for UART3 (LPUART0) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="gab136978025cdaf5f7f65c0e9ecc0950c" name="gab136978025cdaf5f7f65c0e9ecc0950c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gab136978025cdaf5f7f65c0e9ecc0950c">&#9670;&nbsp;</a></span>mxc_uart_flow_t</h2>
 
@@ -862,6 +892,33 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 
 </div>
 </div>
+<a id="ga6c4fe847b59821c23c6c2bec343c8f72" name="ga6c4fe847b59821c23c6c2bec343c8f72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6c4fe847b59821c23c6c2bec343c8f72">&#9670;&nbsp;</a></span>MXC_UART_GetClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a> MXC_UART_GetClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the clock source used for the UART instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The selected clock source for the UART instance </dd></dl>
+
+</div>
+</div>
 <a id="ga59d00ccf6ed8d09e32a11768d711b2cb" name="ga59d00ccf6ed8d09e32a11768d711b2cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga59d00ccf6ed8d09e32a11768d711b2cb">&#9670;&nbsp;</a></span>MXC_UART_GetFlags()</h2>
 
@@ -1154,6 +1211,43 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga0a9efa5dcc05fa5c80befcb1909e9868" name="ga0a9efa5dcc05fa5c80befcb1909e9868"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0a9efa5dcc05fa5c80befcb1909e9868">&#9670;&nbsp;</a></span>MXC_UART_LockClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_UART_LockClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lock</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lock the clock source for the baud rate generator. It must be unlocked before it can be set again. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.) </td></tr>
+    <tr><td class="paramname">lock</td><td>Set to true to lock the clock source, false to unlock the clock source. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2154,7 +2248,7 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

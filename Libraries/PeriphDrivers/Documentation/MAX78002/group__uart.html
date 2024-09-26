@@ -144,6 +144,12 @@ Functions</h2></td></tr>
 <tr class="separator:gaef819588401eaf694c2527306f39c166"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6ae308768f43f08d99184d2a7e40b90d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga6ae308768f43f08d99184d2a7e40b90d">MXC_UART_SetClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart, <a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a> clock)</td></tr>
 <tr class="separator:ga6ae308768f43f08d99184d2a7e40b90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6c4fe847b59821c23c6c2bec343c8f72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga6c4fe847b59821c23c6c2bec343c8f72">MXC_UART_GetClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
+<tr class="separator:ga6c4fe847b59821c23c6c2bec343c8f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8bc7bbd7c7f8bb16c165fa9ff24022a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gae8bc7bbd7c7f8bb16c165fa9ff24022a">MXC_UART_LockClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
+<tr class="separator:gae8bc7bbd7c7f8bb16c165fa9ff24022a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa73429d3ebbf54b04f64bfac93bf60c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gaa73429d3ebbf54b04f64bfac93bf60c9">MXC_UART_UnlockClockSource</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
+<tr class="separator:gaa73429d3ebbf54b04f64bfac93bf60c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga724bb717925ccf2f4c4643a9d9949315"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga724bb717925ccf2f4c4643a9d9949315">MXC_UART_GetActive</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
 <tr class="separator:ga724bb717925ccf2f4c4643a9d9949315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabcad53d7f1842f4b7619e2282b9ffc39"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gabcad53d7f1842f4b7619e2282b9ffc39">MXC_UART_AbortTransmission</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
@@ -804,6 +810,33 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 
 </div>
 </div>
+<a id="ga6c4fe847b59821c23c6c2bec343c8f72" name="ga6c4fe847b59821c23c6c2bec343c8f72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6c4fe847b59821c23c6c2bec343c8f72">&#9670;&nbsp;</a></span>MXC_UART_GetClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__uart.html#ga7445f1b48110715c38070749e0952235">mxc_uart_clock_t</a> MXC_UART_GetClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the clock source used for the UART instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The selected clock source for the UART instance </dd></dl>
+
+</div>
+</div>
 <a id="ga59d00ccf6ed8d09e32a11768d711b2cb" name="ga59d00ccf6ed8d09e32a11768d711b2cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga59d00ccf6ed8d09e32a11768d711b2cb">&#9670;&nbsp;</a></span>MXC_UART_GetFlags()</h2>
 
@@ -1095,6 +1128,33 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gae8bc7bbd7c7f8bb16c165fa9ff24022a" name="gae8bc7bbd7c7f8bb16c165fa9ff24022a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8bc7bbd7c7f8bb16c165fa9ff24022a">&#9670;&nbsp;</a></span>MXC_UART_LockClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_UART_LockClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Locks the clock source for the baud rate generator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
 
 </div>
 </div>
@@ -1398,7 +1458,7 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Actual baud rate if successful, otherwise see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
 
 </div>
 </div>
@@ -1872,6 +1932,33 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 
 </div>
 </div>
+<a id="gaa73429d3ebbf54b04f64bfac93bf60c9" name="gaa73429d3ebbf54b04f64bfac93bf60c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa73429d3ebbf54b04f64bfac93bf60c9">&#9670;&nbsp;</a></span>MXC_UART_UnlockClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_UART_UnlockClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Unlocks the clock source for the baud rate generator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
 <a id="ga9300624bb5e3a0ed187af85ea2ea7ea1" name="ga9300624bb5e3a0ed187af85ea2ea7ea1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga9300624bb5e3a0ed187af85ea2ea7ea1">&#9670;&nbsp;</a></span>MXC_UART_Write()</h2>
 
@@ -2095,7 +2182,7 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:24 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

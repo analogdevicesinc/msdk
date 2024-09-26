@@ -142,6 +142,12 @@ Enumerations</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ga8620921a855062d0e6154ff85ded5c9b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga8620921a855062d0e6154ff85ded5c9b">MXC_ADC_Init</a> (<a class="el" href="group__adc.html#structmxc__adc__req__t">mxc_adc_req_t</a> *req)</td></tr>
 <tr class="separator:ga8620921a855062d0e6154ff85ded5c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3998ebb30f347bfe9970e5d2846be125"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga3998ebb30f347bfe9970e5d2846be125">MXC_ADC_SetClockSource</a> (<a class="el" href="group__adc.html#gaed6234ec75977b9308230146e8e325d0">mxc_adc_clock_t</a> clock_source)</td></tr>
+<tr class="separator:ga3998ebb30f347bfe9970e5d2846be125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13ee5e4139d348c8d163646c0d4cba4e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga13ee5e4139d348c8d163646c0d4cba4e">MXC_ADC_LockClockSource</a> (bool lock)</td></tr>
+<tr class="separator:ga13ee5e4139d348c8d163646c0d4cba4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2f394b4e20352b2ea45a195c47efe952"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga2f394b4e20352b2ea45a195c47efe952">MXC_ADC_SetClockDiv</a> (<a class="el" href="group__adc.html#ga4ac852f4bda65a1cda7a4061d1d3fb03">mxc_adc_clkdiv_t</a> div)</td></tr>
+<tr class="separator:ga2f394b4e20352b2ea45a195c47efe952"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafb7f2e91520a063ee70e6b8512b6ab19"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gafb7f2e91520a063ee70e6b8512b6ab19">MXC_ADC_Shutdown</a> (void)</td></tr>
 <tr class="separator:gafb7f2e91520a063ee70e6b8512b6ab19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga947ddf8dbcb8fc2291a371c6b76c1f41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga947ddf8dbcb8fc2291a371c6b76c1f41">MXC_ADC_EnableInt</a> (uint32_t flags)</td></tr>
@@ -1115,6 +1121,33 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>dma_channel</b></td
 
 </div>
 </div>
+<a id="ga13ee5e4139d348c8d163646c0d4cba4e" name="ga13ee5e4139d348c8d163646c0d4cba4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga13ee5e4139d348c8d163646c0d4cba4e">&#9670;&nbsp;</a></span>MXC_ADC_LockClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_ADC_LockClockSource </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lock</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lock the input clock source for the ADC peripheral. The clock source must be unlocked for it to be set. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lock</td><td>Whether to lock the clock source. Set to true to lock, false, to unlock. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
 <a id="ga699a46de556df51521fa9bd31139ed45" name="ga699a46de556df51521fa9bd31139ed45"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga699a46de556df51521fa9bd31139ed45">&#9670;&nbsp;</a></span>MXC_ADC_ReferenceSelect()</h2>
 
@@ -1135,6 +1168,60 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>dma_channel</b></td
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ref</td><td>Desired reference voltage source.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga2f394b4e20352b2ea45a195c47efe952" name="ga2f394b4e20352b2ea45a195c47efe952"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2f394b4e20352b2ea45a195c47efe952">&#9670;&nbsp;</a></span>MXC_ADC_SetClockDiv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_ADC_SetClockDiv </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#ga4ac852f4bda65a1cda7a4061d1d3fb03">mxc_adc_clkdiv_t</a>&#160;</td>
+          <td class="paramname"><em>div</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the clock divider the ADC peripheral's input clock. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">div</td><td>Clock divider </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga3998ebb30f347bfe9970e5d2846be125" name="ga3998ebb30f347bfe9970e5d2846be125"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3998ebb30f347bfe9970e5d2846be125">&#9670;&nbsp;</a></span>MXC_ADC_SetClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_ADC_SetClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#gaed6234ec75977b9308230146e8e325d0">mxc_adc_clock_t</a>&#160;</td>
+          <td class="paramname"><em>clock_source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the input clock source for the ADC peripheral. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clock_source</td><td>Input clock source </td></tr>
   </table>
   </dd>
 </dl>
@@ -1339,7 +1426,7 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>dma_channel</b></td
       </table>
 </div><div class="memdoc">
 
-<p>Perform a conversion on a specific channel using a DMA transfer. DMA channel must be acquired using <a class="el" href="group__dma.html#gae64f49dc062bd745088ae12eecc6ad33">MXC_DMA_AcquireChannel</a> and should be passed to this function via "dma_channel" member of "req" input struct. DMA IRQ corresponding to that channel must be enabled using MXC_NVIC_SetVector, and the <a class="el" href="group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6">MXC_DMA_Handler</a> should be called from the respective ISR. </p>
+<p>Perform a conversion on a specific channel using a DMA transfer. DMA channel must be acquired using <a class="el" href="group__dma.html#gae64f49dc062bd745088ae12eecc6ad33">MXC_DMA_AcquireChannel</a> and should be passed to this function via "dma_channel" member of "req" input struct. DMA IRQ corresponding to that channel must be enabled using MXC_NVIC_SetVector, and the <a class="el" href="group__dma.html#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d">MXC_DMA_Handler</a> should be called from the respective ISR. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">req</td><td><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> </td></tr>
@@ -1592,7 +1679,7 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>dma_channel</b></td
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:33:17 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:01:16 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -113,7 +113,7 @@ var group__dma =
     [ "MXC_DMA_GetCHRegs", "group__dma.html#ga7df462131ad5fc9c6a6c55e0e5818f73", null ],
     [ "MXC_DMA_GetSrcDst", "group__dma.html#ga02765dc397360c3c803df5d851b5f695", null ],
     [ "MXC_DMA_GetSrcReload", "group__dma.html#gae2dfa05453b55bc7379102c407f05235", null ],
-    [ "MXC_DMA_Handler", "group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6", null ],
+    [ "MXC_DMA_Handler", "group__dma.html#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d", null ],
     [ "MXC_DMA_Init", "group__dma.html#ga54d16d68250df9b7a99c2ab1cfd7c975", null ],
     [ "MXC_DMA_MemCpy", "group__dma.html#gafe7fe8d66927bef5f74347087dcd59bd", null ],
     [ "MXC_DMA_ReleaseChannel", "group__dma.html#ga7f4a2a29bbd6d59fa07b9298d08608c3", null ],

@@ -173,8 +173,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_DMA_DeInit</b> (v
 <tr class="separator:gac4096ee4e50eab71c4b1416ea7261e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7df462131ad5fc9c6a6c55e0e5818f73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__dma__registers.html#structmxc__dma__ch__regs__t">mxc_dma_ch_regs_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#ga7df462131ad5fc9c6a6c55e0e5818f73">MXC_DMA_GetCHRegs</a> (int ch)</td></tr>
 <tr class="separator:ga7df462131ad5fc9c6a6c55e0e5818f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad78154cfcf66654d774ff416fcf6c6c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6">MXC_DMA_Handler</a> ()</td></tr>
-<tr class="separator:gad78154cfcf66654d774ff416fcf6c6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d">MXC_DMA_Handler</a> (void)</td></tr>
+<tr class="separator:ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe7fe8d66927bef5f74347087dcd59bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#gafe7fe8d66927bef5f74347087dcd59bd">MXC_DMA_MemCpy</a> (void *dest, void *src, int len, <a class="el" href="group__dma.html#gac179dfe4c1cf1b660432ced769ea6ec7">mxc_dma_complete_cb_t</a> callback)</td></tr>
 <tr class="separator:gafe7fe8d66927bef5f74347087dcd59bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab74a02c5bb28652810662cc22f463228"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dma.html#gab74a02c5bb28652810662cc22f463228">MXC_DMA_DoTransfer</a> (<a class="el" href="group__dma.html#structmxc__dma__config__t">mxc_dma_config_t</a> config, <a class="el" href="group__dma.html#structmxc__dma__srcdst__t">mxc_dma_srcdst_t</a> firstSrcDst, <a class="el" href="group__dma.html#ga1889a47a935d4ebd34cbd9364abd6bf0">mxc_dma_trans_chain_t</a> callback)</td></tr>
@@ -840,7 +840,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 </div><div class="memdoc">
 
 <p>Performs a memcpy, using DMA, optionally asynchronous. </p>
-<dl class="section note"><dt>Note</dt><dd>The user must have the DMA interrupt enabled and call <a class="el" href="group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6" title="Interrupt handler function.">MXC_DMA_Handler()</a> from the ISR.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The user must have the DMA interrupt enabled and call <a class="el" href="group__dma.html#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d" title="Interrupt handler function.">MXC_DMA_Handler()</a> from the ISR.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config</td><td>The channel config struct </td></tr>
@@ -962,8 +962,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 
 </div>
 </div>
-<a id="gad78154cfcf66654d774ff416fcf6c6c6" name="gad78154cfcf66654d774ff416fcf6c6c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad78154cfcf66654d774ff416fcf6c6c6">&#9670;&nbsp;</a></span>MXC_DMA_Handler()</h2>
+<a id="ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d" name="ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d">&#9670;&nbsp;</a></span>MXC_DMA_Handler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -971,6 +971,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
         <tr>
           <td class="memname">void MXC_DMA_Handler </td>
           <td>(</td>
+          <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -1043,7 +1044,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 </div><div class="memdoc">
 
 <p>Performs a memcpy, using DMA, optionally asynchronous. </p>
-<dl class="section note"><dt>Note</dt><dd>The user must have the DMA interrupt enabled and call <a class="el" href="group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6" title="Interrupt handler function.">MXC_DMA_Handler()</a> from the ISR.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The user must have the DMA interrupt enabled and call <a class="el" href="group__dma.html#ga80c6f01ce0a6cf8dbce7ec66a9c7cc7d" title="Interrupt handler function.">MXC_DMA_Handler()</a> from the ISR.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dest</td><td>pointer to destination memory </td></tr>
@@ -1289,7 +1290,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 22 2024 23:32:36 for MAX32570 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 21:00:37 for MAX32570 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>
