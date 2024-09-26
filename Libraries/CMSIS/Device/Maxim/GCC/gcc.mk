@@ -300,8 +300,9 @@ PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=1
 PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=1
 else
 # Align with Zephyr flags.
-# Do not define CONFIG_TRUSTED_EXECUTION_SECURE
-# not defining means 0
+# Must be defined for the BLE build system.
+PROJ_AFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=0
+PROJ_CFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=0
 
 # Leaving these to support initial development.
 PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=0
@@ -794,4 +795,3 @@ ifneq "$(QUERY_VAR)" ""
 else
 	$(MAKE) debug
 endif
-
