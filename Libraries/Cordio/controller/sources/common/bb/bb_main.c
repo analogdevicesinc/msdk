@@ -51,7 +51,6 @@ const BbRtCfg_t *pBbRtCfg = NULL;       /*!< Runtime configuration. */
 /*************************************************************************************************/
 void BbInitRunTimeCfg(const BbRtCfg_t *pCfg)
 {
-  // WSF_ASSERT(pBbRtCfg == NULL);
   WSF_ASSERT(pCfg);
 
   WSF_ASSERT(pCfg->clkPpm >= 20);
