@@ -303,7 +303,7 @@ const PalBbPhyVersion_t *PalBbGetPhyVersion(void);
  *  \param      type PRBS TYPE
  */
 /*************************************************************************************************/
-bool PalBbEnableFgen(uint32_t freqKhz, PalBbPrbsType_t type);
+bool PalBbEnableFgen(uint32_t freqKhz, PalBbPrbsType_t type, int8_t txPower);
 
 /*************************************************************************************************/
 /*!
@@ -312,6 +312,15 @@ bool PalBbEnableFgen(uint32_t freqKhz, PalBbPrbsType_t type);
  */
 /*************************************************************************************************/
 void PalBbDisableFgen(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Check if the fgen functionality is enabled
+ *  \return     true if enabled. false otherwise
+ */
+/*************************************************************************************************/
+bool PalBbFgenIsEnabled(void);
+
 /*************************************************************************************************/
 /*!
  *  \brief      Sample an RSSI capture

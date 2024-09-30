@@ -296,15 +296,26 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
         if(enable)
         {
+            int8_t txPower = 0;
             uint32_t frequency_khz = pBuf[3] << 16  | pBuf[2] << 8 | pBuf[1];
             PalBbPrbsType_t patternType = pBuf[4];
+
+            status = LlGetAdvTxPower(&txPower);
             
-            if(!PalBbIsValidPrbsType(patternType))
+            if(status != LL_SUCCESS)
+            {
+                break;
+            }
+            else if(PalBbFgenIsEnabled())
             {
                 status = LL_ERROR_CODE_CMD_DISALLOWED;
             }
+            else if(!PalBbIsValidPrbsType(patternType))
+            {
+                status = LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+            }
             else{
-                const bool freqOk = PalBbEnableFgen(frequency_khz, patternType);
+                const bool freqOk = PalBbEnableFgen(frequency_khz, patternType, txPower);
                 status = freqOk ? LL_SUCCESS : LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
             }
 
