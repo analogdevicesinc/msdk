@@ -1,19 +1,16 @@
 site_name: Analog Devices MSDK Documentation
-site_author: Analog Devices
-copyright: 'Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved. (now owned by Analog Devices, Inc.), Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software is proprietary to Analog Devices, Inc. and its licensors.'
+site_author: Analog Devices, Inc.
+copyright: 'Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved. (now owned by Analog Devices, Inc.), Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software is proprietary to Analog Devices, Inc. and its licensors.'
 repo_url: https://github.com/analogdevicesinc/msdk
-edit_uri: null
 docs_dir: 'Documentation'
 site_dir: 'docs'
-extra_css: [css/extra.css]
 nav:
   - Home: 'index.md'
   - MSDK User Guide: 'USERGUIDE.md'
   - Cordio BLE User Guide: 'Libraries/Cordio/docs/CORDIO_USERGUIDE.md'
   - Contributing: 'CONTRIBUTING.md'
-  - License: 'LICENSE.md'
 theme:
-  name: readthedocs
+  name: harmonic
   analytics:
     gtag: G-79C65FSVL6
 markdown_extensions:

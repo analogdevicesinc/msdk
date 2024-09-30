@@ -5,8 +5,13 @@ Examples/*/*/*/buildrv
 .vscode/settings.json
 Libraries/PeriphDrivers/Documentation/MAX*
 Libraries/PeriphDrivers/bin
+docs/
 Documentation/Libraries
 Documentation/res
+Documentation/USERGUIDE.md
+Documentation/LICENSE.md
+Documentation/README.md
+Documentation/Tools/Bluetooth/README.md
 Examples/MAX78000/PowerTest
 Examples/MAX32570
 Examples/MAX32572

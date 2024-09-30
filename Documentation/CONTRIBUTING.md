@@ -276,10 +276,17 @@ To **build** the docs:
 
 1. Install [doxygen](https://www.doxygen.nl/download.html)
 2. Add doxygen's binary diretory to the [Environmental Path](https://learn.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)) Variable
-3. Install Python 3
-4. `pip install -r Documentation/requirements.txt`
-5. `python Documentation/build.py`
-6. The site will be built in the `docs` folder of the repo.
+3. Install Python 3.10 or greater
+4. Run the following commands
+
+    ```sh
+    python -m venv venv
+    source venv/bin/activate # (MacOS/Linux) or venv\Scripts\activate (Windows)
+    pip install -r Documentation/requirements.txt
+    python Documentation/build.py
+    ```
+
+The site will be built in the `docs` folder of the repo.
 
 To **preview** the generated site:
 
