@@ -96,7 +96,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint32_t channel = 0;
 
     (void)channel;
-    
+
     /* Decode and consume command packet. */
 
     switch (pHdr->opCode) {
@@ -305,7 +305,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         {
             int8_t txPower = 0;
             uint32_t frequency_khz = pBuf[3] << 16  | pBuf[2] << 8 | pBuf[1];
-            PalBbPrbsType_t patternType = pBuf[4];
+            PalBbPatternType_t patternType = pBuf[4];
 
             status = LlGetAdvTxPower(&txPower);
             

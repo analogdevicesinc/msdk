@@ -86,7 +86,7 @@ typedef enum
     PAL_BB_PRBS15,
     PAL_BB_DF1,
     PAL_BB_DF2
-}PalBbPrbsType_t;
+}PalBbPatternType_t;
 
 #ifndef BB_CLK_RATE_HZ
 /*! \brief      BB clock rate in hertz. */
@@ -303,7 +303,7 @@ const PalBbPhyVersion_t *PalBbGetPhyVersion(void);
  *  \param      type PRBS TYPE
  */
 /*************************************************************************************************/
-bool PalBbEnableFgen(uint32_t freqKhz, PalBbPrbsType_t type, int8_t txPower);
+bool PalBbEnableFgen(uint32_t freqKhz, PalBbPatternType_t type, int8_t txPower);
 
 /*************************************************************************************************/
 /*!
