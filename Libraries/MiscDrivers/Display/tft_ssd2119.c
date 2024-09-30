@@ -1197,6 +1197,350 @@ void MXC_TFT_FillRect(area_t *area, int color)
     __enable_irq();
 }
 
+void MXC_TFT_DrawImage(int px_x, int px_y, int width, int height, uint32_t **image_2D)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            g_fifo[0] = image_2D[y][x];
+            spi_transmit((uint16_t *)g_fifo, 2);
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawBitmap(int px_x, int px_y, int width, int height, uint16_t *image)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    int i = 0;
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF)) |
+                         (uint32_t)((image[i] & 0xFF00) << 8));
+            spi_transmit((uint16_t *)g_fifo, 2);
+            i += 1;
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawBitmapInverted(int px_x, int px_y, int width, int height, uint16_t *image)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    int i = 0;
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            g_fifo[0] = (0x01000100 | ((uint32_t)(~image[i] & 0x00FF) << 16) |
+                         (uint32_t)((~image[i] & 0xFF00) >> 8));
+            spi_transmit((uint16_t *)g_fifo, 2);
+            i += 1;
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawBitmapMask(int px_x, int px_y, int width, int height, uint16_t *image,
+                            uint16_t original_color, uint16_t mask)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    int i = 0;
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            if (image[i] == original_color) {
+                g_fifo[0] = (0x01000100 | ((uint32_t)(mask & 0x00FF) << 16) |
+                             (uint32_t)((mask & 0xFF00) >> 8));
+            } else {
+                g_fifo[0] = (0x01000100 | ((uint32_t)(image[i] & 0x00FF) << 16) |
+                             (uint32_t)((image[i] & 0xFF00) >> 8));
+            }
+            spi_transmit((uint16_t *)g_fifo, 2);
+            i += 1;
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawBitmapInvertedMask(int px_x, int px_y, int width, int height, uint16_t *image,
+                                    uint16_t original_color, uint16_t mask)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    int i = 0;
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            if (image[i] == original_color) {
+                g_fifo[0] = (0x01000100 | ((uint32_t)(mask & 0x00FF) << 16) |
+                             (uint32_t)((mask & 0xFF00) >> 8));
+            } else {
+                g_fifo[0] = (0x01000100 | ((uint32_t)(~image[i] & 0x00FF) << 16) |
+                             (uint32_t)((~image[i] & 0xFF00) >> 8));
+            }
+            spi_transmit((uint16_t *)g_fifo, 2);
+            i += 1;
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawVerticalLine(int px_x, int px_y, int height, uint32_t color)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = 1;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            g_fifo[0] = color;
+
+            spi_transmit((uint16_t *)g_fifo, 2);
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawHorizontalLine(int px_x, int px_y, int width, uint32_t color)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = px_x;
+    area->y = px_y;
+    area->w = width;
+    area->h = 1;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            g_fifo[0] = color;
+
+            spi_transmit((uint16_t *)g_fifo, 2);
+        }
+    }
+
+    __enable_irq();
+}
+
+void MXC_TFT_DrawRect(int pixelX, int pixelY, int width, int height, uint32_t color)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = pixelX;
+    area->y = pixelY;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, i, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if (tft_rotation == SCREEN_NORMAL || tft_rotation == SCREEN_FLIP) {
+        if ((area->x + w) > DISPLAY_WIDTH) {
+            w = DISPLAY_WIDTH - area->x;
+        }
+
+        if ((area->y + h) > DISPLAY_HEIGHT) {
+            h = DISPLAY_HEIGHT - area->y;
+        }
+
+        displaySub(area->x, area->y, w, h);
+
+    } else if (tft_rotation == SCREEN_ROTATE) {
+        if ((area->x + w) > DISPLAY_HEIGHT) {
+            w = DISPLAY_HEIGHT - area->x;
+        }
+
+        if ((area->y + h) > DISPLAY_WIDTH) {
+            h = DISPLAY_WIDTH - area->y;
+        }
+
+        displaySub_Rotated(area->x, area->y, w, h);
+    }
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < (w >> 2); x++) {
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = color;
+            }
+
+            spi_transmit((uint16_t *)g_fifo, 8);
+        }
+
+        x <<= 2;
+
+        for (; x < w; x++) {
+            write_color(color);
+        }
+    }
+
+    __enable_irq();
+}
+
 void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t color)
 {
     area_t _area;
@@ -1257,6 +1601,55 @@ void MXC_TFT_PrintPalette(void)
             area.x = 10;
         }
     }
+}
+
+void MXC_TFT_DrawRoundedRect(int pixelX, int pixelY, int width, int height, uint32_t color,
+                             int radius, uint32_t background_color)
+{
+    area_t _area;
+    area_t *area;
+
+    area = &_area;
+    area->x = pixelX;
+    area->y = pixelY;
+    area->w = width;
+    area->h = height;
+
+    __disable_irq();
+    int y, x, h, w;
+
+    w = area->w;
+    h = area->h;
+
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+
+    displaySub(area->x, area->y, w, h);
+
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < w; x++) {
+            // Calculate distance from the corner.
+            int dx = (x < radius) ? radius - x : (x >= w - radius) ? x - (w - radius - 1) : 0;
+            int dy = (y < radius) ? radius - y : (y >= h - radius) ? y - (h - radius - 1) : 0;
+
+            // Use pythagorean theorem to map coordinates, square not necessary when comparing with r.
+            if (((dx * dx) + (dy * dy)) <= (radius * radius)) {
+                *g_fifo = color;
+                spi_transmit((uint16_t *)g_fifo, 2);
+
+            } else {
+                *g_fifo = background_color;
+                spi_transmit((uint16_t *)g_fifo, 2);
+            }
+        }
+    }
+
+    __enable_irq();
 }
 
 /***************************************************************

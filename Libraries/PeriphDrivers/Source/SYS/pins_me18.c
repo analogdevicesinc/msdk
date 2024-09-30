@@ -88,9 +88,9 @@ const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable = { MXC_GPIO3, (MXC_GPIO_PIN_2 
                                                      MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP,
                                                      MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
-const mxc_gpio_cfg_t antenna_ctrl0 = { MXC_GPIO2, (MXC_GPIO_PIN_17), MXC_GPIO_FUNC_ALT2,
+const mxc_gpio_cfg_t antenna_ctrl0 = { MXC_GPIO2, (MXC_GPIO_PIN_18), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
-const mxc_gpio_cfg_t antenna_ctrl1 = { MXC_GPIO2, (MXC_GPIO_PIN_18), MXC_GPIO_FUNC_ALT2,
+const mxc_gpio_cfg_t antenna_ctrl1 = { MXC_GPIO2, (MXC_GPIO_PIN_17), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t antenna_ctrl2 = { MXC_GPIO2, (MXC_GPIO_PIN_20), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };

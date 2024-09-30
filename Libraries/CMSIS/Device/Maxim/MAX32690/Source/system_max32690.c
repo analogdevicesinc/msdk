@@ -134,6 +134,7 @@ __weak void PalSysInit(void) {}
  */
 __weak void SystemInit(void)
 {
+    __NOP();
 #ifdef DEBUG
     /* Delay to prevent bricks */
     volatile int i;

@@ -44,9 +44,9 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-#ifndef MSDK_NO_GPIO_CLK_INIT
     int retval;
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     retval = MXC_UART_Shutdown(uart);
     if (retval) {
         return retval;
@@ -270,7 +270,9 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
             break;
 
         case MXC_UART_IBRO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif // MSDK_NO_GPIO_CLK_INIT
             MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
             break;
 
@@ -283,12 +285,16 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
         // UART3 (LPUART0) supports IBRO and ERTCO
         switch (clock) {
         case MXC_UART_IBRO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif // MSDK_NO_GPIO_CLK_INIT
             MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
             break;
 
         case MXC_UART_ERTCO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
             error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+#endif // MSDK_NO_GPIO_CLK_INIT
             MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 1);
             break;
 

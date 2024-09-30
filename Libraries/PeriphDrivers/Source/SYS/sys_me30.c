@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 /**
- * @file mxc_sys.c
+ * @file       mxc_sys.c
  * @brief      System layer driver.
  * @details    This driver is used to control the system layer of the device.
  */
@@ -57,6 +57,7 @@ extern uint32_t _binary_riscv_bin_start;
 /* **** Functions **** */
 
 /* ************************************************************************** */
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     int err = E_NO_ERROR;
@@ -93,9 +94,8 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
 
-        // Info block only accessible for secure code.
+        // Info block only accessible from secure code.
         //  Use Secure DMA1.
-        // TODO(DMA): Figure out access to "secure" functions when in non-secure code.
         err = MXC_AES_Init(MXC_DMA1);
         if (err) {
             MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
@@ -137,6 +137,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     return err;
 }
+#endif
 
 /* ************************************************************************** */
 int MXC_SYS_GetRevision(void)
@@ -237,7 +238,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERFO:
-        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_TX_EN | MXC_F_GCR_BTLELDOCTRL_RX_EN;
+        MXC_GCR->btleldoctrl |= MXC_F_GCR_BTLELDOCTRL_RF_EN | MXC_F_GCR_BTLELDOCTRL_BB_EN;
 
         /* Initialize kickstart circuit
            Select Kick start circuit clock source- IPO/ISO 
@@ -503,6 +504,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
+#if CONFIG_TRUSTED_EXECUTION_SECURE
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)
 {
@@ -541,5 +543,6 @@ int MXC_SYS_LockDAP_Permanent(void)
     return err;
 #endif
 }
+#endif
 
 /**@} end of mxc_sys */

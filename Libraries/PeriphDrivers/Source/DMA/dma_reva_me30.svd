@@ -11,20 +11,20 @@
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
-      <name>DMA0</name>
-      <value>28</value>
+      <name>DMA0_CH0</name>
+      <value>32</value>
     </interrupt>
     <interrupt>
-      <name>DMA1</name>
-      <value>29</value>
+      <name>DMA0_CH1</name>
+      <value>33</value>
     </interrupt>
     <interrupt>
-      <name>DMA2</name>
-      <value>30</value>
+      <name>DMA0_CH2</name>
+      <value>34</value>
     </interrupt>
     <interrupt>
-      <name>DMA3</name>
-      <value>31</value>
+      <name>DMA0_CH3</name>
+      <value>35</value>
     </interrupt>
     <registers>
       <register>
@@ -200,19 +200,24 @@
                   <value>0x00</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>SPIRX</name>
+                  <description>SPI RX</description>
+                  <value>0x01</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>UARTRX</name>
                   <description>UART RX</description>
                   <value>0x04</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>I3CRX</name>
-                  <description>I3C RX</description>
+                  <name>I3CRX_CONT</name>
+                  <description>I3C RX Controller</description>
                   <value>0x07</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPIRX</name>
-                  <description>SPI RX</description>
-                  <value>0x0F</value>
+                  <name>I3CRX_TARG</name>
+                  <description>I3C RX Target</description>
+                  <value>0x08</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>AESRX</name>
@@ -220,24 +225,29 @@
                   <value>0x10</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>SPITX</name>
+                  <description>SPI TX</description>
+                  <value>0x21</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>UARTTX</name>
                   <description>UART TX</description>
                   <value>0x24</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>I3CTX</name>
+                  <name>I3CTX_CONT</name>
                   <description>I3C TX</description>
                   <value>0x27</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>I3CTX_TARG</name>
+                  <description>I3C TX</description>
+                  <value>0x28</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>CRCTX</name>
                   <description>CRC TX</description>
                   <value>0x2C</value>
-                </enumeratedValue>
-                <enumeratedValue>
-                  <name>SPITX</name>
-                  <description>SPI TX</description>
-                  <value>0x2F</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>AESTX</name>

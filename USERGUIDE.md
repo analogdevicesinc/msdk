@@ -2129,11 +2129,19 @@ The following table matches external part numbers to internal die types.  This i
 
 The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores. This library is distributed in the MSDK as a pre-compiled static library file, and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/analogdevicesinc/msdk/tree/main/Examples) folder for each microcontroller.
 
-Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) for more detailed documentation on the library functions and usage.
+Please refer to the [CMSIS-DSP official documentation](https://arm-software.github.io/CMSIS-DSP/v1.16.2/index.html) for more detailed documentation on the library functions and usage.
 
 #### CMSIS-DSP Supported Parts
 
 - All microcontrollers with a Cortex M4 core are supported.
+
+#### CMSIS-DSP Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `CMSIS_DSP_VERSION`    | (Optional) Set the CMSIS-DSP version to use.               | Defaults to `1.16.2`, which is currently the only supported version. |
+
 
 ---
 
