@@ -55,9 +55,6 @@ UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/
 else
 $(warning No Python installation detected on your system!  Will not automatically update version info.)
 endif 
-
-else 
-$(info Not working from GitHub repo.  Will not automatically update version info.)
 endif
 endif
 
