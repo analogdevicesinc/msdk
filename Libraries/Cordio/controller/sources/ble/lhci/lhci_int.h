@@ -7,6 +7,8 @@
  *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019-2020 Packetcraft, Inc.
+ *
+ *  Portions Copyright (c) 2024 Analog Devices, Inc.
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -377,10 +379,14 @@ extern "C" {
                0x306) /*!<Vendor specific Get RSSI*/
 #define LHCI_OPCODE_VS_RESET_ADV_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x307) /*!<Vendor specific Get RSSI*/
+               0x307) /*!<Vendor specific reset adv stats*/
 #define LHCI_OPCODE_VS_RESET_SCAN_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x308) /*!<Vendor specific Get RSSI*/
+               0x308) /*!<Vendor specific reset scan stats*/
+#define LHCI_OPCODE_VS_FGEN     \
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
+               0x309) /*!<Vendor specific frequency generator*/
+            
 /* Vendor specific event masks. */
 #define LHCI_VS_EVT_MASK_SCAN_REPORT_EVT 0x01 /*!< (Byte 0) VS event bit, scan report. */
 #define LHCI_VS_EVT_MASK_DIAG_TRACE_EVT 0x02 /*!< (Byte 0) VS event bit, diagnostic tracing. */
