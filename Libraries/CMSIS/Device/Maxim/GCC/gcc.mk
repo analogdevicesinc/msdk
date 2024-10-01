@@ -24,7 +24,7 @@
 
 ifeq "$(PYTHON_CMD)" ""
 # Try python
-ifneq "$(wildcard $(MAXIM_PATH)/.git)" ""
+ifneq "$(wildcard $(MAXIM_PATH)/.github)" ""
 PYTHON_VERSION := $(shell python --version)
 ifneq ($(.SHELLSTATUS),0)
 PYTHON_CMD := none
@@ -46,11 +46,14 @@ endif
 export PYTHON_CMD
 endif
 
-# Run script
+# Make sure script exists before running. This won't run when working in the official MSDK release (non-GitHub)
+ifneq ("$(wildcard $(MAXIM_PATH)/.github)", "")
+# Run script if exists.
 ifneq "$(PYTHON_CMD)" "none"
 UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
 else
 $(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif 
 endif
 endif
 
