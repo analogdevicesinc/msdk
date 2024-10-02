@@ -217,17 +217,23 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
         break;
 
     case MXC_UART_EXT_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
         error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+#endif // MSDK_NO_GPIO_CLK_INIT
         MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 1);
         break;
 
     case MXC_UART_IBRO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
         error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+#endif // MSDK_NO_GPIO_CLK_INIT
         MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 2);
         break;
 
     case MXC_UART_ERFO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
         error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+#endif // MSDK_NO_GPIO_CLK_INIT
         MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 3);
         break;
 

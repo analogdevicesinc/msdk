@@ -24,7 +24,7 @@
 
 ifeq "$(PYTHON_CMD)" ""
 # Try python
-ifneq "$(wildcard $(MAXIM_PATH)/.git)" ""
+ifneq "$(wildcard $(MAXIM_PATH)/.github)" ""
 PYTHON_VERSION := $(shell python --version)
 ifneq ($(.SHELLSTATUS),0)
 PYTHON_CMD := none
@@ -46,11 +46,14 @@ endif
 export PYTHON_CMD
 endif
 
-# Run script
+# Make sure script exists before running. This won't run when working in the official MSDK release (non-GitHub)
+ifneq ("$(wildcard $(MAXIM_PATH)/.github)", "")
+# Run script if exists.
 ifneq "$(PYTHON_CMD)" "none"
 UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
 else
 $(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif 
 endif
 endif
 
@@ -300,8 +303,9 @@ PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=1
 PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=1
 else
 # Align with Zephyr flags.
-# Do not define CONFIG_TRUSTED_EXECUTION_SECURE
-# not defining means 0
+# Must be defined for the BLE build system.
+PROJ_AFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=0
+PROJ_CFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=0
 
 # Leaving these to support initial development.
 PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=0
@@ -788,9 +792,9 @@ SUPPRESS_HELP := 1
 endif
 .PHONY: query
 query:
+	@echo
 ifneq "$(QUERY_VAR)" ""
-	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+	$(foreach QUERY_VAR,$(QUERY_VAR),$(info $(QUERY_VAR)=$($(QUERY_VAR))))
 else
 	$(MAKE) debug
 endif
-

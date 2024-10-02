@@ -97,3 +97,6 @@ ${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${CORDIO_C_FILES} ${PROJECTMK}
 
 clean.cordio:
 	@$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk BUILD_DIR=${CORDIO_BUILD_DIR} clean
+
+query.cordio:
+	@$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk query QUERY_VAR="${QUERY_VAR}"

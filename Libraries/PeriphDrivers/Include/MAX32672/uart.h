@@ -82,11 +82,10 @@ typedef enum {
     MXC_UART_EXT_CLK = 1,
     /*8M (IBRO) and 32M (EFRO) clocks can be used for UARTs 0,1 and 2*/
     MXC_UART_IBRO_CLK = 2,
-    MXC_UART_ERFO_CLK = 3,
     /*32K (ERTCO) and 80K (INRO) clocks can only be used for UART3*/
-    MXC_UART_ERTCO_CLK = 4,
-    MXC_UART_INRO_CLK = 5,
-    MXC_UART_AOD_CLK = 6
+    MXC_UART_ERTCO_CLK = 3,
+    MXC_UART_INRO_CLK = 4,
+    MXC_UART_AOD_CLK = 5
 } mxc_uart_clock_t;
 
 /**
@@ -276,6 +275,15 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
  *          for a list of return codes.
  */
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock);
+
+/**
+ * @brief   Gets the clock source used for the UART instance
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  The selected clock source for the UART instance
+ */
+mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */

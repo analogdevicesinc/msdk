@@ -57,6 +57,27 @@ jobs:
           ref: '${{ github.event.pull_request.head.ref }}'
           repository: '${{ github.event.pull_request.head.repo.full_name }}'
 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: |
+            **.c
+            **.h
+            **.S
+            **.s
+            **.a
+            **.cpp
+            **.mk
+            **/Makefile
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          echo ${ALL_CHANGED_FILES} > changed_files
+          cat changed_files
+
       - name: Check watch files
         id: check_watch        
         run: |
@@ -222,7 +243,7 @@ jobs:
           # Set MAXIM_PATH to limit warnings
           export MAXIM_PATH=$(pwd)
 
-          python .github/workflows/scripts/build.py
+          python .github/workflows/scripts/build.py --change_file changed_files
 
   Regression_Test_Make_3_81:
     runs-on:
