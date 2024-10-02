@@ -191,7 +191,7 @@ endif
 .PHONY: rvapp
 rvapp: $(RISCV_APP_BIN)
 
-$(RISCV_APP_BIN): $(RISCV_COMMON_LD)
+$(RISCV_APP_BIN): $(RISCV_COMMON_LD) FORCE
 # Build the RISC-V project
 	@$(MAKE) -C ${RISCV_APP} BUILD_DIR=$(RISCV_BUILD_DIR) RISCV_CORE=1 RISCV_LOAD=0 PROJECT=riscv HOST_PROJECT=$(PROJECT) PROJ_LDFLAGS="$(PROJ_LDFLAGS)"
 # Create the binary (should incrementally build off of the first pass for the .elf)

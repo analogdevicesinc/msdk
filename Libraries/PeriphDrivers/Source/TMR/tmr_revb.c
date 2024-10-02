@@ -182,6 +182,11 @@ void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // If the clock source is locked, don't update the frequency either, as we will
+    // have rejected the configuration update too in MXC_TMR_RevB_SetClockSource.
+    if (g_is_clock_locked[tmr_id])
+        return;
+
     tmr_clksrc[tmr_id].configured = true;
     tmr_clksrc[tmr_id].freq = clksrc_freq;
 }
@@ -507,7 +512,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
         return timerClock;
     }
 
-    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
+    temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
@@ -515,7 +520,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
         return E_NO_ERROR;
     }
 
-    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
+    temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;

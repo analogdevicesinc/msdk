@@ -43,6 +43,7 @@ LIB_PERIPHDRIVERS ?= 1
 ifeq ($(LIB_PERIPHDRIVERS), 1)
 PERIPH_DRIVER_DIR := $(LIBS_DIR)/PeriphDrivers
 include $(PERIPH_DRIVER_DIR)/periphdriver.mk
+query: query.periphdrivers
 endif
 # ************************
 
@@ -107,7 +108,6 @@ endif
 #**************************************************************************
 endif
 
-
 #*********************************************************************
 
 
@@ -116,6 +116,8 @@ PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=1
 else
 PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=0
 endif
+
+query: query.cordio
 
 endif
 # ************************
@@ -126,6 +128,7 @@ LIB_FCL ?= 0
 ifeq ($(LIB_FCL), 1)
 FCL_DIR  ?= $(LIBS_DIR)/FCL
 include $(FCL_DIR)/fcl.mk
+query: query.fcl
 endif
 # ************************
 
@@ -143,6 +146,7 @@ SRCS += FreeRTOS_CLI.c
 
 # Include the FreeRTOS library
 include $(LIBS_DIR)/FreeRTOS/freertos.mk
+query: query.freertos
 endif
 # ************************
 
@@ -180,6 +184,7 @@ LIB_LWIP ?= 0
 ifeq ($(LIB_LWIP), 1)
 LWIP_DIR ?= $(LIBS_DIR)/lwIP
 include $(LWIP_DIR)/lwip.mk
+query: query.lwip
 endif
 # ************************
 
@@ -189,6 +194,7 @@ LIB_MAXUSB ?= 0
 ifeq ($(LIB_MAXUSB), 1)
 MAXUSB_DIR ?= $(LIBS_DIR)/MAXUSB
 include $(MAXUSB_DIR)/maxusb.mk
+query: query.maxusb
 endif
 # ************************
 

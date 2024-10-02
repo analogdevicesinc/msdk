@@ -47,11 +47,14 @@ endif
 export PYTHON_CMD
 endif
 
-# Run script
+# Make sure script exists before running. This won't run when working in the official MSDK release (non-GitHub)
+ifneq ("$(wildcard $(MAXIM_PATH)/.github)", "")
+# Run script if exists.
 ifneq "$(PYTHON_CMD)" "none"
 UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
 else
 $(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif 
 endif
 endif
 
@@ -698,9 +701,9 @@ SUPPRESS_HELP := 1
 endif
 .PHONY: query
 query:
+	@echo
 ifneq "$(QUERY_VAR)" ""
-	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+		$(foreach QUERY_VAR,$(QUERY_VAR),$(info $(QUERY_VAR)=$($(QUERY_VAR))))
 else
-	$(MAKE) debug
+		$(MAKE) debug
 endif
-
