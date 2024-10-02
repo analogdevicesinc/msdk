@@ -1,9 +1,8 @@
 ###############################################################################
  #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- # (now owned by Analog Devices, Inc.),
- # Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -42,7 +41,7 @@
 # that gets selected is MaximSDK/Libraries/Boards/TARGET/BOARD.
 
 # Configuration Variables:
-# - TARGET : Override the default target microcontroller.  Ex: TARGET=MAX32690
+# - TARGET : Override the default target microcontroller.  Ex: TARGET=MAX78000
 # - BOARD : Override the default BSP (case sensitive).  Ex: BOARD=EvKit_V1, BOARD=FTHR_RevA
 
 
@@ -226,7 +225,7 @@ MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
 # Default level if not building for release or explicitly for debug
-MXC_OPTIMIZE_CFLAGS ?= -O2
+MXC_OPTIMIZE_CFLAGS ?= -Og
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
@@ -371,7 +370,7 @@ endif
 
 all:
 # 	Extend the functionality of the "all" recipe here
-	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+	$(PREFIX)-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph

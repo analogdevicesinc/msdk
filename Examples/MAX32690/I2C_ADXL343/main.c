@@ -1,9 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
- * (now owned by Analog Devices, Inc.),
- * Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Copyright (C) 2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +29,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "mxc.h"
+#include "mxc_device.h"
+#include "mxc_delay.h"
+#include "i2c.h"
+#include "icc.h"
+#include "gpio.h"
 #include "adxl343.h"
 #include "board.h"
 #include "led.h"
@@ -47,9 +48,9 @@
 #define ADXL343_IRQ_PORT MXC_GPIO2
 #define ADXL343_IRQ_PIN MXC_GPIO_PIN_11
 
-void GPIO2_IRQHandler()
+void GPIO2_IRQHandler(void)
 {
-    MXC_GPIO_Handler(2);
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(ADXL343_IRQ_PORT));
 }
 
 static mxc_gpio_cfg_t adxl343_irq_cfg = { .port = ADXL343_IRQ_PORT,
@@ -175,8 +176,8 @@ int main(void)
                 blink_halt("Trouble reading ADXL343.");
             }
 
-            printf("\rx:% -2.2f  y:% -2.2f  z:% -2.2f", axis_data[0] * ADXL343_SF_2G,
-                   axis_data[1] * ADXL343_SF_2G, axis_data[2] * ADXL343_SF_2G);
+            printf("\rx:% -2.2d  y:% -2.2d  z:% -2.2f", (double)axis_data[0] * ADXL343_SF_2G,
+                   (double)axis_data[1] * ADXL343_SF_2G, (double)axis_data[2] * ADXL343_SF_2G);
             MXC_Delay(200000);
         }
 
