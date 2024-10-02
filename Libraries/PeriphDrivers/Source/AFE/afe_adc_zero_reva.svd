@@ -696,7 +696,7 @@
       <register>
         <name>PART_ID</name>
         <description>Silicon Revision ID</description>
-        <addressOffset>0x00910003</addressOffset>
+        <addressOffset>0x00110003</addressOffset>
         <fields>
           <field>
             <name>REV_ID</name>
@@ -2785,32 +2785,6 @@
             <name>CRC_INV</name>
             <description>Description not included</description>
             <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>TS_CTRL</name>
-        <description>Temperature Sensor Control</description>
-        <addressOffset>0x007C0001</addressOffset>
-        <size>8</size>
-        <fields>
-          <field>
-            <name>TS_EN</name>
-            <description>Description not included</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TS_CONV_EN</name>
-            <description>Description not included</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TS_INTG_RDY</name>
-            <description>Description not included</description>
-            <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
