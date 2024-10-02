@@ -1009,6 +1009,9 @@ int hart_uart_load_tx_fifo(void)
         return 0;
     }
 
+    // Ensure accurate index, dont allow uart interrupt while we manually load the fifo
+    MXC_UART_DisableInt(HART_UART_INSTANCE, (MXC_F_UART_INT_FL_TX_HE | MXC_F_UART_INT_FL_TX_OB));
+
     num_written = MXC_UART_WriteTXFIFO(
         HART_UART_INSTANCE, (const unsigned char *)(hart_buf + hart_uart_transmission_byte_index),
         load_num);
@@ -1016,6 +1019,9 @@ int hart_uart_load_tx_fifo(void)
     // Advance index based on bytes actually written.
     // This should always equal load_num though.
     hart_uart_transmission_byte_index += num_written;
+
+    // Restore interrupts
+    MXC_UART_EnableInt(HART_UART_INSTANCE, (MXC_F_UART_INT_FL_TX_HE | MXC_F_UART_INT_FL_TX_OB));
 
     // Return the number actually written in case someone is interested.
     return num_written;
