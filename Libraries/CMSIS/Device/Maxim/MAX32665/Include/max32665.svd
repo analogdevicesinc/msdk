@@ -4336,13 +4336,13 @@
       </field>
       <field>
        <name>LDOTXBYPENENDLY</name>
-       <description>LDORX Bypass Enable Delay</description>
+       <description>LDOTX Bypass Enable Delay</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>LDORXBYPENENDLY</name>
-       <description>LDOTX Bypass Enable Delay</description>
+       <description>LDORX Bypass Enable Delay</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
