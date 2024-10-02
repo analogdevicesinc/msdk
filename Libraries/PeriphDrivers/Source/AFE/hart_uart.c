@@ -212,6 +212,14 @@ static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
     }
 
     // Set RX threshold to 1 byte
+    // Note, to meet HART TPDLL needs, each received byte must be handled singularly, to verify
+    //  it for (vertical: parity bit) parity, framing errors, and gap error.
+    //  This HART UART driver currently checks parity, and framing errors, but gap must be
+    //  handled by TPDLL or application code.
+    //
+    // To increase threshold would require restructuring of the receiver to monitor gaps
+    //  and to parse when and if comm errors occur, as there could be multiple bytes in
+    //  the FIFO, and the errors would only apply to the most recent.
     retval = MXC_UART_SetRXThreshold(uart, 1);
     if (retval != E_NO_ERROR) {
         return retval;
@@ -934,7 +942,12 @@ int hart_uart_setup(uint32_t test_mode)
     } else {
         hart_rts_receive_mode();
 
-        retval = hart_uart_init(HART_UART_INSTANCE, 1200, MXC_UART_ERFO_CLK);
+        //
+        // NOTE: Need to use APB clock here instead of ERFO.
+        //   Otherwise in a case for ERFO clock is faster than the System/Peripheral
+        //   clock UART interrupts will not or only partially work.
+        //
+        retval = hart_uart_init(HART_UART_INSTANCE, 1200, MXC_UART_APB_CLK);
         if (retval != E_NO_ERROR) {
             return E_COMM_ERR;
         }
