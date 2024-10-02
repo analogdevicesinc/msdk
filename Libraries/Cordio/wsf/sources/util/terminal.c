@@ -496,3 +496,9 @@ static uint8_t terminalCommandEchoHandler(uint32_t argc, char **argv)
   return TERMINAL_ERROR_OK;
 }
 
+
+void TerminalFlush(void)
+{
+    memset(terminalCb.buf, 0, TERMINAL_MAX_COMMAND_LEN + 1);
+    terminalCb.bufOffset = 0;
+}
