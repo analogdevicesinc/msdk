@@ -7,7 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,6 +93,7 @@ extern "C" {
 #define MXC_R_AFE_ADC_ZERO_PGA             ((uint32_t)0x000E0001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0xE0001</tt> */
 #define MXC_R_AFE_ADC_ZERO_WAIT_EXT        ((uint32_t)0x000F0001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0xF0001</tt> */
 #define MXC_R_AFE_ADC_ZERO_WAIT_START      ((uint32_t)0x00100001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x100001</tt> */
+#define MXC_R_AFE_ADC_ZERO_PART_ID         ((uint32_t)0x00110003UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x110003</tt> */
 #define MXC_R_AFE_ADC_ZERO_SYSC_SEL        ((uint32_t)0x00120003UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x120003</tt> */
 #define MXC_R_AFE_ADC_ZERO_SYS_OFF_A       ((uint32_t)0x00130003UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x130003</tt> */
 #define MXC_R_AFE_ADC_ZERO_SYS_OFF_B       ((uint32_t)0x00140003UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x140003</tt> */
@@ -190,8 +193,6 @@ extern "C" {
 #define MXC_R_AFE_ADC_ZERO_ADC_TRIM1       ((uint32_t)0x00780002UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x780002</tt> */
 #define MXC_R_AFE_ADC_ZERO_ANA_TRIM        ((uint32_t)0x00790002UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x790002</tt> */
 #define MXC_R_AFE_ADC_ZERO_SYS_CTRL        ((uint32_t)0x007A0001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x7A0001</tt> */
-#define MXC_R_AFE_ADC_ZERO_TS_CTRL         ((uint32_t)0x007C0001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x7C0001</tt> */
-#define MXC_R_AFE_ADC_ZERO_PART_ID         ((uint32_t)0x00910003UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x910003</tt> */
 /**@} end of group afe_adc_zero_registers */
 
 /**
@@ -553,6 +554,20 @@ extern "C" {
 #define MXC_F_AFE_ADC_ZERO_WAIT_EXT_WAIT_EXT           ((uint8_t)(0xFFUL << MXC_F_AFE_ADC_ZERO_WAIT_EXT_WAIT_EXT_POS)) /**< WAIT_EXT_WAIT_EXT Mask */
 
 /**@} end of group AFE_ADC_ZERO_WAIT_EXT_Register */
+
+/**
+ * @ingroup  afe_adc_zero_registers
+ * @defgroup AFE_ADC_ZERO_PART_ID AFE_ADC_ZERO_PART_ID
+ * @brief    Silicon Revision ID
+ * @{
+ */
+#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS          0 /**< PART_ID_REV_ID Position */
+#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID              ((uint32_t)(0x1FUL << MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS)) /**< PART_ID_REV_ID Mask */
+
+#define MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL_POS         5 /**< PART_ID_ADC_SEL Position */
+#define MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL             ((uint32_t)(0x1UL << MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL_POS)) /**< PART_ID_ADC_SEL Mask */
+
+/**@} end of group AFE_ADC_ZERO_PART_ID_Register */
 
 /**
  * @ingroup  afe_adc_zero_registers
@@ -2010,37 +2025,6 @@ extern "C" {
 #define MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC_INV            ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC_INV_POS)) /**< SYS_CTRL_CRC_INV Mask */
 
 /**@} end of group AFE_ADC_ZERO_SYS_CTRL_Register */
-
-/**
- * @ingroup  afe_adc_zero_registers
- * @defgroup AFE_ADC_ZERO_TS_CTRL AFE_ADC_ZERO_TS_CTRL
- * @brief    Temperature Sensor Control
- * @{
- */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_EN_POS           0 /**< TS_CTRL_TS_EN Position */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_EN               ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_EN_POS)) /**< TS_CTRL_TS_EN Mask */
-
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_CONV_EN_POS      1 /**< TS_CTRL_TS_CONV_EN Position */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_CONV_EN          ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_CONV_EN_POS)) /**< TS_CTRL_TS_CONV_EN Mask */
-
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_INTG_RDY_POS     2 /**< TS_CTRL_TS_INTG_RDY Position */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_INTG_RDY         ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_INTG_RDY_POS)) /**< TS_CTRL_TS_INTG_RDY Mask */
-
-/**@} end of group AFE_ADC_ZERO_TS_CTRL_Register */
-
-/**
- * @ingroup  afe_adc_zero_registers
- * @defgroup AFE_ADC_ZERO_PART_ID AFE_ADC_ZERO_PART_ID
- * @brief    Silicon Revision ID
- * @{
- */
-#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS          0 /**< PART_ID_REV_ID Position */
-#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID              ((uint32_t)(0x1FUL << MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS)) /**< PART_ID_REV_ID Mask */
-
-#define MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL_POS         5 /**< PART_ID_ADC_SEL Position */
-#define MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL             ((uint32_t)(0x1UL << MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL_POS)) /**< PART_ID_ADC_SEL Mask */
-
-/**@} end of group AFE_ADC_ZERO_PART_ID_Register */
 
 #ifdef __cplusplus
 }
