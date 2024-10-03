@@ -83,11 +83,18 @@ $(info tttt $(BOARD_DIR))
 IPATH += ${LIBS_DIR}/MiscDrivers/PushButton
 IPATH += ${LIBS_DIR}/MiscDrivers/LED
 IPATH += ${LIBS_DIR}/Boards/$(TARGET_UC)/$(BOARD)/Include
-IPATH += $(BSP_SEARCH_DIR)/$(BOARD)/Include
-VPATH += $(BSP_SEARCH_DIR)/$(BOARD)/Source
-IPATH += $(BOARD_DIR)/Include
-VPATH += $(BOARD_DIR)/Source
-
+ifneq ($(BOARD_DIR),)
+    IPATH += $(BOARD_DIR)/Include
+    VPATH += $(BOARD_DIR)/Source
+else
+    # Check if both BOARD and BSP_SEARCH_DIR are not empty
+    ifneq ($(BOARD),)
+    ifneq ($(BSP_SEARCH_DIR),)
+        IPATH += $(BSP_SEARCH_DIR)/$(BOARD)/Include
+        VPATH += $(BSP_SEARCH_DIR)/$(BOARD)/Source
+    endif
+    endif
+endif
 include ${LIBS_DIR}/PeriphDrivers/periphdriver.mk
 
 # Use absolute paths if building within eclipse environment.
