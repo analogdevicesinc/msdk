@@ -46,6 +46,7 @@ unsigned int MXC_SDHC_Get_Clock_Config(void)
 /* ************************************************************************** */
 int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     mxc_gpio_regs_t *gpio = gpio_cfg_sdhc.port;
 
     // Startup the HIRC96M clock if it's not on already
@@ -62,6 +63,8 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
     gpio->ds0 |= gpio_cfg_sdhc.mask;
 
     MXC_GPIO_Config(&gpio_cfg_sdhc);
+#endif
+
     return MXC_SDHC_RevA_Init((mxc_sdhc_reva_regs_t *)MXC_SDHC, cfg);
 }
 
