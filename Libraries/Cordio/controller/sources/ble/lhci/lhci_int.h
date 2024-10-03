@@ -360,31 +360,29 @@ extern "C" {
 #define LHCI_OPCODE_VS_SET_CONN_PHY_TX_PWR \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3DD) /*!< Set Connection Phy Tx Power opcode. */
 
-#define LHCI_OPCODE_VS_REG_WRITE HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300) /*!< Write data to MCU register or memory space. */
-#define LHCI_OPCODE_VS_REG_READ HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301) /*!< Read data from MCU  register or memory space. */
 #define LHCI_OPCODE_VS_RESET_CONN_STATS \
-    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x302) /*!< Reset connection stats. */
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300) /*!< Reset connection stats. */
 #define LHCI_OPCODE_VS_TX_TEST \
-    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x303) /*!< Vendor specific TX test that takes numPkt param. */
+    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301) /*!< Vendor specific TX test that takes numPkt param. */
 #define LHCI_OPCODE_VS_RESET_TEST_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x304) /*!<Vendor specific End Test Returning More than RX Packets*/
+               0x302) /*!<Vendor specific End Test Returning More than RX Packets*/
 #define LHCI_OPCODE_VS_RX_TEST     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x305) /*!<Vendor specific RX Test*/
+               0x303) /*!<Vendor specific RX Test*/
 #define LHCI_OPCODE_VS_GET_RSSI     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x306) /*!<Vendor specific Get RSSI*/
+               0x304) /*!<Vendor specific Get RSSI*/
 #define LHCI_OPCODE_VS_RESET_ADV_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x307) /*!<Vendor specific reset adv stats*/
+               0x305) /*!<Vendor specific Reset Advertising Stats */
 #define LHCI_OPCODE_VS_RESET_SCAN_STATS     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x308) /*!<Vendor specific reset scan stats*/
+               0x306) /*!<Vendor specific Reset Scan Stats */
 #define LHCI_OPCODE_VS_FGEN     \
     HCI_OPCODE(HCI_OGF_VENDOR_SPEC, \
-               0x309) /*!<Vendor specific frequency generator*/
-            
+               0x307) /*!<Vendor specific Function Generation */
+
 /* Vendor specific event masks. */
 #define LHCI_VS_EVT_MASK_SCAN_REPORT_EVT 0x01 /*!< (Byte 0) VS event bit, scan report. */
 #define LHCI_VS_EVT_MASK_DIAG_TRACE_EVT 0x02 /*!< (Byte 0) VS event bit, diagnostic tracing. */

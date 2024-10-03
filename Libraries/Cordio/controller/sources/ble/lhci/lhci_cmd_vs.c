@@ -233,33 +233,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         evtParamLen += sizeof(BbBlePduFiltStats_t);
         break;
 
-    case LHCI_OPCODE_VS_REG_WRITE: {
-        uint8_t len;
-        uint32_t addr;
-        uint32_t *addrP;
-
-        BSTREAM_TO_UINT8(len, pBuf);
-        BSTREAM_TO_UINT32(addr, pBuf);
-        addrP = (uint32_t *)addr;
-
-        LL_TRACE_INFO2("### LlVsRegWrite ### 0x%08X %d bytes", addr, len);
-
-        memcpy(addrP, pBuf, len);
-        break;
-    }
-
-    case LHCI_OPCODE_VS_REG_READ: {
-        uint8_t len;
-
-        BSTREAM_TO_UINT8(len, pBuf);
-        BSTREAM_TO_UINT32(regReadAddr, pBuf);
-
-        LL_TRACE_INFO2("### LlVsRegRead ### 0x%08X %d bytes", regReadAddr, len);
-
-        evtParamLen += len;
-        break;
-    }
-
     case LHCI_OPCODE_VS_TX_TEST: {
         uint16_t numPackets = pBuf[4] | (pBuf[5] << 8);
 
@@ -374,7 +347,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_GET_RAND_ADDR:
         case LHCI_OPCODE_VS_SET_TX_TEST_ERR_PATT:
         case LHCI_OPCODE_VS_SET_SNIFFER_ENABLE:
-        case LHCI_OPCODE_VS_REG_WRITE:
         case LHCI_OPCODE_VS_RX_TEST:
         case LHCI_OPCODE_VS_TX_TEST:
         case LHCI_OPCODE_VS_RESET_ADV_STATS:
@@ -511,14 +483,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             BbBlePduFiltStats_t stats;
             BbBleGetPduFiltStats(&stats);
             memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
-            break;
-        }
-
-        case LHCI_OPCODE_VS_REG_READ: {
-            if (regReadAddr != 0) {
-                uint32_t *regReadP = (uint32_t *)regReadAddr;
-                memcpy(pBuf, regReadP, (evtParamLen - 1));
-            }
             break;
         }
 
