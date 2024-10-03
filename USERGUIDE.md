@@ -2138,6 +2138,13 @@ PROJ_CFLAGS += -DMSDK_NO_GPIO_CLK_INIT
 ???+ note "ℹ️ **Syntax Note:**"
     The `-D` flag tells the compiler to define a symbol at compile-time.  It should be followed by the symbol we wish to define.  In this case, `MSDK_NO_GPIO_CLK_INIT`.
 
+#### Peripheral Driver Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `PINS_FILE`               | Override pin definitions                   | This option can be used to override the default GPIO definitions used by the peripheral drivers, which can be found in the `Libraries/PeriphDrivers/Source/SYS/pins_xx.c` files in the MSDK.  The file specified by this option will be passed to the build instead of the default.  It's suggested to copy the default file first as a template before making modifications.  |
+
 ---
 
 ### CMSIS-DSP

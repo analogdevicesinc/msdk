@@ -45,12 +45,15 @@ INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
 
+# Expose a "PINS_FILE" option for easily overriding the pin definitions
+PINS_FILE ?= $(SOURCE_DIR)/SYS/pins_me18.c
+
 # Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_me18.c
+PERIPH_DRIVER_C_FILES += $(PINS_FILE)
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me18.c
 
 
