@@ -38,8 +38,6 @@
 #include "board.h"
 #include "led.h"
 
-#undef WAIT_FOR_KEYPRESS
-
 // The I2C peripheral the ADXL343 is connected to and the bus speed.
 #define I2C_INST MXC_I2C0
 #define I2C_FREQ 100000
@@ -108,8 +106,8 @@ int adxl343_config(void)
     result |= adxl343_set_power_mode(ADXL343_PWRMOD_NORMAL);
     result |= adxl343_set_offsets(axis_offsets);
     result |= adxl343_set_fifo_mode(ADXL343_FIFO_BYPASS);
-    result |= adxl343_set_int_map(ADXL343_INT_DATA_READY);
-    result |= adxl343_set_int_enable(ADXL343_INT_DATA_READY);
+    result |= adxl343_set_int_map(ADXL343_INT_DATA_READY | ADXL343_INT_ACTIVITY);
+    result |= adxl343_set_int_enable(ADXL343_INT_DATA_READY | ADXL343_INT_ACTIVITY);
     result |= adxl343_set_power_control(ADXL343_PWRCTL_MEASURE);
 
     MXC_GPIO_Config(&adxl343_irq_cfg);
@@ -159,16 +157,7 @@ int main(void)
         blink_halt("Trouble configuring ADXL343.");
     }
 
-
-    // Use delay or wait for keypress to allow debugger to attach before entering low power mode
-#if !defined(WAIT_FOR_KEYPRESS)
-    MXC_Delay(MXC_DELAY_SEC(3));
-#else
-    wait_for_keypress();
-#endif
-
-    for (;;) {
-
+    while (1) {
         if (axis_data_ready) {
             axis_data_ready = false;
 
@@ -176,11 +165,11 @@ int main(void)
                 blink_halt("Trouble reading ADXL343.");
             }
 
-            printf("\rx:% -2.2d  y:% -2.2d  z:% -2.2f", (double)axis_data[0] * ADXL343_SF_2G,
-                   (double)axis_data[1] * ADXL343_SF_2G, (double)axis_data[2] * ADXL343_SF_2G);
+            // Add trailing spaces to properly clear any left over digits should the number
+            //  of digits increase/decrease.
+            printf("\rx:%-2.2f  y:%-2.2f  z:%-2.2f         ", (double)(axis_data[0] * ADXL343_SF_2G),
+                   (double)(axis_data[1] * ADXL343_SF_2G), (double)(axis_data[2] * ADXL343_SF_2G));
             MXC_Delay(200000);
         }
-
-//        MXC_LP_EnterSleepMode();
     }
 }

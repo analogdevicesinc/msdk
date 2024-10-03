@@ -10,8 +10,6 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
-
 ## Setup
 
 ### Prepare Hardware:
@@ -33,6 +31,5 @@ The console UART of the MAX32690 EV Kit will output these messages:
 
 ```
 MAX32690 I2C ADXL343 demo.
-Press Enter/Return to continue ...
 x:-0.02  y: 0.02  z: 0.99
 ```
