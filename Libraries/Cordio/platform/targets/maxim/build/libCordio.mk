@@ -78,7 +78,6 @@ SRCS            += $(C_FILES)
 VPATH           += %.c $(sort $(dir $(C_FILES)))
 IPATH           += $(INC_DIRS)
 
-$(info tttt $(BOARD_DIR))
 # Add dependencies in the Board library and the PeripheralDrivers
 IPATH += ${LIBS_DIR}/MiscDrivers/PushButton
 IPATH += ${LIBS_DIR}/MiscDrivers/LED
