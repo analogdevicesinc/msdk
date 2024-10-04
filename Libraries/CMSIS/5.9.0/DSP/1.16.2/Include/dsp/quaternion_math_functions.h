@@ -24,7 +24,6 @@
  * limitations under the License.
  */
 
- 
 #ifndef QUATERNION_MATH_FUNCTIONS_H_
 #define QUATERNION_MATH_FUNCTIONS_H_
 
@@ -34,10 +33,8 @@
 #include "dsp/none.h"
 #include "dsp/utils.h"
 
-
-#ifdef   __cplusplus
-extern "C"
-{
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 /**
@@ -46,17 +43,14 @@ extern "C"
  * rotation and quaternion representation.
  */
 
-
 /**
   @brief         Floating-point quaternion Norm.
   @param[in]     pInputQuaternions       points to the input vector of quaternions
   @param[out]    pNorms                  points to the output vector of norms
   @param[in]     nbQuaternions           number of quaternions in each vector
  */
-void arm_quaternion_norm_f32(const float32_t *pInputQuaternions, 
-    float32_t *pNorms,
-    uint32_t nbQuaternions);
-
+void arm_quaternion_norm_f32(const float32_t *pInputQuaternions, float32_t *pNorms,
+                             uint32_t nbQuaternions);
 
 /**
   @brief         Floating-point quaternion inverse.
@@ -64,10 +58,8 @@ void arm_quaternion_norm_f32(const float32_t *pInputQuaternions,
   @param[out]    pInverseQuaternions          points to the output vector of inverse quaternions
   @param[in]     nbQuaternions                number of quaternions in each vector
  */
-void arm_quaternion_inverse_f32(const float32_t *pInputQuaternions, 
-    float32_t *pInverseQuaternions, 
-    uint32_t nbQuaternions);
-
+void arm_quaternion_inverse_f32(const float32_t *pInputQuaternions, float32_t *pInverseQuaternions,
+                                uint32_t nbQuaternions);
 
 /**
   @brief         Floating-point quaternion conjugates.
@@ -75,10 +67,8 @@ void arm_quaternion_inverse_f32(const float32_t *pInputQuaternions,
   @param[out]    pConjugateQuaternions        points to the output vector of conjugate quaternions
   @param[in]     nbQuaternions                number of quaternions in each vector
  */
-void arm_quaternion_conjugate_f32(const float32_t *inputQuaternions, 
-    float32_t *pConjugateQuaternions, 
-    uint32_t nbQuaternions);
-
+void arm_quaternion_conjugate_f32(const float32_t *inputQuaternions,
+                                  float32_t *pConjugateQuaternions, uint32_t nbQuaternions);
 
 /**
   @brief         Floating-point normalization of quaternions.
@@ -86,10 +76,8 @@ void arm_quaternion_conjugate_f32(const float32_t *inputQuaternions,
   @param[out]    pNormalizedQuaternions       points to the output vector of normalized quaternions
   @param[in]     nbQuaternions                number of quaternions in each vector
  */
-void arm_quaternion_normalize_f32(const float32_t *inputQuaternions, 
-    float32_t *pNormalizedQuaternions, 
-    uint32_t nbQuaternions);
-
+void arm_quaternion_normalize_f32(const float32_t *inputQuaternions,
+                                  float32_t *pNormalizedQuaternions, uint32_t nbQuaternions);
 
 /**
   @brief         Floating-point product of two quaternions.
@@ -97,10 +85,7 @@ void arm_quaternion_normalize_f32(const float32_t *inputQuaternions,
   @param[in]     qb       Second quaternion
   @param[out]    r        Product of two quaternions
  */
-void arm_quaternion_product_single_f32(const float32_t *qa, 
-    const float32_t *qb, 
-    float32_t *r);
-
+void arm_quaternion_product_single_f32(const float32_t *qa, const float32_t *qb, float32_t *r);
 
 /**
   @brief         Floating-point elementwise product two quaternions.
@@ -109,11 +94,8 @@ void arm_quaternion_product_single_f32(const float32_t *qa,
   @param[out]    r                   Elementwise product of quaternions
   @param[in]     nbQuaternions       Number of quaternions in the array
  */
-void arm_quaternion_product_f32(const float32_t *qa, 
-    const float32_t *qb, 
-    float32_t *r,
-    uint32_t nbQuaternions);
-
+void arm_quaternion_product_f32(const float32_t *qa, const float32_t *qb, float32_t *r,
+                                uint32_t nbQuaternions);
 
 /**
  * @brief Conversion of quaternion to equivalent rotation matrix.
@@ -130,10 +112,8 @@ void arm_quaternion_product_f32(const float32_t *qa,
  *
  * Rotation matrix is saved in row order : R00 R01 R02 R10 R11 R12 R20 R21 R22
  */
-void arm_quaternion2rotation_f32(const float32_t *pInputQuaternions, 
-    float32_t *pOutputRotations, 
-    uint32_t nbQuaternions);
-
+void arm_quaternion2rotation_f32(const float32_t *pInputQuaternions, float32_t *pOutputRotations,
+                                 uint32_t nbQuaternions);
 
 /**
  * @brief Conversion of a rotation matrix to equivalent quaternion.
@@ -141,12 +121,10 @@ void arm_quaternion2rotation_f32(const float32_t *pInputQuaternions,
  * @param[out]      pOutputQuaternions points to an array of quaternions
  * @param[in]       nbQuaternions in the array
 */
-void arm_rotation2quaternion_f32(const float32_t *pInputRotations, 
-    float32_t *pOutputQuaternions,  
-    uint32_t nbQuaternions);
+void arm_rotation2quaternion_f32(const float32_t *pInputRotations, float32_t *pOutputQuaternions,
+                                 uint32_t nbQuaternions);
 
-
-#ifdef   __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
