@@ -277,6 +277,8 @@ static void llBuildTxPkt(uint8_t len, uint8_t pktType, uint8_t *pBuf)
 }
 static void llTestTxAbortCback(BbOpDesc_t *pOp)
 {
+
+    
     BbBleData_t *const pBle = pOp->prot.pBle;
     BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
@@ -288,6 +290,26 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
         WsfBufFree(pTx->pTxBuf);
         WsfBufFree(pBle);
         WsfBufFree(pOp);
+        
+        BbStop(BB_PROT_BLE_DTM);
+
+        if (llTestCb.state == LL_TEST_STATE_RESET) {
+            lctrMsgHdr_t *pMsg;
+
+            /* Send SM an test termination event. */
+            if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+                /* pMsg->handle = 0; */ /* not used */
+                pMsg->dispId = LCTR_DISP_TEST;
+                pMsg->event = LL_TEST_MSG_TERMINATE;
+
+                WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+            }
+        } else {
+            /* Terminate immediately. */
+            llTestCb.state = LL_TEST_STATE_IDLE;
+            lmgrCb.testEnabled = FALSE;
+            LmgrDecResetRefCount();
+        }
     }
 }
 /*************************************************************************************************/
@@ -684,16 +706,38 @@ uint8_t LlTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint16_t numPkt)
 
 static void llTestRxAbortCback(BbOpDesc_t *pOp)
 {
+
     BbBleData_t *const pBle = pOp->prot.pBle;
     BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
     if (llTestCb.state == LL_TEST_STATE_RX) {
         SchInsertNextAvailable(pOp);
     } else {
-        WsfBufFree(pBle);
         WsfBufFree(pRx->pRxBuf);
+        WsfBufFree(pBle);
         WsfBufFree(pOp);
+
         llTestCb.packetsFreed = TRUE;
+
+        BbStop(BB_PROT_BLE_DTM);
+
+        if (llTestCb.state == LL_TEST_STATE_RESET) {
+            lctrMsgHdr_t *pMsg;
+
+            /* Send SM an test termination event. */
+            if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+                /* pMsg->handle = 0; */ /* not used */
+                pMsg->dispId = LCTR_DISP_TEST;
+                pMsg->event = LL_TEST_MSG_TERMINATE;
+
+                WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+            }
+        } else {
+            /* Terminate immediately. */
+            llTestCb.state = LL_TEST_STATE_IDLE;
+            lmgrCb.testEnabled = FALSE;
+            LmgrDecResetRefCount();
+        }
     }
 }
 /*************************************************************************************************/
@@ -913,7 +957,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     llTestCb.state = LL_TEST_STATE_RX;
     lmgrCb.testEnabled = TRUE;
     LmgrIncResetRefCount();
-    memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
+    memset((void*)&llTestCb.rpt, 0, sizeof(llTestCb.rpt)); /* clear report */
     BbStart(BB_PROT_BLE_DTM);
     SchInsertNextAvailable(pOp);
 

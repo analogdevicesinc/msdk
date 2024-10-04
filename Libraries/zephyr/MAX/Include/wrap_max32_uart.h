@@ -119,7 +119,7 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
  */
 #elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
     (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
+    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
 // status flags
 #define ADI_MAX32_UART_RX_EMPTY MXC_F_UART_STATUS_RX_EM
 #define ADI_MAX32_UART_TX_EMPTY MXC_F_UART_STATUS_TX_EM
@@ -133,7 +133,11 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
 #define ADI_MAX32_UART_INT_OE MXC_F_UART_INTEN_RX_OV // Overrun Error Interrupt
 #define ADI_MAX32_UART_INT_PE MXC_F_UART_INTEN_RX_PAR // Parity Error Interrupt
 #define ADI_MAX32_UART_INT_FE MXC_F_UART_INTEN_RX_FERR // Framing Error Interrupt
+#if defined(CONFIG_SOC_MAX32657)
+#define ADI_MAX32_UART_INT_TX MXC_F_UART_INTEN_TX_THD // Transmit Interrupt
+#else
 #define ADI_MAX32_UART_INT_TX MXC_F_UART_INTEN_TX_HE // Transmit Interrupt
+#endif
 #define ADI_MAX32_UART_INT_RX MXC_F_UART_INTEN_RX_THD // Receive Interrupt
 #define ADI_MAX32_UART_INT_CTS MXC_F_UART_INTEN_CTS_EV // CTS Modem Interrupt
 #define ADI_MAX32_UART_INT_TX_OEM MXC_F_UART_INTEN_TX_OB // TX FIFO Almost Empty Interrupt
@@ -215,7 +219,7 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
 
 static inline unsigned int Wrap_MXC_UART_GetRegINTEN(mxc_uart_regs_t *uart)
 {
-#if defined(CONFIG_SOC_MAX32662)
+#if defined(CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32657)
     return uart->inten;
 #else
     return uart->int_en;

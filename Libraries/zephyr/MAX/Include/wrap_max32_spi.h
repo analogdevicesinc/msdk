@@ -75,15 +75,21 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
  */
 #elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
     (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
-
+    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
+#if defined(CONFIG_SOC_MAX32657)
+#define ADI_MAX32_SPI_CTRL_MASTER_MODE MXC_F_SPI_CTRL0_CONT_MODE
+#else
 #define ADI_MAX32_SPI_CTRL_MASTER_MODE MXC_F_SPI_CTRL0_MST_MODE
-
+#endif
 #define ADI_MAX32_SPI_INT_FL_RX_UN MXC_F_SPI_INTFL_RX_UN
 #define ADI_MAX32_SPI_INT_FL_RX_OV MXC_F_SPI_INTFL_RX_OV
 #define ADI_MAX32_SPI_INT_FL_TX_UN MXC_F_SPI_INTFL_TX_UN
 #define ADI_MAX32_SPI_INT_FL_TX_OV MXC_F_SPI_INTFL_TX_OV
+#if defined(CONFIG_SOC_MAX32657)
+#define ADI_MAX32_SPI_INT_FL_MST_DONE MXC_F_SPI_INTFL_CONT_DONE
+#else
 #define ADI_MAX32_SPI_INT_FL_MST_DONE MXC_F_SPI_INTFL_MST_DONE
+#endif
 #define ADI_MAX32_SPI_INT_FL_ABORT MXC_F_SPI_INTFL_ABORT
 #define ADI_MAX32_SPI_INT_FL_FAULT MXC_F_SPI_INTFL_FAULT
 #define ADI_MAX32_SPI_INT_FL_SSD MXC_F_SPI_INTFL_SSD
@@ -96,7 +102,11 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
 #define ADI_MAX32_SPI_INT_EN_RX_OV MXC_F_SPI_INTEN_RX_OV
 #define ADI_MAX32_SPI_INT_EN_TX_UN MXC_F_SPI_INTEN_TX_UN
 #define ADI_MAX32_SPI_INT_EN_TX_OV MXC_F_SPI_INTEN_TX_OV
+#if defined(CONFIG_SOC_MAX32657)
+#define ADI_MAX32_SPI_INT_EN_MST_DONE MXC_F_SPI_INTEN_CONT_DONE
+#else
 #define ADI_MAX32_SPI_INT_EN_MST_DONE MXC_F_SPI_INTEN_MST_DONE
+#endif
 #define ADI_MAX32_SPI_INT_EN_ABORT MXC_F_SPI_INTEN_ABORT
 #define ADI_MAX32_SPI_INT_EN_FAULT MXC_F_SPI_INTEN_FAULT
 #define ADI_MAX32_SPI_INT_EN_SSD MXC_F_SPI_INTEN_SSD
@@ -106,9 +116,14 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
 #define ADI_MAX32_SPI_INT_EN_TX_THD MXC_F_SPI_INTEN_TX_THD
 
 #define ADI_MAX32_SPI_DMA_TX_FIFO_CLEAR MXC_F_SPI_DMA_TX_FLUSH
-#define ADI_MAX32_SPI_DMA_TX_DMA_EN MXC_F_SPI_DMA_DMA_TX_EN
 #define ADI_MAX32_SPI_DMA_RX_FIFO_CLEAR MXC_F_SPI_DMA_RX_FLUSH
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32662)
+#define ADI_MAX32_SPI_DMA_TX_DMA_EN MXC_F_SPI_DMA_TX_EN
+#define ADI_MAX32_SPI_DMA_RX_DMA_EN MXC_F_SPI_DMA_RX_EN
+#else
+#define ADI_MAX32_SPI_DMA_TX_DMA_EN MXC_F_SPI_DMA_DMA_TX_EN
 #define ADI_MAX32_SPI_DMA_RX_DMA_EN MXC_F_SPI_DMA_DMA_RX_EN
+#endif /* defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32662) */
 
 static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed,
                                     int numSlaves, unsigned ssPolarity, unsigned int hz)
@@ -122,6 +137,12 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
 }
 
 #endif // part number
+
+#if defined(CONFIG_SOC_MAX32657)
+#define ADI_MAX32_SPI_CTRL0_SS_CTRL MXC_F_SPI_CTRL0_TS_CTRL
+#else
+#define ADI_MAX32_SPI_CTRL0_SS_CTRL MXC_F_SPI_CTRL0_SS_CTRL
+#endif
 
 #ifdef __cplusplus
 }

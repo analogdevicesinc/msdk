@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>MPC</name>
+    <description>Memory Protection Controller.</description>
+    <baseAddress>0x50091000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>Control Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SEC_ERR</name>
+            <description>Security Error Response COnfiguration.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATAIF_REQ</name>
+            <description>Data interface gating request.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATAIF_ACK</name>
+            <description>Data interface gating acknowledged.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AUTO_INC</name>
+            <description>Auto-increment.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SEC_LOCKDOWN</name>
+            <description>Security Lockdown.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_MAX</name>
+        <description>Maximum value of block-based index register.</description>
+        <addressOffset>0x0010</addressOffset>
+        <size>32</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>VAL</name>
+            <description>Maximum value of block-based index register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_CFG</name>
+        <description>Block Control Register.</description>
+        <addressOffset>0x0014</addressOffset>
+        <size>32</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>SIZE</name>
+            <description>Block Size.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>INIT_ST</name>
+            <description>Initialization in progress.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_IDX</name>
+        <description>Block Index Register.</description>
+        <addressOffset>0x0018</addressOffset>
+        <fields>
+          <field>
+            <name>IDX</name>
+            <description>Index value for accessing block-based lookup table.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BLK_LUT</name>
+        <description>Block-based gating Look Up Table Register.</description>
+        <addressOffset>0x001C</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>Each bit indicates one block, based on the index pointed by the BLKIDX register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_STAT</name>
+        <description>Interrupt Flag Register.</description>
+        <addressOffset>0x0020</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>MPC_IRQ</name>
+            <description>MPC IRQ triggered.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_CLEAR</name>
+        <description>Interrupt Clear Register.</description>
+        <addressOffset>0x0024</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>MPC_IRQ</name>
+            <description>MPC IRQ Clear.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_EN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x0028</addressOffset>
+        <fields>
+          <field>
+            <name>MPC_IRQ</name>
+            <description>MPC IRQ Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_INFO1</name>
+        <description>Interrupt Info 1 Register.</description>
+        <addressOffset>0x002C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>HADDR</name>
+            <description>AHB bus signals: Address bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_INFO2</name>
+        <description>Interrupt Info 2 Register.</description>
+        <addressOffset>0x0030</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>HMASTER</name>
+            <description>AHB bus signals: Master Select.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>HNONSEC</name>
+            <description>AHB bus signals: Indicates the current transfer is either a Non-Secure or Secure transfer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CFG_NS</name>
+            <description>Security state.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_SET</name>
+        <description>Interrupt Set Debug Register.</description>
+        <addressOffset>0x0034</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>MPC_IRQ</name>
+            <description>MPC IRQ Set.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PIDR4</name>
+        <description>Peripheral ID 4 Register.</description>
+        <addressOffset>0x0FD0</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR5</name>
+        <description>Peripheral ID 5 Register.</description>
+        <addressOffset>0x0FD4</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR6</name>
+        <description>Peripheral ID 6 Register.</description>
+        <addressOffset>0x0FD8</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR7</name>
+        <description>Peripheral ID 6 Register.</description>
+        <addressOffset>0x0FDC</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR0</name>
+        <description>Peripheral ID 0 Register.</description>
+        <addressOffset>0x0FE0</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR1</name>
+        <description>Peripheral ID 1 Register.</description>
+        <addressOffset>0x0FE4</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR2</name>
+        <description>Peripheral ID 2 Register.</description>
+        <addressOffset>0x0FE8</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>PIDR3</name>
+        <description>Peripheral ID 3 Register.</description>
+        <addressOffset>0x0FEC</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR0</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FF0</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR1</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FF4</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR2</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FF8</addressOffset>
+        <access>read-only</access>
+      </register>
+      <register>
+        <name>CIDR3</name>
+        <description>Component ID register.</description>
+        <addressOffset>0x0FFC</addressOffset>
+        <access>read-only</access>
+      </register>
+    </registers>
+  </peripheral>
+  <!--MPC: Memory Protection Controller-->
+</device>

@@ -103,9 +103,9 @@ int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
  */
 #elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
     (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657)
+    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
 
-#if defined(CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32675)
+#if defined(CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32675) || (CONFIG_SOC_MAX32657)
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 #elif defined(CONFIG_SOC_MAX32662)
@@ -142,13 +142,16 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
         return MXC_TMR_EXT_CLK;
     case 2: // ADI_MAX32_PRPH_CLK_SRC_IBRO
         return MXC_TMR_8M_CLK;
+#if !defined(CONFIG_SOC_MAX78002)
     case 3: //ADI_MAX32_PRPH_CLK_SRC_ERFO
         return MXC_TMR_32M_CLK;
+#endif
     case 4: //ADI_MAX32_PRPH_CLK_SRC_ERTCO
         return MXC_TMR_32K_CLK;
     case 5: //ADI_MAX32_PRPH_CLK_SRC_INRO
         return MXC_TMR_INRO_CLK;
-#if defined(CONFIG_SOC_MAX32690)
+#if defined(CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32690) || \
+    (CONFIG_SOC_MAX78002)
     case 6: //ADI_MAX32_PRPH_CLK_SRC_ISO
         return MXC_TMR_ISO_CLK;
 #endif
@@ -159,6 +162,10 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
 
 void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
+#if defined(CONFIG_SOC_MAX32657)
+    (void)tmr;
+    (void)cfg;
+#else
     mxc_tmr_cfg_t mxc_cfg;
 
     mxc_cfg.pres = cfg->pres;
@@ -172,6 +179,7 @@ void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
     MXC_LP_EnableTimerWakeup(tmr);
     // Enable Timer wake-up source
     MXC_TMR_EnableWakeup(tmr, &mxc_cfg);
+#endif
 }
 
 void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)

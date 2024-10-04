@@ -147,6 +147,10 @@ __weak void SystemInit(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
+    /* Set CTB clock frequency to match ISO (full speed). */
+    /* On reset, GCR_CLKCTRL.crpytoclk_duv is set to 1 (ISO/2). */
+    MXC_GCR->clkctrl &= ~(MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV);
+
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 

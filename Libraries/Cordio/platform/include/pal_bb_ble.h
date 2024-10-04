@@ -187,6 +187,15 @@ void PalBbBleDisable(void);
 /*************************************************************************************************/
 void PalBbBleSetChannelParam(PalBbBleChan_t *pChan);
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Set channelization parameters.
+ *
+ *  \return     pChan
+ */
+/*************************************************************************************************/
+const PalBbBleChan_t* PalBbBleGetChannelParam(void);
+
 /*! \} */    /* PAL_BB_BLE_CHAN */
 
 /*! \addtogroup PAL_BB_BLE_DATA

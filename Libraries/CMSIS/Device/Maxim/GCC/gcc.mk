@@ -24,7 +24,7 @@
 
 ifeq "$(PYTHON_CMD)" ""
 # Try python
-ifneq "$(wildcard $(MAXIM_PATH)/.git)" ""
+ifneq "$(wildcard $(MAXIM_PATH)/.github)" ""
 PYTHON_VERSION := $(shell python --version)
 ifneq ($(.SHELLSTATUS),0)
 PYTHON_CMD := none
@@ -46,11 +46,14 @@ endif
 export PYTHON_CMD
 endif
 
-# Run script
+# Make sure script exists before running. This won't run when working in the official MSDK release (non-GitHub)
+ifneq ("$(wildcard $(MAXIM_PATH)/.github)", "")
+# Run script if exists.
 ifneq "$(PYTHON_CMD)" "none"
 UPDATE_VERSION_OUTPUT := $(shell python $(MAXIM_PATH)/.github/workflows/scripts/update_version.py)
 else
 $(warning No Python installation detected on your system!  Will not automatically update version info.)
+endif 
 endif
 endif
 
@@ -211,21 +214,69 @@ endif
 MCPU ?= cortex-m4
 
 ifeq "$(MCPU)" "cortex-m33"
+
+# Build a project with TrustZone.
+# Acceptable values are
+# - 0 (default) : The project builds as a Secure-only project (development similar to Cortex-M4 examples).
+# - 1 		    : The project builds with both Secure and Non-Secure context.
+#
+# When "0" is selected, the project will build as a Secure-only project with no TrustZone features enabled.
+# Development is similar to other Cortex-M4 examples.
+# 
+# When "1" is selected, the build system will build a Secure and Non-Secure project separately, then link
+# the two images into one combined image.
+TRUSTZONE ?= 0
+
 # Security mode for the target processor.
 # Acceptable values are
 # - SECURE
 # - NONSECURE
 #
+# The core, by default, starts up in Secure mode.
+#
 # When "SECURE" is selected, the build system will link the program binary into the secure
 # memory sections and map peripheral instances onto their corresponding secure
 # address aliases.  "MSECURITY_MODE_SECURE" will be defined at compile time.
 #
-# When "NONSCURE" is selected, the program binary will be linked into the non-secure memory
+# When "NONSECURE" is selected, the program binary will be linked into the non-secure memory
 # sections and peripherals will be mapped onto the non-secure address aliases.
 # It should be noted that the M33 will boot into secure mode by default, which has access to
 # both the secure and non-secure addresses and aliases.  "MSECURITY_MODE_NONSECURE" will be defined
 # at compile time.
 MSECURITY_MODE ?= SECURE
+
+# Not accessible in {device}_files.mk without this.
+export MSECURITY_MODE
+
+ifeq "$(MSECURITY_MODE)" "SECURE"
+# Align with Zephyr flags.
+PROJ_AFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=1
+PROJ_CFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=1
+
+# Leaving these to support initial development.
+PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=1
+PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=1
+else
+# Align with Zephyr flags.
+# Must be defined for the BLE build system.
+PROJ_AFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=0
+PROJ_CFLAGS += -DCONFIG_TRUSTED_EXECUTION_SECURE=0
+
+# Leaving these to support initial development.
+PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT=0
+PROJ_CFLAGS += -DIS_SECURE_ENVIRONMENT=0
+endif
+
+ifeq ($(TRUSTZONE),1)
+
+# Select whether the CMSE importlib object file is generated.
+# - 0 (default) : Do no generate object file.
+# - 1			: Generate object file.
+#
+# The Secure project needs to generate the object file with empty definitions of
+# secure symbols at the right locations. The Non-Secure project needs to be linked
+# with the generated object file.
+GEN_CMSE_IMPLIB_OBJ ?= 0
 
 ifeq "$(MSECURITY_MODE)" "SECURE"
 # Tell the compiler we are building a secure project.  This is required to satisfy the requirements
@@ -233,13 +284,14 @@ ifeq "$(MSECURITY_MODE)" "SECURE"
 # https://developer.arm.com/documentation/ecm0359818/latest
 PROJ_CFLAGS += -mcmse
 
-PROJ_AFLAGS += -DIS_SECURE_ENVIRONMENT
-
-# Tell the linker we are building a secure project.  This defines the "SECURE_LINK" symbol which the
-# linker uses to set the secure FLASH/SRAM memory address ranges.
-PROJ_LDFLAGS += -Xlinker --defsym=SECURE_LINK=1
-endif
-endif
+# Generate an object file with empty definitions of the secure image symbols at the correct locations.
+# The object file needs to be linked with the non-secure image.
+ifeq ($(GEN_CMSE_IMPLIB_OBJ),1)
+PROJ_LDFLAGS := -Xlinker --cmse-implib -Xlinker --out-implib=$(CURDIR)/build/build_s/secure_implib.o
+endif # GEN_CMSE_IMPLIB_OBJ
+endif # MSECUIRTY_MODE
+endif # TRUSTZONE
+endif # MCPU
 
 # Float ABI options:
 # See https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html (-mfloat-abi)
@@ -361,7 +413,8 @@ LDFLAGS=-mthumb                                                                \
         -mfloat-abi=$(MFLOAT_ABI)                                              \
         -mfpu=$(MFPU)                                                          \
         -Xlinker --gc-sections                                                 \
-	-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
+        -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map                     \
+        -Xlinker --print-memory-usage
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
@@ -694,9 +747,9 @@ SUPPRESS_HELP := 1
 endif
 .PHONY: query
 query:
+	@echo
 ifneq "$(QUERY_VAR)" ""
-	@echo $(QUERY_VAR)=$($(QUERY_VAR))
+	$(foreach QUERY_VAR,$(QUERY_VAR),$(info $(QUERY_VAR)=$($(QUERY_VAR))))
 else
 	$(MAKE) debug
 endif
-

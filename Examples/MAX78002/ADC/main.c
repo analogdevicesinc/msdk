@@ -232,10 +232,10 @@ void temperature_average(float temperature)
 
     if (temp_samples == SAMPLE_AVG) {
         average = sum / SAMPLE_AVG;
-        printf("Average = %0.2fC\n", average);
+        printf("Average = %0.2fC\n", (double)average);
 
         for (loop_counter = 0; loop_counter < SAMPLE_AVG; loop_counter++) {
-            printf("%0.2fC ", TEMP_SAMPLES[loop_counter]);
+            printf("%0.2fC ", (double)TEMP_SAMPLES[loop_counter]);
             if (loop_counter == 15) {
                 printf("\n");
             }

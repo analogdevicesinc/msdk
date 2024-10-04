@@ -1,0 +1,137 @@
+###############################################################################
+#
+# Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+# Analog Devices, Inc.),
+# Copyright (C) 2023-2024 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+##############################################################################
+
+name: Basic Examples Test
+
+# Cancels workflows in progress that are in the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  pull_request:
+    branches:
+      - main 
+    paths-ignore:
+      # Any files in a docs directory anywhere in the repository.
+      - "**/docs/**"
+      - "**/Documentation/**"
+      # Any README.md file anywhere in the repository.
+      - "**/README.md"
+      # Any .pdf file anywhere in the repository.
+      - "**/*.pdf"
+      # Any .yml file anywhere in the repository.
+      # can comment this out when testing changes to THIS yml file
+      - "**/*.yml"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+  
+env:
+  MAXIM_PATH: ''
+  
+jobs:
+  Example_Tests_MAX32690:
+    # The type of runner that the job will run on
+    runs-on: [self-hosted]
+    if: github.event.pull_request.draft == false
+    
+
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+          repository: analogdevicesinc/msdk
+          fetch-depth: 0
+      
+      - name: Set MAXIM_PATH
+        run: |
+          echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
+          printenv
+
+      - name: Lock Boards
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          boards: |
+            max32690_board_ex
+          lock: true
+          timeout: 900 # Attempt to lock for an hour
+
+      - name: run_example_test
+        run: |
+          bash .github/workflows/scripts/example_tester.sh max32690_board_ex
+          
+      - name: Unlock Boards
+        if: always()
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          lock: false
+          all_owned: true
+
+  Example_Tests_MAX78002:
+    # The type of runner that the job will run on
+    runs-on: [self-hosted]
+    if: github.event.pull_request.draft == false
+    
+
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+          repository: analogdevicesinc/msdk
+          fetch-depth: 0
+      
+      - name: Set MAXIM_PATH
+        run: |
+          echo "MAXIM_PATH=$(pwd)" >> $GITHUB_ENV
+          printenv
+
+      - name: Lock Boards
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          boards: |
+            max78002_board_ex
+          lock: true
+          timeout: 900 # Attempt to lock for an hour
+
+      - name: run_example_test
+        run: |
+          bash .github/workflows/scripts/example_tester_78002.sh max78002_board_ex
+          
+      - name: Unlock Boards
+        if: always()
+        uses: Analog-Devices-MSDK/btm-ci-scripts/actions/lock-board@v1.1
+        with:
+          lock: false
+          all_owned: true
+  
+
+ 
+
+ 
+          
+         
+
+            

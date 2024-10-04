@@ -48,7 +48,13 @@ PERIPH_DRIVER_INCLUDE_DIR += $(INCLUDE_DIR)/$(TARGET_UC)/
 # Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
+# TODO(JC): Implement mxc_lock for RISC-V.  Skip for now.
+ifneq "$(RISCV_CORE)" "1"
+ifneq "$(RISCV_CORE)" "RV32"
+# ^ NOTE(JC): Some legacy Makefiles use "RV32".  We recommend using "1" in the UG
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+endif
+endif
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_ai87.c
@@ -69,9 +75,14 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CRC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CRC/crc_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CRC/crc_reva.c
 
+ifneq "$(RISCV_CORE)" "1"
+ifneq "$(RISCV_CORE)" "RV32"
+# The RISC-V core does not have access to the CSI2 peripheral.
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CSI2
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CSI2/csi2_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CSI2/csi2_reva.c
+endif
+endif
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_ai87.c

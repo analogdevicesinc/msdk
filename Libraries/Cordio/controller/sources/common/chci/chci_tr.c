@@ -186,6 +186,9 @@ static void chciTrRead(uint16_t len, uint8_t *pData)
 /*************************************************************************************************/
 static void chciRxPacketSM(void)
 {
+  uint8_t *pRdBuf = NULL;
+  uint16_t rdLen;
+
   /* --- Type State --- */
   if (chciTrCb.rxPktState == CHCI_RX_STATE_TYPE)
   {
@@ -194,22 +197,27 @@ static void chciRxPacketSM(void)
     switch (chciTrCb.rdHdr[0])
     {
       case HCI_CMD_TYPE:
-        chciTrRead(HCI_CMD_HDR_LEN, &chciTrCb.rdHdr[1]);
+        rdLen = HCI_CMD_HDR_LEN;
+        pRdBuf = &chciTrCb.rdHdr[1];
         break;
       case HCI_ACL_TYPE:
-        chciTrRead(HCI_ACL_HDR_LEN, &chciTrCb.rdHdr[1]);
+        rdLen = HCI_ACL_HDR_LEN;
+        pRdBuf = &chciTrCb.rdHdr[1];
         break;
       case HCI_ISO_TYPE:
-        chciTrRead(HCI_ISO_HDR_LEN, &chciTrCb.rdHdr[1]);
+        rdLen = HCI_ISO_HDR_LEN;
+        pRdBuf = &chciTrCb.rdHdr[1];
         break;
       case CHCI_15P4_CMD_TYPE:
       case CHCI_15P4_DATA_TYPE:
-        chciTrRead(CHCI_15P4_HDR_LEN, &chciTrCb.rdHdr[1]);
+        rdLen = CHCI_15P4_HDR_LEN;
+        pRdBuf = &chciTrCb.rdHdr[1];
         break;
       default:
         /* Invalid byte received. */
         chciTrHwError(CHCI_TR_CODE_INVALID_DATA);
         chciTrCb.rxPktState = CHCI_RX_STATE_IDLE;
+        WSF_ASSERT(0);
     }
   }
 
@@ -277,7 +285,8 @@ static void chciRxPacketSM(void)
         uint16_t blkLen = WSF_MIN(dataLen, LHCI_MAX_RD_BUF_LEN);
 
         /* Read additional payload data. */
-        chciTrRead(blkLen, chciTrCb.pRdBuf + hdrLen);
+        rdLen = blkLen;
+        pRdBuf = chciTrCb.pRdBuf + hdrLen;
         chciTrCb.rdBufLen = hdrLen + dataLen;
         chciTrCb.rdBufOffs = hdrLen + blkLen;
         chciTrCb.rxPktState = CHCI_RX_STATE_PAYLOAD;
@@ -307,7 +316,8 @@ static void chciRxPacketSM(void)
       blkLen = WSF_MIN(blkLen, LHCI_MAX_RD_BUF_LEN);
 
       /* Read next block. */
-      chciTrRead(blkLen, chciTrCb.pRdBuf + chciTrCb.rdBufOffs);
+      rdLen = blkLen;
+      pRdBuf = chciTrCb.pRdBuf + chciTrCb.rdBufOffs;
       chciTrCb.rdBufOffs += blkLen;
     }
     else
@@ -353,8 +363,16 @@ static void chciRxPacketSM(void)
   if (chciTrCb.rxPktState == CHCI_RX_STATE_IDLE)
   {
     /* Read packet type. */
-    chciTrRead(1, &chciTrCb.rdHdr[0]);
+    rdLen = 1;
+    pRdBuf = &chciTrCb.rdHdr[0];
     chciTrCb.rxPktState = CHCI_RX_STATE_TYPE;
+  }
+
+  if (pRdBuf != NULL)
+  {
+    /* Send read request now, after state change. */
+    WSF_ASSERT(rdLen <= LHCI_MAX_RD_BUF_LEN);
+    chciTrRead(rdLen, pRdBuf);
   }
 }
 
@@ -635,7 +653,7 @@ void chciTrRecv(uint8_t prot, uint8_t type, uint8_t *pBuf)
  *  \return TRUE if work pending, FALSE if no work is pending.
  */
 /*************************************************************************************************/
-bool_t ChciTrService(void)
+bool ChciTrService(void)
 {
 #if (CHCI_TR_UART == 1)
   if (chciTrCb.wrBufComp)

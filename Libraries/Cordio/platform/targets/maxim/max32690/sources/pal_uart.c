@@ -88,8 +88,9 @@ void UART_CommonHandler(mxc_uart_regs_t *uart)
 
   if(err == E_INVALID)
   {
-    // If the uart is the console, we can try to recover since it is not critical
-    if(MXC_UART_GET_IDX(uart) == CONSOLE_UART)
+    const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
+
+    if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
     {
       MXC_UART_ClearRXFIFO(uart);
     }
@@ -294,6 +295,8 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
 
   uartNum = palUartGetNum(id);
 
+  PAL_SYS_ASSERT(palUartCb[uartNum].state == PAL_UART_STATE_UNINIT);
+
   /* Save the callback */
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
@@ -316,7 +319,11 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   if(pCfg->hwFlow) {
     MXC_UART_SetFlowCtrl(MXC_UART_GET_UART(uartNum), MXC_UART_FLOW_EN, 1);
   }
-
+  
+  const IRQn_Type uartIrqn = MXC_UART_GET_IRQ(uartNum);
+  NVIC_ClearPendingIRQ(uartIrqn);
+  NVIC_EnableIRQ(uartIrqn); 
+  
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
 }
 

@@ -192,7 +192,7 @@ int mipi_camera_sleep(int sleep);
  * the received data in time for each new row.
  * @return 0 (E_NO_ERROR) on a successful capture of a full frame, non-zero @ref MXC_Error_Codes on failure.
  */
-int mipi_camera_capture();
+int mipi_camera_capture(void);
 
 /**
  * @brief Retrieve the current camera settings

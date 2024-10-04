@@ -1,35 +1,22 @@
-################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+###############################################################################
  #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
+ # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
+ # Analog Devices, Inc.),
+ # Copyright (C) 2023-2024 Analog Devices, Inc.
  #
- # The above copyright notice and this permission notice shall be included
- # in all copies or substantial portions of the Software.
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
  #
- # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
+ #     http://www.apache.org/licenses/LICENSE-2.0
  #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
  #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
- ###############################################################################
+ ##############################################################################
 
 """
 Utility functions to generate embeddings and I/O operations
@@ -43,7 +30,6 @@ import numpy as np
 from cv2 import imread
 from PIL import Image, ExifTags
 import torch
-import torchvision
 import torchvision.transforms.functional as VF
 
 
@@ -115,7 +101,6 @@ def append_db_file_from_path(folder_path, face_detector, ai85_adapter):
 
             img = get_face_image(img, face_detector)
             if img is not None:
-                img = ((img+1)*128)
                 img = (img.squeeze()).detach().cpu().numpy()
                 img = img.astype(np.uint8)
                 img = img.transpose([1, 2, 0])
@@ -133,29 +118,26 @@ def append_db_file_from_path(folder_path, face_detector, ai85_adapter):
                     emb_id += 1
                     summary[subject] += 1
                                       
-    #np.save('emb_array.npy', emb_array)
     print('Database Summary')
     for key in summary:
         print(f'\t{key}:', f'{summary[key]} images')
-    #Format summary for printing image counts per subject
-    
-        
 
     return emb_array, recorded_subject
+
 def get_face_image(img, face_detector):
     """Detects face on the given image
     """
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    bboxes, lndmrks = face_detector.detect(img)
-    try:
-        pbox = bboxes[0]
-    except IndexError:
-        print('No face detected')
-        return None
-    img = torch.Tensor(img.transpose([2, 0, 1])).to(device).unsqueeze(0)
     
-    img = Normalize_Img(img) #Normalize image for faceID
-        
+    faces = face_detector(img)
+    box, landmarks, score = faces[0]
+    
+    pbox = box
+    for i in range(4):
+        pbox[i] = np.clip(pbox[i], 0, None)
+    
+    img = torch.Tensor(img.transpose([2, 0, 1])).to(device).unsqueeze(0)
+            
     # Convert bounding box to square
     height = pbox[3] - pbox[1]
     width = pbox[2] - pbox[0]
@@ -168,7 +150,7 @@ def get_face_image(img, face_detector):
     # Crop image with the square bounding box
     img = VF.crop(img=img, top=int(pbox[1]), left=int(pbox[0]),
                   height=int(pbox[3]-pbox[1]), width=int(pbox[2]-pbox[0]))
-            
+         
     # Check if the cropped image is square, if not, pad it
 
     _, _, h, w = img.shape
@@ -238,7 +220,7 @@ def create_weights_include_file(emb_array, weights_h_path, baseaddr):
             h_file.write('#define KERNELS_3 { \\\n  ')
             for dim in range(Embedding_dimension):
                 init_proccessor = False
-                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes TODO: Change this from Hardcoded
+                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes
                     reindex = i + 8 - 2*(i%9)
                     if reindex < 1024: # Total emb count is 1024, last index 1023
                         single_byte = str(format(emb_array[reindex][dim], 'x')) #Relocate emb for cnn kernel
@@ -279,7 +261,7 @@ def create_weights_include_file(emb_array, weights_h_path, baseaddr):
             four_byte = 0
             data_arr = bytearray(np.uint8([data_arr]))
             for dim in range(Embedding_dimension):
-                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes TODO: Change this from Hardcoded
+                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes
                     reindex = i + 8 - 2*(i%9)
                     if reindex < 1024: # Total emb count is 1024, last index 1023
                         single_byte = int(emb_array[reindex][dim])  #Relocate emb for cnn kernel                        

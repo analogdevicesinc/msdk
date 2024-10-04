@@ -548,7 +548,7 @@ void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   numBytes    The threshold level to set.  This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -567,7 +567,7 @@ int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   numBytes    The threshold level to set. This value must be
- *                      between 0 and 8 inclusive.
+ *                      between 0 and 30 inclusive.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */

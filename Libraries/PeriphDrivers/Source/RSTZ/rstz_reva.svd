@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!--RSTZ-->
+    <name>RSTZ</name>
+    <description>RSTZ Controller</description>
+    <baseAddress>0x40004800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>RSTZ Control Register.</description>
+        <addressOffset>0x000</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable channels.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SVC_EN</name>
+            <description>Enable the SVC.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CH_SEL</name>
+            <description>Channel Select.</description>
+            <bitRange>[4:2]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CAL_EN</name>
+            <description>Calibration mode enable.</description>
+            <bitRange>[5:5]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DMEASURE_EN</name>
+            <description>Direct Measure mode enable.</description>
+            <bitRange>[6:6]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>OFFTR_P</name>
+            <description>Offset Trim for positive comparator.</description>
+            <bitRange>[11:7]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>OFFTR_N</name>
+            <description>Offset Trim for negative comparator.</description>
+            <bitRange>[16:12]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DOUT</name>
+            <description>Comparator Result.</description>
+            <bitRange>[17:17]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CAL_DOUT_POL</name>
+            <description>Calibration DOUT Polarity.</description>
+            <bitRange>[18:18]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>NUM_SAMP</name>
+            <description>Number of captures per sample.</description>
+            <bitRange>[27:24]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TRIP_TOL</name>
+            <description>Number of failed DOUT captures (tolerance) before corresponding RSTZ signal is tripped.</description>
+            <bitRange>[31:28]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BOOST_CLKCTRL</name>
+        <description>Boost Clock Control Register.</description>
+        <addressOffset>0x004</addressOffset>
+        <fields>
+          <field>
+            <name>EXIT_NUM_SAMP</name>
+            <description>Defines how many samples needed of boost output channel to perform when exiting low-power mode before returning to normal active operation.</description>
+            <bitRange>[1:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CH_SEL</name>
+            <description>Select when channel the output of the boost converter is monitored on.</description>
+            <bitRange>[4:2]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>STATUS_CH[%s]</name>
+        <description>Channel X Status Register.</description>
+        <addressOffset>0x028</addressOffset>
+        <size>32</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RSTZ</name>
+            <description>Result of most recent sample result.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>DOUT</name>
+            <description>Store the most recent DOUT capture for a given channel.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RSTZ_FL</name>
+            <description>RSTZ Flag indicates the RSTZ was tripped at some point since the last time being cleared.</description>
+            <bitRange>[31:31]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--RSTZ Controller-->
+</device>

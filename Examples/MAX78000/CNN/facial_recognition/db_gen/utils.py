@@ -26,7 +26,6 @@ import os
 from collections import defaultdict
 import numpy as np
 
-
 from cv2 import imread
 from PIL import Image, ExifTags
 import torch
@@ -101,7 +100,6 @@ def append_db_file_from_path(folder_path, face_detector, ai85_adapter):
 
             img = get_face_image(img, face_detector)
             if img is not None:
-                img = ((img+1)*128)
                 img = (img.squeeze()).detach().cpu().numpy()
                 img = img.astype(np.uint8)
                 img = img.transpose([1, 2, 0])
@@ -118,28 +116,26 @@ def append_db_file_from_path(folder_path, face_detector, ai85_adapter):
                     emb_id += 1
                     summary[subject] += 1
                                       
-    #np.save('emb_array.npy', emb_array)
     print('Database Summary')
     for key in summary:
         print(f'\t{key}:', f'{summary[key]} images')
-    #Format summary for printing image counts per subject
-    
-        
 
     return emb_array, recorded_subject
+
 def get_face_image(img, face_detector):
     """Detects face on the given image
     """
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    bboxes, lndmrks = face_detector.detect(img)
-    try:
-        pbox = bboxes[0]
-    except IndexError:
-        print('No face detected')
-        return None
+    
+    faces = face_detector(img)
+    box, landmarks, score = faces[0]
+    
+    pbox = box
+    for i in range(4):
+        pbox[i] = np.clip(pbox[i], 0, None)
+    
     img = torch.Tensor(img.transpose([2, 0, 1])).to(device).unsqueeze(0)
     
-    img = Normalize_Img(img) #Normalize image for faceID
         
     # Convert bounding box to square
     height = pbox[3] - pbox[1]
@@ -153,7 +149,7 @@ def get_face_image(img, face_detector):
     # Crop image with the square bounding box
     img = VF.crop(img=img, top=int(pbox[1]), left=int(pbox[0]),
                   height=int(pbox[3]-pbox[1]), width=int(pbox[2]-pbox[0]))
-            
+         
     # Check if the cropped image is square, if not, pad it
 
     _, _, h, w = img.shape
@@ -224,7 +220,7 @@ def create_weights_include_file(emb_array, weights_h_path, baseaddr):
             h_file.write('#define KERNELS_3 { \\\n  ')
             for dim in range(Embedding_dimension):
                 init_proccessor = False
-                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes TODO: Change this from Hardcoded
+                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes
                     reindex = i + 8 - 2*(i%9)
                     if reindex < 1024: # Total emb count is 1024, last index 1023
                         single_byte = str(format(emb_array[reindex][dim], 'x')) #Relocate emb for cnn kernel
@@ -265,7 +261,7 @@ def create_weights_include_file(emb_array, weights_h_path, baseaddr):
             four_byte = 0
             data_arr = bytearray(np.uint8([data_arr]))
             for dim in range(Embedding_dimension):
-                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes TODO: Change this from Hardcoded
+                for i in range(emb_array.shape[0] + 4): # nearest %9 == 0 for 1024 is 1027, it can be kept in 1028 bytes
                     reindex = i + 8 - 2*(i%9)
                     if reindex < 1024: # Total emb count is 1024, last index 1023
                         single_byte = int(emb_array[reindex][dim])  #Relocate emb for cnn kernel

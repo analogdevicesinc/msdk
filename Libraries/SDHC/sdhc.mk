@@ -65,3 +65,6 @@ ${SDHC_DRIVER_BUILD_DIR}/sdhc.a: $(PROJECTMK)
 
 distclean:
 	$(MAKE) -C ${SDHC_DRIVER_DIR} clean
+
+query.sdhc:
+	@${MAKE} -C ${SDHC_DRIVER_DIR} query QUERY_VAR="${QUERY_VAR}"

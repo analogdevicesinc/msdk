@@ -16,7 +16,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Connect a MAXPICO or other supported Debug adapter to the SWD Connector.
+-   Connect a USB cable between the PC and the CN2 (USB/UART) connector.
 -   Connect the 5V power cable at (5V IN).
 -   Close jumper (RX - P0.0) and (TX - P0.1) at Headers JP23 (UART 0 EN).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

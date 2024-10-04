@@ -119,8 +119,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         if (init_pins) {
             if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
                 MXC_GPIO_Config(&gpio_cfg_tmr2);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr2b);
             }
         }
 

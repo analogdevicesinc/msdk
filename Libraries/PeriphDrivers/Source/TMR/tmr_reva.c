@@ -235,7 +235,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
         ((tmr->cn & MXC_F_TMR_REVA_CN_PRES) >> MXC_F_TMR_REVA_CN_PRES_POS) |
         (((tmr->cn & MXC_F_TMR_REVA_CN_PRES3) >> (MXC_F_TMR_REVA_CN_PRES3_POS)) << 3);
 
-    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
+    temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
@@ -243,7 +243,7 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
         return E_NO_ERROR;
     }
 
-    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
+    temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;

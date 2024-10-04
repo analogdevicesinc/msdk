@@ -63,3 +63,6 @@ ${LWIP_BUILD_DIR}/${LWIP_LIBRARY_NAME}.a: ${LWIP_C_FILES} ${LWIP_H_FILES}
 
 clean.lwip:
 	@rm -rf ${LWIP_BUILD_DIR}/*
+
+query.lwip:
+	@${MAKE} -f ${LWIP_DIR}/Makefile query QUERY_VAR="${QUERY_VAR}"

@@ -103,7 +103,9 @@ static void initGPIOForTrigSrc(mxc_adc_trig_sel_t hwTrig)
 int MXC_ADC_Init(mxc_adc_req_t *req)
 {
 #ifndef MSDK_NO_GPIO_CLK_INIT
-    MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
+    if (!MXC_ADC_RevB_IsClockSourceLocked((mxc_adc_revb_regs_t *)MXC_ADC)) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
+    }
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
 
     /* This is required for temperature sensor only */
@@ -113,6 +115,21 @@ int MXC_ADC_Init(mxc_adc_req_t *req)
     MXC_ADC_ReferenceSelect(req->ref);
 
     return MXC_ADC_RevB_Init((mxc_adc_revb_regs_t *)MXC_ADC, req);
+}
+
+int MXC_ADC_SetClockSource(mxc_adc_clock_t clock_source)
+{
+    return MXC_ADC_RevB_SetClockSource((mxc_adc_revb_regs_t *)MXC_ADC, clock_source);
+}
+
+int MXC_ADC_LockClockSource(bool lock)
+{
+    return MXC_ADC_RevB_LockClockSource((mxc_adc_revb_regs_t *)MXC_ADC, lock);
+}
+
+int MXC_ADC_SetClockDiv(mxc_adc_clkdiv_t div)
+{
+    return MXC_ADC_RevB_SetClockDiv((mxc_adc_revb_regs_t *)MXC_ADC, div);
 }
 
 int MXC_ADC_Shutdown(void)

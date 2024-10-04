@@ -6,7 +6,7 @@
     <baseAddress>0x4002A000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x800</size>
+      <size>0x1000</size>
       <usage>registers</usage>
     </addressBlock>
     <registers>
@@ -15,6 +15,7 @@
         <description>Cache ID Register.</description>
         <addressOffset>0x0000</addressOffset>
         <access>read-only</access>
+        <size>32</size>
         <fields>
           <field>
             <name>RELNUM</name>
@@ -42,6 +43,7 @@
         <addressOffset>0x0004</addressOffset>
         <access>read-only</access>
         <resetValue>0x00080008</resetValue>
+        <size>32</size>
         <fields>
           <field>
             <name>CCH</name>
@@ -61,6 +63,7 @@
         <name>CTRL</name>
         <description>Cache Control and Status Register.</description>
         <addressOffset>0x0100</addressOffset>
+        <size>32</size>
         <fields>
           <field>
             <name>EN</name>
@@ -105,27 +108,28 @@
         <name>WAY</name>
         <description>Cache Way Control Register.</description>
         <addressOffset>0x0200</addressOffset>
+        <size>32</size>
         <fields>
           <field>
             <name>WAY</name>
             <description>Number of cache way, default is always 2. Allowed values are 1,2,4.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
+            <bitWidth>3</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>1</name>
                 <description>1</description>
-                <value>0</value>
+                <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>2</name>
                 <description>2</description>
-                <value>1</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>4</name>
                 <description>4</description>
-                <value>2</value>
+                <value>4</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
@@ -135,6 +139,7 @@
         <name>REGCTRL</name>
         <description>Regional Control Register.</description>
         <addressOffset>0x0204</addressOffset>
+        <size>32</size>
         <fields>
           <field>
             <name>EN</name>
@@ -151,18 +156,20 @@
         </fields>
       </register>
       <cluster>
-        <dim>15</dim>
-        <dimIncrement>0x20</dimIncrement>
+        <dim>4</dim>
+        <dimIncrement>8</dimIncrement>
         <name>REGION[%s]</name>
         <description>Regional Low and High Bound Registers.</description>
         <headerStructName>icc_reg</headerStructName>
         <addressOffset>0x0208</addressOffset>
+        <size>64</size>
         <access>read-write</access>
         <register>
           <name>LBOUND</name>
           <description>Regional Low Bound Register.</description>
           <addressOffset>0x0000</addressOffset>
           <clusterName>reg</clusterName>
+          <size>32</size>
           <fields>
             <field>
               <name>BOUND</name>
@@ -177,6 +184,7 @@
           <description>DMA Channel Status Register.</description>
           <addressOffset>0x004</addressOffset>
           <clusterName>reg</clusterName>
+          <size>32</size>
           <fields>
             <field>
               <name>BOUND</name>
@@ -191,6 +199,7 @@
         <name>PFMCTRL</name>
         <description>Performance Control Register.</description>
         <addressOffset>0x0300</addressOffset>
+        <size>32</size>
         <fields>
           <field>
             <name>EN</name>
@@ -204,6 +213,7 @@
         <name>PFMCNT</name>
         <description>Performance Counter Register.</description>
         <addressOffset>0x0304</addressOffset>
+        <size>32</size>
         <fields>
           <field>
             <name>CNT</name>
@@ -218,6 +228,7 @@
         <description>Invalidate All Registers.</description>
         <addressOffset>0x0700</addressOffset>
         <access>read-write</access>
+        <size>32</size>
         <fields>
           <field>
             <name>INVALID</name>

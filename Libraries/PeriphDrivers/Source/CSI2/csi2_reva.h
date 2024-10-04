@@ -66,7 +66,7 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes);
 
 int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2);
 
-int MXC_CSI2_RevA_CaptureFrameDMA();
+int MXC_CSI2_RevA_CaptureFrameDMA(void);
 
 int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src);
 
@@ -76,7 +76,7 @@ void MXC_CSI2_RevA_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h);
 
 int MXC_CSI2_RevA_Callback(mxc_csi2_req_t *req, int retVal);
 
-void MXC_CSI2_RevA_Handler();
+void MXC_CSI2_RevA_Handler(void);
 
 /********************************/
 /* CSI2 RX Controller Functions */
@@ -159,7 +159,7 @@ int MXC_CSI2_RevA_PPI_Stop(void);
 /* CSI2 DMA - Used for all features */
 /************************************/
 
-mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats();
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats(void);
 
 bool MXC_CSI2_RevA_DMA_Frame_Complete(void);
 
@@ -171,6 +171,6 @@ int MXC_CSI2_RevA_DMA_GetCurrentLineCnt(void);
 
 int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void);
 
-void MXC_CSI2_RevA_DMA_Callback();
+void MXC_CSI2_RevA_DMA_Callback(mxc_dma_reva_regs_t *dma, int a, int b);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CSI2_CSI2_REVA_H_

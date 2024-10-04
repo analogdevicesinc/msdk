@@ -33,6 +33,8 @@
 #include "wsf_timer.h"
 #include "wsf_trace.h"
 #include "wsf_bufio.h"
+#include "wsf_types.h"
+#include "wsf_os.h"
 #include "wsf_cs.h"
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
@@ -117,8 +119,8 @@ static void mainWsfInit(void)
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
-#if (BT_VER > 9)
-    WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+#if (BT_VER > 9) && INIT_FEAT_ISO
+    mainLlRtCfg.maxIsoSduLen = mainLlRtCfg.maxAclLen;
 #endif
 
     /* Ensure pool buffers are ordered correctly. */
@@ -162,7 +164,7 @@ static void mainWsfInit(void)
  *  \return TRUE if there is token pending.
  */
 /*************************************************************************************************/
-static bool_t mainCheckServiceTokens(void)
+static bool mainCheckServiceTokens(void)
 {
     bool_t eventPending = FALSE;
 

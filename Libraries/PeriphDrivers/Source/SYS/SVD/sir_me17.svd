@@ -72,28 +72,28 @@
           </field>
         </fields>
       </register>
-      <register>
-        <name>BTLE_LDO_TRIM</name>
-        <description>BTLE LDO Trim register.</description>
-        <addressOffset>0x48</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>TX</name>
-            <description>TX LDO trim value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>5</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>RX</name>
-            <description>RX LDO trim value.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>5</bitWidth>
-            <access>read-write</access>
-          </field>
-        </fields>
-      </register>
+    <register>
+   <name>BTLE_LDO_TRIM</name>
+     <description>BTLE LDO Trim register.</description>
+     <addressOffset>0x48</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>RF</name>
+       <description>RF LDO trim value.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>BB</name>
+       <description>BB LDO trim value.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
       <register>
         <name>FSTAT</name>
         <description>funcstat register.</description>

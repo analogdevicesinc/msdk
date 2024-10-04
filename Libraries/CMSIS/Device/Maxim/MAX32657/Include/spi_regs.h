@@ -156,8 +156,8 @@ typedef struct {
 #define MXC_F_SPI_CTRL0_EN_POS                         0 /**< CTRL0_EN Position */
 #define MXC_F_SPI_CTRL0_EN                             ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_EN_POS)) /**< CTRL0_EN Mask */
 
-#define MXC_F_SPI_CTRL0_CTRLR_MODE_POS                 1 /**< CTRL0_CTRLR_MODE Position */
-#define MXC_F_SPI_CTRL0_CTRLR_MODE                     ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_CTRLR_MODE_POS)) /**< CTRL0_CTRLR_MODE Mask */
+#define MXC_F_SPI_CTRL0_CONT_MODE_POS                  1 /**< CTRL0_CONT_MODE Position */
+#define MXC_F_SPI_CTRL0_CONT_MODE                      ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_CONT_MODE_POS)) /**< CTRL0_CONT_MODE Mask */
 
 #define MXC_F_SPI_CTRL0_TS_IO_POS                      4 /**< CTRL0_TS_IO Position */
 #define MXC_F_SPI_CTRL0_TS_IO                          ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_TS_IO_POS)) /**< CTRL0_TS_IO Mask */
@@ -383,8 +383,8 @@ typedef struct {
 #define MXC_F_SPI_INTFL_ABORT_POS                      9 /**< INTFL_ABORT Position */
 #define MXC_F_SPI_INTFL_ABORT                          ((uint32_t)(0x1UL << MXC_F_SPI_INTFL_ABORT_POS)) /**< INTFL_ABORT Mask */
 
-#define MXC_F_SPI_INTFL_CTRLR_DONE_POS                 11 /**< INTFL_CTRLR_DONE Position */
-#define MXC_F_SPI_INTFL_CTRLR_DONE                     ((uint32_t)(0x1UL << MXC_F_SPI_INTFL_CTRLR_DONE_POS)) /**< INTFL_CTRLR_DONE Mask */
+#define MXC_F_SPI_INTFL_CONT_DONE_POS                  11 /**< INTFL_CONT_DONE Position */
+#define MXC_F_SPI_INTFL_CONT_DONE                      ((uint32_t)(0x1UL << MXC_F_SPI_INTFL_CONT_DONE_POS)) /**< INTFL_CONT_DONE Mask */
 
 #define MXC_F_SPI_INTFL_TX_OV_POS                      12 /**< INTFL_TX_OV Position */
 #define MXC_F_SPI_INTFL_TX_OV                          ((uint32_t)(0x1UL << MXC_F_SPI_INTFL_TX_OV_POS)) /**< INTFL_TX_OV Mask */
@@ -430,8 +430,8 @@ typedef struct {
 #define MXC_F_SPI_INTEN_ABORT_POS                      9 /**< INTEN_ABORT Position */
 #define MXC_F_SPI_INTEN_ABORT                          ((uint32_t)(0x1UL << MXC_F_SPI_INTEN_ABORT_POS)) /**< INTEN_ABORT Mask */
 
-#define MXC_F_SPI_INTEN_CTRLR_DONE_POS                 11 /**< INTEN_CTRLR_DONE Position */
-#define MXC_F_SPI_INTEN_CTRLR_DONE                     ((uint32_t)(0x1UL << MXC_F_SPI_INTEN_CTRLR_DONE_POS)) /**< INTEN_CTRLR_DONE Mask */
+#define MXC_F_SPI_INTEN_CONT_DONE_POS                  11 /**< INTEN_CONT_DONE Position */
+#define MXC_F_SPI_INTEN_CONT_DONE                      ((uint32_t)(0x1UL << MXC_F_SPI_INTEN_CONT_DONE_POS)) /**< INTEN_CONT_DONE Mask */
 
 #define MXC_F_SPI_INTEN_TX_OV_POS                      12 /**< INTEN_TX_OV Position */
 #define MXC_F_SPI_INTEN_TX_OV                          ((uint32_t)(0x1UL << MXC_F_SPI_INTEN_TX_OV_POS)) /**< INTEN_TX_OV Mask */

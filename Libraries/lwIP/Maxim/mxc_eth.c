@@ -202,7 +202,7 @@ int MXC_ETH_Tick(void)
 
     return E_NO_ERROR;
 }
-
+#if NO_SYS
 u32_t sys_now(void)
 {
     if (mxc_eth_config.sys_get_ms)
@@ -210,3 +210,4 @@ u32_t sys_now(void)
     else
         return 0;
 }
+#endif

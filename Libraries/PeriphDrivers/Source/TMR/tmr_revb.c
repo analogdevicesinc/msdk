@@ -38,6 +38,8 @@ typedef struct {
 } mxc_tmr_revb_clksrc_freq_t;
 
 static mxc_tmr_revb_clksrc_freq_t tmr_clksrc[MXC_CFG_TMR_INSTANCES];
+static bool g_is_clock_locked[MXC_CFG_TMR_INSTANCES] = { [0 ... MXC_CFG_TMR_INSTANCES - 1] =
+                                                             false };
 
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src)
@@ -60,21 +62,8 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     // Clear interrupt flag
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 
-    // Select clock Source and prescaler
-    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
-    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
-    if (cfg->bitMode == TMR_BIT_MODE_16A || cfg->bitMode == TMR_BIT_MODE_32) {
-        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A,
-                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
-        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, cfg->pres);
-    }
-    if (cfg->bitMode == TMR_BIT_MODE_16B || cfg->bitMode == TMR_BIT_MODE_32) {
-        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
-                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
-        // mxc_tmr_pres_t is for for CLKDIV_A register settings [4:7]
-        // Field positions for CLKDIV_B are Located at [16:19]. Shift 12 more bits.
-        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (cfg->pres) << 12);
-    }
+    MXC_TMR_RevB_SetClockSource(tmr, cfg->bitMode, clk_src);
+    MXC_TMR_RevB_SetPrescalar(tmr, cfg->bitMode, cfg->pres);
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
@@ -142,11 +131,61 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
     return E_NO_ERROR;
 }
 
+void MXC_TMR_RevB_LockClockSource(mxc_tmr_revb_regs_t *tmr, bool lock)
+{
+    g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)] = lock;
+}
+
+bool MXC_TMR_RevB_IsClockSourceLocked(mxc_tmr_revb_regs_t *tmr)
+{
+    return g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)];
+}
+
+void MXC_TMR_RevB_SetClockSource(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                                 uint8_t clk_src)
+{
+    if (g_is_clock_locked[MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr)])
+        return;
+
+    // Select clock Source
+    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
+    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
+    if (bit_mode == TMR_BIT_MODE_16A || bit_mode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_A,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_A_POS));
+    }
+    if (bit_mode == TMR_BIT_MODE_16B || bit_mode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl1, MXC_F_TMR_CTRL1_CLKSEL_B,
+                     (clk_src << MXC_F_TMR_CTRL1_CLKSEL_B_POS));
+    }
+}
+
+void MXC_TMR_RevB_SetPrescalar(mxc_tmr_revb_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+                               mxc_tmr_pres_t prescalar)
+{
+    // Set prescaler
+    // Note:  For 32-bit cascade mode, TMR A and TMR B clock sources must be
+    //        the same to ensure proper operation.  (See MAX32670 UG Rev 4 Section 13.4)
+    if (bit_mode == TMR_BIT_MODE_16A || bit_mode == TMR_BIT_MODE_32) {
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_A, prescalar);
+    }
+    if (bit_mode == TMR_BIT_MODE_16B || bit_mode == TMR_BIT_MODE_32) {
+        // mxc_tmr_pres_t is for for CLKDIV_A register settings [7:4]
+        // Field positions for CLKDIV_B are Located at [23:20]. Shift 16 more bits.
+        MXC_SETFIELD(tmr->ctrl0, MXC_F_TMR_CTRL0_CLKDIV_B, (prescalar) << 16);
+    }
+}
+
 void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq)
 {
     int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
+
+    // If the clock source is locked, don't update the frequency either, as we will
+    // have rejected the configuration update too in MXC_TMR_RevB_SetClockSource.
+    if (g_is_clock_locked[tmr_id])
+        return;
 
     tmr_clksrc[tmr_id].configured = true;
     tmr_clksrc[tmr_id].freq = clksrc_freq;
@@ -192,19 +231,12 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     while (!(tmr->intfl & (MXC_F_TMR_REVB_INTFL_WRDONE_A << timerOffset))) {}
 
     tmr->cmp = (cfg->cmp_cnt << timerOffset);
-#if TARGET_NUM == 32655 || TARGET_NUM == 78000 || TARGET_NUM == 32690 || TARGET_NUM == 78002
+#if TARGET_NUM == 32655 || TARGET_NUM == 32657 || TARGET_NUM == 78000 || TARGET_NUM == 32690 || \
+    TARGET_NUM == 78002
     tmr->ctrl1 &= ~(MXC_F_TMR_REVB_CTRL1_OUTEN_A << timerOffset);
 #else
     tmr->ctrl1 |= (MXC_F_TMR_REVB_CTRL1_OUTEN_A << timerOffset);
 #endif
-
-    // If configured as TIMER_16B then enable the interrupt and start the timer
-    if (cfg->bitMode == MXC_TMR_BIT_MODE_16B) {
-        tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_IE_B;
-
-        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
-        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
-    }
 }
 
 void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
@@ -227,8 +259,20 @@ void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
-    while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
+    /* If a timer's clk is enabled, it's a reliable signal that the
+    clock itself is configured and we should start it.  This check is
+    relevant for dual-mode timer configs
+    */
+
+    if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_A) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
+    }
+
+    if (tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKEN_B) {
+        tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
+    }
 }
 
 void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
@@ -237,7 +281,8 @@ void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    tmr->ctrl0 &= ~MXC_F_TMR_REVB_CTRL0_EN_A;
+    // Will stop both timers in a dual-mode config
+    tmr->ctrl0 &= ~(MXC_F_TMR_REVB_CTRL0_EN_A | MXC_F_TMR_REVB_CTRL0_EN_B);
 }
 
 int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
@@ -467,7 +512,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
         return timerClock;
     }
 
-    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
+    temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
@@ -475,7 +520,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
         return E_NO_ERROR;
     }
 
-    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
+    temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;

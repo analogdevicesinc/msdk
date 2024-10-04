@@ -37,6 +37,7 @@
 #include "dma.h"
 #include "dma_reva.h"
 #include "mcr_regs.h"
+#include "tmr.h"
 
 /* **** Definitions **** */
 
@@ -66,6 +67,8 @@
                  ((x) == 1) ? DMA1_IRQn : \
                  ((x) == 2) ? DMA2_IRQn : \
                               DMA3_IRQn))
+
+#define MAX_G_FRAME_COMPLETE_US 1500000 // 1.5 seconds
 
 /* **** Globals **** */
 
@@ -103,7 +106,7 @@ void _free_line_buffer(void)
     }
 }
 
-int _init_line_buffer()
+int _init_line_buffer(void)
 {
     _free_line_buffer();
 
@@ -117,7 +120,7 @@ int _init_line_buffer()
     return E_NO_ERROR;
 }
 
-void _swap_line_buffer()
+void _swap_line_buffer(void)
 {
     uint8_t *temp = lb.active;
     lb.active = lb.inactive;
@@ -274,7 +277,7 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_CaptureFrameDMA()
+int MXC_CSI2_RevA_CaptureFrameDMA(void)
 {
     int i;
     int error;
@@ -361,7 +364,15 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     interrupt handler. (MXC_CSI2_RevA_Handler)
     */
 
-    while (!g_frame_complete) {}
+    MXC_TMR_SW_Start(MXC_TMR0); // runs in microseconds
+
+    while (!g_frame_complete) {
+        if (MXC_TMR_TO_Elapsed(MXC_TMR0) > MAX_G_FRAME_COMPLETE_US) {
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            return E_NO_RESPONSE;
+        }
+    }
+    MXC_TMR_SW_Stop(MXC_TMR0);
 
     if (!csi2_state.capture_stats.success)
         return E_FAIL;
@@ -406,7 +417,7 @@ void MXC_CSI2_RevA_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h)
     *h = csi2_state.req->lines_per_frame;
 }
 
-void MXC_CSI2_RevA_Handler()
+void MXC_CSI2_RevA_Handler(void)
 {
     uint32_t ctrl_flags, vfifo_flags, ppi_flags;
 
@@ -1043,12 +1054,12 @@ bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
     return g_frame_complete;
 }
 
-mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats()
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats(void)
 {
     return csi2_state.capture_stats;
 }
 
-void MXC_CSI2_RevA_DMA_Handler()
+void MXC_CSI2_RevA_DMA_Handler(void)
 {
     // Clear CTZ Status Flag
     if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {

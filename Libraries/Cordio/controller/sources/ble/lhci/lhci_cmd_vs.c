@@ -38,6 +38,9 @@
 #include "wsf_trace.h"
 #include "util/bstream.h"
 #include "bb_ble_api.h"
+#include "flc.h"
+#include "wsf_timer.h"
+#include "pal_uart.h"
 #include <string.h>
 
 /**************************************************************************************************
@@ -64,6 +67,14 @@
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
+//this is the callback function to the Msg
+wsfHandlerId_t myTimerHandlerId;
+wsfTimer_t myTimer;
+void device_reset(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    NVIC_SystemReset();
+    return;
+}
 
 /*************************************************************************************************/
 /*!
@@ -82,12 +93,67 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     uint8_t status = HCI_SUCCESS;
     uint8_t evtParamLen = 1; /* default is status field only */
     uint32_t regReadAddr = 0;
-    uint8_t channel = 0;
+    uint32_t channel = 0;
+
+    (void)channel;
 
     /* Decode and consume command packet. */
 
     switch (pHdr->opCode) {
         /* --- extended device commands --- */
+        
+
+    case LHCI_OPCODE_VS_DEVICE_RESET: {
+        LlReset();
+
+        myTimerHandlerId = WsfOsSetNextHandler(device_reset);
+        myTimer.handlerId = myTimerHandlerId;
+
+        /*This delay is necessary here to let UART transfer the status back to hci*/
+        WsfTimerStartMs(&myTimer, 5000);
+
+        break;
+    }
+
+    case LHCI_OPCODE_VS_PAGE_ERASE: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
+        LL_TRACE_INFO1("Erase flash memory at address: %x", addr);
+        if (addr % MXC_FLASH_PAGE_SIZE)
+        {
+            status = HCI_ERR_INVALID_PARAM; 
+        }
+        else
+        {
+            int error = MXC_FLC_PageErase(addr);
+       
+            if (error == E_NO_ERROR || error == E_BAD_PARAM) {
+                LL_TRACE_INFO0("Done");
+            
+            }
+            else{
+                LL_TRACE_ERR0("Failed");
+                status = HCI_ERR_HARDWARE_FAILURE;
+            }
+        }
+        break;
+    
+    }
+
+    case LHCI_OPCODE_VS_WRITE_FLASH: {
+        uint32_t addr;
+        BSTREAM_TO_UINT32(addr, pBuf);
+        int error = E_NO_ERROR;
+
+        error = MXC_FLC_Write(addr, (uint32_t) (pHdr->len - 4), (uint32_t*) pBuf);
+
+        if (error != E_NO_ERROR) {
+                LL_TRACE_ERR1("Writing to flash memory Failed! Error code: %d", error);
+                status = HCI_ERR_HARDWARE_FAILURE;
+        }
+        
+        break;
+    }    
 
     case LHCI_OPCODE_VS_SET_OP_FLAGS: {
         uint32_t flags;
@@ -167,33 +233,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         evtParamLen += sizeof(BbBlePduFiltStats_t);
         break;
 
-    case LHCI_OPCODE_VS_REG_WRITE: {
-        uint8_t len;
-        uint32_t addr;
-        uint32_t *addrP;
-
-        BSTREAM_TO_UINT8(len, pBuf);
-        BSTREAM_TO_UINT32(addr, pBuf);
-        addrP = (uint32_t *)addr;
-
-        LL_TRACE_INFO2("### LlVsRegWrite ### 0x%08X %d bytes", addr, len);
-
-        memcpy(addrP, pBuf, len);
-        break;
-    }
-
-    case LHCI_OPCODE_VS_REG_READ: {
-        uint8_t len;
-
-        BSTREAM_TO_UINT8(len, pBuf);
-        BSTREAM_TO_UINT32(regReadAddr, pBuf);
-
-        LL_TRACE_INFO2("### LlVsRegRead ### 0x%08X %d bytes", regReadAddr, len);
-
-        evtParamLen += len;
-        break;
-    }
-
     case LHCI_OPCODE_VS_TX_TEST: {
         uint16_t numPackets = pBuf[4] | (pBuf[5] << 8);
 
@@ -213,21 +252,77 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     }
     case LHCI_OPCODE_VS_GET_RSSI:
     {
-        status = LL_SUCCESS;
+        #if 0
         channel = pBuf[0];
+
+        if(channel > LL_DTM_MAX_CHAN_IDX)
+        {
+            status = LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
+        }
+        else{
+            status = LL_SUCCESS;
+        }
         evtParamLen += sizeof(int8_t);
+        #else
+        status = LL_ERROR_CODE_CMD_DISALLOWED;
+        #endif
+
         break;
     }
-    case LHCI_OPCODE_VS_PHY_EN:
+    case LHCI_OPCODE_VS_FGEN:
     {
-        status = LL_SUCCESS;
-        PalBbEnable();
+        #if 0
+        uint8_t enable = pBuf[0];
+
+        if(enable)
+        {
+            int8_t txPower = 0;
+            uint32_t frequency_khz = pBuf[3] << 16  | pBuf[2] << 8 | pBuf[1];
+            PalBbPatternType_t patternType = pBuf[4];
+
+            status = LlGetAdvTxPower(&txPower);
+            
+            if(status != LL_SUCCESS)
+            {
+                break;
+            }
+            else if(PalBbFgenIsEnabled())
+            {
+                status = LL_ERROR_CODE_CMD_DISALLOWED;
+            }
+            else if(!PalBbIsValidPrbsType(patternType))
+            {
+                status = LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+            }
+            else{
+                const bool freqOk = PalBbEnableFgen(frequency_khz, patternType, txPower);
+                status = freqOk ? LL_SUCCESS : LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
+            }
+
+
+        }
+        else
+        {
+            PalBbDisableFgen();
+            status = LL_SUCCESS;
+        }
+
+        #else
+        status = LL_ERROR_CODE_CMD_DISALLOWED;
+        #endif
+
         break;
     }
-    case LHCI_OPCODE_VS_PHY_DIS:
+    case LHCI_OPCODE_VS_RESET_ADV_STATS:
     {
         status = LL_SUCCESS;
-        PalBbDisable();
+        BbBleResetAdvStats();
+        break;
+    }
+    case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+    {
+        status = LL_SUCCESS;
+        BbBleResetScanStats();
         break;
     }
 
@@ -252,25 +347,38 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         case LHCI_OPCODE_VS_GET_RAND_ADDR:
         case LHCI_OPCODE_VS_SET_TX_TEST_ERR_PATT:
         case LHCI_OPCODE_VS_SET_SNIFFER_ENABLE:
-        case LHCI_OPCODE_VS_REG_WRITE:
         case LHCI_OPCODE_VS_RX_TEST:
         case LHCI_OPCODE_VS_TX_TEST:
-        case LHCI_OPCODE_VS_PHY_EN:
-        case LHCI_OPCODE_VS_PHY_DIS:
-
+        case LHCI_OPCODE_VS_RESET_ADV_STATS:
+        case LHCI_OPCODE_VS_RESET_SCAN_STATS:
+        case LHCI_OPCODE_VS_FGEN:
 
             /* no action */
             break;
+        case LHCI_OPCODE_VS_GET_RSSI:
+        {
+            #if 0
+            if(status != LL_SUCCESS)
+            {
+                break;
+            }
+        
+            int8_t rssi = 0;
+            PalBbGetRssi(&rssi, channel);
+            
+
+            pBuf[0] = (uint8_t)rssi;
+            #else
+            pBuf[0] = INT8_MIN;
+            #endif
+        
+        
+
+            break;
+        }
 
         case LHCI_OPCODE_VS_RESET_TEST_STATS: {
             BbBleResetTestStats();
-            break;
-        }
-        case LHCI_OPCODE_VS_GET_RSSI:{
-            /*
-                TODO: Needs feature in PHY
-            */
-            pBuf[0] = -10;
             break;
         }
 
@@ -375,14 +483,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             BbBlePduFiltStats_t stats;
             BbBleGetPduFiltStats(&stats);
             memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
-            break;
-        }
-
-        case LHCI_OPCODE_VS_REG_READ: {
-            if (regReadAddr != 0) {
-                uint32_t *regReadP = (uint32_t *)regReadAddr;
-                memcpy(pBuf, regReadP, (evtParamLen - 1));
-            }
             break;
         }
 
