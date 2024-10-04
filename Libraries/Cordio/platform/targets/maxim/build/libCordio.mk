@@ -78,11 +78,14 @@ SRCS            += $(C_FILES)
 VPATH           += %.c $(sort $(dir $(C_FILES)))
 IPATH           += $(INC_DIRS)
 
-# Add dependencies in the Board library and the PeripheralDrivers
+
 IPATH += ${LIBS_DIR}/MiscDrivers/PushButton
 IPATH += ${LIBS_DIR}/MiscDrivers/LED
-IPATH += ${LIBS_DIR}/Boards/$(TARGET_UC)/$(BOARD)/Include
-include ${LIBS_DIR}/PeriphDrivers/periphdriver.mk
+
+# Add dependencies in the Board library and the PeripheralDrivers
+LIB_BOARD = 1
+LIB_PERIPHDRIVERS = 1
+include ${LIBS_DIR}/libs.mk
 
 # Use absolute paths if building within eclipse environment.
 ifeq "$(ECLIPSE)" "1"
