@@ -37,7 +37,7 @@ FILES=""
 if [[ $# -eq 0 ]]
 then
   # Find the c files
-  FILES=$(find . -iname "*.c" -not -name "*cnn.c" -a -not -name "*softmax.c" -a -not -regex ".*/Libraries/MiscDrivers/BarcodeDecoder/.*" -a -not -regex ".*/Examples/.*/Coremark/.*" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\|LVGL\|Coremark\|tinyusb\)/.*")
+  FILES=$(find . -iname "*.c" -not -name "*cnn.c" -a -not -name "*softmax.c" -a -not -regex ".*/Libraries/MiscDrivers/BarcodeDecoder/.*" -a -not -regex ".*/Examples/.*/Coremark/.*" -a -not -regex ".*/Libraries/CMSIS/5.9.0/.*" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\|LVGL\|Coremark\|tinyusb\)/.*")
 
   # Find the header files
   FILES=$FILES+$(find . -iname "*.h" -not -name "*regs*" -a -not -name "*weights.h" -a -not -name "*cnn.h" -a -not -name "*sampledata.h" -a -not -name "*sampleoutput.h" -a -not -regex ".*/Libraries/MiscDrivers/BarcodeDecoder/.*" -a -not -regex ".*/Examples/.*/Coremark/.*" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\|LVGL\|Coremark\|tinyusb\)/.*")
