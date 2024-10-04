@@ -221,6 +221,8 @@
 #include "board.h"
 #define MXC_UARTn MXC_UART_GET_UART(CONSOLE_UART)
 #define UNITY_OUTPUT_CHAR(a) MXC_UART_WriteCharacter(MXC_UARTn, a);
+#define UNITY_OUTPUT_FLUSH() MXC_UART_ClearTXFIFO(MXC_UARTn);
+#define UNITY_EXCLUDE_SETJMP_H
 #endif
 
 /* #define UNITY_OUTPUT_CHAR(a)                    RS232_putc(a) */
