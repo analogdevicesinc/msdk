@@ -38,7 +38,7 @@ void resetTest(void)
 /*=======MAIN=====*/
 int main(void)
 {
-    UnityBegin("test/TestProductionCode.c");
+    UnityBegin("test_functions.c");
     RUN_TEST(test_simple_add_ok, __LINE__);
     RUN_TEST(test_simple_add_fail, __LINE__);
 

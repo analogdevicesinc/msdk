@@ -20,27 +20,23 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Simple Unity Testing example
+ * @details This example shows how to run a simple test program on a host micro.
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
 #include "unity.h"
 
-/***** Definitions *****/
-
-/***** Globals *****/
-
-/***** Functions *****/
-
-extern uint8_t simple_add(uint8_t x, uint8_t y);
 // *****************************************************************************
 int main(void)
 {
-    puts("\nRunning Tests");
-    TEST_ASSERT_EQUAL(7, simple_add(3, 4));
-    TEST_ASSERT_EQUAL(8, simple_add(3, 4));
-    while (1) {}
+    UnityBegin(__FILE__);
+
+    Unity.NumberOfTests++;
+    TEST_ASSERT_EQUAL(1 + 1, 2);
+
+    Unity.NumberOfTests++;
+    TEST_ASSERT_NOT_EQUAL(1 + 1, 2);
+
+    return (UnityEnd());
 }

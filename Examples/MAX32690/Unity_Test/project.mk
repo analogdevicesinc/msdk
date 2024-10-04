@@ -8,11 +8,8 @@
 # **********************************************************
 
 # Add your config here!
-LIB_UNITY=1
+LIB_UNITY = 1
 
-TEST_SRCS+=simple_code.c
-DEBUG=1
-PROJ_CFLAGS += -DUNITY_INCLUDE_CONFIG_H
-# TEST_CFLAGS+=-DUNITY_INCLUDE_CONFIG_H
-# TEST_CC=gcc
-# TEST_CFLAGS=-Werror
+# Add 'simple_code.c' to the compilation list for any host-side tests run on `make test`
+# Everything else in the 'test' folder will get added automatically.
+TEST_SRCS += simple_code.c

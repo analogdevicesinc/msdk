@@ -25,25 +25,67 @@
 
 ifeq "$(LIB_UNITY_DIR)" ""
 # If UNITY_DIR is not specified, this Makefile will locate itself.
-
 LIB_UNITY_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
+
+ifeq "$(PROJECT)" ""
+PROJECT = $(TARGET_LC)
+endif
+
+# Detect current OS.
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/detect_os.mk
 
 IPATH += ${LIB_UNITY_DIR}/src
 VPATH += ${LIB_UNITY_DIR}/src
 SRCS += unity.c
+# Add this to PROJ_CFLAGS so that custom config is only used when compiling for
+# running on actual hardware.  Otherwise, we are unit testing on the host machine
+# and should use the default config
+PROJ_CFLAGS += -DUNITY_INCLUDE_CONFIG_H
 
 # Test Options
-TEST_CC?=gcc
-TEST_TARGET_OUT?=build/testbench
-TEST_SRCS+=$(LIBS_DIR)/Unity/src/unity.c
-TEST_SRCS+=$(sort $(wildcard test/*.c))
-TEST_CFLAGS += -I$(LIBS_DIR)/Unity/src
+ifeq "(_OS)" "windows"
+$(warning Native Windows environment detected!  Unit testing is currently configured for GCC)
+# TODO: MSVC/MinGW support (?)
+endif
+TEST_CC ?= gcc
+ifeq "$(BUILD_DIR)" ""
+TEST_BUILD_DIR ?= $(CURDIR)/build/unittest
+else
+TEST_BUILD_DIR ?= $(BUILD_DIR)/unittest
+endif
+TEST_SRC_DIR ?= $(CURDIR)/test
+TEST_OUTPUT_BINARY ?= $(PROJECT)_unittest
+
+TEST_SRCS += $(LIB_UNITY_DIR)/src/unity.c
+TEST_SRCS += $(sort $(wildcard $(TEST_SRC_DIR)/*.c))
+TEST_CFLAGS += -I$(LIB_UNITY_DIR)/src
+# Add include paths from main project so test code can locate any relevant files
+TEST_CFLAGS += ${patsubst %,-I%,$(IPATH)}
 
 
+$(TEST_BUILD_DIR):
+	@echo -  MKDIR $(@)
+ifeq "$(_OS)" "windows"
+# Make run on native Windows will yield C:/-like paths, but the mkdir commands needs
+# paths with backslashes.
+	@if not exist ${subst /,\,${@}} mkdir ${subst /,\,${@}}
+else
+	@mkdir -p ${@}
+endif
 
+# Rule for running the test binary.
+# Return codes are not ignored so that they can be signaled to the host machine.
+.PHONY: test
+test: $(TEST_BUILD_DIR)/$(TEST_OUTPUT_BINARY)
+	@echo - RUN $(^)
+	@ $(^)
 
-# Use absolute paths if building within eclipse environment.
-ifeq "$(ECLIPSE)" "1"
-SRCS := $(abspath $(SRCS))
+# Rule for building the test binary itself.
+$(TEST_BUILD_DIR)/$(TEST_OUTPUT_BINARY): $(TEST_SRCS) | $(TEST_BUILD_DIR)
+	@echo - CC $(@)
+ifeq "$(VERBOSE)" "1"
+	$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRCS) -o $(@)
+else
+	@$(TEST_CC) $(TEST_CFLAGS) $(TEST_SRCS) -o $(@)
 endif
