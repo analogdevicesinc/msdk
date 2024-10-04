@@ -176,8 +176,9 @@ int main(void)
 
             // Add trailing spaces to properly clear any left over digits should the number
             //  of digits increase/decrease.
-            printf("\rx:%-2.2f  y:%-2.2f  z:%-2.2f         ", (double)(axis_data[0] * ADXL343_SF_2G),
-                   (double)(axis_data[1] * ADXL343_SF_2G), (double)(axis_data[2] * ADXL343_SF_2G));
+            printf("\rx:%-2.2f  y:%-2.2f  z:%-2.2f         ",
+                   (double)(axis_data[0] * ADXL343_SF_2G), (double)(axis_data[1] * ADXL343_SF_2G),
+                   (double)(axis_data[2] * ADXL343_SF_2G));
             // MXC_Delay(200000);
         }
 
