@@ -31,6 +31,8 @@
  */
 /*************************************************************************************************/
 
+#include "util/terminal.h"
+
 #include "pal_uart.h"
 #include "pal_led.h"
 #include "pal_sys.h"
@@ -90,10 +92,16 @@ void UART_CommonHandler(mxc_uart_regs_t *uart)
   {
     const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
 
-    if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
+    if( uartIdx == CONSOLE_UART)
+    {
+      TerminalFlush();
+      MXC_UART_ClearRXFIFO(uart);
+    }
+    else if(uartIdx == HCI_UART)
     {
       MXC_UART_ClearRXFIFO(uart);
     }
+
     else
     {
       PAL_SYS_ASSERT(err == E_NO_ERROR);

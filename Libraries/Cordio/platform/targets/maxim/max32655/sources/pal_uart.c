@@ -31,6 +31,8 @@
  */
 /*************************************************************************************************/
 
+#include "util/terminal.h"
+
 #include "pal_uart.h"
 #include "pal_led.h"
 #include "pal_sys.h"
