@@ -25,6 +25,9 @@ on:
   issue_comment:
       types: [created]
 
+permissions:
+  actions: write
+
 env:
   CLANG_VERSION: 14
 

@@ -244,6 +244,8 @@ int main(void)
         .freeMemAvail = WsfHeapCountAvailable()
     };
 
+
+
     llmemUsed = LlInitSetRtCfg(&llCfg);
 
 #if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
