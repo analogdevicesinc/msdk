@@ -83,7 +83,7 @@ void blink_halt(char *msg)
 void adxl343_handler(void *cbdata)
 {
     (void)cbdata;
-    LED_Toggle(0);
+
     axis_data_ready = true;
 }
 
