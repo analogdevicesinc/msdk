@@ -37,16 +37,17 @@
 #include "adxl343.h"
 #include "board.h"
 #include "led.h"
+#include "lp.h"
 
 // The I2C peripheral the ADXL343 is connected to and the bus speed.
 #define I2C_INST MXC_I2C0
 #define I2C_FREQ 100000
 
 // The GPIO pin used for ADXL343 interrupt.
-#define ADXL343_IRQ_PORT MXC_GPIO2
-#define ADXL343_IRQ_PIN MXC_GPIO_PIN_11
+#define ADXL343_IRQ_PORT MXC_GPIO0
+#define ADXL343_IRQ_PIN MXC_GPIO_PIN_7
 
-void GPIO2_IRQHandler(void)
+void GPIO0_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(ADXL343_IRQ_PORT));
 }
@@ -82,7 +83,7 @@ void blink_halt(char *msg)
 void adxl343_handler(void *cbdata)
 {
     (void)cbdata;
-
+    LED_Toggle(0);
     axis_data_ready = true;
 }
 
@@ -106,8 +107,8 @@ int adxl343_config(void)
     result |= adxl343_set_power_mode(ADXL343_PWRMOD_NORMAL);
     result |= adxl343_set_offsets(axis_offsets);
     result |= adxl343_set_fifo_mode(ADXL343_FIFO_BYPASS);
-    result |= adxl343_set_int_map(ADXL343_INT_DATA_READY | ADXL343_INT_ACTIVITY);
-    result |= adxl343_set_int_enable(ADXL343_INT_DATA_READY | ADXL343_INT_ACTIVITY);
+    result |= adxl343_set_int_map(ADXL343_INT_DATA_READY);
+    result |= adxl343_set_int_enable(ADXL343_INT_DATA_READY);
     result |= adxl343_set_power_control(ADXL343_PWRCTL_MEASURE);
 
     MXC_GPIO_Config(&adxl343_irq_cfg);
@@ -115,6 +116,7 @@ int adxl343_config(void)
     MXC_GPIO_IntConfig(&adxl343_irq_cfg, MXC_GPIO_INT_RISING);
     MXC_GPIO_EnableInt(adxl343_irq_cfg.port, adxl343_irq_cfg.mask);
     NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(ADXL343_IRQ_PORT)));
+    MXC_LP_EnableGPIOWakeup(&adxl343_irq_cfg);
 
     return result;
 }
@@ -157,6 +159,13 @@ int main(void)
         blink_halt("Trouble configuring ADXL343.");
     }
 
+    // Use delay or wait for keypress to allow debugger to attach before entering low power mode
+#if !defined(WAIT_FOR_KEYPRESS)
+    MXC_Delay(MXC_DELAY_SEC(3));
+#else
+    wait_for_keypress();
+#endif
+
     while (1) {
         if (axis_data_ready) {
             axis_data_ready = false;
@@ -169,7 +178,9 @@ int main(void)
             //  of digits increase/decrease.
             printf("\rx:%-2.2f  y:%-2.2f  z:%-2.2f         ", (double)(axis_data[0] * ADXL343_SF_2G),
                    (double)(axis_data[1] * ADXL343_SF_2G), (double)(axis_data[2] * ADXL343_SF_2G));
-            MXC_Delay(200000);
+            // MXC_Delay(200000);
         }
+
+        MXC_LP_EnterSleepMode();
     }
 }

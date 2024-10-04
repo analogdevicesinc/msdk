@@ -871,7 +871,6 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
     mxc_i2c_reva_regs_t *i2c = req->i2c; // Save off pointer for faster access
     unsigned int written = 0;
     unsigned int read = 0;
-    unsigned int prev_read = read; // Account for repeated start condition
 
     if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
         return E_NOT_SUPPORTED;
@@ -947,20 +946,9 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
 
     while (req->rx_len > read) {
         if (i2c->intfl0 & (MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE)) {
-            prev_read = read;
             read +=
                 MXC_I2C_ReadRXFIFO((mxc_i2c_regs_t *)i2c, &req->rx_buf[read], req->rx_len - read);
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RX_THD;
-
-            // A repeated start condition or a "Restart" can already be triggered when MXC_I2C_Start(...) was called earlier.
-            //  Due to the nature of a repeated start condition and the timing of the core, I2C, and external I2C device
-            //  (target), it's possible to enter this parent if statement when ONLY INTFL0.done is set and the RX FIFO is empty.
-            //  No reads occur when that happens and continuing down the while loop, another repeated start condition will be
-            //  triggered, causing double read backs and breaking protocol for some external I2C devices. This if statement
-            //  prevents sending another repeated start condition when no reads have occurred.
-            if (prev_read == read) {
-                continue;
-            }
         }
 
         if (i2c->intfl0 & MXC_I2C_REVA_ERROR) {

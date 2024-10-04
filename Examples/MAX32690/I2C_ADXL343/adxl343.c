@@ -76,15 +76,21 @@
 #define MEASURE_MASK 0x08
 #define FIFO_MODE_MASK 0xC0
 
-static mxc_i2c_req_t i2c_req;
+static mxc_i2c_req_t i2c_save;
 
 static inline int reg_write(uint8_t reg, uint8_t val)
 {
     uint8_t buf[2] = { reg, val };
+    mxc_i2c_req_t i2c_req;
 
+    i2c_req.i2c = i2c_save.i2c;
+    i2c_req.addr = i2c_save.addr;
     i2c_req.tx_buf = buf;
     i2c_req.tx_len = sizeof(buf);
+    i2c_req.rx_buf = NULL;
     i2c_req.rx_len = 0;
+    i2c_req.restart = 0;
+    i2c_req.callback = i2c_save.callback;
 
     return MXC_I2C_MasterTransaction(&i2c_req);
 }
@@ -92,25 +98,62 @@ static inline int reg_write(uint8_t reg, uint8_t val)
 static inline int reg_read(uint8_t reg, uint8_t *dat)
 {
     uint8_t buf[1] = { reg };
+    mxc_i2c_req_t i2c_req_wr, i2c_req_rd;
+    int result;
 
-    i2c_req.tx_buf = buf;
-    i2c_req.tx_len = sizeof(buf);
-    i2c_req.rx_buf = dat;
-    i2c_req.rx_len = 1;
+    // A repeated start condition, one write then one read transaction.
+    i2c_req_wr.i2c = i2c_save.i2c;
+    i2c_req_wr.addr = i2c_save.addr;
+    i2c_req_wr.tx_buf = buf;
+    i2c_req_wr.tx_len = sizeof(buf);
+    i2c_req_wr.rx_buf = NULL;
+    i2c_req_wr.rx_len = 0;
+    i2c_req_wr.restart = 0;
+    i2c_req_wr.callback = NULL; // Repeat start condition, callback at end.
 
-    return MXC_I2C_MasterTransaction(&i2c_req);
+    i2c_req_rd.i2c = i2c_save.i2c;
+    i2c_req_rd.addr = i2c_save.addr;
+    i2c_req_rd.tx_buf = NULL;
+    i2c_req_rd.tx_len = 0;
+    i2c_req_rd.rx_buf = dat;
+    i2c_req_rd.rx_len = 1;
+    i2c_req_rd.restart = 0;
+    i2c_req_rd.callback = i2c_save.callback;
+
+    result = MXC_I2C_MasterTransaction(&i2c_req_wr);
+    result += MXC_I2C_MasterTransaction(&i2c_req_rd);
+
+    return result;
 }
 
 int adxl343_get_axis_data(int16_t *ptr)
 {
     uint8_t buf[1] = { DATAX0_REG };
+    mxc_i2c_req_t i2c_req_wr, i2c_req_rd;
+    int result = 0;
 
-    i2c_req.tx_buf = buf;
-    i2c_req.tx_len = sizeof(buf);
-    i2c_req.rx_buf = (uint8_t *)ptr;
-    i2c_req.rx_len = 6;
+    i2c_req_wr.i2c = i2c_save.i2c;
+    i2c_req_wr.addr = i2c_save.addr;
+    i2c_req_wr.tx_buf = buf;
+    i2c_req_wr.tx_len = sizeof(buf);
+    i2c_req_wr.rx_buf = NULL;
+    i2c_req_wr.rx_len = 0;
+    i2c_req_wr.restart = 0;
+    i2c_req_wr.callback = NULL; // Repeat start condition, callback at end.
 
-    return MXC_I2C_MasterTransaction(&i2c_req);
+    i2c_req_rd.i2c = i2c_save.i2c;
+    i2c_req_rd.addr = i2c_save.addr;
+    i2c_req_rd.tx_buf = NULL;
+    i2c_req_rd.tx_len = 0;
+    i2c_req_rd.rx_buf = (uint8_t *)ptr;
+    i2c_req_rd.rx_len = 6;
+    i2c_req_rd.restart = 0;
+    i2c_req_rd.callback = i2c_save.callback;
+
+    result = MXC_I2C_MasterTransaction(&i2c_req_wr);
+    result += MXC_I2C_MasterTransaction(&i2c_req_rd);
+
+    return result;
 }
 
 int adxl343_set_power_mode(uint8_t mode)
@@ -191,10 +234,15 @@ int adxl343_get_int_source(uint8_t *srcs)
 int adxl343_set_offsets(const int8_t *offs)
 {
     uint8_t buf[4] = { OFSX_REG, offs[0], offs[1], offs[2] };
+    mxc_i2c_req_t i2c_req;
 
+    i2c_req.i2c = i2c_save.i2c;
+    i2c_req.addr = i2c_save.addr;
+    i2c_req.restart = 0;
     i2c_req.tx_buf = buf;
     i2c_req.tx_len = sizeof(buf);
     i2c_req.rx_len = 0;
+    i2c_req.callback = i2c_save.callback;
 
     return MXC_I2C_MasterTransaction(&i2c_req);
 }
@@ -207,10 +255,9 @@ int adxl343_init(mxc_i2c_regs_t *i2c_inst)
     if (!i2c_inst)
         return E_NULL_PTR;
 
-    i2c_req.i2c = i2c_inst;
-    i2c_req.addr = ADXL343_ADDR;
-    i2c_req.restart = 0;
-    i2c_req.callback = NULL;
+    i2c_save.i2c = i2c_inst;
+    i2c_save.addr = ADXL343_ADDR;
+    i2c_save.callback = NULL;
 
     if ((result = reg_read(DEVID_REG, &id)) != E_NO_ERROR)
         return result;
