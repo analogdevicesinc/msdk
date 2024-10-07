@@ -1,0 +1,23 @@
+# start with the default markdownlint configuration
+default: true
+
+# ignore line length limitations
+line-length: false
+
+# prefer # style headings
+heading-style:
+  style: atx
+
+# disable block style checks since they interfere with material admonitions
+code-block-style: false
+
+# default for Python-Markdown is 4 spaces
+ul-indent:
+  indent: 4
+  start_indented: false
+  start_indent: 4
+
+# allow img tags to set specific image sizes
+no-inline-html:
+  allowed_elements:
+    - img
