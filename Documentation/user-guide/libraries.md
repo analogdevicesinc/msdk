@@ -3,7 +3,7 @@
 The MSDK contains a large number of libraries, both third-party and in-house. The main library is the [Peripheral Driver API](#peripheral-driver-api), but the MSDK also contains drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. Additionally, dedicated libraries for more complex _internal_ hardware peripherals such as USB, the SDHC interface, and the Cordio BLE stack are also available. These usually build on _top_ of the Peripheral Driver API.
 
 ???+ note "ℹ️ **Note: Enabling Libraries**"
-    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries)).
+    Libraries can be enabled for a project with a convenient _toggle switch_ provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries)).
 
 ## Peripheral Driver API
 
@@ -78,6 +78,28 @@ The following table matches external part numbers to internal die types.  This i
     | MAX32690 | ME18 |
     | MAX78000 | AI85 |
     | MAX78002 | AI87 |
+
+### `MSDK_NO_GPIO_CLK_INIT`
+
+Most Peripheral Driver initialization routines involve enabling system clocks, setting clock dividers, and configuring GPIO pins.  In some cases (such as for Zephyr), frameworks or tools offer their own mechanisms for handling this, or it's desirable to manually handle it in custom application code.  
+
+The MSDK offers a mechanism for disabling the automatic initialization of clocks and GPIO pins via the `MSDK_NO_GPIO_CLK_INIT` compiler definition.  To enable this for a project, add it via the `PROJ_CFLAGS` [build configuration variable](#build-variables-for-the-compiler) using the following syntax:
+
+```Makefile
+#project.mk
+
+PROJ_CFLAGS += -DMSDK_NO_GPIO_CLK_INIT
+```
+
+???+ note "ℹ️ **Syntax Note:**"
+    The `-D` flag tells the compiler to define a symbol at compile-time.  It should be followed by the symbol we wish to define.  In this case, `MSDK_NO_GPIO_CLK_INIT`.
+
+#### Peripheral Driver Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `PINS_FILE`               | Override pin definitions                   | This option can be used to override the default GPIO definitions used by the peripheral drivers, which can be found in the `Libraries/PeriphDrivers/Source/SYS/pins_xx.c` files in the MSDK.  The file specified by this option will be passed to the build instead of the default.  It's suggested to copy the default file first as a template before making modifications.  |
 
 ---
 
@@ -159,7 +181,7 @@ The `Libraries/MiscDrivers` folder of the MSDK contains drivers for miscellaneou
 
 ## SDHC
 
-The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a [FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html) implementation for managing files on SD cards.
+The **Secure Digital High Capacity _(SDHC)_** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a [FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html) implementation for managing files on SD cards.
 
 See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries) for instructions on enabling the SDHC library.
 
