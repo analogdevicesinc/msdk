@@ -2,7 +2,7 @@
 
 Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/analogdevicesinc/VSCode-Maxim) GitHub repository.
 
-For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](#getting-started-with-visual-studio-code) first.  This section offers detailed usage info focusing on the typical development cycle.
+For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](getting-started.md#getting-started-with-visual-studio-code) first. This section offers detailed usage info focusing on the typical development cycle.
 
 ## Opening Example Projects
 
@@ -45,9 +45,9 @@ To open a project:
 
 To set the BSP for an open project:
 
-1. Set the `"board"` [project configuration](https://github.com/analogdevicesinc/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
+1. Set the `"board"` [project configuration](https://github.com/analogdevicesinc/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](build-system.md#build-tables)_.
 
-    See [Board Support Packages](#board-support-packages) for a table of possible values.
+    See [Board Support Packages](board-support-pkgs.md) for a table of possible values.
 
     ![Figure 17](res/Fig17.jpg)
 
@@ -148,16 +148,16 @@ As of the [v1.6.0](https://github.com/analogdevicesinc/VSCode-Maxim/releases/tag
 
 ![Figure 47](res/Fig47.jpg)
 
-Alternatively, *watch expressions* can be used.  These can be set for registers and variables. (For example, the `sysctrl` register below).
+Alternatively, _watch expressions_ can be used.  These can be set for registers and variables. (For example, the `sysctrl` register below).
 
 ![image](https://user-images.githubusercontent.com/38844790/177819247-ccf90782-e1e6-44f2-8605-c39fc15c09a6.png)
 
-- Adding **`,b`** lets you print out the value in **binary**
-- Adding **`,x`** prints the value in **hex**.
-- Standard **logical** and **bitwise** operations are supported inside the watch expression.
-- **Register** and **variable** values can be **modified** through these same watch-points.  _(Right click -> Set Value)_
+* Adding **`,b`** lets you print out the value in **binary**
+* Adding **`,x`** prints the value in **hex**.
+* Standard **logical** and **bitwise** operations are supported inside the watch expression.
+* **Register** and **variable** values can be **modified** through these same watch-points.  _(Right click -> Set Value)_
 
-It should be noted that the debugger's watch points are *contextual*, meaning that its symbol look-ups will depend on the active point in your program.
+It should be noted that the debugger's watch points are _contextual, meaning that its symbol look-ups will depend on the active point in your program.
 
 ### Disassembly View
 
@@ -190,7 +190,7 @@ For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_
 ???+ note "ℹ️ **Note**"
     The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
 
-This section demonstrates how to debug `-riscv` projects in VS Code using the [mnist-riscv](Examples/MAX78000/CNN/mnist-riscv) project for the MAX78000 as an example.
+This section demonstrates how to debug `-riscv` projects in VS Code using the [mnist-riscv](/Examples/MAX78000/CNN/mnist-riscv) project for the MAX78000 as an example.
 
 1. Connect _both_ your Arm (SWD) and RISC-V (JTAG) debuggers. VSCode-Maxim projects come pre-configured to use the [ARM-USB-OCD-H](https://www.olimex.com/Products/ARM/JTAG/ARM-USB-OCD-H/) + [ARM-JTAG-20-10](https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-20-10/) adapters for the RISC-V JTAG port. Ex:
 
@@ -247,12 +247,12 @@ The following configuration options are available:
 ### `"MAXIM_PATH"`
 
 * This option must point to the root installation directory of the MSDK.
-* It should be placed in the _global_ user settings.json file during first-time VSCode-Maxim setup.  See [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code).
+* It should be placed in the _global_ user settings.json file during first-time VSCode-Maxim setup.  See [Getting Started with Visual Studio Code](getting-started.md#getting-started-with-visual-studio-code).
 
 ### `"target"`
 
 * This sets the target microcontroller for the project.
-* It sets the `TARGET` [Build Configuration](#build-configuration-variables) variable.
+* It sets the `TARGET` [Build Configuration](build-system.md#build-configuration-variables) variable.
 
 ### `"board"`
 
@@ -411,6 +411,6 @@ VSCode-Maxim releases provide the `Inject` folder for "injecting" into an existi
 
 5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
 
-6. Configure the [build system](#build-system) for use with any pre-existing source code.
+6. Configure the [build system](build-system.md) for use with any pre-existing source code.
 
 7. That's it!  Your new project can now be opened with `File > Open Folder` from within VS Code.

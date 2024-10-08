@@ -1,6 +1,6 @@
 # Eclipse
 
-For setup/quick-start instructions, see ["Getting Started with Eclipse"](#getting-started-with-eclipse) first.  This section offers detailed usage info focusing on the typical development cycle.
+For setup/quick-start instructions, see ["Getting Started with Eclipse"](getting-started.md#getting-started-with-eclipse) first.  This section offers detailed usage info focusing on the typical development cycle.
 
 ## Running Eclipse
 
@@ -29,7 +29,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 5. Follow the new project wizard.
 
     - Chip type selects the _Target Microcontroller_
-    - Board type selects the [_Board Support Package (BSP)_](#board-support-packages)
+    - Board type selects the [_Board Support Package (BSP)_](board-support-pkgs.md)
     - Example type selects the example project to be copied as the template for the new project.
     - Adapter type selects the debug adapter to use.
 
@@ -64,9 +64,9 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 [Imported](#importing-examples) Eclipse projects files are configured for the **EVKIT**-type _BSP_ by default. To set the BSP:
 
 1. Right click the project name and select _Properties_.  Navigate to **C/C++ Build -> Environment**.
-2. Set the **`BOARD`** _[Build Configuration Variable](#build-tables)_ to match the target evaluation platform.
+2. Set the **`BOARD`** _[Build Configuration Variable](build-system.md#build-tables)_ to match the target evaluation platform.
 
-    See [Board Support Packages](#board-support-packages) for a table of possible values.
+    See [Board Support Packages](board-support-pkgs.md) for a table of possible values.
 
     ![Figure 26](res/Fig26.jpg)
 

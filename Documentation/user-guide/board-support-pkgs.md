@@ -1,6 +1,6 @@
 # Board Support Packages
 
-The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**. For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.
+The MSDK supports multiple parts and evaluation platforms (see [supported parts](index.md#supported-parts)) through **"Board Support Packages" (BSPs)**. For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.
 
 The role of a _BSP_ is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms. The BSP abstraction layer also improves code portability to custom devices.
 
@@ -11,9 +11,9 @@ The role of a _BSP_ is to provide a hardware abstraction layer for the initializ
 
 To set the BSP for a project:
 
-- In **VS Code**:  [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
-- In **Eclipse**:  [How to Set the BSP (Eclipse)](#how-to-set-the-bsp-eclipse)
-- **Command-Line** Development:  [How to Set the BSP (Command-Line)](#how-to-set-the-bsp-command-line)
+- In **VS Code**:  [How to Set the BSP (VS Code)](visual-studio-code.md#how-to-set-the-bsp-vs-code)
+- In **Eclipse**:  [How to Set the BSP (Eclipse)](eclipse.md#how-to-set-the-bsp-eclipse)
+- **Command-Line** Development:  [How to Set the BSP (Command-Line)](command-line-dev.md#how-to-set-the-bsp-command-line)
 
 ## BSP Table
 
@@ -21,7 +21,7 @@ Available BSPs are located in the `Libraries/Boards` folder for each _Target Mic
 
 ![Figure 34](res/Fig34.jpg)
 
-The name of a BSP's folder is used with the `BOARD` [build configuration variable](#build-configuration-variables) to build a project for a specific BSP. The table below matches the correct `BOARD` values to _external part numbers_.
+The name of a BSP's folder is used with the `BOARD` [build configuration variable](build-system.md#build-configuration-variables) to build a project for a specific BSP. The table below matches the correct `BOARD` values to _external part numbers_.
 
 | External Part Number                         | `TARGET`       | `BOARD`        |
 | ---------------------------------------------|--------------- | -------------- |
@@ -119,11 +119,11 @@ A custom BSP can implement one or all of the weak functions. The file structure 
          └─ Source
             └─ board.c
 
-The name of the BSP's root folder will be the string used with the `BOARD` [build configuration variable](#build-configuration-variables) to select it for a project.  In the example above, one would use `BOARD = CustomBSP` to select it as the active BSP.
+The name of the BSP's root folder will be the string used with the `BOARD` [build configuration variable](build-system.md#build-configuration-variables) to select it for a project.  In the example above, one would use `BOARD = CustomBSP` to select it as the active BSP.
 
 ### BSP Search Directory
 
-By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.
+By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](build-system.md#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.
 
 For example, the configuration...
 
@@ -141,7 +141,7 @@ For example, the configuration...
 
 The following contents can be used as a bare-bones starter template for a custom BSP.
 
-* _board.h_
+- _board.h_
 
         :::C
         // board.h
@@ -160,7 +160,7 @@ The following contents can be used as a bare-bones starter template for a custom
         */
         int Board_Init(void);
 
-* _board.c_
+- _board.c_
 
         :::C
         //board.c
@@ -173,7 +173,7 @@ The following contents can be used as a bare-bones starter template for a custom
             return E_NO_ERROR;
         }
 
-* _board.mk_
+- _board.mk_
 
         :::Makefile
         # board.mk
@@ -189,18 +189,18 @@ The following contents can be used as a bare-bones starter template for a custom
 
 ## Disabling BSPs
 
-It should also be noted that BSP integration can be disabled entirely by setting the `LIB_BOARD` [build configuration variable](#build-configuration-variables) to 0. This will skip the inclusion of the BSP's `board.mk` file entirely, and the default system initialization functions will be used.
+It should also be noted that BSP integration can be disabled entirely by setting the `LIB_BOARD` [build configuration variable](build-system.md#build-configuration-variables) to 0. This will skip the inclusion of the BSP's `board.mk` file entirely, and the default system initialization functions will be used.
 
 This option can also be used to implement a custom BSP inside of a project's application code.  For example, a user could implement `Board_Init` inside of a project's `main.c` file without having to create a separate BSP folder with `LIB_BOARD = 0`.
 
-* _project.mk_
+- _project.mk_
 
         :::Makefile
         # project.mk
 
         LIB_BOARD = 0
 
-* _main.c_
+- _main.c_
 
         :::C
         // main.c

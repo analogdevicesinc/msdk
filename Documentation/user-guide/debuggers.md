@@ -4,19 +4,19 @@
 
 - ???+ warning "**⚠️ Warning**"
     It’s important to note some fundamental limitations of debugging the MSDK's supported parts. These limitations may make the device difficult (or impossible) for the debugger to connect in certain states. In such cases, the device can attempt to be recovered using a [MAX32625PICO](#max32625pico-pico).  See [How to Unlock a Microcontroller That Can No Longer Be Programmed](#how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed)
-    * A debugger can not be connected to a microcontroller _while_ the device is in reset.
-    * A microcontroller can not be debugged while it's _Sleep_, _Low Power Mode_, _Micro Power Mode_, _Standby_, _Backup_, or _Shutdown_ mode.  These modes shut down the SWD clock.
-        * For low-power development, it's recommended to place a 2-second blocking delay at the start of `main`.
+    - A debugger can not be connected to a microcontroller _while_ the device is in reset.
+    - A microcontroller can not be debugged while it's _Sleep_, _Low Power Mode_, _Micro Power Mode_, _Standby_, _Backup_, or _Shutdown_ mode.  These modes shut down the SWD clock.
+        - For low-power development, it's recommended to place a 2-second blocking delay at the start of `main`.
 
 ## MAX32625PICO (PICO)
 
 A MAX32625PICO (affectionately called the "PICO") debug adapter is provided with almost all the evaluation platforms supported by the MSDK.  Additionally, most small form-factor evaluation kits have a PICO _embedded_ into the PCB.
 
-It's good practice to update the PICO's firmware to the latest version, which can be found on the [MAX32625PICO Firmware Images](https://github.com/MaximIntegrated/max32625pico-firmware-images) Github page.
+It's good practice to update the PICO's firmware to the latest version, which can be found on the [MAX32625PICO Firmware Images](https://github.com/MaximIntegrated/max32625pico-firmware-images) GitHub page.
 
 ### Updating the MAX32625PICO (PICO) Debug Adapter Firmware
 
-1. Download the correct image for your evaluation platform from the [MAX32625PICO Firmware Images](https://github.com/MaximIntegrated/max32625pico-firmware-images) Github page.
+1. Download the correct image for your evaluation platform from the [MAX32625PICO Firmware Images](https://github.com/MaximIntegrated/max32625pico-firmware-images) GitHub page.
 
 2. Connect the included micro-USB cable to the PICO _without_ connecting the other side of the cable to your host PC yet.
 
@@ -66,7 +66,7 @@ Before following the procedure below, ensure that you have updated the PICO debu
 
 #### Unlock with VS Code
 
-For VS Code users, the `"erase flash"` [build task](#build-tasks) can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.
+For VS Code users, the `"erase flash"` [build task](visual-studio-code.md#build-tasks) can be used to attempt a mass erase. If this task fails to recover the part, attempt the procedure below.
 
 #### Unlock with `erase.act`
 
@@ -114,6 +114,6 @@ For VS Code users, the `"erase flash"` [build task](#build-tasks) can be used to
 9. The PICO debugger will attempt to mass erase the microcontroller's flash bank, which will completely wipe any application firmware that is programmed on the device.
 
     ???+ note "ℹ️ **Note**"
-        If this process fails, a `FAIL.TXT` file will be present in the DAPLINK drive with an additional error message inside of it.  A failure is generally indicative of firmware that has completely shut down the debug port, or has entered low power loop immediately on power-up.  In these cases, it's not possible to recover the device.
+        If this process fails, a `FAIL.TXT` file will be present in the DAPLINK drive with an additional error message inside of it. A failure is generally indicative of firmware that has completely shut down the debug port, or has entered low power loop immediately on power-up. In these cases, it's not possible to recover the device.
 
-10. Power cycle the microcontroller. It step 8 succeeded, it's blank and ready to re-program. The debugger should have no issues connecting to the device in this blank state.
+10. Power cycle the microcontroller. If step 8 succeeded, it's blank and ready to re-program. The debugger should have no issues connecting to the device in this blank state.

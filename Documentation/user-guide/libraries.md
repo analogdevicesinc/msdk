@@ -3,7 +3,7 @@
 The MSDK contains a large number of libraries, both third-party and in-house. The main library is the [Peripheral Driver API](#peripheral-driver-api), but the MSDK also contains drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. Additionally, dedicated libraries for more complex _internal_ hardware peripherals such as USB, the SDHC interface, and the Cordio BLE stack are also available. These usually build on _top_ of the Peripheral Driver API.
 
 ???+ note "ℹ️ **Note: Enabling Libraries**"
-    Libraries can be enabled for a project with a convenient _toggle switch_ provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries)).
+    Libraries can be enabled for a project with a convenient _toggle switch_ provided by the build system (See [Build Variables for Toggling Libraries](build-system.md#build-variables-for-toggling-libraries)).
 
 ## Peripheral Driver API
 
@@ -15,29 +15,29 @@ A microcontroller is made up of a Central Processing Unit (CPU) that is surround
 
 The links below will open detailed API references for each microcontroller. Offline copies of these API references can also be found in the `Documentation` folder of the MSDK installation.
 
-- [MAX32520 API](Libraries/PeriphDrivers/Documentation/MAX32520/index.html)
+- [MAX32520 API](../Libraries/PeriphDrivers/Documentation/MAX32520/index.html)
 
-- [MAX32650 API](Libraries/PeriphDrivers/Documentation/MAX32650/index.html)
+- [MAX32650 API](../Libraries/PeriphDrivers/Documentation/MAX32650/index.html)
 
-- [MAX32655 API](Libraries/PeriphDrivers/Documentation/MAX32655/index.html)
+- [MAX32655 API](../Libraries/PeriphDrivers/Documentation/MAX32655/index.html)
 
-- [MAX32660 API](Libraries/PeriphDrivers/Documentation/MAX32660/index.html)
+- [MAX32660 API](../Libraries/PeriphDrivers/Documentation/MAX32660/index.html)
 
-- [MAX32665-MAX32666 API](Libraries/PeriphDrivers/Documentation/MAX32665/index.html)
+- [MAX32665-MAX32666 API](../Libraries/PeriphDrivers/Documentation/MAX32665/index.html)
 
-- [MAX32670 API](Libraries/PeriphDrivers/Documentation/MAX32670/index.html)
+- [MAX32670 API](../Libraries/PeriphDrivers/Documentation/MAX32670/index.html)
 
-- [MAX32672 API](Libraries/PeriphDrivers/Documentation/MAX32672/index.html)
+- [MAX32672 API](../Libraries/PeriphDrivers/Documentation/MAX32672/index.html)
 
-- [MAX32675 API](Libraries/PeriphDrivers/Documentation/MAX32675/index.html)
+- [MAX32675 API](../Libraries/PeriphDrivers/Documentation/MAX32675/index.html)
 
-- [MAX32680 API](Libraries/PeriphDrivers/Documentation/MAX32680/index.html)
+- [MAX32680 API](../Libraries/PeriphDrivers/Documentation/MAX32680/index.html)
 
-- [MAX32690 API](Libraries/PeriphDrivers/Documentation/MAX32690/index.html)
+- [MAX32690 API](../Libraries/PeriphDrivers/Documentation/MAX32690/index.html)
 
-- [MAX78000 API](Libraries/PeriphDrivers/Documentation/MAX78000/index.html)
+- [MAX78000 API](../Libraries/PeriphDrivers/Documentation/MAX78000/index.html)
 
-- [MAX78002 API](Libraries/PeriphDrivers/Documentation/MAX78002/index.html)
+- [MAX78002 API](../Libraries/PeriphDrivers/Documentation/MAX78002/index.html)
 
 ### PeriphDrivers Organization
 
@@ -62,7 +62,7 @@ The following table matches external part numbers to internal die types.  This i
 
 - ???+ note "ℹ️ **Note: Die Types Table**"
 
-    | Part Number | Die Type
+    | Part Number | Die Type |
     | -------- | ----------- |
     | MAX32520 | ES17 |
     | MAX32570 | ME13 |
@@ -83,7 +83,7 @@ The following table matches external part numbers to internal die types.  This i
 
 Most Peripheral Driver initialization routines involve enabling system clocks, setting clock dividers, and configuring GPIO pins.  In some cases (such as for Zephyr), frameworks or tools offer their own mechanisms for handling this, or it's desirable to manually handle it in custom application code.  
 
-The MSDK offers a mechanism for disabling the automatic initialization of clocks and GPIO pins via the `MSDK_NO_GPIO_CLK_INIT` compiler definition.  To enable this for a project, add it via the `PROJ_CFLAGS` [build configuration variable](#build-variables-for-the-compiler) using the following syntax:
+The MSDK offers a mechanism for disabling the automatic initialization of clocks and GPIO pins via the `MSDK_NO_GPIO_CLK_INIT` compiler definition.  To enable this for a project, add it via the `PROJ_CFLAGS` [build configuration variable](build-system.md#build-variables-for-the-compiler) using the following syntax:
 
 ```Makefile
 #project.mk
@@ -126,7 +126,7 @@ Please refer to the [CMSIS-DSP official documentation](https://arm-software.gith
 
 The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for microcontrollers with an integrated BLE controller.
 
-The Cordio library warrants its own separate documentation. See the **[Cordio BLE User Guide](Libraries/Cordio/docs/CORDIO_USERGUIDE.md)**.
+The Cordio library warrants its own separate documentation. See the **[Cordio BLE User Guide](../Libraries/Cordio/docs/CORDIO_USERGUIDE.md)**.
 
 ### Cordio Supported Parts
 
@@ -139,7 +139,7 @@ The Cordio library warrants its own separate documentation. See the **[Cordio BL
 
 ## MAXUSB
 
-The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC.  MAXUSB provides a finer level of control of USB events and classes than TinyUSB.
+The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers. This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC. MAXUSB provides a finer level of control of USB events and classes than TinyUSB.
 
 ### MAXUSB Supported Parts
 
@@ -168,14 +168,14 @@ supporting most standard USB device classes.
 
 ## Miscellaneous Drivers
 
-The `Libraries/MiscDrivers` folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc. These resources are usually closely tied with the [Board Support Packages](#board-support-packages).
+The `Libraries/MiscDrivers` folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc. These resources are usually closely tied with the [Board Support Packages](board-support-pkgs.md).
 
 ### Miscellaneous Build Variables
 
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 |                        |                                                            |                                                              |
-| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
+| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](../Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
 
 ---
 
@@ -183,7 +183,7 @@ The `Libraries/MiscDrivers` folder of the MSDK contains drivers for miscellaneou
 
 The **Secure Digital High Capacity _(SDHC)_** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a [FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html) implementation for managing files on SD cards.
 
-See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries) for instructions on enabling the SDHC library.
+See [Build Variables for Toggling Libraries](build-system.md#build-variables-for-toggling-libraries) for instructions on enabling the SDHC library.
 
 ### SDHC Supported Parts
 
@@ -195,7 +195,7 @@ See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libra
 
 ### SDHC Build Variables
 
-Once enabled, the following [build configuration variables](#build-configuration-variables) become available.
+Once enabled, the following [build configuration variables](build-system.md#build-configuration-variables) become available.
 
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
@@ -228,13 +228,13 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 ## CLI
 
-Developing a UART Command-Line Interface (CLI) is a common task while developing embedded firmware.  The MSDK contains a pre-made command processing library in the `Libraries/CLI` that can be used to simplify and speed up development.
+Developing a UART Command-Line Interface (CLI) is a common task while developing embedded firmware. The MSDK contains a pre-made command processing library in the `Libraries/CLI` that can be used to simplify and speed up development.
 
-See the [`Libraries/CLI/README.md`](Libraries/CLI/README.md) document for more details.
+See the [`Libraries/CLI/README.md`](../Libraries/CLI/README.md) document for more details.
 
 ## CoreMark
 
-[EEMBC’s CoreMark®](https://www.eembc.org/coremark/) is a benchmark that measures the performance of microcontrollers (MCUs) and central processing units (CPUs) used in embedded systems.  CoreMark is a simple, yet sophisticated benchmark that is designed specifically to test the functionality of a processor core. Running CoreMark produces a single-number score allowing users to make quick comparisons between processors.
+[EEMBC’s CoreMark®](https://www.eembc.org/coremark/) is a benchmark that measures the performance of microcontrollers (MCUs) and central processing units (CPUs) used in embedded systems. CoreMark is a simple, yet sophisticated benchmark that is designed specifically to test the functionality of a processor core. Running CoreMark produces a single-number score allowing users to make quick comparisons between processors.
 
 ### CoreMark Supported Parts
 

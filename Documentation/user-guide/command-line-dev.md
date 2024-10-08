@@ -2,11 +2,11 @@
 
 This section offers more detailed info on command-line development.
 
-For setup/quick-start, see ["Getting Started with Command-Line Development"](#getting-started-with-command-line-development).
+For setup/quick-start, see ["Getting Started with Command-Line Development"](getting-started.md#getting-started-with-command-line-development).
 
 ## How to Set the BSP (Command-Line)
 
-- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables)_ by editing the **project.mk** that can be found inside each project.
+- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](build-system.md#build-configuration-variables)_ by editing the **project.mk** that can be found inside each project.
 
         :::makefile
         # This file can be used to set build configuration
@@ -45,7 +45,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 1. `cd` into the project folder.
 2. Run `make clean`
    - **Project clean**: `make clean` deletes the project `build` folder and all of its contents.
-   - **Library clean**: `make distclean` can be used to clean out _all_ build products, including the project `build` folder and all [peripheral driver](#peripheral-driver-api) libraries.
+   - **Library clean**: `make distclean` can be used to clean out _all_ build products, including the project `build` folder and all [peripheral driver](libraries.md#peripheral-driver-api) libraries.
 
 ## Flashing on the Command-Line
 
@@ -162,7 +162,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 3. `cd` into the location of the copied example project.
 
-4. Run the following command to launch a **GDB *client***.
+4. Run the following command to launch a **GDB _client_**.
 
         arm-none-eabi-gdb --se=build/<filename>.elf
 

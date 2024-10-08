@@ -65,7 +65,6 @@ The MSDK installer can be run through a [**GUI Installation**](#gui-installation
     ???+ warning "⚠️ **Warning**"
         On MacOS, some [_additional steps_](#completing-the-installation-on-macos) are required.
 
-
 ### Command-Line Installation
 
 The MSDK installer features a command-line interface that can be used as an alternative to its GUI.  This is useful for installations on "headless" systems and scripting.
@@ -215,4 +214,4 @@ Older versions of the MSDK are available as an **_offline installer_** for each 
 
 ### Development Resources
 
-Users can obtain development copies of the MSDK resources from [Github](https://github.com/analogdevicesinc/msdk).  Setup instructions can be found in the repository's [README](https://github.com/analogdevicesinc/msdk/blob/main/README.md).
+Users can obtain development copies of the MSDK resources from [GitHub](https://github.com/analogdevicesinc/msdk).  Setup instructions can be found in the repository's [README](https://github.com/analogdevicesinc/msdk/blob/main/README.md).

@@ -63,7 +63,7 @@ For example, to enable hardware floating-point acceleration for a project, the *
     # "Makefile" that is located next to this one.
 
     # For instructions on how to use this system, see
-    # https://analogdevicesinc.github.io/msdk/USERGUIDE/
+    # https://analogdevicesinc.github.io/msdk/Documentation/user-guide/index.md
 
     # **********************************************************
 
@@ -87,7 +87,7 @@ However, there is a _precedence hierarchy_ that should be taken into considerati
 
 The precedence hierarchy for the value of a configuration variable is:
 
-- **IDE/command-line > project.mk > environment variable > default value**
+* **IDE/command-line > project.mk > environment variable > default value**
 
 If a value is set in an IDE _and_ project.mk, the IDE's value will take precedence. However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
 
@@ -101,8 +101,8 @@ The following sections present the available [Build Configuration Variables](#bu
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
 | `TARGET`               | Set the _Target Microcontroller_                           | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk** |
-| `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
-| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`.<br>See [BSP Search Directory](#bsp-search-directory) for more details. |
+| `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](board-support-pkgs.md) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
+| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`. See [BSP Search Directory](board-support-pkgs.md/bsp-search-directory) for more details. |
 
 ### Project Build Variables
 
@@ -114,8 +114,8 @@ The following variables deal with fundamental project tasks such as adding sourc
 | `IPATH`                | Where to search for header (.h) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files. _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`. Individual header files are _not_ ever manually added to the build. Instead, you only need to specify the _location_ of your header files. |
 | `SRCS`                 | List of source (.c/.cpp) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
 | `AUTOSEARCH`           | Automatically search for source (.c/.cpp) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
-| `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
-| `PROJ_LIBS`            | Add a static library file (.a) to the project              | **Use the `+=` operator with this variable**.  Additional static libraries to link against can be added with this option.<br>It should be noted that static library files are named with the `lib<libraryname>.a` convention.  Only add `<libraryname>` to this variable.<br>Ex: Give a file called `libEXAMPLE.a`, write `PROJ_LIBS += EXAMPLE`<br>Additionally, ensure that the location of the library is added to `PROJ_LDFLAGS`.<br>Ex: `PROJ_LDFLAGS += -Lsome/library/search/directory` |
+| `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](visual-studio-code.md/project_name) advanced config option instead of project.mk.** |
+| `PROJ_LIBS`            | Add a static library file (.a) to the project              | **Use the `+=` operator with this variable**.  Additional static libraries to link against can be added with this option. It should be noted that static library files are named with the `lib<libraryname>.a` convention.  Only add `<libraryname>` to this variable. Example: Give a file called `libEXAMPLE.a`, write `PROJ_LIBS += EXAMPLE` Additionally, ensure that the location of the library is added to `PROJ_LDFLAGS`. Example: `PROJ_LDFLAGS += -Lsome/library/search/directory` |
 
 ### Build Variables for the Compiler
 
@@ -127,7 +127,7 @@ The following variables can be used to interface with the compiler to perform co
 | `PROJ_CFLAGS`          | Add compiler flags to the build                            | **Use the `+=` operator with this variable**.  Compiler flags can be added with this option, including compiler definitions. For each value, the same syntax should be used as if the compiler flag was passed in over the command line. These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
 | `PROJ_AFLAGS`          | Add assemblers flag to the build                           | **Use the `+=` operator with this variable**.  Assembler flags can be added with this option. |
 | `PROJ_OBJS`            | Add object files to the build                              | **Use the `+=` operator with this variable**.  If needed, object files (.o) can be added to the build with this option. |
-| `DEBUG`                | Toggle extra debug information  | Set this to `1` to enable extra debug information at compile time.  This generally improves the reliability of debugging at some increase in code size.  Set to `0` to disable.
+| `DEBUG`                | Toggle extra debug information  | Set this to `1` to enable extra debug information at compile time.  This generally improves the reliability of debugging at some increase in code size.  Set to `0` to disable. |
 
 ### Build Variables for the Linker
 
@@ -143,10 +143,10 @@ The following build variables are used to control options specific to the Arm Co
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, and `softfp` (default). To enable full hardware acceleration instructions, use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`. If there is any conflict, you'll get a linker error. For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
-| `DEFAULT_OPTIMIZE_FLAGS` | Override the default extra optimization flags | Extra compiler optimization flags are added to the build.  They are defined in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
+| `DEFAULT_OPTIMIZE_FLAGS` | Override the default extra optimization flags | Extra compiler optimization flags are added to the build. They are defined in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
 | `DEFAULT_WARNING_FLAGS` | Override the default warning flags | Default flags controlling warning output are added in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
 | `MCPU`           | Set the processor type                  | Set the target ARM processor.  Directly maps to `-mcpu` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).  This flag is handled by the MSDK and not typically changed manually. |
-| `MFPU`           | Set the FPU architecture                  | Set the floating point unit (FPU) architecture.  Directly maps to `-mfpu` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).  This flag is handled by the MSDK and not typically changed manually. |
+| `MFPU`           | Set the FPU architecture                  | Set the floating point unit (FPU) architecture.  Directly maps to `-mfpu` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). This flag is handled by the MSDK and not typically changed manually. |
 
 ### Build Variables for RISC-V Cores
 
@@ -155,13 +155,13 @@ The following build variables are used for RISC-V development.  They are only av
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `RISCV_CORE`           | Build a project for the RISC-V core                        | Set to `1` to convert an entire project to use the RISC-V toolchain.  Only available on microcontrollers with a RISC-V core. |
-| `RISCV_LOAD`           | Compile and load project for the RISC-V core               | **Only available on the MAX32655, MAX32680, and MAX32690**.  Set to `1` compile the project specified by `RISCV_APP` for the RISC-V core and link it into the same binary as the current project.  Useful for dual-core projects.
+| `RISCV_LOAD`           | Compile and load project for the RISC-V core               | **Only available on the MAX32655, MAX32680, and MAX32690**.  Set to `1` compile the project specified by `RISCV_APP` for the RISC-V core and link it into the same binary as the current project.  Useful for dual-core projects. |
 | `RISCV_APP`            | Project folder to compile for the `RISCV_LOAD` option      | **Only available on the MAX32655, MAX32680, and MAX32690**.  This option specifies the project to build for the RISC-V core when `RISCV_LOAD` is enabled.  Must be a path relative to the project that enables `RISCV_LOAD`, or an absolute path. |
 | `RISCV_PREFIX`         | Change the toolchain prefix                                | This option can be used to override the GCC toolchain prefix if needed.  For example, to use the legacy RISC-V toolchain `RISCV_PREFIX = riscv-none-embed` will attempt to compile with `riscv-none-embed-gcc`. |
 
 ### Build Variables for Toggling Libraries
 
-The following variables can be used to enable the [available libraries](#libraries) in the MSDK.  Each library may also offer its own build configuration variables when enabled, which are documented in the [libraries](#libraries) section.
+The following variables can be used to enable the [available libraries](libraries.md) in the MSDK.  Each library may also offer its own build configuration variables when enabled, which are documented in the [libraries](libraries.md) section.
 
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
@@ -186,7 +186,7 @@ The following variables are specific to the PeriphDrivers library.
 
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-| `MXC_SPI_VERSION`            | Set the SPI drivers to use (default is `v1`) | The PeriphDrivers offer two versions of the SPI API in order to maintain backwards compatibility.  Acceptable values are `v1` (legacy) or `v2`.  See [The SPI V2 Developer Note](#spi-v2-library) for more details. |
+| `MXC_SPI_VERSION`            | Set the SPI drivers to use (default is `v1`) | The PeriphDrivers offer two versions of the SPI API in order to maintain backwards compatibility.  Acceptable values are `v1` (legacy) or `v2`.  See [The SPI V2 Developer Note](developer-notes.md#spi-v2-library) for more details. |
 
 ### Build Variables for Secure Boot Tools (SBTs)
 
@@ -206,5 +206,5 @@ The following build variables can be used to control how to build output is form
 
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-| `VERBOSE`              | Toggle verbose builds             | Set to `1` to enable a verbose build that prints exactly what the compiler is doing for each step.  This is useful for troubleshooting.
+| `VERBOSE`              | Toggle verbose builds             | Set to `1` to enable a verbose build that prints exactly what the compiler is doing for each step.  This is useful for troubleshooting. |
 | `FORCE_COLOR`          | Force colorized compiler output   | By default, GCC will attempt to autodetect whether colorized output is supported or not.  Set to `1` to force color (equivalent to `PROJ_CFLAGS += -fdiagnostics-color=always`).  This is useful for forcing color in CI systems. |

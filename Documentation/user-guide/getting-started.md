@@ -2,49 +2,49 @@
 
 The MSDK is designed for both evaluation and end-application development. The typical **evaluation** cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an _evaluation platform_. The typical **development** cycle typically involves building a prototype application on an _evaluation platform_ first, then porting the application to a custom board. This section describes how to get started with the MSDK focusing on the _evaluation_ cycle.
 
-**First**, review the [**Key Concepts**](#key-concepts) below.  Then, proceed to the section for your preferred IDE. Each sub-section is written as a self-contained quick-start with links to additional documentation on important topics.
+**First**, review the [**Key Concepts**](#key-concepts) below.  Then proceed to the section for your preferred IDE. Each subsection is a self-contained quick-start that includes links to additional documentation on important topics.
 
-- [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code)
-- [Getting Started with Eclipse](#getting-started-with-eclipse)
-- [Getting Started with Command-Line Development](#getting-started-with-command-line-development)
+* [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code)
+* [Getting Started with Eclipse](#getting-started-with-eclipse)
+* [Getting Started with Command-Line Development](#getting-started-with-command-line-development)
 
 ## Key Concepts
 
-The MSDK supports multiple development environments with different features that may tailor to the user's preferences. There are a few key concepts to remember that are universal to MSDK development.
+The MSDK supports multiple development environments with different features that can be tailored to the user's preferences. A few concepts are key to remember that are universal to MSDK development.
 
-- **Target Microcontroller**:  The _target microcontroller_ refers to the base part number of the microcontroller used for development. The MSDK contains register-level support and startup files for each of its [supported parts](#supported-parts), and it's important to note that support files for a target microcontroller and its _Board Support Packages_ are distinct from each other.
+* **Target Microcontroller**:  The _target microcontroller_ refers to the base part number of the microcontroller used for development. The MSDK contains register-level support and startup files for each of its [supported parts](index.md#supported-parts), and it's important to note that support files for a target microcontroller and its _Board Support Packages_ are distinct from each other.
 
     For example, if the [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) _or_ [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html) is being used, the _Target Microcontroller_ is the MAX78000.
 
 ---
 
-- **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers with _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available. These can be found in the `Libraries/Boards` folder of the MSDK installation.
+* **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers with _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available. These can be found in the `Libraries/Boards` folder of the MSDK installation.
 
     By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest evaluation platform for that device with most (or all) pins broken out. It's important to note that the active BSP may need to be reconfigured for a project, which is done slightly differently for each development environment.
 
 ---
 
-- **System Environment**:  Your system's _environment_ is a broad term that encapsulates the programs and variables available to your system's shell on the command line. The user is expected to have some basic familiarity with this concept.
+* **System Environment**:  Your system's _environment_ is a broad term that encapsulates the programs and variables available to your system's shell on the command line. The user is expected to have some basic familiarity with this concept.
 
 ---
 
-- **System Path**:  Your system's _Path_ is a unique environment variable that tells it where to search for program binaries. The user is expected to be familiar with this concept and how to modify the system Path if necessary.
+* **System Path**:  Your system's _Path_ is a unique environment variable that tells it where to search for program binaries. The user is expected to be familiar with this concept and how to modify the system Path if necessary.
 
 ---
 
-- **Integrated Development Environment (IDE)**:  An IDE offers a higher-level user interface (typically with a GUI) that manages the tools for **editing** source code, **building** source code, **flashing** program binaries, and **debugging**. The abbreviation is frequently used in this document, and the MSDK supports _multiple_ IDEs that can be used depending on preference. (See ["Supported Development Environments"](#supported-development-environments))
+* **Integrated Development Environment (IDE)**:  An IDE offers a higher-level user interface (typically with a GUI) that manages the tools for **editing** source code, **building** source code, **flashing** program binaries, and **debugging**. The abbreviation is frequently used in this document, and the MSDK supports _multiple_ IDEs that can be used depending on preference. (See ["Supported Development Environments"](index.md#supported-development-environments))
 
 ---
 
-- **Build Configuration vs. Project Configuration**: An MSDK project is comprised of two complementary systems:  The _Build System_ and the _Integrated Development Environment (IDE)_. These systems each offer their own configuration interfaces, and it's important to note what each is used for.
+* **Build Configuration vs. Project Configuration**: An MSDK project is comprised of two complementary systems: The _Build System_ and the _Integrated Development Environment (IDE)_. These systems each offer their own configuration interfaces, and it's important to note what each is used for.
 
     The **Build System** manages source code compilation into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**.
 
     The **IDE** offers a higher-level user interface (typically with a GUI) for managing a project and sits _on top_ of the build system's _CLI_. Each IDE offers its own settings for managing fundamental aspects of the build, such as:
 
-    - Setting the _Target Microcontroller_
-    - Setting the _Board Support Package_
-    - Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain
+    * Setting the _Target Microcontroller_
+    * Setting the _Board Support Package_
+    * Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain
 
 ## Getting Started with Visual Studio Code
 
@@ -52,11 +52,11 @@ The MSDK includes Visual Studio Code ("VS Code") support through the [VSCode-Max
 
 This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.analog.com/en/education/education-library/videos/6313212752112.html).
 
-For complete documentation, see the [Visual Studio Code](#visual-studio-code) section of this User Guide.
+For complete documentation, see the [Visual Studio Code](visual-studio-code.md) section of this User Guide.
 
 ### Setup (VS Code)
 
-The setup below only needs to be done once per MSDK [installation](#installation).
+The setup below only needs to be done once per MSDK [installation](installation.md).
 
 1. Download and install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
 
@@ -88,7 +88,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
         For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows and `"MAXIM_PATH":"/home/username/MaximSDK"` on Ubuntu/MacOS.
 
     ???+ note "ℹ️ **Note: Automatic Updates**"
-        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/analogdevicesinc/VSCode-Maxim/releases) page.
+        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn. Things have stabilized more as of version 1.70+, but updates remain frequent. For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/analogdevicesinc/VSCode-Maxim/releases) page.
 
 8. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
@@ -118,7 +118,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
 6. Set the **Board Support Package** to match your evaluation platform. In VS Code, this is done by editing the `.vscode/settings.json` file and setting the `"board"`  project configuration option.
 
     ???+ note "ℹ️ **Note**"
-        See [Board Support Packages](#board-support-packages) for more details and a table of values.
+        See [Board Support Packages](board-support-pkgs.md) for more details and a table of values.
 
     ![Figure 17](res/Fig17.jpg)
 
@@ -134,13 +134,13 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
     ![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
-10. Run the **"build"** task to compile the project for the configured _Target Microcontroller_ and _BSP_.  Notice that the `TARGET` and `BOARD` Build Configuration Variables are set on the command line. The program binary is successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
+10. Run the **"build"** task to compile the project for the configured _Target Microcontroller_ and _BSP_. Notice that the `TARGET` and `BOARD` Build Configuration Variables are set on the command line. The program binary is successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
 
     ![Figure 18](res/Fig18.jpg)
 
 11. Connect a debug adapter between the host PC and the evaluation platform. Detailed instructions on this hardware setup can be found in the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
-12. Run the **`flash`**  build task.  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.
+12. Run the **`flash`**  build task. Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.
 
     ![Figure 19](res/Fig19.jpg)
 
@@ -161,7 +161,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
 16. Exercise the debugger and press stop to disconnect when finished.
 
     ???+ note "ℹ️ **Note**"
-        See [Visual Studio Code](#visual-studio-code) for additional more detailed documentation.
+        See [Visual Studio Code](visual-studio-code.md) for additional more detailed documentation.
 
 ---
 
@@ -169,9 +169,9 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 ### Setup (Eclipse)
 
-The only setup required to use Eclipse is to ensure that the "Eclipse" component has been selected during the [MSDK installation](#installation). If the MSDK is already installed, Eclipse can be retrieved using the [Maintenance Tool](#maintenance).
+The only setup required to use Eclipse is to ensure that the "Eclipse" component has been selected during the [MSDK installation](installation.md). If the MSDK is already installed, Eclipse can be retrieved using the [Maintenance Tool](installation.md#maintenance).
 
-This section is an Eclipse "quick-start" that walks through creating, building, and running a project. For complete documentation, see the [Eclipse](#eclipse) section of this User Guide.
+This section is an Eclipse "quick-start" that walks through creating, building, and running a project. For complete documentation, see the [Eclipse](eclipse.md) section of this User Guide.
 
 ### Building and Running a Project (Eclipse)
 
@@ -179,7 +179,7 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
     ![Figure 22](res/Fig22.jpg)
 
-2. Ensure Eclipse is set to the **C/C++ perspective** in the top right corner.  Otherwise, the new project wizard will not show up.
+2. Ensure Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
 
 3. Navigate to **File -> New -> Maxim Microcontrollers**.
 
@@ -191,10 +191,10 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
 5. Follow the new project wizard.
 
-    - Chip type selects the _Target Microcontroller_
-    - Board type selects the [_Board Support Package (BSP)_](#board-support-packages)
-    - Example type selects the example project to be copied as the template for the new project.
-    - Adapter type selects the debug adapter to use.
+    * Chip type selects the _Target Microcontroller_
+    * Board type selects the [_Board Support Package (BSP)_](board-support-pkgs.md)
+    * Example type selects the example project to be copied as the template for the new project.
+    * Adapter type selects the debug adapter to use.
 
     ![Figure 33](res/Fig33.jpg)
 
@@ -204,7 +204,7 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
     ![Figure 27](res/Fig27.jpg)
 
-8.  Select the correct project in the **Launch Configuration** dropdown and set it to **Debug** mode.
+8. Select the correct project in the **Launch Configuration** dropdown and set it to **Debug** mode.
 
 9. Use the **Debug** button (top left) to flash the program binary and connect the debugger.
 
@@ -221,7 +221,7 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 12. **Terminate** the debugger (**`CTRL+F2`**) when finished.
 
     ???+ note "ℹ️ **Note**"
-        See [Eclipse](#eclipse) for additional more detailed documentation.
+        See [Eclipse](eclipse.md) for additional more detailed documentation.
 
 ---
 
@@ -229,7 +229,7 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
 This section demonstrates how to build MSDK example projects on the command line. It also shows how to flash and debug over the command line. The [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html) will be used as an example, but the same concepts apply to all parts.
 
-For more detailed documentation, see the [Command-Line Development](#command-line-development) section of this User Guide.
+For more detailed documentation, see the [Command-Line Development](command-line-dev.md) section of this User Guide.
 
 ### Setup (Command-Line)
 
@@ -243,7 +243,7 @@ On Windows, use the MinGW shortcut to launch an MSYS2/MinGW terminal. This short
 
 ##### Sourcing `setenv`
 
-A `setenv.sh` script is available in the root directory of an MSDK installation.  This file can be sourced to facilitate the setup of an environment for MSDK development.
+A `setenv.sh` script is available in the root directory of an MSDK installation. This file can be sourced to facilitate the setup of an environment for MSDK development.
 
 ```bash
 source ~/MaximSDK/setenv.sh
@@ -252,7 +252,7 @@ source ~/MaximSDK/setenv.sh
 This command can also be added to shell startup scripts (`~/.bashrc`, `~/.zshrc`, etc.) to automate the environment setup.
 
 ???+ note "ℹ️ **Note: Automatic Updates**"
-    `setenv.sh` will automatically check for available updates to the MSDK.  This can be permanently disabled by following its prompt on startup, or by deleting/moving the `updates.sh` script in the root directory of the MSDK installation.
+    `setenv.sh` will automatically check for available updates to the MSDK. This can be permanently disabled by following its prompt on startup, or by deleting/moving the `updates.sh` script in the root directory of the MSDK installation.
 
     ![Figure 51](res/Fig51.jpg)
 
@@ -275,7 +275,7 @@ This command can also be added to shell startup scripts (`~/.bashrc`, `~/.zshrc`
         export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
         export PATH=$OPENOCD_ROOT:$PATH
 
-2. Change `export MAXIM_PATH=#changeme!` to the installation location of the MSDK. This will make the toolchain accessible from the command line by adding it to your *system's path*.
+2. Change `export MAXIM_PATH=#changeme!` to the installation location of the MSDK. This will make the toolchain accessible from the command line by adding it to your _system's path_.
 
         # Set MAXIM_PATH environment variable
         export MAXIM_PATH=$HOME/MaximSDK
@@ -284,10 +284,10 @@ This command can also be added to shell startup scripts (`~/.bashrc`, `~/.zshrc`
 
 Run the following commands to verify that the toolchain is accessible. They should display version numbers successfully.
 
-- `arm-none-eabi-gcc -v`
-- `arm-none-eabi-gdb -v`
-- `make -v`
-- `openocd -v`
+* `arm-none-eabi-gcc -v`
+* `arm-none-eabi-gdb -v`
+* `make -v`
+* `openocd -v`
 
 Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctly or the system's Path has not been configured correctly.
 
@@ -312,11 +312,11 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
             :::shell
             make -r -j --output-sync=target --no-print-directory
 
-        - `-r` is an option that ignores some of Make's implicit rules to improve build speed.
-        - `-j` enables parallel execution of the build in the maximum number of threads.
+        * `-r` is an option that ignores some of Make's implicit rules to improve build speed.
+        * `-j` enables parallel execution of the build in the maximum number of threads.
 
             ???+ warning "**⚠️ Parallel Builds**"
-                Parallel builds can mangle the console output.  To deal with this, the `--output-sync=target` option can be used.  However, _this is only available in Make version 4 or higher_.  When this option is used, `--no-print-directory` is also used to declutter the build output.
+                Parallel builds can mangle the console output. To deal with this, the `--output-sync=target` option can be used. However, _this is only available in Make version 4 or higher_. When this option is used, `--no-print-directory` is also used to declutter the build output.
 
     Expected output:
 
@@ -349,7 +349,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         make flash.openocd
 
     ???+ note "ℹ️ **Note: Flashing with Make**"
-        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
+        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/analogdevicesinc/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](command-line-dev.md#flashing-on-the-command-line) for more details on launching debug server/clients manually.
 
     Expected output:
 
@@ -384,7 +384,7 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         Info : SWD DPIDR 0x2ba01477
         shutdown command invoked
 
-7. The program has been flashed and the target micro has been reset.  The flashed program should now be running.  For the `Hello_World` example, an LED on the board should be blinking.
+7. The program has been flashed and the target micro has been reset. The flashed program should now be running. For the `Hello_World` example, an LED on the board should be blinking.
 
     ???+ note "ℹ️ **Note**"
-        See [Command-Line Development](#command-line-development) for additional more detailed documentation.
+        See [Command-Line Development](command-line-dev.md) for additional detailed documentation.
