@@ -18,7 +18,6 @@
  *
  ******************************************************************************/
 
-#include <math.h>
 #include "uart.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
@@ -206,7 +205,7 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
     case MXC_UART_AOD_CLK:
         aon_clk_div = (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV) >>
                       MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS;
-        clock_freq = PeripheralClock / (4 * (pow(2, aon_clk_div)));
+        clock_freq = PeripheralClock / (4 * (1 << aon_clk_div));
         break;
     default:
         return E_BAD_PARAM;
