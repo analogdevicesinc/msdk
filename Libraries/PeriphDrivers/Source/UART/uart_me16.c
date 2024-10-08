@@ -21,7 +21,6 @@
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
 #endif
 
-#include <math.h>
 #include "uart.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
