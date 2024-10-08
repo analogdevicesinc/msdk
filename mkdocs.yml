@@ -6,7 +6,7 @@ docs_dir: 'Documentation'
 site_dir: 'docs'
 nav:
   - Home: 'index.md'
-  - MSDK User Guide: 'USERGUIDE.md'
+  - MSDK User Guide: 'user-guide/index.md'
   - Cordio BLE User Guide: 'Libraries/Cordio/docs/CORDIO_USERGUIDE.md'
   - Contributing: 'CONTRIBUTING.md'
 theme:

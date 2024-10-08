@@ -136,54 +136,45 @@ def generate_examples_md():
 
 
 def copy_sources():
-    print("Copying root markdown files")
-    for f in repo.glob("*.md"):
-        print(f"-> {f.name}")
-        if f.name != "README.md":
-            shutil.copy(
-                f, here
-            )  # Workaround for https://github.com/mkdocs/mkdocs/issues/3313
 
-    print("Copying CLI markdown files")
-    cli_path = repo / "Libraries/CLI"
-    cli_path.mkdir(exist_ok=True, parents=True)
-    shutil.copy(
-        cli_path / "README.md",
-        here / "Libraries/CLI/README.md",
-    )
+    files_to_copy = [
+        (repo / "LICENSE.md", here),
+        (repo / "CONTRIBUTING.md", here),
+        (repo / "Libraries/CLI/README.md", here / "Libraries/CLI"),
+        (repo / "Tools/Bluetooth/*.md", here / "Tools/Bluetooth"),
+        (repo / "Libraries/Cordio/docs", here / "Libraries/Cordio/docs"),
+        (
+            repo / "Libraries/Cordio/platform/Documentation",
+            here / "Libraries/Cordio/platform/Documentation",
+        ),
+    ]
 
-    print("Copying bluetooth markdown files")
-    src = repo / "Tools/Bluetooth"
-    dst = here / "Tools/Bluetooth"
-    for f in src.glob("*.md"):
-        print(f"-> {f.name}")
+    print("Copying source documentation")
+    for src, dst in files_to_copy:
         if not dst.exists():
-            dst.mkdir(parents=True, exist_ok=True)
-        shutil.copy(f, dst)
-
-    cordio_docs_dir = repo / "Libraries/Cordio/docs"
-    platform_docs_dir = repo / "Libraries/Cordio/platform/Documentation"
-
-    print("Copying Cordio markdown files")
-    shutil.copytree(cordio_docs_dir, here / "Libraries/Cordio/docs", dirs_exist_ok=True)
-
-    print("Copying platform markdown files")
-    shutil.copytree(
-        platform_docs_dir,
-        here / "Libraries/Cordio/platform/Documentation",
-        dirs_exist_ok=True,
-    )
+            dst.mkdir(parents=True)
+        if "*" in str(src):
+            for f in src.parent.glob(src.name):
+                print(f"-> {f}")
+                shutil.copy(f, dst)
+        elif src.is_file():
+            print(f"-> {src}")
+            shutil.copy(src, dst)
+        elif src.is_dir():
+            print(f"-> {src}")
+            shutil.copytree(src, dst, dirs_exist_ok=True)
 
 
 def build_doxygen_docs():
     # Run Doxygen builds
+    print("Building Doxygen docs...")
     periph_docs_dir = repo / "Libraries/PeriphDrivers/Documentation"
     for f in periph_docs_dir.glob("*_Doxyfile"):
         micro = f.name.split("_")[0].upper()  # max32xxx_Doxyfile -> MAX32XXX
         if not (periph_docs_dir / micro).exists():
             run(f"doxygen {f.name}", cwd=f.parent, shell=True, check=False)
         else:
-            print(f"{micro} Doxygen exists, skipping")
+            print(f"-> {micro} Doxygen exists, skipping")
         dest = here / "Libraries/PeriphDrivers/Documentation" / micro
         # ^ Recreate directory structure so built links work
         shutil.copytree(periph_docs_dir / micro, dest, dirs_exist_ok=True)
