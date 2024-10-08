@@ -10,6 +10,7 @@ Documentation/Libraries
 Documentation/res
 Documentation/LICENSE.md
 Documentation/README.md
+Documentation/CONTRIBUTING.md
 Documentation/Tools/Bluetooth/README.md
 Documentation/user-guide/examples.md
 Examples/MAX78000/PowerTest
