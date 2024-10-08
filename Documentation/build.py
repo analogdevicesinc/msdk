@@ -3,6 +3,7 @@
 
 import re
 import shutil
+import textwrap
 from dataclasses import dataclass
 from operator import attrgetter
 from pathlib import Path
@@ -56,8 +57,9 @@ def generate_examples_md():
     print("Searching for shared examples...")
     for directory in examples_dir.glob("*"):
         if directory.name in target_excludelist:
-            print(f"Skipping {directory.name}...  (in exclude-list)")
+            print(f"Skipping {directory.name}... (in exclude-list)")
             continue
+        print(f"-> {directory.name}")
         target_micro = directory.name
         all_target_micros.add(target_micro)
         for main_file in directory.rglob("**/main.c"):
@@ -86,16 +88,17 @@ def generate_examples_md():
         if len(e.supported_parts) > 1:
             common_entries += f"| **{e.name}** | {e.description} | {'<br/>'.join(e.supported_parts)} |\n"
 
-    markdown_content = f"""
-    ### Common Examples
+    markdown_content = textwrap.dedent(
+        """
+        ### Common Examples
 
-    The following common examples are supported across multiple microcontrollers.
+        The following common examples are supported across multiple microcontrollers.
 
-    | Example | Description | Supported Parts |
-    | ------- | ----------- | --------------- |
-    {common_entries}
-
-    """
+        | Example | Description | Supported Parts |
+        | ------- | ----------- | --------------- |
+        """
+    )
+    markdown_content += common_entries
 
     # Generate markdown content for part-specific examples
     all_target_micros = sorted(all_target_micros)
@@ -108,15 +111,17 @@ def generate_examples_md():
         ]
 
     for target, examples in specific_examples.items():
-        markdown_content += f"""
-        ### {target.upper()} Examples
+        markdown_content += textwrap.dedent(
+            f"""
+            ### {target.upper()} Examples
 
-        In addition to the [Common Examples](#common-examples), the following examples 
-        are available specifically for the {target.upper()}.
+            In addition to the [Common Examples](#common-examples), the following examples 
+            are available specifically for the {target.upper()}.
 
-        | Example | Description | MSDK Location |
-        | ------- | ----------- | ------------- |
-        """
+            | Example | Description | MSDK Location |
+            | ------- | ----------- | ------------- |
+            """
+        )
         for e in examples:
             relative_path = e.folder.relative_to(repo).as_posix()
             github = (
