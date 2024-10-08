@@ -7,7 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -191,7 +193,6 @@ extern "C" {
 #define MXC_R_AFE_ADC_ONE_ADC_TRIM1        ((uint32_t)0x00F80002UL) /**< Offset from AFE_ADC_ONE Base Address: <tt> 0xF80002</tt> */
 #define MXC_R_AFE_ADC_ONE_ANA_TRIM         ((uint32_t)0x00F90002UL) /**< Offset from AFE_ADC_ONE Base Address: <tt> 0xF90002</tt> */
 #define MXC_R_AFE_ADC_ONE_SYS_CTRL         ((uint32_t)0x00FA0001UL) /**< Offset from AFE_ADC_ONE Base Address: <tt> 0xFA0001</tt> */
-#define MXC_R_AFE_ADC_ONE_TS_CTRL          ((uint32_t)0x00FC0001UL) /**< Offset from AFE_ADC_ONE Base Address: <tt> 0xFC0001</tt> */
 /**@} end of group afe_adc_one_registers */
 
 /**
@@ -2024,23 +2025,6 @@ extern "C" {
 #define MXC_F_AFE_ADC_ONE_SYS_CTRL_CRC_INV             ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_SYS_CTRL_CRC_INV_POS)) /**< SYS_CTRL_CRC_INV Mask */
 
 /**@} end of group AFE_ADC_ONE_SYS_CTRL_Register */
-
-/**
- * @ingroup  afe_adc_one_registers
- * @defgroup AFE_ADC_ONE_TS_CTRL AFE_ADC_ONE_TS_CTRL
- * @brief    Temperature Sensor Control
- * @{
- */
-#define MXC_F_AFE_ADC_ONE_TS_CTRL_TS_EN_POS            0 /**< TS_CTRL_TS_EN Position */
-#define MXC_F_AFE_ADC_ONE_TS_CTRL_TS_EN                ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_TS_CTRL_TS_EN_POS)) /**< TS_CTRL_TS_EN Mask */
-
-#define MXC_F_AFE_ADC_ONE_TS_CTRL_TS_CONV_EN_POS       1 /**< TS_CTRL_TS_CONV_EN Position */
-#define MXC_F_AFE_ADC_ONE_TS_CTRL_TS_CONV_EN           ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_TS_CTRL_TS_CONV_EN_POS)) /**< TS_CTRL_TS_CONV_EN Mask */
-
-#define MXC_F_AFE_ADC_ONE_TS_CTRL_TS_INTG_RDY_POS      2 /**< TS_CTRL_TS_INTG_RDY Position */
-#define MXC_F_AFE_ADC_ONE_TS_CTRL_TS_INTG_RDY          ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_TS_CTRL_TS_INTG_RDY_POS)) /**< TS_CTRL_TS_INTG_RDY Mask */
-
-/**@} end of group AFE_ADC_ONE_TS_CTRL_Register */
 
 #ifdef __cplusplus
 }

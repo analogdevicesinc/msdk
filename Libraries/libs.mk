@@ -30,9 +30,21 @@ LIBS_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # ************************
 LIB_BOARD ?= 1
 ifeq ($(LIB_BOARD), 1)
+
+ifeq "$(BOARD)" ""
+$(error ERROR: BOARD not set!)
+endif
+
 BSP_SEARCH_DIR ?= $(LIBS_DIR)/Boards/$(TARGET_UC)
 BOARD_DIR := $(BSP_SEARCH_DIR)/$(BOARD)
 PROJ_CFLAGS += -DLIB_BOARD
+
+# Export BOARD and BSP_SEARCH_DIR so that all recursive Make sub-calls
+# that include libs.mk will use the same BSP.  Exports in general should
+# be used sparingly since they will override ALL recursive sub-calls, but
+# in this case we want to avoid building with mismatched BSPs.
+export BOARD
+export BSP_SEARCH_DIR
 include $(BOARD_DIR)/board.mk
 endif
 # ************************

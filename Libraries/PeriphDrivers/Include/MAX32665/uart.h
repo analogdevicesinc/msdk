@@ -157,7 +157,7 @@ struct _mxc_uart_req_t {
  * @param   map            	MAP_A or MAP_B uart pins select, Has no effect incase of 
  *                          MSDK_NO_GPIO_CLK_INIT has been defined.
  *
- * @return  If successful, the actual clock frequency is returned. Otherwise, see
+ * @return  E_NO_ERROR if successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, sys_map_t map);
