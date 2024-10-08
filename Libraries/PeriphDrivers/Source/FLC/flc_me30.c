@@ -183,9 +183,9 @@ int MXC_FLC_MassErase(void)
 }
 
 //******************************************************************************
-int MXC_FLC_UnlockInfoBlock(uint32_t address)
+__weak int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
-    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t *)MXC_FLC, address);
+    return E_NOT_SUPPORTED;
 }
 
 //******************************************************************************
