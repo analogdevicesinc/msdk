@@ -212,6 +212,14 @@ static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
     }
 
     // Set RX threshold to 1 byte
+    // Note, to meet HART TPDLL needs, each received byte must be handled singularly, to verify
+    //  it for (vertical: parity bit) parity, framing errors, and gap error.
+    //  This HART UART driver currently checks parity, and framing errors, but gap must be
+    //  handled by TPDLL or application code.
+    //
+    // To increase threshold would require restructuring of the receiver to monitor gaps
+    //  and to parse when and if comm errors occur, as there could be multiple bytes in
+    //  the FIFO, and the errors would only apply to the most recent.
     retval = MXC_UART_SetRXThreshold(uart, 1);
     if (retval != E_NO_ERROR) {
         return retval;
@@ -479,7 +487,7 @@ static int hart_uart_pins_external_test_mode_state(void)
     int retval = 0;
     mxc_gpio_cfg_t hart_pin;
 
-    // RTS Input to AFE, LOW is transmit mode, so Pulling Up
+    // HART_RTS Input to AFE, LOW is transmit mode, so Pulling Up
     hart_pin.port = HART_RTS_GPIO_PORT;
     hart_pin.mask = HART_RTS_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
@@ -490,30 +498,33 @@ static int hart_uart_pins_external_test_mode_state(void)
         return retval;
     }
 
-    // CD output from AFE, Tristate
+    // HART_CD output from AFE, Tristate
     hart_pin.port = HART_CD_GPIO_PORT;
     hart_pin.mask = HART_CD_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_NONE;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    // IN input to AFE, pulling Up
+    // HART_IN input to AFE, pulling Up
     hart_pin.port = HART_IN_GPIO_PORT;
     hart_pin.mask = HART_IN_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_PULL_UP;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    // IN output from AFE, Tristate
+    // HART_OUT output from AFE, Tristate
     hart_pin.port = HART_OUT_GPIO_PORT;
     hart_pin.mask = HART_OUT_GPIO_PIN;
     hart_pin.pad = MXC_GPIO_PAD_NONE;
+    hart_pin.func = MXC_GPIO_FUNC_IN;
 
     retval = MXC_AFE_GPIO_Config(&hart_pin);
     if (retval != E_NO_ERROR) {
@@ -934,7 +945,12 @@ int hart_uart_setup(uint32_t test_mode)
     } else {
         hart_rts_receive_mode();
 
-        retval = hart_uart_init(HART_UART_INSTANCE, 1200, MXC_UART_ERFO_CLK);
+        //
+        // NOTE: Need to use APB clock here instead of ERFO.
+        //   Otherwise in a case for ERFO clock is faster than the System/Peripheral
+        //   clock UART interrupts will not or only partially work.
+        //
+        retval = hart_uart_init(HART_UART_INSTANCE, 1200, MXC_UART_APB_CLK);
         if (retval != E_NO_ERROR) {
             return E_COMM_ERR;
         }
@@ -1009,6 +1025,9 @@ int hart_uart_load_tx_fifo(void)
         return 0;
     }
 
+    // Ensure accurate index, dont allow uart interrupt while we manually load the fifo
+    MXC_UART_DisableInt(HART_UART_INSTANCE, (MXC_F_UART_INT_FL_TX_HE | MXC_F_UART_INT_FL_TX_OB));
+
     num_written = MXC_UART_WriteTXFIFO(
         HART_UART_INSTANCE, (const unsigned char *)(hart_buf + hart_uart_transmission_byte_index),
         load_num);
@@ -1016,6 +1035,9 @@ int hart_uart_load_tx_fifo(void)
     // Advance index based on bytes actually written.
     // This should always equal load_num though.
     hart_uart_transmission_byte_index += num_written;
+
+    // Restore interrupts
+    MXC_UART_EnableInt(HART_UART_INSTANCE, (MXC_F_UART_INT_FL_TX_HE | MXC_F_UART_INT_FL_TX_OB));
 
     // Return the number actually written in case someone is interested.
     return num_written;
