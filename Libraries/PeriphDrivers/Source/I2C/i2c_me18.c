@@ -74,10 +74,10 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 #endif
     } else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C2);
-#ifndef MAX32690GTK_PACKAGE_TQFN
         MXC_GPIO_Config(&gpio_cfg_i2c2);
-#endif
+#ifndef MAX32690GTK_PACKAGE_TQFN
         MXC_GPIO_Config(&gpio_cfg_i2c2c);
+#endif
     } else {
         return E_NO_DEVICE;
     }
