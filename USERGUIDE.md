@@ -2123,6 +2123,28 @@ The following table matches external part numbers to internal die types.  This i
     | MAX78000 | AI85 |
     | MAX78002 | AI87 |
 
+#### `MSDK_NO_GPIO_CLK_INIT`
+
+Most Peripheral Driver initialization routines involve enabling system clocks, setting clock dividers, and configuring GPIO pins.  In some cases (such as for Zephyr), frameworks or tools offer their own mechanisms for handling this, or it's desirable to manually handle it in custom application code.  
+
+The MSDK offers a mechanism for disabling the automatic initialization of clocks and GPIO pins via the `MSDK_NO_GPIO_CLK_INIT` compiler definition.  To enable this for a project, add it via the `PROJ_CFLAGS` [build configuration variable](#build-variables-for-the-compiler) using the following syntax:
+
+```Makefile
+#project.mk
+
+PROJ_CFLAGS += -DMSDK_NO_GPIO_CLK_INIT
+```
+
+???+ note "ℹ️ **Syntax Note:**"
+    The `-D` flag tells the compiler to define a symbol at compile-time.  It should be followed by the symbol we wish to define.  In this case, `MSDK_NO_GPIO_CLK_INIT`.
+
+#### Peripheral Driver Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `PINS_FILE`               | Override pin definitions                   | This option can be used to override the default GPIO definitions used by the peripheral drivers, which can be found in the `Libraries/PeriphDrivers/Source/SYS/pins_xx.c` files in the MSDK.  The file specified by this option will be passed to the build instead of the default.  It's suggested to copy the default file first as a template before making modifications.  |
+
 ---
 
 ### CMSIS-DSP
