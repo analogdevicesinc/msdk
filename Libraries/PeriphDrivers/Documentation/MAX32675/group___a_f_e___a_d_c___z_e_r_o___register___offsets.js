@@ -53,7 +53,6 @@ var group___a_f_e___a_d_c___z_e_r_o___register___offsets =
     [ "MXC_R_AFE_ADC_ZERO_SYS_OFF_A", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#ga1ef86479f57b4bc4d6c4b85a298f2d3c", null ],
     [ "MXC_R_AFE_ADC_ZERO_SYS_OFF_B", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#gad28759144c2db4f95fe6ed3764ad4bd0", null ],
     [ "MXC_R_AFE_ADC_ZERO_SYSC_SEL", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#ga8a0f60013e9a56f40995647c9bf07acf", null ],
-    [ "MXC_R_AFE_ADC_ZERO_TS_CTRL", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#ga0c380d3e8e35229cda4c96ec5c2d81f0", null ],
     [ "MXC_R_AFE_ADC_ZERO_UC_0", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#ga0271789084a6109965642a83ddd55bb8", null ],
     [ "MXC_R_AFE_ADC_ZERO_UC_1", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#ga8a0c0aa16ca19dd051b0edcc997c3d9b", null ],
     [ "MXC_R_AFE_ADC_ZERO_UC_10", "group___a_f_e___a_d_c___z_e_r_o___register___offsets.html#ga984f5aa6841f772d901148f490bbf76a", null ],

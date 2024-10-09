@@ -1,17 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"group__pwrseq.html#ga641b6f0e28da541f3ce168ebf59fcb5f":[0,10,24],
-"group__pwrseq.html#ga6ac0edd342a999a54a4370a55ea13867":[0,10,27],
-"group__pwrseq.html#ga7114f139cf0400c690ad23f16320e65c":[0,10,22],
-"group__pwrseq.html#ga753730e41dc3ef82e27b576a8ebdd59a":[0,10,6],
-"group__pwrseq.html#ga79fc37371535407c4eaaa9f99e93e734":[0,10,9],
-"group__pwrseq.html#ga7b8a93fe1df6a0798d2b25b797cf4365":[0,10,31],
-"group__pwrseq.html#ga83a8ef5d66b669509711f5b614340cf1":[0,10,12],
-"group__pwrseq.html#ga960db8332ff4373bbff4bf7ec01511bf":[0,10,4],
-"group__pwrseq.html#ga9f9c4f8d35451c4e95cf99401eb8d840":[0,10,14],
-"group__pwrseq.html#gaa1277828601d21b39d210d540bf2c01b":[0,10,13],
-"group__pwrseq.html#gab020a943a6b79ec2bb86e6d4a43bdb03":[0,10,11],
-"group__pwrseq.html#gab96ee60b01b7bc338971723454ee59d1":[0,10,28],
 "group__pwrseq.html#gaba5a7805c6793c931cadfc4f964aa581":[0,10,30],
 "group__pwrseq.html#gabb6c99f86c25abe408c3a4fe27d80f28":[0,10,19],
 "group__pwrseq.html#gac5100009224c52cc9d188a33c310bf68":[0,10,10],
@@ -249,5 +237,17 @@ var NAVTREEINDEX25 =
 "group__tmr.html#gaa43ca41ee1a4f223572c621229039c14":[0,22,21],
 "group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da":[0,22,4],
 "group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3":[0,22,5],
-"group__tmr.html#gac2efae1d91bc0bcef15531f267fc74db":[0,22,27]
+"group__tmr.html#gac2efae1d91bc0bcef15531f267fc74db":[0,22,27],
+"group__tmr.html#gacb9e5277ceceba9a87038644f2e18360":[0,22,17],
+"group__tmr.html#gad0e3d710386ef39ca79b7c4e87f96b26":[0,22,16],
+"group__tmr.html#gad853fbc541aee656b1df92f9ab8c8c29":[0,22,33],
+"group__tmr.html#gad98de64fb8fe92a779d16820201ebb78":[0,22,30],
+"group__tmr.html#gade08f3e38b6383f019e0d47c735adb94":[0,22,10],
+"group__tmr.html#gaf5f910fb8442d3f8f716297b8f7c6cf5":[0,22,8],
+"group__tmr.html#gaf6de93d4bcf7b21642125e48528eda3a":[0,22,9],
+"group__tmr.html#gafa3ecdd1645041b6ad8a757cf17ba149":[0,22,31],
+"group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a0911f82d33fd259ae831eb24c926ca6c":[0,22,3,0],
+"group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a12daec68abbbaf37d2c93a8ef5e616ef":[0,22,3,2],
+"group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83a7fc045d3e7169a259f77eeecbb08da95":[0,22,3,1],
+"group__tmr.html#gga58901bfa21b78eb6ab4a702cc4f6ae83ab281fa148b505150d4c066f7f852311b":[0,22,3,5]
 };

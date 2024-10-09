@@ -17,6 +17,7 @@ var group__afe__adc__zero__registers =
     [ "AFE_ADC_ZERO_MUX_CTRL2", "group___a_f_e___a_d_c___z_e_r_o___m_u_x___c_t_r_l2.html", "group___a_f_e___a_d_c___z_e_r_o___m_u_x___c_t_r_l2" ],
     [ "AFE_ADC_ZERO_PGA", "group___a_f_e___a_d_c___z_e_r_o___p_g_a.html", "group___a_f_e___a_d_c___z_e_r_o___p_g_a" ],
     [ "AFE_ADC_ZERO_WAIT_EXT", "group___a_f_e___a_d_c___z_e_r_o___w_a_i_t___e_x_t.html", "group___a_f_e___a_d_c___z_e_r_o___w_a_i_t___e_x_t" ],
+    [ "AFE_ADC_ZERO_PART_ID", "group___a_f_e___a_d_c___z_e_r_o___p_a_r_t___i_d.html", "group___a_f_e___a_d_c___z_e_r_o___p_a_r_t___i_d" ],
     [ "AFE_ADC_ZERO_SYSC_SEL", "group___a_f_e___a_d_c___z_e_r_o___s_y_s_c___s_e_l.html", "group___a_f_e___a_d_c___z_e_r_o___s_y_s_c___s_e_l" ],
     [ "AFE_ADC_ZERO_SYS_OFF_A", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___o_f_f___a.html", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___o_f_f___a" ],
     [ "AFE_ADC_ZERO_SYS_OFF_B", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___o_f_f___b.html", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___o_f_f___b" ],
@@ -116,7 +117,5 @@ var group__afe__adc__zero__registers =
     [ "AFE_ADC_ZERO_ADC_TRIM1", "group___a_f_e___a_d_c___z_e_r_o___a_d_c___t_r_i_m1.html", "group___a_f_e___a_d_c___z_e_r_o___a_d_c___t_r_i_m1" ],
     [ "AFE_ADC_ZERO_ANA_TRIM", "group___a_f_e___a_d_c___z_e_r_o___a_n_a___t_r_i_m.html", "group___a_f_e___a_d_c___z_e_r_o___a_n_a___t_r_i_m" ],
     [ "AFE_ADC_ZERO_SYS_CTRL", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l" ],
-    [ "AFE_ADC_ZERO_TS_CTRL", "group___a_f_e___a_d_c___z_e_r_o___t_s___c_t_r_l.html", "group___a_f_e___a_d_c___z_e_r_o___t_s___c_t_r_l" ],
-    [ "AFE_ADC_ZERO_PART_ID", "group___a_f_e___a_d_c___z_e_r_o___p_a_r_t___i_d.html", "group___a_f_e___a_d_c___z_e_r_o___p_a_r_t___i_d" ],
     [ "afe_adc_zero_regs.h", "afe__adc__zero__regs_8h.html", null ]
 ];
