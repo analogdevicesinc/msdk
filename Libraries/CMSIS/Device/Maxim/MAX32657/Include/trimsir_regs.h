@@ -64,7 +64,7 @@ extern "C" {
  * @ingroup     trimsir
  * @defgroup    trimsir_registers TRIMSIR_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
- * @details     Trim System Initilazation Registers
+ * @details     Trim System Initilazation Registers.
  */
 
 /**
@@ -72,14 +72,10 @@ extern "C" {
  * Structure type to access the TRIMSIR Registers.
  */
 typedef struct {
-    __R  uint32_t rsv_0x0_0x7[2];
-    __IO uint32_t rtc;                  /**< <tt>\b 0x08:</tt> TRIMSIR RTC Register */
-    __R  uint32_t rsv_0xc_0x33[10];
-    __I  uint32_t simo;                 /**< <tt>\b 0x34:</tt> TRIMSIR SIMO Register */
-    __R  uint32_t rsv_0x38;
-    __I  uint32_t ipolo;                /**< <tt>\b 0x3C:</tt> TRIMSIR IPOLO Register */
-    __IO uint32_t ctrl;                 /**< <tt>\b 0x40:</tt> TRIMSIR CTRL Register */
-    __IO uint32_t inro;                 /**< <tt>\b 0x44:</tt> TRIMSIR INRO Register */
+    __R  uint32_t rsv_0x0_0x3b[15];
+    __I  uint32_t rtcx1;                /**< <tt>\b 0x3C:</tt> TRIMSIR RTCX1 Register */
+    __R  uint32_t rsv_0x40;
+    __IO uint32_t rtcx2;                /**< <tt>\b 0x44:</tt> TRIMSIR RTCX2 Register */
 } mxc_trimsir_regs_t;
 
 /* Register offsets for module TRIMSIR */
@@ -89,113 +85,31 @@ typedef struct {
  * @brief      TRIMSIR Peripheral Register Offsets from the TRIMSIR Base Peripheral Address.
  * @{
  */
-#define MXC_R_TRIMSIR_RTC                  ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */
-#define MXC_R_TRIMSIR_SIMO                 ((uint32_t)0x00000034UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0034</tt> */
-#define MXC_R_TRIMSIR_IPOLO                ((uint32_t)0x0000003CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x003C</tt> */
-#define MXC_R_TRIMSIR_CTRL                 ((uint32_t)0x00000040UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0040</tt> */
-#define MXC_R_TRIMSIR_INRO                 ((uint32_t)0x00000044UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0044</tt> */
+#define MXC_R_TRIMSIR_RTCX1                ((uint32_t)0x0000003CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x003C</tt> */
+#define MXC_R_TRIMSIR_RTCX2                ((uint32_t)0x00000044UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0044</tt> */
 /**@} end of group trimsir_registers */
 
 /**
  * @ingroup  trimsir_registers
- * @defgroup TRIMSIR_RTC TRIMSIR_RTC
- * @brief    RTC Trim System Initialization Register.
+ * @defgroup TRIMSIR_RTCX1 TRIMSIR_RTCX1
+ * @brief    RTC X2 Capacitor Setting.
  * @{
  */
-#define MXC_F_TRIMSIR_RTC_X1TRIM_POS                   16 /**< RTC_X1TRIM Position */
-#define MXC_F_TRIMSIR_RTC_X1TRIM                       ((uint32_t)(0x1FUL << MXC_F_TRIMSIR_RTC_X1TRIM_POS)) /**< RTC_X1TRIM Mask */
+#define MXC_F_TRIMSIR_RTCX1_CAP_POS                    0 /**< RTCX1_CAP Position */
+#define MXC_F_TRIMSIR_RTCX1_CAP                        ((uint32_t)(0x1FUL << MXC_F_TRIMSIR_RTCX1_CAP_POS)) /**< RTCX1_CAP Mask */
 
-#define MXC_F_TRIMSIR_RTC_X2TRIM_POS                   21 /**< RTC_X2TRIM Position */
-#define MXC_F_TRIMSIR_RTC_X2TRIM                       ((uint32_t)(0x1FUL << MXC_F_TRIMSIR_RTC_X2TRIM_POS)) /**< RTC_X2TRIM Mask */
-
-#define MXC_F_TRIMSIR_RTC_LOCK_POS                     31 /**< RTC_LOCK Position */
-#define MXC_F_TRIMSIR_RTC_LOCK                         ((uint32_t)(0x1UL << MXC_F_TRIMSIR_RTC_LOCK_POS)) /**< RTC_LOCK Mask */
-
-/**@} end of group TRIMSIR_RTC_Register */
+/**@} end of group TRIMSIR_RTCX1_Register */
 
 /**
  * @ingroup  trimsir_registers
- * @defgroup TRIMSIR_SIMO TRIMSIR_SIMO
- * @brief    SIMO Trim System Initialization Register.
+ * @defgroup TRIMSIR_RTCX2 TRIMSIR_RTCX2
+ * @brief    RTC X2 Capacitor Setting.
  * @{
  */
-#define MXC_F_TRIMSIR_SIMO_CLKDIV_POS                  0 /**< SIMO_CLKDIV Position */
-#define MXC_F_TRIMSIR_SIMO_CLKDIV                      ((uint32_t)(0x7UL << MXC_F_TRIMSIR_SIMO_CLKDIV_POS)) /**< SIMO_CLKDIV Mask */
-#define MXC_V_TRIMSIR_SIMO_CLKDIV_DIV1                 ((uint32_t)0x0UL) /**< SIMO_CLKDIV_DIV1 Value */
-#define MXC_S_TRIMSIR_SIMO_CLKDIV_DIV1                 (MXC_V_TRIMSIR_SIMO_CLKDIV_DIV1 << MXC_F_TRIMSIR_SIMO_CLKDIV_POS) /**< SIMO_CLKDIV_DIV1 Setting */
-#define MXC_V_TRIMSIR_SIMO_CLKDIV_DIV16                ((uint32_t)0x1UL) /**< SIMO_CLKDIV_DIV16 Value */
-#define MXC_S_TRIMSIR_SIMO_CLKDIV_DIV16                (MXC_V_TRIMSIR_SIMO_CLKDIV_DIV16 << MXC_F_TRIMSIR_SIMO_CLKDIV_POS) /**< SIMO_CLKDIV_DIV16 Setting */
-#define MXC_V_TRIMSIR_SIMO_CLKDIV_DIV32                ((uint32_t)0x3UL) /**< SIMO_CLKDIV_DIV32 Value */
-#define MXC_S_TRIMSIR_SIMO_CLKDIV_DIV32                (MXC_V_TRIMSIR_SIMO_CLKDIV_DIV32 << MXC_F_TRIMSIR_SIMO_CLKDIV_POS) /**< SIMO_CLKDIV_DIV32 Setting */
-#define MXC_V_TRIMSIR_SIMO_CLKDIV_DIV64                ((uint32_t)0x5UL) /**< SIMO_CLKDIV_DIV64 Value */
-#define MXC_S_TRIMSIR_SIMO_CLKDIV_DIV64                (MXC_V_TRIMSIR_SIMO_CLKDIV_DIV64 << MXC_F_TRIMSIR_SIMO_CLKDIV_POS) /**< SIMO_CLKDIV_DIV64 Setting */
-#define MXC_V_TRIMSIR_SIMO_CLKDIV_DIV128               ((uint32_t)0x7UL) /**< SIMO_CLKDIV_DIV128 Value */
-#define MXC_S_TRIMSIR_SIMO_CLKDIV_DIV128               (MXC_V_TRIMSIR_SIMO_CLKDIV_DIV128 << MXC_F_TRIMSIR_SIMO_CLKDIV_POS) /**< SIMO_CLKDIV_DIV128 Setting */
+#define MXC_F_TRIMSIR_RTCX2_CAP_POS                    0 /**< RTCX2_CAP Position */
+#define MXC_F_TRIMSIR_RTCX2_CAP                        ((uint32_t)(0x1FUL << MXC_F_TRIMSIR_RTCX2_CAP_POS)) /**< RTCX2_CAP Mask */
 
-/**@} end of group TRIMSIR_SIMO_Register */
-
-/**
- * @ingroup  trimsir_registers
- * @defgroup TRIMSIR_IPOLO TRIMSIR_IPOLO
- * @brief    IPO Low Trim System Initialization Register.
- * @{
- */
-#define MXC_F_TRIMSIR_IPOLO_IPO_LIMITLO_POS            0 /**< IPOLO_IPO_LIMITLO Position */
-#define MXC_F_TRIMSIR_IPOLO_IPO_LIMITLO                ((uint32_t)(0xFFUL << MXC_F_TRIMSIR_IPOLO_IPO_LIMITLO_POS)) /**< IPOLO_IPO_LIMITLO Mask */
-
-/**@} end of group TRIMSIR_IPOLO_Register */
-
-/**
- * @ingroup  trimsir_registers
- * @defgroup TRIMSIR_CTRL TRIMSIR_CTRL
- * @brief    Control Trim System Initialization Register.
- * @{
- */
-#define MXC_F_TRIMSIR_CTRL_VDDA_LIMITLO_POS            0 /**< CTRL_VDDA_LIMITLO Position */
-#define MXC_F_TRIMSIR_CTRL_VDDA_LIMITLO                ((uint32_t)(0x7FUL << MXC_F_TRIMSIR_CTRL_VDDA_LIMITLO_POS)) /**< CTRL_VDDA_LIMITLO Mask */
-
-#define MXC_F_TRIMSIR_CTRL_VDDA_LIMITHI_POS            8 /**< CTRL_VDDA_LIMITHI Position */
-#define MXC_F_TRIMSIR_CTRL_VDDA_LIMITHI                ((uint32_t)(0x7FUL << MXC_F_TRIMSIR_CTRL_VDDA_LIMITHI_POS)) /**< CTRL_VDDA_LIMITHI Mask */
-
-#define MXC_F_TRIMSIR_CTRL_IPO_LIMITHI_POS             15 /**< CTRL_IPO_LIMITHI Position */
-#define MXC_F_TRIMSIR_CTRL_IPO_LIMITHI                 ((uint32_t)(0x1FFUL << MXC_F_TRIMSIR_CTRL_IPO_LIMITHI_POS)) /**< CTRL_IPO_LIMITHI Mask */
-
-#define MXC_F_TRIMSIR_CTRL_INRO_SEL_POS                24 /**< CTRL_INRO_SEL Position */
-#define MXC_F_TRIMSIR_CTRL_INRO_SEL                    ((uint32_t)(0x3UL << MXC_F_TRIMSIR_CTRL_INRO_SEL_POS)) /**< CTRL_INRO_SEL Mask */
-#define MXC_V_TRIMSIR_CTRL_INRO_SEL_8KHZ               ((uint32_t)0x0UL) /**< CTRL_INRO_SEL_8KHZ Value */
-#define MXC_S_TRIMSIR_CTRL_INRO_SEL_8KHZ               (MXC_V_TRIMSIR_CTRL_INRO_SEL_8KHZ << MXC_F_TRIMSIR_CTRL_INRO_SEL_POS) /**< CTRL_INRO_SEL_8KHZ Setting */
-#define MXC_V_TRIMSIR_CTRL_INRO_SEL_16KHZ              ((uint32_t)0x1UL) /**< CTRL_INRO_SEL_16KHZ Value */
-#define MXC_S_TRIMSIR_CTRL_INRO_SEL_16KHZ              (MXC_V_TRIMSIR_CTRL_INRO_SEL_16KHZ << MXC_F_TRIMSIR_CTRL_INRO_SEL_POS) /**< CTRL_INRO_SEL_16KHZ Setting */
-#define MXC_V_TRIMSIR_CTRL_INRO_SEL_30KHZ              ((uint32_t)0x2UL) /**< CTRL_INRO_SEL_30KHZ Value */
-#define MXC_S_TRIMSIR_CTRL_INRO_SEL_30KHZ              (MXC_V_TRIMSIR_CTRL_INRO_SEL_30KHZ << MXC_F_TRIMSIR_CTRL_INRO_SEL_POS) /**< CTRL_INRO_SEL_30KHZ Setting */
-
-#define MXC_F_TRIMSIR_CTRL_INRO_TRIM_POS               29 /**< CTRL_INRO_TRIM Position */
-#define MXC_F_TRIMSIR_CTRL_INRO_TRIM                   ((uint32_t)(0x7UL << MXC_F_TRIMSIR_CTRL_INRO_TRIM_POS)) /**< CTRL_INRO_TRIM Mask */
-
-/**@} end of group TRIMSIR_CTRL_Register */
-
-/**
- * @ingroup  trimsir_registers
- * @defgroup TRIMSIR_INRO TRIMSIR_INRO
- * @brief    RTC Trim System Initialization Register.
- * @{
- */
-#define MXC_F_TRIMSIR_INRO_TRIM16K_POS                 0 /**< INRO_TRIM16K Position */
-#define MXC_F_TRIMSIR_INRO_TRIM16K                     ((uint32_t)(0x7UL << MXC_F_TRIMSIR_INRO_TRIM16K_POS)) /**< INRO_TRIM16K Mask */
-
-#define MXC_F_TRIMSIR_INRO_TRIM30K_POS                 3 /**< INRO_TRIM30K Position */
-#define MXC_F_TRIMSIR_INRO_TRIM30K                     ((uint32_t)(0x7UL << MXC_F_TRIMSIR_INRO_TRIM30K_POS)) /**< INRO_TRIM30K Mask */
-
-#define MXC_F_TRIMSIR_INRO_LPCLKSEL_POS                6 /**< INRO_LPCLKSEL Position */
-#define MXC_F_TRIMSIR_INRO_LPCLKSEL                    ((uint32_t)(0x3UL << MXC_F_TRIMSIR_INRO_LPCLKSEL_POS)) /**< INRO_LPCLKSEL Mask */
-#define MXC_V_TRIMSIR_INRO_LPCLKSEL_8KHZ               ((uint32_t)0x0UL) /**< INRO_LPCLKSEL_8KHZ Value */
-#define MXC_S_TRIMSIR_INRO_LPCLKSEL_8KHZ               (MXC_V_TRIMSIR_INRO_LPCLKSEL_8KHZ << MXC_F_TRIMSIR_INRO_LPCLKSEL_POS) /**< INRO_LPCLKSEL_8KHZ Setting */
-#define MXC_V_TRIMSIR_INRO_LPCLKSEL_16KHZ              ((uint32_t)0x1UL) /**< INRO_LPCLKSEL_16KHZ Value */
-#define MXC_S_TRIMSIR_INRO_LPCLKSEL_16KHZ              (MXC_V_TRIMSIR_INRO_LPCLKSEL_16KHZ << MXC_F_TRIMSIR_INRO_LPCLKSEL_POS) /**< INRO_LPCLKSEL_16KHZ Setting */
-#define MXC_V_TRIMSIR_INRO_LPCLKSEL_30KHZ              ((uint32_t)0x2UL) /**< INRO_LPCLKSEL_30KHZ Value */
-#define MXC_S_TRIMSIR_INRO_LPCLKSEL_30KHZ              (MXC_V_TRIMSIR_INRO_LPCLKSEL_30KHZ << MXC_F_TRIMSIR_INRO_LPCLKSEL_POS) /**< INRO_LPCLKSEL_30KHZ Setting */
-
-/**@} end of group TRIMSIR_INRO_Register */
+/**@} end of group TRIMSIR_RTCX2_Register */
 
 #ifdef __cplusplus
 }

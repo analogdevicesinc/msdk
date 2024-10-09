@@ -80,7 +80,7 @@ typedef struct {
     __IO uint32_t erfoks;               /**< <tt>\b 0x18:</tt> FCR ERFOKS Register */
     __IO uint32_t intfl;                /**< <tt>\b 0x1C:</tt> FCR INTFL Register */
     __IO uint32_t inten;                /**< <tt>\b 0x20:</tt> FCR INTEN Register */
-    __R  uint32_t rsv_0x24;
+    __IO uint32_t erfoctrl;             /**< <tt>\b 0x24:</tt> FCR ERFOCTRL Register */
     __IO uint32_t frqcntctrl;           /**< <tt>\b 0x28:</tt> FCR FRQCNTCTRL Register */
     __IO uint32_t frqcntcmp;            /**< <tt>\b 0x2C:</tt> FCR FRQCNTCMP Register */
     __I  uint32_t refclk;               /**< <tt>\b 0x30:</tt> FCR REFCLK Register */
@@ -101,6 +101,7 @@ typedef struct {
 #define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000018UL) /**< Offset from FCR Base Address: <tt> 0x0018</tt> */
 #define MXC_R_FCR_INTFL                    ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */
 #define MXC_R_FCR_INTEN                    ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
+#define MXC_R_FCR_ERFOCTRL                 ((uint32_t)0x00000024UL) /**< Offset from FCR Base Address: <tt> 0x0024</tt> */
 #define MXC_R_FCR_FRQCNTCTRL               ((uint32_t)0x00000028UL) /**< Offset from FCR Base Address: <tt> 0x0028</tt> */
 #define MXC_R_FCR_FRQCNTCMP                ((uint32_t)0x0000002CUL) /**< Offset from FCR Base Address: <tt> 0x002C</tt> */
 #define MXC_R_FCR_REFCLK                   ((uint32_t)0x00000030UL) /**< Offset from FCR Base Address: <tt> 0x0030</tt> */
@@ -235,6 +236,23 @@ typedef struct {
 #define MXC_F_FCR_INTEN_FRQCNT                         ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_FRQCNT_POS)) /**< INTEN_FRQCNT Mask */
 
 /**@} end of group FCR_INTEN_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_ERFOCTRL FCR_ERFOCTRL
+ * @brief    ERFO Control Register.
+ * @{
+ */
+#define MXC_F_FCR_ERFOCTRL_CAP_X1_POS                  0 /**< ERFOCTRL_CAP_X1 Position */
+#define MXC_F_FCR_ERFOCTRL_CAP_X1                      ((uint32_t)(0x7FUL << MXC_F_FCR_ERFOCTRL_CAP_X1_POS)) /**< ERFOCTRL_CAP_X1 Mask */
+
+#define MXC_F_FCR_ERFOCTRL_CAP_X2_POS                  7 /**< ERFOCTRL_CAP_X2 Position */
+#define MXC_F_FCR_ERFOCTRL_CAP_X2                      ((uint32_t)(0x7FUL << MXC_F_FCR_ERFOCTRL_CAP_X2_POS)) /**< ERFOCTRL_CAP_X2 Mask */
+
+#define MXC_F_FCR_ERFOCTRL_CAP_BYPASS_POS              14 /**< ERFOCTRL_CAP_BYPASS Position */
+#define MXC_F_FCR_ERFOCTRL_CAP_BYPASS                  ((uint32_t)(0x1UL << MXC_F_FCR_ERFOCTRL_CAP_BYPASS_POS)) /**< ERFOCTRL_CAP_BYPASS Mask */
+
+/**@} end of group FCR_ERFOCTRL_Register */
 
 /**
  * @ingroup  fcr_registers
