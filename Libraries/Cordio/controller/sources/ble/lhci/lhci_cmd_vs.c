@@ -279,7 +279,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
     }
     case LHCI_OPCODE_VS_GET_RSSI:
     {
-        #if 0
+        
         channel = pBuf[0];
 
         if(channel > LL_DTM_MAX_CHAN_IDX)
@@ -290,15 +290,13 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             status = LL_SUCCESS;
         }
         evtParamLen += sizeof(int8_t);
-        #else
-        status = LL_ERROR_CODE_CMD_DISALLOWED;
-        #endif
+        
 
         break;
     }
     case LHCI_OPCODE_VS_FGEN:
     {
-        #if 0
+        
         uint8_t enable = pBuf[0];
 
         if(enable)
@@ -334,9 +332,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             status = LL_SUCCESS;
         }
 
-        #else
-        status = LL_ERROR_CODE_CMD_DISALLOWED;
-        #endif
 
         break;
     }
@@ -385,7 +380,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             break;
         case LHCI_OPCODE_VS_GET_RSSI:
         {
-            #if 0
+     
             if(status != LL_SUCCESS)
             {
                 break;
@@ -396,10 +391,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
             
 
             pBuf[0] = (uint8_t)rssi;
-            #else
-            pBuf[0] = INT8_MIN;
-            #endif
-        
+
         
 
             break;
