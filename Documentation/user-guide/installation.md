@@ -5,10 +5,10 @@
 - **Elevated/Administrator rights**
 
 - ???+ warning "**⚠️ MacOS**"
-    On MacOS, please also download and install [Homebrew](https://brew.sh/).  It will be used in [Completing the Installation on MacOS](#completing-the-installation-on-macos) later on.
+    On MacOS, please also download and install [Homebrew](https://brew.sh/). It will be used in [Completing the Installation on MacOS](#completing-the-installation-on-macos) later on.
 
 - ???+ warning "**⚠️ Ubuntu**"
-    Several GUI packages are required by the QT installer framework _even on headless systems_.  Run the following command _before_ running the installer to retrieve them.
+    Several GUI packages are required by the QT installer framework _even on headless systems_. Run the following command _before_ running the installer to retrieve them.
 
             :::shell
             sudo apt update && sudo apt install libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
@@ -63,14 +63,14 @@ The MSDK installer can be run through a [**GUI Installation**](#gui-installation
     ![Figure 10](res/Fig10.jpg)
 
     ???+ warning "⚠️ **Warning**"
-        On MacOS, some [_additional steps_](#completing-the-installation-on-macos) are required.
+        On MacOS, [_additional steps_](#completing-the-installation-on-macos) are required.
 
 ### Command-Line Installation
 
-The MSDK installer features a command-line interface that can be used as an alternative to its GUI.  This is useful for installations on "headless" systems and scripting.
+The MSDK installer features a command-line interface that can be used as an alternative to its GUI. This is useful for installations on "headless" systems and scripting.
 
 ??? note "ℹ️ **Note:**" The `--help` Command"
-    The available commands can be retrieved by running the MSDK installer executable with the `--help` option on the command line.  For example:
+    The available commands can be retrieved by running the MSDK installer executable with the `--help` option on the command line. For example:
 
         :::shell
         $ ./MaximMicrosSDK_linux.run --help
@@ -189,7 +189,7 @@ To run a _headless_ installation:
 ### Completing the Installation on MacOS
 
 ???+ warning "⚠️ **Warning**"
-    On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/).  There are also some manual setup steps required to retrieve `make` version 4.  The instructions in this section are critical.
+    On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/). There are also some manual setup steps required to retrieve `make` version 4. The instructions in this section are critical.
 
 1. Install [Homebrew](https://brew.sh/).
 
@@ -214,4 +214,4 @@ Older versions of the MSDK are available as an **_offline installer_** for each 
 
 ### Development Resources
 
-Users can obtain development copies of the MSDK resources from [GitHub](https://github.com/analogdevicesinc/msdk).  Setup instructions can be found in the repository's [README](https://github.com/analogdevicesinc/msdk/blob/main/README.md).
+Users can obtain development copies of the MSDK resources from [GitHub](https://github.com/analogdevicesinc/msdk). Setup instructions can be found in the repository's [README](https://github.com/analogdevicesinc/msdk/blob/main/README.md).
