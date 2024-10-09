@@ -193,7 +193,6 @@ extern "C" {
 #define MXC_R_AFE_ADC_ZERO_ADC_TRIM1       ((uint32_t)0x00780002UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x780002</tt> */
 #define MXC_R_AFE_ADC_ZERO_ANA_TRIM        ((uint32_t)0x00790002UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x790002</tt> */
 #define MXC_R_AFE_ADC_ZERO_SYS_CTRL        ((uint32_t)0x007A0001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x7A0001</tt> */
-#define MXC_R_AFE_ADC_ZERO_TS_CTRL         ((uint32_t)0x007C0001UL) /**< Offset from AFE_ADC_ZERO Base Address: <tt> 0x7C0001</tt> */
 /**@} end of group afe_adc_zero_registers */
 
 /**
@@ -563,7 +562,10 @@ extern "C" {
  * @{
  */
 #define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS          0 /**< PART_ID_REV_ID Position */
-#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID              ((uint32_t)(0x3FUL << MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS)) /**< PART_ID_REV_ID Mask */
+#define MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID              ((uint32_t)(0x1FUL << MXC_F_AFE_ADC_ZERO_PART_ID_REV_ID_POS)) /**< PART_ID_REV_ID Mask */
+
+#define MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL_POS         5 /**< PART_ID_ADC_SEL Position */
+#define MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL             ((uint32_t)(0x1UL << MXC_F_AFE_ADC_ZERO_PART_ID_ADC_SEL_POS)) /**< PART_ID_ADC_SEL Mask */
 
 /**@} end of group AFE_ADC_ZERO_PART_ID_Register */
 
@@ -2023,23 +2025,6 @@ extern "C" {
 #define MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC_INV            ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC_INV_POS)) /**< SYS_CTRL_CRC_INV Mask */
 
 /**@} end of group AFE_ADC_ZERO_SYS_CTRL_Register */
-
-/**
- * @ingroup  afe_adc_zero_registers
- * @defgroup AFE_ADC_ZERO_TS_CTRL AFE_ADC_ZERO_TS_CTRL
- * @brief    Temperature Sensor Control
- * @{
- */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_EN_POS           0 /**< TS_CTRL_TS_EN Position */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_EN               ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_EN_POS)) /**< TS_CTRL_TS_EN Mask */
-
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_CONV_EN_POS      1 /**< TS_CTRL_TS_CONV_EN Position */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_CONV_EN          ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_CONV_EN_POS)) /**< TS_CTRL_TS_CONV_EN Mask */
-
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_INTG_RDY_POS     2 /**< TS_CTRL_TS_INTG_RDY Position */
-#define MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_INTG_RDY         ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ZERO_TS_CTRL_TS_INTG_RDY_POS)) /**< TS_CTRL_TS_INTG_RDY Mask */
-
-/**@} end of group AFE_ADC_ZERO_TS_CTRL_Register */
 
 #ifdef __cplusplus
 }
