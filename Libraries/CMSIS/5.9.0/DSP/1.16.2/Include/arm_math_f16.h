@@ -28,9 +28,8 @@
 
 #include "arm_math.h"
 
-#ifdef   __cplusplus
-extern "C"
-{
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 #include "arm_math_types_f16.h"
@@ -50,10 +49,8 @@ extern "C"
 #include "dsp/transform_functions_f16.h"
 #include "dsp/filtering_functions_f16.h"
 
-#ifdef   __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
 #endif /* _ARM_MATH_F16_H */
-
-

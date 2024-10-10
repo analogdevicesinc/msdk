@@ -23,7 +23,6 @@
  * limitations under the License.
  */
 
- 
 #ifndef WINDOW_FUNCTIONS_H_
 #define WINDOW_FUNCTIONS_H_
 
@@ -33,17 +32,15 @@
 #include "dsp/none.h"
 #include "dsp/utils.h"
 
-
-#ifdef   __cplusplus
-extern "C"
-{
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 /**
  * @defgroup groupWindow Window Functions
  */
 
- /**
+/**
    * @brief Welch window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -58,11 +55,9 @@ extern "C"
    * | Recommended overlap                   |            29.3 %  |
    *
    */
-  void arm_welch_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_welch_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Welch window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -78,10 +73,8 @@ extern "C"
    *
    *
    */
-  void arm_welch_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_welch_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Bartlett window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -96,11 +89,9 @@ extern "C"
    * | Recommended overlap                   |            50.0 %  |
    *
    */
-  void arm_bartlett_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_bartlett_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Bartlett window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -116,10 +107,8 @@ extern "C"
    *
    *
    */
-  void arm_bartlett_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_bartlett_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hamming window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -134,11 +123,9 @@ extern "C"
    * | Recommended overlap                   |              50 %  |
    *
    */
-  void arm_hamming_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hamming_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hamming window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -154,10 +141,8 @@ extern "C"
    *
    *
    */
-  void arm_hamming_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hamming_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hanning window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -172,11 +157,9 @@ extern "C"
    * | Recommended overlap                   |              50 %  |
    *
    */
-  void arm_hanning_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hanning_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hanning window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -192,10 +175,8 @@ extern "C"
    *
    *
    */
-  void arm_hanning_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hanning_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall3 window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -210,11 +191,9 @@ extern "C"
    * | Recommended overlap                   |            64.7 %  |
    *
    */
-  void arm_nuttall3_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall3_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall3 window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -230,10 +209,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall3_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall3_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall4 window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -248,11 +225,9 @@ extern "C"
    * | Recommended overlap                   |            70.5 %  |
    *
    */
-  void arm_nuttall4_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall4_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall4 window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -268,10 +243,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall4_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall4_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall3a window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -286,11 +259,9 @@ extern "C"
    * | Recommended overlap                   |            61.2 %  |
    *
    */
-  void arm_nuttall3a_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall3a_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall3a window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -306,10 +277,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall3a_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall3a_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall3b window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -324,11 +293,9 @@ extern "C"
    * | Recommended overlap                   |            59.8 %  |
    *
    */
-  void arm_nuttall3b_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall3b_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall3b window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -344,10 +311,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall3b_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall3b_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall4a window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -362,11 +327,9 @@ extern "C"
    * | Recommended overlap                   |            68.0 %  |
    *
    */
-  void arm_nuttall4a_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall4a_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall4a window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -382,10 +345,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall4a_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall4a_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief 92 db blackman harris window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -400,11 +361,9 @@ extern "C"
    * | Recommended overlap                   |            66.1 %  |
    *
    */
-  void arm_blackman_harris_92db_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_blackman_harris_92db_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief 92 db blackman harris window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -420,10 +379,8 @@ extern "C"
    *
    *
    */
-  void arm_blackman_harris_92db_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_blackman_harris_92db_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall4b window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -438,11 +395,9 @@ extern "C"
    * | Recommended overlap                   |            66.3 %  |
    *
    */
-  void arm_nuttall4b_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall4b_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall4b window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -458,10 +413,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall4b_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall4b_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Nuttall4c window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -476,11 +429,9 @@ extern "C"
    * | Recommended overlap                   |            65.6 %  |
    *
    */
-  void arm_nuttall4c_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_nuttall4c_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Nuttall4c window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -496,10 +447,8 @@ extern "C"
    *
    *
    */
-  void arm_nuttall4c_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_nuttall4c_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft90d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -514,11 +463,9 @@ extern "C"
    * | Recommended overlap                   |            76.0 %  |
    *
    */
-  void arm_hft90d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft90d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft90d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -534,10 +481,8 @@ extern "C"
    *
    *
    */
-  void arm_hft90d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft90d_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft95 window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -552,11 +497,9 @@ extern "C"
    * | Recommended overlap                   |            75.6 %  |
    *
    */
-  void arm_hft95_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft95_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft95 window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -572,10 +515,8 @@ extern "C"
    *
    *
    */
-  void arm_hft95_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft95_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft116d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -590,11 +531,9 @@ extern "C"
    * | Recommended overlap                   |            78.2 %  |
    *
    */
-  void arm_hft116d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft116d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft116d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -610,10 +549,8 @@ extern "C"
    *
    *
    */
-  void arm_hft116d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft116d_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft144d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -628,11 +565,9 @@ extern "C"
    * | Recommended overlap                   |            79.9 %  |
    *
    */
-  void arm_hft144d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft144d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft144d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -648,10 +583,8 @@ extern "C"
    *
    *
    */
-  void arm_hft144d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft144d_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft169d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -666,11 +599,9 @@ extern "C"
    * | Recommended overlap                   |            81.2 %  |
    *
    */
-  void arm_hft169d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft169d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft169d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -686,10 +617,8 @@ extern "C"
    *
    *
    */
-  void arm_hft169d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft169d_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft196d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -704,11 +633,9 @@ extern "C"
    * | Recommended overlap                   |            82.3 %  |
    *
    */
-  void arm_hft196d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft196d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft196d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -724,10 +651,8 @@ extern "C"
    *
    *
    */
-  void arm_hft196d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft196d_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft223d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -742,11 +667,9 @@ extern "C"
    * | Recommended overlap                   |            83.3 %  |
    *
    */
-  void arm_hft223d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft223d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft223d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -762,10 +685,8 @@ extern "C"
    *
    *
    */
-  void arm_hft223d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
- /**
+void arm_hft223d_f32(float32_t *pDst, uint32_t blockSize);
+/**
    * @brief Hft248d window (double).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -780,11 +701,9 @@ extern "C"
    * | Recommended overlap                   |            84.1 %  |
    *
    */
-  void arm_hft248d_f64(
-        float64_t * pDst,
-        uint32_t blockSize);
+void arm_hft248d_f64(float64_t *pDst, uint32_t blockSize);
 
- /**
+/**
    * @brief Hft248d window (float).
    * @param[out] pDst       points to the output generated window
    * @param[in]  blockSize  number of samples in the window
@@ -800,12 +719,9 @@ extern "C"
    *
    *
    */
-  void arm_hft248d_f32(
-        float32_t * pDst,
-        uint32_t blockSize);
+void arm_hft248d_f32(float32_t *pDst, uint32_t blockSize);
 
-
-#ifdef   __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

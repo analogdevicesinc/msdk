@@ -23,18 +23,16 @@
  * limitations under the License.
  */
 
- 
 #ifndef CONTROLLER_FUNCTIONS_F16_H_
 #define CONTROLLER_FUNCTIONS_F16_H_
 
-#ifdef   __cplusplus
-extern "C"
-{
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 #if defined(ARM_FLOAT16_SUPPORTED)
 #endif /*defined(ARM_FLOAT16_SUPPORTED)*/
-#ifdef   __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

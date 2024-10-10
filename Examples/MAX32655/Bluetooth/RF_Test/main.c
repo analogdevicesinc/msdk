@@ -514,8 +514,13 @@ static void mainWsfInit(void)
 
     /* Initial buffer configuration. */
     uint16_t memUsed;
-    memUsed = WsfBufInit(numPools, poolDesc);
+    /* Initial buffer configuration. */
+    WsfCsEnter();
+    memUsed = WsfBufCalcSize(numPools, poolDesc);
     WsfHeapAlloc(memUsed);
+    WsfBufInit(numPools, poolDesc);
+    WsfCsExit();
+
     WsfOsInit();
     WsfTimerInit();
 #if (WSF_TRACE_ENABLED == TRUE)
@@ -857,26 +862,48 @@ void printConfigs(void)
 /*************************************************************************************************/
 int main(void)
 {
-    uint32_t memUsed;
+    uint32_t llmemUsed;
 
     mainLoadConfiguration();
     mainWsfInit();
 
 #if (WSF_TRACE_ENABLED == TRUE)
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
+    WsfCsEnter();
+    WsfHeapAlloc(PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfCsExit();
 #endif
 
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            .freeMemAvail = WsfHeapCountAvailable() };
+    /* Calculate how much memory we will need for the LL initialization */
+    WsfCsEnter();
 
-    memUsed = LlInitControllerInit(&llCfg);
-    WsfHeapAlloc(memUsed);
+    LlInitRtCfg_t llCfg = {
+        .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .freeMemAvail = WsfHeapCountAvailable()
+    };
+
+    llmemUsed = LlInitSetRtCfg(&llCfg);
+
+    /* Allocate the memory */
+    WsfHeapAlloc(llmemUsed);
+
+    /* Set the free memory pointers */
+    llCfg.pFreeMem = WsfHeapGetFreeStartAddress();
+    llCfg.freeMemAvail = WsfHeapCountAvailable();
+
+    /* Run the initialization with properly set the free memory pointers */
+    if (llmemUsed != LlInitControllerInit(&llCfg)) {
+        WSF_ASSERT(0);
+    }
+
+    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));

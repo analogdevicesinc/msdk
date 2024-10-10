@@ -41,6 +41,7 @@
 #include "wsf_timer.h"
 #include "wsf_trace.h"
 #include "wsf_bufio.h"
+#include "wsf_cs.h"
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
