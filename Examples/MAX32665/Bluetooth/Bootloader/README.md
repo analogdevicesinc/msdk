@@ -9,12 +9,12 @@ the main flash section is erased and replaced with the update image. If no valid
 is identified, the Bootloader will boot the exiting image in the main flash space.
 
 __0x10000000__: Bootloader  
-__0x10004000__: Main flash space  
+__0x10008000__: Main flash space  
 __0x10080000__: Update flash space
 
 ## Setup
 
-This Bootloader application needs to be loaded to the first two flash pages. The main application
+This Bootloader application needs to be loaded at the beginning of Flash. The main application
 will run on top of this application. The linker file for the main application must coincide 
 with the memory sections defined in this application. The main application is responsible 
 for updating the update flash space.
