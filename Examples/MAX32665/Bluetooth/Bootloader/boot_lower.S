@@ -31,7 +31,7 @@
 /* Boot from the lower flash array */
 Boot_Lower:
 
-    ldr     r0,=0x10004000      /* Address for main flash image */
+    ldr     r0,=0x10008000      /* Address for main flash image */
     ldr     r1,=0xE000ED08      /* Address for SCB_VTOR_REG */
 
     /* First 32-bit word in image is initial stack pointer */
