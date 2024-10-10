@@ -443,39 +443,9 @@
         </fields>
       </register>
       <register>
-        <name>PADCTRL0</name>
-        <description>GPIO Input Mode Config 0. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
+        <name>PADCTRL</name>
+        <description>GPIO Pad Control. Each bit in this register configures the pad for the associated GPIO pin in this port.</description>
         <addressOffset>0x60</addressOffset>
-        <fields>
-          <field>
-            <name>ALL</name>
-            <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>impedance</name>
-                <description>High Impedance.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>pu</name>
-                <description>Weak pull-up mode.</description>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>pd</name>
-                <description>weak pull-down mode.</description>
-                <value>2</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>PADCTRL1</name>
-        <description>GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
-        <addressOffset>0x64</addressOffset>
         <fields>
           <field>
             <name>ALL</name>

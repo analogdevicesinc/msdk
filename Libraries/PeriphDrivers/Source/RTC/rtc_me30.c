@@ -151,13 +151,10 @@ int MXC_RTC_GetBusyFlag(void)
     return MXC_RTC_RevA_GetBusyFlag((mxc_rtc_reva_regs_t *)MXC_RTC);
 }
 
+// TODO(SW): TRIMSIR RTC X1/X2 register descriptions were updated due to design changes.
+//      CAP vs TRIM value differences unknown, and this function has not been tested.
 int MXC_RTC_TrimCrystal(void)
 {
-#if TARGET_NUM == 78000
-    /* MAX78000 does not have the ERFO clock which the Trim function requires */
-    return E_NOT_SUPPORTED;
-#endif
-
     unsigned int search_step, elapsed;
     unsigned int upper, lower, trim, oldtrim, bestTrim, bestElapsed, bestElapsedDiff;
     unsigned int freq = NOM_32K_FREQ;
@@ -209,10 +206,10 @@ int MXC_RTC_TrimCrystal(void)
         }
 
         /* Set the trim values */
-        MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_X1TRIM,
-                     (trim << MXC_F_TRIMSIR_RTC_X1TRIM_POS));
-        MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_X2TRIM,
-                     (trim << MXC_F_TRIMSIR_RTC_X2TRIM_POS));
+        MXC_SETFIELD(MXC_TRIMSIR->rtcx1, MXC_F_TRIMSIR_RTCX1_CAP,
+                     (trim << MXC_F_TRIMSIR_RTCX1_CAP_POS));
+        MXC_SETFIELD(MXC_TRIMSIR->rtcx2, MXC_F_TRIMSIR_RTCX2_CAP,
+                     (trim << MXC_F_TRIMSIR_RTCX2_CAP_POS));
 
         /* Sleep to settle new caps */
         MXC_Delay(MXC_DELAY_MSEC(10));
@@ -263,10 +260,10 @@ int MXC_RTC_TrimCrystal(void)
     }
 
     /* Apply the closest trim setting */
-    MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_X1TRIM,
-                 (bestTrim << MXC_F_TRIMSIR_RTC_X1TRIM_POS));
-    MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_X2TRIM,
-                 (bestTrim << MXC_F_TRIMSIR_RTC_X2TRIM_POS));
+    MXC_SETFIELD(MXC_TRIMSIR->rtcx1, MXC_F_TRIMSIR_RTCX1_CAP,
+                 (bestTrim << MXC_F_TRIMSIR_RTCX1_CAP_POS));
+    MXC_SETFIELD(MXC_TRIMSIR->rtcx2, MXC_F_TRIMSIR_RTCX2_CAP,
+                 (bestTrim << MXC_F_TRIMSIR_RTCX2_CAP_POS));
 
     /* Adjust 32K freq if we can't get close enough to 32768 Hz */
     if (bestElapsed >= SEARCH_TARGET) {

@@ -73,7 +73,7 @@ extern "C" {
  */
 typedef struct {
     __R  uint32_t rsv_0x0_0x3b[15];
-    __I  uint32_t rtcx1;                /**< <tt>\b 0x3C:</tt> TRIMSIR RTCX1 Register */
+    __IO uint32_t rtcx1;                /**< <tt>\b 0x3C:</tt> TRIMSIR RTCX1 Register */
     __R  uint32_t rsv_0x40;
     __IO uint32_t rtcx2;                /**< <tt>\b 0x44:</tt> TRIMSIR RTCX2 Register */
 } mxc_trimsir_regs_t;
@@ -92,7 +92,7 @@ typedef struct {
 /**
  * @ingroup  trimsir_registers
  * @defgroup TRIMSIR_RTCX1 TRIMSIR_RTCX1
- * @brief    RTC X2 Capacitor Setting.
+ * @brief    RTC X1 Capacitor Setting.
  * @{
  */
 #define MXC_F_TRIMSIR_RTCX1_CAP_POS                    0 /**< RTCX1_CAP Position */

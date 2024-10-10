@@ -176,8 +176,6 @@ typedef struct {
 #define MXC_S_SPI_CTRL0_TS_ACTIVE_TS1                  (MXC_V_SPI_CTRL0_TS_ACTIVE_TS1 << MXC_F_SPI_CTRL0_TS_ACTIVE_POS) /**< CTRL0_TS_ACTIVE_TS1 Setting */
 #define MXC_V_SPI_CTRL0_TS_ACTIVE_TS2                  ((uint32_t)0x4UL) /**< CTRL0_TS_ACTIVE_TS2 Value */
 #define MXC_S_SPI_CTRL0_TS_ACTIVE_TS2                  (MXC_V_SPI_CTRL0_TS_ACTIVE_TS2 << MXC_F_SPI_CTRL0_TS_ACTIVE_POS) /**< CTRL0_TS_ACTIVE_TS2 Setting */
-#define MXC_V_SPI_CTRL0_TS_ACTIVE_TS3                  ((uint32_t)0x8UL) /**< CTRL0_TS_ACTIVE_TS3 Value */
-#define MXC_S_SPI_CTRL0_TS_ACTIVE_TS3                  (MXC_V_SPI_CTRL0_TS_ACTIVE_TS3 << MXC_F_SPI_CTRL0_TS_ACTIVE_POS) /**< CTRL0_TS_ACTIVE_TS3 Setting */
 
 /**@} end of group SPI_CTRL0_Register */
 
@@ -258,15 +256,13 @@ typedef struct {
 #define MXC_F_SPI_CTRL2_THREE_WIRE                     ((uint32_t)(0x1UL << MXC_F_SPI_CTRL2_THREE_WIRE_POS)) /**< CTRL2_THREE_WIRE Mask */
 
 #define MXC_F_SPI_CTRL2_TSPOL_POS                      16 /**< CTRL2_TSPOL Position */
-#define MXC_F_SPI_CTRL2_TSPOL                          ((uint32_t)(0xFUL << MXC_F_SPI_CTRL2_TSPOL_POS)) /**< CTRL2_TSPOL Mask */
+#define MXC_F_SPI_CTRL2_TSPOL                          ((uint32_t)(0x7UL << MXC_F_SPI_CTRL2_TSPOL_POS)) /**< CTRL2_TSPOL Mask */
 #define MXC_V_SPI_CTRL2_TSPOL_TS0_HIGH                 ((uint32_t)0x1UL) /**< CTRL2_TSPOL_TS0_HIGH Value */
 #define MXC_S_SPI_CTRL2_TSPOL_TS0_HIGH                 (MXC_V_SPI_CTRL2_TSPOL_TS0_HIGH << MXC_F_SPI_CTRL2_TSPOL_POS) /**< CTRL2_TSPOL_TS0_HIGH Setting */
 #define MXC_V_SPI_CTRL2_TSPOL_TS1_HIGH                 ((uint32_t)0x2UL) /**< CTRL2_TSPOL_TS1_HIGH Value */
 #define MXC_S_SPI_CTRL2_TSPOL_TS1_HIGH                 (MXC_V_SPI_CTRL2_TSPOL_TS1_HIGH << MXC_F_SPI_CTRL2_TSPOL_POS) /**< CTRL2_TSPOL_TS1_HIGH Setting */
 #define MXC_V_SPI_CTRL2_TSPOL_TS2_HIGH                 ((uint32_t)0x4UL) /**< CTRL2_TSPOL_TS2_HIGH Value */
 #define MXC_S_SPI_CTRL2_TSPOL_TS2_HIGH                 (MXC_V_SPI_CTRL2_TSPOL_TS2_HIGH << MXC_F_SPI_CTRL2_TSPOL_POS) /**< CTRL2_TSPOL_TS2_HIGH Setting */
-#define MXC_V_SPI_CTRL2_TSPOL_TS3_HIGH                 ((uint32_t)0x8UL) /**< CTRL2_TSPOL_TS3_HIGH Value */
-#define MXC_S_SPI_CTRL2_TSPOL_TS3_HIGH                 (MXC_V_SPI_CTRL2_TSPOL_TS3_HIGH << MXC_F_SPI_CTRL2_TSPOL_POS) /**< CTRL2_TSPOL_TS3_HIGH Setting */
 
 /**@} end of group SPI_CTRL2_Register */
 
