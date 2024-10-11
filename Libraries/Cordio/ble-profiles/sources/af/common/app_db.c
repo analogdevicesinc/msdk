@@ -1306,7 +1306,7 @@ void AppDbNvmReadAll(void)
   /* Read all records. */
   for (i = 0; i < APP_DB_NUM_RECS; i++)
   {
-    bool_t valid = FALSE;
+    uint8_t valid = 0;
     appDbRec_t *pRec = &appDb.rec[i];
 
     /* Verify record is valid. */
