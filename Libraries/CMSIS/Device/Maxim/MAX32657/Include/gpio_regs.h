@@ -96,8 +96,8 @@ typedef struct {
     __IO uint32_t wken_clr;             /**< <tt>\b 0x54:</tt> GPIO WKEN_CLR Register */
     __R  uint32_t rsv_0x58;
     __IO uint32_t dualedge;             /**< <tt>\b 0x5C:</tt> GPIO DUALEDGE Register */
-    __IO uint32_t padctrl0;             /**< <tt>\b 0x60:</tt> GPIO PADCTRL0 Register */
-    __IO uint32_t padctrl1;             /**< <tt>\b 0x64:</tt> GPIO PADCTRL1 Register */
+    __IO uint32_t padctrl;              /**< <tt>\b 0x60:</tt> GPIO PADCTRL Register */
+    __R  uint32_t rsv_0x64;
     __IO uint32_t en1;                  /**< <tt>\b 0x68:</tt> GPIO EN1 Register */
     __IO uint32_t en1_set;              /**< <tt>\b 0x6C:</tt> GPIO EN1_SET Register */
     __IO uint32_t en1_clr;              /**< <tt>\b 0x70:</tt> GPIO EN1_CLR Register */
@@ -143,8 +143,7 @@ typedef struct {
 #define MXC_R_GPIO_WKEN_SET                ((uint32_t)0x00000050UL) /**< Offset from GPIO Base Address: <tt> 0x0050</tt> */
 #define MXC_R_GPIO_WKEN_CLR                ((uint32_t)0x00000054UL) /**< Offset from GPIO Base Address: <tt> 0x0054</tt> */
 #define MXC_R_GPIO_DUALEDGE                ((uint32_t)0x0000005CUL) /**< Offset from GPIO Base Address: <tt> 0x005C</tt> */
-#define MXC_R_GPIO_PADCTRL0                ((uint32_t)0x00000060UL) /**< Offset from GPIO Base Address: <tt> 0x0060</tt> */
-#define MXC_R_GPIO_PADCTRL1                ((uint32_t)0x00000064UL) /**< Offset from GPIO Base Address: <tt> 0x0064</tt> */
+#define MXC_R_GPIO_PADCTRL                 ((uint32_t)0x00000060UL) /**< Offset from GPIO Base Address: <tt> 0x0060</tt> */
 #define MXC_R_GPIO_EN1                     ((uint32_t)0x00000068UL) /**< Offset from GPIO Base Address: <tt> 0x0068</tt> */
 #define MXC_R_GPIO_EN1_SET                 ((uint32_t)0x0000006CUL) /**< Offset from GPIO Base Address: <tt> 0x006C</tt> */
 #define MXC_R_GPIO_EN1_CLR                 ((uint32_t)0x00000070UL) /**< Offset from GPIO Base Address: <tt> 0x0070</tt> */
@@ -473,39 +472,21 @@ typedef struct {
 
 /**
  * @ingroup  gpio_registers
- * @defgroup GPIO_PADCTRL0 GPIO_PADCTRL0
- * @brief    GPIO Input Mode Config 0. Each bit in this register enables the weak pull-up for
- *           the associated GPIO pin in this port.
+ * @defgroup GPIO_PADCTRL GPIO_PADCTRL
+ * @brief    GPIO Pad Control. Each bit in this register configures the pad for the
+ *           associated GPIO pin in this port.
  * @{
  */
-#define MXC_F_GPIO_PADCTRL0_ALL_POS                    0 /**< PADCTRL0_ALL Position */
-#define MXC_F_GPIO_PADCTRL0_ALL                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PADCTRL0_ALL_POS)) /**< PADCTRL0_ALL Mask */
-#define MXC_V_GPIO_PADCTRL0_ALL_IMPEDANCE              ((uint32_t)0x0UL) /**< PADCTRL0_ALL_IMPEDANCE Value */
-#define MXC_S_GPIO_PADCTRL0_ALL_IMPEDANCE              (MXC_V_GPIO_PADCTRL0_ALL_IMPEDANCE << MXC_F_GPIO_PADCTRL0_ALL_POS) /**< PADCTRL0_ALL_IMPEDANCE Setting */
-#define MXC_V_GPIO_PADCTRL0_ALL_PU                     ((uint32_t)0x1UL) /**< PADCTRL0_ALL_PU Value */
-#define MXC_S_GPIO_PADCTRL0_ALL_PU                     (MXC_V_GPIO_PADCTRL0_ALL_PU << MXC_F_GPIO_PADCTRL0_ALL_POS) /**< PADCTRL0_ALL_PU Setting */
-#define MXC_V_GPIO_PADCTRL0_ALL_PD                     ((uint32_t)0x2UL) /**< PADCTRL0_ALL_PD Value */
-#define MXC_S_GPIO_PADCTRL0_ALL_PD                     (MXC_V_GPIO_PADCTRL0_ALL_PD << MXC_F_GPIO_PADCTRL0_ALL_POS) /**< PADCTRL0_ALL_PD Setting */
+#define MXC_F_GPIO_PADCTRL_ALL_POS                     0 /**< PADCTRL_ALL Position */
+#define MXC_F_GPIO_PADCTRL_ALL                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PADCTRL_ALL_POS)) /**< PADCTRL_ALL Mask */
+#define MXC_V_GPIO_PADCTRL_ALL_IMPEDANCE               ((uint32_t)0x0UL) /**< PADCTRL_ALL_IMPEDANCE Value */
+#define MXC_S_GPIO_PADCTRL_ALL_IMPEDANCE               (MXC_V_GPIO_PADCTRL_ALL_IMPEDANCE << MXC_F_GPIO_PADCTRL_ALL_POS) /**< PADCTRL_ALL_IMPEDANCE Setting */
+#define MXC_V_GPIO_PADCTRL_ALL_PU                      ((uint32_t)0x1UL) /**< PADCTRL_ALL_PU Value */
+#define MXC_S_GPIO_PADCTRL_ALL_PU                      (MXC_V_GPIO_PADCTRL_ALL_PU << MXC_F_GPIO_PADCTRL_ALL_POS) /**< PADCTRL_ALL_PU Setting */
+#define MXC_V_GPIO_PADCTRL_ALL_PD                      ((uint32_t)0x2UL) /**< PADCTRL_ALL_PD Value */
+#define MXC_S_GPIO_PADCTRL_ALL_PD                      (MXC_V_GPIO_PADCTRL_ALL_PD << MXC_F_GPIO_PADCTRL_ALL_POS) /**< PADCTRL_ALL_PD Setting */
 
-/**@} end of group GPIO_PADCTRL0_Register */
-
-/**
- * @ingroup  gpio_registers
- * @defgroup GPIO_PADCTRL1 GPIO_PADCTRL1
- * @brief    GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for
- *           the associated GPIO pin in this port.
- * @{
- */
-#define MXC_F_GPIO_PADCTRL1_ALL_POS                    0 /**< PADCTRL1_ALL Position */
-#define MXC_F_GPIO_PADCTRL1_ALL                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PADCTRL1_ALL_POS)) /**< PADCTRL1_ALL Mask */
-#define MXC_V_GPIO_PADCTRL1_ALL_IMPEDANCE              ((uint32_t)0x0UL) /**< PADCTRL1_ALL_IMPEDANCE Value */
-#define MXC_S_GPIO_PADCTRL1_ALL_IMPEDANCE              (MXC_V_GPIO_PADCTRL1_ALL_IMPEDANCE << MXC_F_GPIO_PADCTRL1_ALL_POS) /**< PADCTRL1_ALL_IMPEDANCE Setting */
-#define MXC_V_GPIO_PADCTRL1_ALL_PU                     ((uint32_t)0x1UL) /**< PADCTRL1_ALL_PU Value */
-#define MXC_S_GPIO_PADCTRL1_ALL_PU                     (MXC_V_GPIO_PADCTRL1_ALL_PU << MXC_F_GPIO_PADCTRL1_ALL_POS) /**< PADCTRL1_ALL_PU Setting */
-#define MXC_V_GPIO_PADCTRL1_ALL_PD                     ((uint32_t)0x2UL) /**< PADCTRL1_ALL_PD Value */
-#define MXC_S_GPIO_PADCTRL1_ALL_PD                     (MXC_V_GPIO_PADCTRL1_ALL_PD << MXC_F_GPIO_PADCTRL1_ALL_POS) /**< PADCTRL1_ALL_PD Setting */
-
-/**@} end of group GPIO_PADCTRL1_Register */
+/**@} end of group GPIO_PADCTRL_Register */
 
 /**
  * @ingroup  gpio_registers

@@ -177,11 +177,6 @@
                 <description>TS2 is selected.</description>
                 <value>0x4</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>TS3</name>
-                <description>TS3 is selected.</description>
-                <value>0x8</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
         </fields>
@@ -399,7 +394,7 @@
             <name>TSPOL</name>
             <description>Target Select Polarity, each Target Select can have unique polarity.</description>
             <bitOffset>16</bitOffset>
-            <bitWidth>4</bitWidth>
+            <bitWidth>3</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>TS0_high</name>
@@ -415,11 +410,6 @@
                 <name>TS2_high</name>
                 <description>TS2 active high.</description>
                 <value>0x4</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>TS3_high</name>
-                <description>TS3 active high.</description>
-                <value>0x8</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
