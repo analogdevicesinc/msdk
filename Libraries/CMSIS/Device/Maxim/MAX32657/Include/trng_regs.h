@@ -7,7 +7,9 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Analog Devices, Inc.),
+ * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
