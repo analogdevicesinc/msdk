@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -88,7 +92,7 @@ typedef struct {
     __IO uint32_t cn;                   /**< <tt>\b 0x000:</tt> DMA CN Register */
     __I  uint32_t intr;                 /**< <tt>\b 0x004:</tt> DMA INTR Register */
     __R  uint32_t rsv_0x8_0xff[62];
-    __IO mxc_dma_ch_regs_t    ch[16];   /**< <tt>\b 0x100:</tt> DMA CH Register */
+    __IO mxc_dma_ch_regs_t ch[16];      /**< <tt>\b 0x100:</tt> DMA CH Register */
 } mxc_dma_regs_t;
 
 /* Register offsets for module DMA */
