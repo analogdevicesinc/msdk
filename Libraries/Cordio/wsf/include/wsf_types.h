@@ -44,7 +44,7 @@ extern "C" {
 #include <stddef.h>
 
 #ifndef bool_t
-  #define bool_t bool
+#define bool_t bool
 #endif
 
 /* New library uses bool instead of bool_t */
@@ -53,11 +53,11 @@ extern "C" {
 #endif
 
 #ifndef FALSE
-  #define FALSE 0
+#define FALSE 0
 #endif
 
 #ifndef TRUE
-  #define TRUE (!FALSE)
+#define TRUE (!FALSE)
 #endif
 
 /*! \} */    /* Integer Data Types */
