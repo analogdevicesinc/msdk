@@ -27,6 +27,7 @@ Tools/MSYS2
 *.d
 /**/make.log
 /**/.idea/
+/**/.venv/
 /**/venv/
 session.txt.log
 flash.log
