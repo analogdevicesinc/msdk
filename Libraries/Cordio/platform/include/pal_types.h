@@ -42,21 +42,18 @@ extern "C" {
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 #ifndef bool_t
 #define bool_t bool
 #endif
 
-#ifndef bool
-#define bool _Bool
-#endif
-
 #ifndef FALSE
-#define FALSE 0
+#define FALSE false
 #endif
 
 #ifndef TRUE
-#define TRUE (!FALSE)
+#define TRUE true
 #endif
 
 /*! \} */ /* Integer Data Types */
