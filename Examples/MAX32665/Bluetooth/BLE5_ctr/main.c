@@ -76,7 +76,7 @@ static void mainLoadConfiguration(void)
     PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
-    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
+    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, (uint8_t*)&mainLlRtCfg.phy2mSup, 4);
 
     /* Set 5.0 requirements. */
     mainLlRtCfg.btVer = BT_VER;
