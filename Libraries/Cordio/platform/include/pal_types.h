@@ -44,7 +44,11 @@ extern "C" {
 #include <stddef.h>
 
 #ifndef bool_t
-  #define bool_t uint8_t
+  #define bool_t bool
+#endif
+
+#ifndef bool
+#define bool _Bool
 #endif
 
 #ifndef FALSE
