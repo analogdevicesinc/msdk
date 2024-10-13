@@ -36,10 +36,10 @@ __attribute__((aligned(512)))
 static void (*ramVectorTable[MXC_IRQ_COUNT])(void);
 
 #if defined(__ICCARM__)
-    extern void (*const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 #else
-    /* should be defined in starup_<device>.S */
-    extern uint32_t __isr_vector[MXC_IRQ_COUNT];
+/* should be defined in starup_<device>.S */
+extern uint32_t __isr_vector[MXC_IRQ_COUNT];
 #endif
 
 void NVIC_SetRAM(void)
