@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -197,7 +197,7 @@ int MXC_DMA_RevB_SetSrcDst(mxc_dma_srcdst_t srcdst)
 //TODO(ADI): Necessary?
 int MXC_DMA_RevB_GetSrcDst(mxc_dma_srcdst_t *srcdst)
 {
-    if (CHECK_HANDLE(srcdst.ch)) {
+    if (CHECK_HANDLE(srcdst->ch)) {
         srcdst->source = (void *)dma_resource[srcdst->ch].regs->src;
         srcdst->dest = (void *)dma_resource[srcdst->ch].regs->dst;
         srcdst->len = (dma_resource[srcdst->ch].regs->cnt) & ~MXC_F_DMA_CNTRLD_EN;
@@ -231,7 +231,7 @@ int MXC_DMA_RevB_SetSrcReload(mxc_dma_srcdst_t srcdst)
 //TODO(ADI): Necessary?
 int MXC_DMA_RevB_GetSrcReload(mxc_dma_srcdst_t *srcdst)
 {
-    if (CHECK_HANDLE(srcdst.ch)) {
+    if (CHECK_HANDLE(srcdst->ch)) {
         srcdst->source = (void *)dma_resource[srcdst->ch].regs->srcrld;
         srcdst->dest = (void *)dma_resource[srcdst->ch].regs->dstrld;
         srcdst->len = (dma_resource[srcdst->ch].regs->cntrld) & ~MXC_F_DMA_CNTRLD_EN;
