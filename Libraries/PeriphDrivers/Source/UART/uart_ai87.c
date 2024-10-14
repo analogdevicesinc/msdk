@@ -192,7 +192,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = IBRO_FREQ;
         } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
-                   MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+                   MXC_S_UART_CTRL_BCLKSRC_CLK1) {
             periphClock = ERTCO_FREQ * 2;
         } else {
             return E_BAD_PARAM;
