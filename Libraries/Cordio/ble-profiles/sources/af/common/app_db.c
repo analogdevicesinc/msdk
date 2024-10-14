@@ -962,7 +962,7 @@ bool_t AppDbNvmStorePeerRpao(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, recIndex);
 
-    return WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerRpao, sizeof(bool_t), NULL);
   }else
   {
     APP_TRACE_INFO0("Invalid record index!");
@@ -1021,7 +1021,7 @@ bool_t AppDbNvmStoreHdlList(appDbHdl_t hdl)
 
     nvmId = DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, recIndex);
 
-    return WsfNvmWriteData(nvmId, &pRec->discStatus, sizeof(uint8_t), NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) &pRec->discStatus, sizeof(uint8_t), NULL);
   }else
   {
     APP_TRACE_INFO0("Invalid record index!");
@@ -1181,7 +1181,7 @@ bool_t AppDbNvmStoreDbHash(appDbHdl_t hdl)
     appDbRec_t *pRec = &appDb.rec[recIndex];
     uint32_t nvmId = DBNV_ID(APP_DB_NVM_HASH_ID, recIndex);
 
-    return WsfNvmWriteData(nvmId, pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
+    return WsfNvmWriteData(nvmId, (uint8_t*) pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
   }
   else
   {
@@ -1213,7 +1213,7 @@ bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
 
       /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
       /*  - First ensure valid FALSE before writing parameters. */
-      bool_t writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+      bool_t writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), (uint8_t*) &valid, sizeof(bool_t), NULL);
 
       if(!writeOk){
         return FALSE;
@@ -1221,7 +1221,7 @@ bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
 
 
       /* Write record parameters. */
-      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), (uint8_t*) &pRec->keyValidMask, sizeof(uint8_t), NULL);
       if(!writeOk){
         return FALSE;
       }
@@ -1232,7 +1232,7 @@ bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
         if(!writeOk){
         return FALSE;
         }
-        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), (uint8_t*) &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
         if(!writeOk){
           return FALSE;
         }
@@ -1244,7 +1244,7 @@ bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
         if(!writeOk){
           return FALSE;
         }
-        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
+        writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), (uint8_t*) &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
         if(!writeOk){
           return FALSE;
         }
@@ -1266,21 +1266,21 @@ bool_t AppDbNvmStoreBond(appDbHdl_t hdl)
         }
       }
 
-      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), (uint8_t*) pRec->peerAddr, sizeof(bdAddr_t), NULL);
       if(!writeOk){
         return FALSE;
       }
-      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), (uint8_t*) &pRec->addrType, sizeof(uint8_t), NULL);
       if(!writeOk){
         return FALSE;
       }
-      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
+      writeOk = WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
       if(!writeOk){
         return FALSE;
       }
       /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
       /*  - Second set valid TRUE after writing parameters. */
-      return WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &pRec->valid, sizeof(bool_t), NULL);
+      return WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), (uint8_t*) &pRec->valid, sizeof(bool_t), NULL);
     }
 
     return TRUE;
@@ -1306,11 +1306,11 @@ void AppDbNvmReadAll(void)
   /* Read all records. */
   for (i = 0; i < APP_DB_NUM_RECS; i++)
   {
-    bool_t valid = FALSE;
+    uint8_t valid = 0;
     appDbRec_t *pRec = &appDb.rec[i];
 
     /* Verify record is valid. */
-    WsfNvmReadData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+    WsfNvmReadData(DBNV_ID(APP_DB_NVM_VALID_ID, i), (uint8_t*) &valid, sizeof(bool_t), NULL);
 
     if (valid && valid != 0xFF)
     {
@@ -1318,21 +1318,21 @@ void AppDbNvmReadAll(void)
       pRec->valid = TRUE;
 
       /* Read bonding parameters. */
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), (uint8_t*) pRec->peerAddr, sizeof(bdAddr_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), (uint8_t*) &pRec->addrType, sizeof(uint8_t), NULL);
 
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), (uint8_t*) &pRec->keyValidMask, sizeof(uint8_t), NULL);
 
       if (pRec->keyValidMask & DM_KEY_LOCAL_LTK)
       {
         WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
+        WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), (uint8_t*) &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
       }
 
       if (pRec->keyValidMask & DM_KEY_PEER_LTK)
       {
         WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
+        WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), (uint8_t*) &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
       }
 
       if (pRec->keyValidMask & DM_KEY_IRK)
@@ -1346,17 +1346,17 @@ void AppDbNvmReadAll(void)
       }
 
       /* Read additional parameters. */
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, i), &pRec->peerRpao, sizeof(bool_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, i), (uint8_t*) &pRec->peerRpao, sizeof(bool_t), NULL);
       WsfNvmReadData(DBNV_ID(APP_DB_NVM_CCC_TBL_ID, i), (uint8_t*) pRec->cccTbl, sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
 
       WsfNvmReadData(DBNV_ID(APP_DB_NVM_HDL_LIST_ID, i), (uint8_t*) &pRec->hdlList, sizeof(uint16_t) * APP_DB_HDL_LIST_LEN, NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, i), &pRec->discStatus, sizeof(uint8_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, i), &pRec->peerAddrRes, sizeof(bool_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, i), (uint8_t*) &pRec->discStatus, sizeof(uint8_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, i), (uint8_t*) &pRec->peerAddrRes, sizeof(bool_t), NULL);
 
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CAS_ID, i), &pRec->changeAwareState, sizeof(uint8_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CSF_ID, i), pRec->csf, ATT_CSF_LEN, NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_HASH_ID, i), pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CAS_ID, i), (uint8_t*) &pRec->changeAwareState, sizeof(uint8_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CSF_ID, i), (uint8_t*) pRec->csf, ATT_CSF_LEN, NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
+      WsfNvmReadData(DBNV_ID(APP_DB_NVM_HASH_ID, i), (uint8_t*) pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
     }
   }
 }

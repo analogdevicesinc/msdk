@@ -42,21 +42,8 @@ extern "C" {
 
 #include <stdint.h>
 #include <stddef.h>
-
-#ifndef bool_t
-  #define bool_t uint8_t
-#endif
-
-/* New library uses bool instead of bool_t */
-#define bool _Bool
-
-#ifndef FALSE
-  #define FALSE 0
-#endif
-
-#ifndef TRUE
-  #define TRUE (!FALSE)
-#endif
+#include <stdbool.h>
+#include "pal_types.h"
 
 /*! \} */    /* Integer Data Types */
 
