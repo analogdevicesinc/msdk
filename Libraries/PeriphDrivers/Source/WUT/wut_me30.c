@@ -168,13 +168,15 @@ static void MXC_WUT_GetWUTSync(mxc_wut_regs_t *wut, uint32_t *wutCnt, uint32_t *
 /* ************************************************************************** */
 static void MXC_WUT_SetTrim(uint32_t trimValue)
 {
-    MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_X1TRIM,
-                 (trimValue << MXC_F_TRIMSIR_RTC_X1TRIM_POS));
-    MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_X2TRIM,
-                 (trimValue << MXC_F_TRIMSIR_RTC_X2TRIM_POS));
+    MXC_SETFIELD(MXC_TRIMSIR->rtcx1, MXC_F_TRIMSIR_RTCX1_CAP,
+                 (trimValue << MXC_F_TRIMSIR_RTCX1_CAP_POS));
+    MXC_SETFIELD(MXC_TRIMSIR->rtcx2, MXC_F_TRIMSIR_RTCX2_CAP,
+                 (trimValue << MXC_F_TRIMSIR_RTCX2_CAP_POS));
 }
 
 /* ************************************************************************** */
+// TODO(SW): TRIMSIR RTC X1/X2 register descriptions were updated due to design changes.
+//      CAP vs TRIM value differences unknown, and this function has not been tested.
 static int MXC_WUT_StartTrim(mxc_wut_regs_t *wut)
 {
     uint32_t wutCnt0, wutCnt1;
@@ -194,7 +196,7 @@ static int MXC_WUT_StartTrim(mxc_wut_regs_t *wut)
     }
 
     /* Start with existing trim value */
-    trimValue = (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_X1TRIM) >> MXC_F_TRIMSIR_RTC_X1TRIM_POS;
+    trimValue = (MXC_TRIMSIR->rtcx1 & MXC_F_TRIMSIR_RTCX1_CAP) >> MXC_F_TRIMSIR_RTCX1_CAP_POS;
     MXC_WUT_SetTrim(trimValue);
 
     /* Initialize the variables */
@@ -236,7 +238,7 @@ int MXC_WUT_Handler(mxc_wut_regs_t *wut)
     calcTicks = ((uint64_t)wutTicks * (uint64_t)BB_CLK_RATE_HZ) / (uint64_t)32768;
 
     trimComplete = 0;
-    trimValue = (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_X1TRIM) >> MXC_F_TRIMSIR_RTC_X1TRIM_POS;
+    trimValue = (MXC_TRIMSIR->rtcx1 & MXC_F_TRIMSIR_RTCX1_CAP) >> MXC_F_TRIMSIR_RTCX1_CAP_POS;
 
     if (snapTicks > calcTicks) {
         /* See if we're closer to the calculated value */

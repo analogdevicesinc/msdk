@@ -57,7 +57,6 @@ endif
 endif
 endif
 
-
 ifneq "$(wildcard $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk)" ""
 include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/mxc_version.mk
 endif

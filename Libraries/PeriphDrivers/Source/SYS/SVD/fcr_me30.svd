@@ -289,6 +289,32 @@
         </fields>
       </register>
       <register>
+        <name>ERFOCTRL</name>
+        <description>ERFO Control Register.</description>
+        <addressOffset>0x24</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>CAP_X1</name>
+            <description>Load capacitor tuning bit for X1.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>CAP_X2</name>
+            <description>Load capacitor tuning bit for X2.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>CAP_BYPASS</name>
+            <description>Bypass (disable) load capacitors.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>FRQCNTCTRL</name>
         <description>Frequency Counter Control Register.</description>
         <addressOffset>0x28</addressOffset>
