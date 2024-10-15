@@ -85,7 +85,14 @@ __weak void GPIO2_IRQHandler(void)
 /******************************************************************************/
 static int ext_flash_board_init(void)
 {
-    return MXC_SPIXF_Init(0, EXT_FLASH_BAUD);
+    int err;
+
+    err = MXC_SPIXF_Init(0x0B, EXT_FLASH_BAUD);
+
+    if (err == E_NO_ERROR) {
+        MXC_SPIXF_Enable();
+    }
+    return err;
 }
 
 /******************************************************************************/
