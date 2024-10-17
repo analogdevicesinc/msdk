@@ -175,7 +175,7 @@ To open the disassembly view:
 
     ![Figure 49](res/Fig49.jpg)
 
-    Alternatively, right click -> "Open Disassembly View"
+    Alternatively, right-click -> "Open Disassembly View"
 
     ![Figure 50](res/Fig50.jpg)
 
@@ -190,7 +190,7 @@ For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_
 ???+ note "ℹ️ **Note**"
     The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
 
-This section demonstrates how to debug `-riscv` projects in VS Code using the [mnist-riscv](/Examples/MAX78000/CNN/mnist-riscv) project for the MAX78000 as an example.
+This section demonstrates how to debug `-riscv` projects in VS Code using the mnist-riscv project for the MAX78000 as an example. Example files are located in the `Examples/MAX78000/CNN/mnist-riscv` directory.
 
 1. Connect _both_ your Arm (SWD) and RISC-V (JTAG) debuggers. VSCode-Maxim projects come pre-configured to use the [ARM-USB-OCD-H](https://www.olimex.com/Products/ARM/JTAG/ARM-USB-OCD-H/) + [ARM-JTAG-20-10](https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-20-10/) adapters for the RISC-V JTAG port. Ex:
 
