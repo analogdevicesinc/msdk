@@ -237,7 +237,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
 
     // check if UARt is LP UART
     if (uart == MXC_UART3) {
-        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK1) {
             periphClock = EXTCLK2_FREQ * 2;
         } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
                    MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
