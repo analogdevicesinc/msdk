@@ -1,0 +1,10 @@
+{
+	"name":"Unity",
+	"ipaths":[
+		"src"
+	],
+	"vpaths":[
+		"src"
+	],
+	"whitelist":"False"
+}
