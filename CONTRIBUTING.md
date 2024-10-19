@@ -257,11 +257,11 @@ DoxyGen is automatically run across the MSDK code as part of the User Guide's bu
 
 ### User Guide
 
-An MSDK User Guide is maintained in the [USERGUIDE.md](USERGUIDE.md) file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.
+The [MSDK User Guide](Documentation/user-guide/index.md) is maintained in the `Documentation/user-guide` folder.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.
 
 When writing markdown links, relative paths should always be used.  Additionally, links to local files on the user's filesystem **cannot** be used, since the online copy of the docs will throw a 404 on them.  See [Writing Your Docs](https://www.mkdocs.org/user-guide/writing-your-docs/) for more details.
 
-Static resources such as images should be placed in the `res` folder.
+Static resources such as images should be placed in the `user-guide/res` folder.
 
 ### Building the Documentation
 
