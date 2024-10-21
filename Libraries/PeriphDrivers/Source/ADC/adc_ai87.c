@@ -37,9 +37,9 @@
  */
 
 #define MXC_F_MCR_ADCCFG2_CH 0x3
-#define TEMP_FACTOR 530.582f / 4096.0
-#define TEMP_FACTOR1V25 1.25 * TEMP_FACTOR
-#define TEMP_FACTOR2V048 2.048 * TEMP_FACTOR
+#define TEMP_FACTOR 530.582f / 4096.0f
+#define TEMP_FACTOR1V25 1.25f * TEMP_FACTOR
+#define TEMP_FACTOR2V048 2.048f * TEMP_FACTOR
 
 static void initGPIOForChannel(mxc_adc_chsel_t channel)
 {
@@ -397,7 +397,7 @@ int MXC_ConvertTemperature_ToF(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref
                                float *temp)
 {
     if (MXC_ConvertTemperature_ToK(tempSensor_Readout, ref, ext_ref, temp) == E_NO_ERROR) {
-        *temp = ((*temp * 1.8) - 459.67f);
+        *temp = (*temp * 1.8f) - 459.67f;
         return E_NO_ERROR;
     } else {
         return E_BAD_PARAM;
