@@ -295,7 +295,6 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
 
-  /* Initialize the UART */
   result = MXC_UART_Init(MXC_UART_GET_UART(uartNum), pCfg->baud, MXC_UART_IBRO_CLK);
   
 
