@@ -27,14 +27,20 @@ on:
 
 permissions:
   actions: write
+  contents: write
 
 env:
   CLANG_VERSION: 14
 
 jobs:
 
-  run-on-pr: 
-    # Run on branchs, not forked PR branches
+  run-on-pr:
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+
+    # Run on branches, not forked PR branches
     if: |
       contains(github.event.comment.body, '/clang-format-run')
 
