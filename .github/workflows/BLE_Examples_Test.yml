@@ -595,8 +595,6 @@ jobs:
           boards: |
             max32655_board1
             max32655_board2
-            # max32665_board1
-            # max32690_board_w1
           lock: true
           timeout: 3600 # Attempt to lock for an hour
 
@@ -621,8 +619,6 @@ jobs:
           board: |
             max32655_board1
             max32655_board2
-            # max32665_board1
-            # max32690_board_w1
 
           has_two_flash_banks: |
             true
@@ -668,8 +664,6 @@ jobs:
           board: |
             max32655_board1
             max32655_board2
-            # max32665_board1
-            # max32690_board_w1
       
       - name: Flash OTAS
         if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
