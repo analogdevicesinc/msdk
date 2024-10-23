@@ -422,6 +422,7 @@ class PolygonSubscriber(Node):
         self._status("Grabbing object")
         goal_joint_angle[4] = 0.002
         teleop_keyboard.send_goal_tool_control()
+        sleep(1) # Wait for grabber to close
 
     def search_forward(self):
         global goal_kinematics_pose
@@ -539,7 +540,7 @@ class PolygonSubscriber(Node):
             elif self.state == 6: # Move back to home
                 global height_drop
                 global drop_angle
-                height_drop = (deepcopy(present_kinematics_pose[2]) * 1.2)
+                height_drop = (deepcopy(present_kinematics_pose[2]))
                 drop_angle = deepcopy(present_kinematics_pose[3:6])
                 goal_joint_angle = home
 
