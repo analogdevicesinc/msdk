@@ -58,10 +58,9 @@ int MXC_GetLock(uint32_t *lock, uint32_t value)
         return E_BUSY;
     }
 
-    *lock = value
+    *lock = value;
 
-        // Ensure memory ordering
-        __asm volatile("fence rw, rw");
+    __asm volatile("fence rw, rw");
     __enable_irq();
     return E_NO_ERROR;
 }
