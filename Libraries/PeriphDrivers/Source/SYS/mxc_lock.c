@@ -22,21 +22,15 @@
 #include "mxc_device.h"
 #include "mxc_lock.h"
 
-#ifndef __riscv
+
 /* ************************************************************************** */
 int MXC_GetLock(uint32_t *lock, uint32_t value)
 {
-    do {
-        // Return if the lock is taken by a different thread
-        if (__LDREXW((volatile uint32_t *)lock) != 0) {
-            return E_BUSY;
-        }
+    while(*lock != 0) {}
 
-        // Attempt to take the lock
-    } while (__STREXW(value, (volatile uint32_t *)lock) != 0);
-
-    // Do not start any other memory access until memory barrier is complete
-    __DMB();
+    __disable_irq();
+    *lock = 1;
+    __enable_irq();
 
     return E_NO_ERROR;
 }
@@ -45,20 +39,5 @@ int MXC_GetLock(uint32_t *lock, uint32_t value)
 void MXC_FreeLock(uint32_t *lock)
 {
     // Ensure memory operations complete before releasing lock
-    __DMB();
     *lock = 0;
 }
-#else // __riscv
-/* ************************************************************************** */
-int MXC_GetLock(uint32_t *lock, uint32_t value)
-{
-#warning "Unimplemented for RISCV"
-    return E_NO_ERROR;
-}
-
-/* ************************************************************************** */
-void MXC_FreeLock(uint32_t *lock)
-{
-#warning "Unimplemented for RISCV"
-}
-#endif
