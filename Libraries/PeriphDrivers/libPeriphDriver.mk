@@ -60,6 +60,11 @@ CMSIS_ROOT=../CMSIS
 endif
 
 include ${CMSIS_ROOT}/../PeriphDrivers/$(TARGET_LC)_files.mk
+PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_assert.c
+PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_delay.c
+PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/nvic_table.c
+PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/sys_common.c
 
 # # Where to find header files for this project
 IPATH += $(PERIPH_DRIVER_INCLUDE_DIR)

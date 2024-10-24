@@ -313,7 +313,9 @@ static inline int MXC_SYS_In_Crit_Section(void)
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
-
+mxc_sys_package_type_t MXC_SYS_GetPackageType(void);
+int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type);
+int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info);
 /**
  * @brief Gets design revision of the chip.
  * 
