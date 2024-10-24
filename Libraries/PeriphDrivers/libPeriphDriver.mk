@@ -63,8 +63,14 @@ include ${CMSIS_ROOT}/../PeriphDrivers/$(TARGET_LC)_files.mk
 
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
+# TODO(JC): Implement mxc_lock for RISC-V.  Skip for now.
+ifneq "$(RISCV_CORE)" "1"
+ifneq "$(RISCV_CORE)" "RV32"
+# ^ NOTE(JC): Some legacy Makefiles use "RV32".  We recommend using "1" in the UG
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+endif
+endif
 
 # # Where to find header files for this project
 IPATH += $(PERIPH_DRIVER_INCLUDE_DIR)
