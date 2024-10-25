@@ -196,18 +196,16 @@ typedef enum {
     MXC_SYS_CLOCK_XTAL32K = MXC_V_GCR_CLKCN_CLKSEL_XTAL32K,
 } mxc_sys_system_clock_t;
 
-typedef enum
-{
+typedef enum {
     MXC_SYS_PKG_TQFN = 1,
     MXC_SYS_PKG_BGA = 2,
     MXC_SYS_PKG_WLP = 3,
     MXC_SYS_PKG_UNSET = 0xff
-}mxc_sys_package_type_t;
+} mxc_sys_package_type_t;
 
-typedef struct 
-{
+typedef struct {
     uint8_t day, month, year;
-}mxc_sys_date_t;
+} mxc_sys_date_t;
 
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK

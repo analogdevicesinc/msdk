@@ -111,18 +111,16 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLK_CTRL_PSC_DIV128
 } mxc_sys_system_clock_div_t;
 
-typedef enum
-{
+typedef enum {
     MXC_SYS_PKG_TQFN = 1,
     MXC_SYS_PKG_BGA = 2,
     MXC_SYS_PKG_WLP = 3,
     MXC_SYS_PKG_UNSET = 0xff
-}mxc_sys_package_type_t;
+} mxc_sys_package_type_t;
 
-typedef struct 
-{
+typedef struct {
     uint8_t day, month, year;
-}mxc_sys_date_t;
+} mxc_sys_date_t;
 
 #define MXC_SYS_USN_LEN 8
 

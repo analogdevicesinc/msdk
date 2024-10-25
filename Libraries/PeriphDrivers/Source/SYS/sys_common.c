@@ -51,14 +51,13 @@
 
 /* **** Globals **** */
 static mxc_sys_package_type_t pkg_type = MXC_SYS_PKG_UNSET;
-bool info_block_unlocked = false; 
+bool info_block_unlocked = false;
 /* **** Functions **** */
 
 /* ************************************************************************** */
 mxc_sys_package_type_t MXC_SYS_GetPackageType(void)
 {
-    if(pkg_type != MXC_SYS_PKG_UNSET)
-    {
+    if (pkg_type != MXC_SYS_PKG_UNSET) {
         return pkg_type;
     }
 
@@ -66,63 +65,54 @@ mxc_sys_package_type_t MXC_SYS_GetPackageType(void)
 
     // Package codes were only introduced when test date was
     int err = MXC_SYS_GetTestDate(&date);
-    if(err != E_NO_ERROR)
-    {
+    if (err != E_NO_ERROR) {
         return MXC_SYS_PKG_UNSET;
     }
-
 
     MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
 
     const uint8_t maybe_pkg_type = REG8_VAL(PKG_CODE_OFFSET);
     int err = MXC_SYS_SetPackageType(maybe_pkg_type);
-    
-    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
-    
-    MXC_ASSERT(err == E_NO_ERROR);
 
+    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
+
+    MXC_ASSERT(err == E_NO_ERROR);
 
     return pkg_type;
 }
 int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type)
 {
-    switch(new_pkg_type)
-    {
-        case MXC_SYS_PKG_TQFN:
-        case MXC_SYS_PKG_BGA:
-        case MXC_SYS_PKG_WLP:
-        case MXC_SYS_PKG_UNSET:
-            pkg_type = new_pkg_type;
-            return E_NO_ERROR;
-        default:
-            return E_BAD_PARAM;
+    switch (new_pkg_type) {
+    case MXC_SYS_PKG_TQFN:
+    case MXC_SYS_PKG_BGA:
+    case MXC_SYS_PKG_WLP:
+    case MXC_SYS_PKG_UNSET:
+        pkg_type = new_pkg_type;
+        return E_NO_ERROR;
+    default:
+        return E_BAD_PARAM;
     }
 }
 
-
 int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info)
-{   
+{
     MXC_ASSERT(date_info);
-
 
     MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
 
     date_info->day = REG8_VAL(DAY_CODE_OFFSET);
     date_info->month = REG8_VAL(MONTH_CODE_OFFSET);
     date_info->year = REG8_VAL(YEAR_CODE_OFFSET);
-    
+
     MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     // Flash is cleared if not valid
     // Year 2255 is valid
-    if(date_info->month > 12 || date_info->day > 31)
-    {
+    if (date_info->month > 12 || date_info->day > 31) {
         return E_INVALID;
     }
-    
-    
-    return E_NO_ERROR;
 
+    return E_NO_ERROR;
 }
 
 /**@} end of mxc_sys */
