@@ -77,11 +77,7 @@ mxc_sys_package_type_t MXC_SYS_GetPackageType(void)
     MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
     
     MXC_ASSERT(err == E_NO_ERROR);
-
-    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
-
-    MXC_ASSERT(err == E_NO_ERROR);
-
+    
     return pkg_type;
 }
 int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type)
