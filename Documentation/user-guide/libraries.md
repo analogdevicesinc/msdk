@@ -230,9 +230,9 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 Developing a UART Command-Line Interface (CLI) is a common task while developing embedded firmware. The MSDK contains a pre-made command processing library in the `Libraries/CLI` that can be used to simplify and speed up development.
 
-See the [`Libraries/CLI/README.md`](../../Libraries/CLI/README.md) document for more details.
+See the [`Libraries/CLI/README.md`](../Libraries/CLI/README.md) document for more details.
 
-## CoreMark
+## CoreMarkS
 
 [EEMBC’s CoreMark®](https://www.eembc.org/coremark/) is a benchmark that measures the performance of microcontrollers (MCUs) and central processing units (CPUs) used in embedded systems. CoreMark is a simple, yet sophisticated benchmark that is designed specifically to test the functionality of a processor core. Running CoreMark produces a single-number score allowing users to make quick comparisons between processors.
 
