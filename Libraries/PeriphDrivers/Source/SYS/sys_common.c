@@ -34,7 +34,7 @@
 #include "gcr_regs.h"
 #include "fcr_regs.h"
 #include "mcr_regs.h"
-
+#include <stdbool.h>
 
 /**
  * @ingroup mxc_sys
@@ -51,7 +51,7 @@
 
 /* **** Globals **** */
 static mxc_sys_package_type_t pkg_type = MXC_SYS_PKG_UNSET;
-
+bool info_block_unlocked = false; 
 /* **** Functions **** */
 
 /* ************************************************************************** */
@@ -63,29 +63,24 @@ mxc_sys_package_type_t MXC_SYS_GetPackageType(void)
     }
 
     mxc_sys_date_t date;
-    mxc_sys_date_t date_info;
-
-    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
-
-    MXC_SYS_GetTestDate(&date_info);
 
     // Package codes were only introduced when test date was
     int err = MXC_SYS_GetTestDate(&date);
-
     if(err != E_NO_ERROR)
     {
-        pkg_type = MXC_SYS_PKG_UNSET;
+        return MXC_SYS_PKG_UNSET;
     }
-    else
-    {
-        const uint8_t maybe_pkg_type = REG8_VAL(PKG_CODE_OFFSET);
-        int err = MXC_SYS_SetPackageType(maybe_pkg_type);
-        MXC_ASSERT(err == E_NO_ERROR);
-    }
+
+
+    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
+
+    const uint8_t maybe_pkg_type = REG8_VAL(PKG_CODE_OFFSET);
+    int err = MXC_SYS_SetPackageType(maybe_pkg_type);
     
-
-
     MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
+    
+    MXC_ASSERT(err == E_NO_ERROR);
+
 
     return pkg_type;
 }
@@ -108,10 +103,15 @@ int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type)
 int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info)
 {   
     MXC_ASSERT(date_info);
-    
+
+
+    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
+
     date_info->day = REG8_VAL(DAY_CODE_OFFSET);
     date_info->month = REG8_VAL(MONTH_CODE_OFFSET);
     date_info->year = REG8_VAL(YEAR_CODE_OFFSET);
+    
+    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     // Flash is cleared if not valid
     // Year 2255 is valid
