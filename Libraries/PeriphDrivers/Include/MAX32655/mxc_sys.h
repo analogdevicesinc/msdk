@@ -29,6 +29,7 @@
 #include "mxc_device.h"
 #include "gcr_regs.h"
 #include "lpgcr_regs.h"
+#include "mxc_sys_common.h"
 
 #ifdef __cplusplus
 extern "C" {
