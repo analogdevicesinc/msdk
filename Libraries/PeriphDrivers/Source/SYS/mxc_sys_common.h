@@ -40,21 +40,17 @@ extern "C" {
  * @{
  */
 
-
 /** @brief Enumeration to select Package Type*/
-typedef enum
-{
+typedef enum {
     MXC_SYS_PKG_TQFN = 1,
     MXC_SYS_PKG_BGA = 2,
     MXC_SYS_PKG_WLP = 3,
     MXC_SYS_PKG_UNSET = 0xff
-}mxc_sys_package_type_t;
+} mxc_sys_package_type_t;
 
-typedef struct 
-{
+typedef struct {
     uint8_t day, month, year;
-}mxc_sys_date_t;
-
+} mxc_sys_date_t;
 
 /**
  * @brief Reads the device package type.
@@ -73,7 +69,6 @@ int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type);
  * @returns         E_NO_ERROR if date is valid. E_INVALID otherwise
  */
 int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info);
-
 
 #ifdef __cplusplus
 }
