@@ -281,13 +281,13 @@ ifneq ($(DEV_LIB_NFC),1)
 # Add to include directory list
 IPATH += $(LIB_NFC_PCD_PBM_DIR)/include
 PROJ_LDFLAGS += -L$(LIB_NFC_PCD_PBM_DIR)
-PROJ_LIBS += nfc_pcd_pbm_$(LIBRARY_VARIANT)
+PROJ_LIBS += nfc_pcd_pbm_$(MFLOAT_ABI)
 
 # Add to include directory list
 IPATH += $(LIB_NFC_PCD_RF_DRIVER_DIR)/include
 IPATH += $(LIB_NFC_PCD_RF_DRIVER_DIR)/include/nfc
 PROJ_LDFLAGS += -L$(LIB_NFC_PCD_RF_DRIVER_DIR)
-PROJ_LIBS += nfc_pcd_rf_driver_MAX32570_$(LIBRARY_VARIANT)
+PROJ_LIBS += nfc_pcd_rf_driver_MAX32570_$(MFLOAT_ABI)
 
 else
 # Development setup (DEV_LIB_NFC=1) for building libraries
