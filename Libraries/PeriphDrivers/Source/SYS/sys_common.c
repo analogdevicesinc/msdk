@@ -64,8 +64,7 @@ mxc_sys_package_type_t MXC_SYS_GetPackageType(void)
     mxc_sys_date_t date;
 
     // Package codes were only introduced when test date was
-    if(MXC_SYS_GetTestDate(&date) != E_NO_ERROR)
-    {
+    if (MXC_SYS_GetTestDate(&date) != E_NO_ERROR) {
         return MXC_SYS_PKG_UNSET;
     }
 
@@ -73,11 +72,11 @@ mxc_sys_package_type_t MXC_SYS_GetPackageType(void)
 
     const uint8_t maybe_pkg_type = REG8_VAL(PKG_CODE_OFFSET);
     const int err = MXC_SYS_SetPackageType(maybe_pkg_type);
-    
+
     MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
-    
+
     MXC_ASSERT(err == E_NO_ERROR);
-    
+
     return pkg_type;
 }
 int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type)
