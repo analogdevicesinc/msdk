@@ -313,8 +313,22 @@ static inline int MXC_SYS_In_Crit_Section(void)
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
+/**
+ * @brief Reads the device package type.
+ * @returns         Device Package Type (See mxc_sys_package_t for available options)
+ */
 mxc_sys_package_type_t MXC_SYS_GetPackageType(void);
+/**
+ * @brief Set the package type. (Acts as an override to what is in Info Block)
+ * @param new_pkg_type       Device Package Type (See mxc_sys_package_t for available options)
+ * @returns         E_NO_ERROR if package exists.
+ */
 int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type);
+/**
+ * @brief Get date of production test
+ * @param date_info       Pointer to date information struct
+ * @returns         E_NO_ERROR if date is valid. E_INVALID otherwise
+ */
 int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info);
 /**
  * @brief Gets design revision of the chip.

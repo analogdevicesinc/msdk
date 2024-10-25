@@ -234,6 +234,19 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
 
+typedef enum
+{
+    MXC_SYS_PKG_TQFN = 1,
+    MXC_SYS_PKG_BGA = 2,
+    MXC_SYS_PKG_WLP = 3,
+    MXC_SYS_PKG_UNSET = 0xff
+}mxc_sys_package_type_t;
+
+typedef struct 
+{
+    uint8_t day, month, year;
+}mxc_sys_date_t;
+
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
@@ -430,6 +443,24 @@ uint8_t MXC_SYS_GetRev(void);
  * @returns    #E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *serialNumber, int len);
+
+/**
+ * @brief Reads the device package type.
+ * @returns         Device Package Type (See mxc_sys_package_t for available options)
+ */
+mxc_sys_package_type_t MXC_SYS_GetPackageType(void);
+/**
+ * @brief Set the package type. (Acts as an override to what is in Info Block)
+ * @param new_pkg_type       Device Package Type (See mxc_sys_package_t for available options)
+ * @returns         E_NO_ERROR if package exists.
+ */
+int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type);
+/**
+ * @brief Get date of production test
+ * @param date_info       Pointer to date information struct
+ * @returns         E_NO_ERROR if date is valid. E_INVALID otherwise
+ */
+int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info);
 
 /**
  * @brief This function PERMANENTLY locks the Debug Access Port.

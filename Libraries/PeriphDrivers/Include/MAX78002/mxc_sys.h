@@ -198,6 +198,19 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
 
+typedef enum
+{
+    MXC_SYS_PKG_TQFN = 1,
+    MXC_SYS_PKG_BGA = 2,
+    MXC_SYS_PKG_WLP = 3,
+    MXC_SYS_PKG_UNSET = 0xff
+}mxc_sys_package_type_t;
+
+typedef struct 
+{
+    uint8_t day, month, year;
+}mxc_sys_date_t;
+
 #define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
 #define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
 #define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
@@ -312,7 +325,23 @@ static inline int MXC_SYS_In_Crit_Section(void)
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
-
+/**
+ * @brief Reads the device package type.
+ * @returns         Device Package Type (See mxc_sys_package_t for available options)
+ */
+mxc_sys_package_type_t MXC_SYS_GetPackageType(void);
+/**
+ * @brief Set the package type. (Acts as an override to what is in Info Block)
+ * @param new_pkg_type       Device Package Type (See mxc_sys_package_t for available options)
+ * @returns         E_NO_ERROR if package exists.
+ */
+int MXC_SYS_SetPackageType(mxc_sys_package_type_t new_pkg_type);
+/**
+ * @brief Get date of production test
+ * @param date_info       Pointer to date information struct
+ * @returns         E_NO_ERROR if date is valid. E_INVALID otherwise
+ */
+int MXC_SYS_GetTestDate(mxc_sys_date_t *date_info);
 /**
  * @brief Determines if the selected peripheral clock is enabled.
  * @param clock   Enumeration for desired clock.
