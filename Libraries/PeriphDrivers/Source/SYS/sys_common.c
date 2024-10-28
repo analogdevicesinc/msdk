@@ -47,7 +47,6 @@
 
 /* **** Globals **** */
 static mxc_sys_package_type_t pkg_type = MXC_SYS_PKG_UNSET;
-bool info_block_unlocked = false;
 /* **** Functions **** */
 
 /* ************************************************************************** */
