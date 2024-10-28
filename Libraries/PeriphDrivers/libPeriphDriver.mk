@@ -64,7 +64,7 @@ PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_delay.c
 PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_lock.c
 PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/nvic_table.c
-PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/sys_common.c
+PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_sys_common.c
 
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
