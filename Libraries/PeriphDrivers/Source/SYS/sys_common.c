@@ -26,15 +26,11 @@
 
 /* **** Includes **** */
 #include <stddef.h>
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "flc.h"
-#include "mxc_delay.h"
-#include "gcr_regs.h"
-#include "fcr_regs.h"
-#include "mcr_regs.h"
-#include <stdbool.h>
 
 /**
  * @ingroup mxc_sys
