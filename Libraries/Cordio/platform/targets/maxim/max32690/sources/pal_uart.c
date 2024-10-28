@@ -301,14 +301,7 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
 
-  /* Initialize the UART */
-  if(uartNum == 3) {
-    /* Use the IBRO clock for UART3 */
-    result = MXC_UART_Init(MXC_UART_GET_UART(uartNum), pCfg->baud, MXC_UART_IBRO_CLK);
-  } else {
-    /* Use the APB clock for rest of the UARTs */
-    result = MXC_UART_Init(MXC_UART_GET_UART(uartNum), pCfg->baud, MXC_UART_APB_CLK);
-  }
+  result = MXC_UART_Init(MXC_UART_GET_UART(uartNum), pCfg->baud, MXC_UART_IBRO_CLK);
 
   (void)result;
   PAL_SYS_ASSERT(result == 0);

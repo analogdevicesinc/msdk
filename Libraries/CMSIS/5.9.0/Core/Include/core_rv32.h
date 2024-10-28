@@ -394,7 +394,31 @@ __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
         MXC_EVENT->event1_enable &= ~(1 << (IRQn - 32));
     }
 }
+/**
+  \brief   Get Interrupt Enable status
+  \details Returns a device specific interrupt enable status from the NVIC interrupt controller.
+  \param [in]      IRQn  Device specific interrupt number.
+  \return             0  Interrupt is not enabled.
+  \return             1  Interrupt is enabled.
+  \note    IRQn must not be negative.
+ */
+__STATIC_INLINE uint32_t NVIC_GetEnableIRQ(IRQn_Type IRQn)
+{
+    if((int32_t)(IRQn) < 0)
+    {
+        return 0u;
+    }
+    
+    const uint32_t irq_mask = (1 << IRQn);
+    if(IRQn < 32)
+    {
+        return (MXC_INTR->irq0_enable & irq_mask) && (MXC_EVENT->event0_enable && irq_mask) ? 1 : 0;
+        
+    }
+    
+    return (MXC_INTR->irq1_enable & irq_mask) && (MXC_EVENT->event1_enable && irq_mask) ? 1 : 0;
 
+}
 __STATIC_INLINE void NVIC_EnableEVENT(IRQn_Type EVENT)
 {
     if (EVENT < 32)

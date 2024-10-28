@@ -319,16 +319,22 @@ uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t
 /*************************************************************************************************/
 uint32_t LlInitSetRtCfg(LlInitRtCfg_t *pCfg)
 {
-  uint32_t memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
+  uint32_t totalMemUsed = 0;
+  uint32_t memUsed;
+
+  memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
                                  pCfg->pFreeMem, pCfg->freeMemAvail);
+
   pCfg->pFreeMem += memUsed;
   pCfg->freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
 
-  memUsed += LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
+  memUsed = LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
   pCfg->pFreeMem += memUsed;
   pCfg->freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
 
-  return memUsed;
+  return totalMemUsed;
 }
 
 /*************************************************************************************************/

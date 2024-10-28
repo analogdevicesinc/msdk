@@ -595,8 +595,6 @@ jobs:
           boards: |
             max32655_board1
             max32655_board2
-            max32665_board1
-            max32690_board_w1
           lock: true
           timeout: 3600 # Attempt to lock for an hour
 
@@ -615,23 +613,21 @@ jobs:
           # sed -i "s/'S'/'!'/g" Examples/MAX32690/Bluetooth/BLE_otac/datc_main.c
 
       - name: Erase Boards DATS
-        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
         uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
         with:
           board: |
             max32655_board1
             max32655_board2
-            max32665_board1
-            max32690_board_w1
 
           has_two_flash_banks: |
             true
             true
-            true
-            true
+            # true
+            # true
 
       - name: Flash DATS 655
-        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
         uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
         with:
           board: |
@@ -652,7 +648,7 @@ jobs:
           distclean: true
 
       - name: DATS 655
-        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true'}}
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
         run: | 
           DATS_TEST_DIR=$TEST_DIR/dats     
           DATS_BOARD_655=max32655_board1
@@ -662,17 +658,15 @@ jobs:
 
 
       - name: Erase Boards OTAS
-        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
         uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocderase@v1.1
         with:
           board: |
             max32655_board1
             max32655_board2
-            max32665_board1
-            max32690_board_w1
       
       - name: Flash OTAS
-        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
         uses: Analog-Devices-MSDK/btm-ci-scripts/actions/ocdflash@v1.1
         with:
           board: |
@@ -695,13 +689,13 @@ jobs:
           distclean: true
 
       - name: OTAS
-        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32665_DATS_CONNECTED_TEST == 'true' || env.MAX32690_DATS_CONNECTED_TEST == 'true'}}
+        if: ${{env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_RUN_ALL_TEST == 'true'}}
         run: | 
           OTAS_TEST_DIR=$TEST_DIR/otas
           OTAS_BOARD_655=max32655_board1
           OTAC_BOARD_655=max32655_board2
-          OTAC_BOARD_665=max32665_board1
-          OTAC_BOARD_690=max32690_board_w1
+          # OTAC_BOARD_665=max32665_board1
+          # OTAC_BOARD_690=max32690_board_w1
 
 
           if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then

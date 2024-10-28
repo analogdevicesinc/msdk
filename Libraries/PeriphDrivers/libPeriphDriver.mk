@@ -66,6 +66,11 @@ PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/mxc_lock.c
 PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(PERIPH_DIR)/Source/SYS/sys_common.c
 
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+
 # # Where to find header files for this project
 IPATH += $(PERIPH_DRIVER_INCLUDE_DIR)
 SRCS  += $(PERIPH_DRIVER_C_FILES)
