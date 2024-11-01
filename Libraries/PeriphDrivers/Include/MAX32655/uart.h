@@ -256,6 +256,26 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
  *          for a list of return codes.
  */
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock);
+/**
+ * @brief   Sets the clock source for the baud rate generator
+ * 
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   map         Pin MAP for UART
+ *
+ * @return  E_NO_ERROR if successful, otherwise see \ref MXC_Error_Codes 
+ *          
+ */
+int MXC_UART_SetPinMap(mxc_uart_regs_t *uart, sys_map_t map);
+
+/**
+ * @brief   Sets the clock source for the baud rate generator
+ * 
+ * @return   map  
+ *
+ * @note  Assertion triggered in debug mode if invalid uart is passed. 
+ *          
+ */
+int MXC_UART_GetPinMap(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Gets the clock source used for the UART instance

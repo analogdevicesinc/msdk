@@ -27,6 +27,14 @@
 #include "lpgcr_regs.h"
 #include "dma.h"
 
+
+static sys_map_t uart_maps[] = {
+    [0] = MAP_A,
+    [1] = MAP_A,
+    [2] = MAP_A,
+    [3] = MAP_A,
+};
+
 void MXC_UART_DMACallback(int ch, int error)
 {
     MXC_UART_RevB_DMACallback(ch, error);
@@ -51,25 +59,27 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     if (retval) {
         return retval;
     }
+    
+    const sys_map_t map = MXC_UART_GetPinMap(uart);
 
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
-        MXC_GPIO_Config(&gpio_cfg_uart0);
+        MXC_GPIO_Config(&gpio_cfg_uart0[map]);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
         break;
 
     case 1:
-        MXC_GPIO_Config(&gpio_cfg_uart1);
+        MXC_GPIO_Config(&gpio_cfg_uart1[map]);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
         break;
 
     case 2:
-        MXC_GPIO_Config(&gpio_cfg_uart2);
+        MXC_GPIO_Config(&gpio_cfg_uart2[map]);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
         break;
 
     case 3:
-        MXC_GPIO_Config(&gpio_cfg_uart3);
+        MXC_GPIO_Config(&gpio_cfg_uart3[map]);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
         break;
 
@@ -216,35 +226,38 @@ int MXC_UART_SetParity(mxc_uart_regs_t *uart, mxc_uart_parity_t parity)
 
 int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
 {
+    const sys_map_t map = MXC_UART_GetPinMap(uart);
+
     if (flowCtrl == MXC_UART_FLOW_EN) {
         switch (MXC_UART_GET_IDX(uart)) {
         case 0:
-            MXC_GPIO_Config(&gpio_cfg_uart0_flow);
+            MXC_GPIO_Config(&gpio_cfg_uart0_flow[map]);
             break;
 
         case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow);
+            MXC_GPIO_Config(&gpio_cfg_uart1_flow[map]);
             break;
 
         case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow);
+            MXC_GPIO_Config(&gpio_cfg_uart2_flow[map]);
             break;
 
         default:
             return E_BAD_PARAM;
         }
     } else {
+
         switch (MXC_UART_GET_IDX(uart)) {
         case 0:
-            MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable);
+            MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable[map]);
             break;
 
         case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow_disable);
+            MXC_GPIO_Config(&gpio_cfg_uart1_flow_disable[map]);
             break;
 
         case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable);
+            MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable[map]);
             break;
 
         default:
@@ -340,6 +353,73 @@ mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
         return E_BAD_PARAM;
     }
 }
+/**
+ * @brief   Sets the clock source for the baud rate generator
+ * 
+ * @param   map         Pin MAP for UART
+ *
+ * @return  E_NO_ERROR if successful, otherwise see \ref MXC_Error_Codes 
+ *          
+ */
+int MXC_UART_SetPinMap(mxc_uart_regs_t *uart, sys_map_t map)
+{
+    if(map != MAP_A || map != MAP_B)
+    {
+        return E_BAD_PARAM;
+    }
+    const uint8_t uart_idx = MXC_UART_GET_IDX(uart);
+
+    switch (uart_idx) {
+    case 0:
+        MXC_GPIO_Config(&gpio_cfg_uart0[map]);
+        break;
+
+    case 1:
+
+        MXC_GPIO_Config(&gpio_cfg_uart1[map]);
+        break;
+
+    case 2:
+        MXC_GPIO_Config(&gpio_cfg_uart2[map]);
+        break;
+
+    case 3:
+        MXC_GPIO_Config(&gpio_cfg_uart3[map]);
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+    
+
+
+    uart_maps[uart_idx] = map;
+
+
+    return E_NO_ERROR;
+
+}
+
+/**
+ * @brief   Sets the clock source for the baud rate generator
+ * 
+ * @return   map  
+ *
+ * @note  Assertion triggered in debug mode if invalid uart is passed. 
+ *          
+ */
+int MXC_UART_GetPinMap(mxc_uart_regs_t *uart)
+{
+    const int uart_idx = MXC_UART_GET_IDX(uart);    
+
+    if(uart_idx < 0)
+    {
+        return E_BAD_PARAM;
+    }
+
+    return (int)uart_maps[uart_idx];
+}
+
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
 {
