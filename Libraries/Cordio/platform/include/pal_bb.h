@@ -212,6 +212,17 @@ void PalBbEnable(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Get the current BB clock value in microseconds.
+ *
+ *  \return     true is BB is enabled
+ *
+ *  Checks to see if BB is enabled.
+ */
+/*************************************************************************************************/
+bool PalBbIsEnabled(void);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Disable the BB hardware.
  *
  *  This routine signals the BB hardware to go into low power (disable power and clocks) after all
@@ -249,17 +260,6 @@ void PalBbLoadCfg(PalBbCfg_t *pCfg);
  */
 /*************************************************************************************************/
 uint32_t PalBbGetCurrentTime(void);
-
-/*************************************************************************************************/
-/*!
- *  \brief      Get the current BB clock value in microseconds.
- *
- *  \return     true is BB is enabled
- *
- *  Checks to see if BB is enabled.
- */
-/*************************************************************************************************/
-bool PalBbIsEnabled(void);
 
 /*************************************************************************************************/
 /*!
