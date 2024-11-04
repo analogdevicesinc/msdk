@@ -867,7 +867,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     }
 
     if ((LL_API_PARAM_CHECK == 1) && ((rfChan > LL_DTM_MAX_CHAN_IDX) ||
-                                      ((phy < LL_TEST_PHY_LE_1M) || (phy > LL_TEST_PHY_LE_CODED)) ||
+                                      ((phy < LL_TEST_PHY_LE_1M) || (phy > LL_TEST_PHY_LE_CODED_S2)) ||
                                       (modIdx > LL_TEST_MOD_IDX_STABLE))) {
         return LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
     }
