@@ -252,6 +252,17 @@ uint32_t PalBbGetCurrentTime(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Get the current BB clock value in microseconds.
+ *
+ *  \return     true is BB is enabled
+ *
+ *  Checks to see if BB is enabled.
+ */
+/*************************************************************************************************/
+bool PalBbIsEnabled(void);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Get the current FRC time.
  *
  *  \param      pTime   Pointer to return the current time.
