@@ -212,11 +212,9 @@ void PalBbEnable(void);
 
 /*************************************************************************************************/
 /*!
- *  \brief      Get the current BB clock value in microseconds.
+ *  \brief      Checks to see if BB is enabled.
  *
  *  \return     true is BB is enabled
- *
- *  Checks to see if BB is enabled.
  */
 /*************************************************************************************************/
 bool PalBbIsEnabled(void);
