@@ -75,8 +75,7 @@ int freertos_permit_tickless(void)
         return E_BUSY;
     }
 
-    if(PalBbIsEnabled())
-    {
+    if (PalBbIsEnabled()) {
         return E_BUSY;
     }
 
