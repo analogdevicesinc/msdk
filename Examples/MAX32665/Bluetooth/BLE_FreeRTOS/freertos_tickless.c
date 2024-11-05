@@ -76,12 +76,14 @@ int freertos_permit_tickless(void)
     if (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {
         return E_BUSY;
     }
-    
-    if(PalBbIsEnabled())
+
+    uint32_t dummy;
+    bool_t ret = PalBbGetTimestamp(&dummy);
+    if(!ret)
     {
         return E_BUSY;
     }
-    
+
     return E_NO_ERROR;
 }
 
