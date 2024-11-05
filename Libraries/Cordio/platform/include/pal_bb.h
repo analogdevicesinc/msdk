@@ -219,6 +219,8 @@ void PalBbEnable(void);
 /*************************************************************************************************/
 bool PalBbIsEnabled(void);
 
+
+
 /*************************************************************************************************/
 /*!
  *  \brief      Disable the BB hardware.
@@ -341,6 +343,12 @@ bool PalBbFgenIsEnabled(void);
  */
 /*************************************************************************************************/
 bool_t PalBbGetRssi(int8_t *rssi, uint8_t rfChannel);
+
+bool __attribute__((weak)) PalBbIsEnabled(void)
+{
+    uint32_t dummy;
+    return PalBbGetTimestamp(&dummy);
+}
 
 static inline bool PalBbIsValidPrbsType(uint8_t maybeType)
 {
