@@ -79,8 +79,7 @@ int freertos_permit_tickless(void)
 
     uint32_t dummy;
     bool_t ret = PalBbGetTimestamp(&dummy);
-    if(!ret)
-    {
+    if (!ret) {
         return E_BUSY;
     }
 
