@@ -710,8 +710,7 @@ void txTestTask(void *pvParameters)
         if (testConfig.testType == BLE_TX_TEST) {
             res = LlEnhancedTxTest(testConfig.channel, packetLen, packetType, phy, 0);
         } else {
-            // Transmitters decision if S2 or S8
-            res = LlEnhancedRxTest(testConfig.channel, LL_PHY_LE_CODED, 0, 0);
+            res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
         }
         xTaskResumeAll(); //Restore scheduler
 
