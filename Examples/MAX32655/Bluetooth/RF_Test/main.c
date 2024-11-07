@@ -711,7 +711,6 @@ void txTestTask(void *pvParameters)
                 phy = LL_PHY_LE_CODED;
             }
             res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
-
         }
         xTaskResumeAll(); //Restore scheduler
 
