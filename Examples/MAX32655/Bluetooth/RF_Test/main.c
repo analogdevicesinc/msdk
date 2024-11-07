@@ -707,7 +707,11 @@ void txTestTask(void *pvParameters)
             res = LlEnhancedTxTest(testConfig.channel, packetLen, packetType, phy, 0);
         } else {
             // Transmitters decision if it is S2 or S8.
-            res = LlEnhancedRxTest(testConfig.channel, LL_PHY_LE_CODED, 0, 0);
+            if (phy == LL_PHY_LE_CODED_S8 || phy == LL_PHY_LE_CODED_S2) {
+                phy = LL_PHY_LE_CODED;
+            }
+            res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
+
         }
         xTaskResumeAll(); //Restore scheduler
 
