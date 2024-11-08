@@ -23,8 +23,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MXC_SYS_COMMON_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MXC_SYS_COMMON_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SYS_MXC_SYS_COMMON_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SYS_MXC_SYS_COMMON_H_
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
