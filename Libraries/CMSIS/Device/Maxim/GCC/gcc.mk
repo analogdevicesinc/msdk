@@ -360,10 +360,11 @@ CFLAGS=-mthumb                                                                 \
 
 # The flags passed to the C++ compiler.
 CXXFLAGS := $(CFLAGS)
+CXX_STANDARD?=17
 CXXFLAGS += \
 	-fno-rtti				\
 	-fno-exceptions				\
-	-std=c++11				\
+	-std=c++$(CXX_STANDARD)				
 
 # On GCC version > 4.8.0 use the -fno-isolate-erroneous-paths-dereference flag
 ifeq "$(GCCVERSIONGTEQ4)" "1"
