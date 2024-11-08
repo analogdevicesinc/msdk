@@ -30,6 +30,7 @@
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_sys_common.h"
+#include "mxc_sys.h"
 #include "flc.h"
 
 /**
