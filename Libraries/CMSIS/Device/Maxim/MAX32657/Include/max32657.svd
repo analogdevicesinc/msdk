@@ -1266,18 +1266,6 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>BTLELDO_RF</name>
-       <description>BTLE LDO RF Trim.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>5</bitWidth>
-      </field>
-      <field>
-       <name>BTLELDO_BB</name>
-       <description>BTLE LDO BB Trim.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>5</bitWidth>
-      </field>
-      <field>
        <name>I3CDGEN0</name>
        <description>I3C SDA Glitch Filter Enable.</description>
        <bitOffset>20</bitOffset>
@@ -1504,8 +1492,8 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>ERTOC_RDY</name>
-       <description>ERTCO 32K Ready.</description>
+       <name>ERFO_RDY</name>
+       <description>ERFO Ready.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -1524,8 +1512,8 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>ERTOC_RDY</name>
-       <description>ERTCO 32K Ready Interrupt Enable.</description>
+       <name>ERFO_RDY</name>
+       <description>ERFO Ready Interrupt Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -2808,6 +2796,28 @@
        <description>Voltage Selection for BB LDO.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_9</name>
+         <description>0.9V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_0</name>
+         <description>1.0V</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_1</name>
+         <description>1.1V</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_2</name>
+         <description>1.2V</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>RF_EN</name>
@@ -2826,6 +2836,28 @@
        <description>LDO RF Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_9</name>
+         <description>0.9V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_0</name>
+         <description>1.0V</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_1</name>
+         <description>1.1V</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_2</name>
+         <description>1.2V</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>RF_BP_EN</name>
