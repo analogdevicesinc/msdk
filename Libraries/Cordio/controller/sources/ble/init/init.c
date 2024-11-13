@@ -310,6 +310,35 @@ uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Set LL and BB runtime configurations.
+ *
+ *  \param  pCfg    Runtime configuration.
+ *
+ *  \return Memory used.
+ */
+/*************************************************************************************************/
+uint32_t LlInitSetRtCfg(LlInitRtCfg_t *pCfg)
+{
+  uint32_t totalMemUsed = 0;
+  uint32_t memUsed;
+
+  memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
+                                 pCfg->pFreeMem, pCfg->freeMemAvail);
+
+  pCfg->pFreeMem += memUsed;
+  pCfg->freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
+
+  memUsed = LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
+  pCfg->pFreeMem += memUsed;
+  pCfg->freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
+
+  return totalMemUsed;
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  Initialize configuration.
  *
  *  \param  pCfg    Runtime configuration.
@@ -319,19 +348,7 @@ uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t
 /*************************************************************************************************/
 uint32_t LlInit(LlInitRtCfg_t *pCfg)
 {
-  uint32_t memUsed;
-  uint32_t totalMemUsed = 0;
-
-  memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
-                             pCfg->pFreeMem, pCfg->freeMemAvail);
-  pCfg->pFreeMem += memUsed;
-  pCfg->freeMemAvail -= memUsed;
-  totalMemUsed += memUsed;
-
-  memUsed = LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
-  pCfg->pFreeMem += memUsed;
-  pCfg->freeMemAvail -= memUsed;
-  totalMemUsed += memUsed;
+  uint32_t totalMemUsed = LlInitSetRtCfg(pCfg);
 
   LlInitBbInit();
   LlInitSchInit();

@@ -113,7 +113,6 @@ void LlGetDefaultRunTimeCfg(LlRtCfg_t *pCfg)
 /*************************************************************************************************/
 void LlInitRunTimeCfg(const LlRtCfg_t *pCfg)
 {
-  WSF_ASSERT(pLctrRtCfg == NULL);
   WSF_ASSERT(pCfg);
 
   WSF_ASSERT(pCfg->btVer >= LL_VER_BT_CORE_SPEC_4_0);

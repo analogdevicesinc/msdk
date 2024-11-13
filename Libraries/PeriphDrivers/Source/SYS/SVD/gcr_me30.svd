@@ -896,6 +896,28 @@
             <description>Voltage Selection for BB LDO.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0_9</name>
+                <description>0.9V</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_0</name>
+                <description>1.0V</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_1</name>
+                <description>1.1V</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_2</name>
+                <description>1.2V</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>RF_EN</name>
@@ -914,6 +936,28 @@
             <description>LDO RF Voltage Setting.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0_9</name>
+                <description>0.9V</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_0</name>
+                <description>1.0V</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_1</name>
+                <description>1.1V</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_2</name>
+                <description>1.2V</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>RF_BP_EN</name>

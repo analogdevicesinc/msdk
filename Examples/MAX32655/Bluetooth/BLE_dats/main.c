@@ -115,9 +115,11 @@ static void mainWsfInit(void)
     const uint8_t numPools = sizeof(mainPoolDesc) / sizeof(mainPoolDesc[0]);
 
     uint16_t memUsed;
+    /* Initial buffer configuration. */
     WsfCsEnter();
-    memUsed = WsfBufInit(numPools, mainPoolDesc);
+    memUsed = WsfBufCalcSize(numPools, mainPoolDesc);
     WsfHeapAlloc(memUsed);
+    WsfBufInit(numPools, mainPoolDesc);
     WsfCsExit();
 
     WsfOsInit();
@@ -189,7 +191,7 @@ int main(void)
 #endif
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
+    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, (uint8_t *)&mainLlRtCfg.phy2mSup, 4);
 #endif
 
     /* Set the 32k sleep clock accuracy into one of the following bins, default is 20
@@ -208,10 +210,9 @@ int main(void)
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 #endif
 
-    uint32_t memUsed;
     WsfCsEnter();
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
+    WsfHeapAlloc(PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfCsExit();
 
     mainWsfInit();
@@ -219,17 +220,44 @@ int main(void)
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 
-    WsfCsEnter();
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            .freeMemAvail = WsfHeapCountAvailable() };
+    uint32_t llmemUsed;
 
-    memUsed = LlInit(&llCfg);
-    WsfHeapAlloc(memUsed);
+    /* Calculate how much memory we will need for the LL initialization */
+    WsfCsEnter();
+
+    WsfTraceEnable(FALSE);
+
+    LlInitRtCfg_t llCfg = {
+        .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .freeMemAvail = WsfHeapCountAvailable()
+    };
+
+    llmemUsed = LlInitSetRtCfg(&llCfg);
+
+#if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
+    WsfTraceEnable(TRUE);
+#endif
+
+    /* Complete the LL initialization */
+    /* Allocate the memory */
+    WsfHeapAlloc(llmemUsed);
+
+    /* Set the free memory pointers */
+    llCfg.pFreeMem = WsfHeapGetFreeStartAddress();
+    llCfg.freeMemAvail = WsfHeapCountAvailable();
+
+    /* Run the initialization with properly set the free memory pointers */
+    if (llmemUsed != LlInit(&llCfg)) {
+        WSF_ASSERT(0);
+    }
+
     WsfCsExit();
 
     bdAddr_t bdAddr;
