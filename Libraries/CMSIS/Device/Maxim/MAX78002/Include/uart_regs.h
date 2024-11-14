@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -164,8 +168,8 @@ typedef struct {
 #define MXC_F_UART_CTRL_BCLKSRC                        ((uint32_t)(0x3UL << MXC_F_UART_CTRL_BCLKSRC_POS)) /**< CTRL_BCLKSRC Mask */
 #define MXC_V_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK       ((uint32_t)0x0UL) /**< CTRL_BCLKSRC_PERIPHERAL_CLOCK Value */
 #define MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK       (MXC_V_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_PERIPHERAL_CLOCK Setting */
-#define MXC_V_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK         ((uint32_t)0x1UL) /**< CTRL_BCLKSRC_EXTERNAL_CLOCK Value */
-#define MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK         (MXC_V_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_EXTERNAL_CLOCK Setting */
+#define MXC_V_UART_CTRL_BCLKSRC_CLK1                   ((uint32_t)0x1UL) /**< CTRL_BCLKSRC_CLK1 Value */
+#define MXC_S_UART_CTRL_BCLKSRC_CLK1                   (MXC_V_UART_CTRL_BCLKSRC_CLK1 << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_CLK1 Setting */
 #define MXC_V_UART_CTRL_BCLKSRC_CLK2                   ((uint32_t)0x2UL) /**< CTRL_BCLKSRC_CLK2 Value */
 #define MXC_S_UART_CTRL_BCLKSRC_CLK2                   (MXC_V_UART_CTRL_BCLKSRC_CLK2 << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_CLK2 Setting */
 #define MXC_V_UART_CTRL_BCLKSRC_CLK3                   ((uint32_t)0x3UL) /**< CTRL_BCLKSRC_CLK3 Value */

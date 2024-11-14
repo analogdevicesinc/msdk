@@ -7,26 +7,18 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+/******************************************************************************
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This software is proprietary to Analog Devices, Inc. and its licensors.
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_AESKEYS_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_AESKEYS_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AESKEYS_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AESKEYS_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -71,7 +63,7 @@ extern "C" {
  * @ingroup     aes
  * @defgroup    aeskeys_registers AESKEYS_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
- * @details     AES Key Registers.
+ * @details     AES Keys.
  */
 
 /**
@@ -79,8 +71,11 @@ extern "C" {
  * Structure type to access the AESKEYS Registers.
  */
 typedef struct {
-    __IO uint32_t meu[8];               /**< <tt>\b 0x00:</tt> AESKEYS MEU Register */
-    __IO uint32_t xip[4];               /**< <tt>\b 0x20:</tt> AESKEYS XIP Register */
+    __IO uint32_t sram_key;             /**< <tt>\b 0x00:</tt> AESKEYS SRAM_KEY Register */
+    __R  uint32_t rsv_0x4_0x1f[7];
+    __IO uint32_t code_key;             /**< <tt>\b 0x20:</tt> AESKEYS CODE_KEY Register */
+    __R  uint32_t rsv_0x24_0x3f[7];
+    __IO uint32_t data_key;             /**< <tt>\b 0x40:</tt> AESKEYS DATA_KEY Register */
 } mxc_aeskeys_regs_t;
 
 /* Register offsets for module AESKEYS */
@@ -90,12 +85,13 @@ typedef struct {
  * @brief      AESKEYS Peripheral Register Offsets from the AESKEYS Base Peripheral Address.
  * @{
  */
-#define MXC_R_AESKEYS_MEU                  ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
-#define MXC_R_AESKEYS_XIP                  ((uint32_t)0x00000020UL) /**< Offset from AESKEYS Base Address: <tt> 0x0020</tt> */
+#define MXC_R_AESKEYS_SRAM_KEY             ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AESKEYS_CODE_KEY             ((uint32_t)0x00000020UL) /**< Offset from AESKEYS Base Address: <tt> 0x0020</tt> */
+#define MXC_R_AESKEYS_DATA_KEY             ((uint32_t)0x00000040UL) /**< Offset from AESKEYS Base Address: <tt> 0x0040</tt> */
 /**@} end of group aeskeys_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_AESKEYS_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AESKEYS_REGS_H_
