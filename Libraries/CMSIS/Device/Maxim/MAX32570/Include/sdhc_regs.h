@@ -2,25 +2,18 @@
  * @file    sdhc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SDHC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sdhc_registers
  */
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+/******************************************************************************
+ *
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This software is proprietary to Analog Devices, Inc. and its licensors.
  *
  ******************************************************************************/
 
@@ -49,7 +42,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -104,7 +101,7 @@ typedef struct {
     __O  uint16_t force_cmd;            /**< <tt>\b 0x050:</tt> SDHC FORCE_CMD Register */
     __IO uint16_t force_event_int_stat; /**< <tt>\b 0x052:</tt> SDHC FORCE_EVENT_INT_STAT Register */
     __IO uint8_t  adma_er;              /**< <tt>\b 0x054:</tt> SDHC ADMA_ER Register */
-    __R  uint8_t rsv_0x55_0x57[3];
+    __R  uint8_t  rsv_0x55_0x57[3];
     __IO uint32_t adma_addr_0;          /**< <tt>\b 0x058:</tt> SDHC ADMA_ADDR_0 Register */
     __IO uint32_t adma_addr_1;          /**< <tt>\b 0x05C:</tt> SDHC ADMA_ADDR_1 Register */
     __I  uint16_t preset_0;             /**< <tt>\b 0x060:</tt> SDHC PRESET_0 Register */
