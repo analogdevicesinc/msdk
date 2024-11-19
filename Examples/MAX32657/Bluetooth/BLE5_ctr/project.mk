@@ -28,7 +28,7 @@
 LIB_CORDIO = 1
 
 CORDIO_DIR = $(LIBS_DIR)/Packetcraft-ADI
-RF_PHY_DIR = $(LIBS_DIR)/RF-PHY
+LIB_PHY_DIR ?= $(LIBS_DIR)/RF-PHY
 
 # Cordio library options
 BLE_HOST = 0
