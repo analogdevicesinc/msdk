@@ -78,8 +78,9 @@ INIT_EXTENDED ?= 0
 # Default directory for libphy
 LIB_PHY_DIR ?= $(LIBS_DIR)/BlePhy
 
+BLE_API ?= Cordio
 # Include the Cordio Library
-CORDIO_DIR ?= $(LIBS_DIR)/Cordio
+CORDIO_DIR ?= $(LIBS_DIR)/$(BLE_API)
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 PROJ_CFLAGS += -D__CORDIO__
 
