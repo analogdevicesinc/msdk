@@ -295,11 +295,11 @@ static char rxData[10];
 void rd_callback(void)
 {
     PalUartWriteData(PAL_UART_ID_TERMINAL, rxData, 1);
-    PalUartReadData(PAL_UART_ID_TERMINAL, rxData, 1);
+    
 }
 void wr_callback(void)
 {
-
+    PalUartReadData(PAL_UART_ID_TERMINAL, rxData, 1);
 }
 int main(void)
 {
