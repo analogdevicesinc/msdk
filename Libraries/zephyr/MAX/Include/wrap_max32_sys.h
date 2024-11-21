@@ -34,7 +34,7 @@ void max32xx_system_init(void);
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 
 #define ADI_MAX32_CLK_IPO MXC_SYS_CLOCK_HIRC96
 #define ADI_MAX32_CLK_ERFO MXC_SYS_CLOCK_XTAL32M
@@ -54,9 +54,10 @@ static inline void Wrap_MXC_SYS_SetClockDiv(int div)
 /*
  *  MAX32690, MAX32655 related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
-    (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
+    defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX78002)
 
 #define ADI_MAX32_CLK_IPO MXC_SYS_CLOCK_IPO
 #if defined(CONFIG_SOC_MAX78002)
@@ -69,8 +70,8 @@ static inline void Wrap_MXC_SYS_SetClockDiv(int div)
 #define ADI_MAX32_CLK_INRO MXC_SYS_CLOCK_INRO
 #define ADI_MAX32_CLK_ERTCO MXC_SYS_CLOCK_ERTCO
 #define ADI_MAX32_CLK_EXTCLK MXC_SYS_CLOCK_EXTCLK
-#if !(defined(CONFIG_SOC_MAX32670) || (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || \
-      (CONFIG_SOC_MAX32675))
+#if !(defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) || \
+      defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675))
 #define ADI_MAX32_CLK_ISO MXC_SYS_CLOCK_ISO
 #endif
 

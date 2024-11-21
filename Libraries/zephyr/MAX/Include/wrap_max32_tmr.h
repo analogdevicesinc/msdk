@@ -39,7 +39,7 @@ typedef struct {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
@@ -101,12 +101,13 @@ int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 /*
  *  MAX32690, MAX32655 related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
-    (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
+    defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX78002)
 
-#if defined(CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32675) || (CONFIG_SOC_MAX32657) || \
-    (CONFIG_SOC_MAX32670)
+#if defined(CONFIG_SOC_MAX32672) || defined(CONFIG_SOC_MAX32675) || \
+    defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32670)
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 #elif defined(CONFIG_SOC_MAX32662)
@@ -151,8 +152,8 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
         return MXC_TMR_32K_CLK;
     case 5: //ADI_MAX32_PRPH_CLK_SRC_INRO
         return MXC_TMR_INRO_CLK;
-#if defined(CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32690) || \
-    (CONFIG_SOC_MAX78002)
+#if defined(CONFIG_SOC_MAX32655) || defined(CONFIG_SOC_MAX32680) || \
+    defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX78002)
     case 6: //ADI_MAX32_PRPH_CLK_SRC_ISO
         return MXC_TMR_ISO_CLK;
 #endif
