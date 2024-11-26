@@ -103,7 +103,11 @@ void PalExitCs(void)
   __enable_irq();
 }
 
-
+/*************************************************************************************************/
+/*!
+ *  \brief  DMA interrupt handlers.
+ */
+/*************************************************************************************************/
 void DMA0_IRQHandler(void)
 {
   MXC_DMA_Handler(); /* DMA channel 0 is associated with DMA instance 0 */
