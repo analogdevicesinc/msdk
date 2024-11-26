@@ -52,6 +52,7 @@
 #include "wut.h"
 #include "uart.h"
 #include "sema.h"
+#include "dma.h"
 
 /**************************************************************************************************
   Macros
@@ -100,6 +101,72 @@ void PalEnterCs(void)
 void PalExitCs(void)
 {
   __enable_irq();
+}
+
+
+void DMA0_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 0 is associated with DMA instance 0 */
+}
+void DMA1_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 1 is associated with DMA instance 0 */
+}
+void DMA2_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 2 is associated with DMA instance 0 */
+}
+void DMA3_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 3 is associated with DMA instance 0 */
+}
+void DMA4_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 4 is associated with DMA instance 0 */
+}
+void DMA5_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 5 is associated with DMA instance 0 */
+}
+void DMA6_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 6 is associated with DMA instance 0 */
+}
+void DMA7_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 7 is associated with DMA instance 0 */
+}
+void DMA8_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 8 is associated with DMA instance 0 */
+}
+void DMA9_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 9 is associated with DMA instance 0 */
+}
+void DMA10_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 10 is associated with DMA instance 0 */
+}
+void DMA11_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 11 is associated with DMA instance 0 */
+}
+void DMA12_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 12 is associated with DMA instance 0 */
+}
+void DMA13_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 13 is associated with DMA instance 0 */
+}
+void DMA14_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 14 is associated with DMA instance 0 */
+}
+void DMA15_IRQHandler(void)
+{
+  MXC_DMA_Handler(); /* DMA channel 15 is associated with DMA instance 0 */
 }
 
 /*************************************************************************************************/

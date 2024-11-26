@@ -38,7 +38,13 @@
 #include "board.h"
 
 #include "uart.h"
+#include "dma.h"
 #include "sema.h"
+
+#include "uart_revb.h"
+#include "nvic_table.h"
+
+#include "wsf_cs.h"
 
 #include <string.h>
 
@@ -65,70 +71,11 @@
 /*! \brief      Control block. */
 static struct {
   PalUartState_t state;
-  mxc_uart_req_t readReq;
-  mxc_uart_req_t writeReq;
   PalUartCompCback_t rdCback;
   PalUartCompCback_t wrCback;
+  int writeCh;
+  int readCh;
 } palUartCb[PAL_UARTS];
-
-/**************************************************************************************************
-  Local Functions
-**************************************************************************************************/
-
-/*************************************************************************************************/
-/*!
- *  \brief      UART Interrupt handlers.
- *
- *  \return     None.
- */
-/*************************************************************************************************/
-// void UART_CommonHandler(mxc_uart_regs_t *uart)
-// {
-//   const int32_t err = MXC_UART_AsyncHandler(uart);
-
-//   if(err == E_INVALID)
-//   {
-//     const uint8_t uartIdx = MXC_UART_GET_IDX(uart);
-
-//     if( uartIdx == CONSOLE_UART || uartIdx == HCI_UART)
-//     {
-//       MXC_UART_ClearRXFIFO(uart);
-//     }
-//     else
-//     {
-//       PAL_SYS_ASSERT(err == E_NO_ERROR);
-//     }
-//   }
-  
-// }
-// void UART0_IRQHandler(void)
-// {
-  
-//   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-//   UART_CommonHandler(MXC_UART0);
-
-// }
-// void UART1_IRQHandler(void)
-// {
-  
-//   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-//   UART_CommonHandler(MXC_UART1);
-
-// }
-// void UART2_IRQHandler(void)
-// {
-  
-//   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-//   UART_CommonHandler(MXC_UART2);
-
-// }
-// void UART3_IRQHandler(void)
-// {
-  
-//   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-//   UART_CommonHandler(MXC_UART3);
-
-// }
 
 /*************************************************************************************************/
 /*!
@@ -172,26 +119,37 @@ void RISCV_IRQHandler(void)
  *  \return     None.
  */
 /*************************************************************************************************/
-void palUartCallback(mxc_uart_req_t* req, int error)
+void palUartCallback(int ch, int error)
 {
   int i;
-  uint8_t echo = 0;
   for(i = 0; i < PAL_UARTS; i++) {
     /* Find the corresponding rqeuest and call the callback */
-    if(req == &palUartCb[i].readReq) {
+    
+     if((ch == palUartCb[i].readCh) && (palUartCb[i].state != PAL_UART_STATE_UNINIT)) {
+      // palUartCb[i].readCh = -1;
+      palUartCb[i].state = PAL_UART_STATE_READY;
+
       if(palUartCb[i].rdCback != NULL) {
         palUartCb[i].rdCback();
-        echo = 1;
       }
+
+      // MXC_DMA_ReleaseChannel(ch);
+      return;
     }
 
-    if(req == &palUartCb[i].writeReq || echo) {
+    if((ch == palUartCb[i].writeCh) && (palUartCb[i].state != PAL_UART_STATE_UNINIT)) {
+      // palUartCb[i].writeCh = -1;
       palUartCb[i].state = PAL_UART_STATE_READY;
       if(palUartCb[i].wrCback != NULL) {
         palUartCb[i].wrCback();
       }
+
+      // MXC_DMA_ReleaseChannel(ch);
+      return;
     }
   }
+
+
 }
 
 /*************************************************************************************************/
@@ -283,7 +241,8 @@ static void PalMailInit(const PalUartConfig_t *pCfg)
 /*************************************************************************************************/
 void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
 {
-  uint8_t uartNum;
+  uint8_t uartNum = palUartGetNum(id);
+  mxc_uart_regs_t *uart = MXC_UART_GET_UART(uartNum);
   int result;
 
 #if defined(HCI_TR_MAIL) && (HCI_TR_MAIL != 0)
@@ -293,35 +252,51 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   }
 #endif
 
-  uartNum = palUartGetNum(id);
 
   PAL_SYS_ASSERT(palUartCb[uartNum].state == PAL_UART_STATE_UNINIT);
 
   /* Save the callback */
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
+  
 
-  result = MXC_UART_Init(MXC_UART_GET_UART(uartNum), pCfg->baud, MXC_UART_IBRO_CLK);
-
+  result = MXC_UART_Init(uart, pCfg->baud, MXC_UART_IBRO_CLK);
   (void)result;
   PAL_SYS_ASSERT(result == 0);
 
-  MXC_UART_SetDataSize(MXC_UART_GET_UART(uartNum), 8);
-  MXC_UART_SetStopBits(MXC_UART_GET_UART(uartNum), MXC_UART_STOP_1);
-  MXC_UART_SetParity(MXC_UART_GET_UART(uartNum), MXC_UART_PARITY_DISABLE);
+  /* Disable UART interrupts */
+  MXC_UART_DisableInt(uart, 0xFFFFFFFF);
+  MXC_UART_ClearFlags(uart, 0xFFFFFFFF);
+
+  MXC_UART_SetDataSize(uart, 8);
+  MXC_UART_SetStopBits(uart, MXC_UART_STOP_1);
+  MXC_UART_SetParity(uart, MXC_UART_PARITY_DISABLE);
   if(pCfg->hwFlow) {
-    MXC_UART_SetFlowCtrl(MXC_UART_GET_UART(uartNum), MXC_UART_FLOW_EN, 1);
+    MXC_UART_SetFlowCtrl(uart, MXC_UART_FLOW_EN, 1);
   }
   
-  // const IRQn_Type uartIrqn = MXC_UART_GET_IRQ(uartNum);
-  // NVIC_ClearPendingIRQ(uartIrqn);
-  // NVIC_EnableIRQ(uartIrqn); 
+  MXC_DMA_Init();
 
-  result = MXC_UART_SetAutoDMAHandlers(MXC_UART_GET_UART(uartNum), true);
+  /* Enable the DMA channel interrupts */
+  NVIC_EnableIRQ(DMA0_IRQn);
+  NVIC_EnableIRQ(DMA1_IRQn);
+  NVIC_EnableIRQ(DMA2_IRQn);
+  NVIC_EnableIRQ(DMA3_IRQn);
+  NVIC_EnableIRQ(DMA4_IRQn);
+  NVIC_EnableIRQ(DMA5_IRQn);
+  NVIC_EnableIRQ(DMA6_IRQn);
+  NVIC_EnableIRQ(DMA7_IRQn);
+  NVIC_EnableIRQ(DMA8_IRQn);
+  NVIC_EnableIRQ(DMA9_IRQn);
+  NVIC_EnableIRQ(DMA10_IRQn);
+  NVIC_EnableIRQ(DMA11_IRQn);
+  NVIC_EnableIRQ(DMA12_IRQn);
+  NVIC_EnableIRQ(DMA13_IRQn);
+  NVIC_EnableIRQ(DMA14_IRQn);
+  NVIC_EnableIRQ(DMA15_IRQn);
 
-  (void)result;
-  PAL_SYS_ASSERT(result == 0);
-  
+  palUartCb[uartNum].readCh = MXC_DMA_AcquireChannel();
+  palUartCb[uartNum].writeCh = MXC_DMA_AcquireChannel();
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
 }
 
@@ -345,7 +320,8 @@ void PalUartDeInit(PalUartId_t id)
   (void)result;
   PAL_SYS_ASSERT(result);
 
-  // NVIC_DisableIRQ(MXC_UART_GET_IRQ(uartNum));
+  NVIC_DisableIRQ(MXC_UART_GET_IRQ(uartNum));
+  MXC_DMA_DeInit();
 
   palUartCb[uartNum].state = PAL_UART_STATE_UNINIT;
 }
@@ -383,9 +359,13 @@ PalUartState_t PalUartGetState(PalUartId_t id)
 /*************************************************************************************************/
 void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
 {
-  uint8_t uartNum;
-  uint32_t irqn;
+  uint8_t uartNum = palUartGetNum(id);
+  mxc_uart_regs_t* uart = MXC_UART_GET_UART(uartNum);
+  int dmaCh = palUartCb[uartNum].readCh;
   int result;
+
+  MXC_UART_DisableInt(uart, 0xFFFFFFFF);
+  MXC_UART_ClearFlags(uart, 0xFFFFFFFF);
 
 #if defined(HCI_TR_MAIL) && (HCI_TR_MAIL != 0)
   if(id == PAL_UART_ID_CHCI) {
@@ -394,25 +374,88 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
   }
 #endif
 
-  uartNum = palUartGetNum(id);
-  // irqn = MXC_UART_GET_IRQ(uartNum);
+   /* Acquire the DMA channel */
+  // WsfCsEnter();
+  // dmaCh = MXC_DMA_AcquireChannel();
+  // WsfCsExit();
 
-  palUartCb[uartNum].readReq.uart       = MXC_UART_GET_UART(uartNum);
-  palUartCb[uartNum].readReq.rxData     = pData;
-  palUartCb[uartNum].readReq.rxLen      = len;
-  palUartCb[uartNum].readReq.txLen      = 0;
-  palUartCb[uartNum].readReq.callback   = palUartCallback;
+  if((dmaCh < 0) || (dmaCh > 15)) {
+    /* DMA unavailable */
+    PAL_SYS_ASSERT(0);
+    return;
+  }
 
-  // NVIC_DisableIRQ(irqn);
 
-  /* Start the read */
-  result = MXC_UART_TransactionDMA(&palUartCb[uartNum].readReq);
-  (void)result;
-  PAL_SYS_ASSERT(result == E_SUCCESS);
+  mxc_dma_srcdst_t srcdst;
+  static mxc_dma_config_t config;
 
-  /* Enable the interrupt */
-  // NVIC_EnableIRQ(irqn);
+  /* Save the channel number */
+  // palUartCb[uartNum].readCh = dmaCh;
+
+  /* Setup the DMA transfer */
+  config.ch = dmaCh;
+
+  config.srcwd = MXC_DMA_WIDTH_BYTE;
+  config.dstwd = MXC_DMA_WIDTH_BYTE;
+
+  config.srcinc_en = 0;
+  config.dstinc_en = 1;
+
+  srcdst.ch = dmaCh;
+  srcdst.dest = (void*)pData;
+  srcdst.len = len;
+
+  switch (uartNum) {
+  case 0:
+    config.reqsel = MXC_DMA_REQUEST_UART0RX;
+    break;
+
+  case 1:
+    config.reqsel = MXC_DMA_REQUEST_UART1RX;
+    break;
+
+  case 2:
+    config.reqsel = MXC_DMA_REQUEST_UART2RX;
+    break;
+
+  case 3:
+    config.reqsel = MXC_DMA_REQUEST_UART3RX;
+    break;
+
+  default:
+    PAL_SYS_ASSERT(0);
+    return;
+  }
+
+  int error;
+
+  error = MXC_DMA_ConfigChannel(config, srcdst);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  error = MXC_DMA_SetCallback(dmaCh, palUartCallback);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+  
+  error = MXC_DMA_EnableInt(dmaCh);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+
+  // Enable channel interrupt
+  // MXC_DMA->ch[dmaCh].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
+  error = MXC_DMA_SetChannelInterruptEn(dmaCh, 0, 1);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  // Enable channel receiving. Set Rx FIFO threshold
+  uart->dma |= (1 << MXC_F_UART_REVB_DMA_RX_THD_VAL_POS) | MXC_F_UART_REVB_DMA_RX_EN;
+
+
+  /* Start the transfer */
+  error = MXC_DMA_Start(dmaCh);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
 }
+
+
+
 
 /*************************************************************************************************/
 /*!
@@ -429,10 +472,14 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
 /*************************************************************************************************/
 void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 {
-  uint8_t uartNum;
-  uint32_t irqn;
+  uint8_t uartNum = palUartGetNum(id);
+  int dmaCh = palUartCb[uartNum].writeCh;
   int result;
 
+  mxc_uart_regs_t* uart = MXC_UART_GET_UART(uartNum);
+
+  MXC_UART_DisableInt(uart, 0xFFFFFFFF);
+  MXC_UART_ClearFlags(uart, 0xFFFFFFFF);
 
 #if defined(HCI_TR_MAIL) && (HCI_TR_MAIL != 0)
   if(id == PAL_UART_ID_CHCI) {
@@ -440,25 +487,90 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
     return;
   }
 #endif
+  
 
-  uartNum = palUartGetNum(id);
-  // irqn = MXC_UART_GET_IRQ(uartNum);
+  // /* Acquire the DMA channel */
+  // WsfCsEnter();
+  // dmaCh = MXC_DMA_AcquireChannel();
+  // WsfCsExit();
 
-  // NVIC_DisableIRQ(irqn);
+  if((dmaCh < 0) || (dmaCh > 15)) {
+    /* DMA unavailable */
+    PAL_SYS_ASSERT(0);
+    return;
+  }
 
+  mxc_dma_srcdst_t srcdst;
+  mxc_dma_config_t config;
+  // palUartCb[uartNum].writeCh = dmaCh;
   palUartCb[uartNum].state = PAL_UART_STATE_BUSY;
 
-  palUartCb[uartNum].writeReq.uart       = MXC_UART_GET_UART(uartNum);
-  palUartCb[uartNum].writeReq.txData     = pData;
-  palUartCb[uartNum].writeReq.txLen      = len;
-  palUartCb[uartNum].writeReq.rxLen      = 0;
-  palUartCb[uartNum].writeReq.callback   = palUartCallback;
+  /* Setup the DMA transfer */
+  config.ch = dmaCh;
 
-  /* Start the write */
-  result = MXC_UART_TransactionDMA(&palUartCb[uartNum].writeReq);
-  (void)result;
-  PAL_SYS_ASSERT(result == E_SUCCESS);
+  config.srcwd = MXC_DMA_WIDTH_BYTE;
+  config.dstwd = MXC_DMA_WIDTH_BYTE;
 
-  /* Enable the interrupt */
-  // NVIC_EnableIRQ(irqn);
+  config.srcinc_en = 1;
+  config.dstinc_en = 0;
+
+  srcdst.ch = dmaCh;
+  srcdst.source = (void*)pData;
+  srcdst.len = len;
+
+
+  switch (uartNum) {
+  case 0:
+    config.reqsel = MXC_DMA_REQUEST_UART0TX;
+    break;
+
+  case 1:
+    config.reqsel = MXC_DMA_REQUEST_UART1TX;
+    break;
+
+  case 2:
+    config.reqsel = MXC_DMA_REQUEST_UART2TX;
+    break;
+
+  case 3:
+    config.reqsel = MXC_DMA_REQUEST_UART3TX;
+    break;
+
+  default:
+    PAL_SYS_ASSERT(0);
+    return;
+  }
+
+
+  int error;
+
+  error = MXC_DMA_ConfigChannel(config, srcdst);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  error = MXC_DMA_SetCallback(dmaCh, palUartCallback);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  error = MXC_DMA_EnableInt(dmaCh);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  
+
+
+
+  // Enable channel interrupt
+  // MXC_DMA->ch[dmaCh].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
+  error = MXC_DMA_SetChannelInterruptEn(dmaCh, 0, 1);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  // Set Tx FIFO threshold
+  uart->dma |= 2 << MXC_F_UART_REVB_DMA_TX_THD_VAL_POS;
+  
+  
+
+  /* Start the transfer */
+  error = MXC_DMA_Start(dmaCh);
+  if (error != E_NO_ERROR) { PAL_SYS_ASSERT(0); }
+
+  // Enable channel transmission
+  uart->dma |= MXC_F_UART_REVB_DMA_TX_EN;
 }
