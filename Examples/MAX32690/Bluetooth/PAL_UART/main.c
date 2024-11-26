@@ -47,7 +47,7 @@ static uint8_t rxData[10];
 /*************************************************************************************************/
 void rd_callback(void)
 {
-    PalUartWriteData(PAL_UART_ID_TERMINAL, rxData, 1);    
+    PalUartWriteData(PAL_UART_ID_TERMINAL, rxData, 1);
 }
 
 /*************************************************************************************************/
