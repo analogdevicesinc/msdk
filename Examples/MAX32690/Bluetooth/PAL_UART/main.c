@@ -28,13 +28,11 @@
 #include "board.h"
 #include "pal_uart.h"
 
-
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 static uint8_t rxData[10];
-
 
 /**************************************************************************************************
   Functions
@@ -70,11 +68,7 @@ int main(void)
     printf("Starting\n");
     MXC_Delay(500000);
 
-    const PalUartConfig_t pCfg = {
-        .rdCback = rd_callback,
-        .wrCback = wr_callback,
-        .baud = 115200
-    };
+    const PalUartConfig_t pCfg = { .rdCback = rd_callback, .wrCback = wr_callback, .baud = 115200 };
 
     PalUartInit(PAL_UART_ID_TERMINAL, &pCfg);
     PalUartReadData(PAL_UART_ID_TERMINAL, rxData, 1);
