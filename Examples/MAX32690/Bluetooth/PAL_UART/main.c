@@ -79,7 +79,7 @@ int main(void)
     PalUartInit(PAL_UART_ID_TERMINAL, &pCfg);
     PalUartReadData(PAL_UART_ID_TERMINAL, rxData, 1);
 
-    while (1) {};
+    while (1) {}
 
     /* Does not return. */
     return 0;
