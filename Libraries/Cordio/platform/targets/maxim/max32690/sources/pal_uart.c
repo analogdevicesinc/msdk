@@ -126,25 +126,23 @@ void palUartCallback(int ch, int error)
     /* Find the corresponding rqeuest and call the callback */
     
      if((ch == palUartCb[i].readCh) && (palUartCb[i].state != PAL_UART_STATE_UNINIT)) {
-      // palUartCb[i].readCh = -1;
-      palUartCb[i].state = PAL_UART_STATE_READY;
-
+      palUartCb[i].readCh = -1;
       if(palUartCb[i].rdCback != NULL) {
         palUartCb[i].rdCback();
       }
 
-      // MXC_DMA_ReleaseChannel(ch);
+      MXC_DMA_ReleaseChannel(ch);
       return;
     }
 
     if((ch == palUartCb[i].writeCh) && (palUartCb[i].state != PAL_UART_STATE_UNINIT)) {
-      // palUartCb[i].writeCh = -1;
+      palUartCb[i].writeCh = -1;
       palUartCb[i].state = PAL_UART_STATE_READY;
       if(palUartCb[i].wrCback != NULL) {
         palUartCb[i].wrCback();
       }
 
-      // MXC_DMA_ReleaseChannel(ch);
+      MXC_DMA_ReleaseChannel(ch);
       return;
     }
   }
@@ -258,6 +256,8 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   /* Save the callback */
   palUartCb[uartNum].rdCback = pCfg->rdCback;
   palUartCb[uartNum].wrCback = pCfg->wrCback;
+  palUartCb[uartNum].readCh = -1;
+  palUartCb[uartNum].writeCh = -1;
   
 
   result = MXC_UART_Init(uart, pCfg->baud, MXC_UART_IBRO_CLK);
@@ -295,8 +295,7 @@ void PalUartInit(PalUartId_t id, const PalUartConfig_t *pCfg)
   NVIC_EnableIRQ(DMA14_IRQn);
   NVIC_EnableIRQ(DMA15_IRQn);
 
-  palUartCb[uartNum].readCh = MXC_DMA_AcquireChannel();
-  palUartCb[uartNum].writeCh = MXC_DMA_AcquireChannel();
+ 
   palUartCb[uartNum].state = PAL_UART_STATE_READY;
 }
 
@@ -361,7 +360,7 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
 {
   uint8_t uartNum = palUartGetNum(id);
   mxc_uart_regs_t* uart = MXC_UART_GET_UART(uartNum);
-  int dmaCh = palUartCb[uartNum].readCh;
+  int dmaCh;
   int result;
 
   MXC_UART_DisableInt(uart, 0xFFFFFFFF);
@@ -374,10 +373,10 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
   }
 #endif
 
-   /* Acquire the DMA channel */
-  // WsfCsEnter();
-  // dmaCh = MXC_DMA_AcquireChannel();
-  // WsfCsExit();
+  /* Acquire the DMA channel */
+  WsfCsEnter();
+  dmaCh = MXC_DMA_AcquireChannel();
+  WsfCsExit();
 
   if((dmaCh < 0) || (dmaCh > 15)) {
     /* DMA unavailable */
@@ -390,7 +389,7 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
   static mxc_dma_config_t config;
 
   /* Save the channel number */
-  // palUartCb[uartNum].readCh = dmaCh;
+  palUartCb[uartNum].readCh = dmaCh;
 
   /* Setup the DMA transfer */
   config.ch = dmaCh;
@@ -473,7 +472,7 @@ void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len)
 void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 {
   uint8_t uartNum = palUartGetNum(id);
-  int dmaCh = palUartCb[uartNum].writeCh;
+  int dmaCh;
   int result;
 
   mxc_uart_regs_t* uart = MXC_UART_GET_UART(uartNum);
@@ -489,10 +488,10 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 #endif
   
 
-  // /* Acquire the DMA channel */
-  // WsfCsEnter();
-  // dmaCh = MXC_DMA_AcquireChannel();
-  // WsfCsExit();
+  /* Acquire the DMA channel */
+  WsfCsEnter();
+  dmaCh = MXC_DMA_AcquireChannel();
+  WsfCsExit();
 
   if((dmaCh < 0) || (dmaCh > 15)) {
     /* DMA unavailable */
@@ -502,7 +501,7 @@ void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len)
 
   mxc_dma_srcdst_t srcdst;
   mxc_dma_config_t config;
-  // palUartCb[uartNum].writeCh = dmaCh;
+  palUartCb[uartNum].writeCh = dmaCh;
   palUartCb[uartNum].state = PAL_UART_STATE_BUSY;
 
   /* Setup the DMA transfer */
