@@ -131,6 +131,9 @@ __weak int Board_Init(void)
     return 0;
 }
 
+/* This function is used for the Bluetooth stack initialization */
+__weak void PalSysInit(void) {}
+
 /**
  * This function is called just before control is transferred to main().
  *
@@ -182,6 +185,8 @@ __weak void SystemInit(void)
 
     PinInit();
     Board_Init();
+
+    PalSysInit();
 }
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
