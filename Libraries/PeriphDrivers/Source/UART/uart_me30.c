@@ -77,6 +77,11 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
     }
 #endif // MSDK_NO_GPIO_CLK_INIT
 
+    retval = MXC_UART_SetClockSource(uart, clock);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, clock);
 }
 
@@ -173,7 +178,16 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
-    return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, clock);
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 0);
+
+    case MXC_UART_IBRO_CLK:
+        return MXC_UART_RevB_SetClockSource((mxc_uart_revb_regs_t *)uart, 1);
+
+    default:
+        return E_BAD_PARAM;
+    }
 }
 
 int MXC_UART_GetActive(mxc_uart_regs_t *uart)
