@@ -273,14 +273,14 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 #ifndef MSDK_NO_GPIO_CLK_INIT
             retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
 #endif // MSDK_NO_GPIO_CLK_INIT
-            clock_option = 2;
+            clock_option = 0;
             break;
 
         case MXC_UART_ERTCO_CLK:
 #ifndef MSDK_NO_GPIO_CLK_INIT
             retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
 #endif // MSDK_NO_GPIO_CLK_INIT
-            clock_option = 3;
+            clock_option = 1;
             break;
 
         default:
@@ -316,9 +316,9 @@ mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
         break;
     case 3:
         switch (clock_option) {
-        case 2:
+        case 0:
             return MXC_UART_IBRO_CLK;
-        case 3:
+        case 1:
             return MXC_UART_ERTCO_CLK;
         default:
             return E_BAD_STATE;
