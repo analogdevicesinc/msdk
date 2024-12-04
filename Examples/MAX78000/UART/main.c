@@ -102,8 +102,13 @@ int main(void)
         printf("-->Example Failed\n");
         return error;
     }
-
+#if defined(BOARD_EVKIT_V1)
     if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
+#elif defined(BOARD_FTHR_REVA)
+    // We define UART3(LPUART) as WRITING_UART for FTHR Board.
+    // LPUART can use IBRO and ERTCO clocks.
+    if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+#endif
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
         return error;
