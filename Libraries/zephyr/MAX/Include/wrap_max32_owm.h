@@ -29,7 +29,7 @@ extern "C" {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 
 static inline int Wrap_MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
 {
@@ -40,8 +40,8 @@ static inline int Wrap_MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
 /*
  *  MAX32690, MAX32655 related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32680) || \
-    (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX78002)
 
 static inline int Wrap_MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
 {
