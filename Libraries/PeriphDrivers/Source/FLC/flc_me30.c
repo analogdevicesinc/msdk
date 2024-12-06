@@ -196,12 +196,12 @@ int MXC_FLC_UnlockInfoBlock(uint32_t address)
 #endif
 
     /* Make sure the info block is locked */
-    flc->actrl = 0x1234;
+    MXC_FLC->actrl = 0x1234;
 
     /* Write the unlock sequence */
-    flc->actrl = 0x55bcbe69;
-    flc->actrl = 0x7688c189;
-    flc->actrl = 0x82306612;
+    MXC_FLC->actrl = 0x55bcbe69;
+    MXC_FLC->actrl = 0x7688c189;
+    MXC_FLC->actrl = 0x82306612;
 
     return E_NO_ERROR;
 }
@@ -219,7 +219,7 @@ int MXC_FLC_LockInfoBlock(uint32_t address)
     return E_NOT_SUPPORTED;
 #endif
 
-    flc->actrl = 0xDEADBEEF;
+    MXC_FLC->actrl = 0xDEADBEEF;
     return E_NO_ERROR;
 }
 
