@@ -185,13 +185,13 @@ int MXC_FLC_MassErase(void)
 //******************************************************************************
 int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
+    /* Flash Controller only accessible in secure world. */
 #if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
     }
 #else
-    /* Flash Controller only accessible in secure world. */
     return E_NOT_SUPPORTED;
 #endif
 
