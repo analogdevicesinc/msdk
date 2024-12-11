@@ -114,57 +114,64 @@ typedef void (*mxc_wut_complete_cb_t)(int result);
  * @brief      Initialize timer module clock.
  * @param      pres       Prescaler value. 
  */
-void MXC_WUT_Init(mxc_wut_pres_t pres);
+void MXC_WUT_Init(mxc_wut_regs_t *wut, mxc_wut_pres_t pres);
 
 /**
  * @brief      Shutdown timer module clock.
  */
-void MXC_WUT_Shutdown(void);
+void MXC_WUT_Shutdown(mxc_wut_regs_t *wut);
 
 /**
  * @brief      Enable the timer. 
  */
-void MXC_WUT_Enable(void);
+void MXC_WUT_Enable(mxc_wut_regs_t *wut);
 
 /**
  * @brief      Disable the timer.
  */
-void MXC_WUT_Disable(void);
+void MXC_WUT_Disable(mxc_wut_regs_t *wut);
 
 /**
  * @brief      Configure the timer.
  * @param      cfg  Pointer to timer configuration struct.
  */
-void MXC_WUT_Config(const mxc_wut_cfg_t *cfg);
+void MXC_WUT_Config(mxc_wut_regs_t *wut, const mxc_wut_cfg_t *cfg);
 
 /**
  * @brief   Get the timer compare count.
  * @return  Returns the current compare count.
  */
-uint32_t MXC_WUT_GetCompare(void);
+uint32_t MXC_WUT_GetCompare(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Get the timer capture count.
  * @return  Returns the most recent capture count.
  */
-uint32_t MXC_WUT_GetCapture(void);
+uint32_t MXC_WUT_GetCapture(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Get the timer count.
  * @return  Returns the current count.
  */
-uint32_t MXC_WUT_GetCount(void);
+uint32_t MXC_WUT_GetCount(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Clear the timer interrupt.
  */
-void MXC_WUT_IntClear(void);
+__attribute__((
+    deprecated("Use MXC_NVIC_SetVector instead.  See nvic_table.h for more details.")))void
+MXC_WUT_IntClear(void);
+
+/**
+ * @brief   Clear the timer interrupt.
+ */
+void MXC_WUT_ClearFlags(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Get the timer interrupt status.
  * @return  Returns the interrupt status. 1 if interrupt has occurred.
  */
-uint32_t MXC_WUT_IntStatus(void);
+uint32_t MXC_WUT_IntStatus(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Set the timer compare count.
@@ -172,13 +179,13 @@ uint32_t MXC_WUT_IntStatus(void);
  * @note    This function does not protect against output glitches in PWM mode.
  *          Use MXC_WUT_PWMSetPeriod when in PWM mode.
  */
-void MXC_WUT_SetCompare(uint32_t cmp_cnt);
+void MXC_WUT_SetCompare(mxc_wut_regs_t *wut, uint32_t cmp_cnt);
 
 /**
  * @brief   Set the timer count.
  * @param   cnt     New count.
  */
-void MXC_WUT_SetCount(uint32_t cnt);
+void MXC_WUT_SetCount(mxc_wut_regs_t *wut, uint32_t cnt);
 
 /**
  * @brief   Convert real time to timer ticks.
@@ -188,7 +195,7 @@ void MXC_WUT_SetCount(uint32_t cnt);
  * @return     #E_NO_ERROR If everything is successful. 
  * @return     @ref MXC_Error_Codes If function is unsuccessful.
  */
-int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t *ticks);
+int MXC_WUT_GetTicks(mxc_wut_regs_t *wut, uint32_t time, mxc_wut_unit_t units, uint32_t *ticks);
 
 /**
  * @brief   Convert timer ticks to real time.
@@ -198,36 +205,36 @@ int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t *ticks);
  * @return     #E_NO_ERROR If everything is successful. 
  * @return     @ref MXC_Error_Codes If function is unsuccessful.
  */
-int MXC_WUT_GetTime(uint32_t ticks, uint32_t *time, mxc_wut_unit_t *units);
+int MXC_WUT_GetTime(mxc_wut_regs_t *wut, uint32_t ticks, uint32_t *time, mxc_wut_unit_t *units);
 
 /**
  * @brief   Wait for an edge of the WUT count register.
  */
-void MXC_WUT_Edge(void);
+void MXC_WUT_Edge(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Store the count and snapshot values.
  */
-void MXC_WUT_Store(void);
+void MXC_WUT_Store(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Restore the DBB clock with the stored count and snapshot values.
  * @param   dbbFreq  Frequency of DBB clock.
  */
-void MXC_WUT_RestoreBBClock(uint32_t dbbFreq);
+void MXC_WUT_RestoreBBClock(mxc_wut_regs_t *wut, uint32_t dbbFreq);
 
 /**
  * @brief   Get the difference between the stored counter value 
  *          and the current counter value.
  * @return  Returns the current counter value - stored counter value.
  */
-uint32_t MXC_WUT_GetSleepTicks(void);
+uint32_t MXC_WUT_GetSleepTicks(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Delays for the given number of milliseconds.
  * @param   waitMs  Number of milliseconds to wait.
  */
-void MXC_WUT_Delay_MS(uint32_t waitMs);
+void MXC_WUT_Delay_MS(mxc_wut_regs_t *wut, uint32_t waitMs);
 
 /**
  * @brief   Trim the 32 kHz crystal load settings, blocks until complete.
@@ -237,7 +244,7 @@ void MXC_WUT_Delay_MS(uint32_t waitMs);
  *
  * @return  #E_NO_ERROR If everything is successful.
  */
-int MXC_WUT_TrimCrystal(void);
+int MXC_WUT_TrimCrystal(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Trim the 32 kHz crystal load settings, non-blocking interrupt based.
@@ -248,21 +255,21 @@ int MXC_WUT_TrimCrystal(void);
  * @param   cb Callback for when the trim is complete.
  * @return  #E_NO_ERROR If everything is successful.
  */
-int MXC_WUT_TrimCrystalAsync(mxc_wut_complete_cb_t cb);
+int MXC_WUT_TrimCrystalAsync(mxc_wut_regs_t *wut, mxc_wut_complete_cb_t cb);
 
 /**
  * @brief   Check to see if the trim procedure is ongoing.
  * @details Must leave the 32 MHz clock and BLE DBB running while the trim procedure is pending.
  * @return  #E_NO_ERROR If trim is complete, E_BUSY if trim procedure is ongoing.
  */
-int MXC_WUT_TrimPending(void);
+int MXC_WUT_TrimPending(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Interrupt handler for trim procedure.
  *
  * @return  #E_NO_ERROR If trim is complete, E_BUSY if trim procedure is ongoing.
  */
-int MXC_WUT_Handler(void);
+int MXC_WUT_Handler(mxc_wut_regs_t *wut);
 
 /**@} end of group wut */
 
