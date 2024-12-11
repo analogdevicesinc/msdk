@@ -345,7 +345,7 @@ int freertos_permit_tickless(void)
  */
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
     NVIC_ClearPendingIRQ(WUT0_IRQn);
 }
 
