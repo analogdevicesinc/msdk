@@ -157,8 +157,7 @@ uint32_t MXC_WUT_GetCount(mxc_wut_regs_t *wut);
  * @brief   Clear the timer interrupt.
  * @param   wut  Pointer to Wakeup Timer instance to clear interrupts for.
  */
-__attribute__((
-    deprecated("Use MXC_WUT_ClearFlags instead.  See wut.h for more details.")))void
+__attribute__((deprecated("Use MXC_WUT_ClearFlags instead.  See wut.h for more details."))) void
 MXC_WUT_IntClear(mxc_wut_regs_t *wut);
 
 /**
