@@ -183,15 +183,44 @@ int MXC_FLC_MassErase(void)
 }
 
 //******************************************************************************
-__weak int MXC_FLC_UnlockInfoBlock(uint32_t address)
+int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
+    /* Flash Controller only accessible in secure world. */
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
+    if ((address < MXC_INFO_MEM_BASE) ||
+        (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
+        return E_BAD_PARAM;
+    }
+#else
     return E_NOT_SUPPORTED;
+#endif
+
+    /* Make sure the info block is locked */
+    MXC_FLC->actrl = 0x1234;
+
+    /* Write the unlock sequence */
+    MXC_FLC->actrl = 0x55bcbe69;
+    MXC_FLC->actrl = 0x7688c189;
+    MXC_FLC->actrl = 0x82306612;
+
+    return E_NO_ERROR;
 }
 
 //******************************************************************************
 int MXC_FLC_LockInfoBlock(uint32_t address)
 {
-    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t *)MXC_FLC, address);
+    /* Flash Controller only accessible in secure world. */
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
+    if ((address < MXC_INFO_MEM_BASE) ||
+        (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
+        return E_BAD_PARAM;
+    }
+#else
+    return E_NOT_SUPPORTED;
+#endif
+
+    MXC_FLC->actrl = 0xDEADBEEF;
+    return E_NO_ERROR;
 }
 
 //******************************************************************************
