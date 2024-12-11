@@ -97,6 +97,12 @@ void MXC_WUT_IntClear(mxc_wut_regs_t *wut)
 }
 
 /* ************************************************************************* */
+void MXC_WUT_ClearFlags(mxc_wut_regs_t *wut)
+{
+    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)wut);
+}
+
+/* ************************************************************************* */
 uint32_t MXC_WUT_IntStatus(mxc_wut_regs_t *wut)
 {
     return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)wut);
@@ -223,7 +229,7 @@ int MXC_WUT_Handler(mxc_wut_regs_t *wut)
     mxc_wut_complete_cb_t cbTemp;
 
     /* Clear the interrupt flags */
-    MXC_WUT_IntClear(wut);
+    MXC_WUT_ClearFlags(wut);
 
     if (!trimPending) {
         return E_NO_ERROR;

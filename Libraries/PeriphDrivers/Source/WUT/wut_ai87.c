@@ -89,6 +89,12 @@ void MXC_WUT_IntClear(void)
 }
 
 /* ************************************************************************* */
+void MXC_WUT_ClearFlags(void)
+{
+    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************* */
 uint32_t MXC_WUT_IntStatus(void)
 {
     return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)MXC_WUT);

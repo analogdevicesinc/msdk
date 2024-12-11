@@ -159,7 +159,7 @@ uint32_t MXC_WUT_GetCount(mxc_wut_regs_t *wut);
  * @brief   Clear the timer interrupt.
  */
 __attribute__((
-    deprecated("Use MXC_NVIC_SetVector instead.  See nvic_table.h for more details.")))void
+    deprecated("Use MXC_WUT_ClearFlags instead.  See wut.h for more details.")))void
 MXC_WUT_IntClear(void);
 
 /**
