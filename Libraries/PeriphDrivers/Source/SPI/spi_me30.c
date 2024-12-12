@@ -88,30 +88,20 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     //clear mask
     gpio_cfg_spi.mask = 0;
 
-    // TODO(ME30): Validate pin assignments
-    // check rest of the pins
     if (pins.clock) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_23;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_6;
     }
 
     if (pins.miso) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_22;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_4;
     }
 
     if (pins.mosi) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_21;
-    }
-
-    if (pins.sdio2) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_24;
-    }
-
-    if (pins.sdio3) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_25;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_2;
     }
 
     if (pins.ss0) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_20;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_3;
     }
 
     gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
