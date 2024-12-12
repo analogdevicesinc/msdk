@@ -164,6 +164,7 @@ MXC_WUT_IntClear(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Clear the timer interrupt.
+ * @param   wut  Pointer to Wakeup Timer instance to clear interrupt flags for.
  */
 void MXC_WUT_ClearFlags(mxc_wut_regs_t *wut);
 
@@ -177,7 +178,7 @@ MXC_WUT_IntStatus(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Get the timer interrupt status.
- * @param   wut  Pointer to Wakeup Timer instance to get interrupt staus from.
+ * @param   wut  Pointer to Wakeup Timer instance to get interrupt status from.
  * @return  Returns the interrupt status. 1 if interrupt has occurred.
  */
 uint32_t MXC_WUT_GetFlags(mxc_wut_regs_t *wut);
