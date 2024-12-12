@@ -111,6 +111,12 @@ uint32_t MXC_WUT_IntStatus(void)
 }
 
 /* ************************************************************************* */
+uint32_t MXC_WUT_GetFlags(void)
+{
+    return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************* */
 void MXC_WUT_SetCompare(uint32_t cmp_cnt)
 {
     MXC_WUT_RevA_SetCompare((mxc_wut_reva_regs_t *)MXC_WUT, cmp_cnt);
@@ -142,7 +148,19 @@ void MXC_WUT_Edge(void)
 }
 
 /* ************************************************************************** */
+void MXC_WUT_WaitForEdge(void)
+{
+    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************** */
 void MXC_WUT_Store(void)
+{
+    MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************** */
+void MXC_WUT_StoreCount(void)
 {
     MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)MXC_WUT);
 }

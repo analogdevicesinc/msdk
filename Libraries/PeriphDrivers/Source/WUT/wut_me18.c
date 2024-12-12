@@ -100,19 +100,13 @@ uint32_t MXC_WUT_GetCount(mxc_wut_regs_t *wut)
 }
 
 /* ************************************************************************* */
-void MXC_WUT_IntClear(void)
-{
-    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)MXC_WUT);
-}
-
-/* ************************************************************************* */
 void MXC_WUT_ClearFlags(mxc_wut_regs_t *wut)
 {
     MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************* */
-uint32_t MXC_WUT_IntStatus(mxc_wut_regs_t *wut)
+uint32_t MXC_WUT_GetFlags(mxc_wut_regs_t *wut)
 {
     return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)wut);
 }
@@ -144,13 +138,13 @@ int MXC_WUT_GetTime(mxc_wut_regs_t *wut, uint32_t ticks, uint32_t *time, mxc_wut
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Edge(mxc_wut_regs_t *wut)
+void MXC_WUT_WaitForEdge(mxc_wut_regs_t *wut)
 {
     MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Store(mxc_wut_regs_t *wut)
+void MXC_WUT_StoreCount(mxc_wut_regs_t *wut)
 {
     MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)wut);
 }

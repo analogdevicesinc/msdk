@@ -160,7 +160,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Determine if we need to snapshot the PalBb clock */
     if (schTimerActive) {
         /* Snapshot the current WUT value with the PalBb clock */
-        MXC_WUT_Store(MXC_WUT0);
+        MXC_WUT_StoreCount(MXC_WUT0);
         preCapture = MXC_WUT_GetCount(MXC_WUT0);
         schUsec = PalTimerGetExpTime();
 
@@ -176,7 +176,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         }
     } else {
         /* Snapshot the current WUT value */
-        MXC_WUT_Edge(MXC_WUT0);
+        MXC_WUT_WaitForEdge(MXC_WUT0);
         preCapture = MXC_WUT_GetCount(MXC_WUT0);
         bleSleepTicks = 0;
         schUsec = 0;
@@ -238,7 +238,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     /* Recalculate dsWutTicks for the FreeRTOS tick counter update */
-    MXC_WUT_Edge(MXC_WUT0);
+    MXC_WUT_WaitForEdge(MXC_WUT0);
     postCapture = MXC_WUT_GetCount(MXC_WUT0);
     dsWutTicks = postCapture - preCapture;
 
