@@ -99,9 +99,8 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
     MXC_SYS_CLOCK_ERTCO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
-    // MXC_SYS_CLOCK_EXTCLK =
-    //     MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
-    // TODO(JC): ^^^ EXTCLK select is missing from gcr_regs.h (should be 0x7)
+    MXC_SYS_CLOCK_EXTCLK =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
 
 /** @brief Enumeration to set the System Clock divider */

@@ -80,10 +80,9 @@ __weak void SystemCoreClockUpdate(void)
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
         base_freq = ERTCO_FREQ;
         break;
-    // case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-    //     base_freq = EXTCLK_FREQ;
-    //     break;
-    // TODO(JC): ^^^ Uncomment when EXTCLK register definition is added
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+        base_freq = EXTCLK_FREQ;
+        break;
     default:
         // Codes 001 and 111 are reserved.
         // This code should never execute, however, initialize to safe value.
