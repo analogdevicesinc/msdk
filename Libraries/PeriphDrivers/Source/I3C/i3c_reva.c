@@ -582,6 +582,8 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
     int ret;
     uint8_t readCount;
     uint16_t remaining;
+    uint32_t timeout;
+    uint32_t freq;
 
     if (MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_IDLE &&
         MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_SDR_NORM) {
@@ -598,10 +600,12 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
     if (!req->is_i2c) {
         ret = MXC_I3C_RevA_EmitStart(i3c, req->is_i2c, MXC_I3C_TRANSFER_TYPE_WRITE,
                                      MXC_I3C_BROADCAST_ADDR, 0);
-
         if (ret < 0) {
             goto err;
         }
+        freq = MXC_I3C_RevA_GetPPFrequency(i3c);
+    } else {
+        freq = MXC_I3C_RevA_GetI2CFrequency(i3c);
     }
 
     /* Restart with write */
@@ -612,7 +616,13 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
             goto err;
         }
 
-        ret = MXC_I3C_RevA_WriteTXFIFO(i3c, req->tx_buf, req->tx_len, true, 100);
+        /* A simple linear estimation to find a reasonable write timeout value,
+           proportional to clock period and buffer size. Coefficient value has
+           been found by trial-and-error.
+        */
+        timeout = (uint32_t)(40 * 1000000 / freq) * req->tx_len;
+
+        ret = MXC_I3C_RevA_WriteTXFIFO(i3c, req->tx_buf, req->tx_len, true, timeout);
         if (ret < 0) {
             goto err;
         }
@@ -633,8 +643,14 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
                 goto err;
             }
 
+            /* A simple linear estimation to find a reasonable read timeout value,
+               proportional to clock period and buffer size. Coefficient value has
+               been found by trial-and-error.
+            */
+            timeout = (uint32_t)(80 * 1000000 / freq) * readCount;
+
             ret = MXC_I3C_RevA_ReadRXFIFO(i3c, req->rx_buf + (req->rx_len - remaining), readCount,
-                                          1000);
+                                          timeout);
             if (ret == readCount) {
                 remaining -= readCount;
             } else {
