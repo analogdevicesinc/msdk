@@ -301,7 +301,7 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
+        // The 131k clock is always enabled
         break;
 
     case MXC_SYS_CLOCK_ERFO:
