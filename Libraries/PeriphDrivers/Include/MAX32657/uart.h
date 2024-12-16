@@ -77,14 +77,11 @@ typedef enum {
 } mxc_uart_flow_t;
 
 /**
- * @brief      Clock settings */
+ * @brief   Clock settings
+ */
 typedef enum {
-    /*Only available for UARTS 0-2*/
     MXC_UART_APB_CLK = 0,
-    /*Available for all UARTs*/
-    MXC_UART_IBRO_CLK = 2,
-    /*ERTCO clock can only be used for UART3*/
-    MXC_UART_ERTCO_CLK = 4,
+    MXC_UART_IBRO_CLK = 1,
 } mxc_uart_clock_t;
 
 /**
