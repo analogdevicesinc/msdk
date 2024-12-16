@@ -397,7 +397,7 @@ void turnOffUnused(void)
  */
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
     NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 

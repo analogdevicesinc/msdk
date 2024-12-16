@@ -158,13 +158,26 @@ uint32_t MXC_WUT_GetCount(void);
 /**
  * @brief   Clear the timer interrupt.
  */
-void MXC_WUT_IntClear(void);
+__attribute__((deprecated("Use MXC_WUT_ClearFlags instead.  See wut.h for more details."))) void
+MXC_WUT_IntClear(void);
+
+/**
+ * @brief   Clear the timer interrupt.
+ */
+void MXC_WUT_ClearFlags(void);
 
 /**
  * @brief   Get the timer interrupt status.
  * @return  Returns the interrupt status. 1 if interrupt has occurred.
  */
-uint32_t MXC_WUT_IntStatus(void);
+__attribute__((deprecated("Use MXC_WUT_GetFlags instead.  See wut.h for more details."))) uint32_t
+MXC_WUT_IntStatus(void);
+
+/**
+ * @brief   Get the timer interrupt status.
+ * @return  Returns the interrupt status. 1 if interrupt has occurred.
+ */
+uint32_t MXC_WUT_GetFlags(void);
 
 /**
  * @brief   Set the timer compare count.
@@ -203,12 +216,24 @@ int MXC_WUT_GetTime(uint32_t ticks, uint32_t *time, mxc_wut_unit_t *units);
 /**
  * @brief   Wait for an edge of the WUT count register.
  */
-void MXC_WUT_Edge(void);
+__attribute__((deprecated("Use MXC_WUT_WaitForEdge instead.  See wut.h for more details."))) void
+MXC_WUT_Edge(void);
+
+/**
+ * @brief   Wait for an edge of the WUT count register.
+ */
+void MXC_WUT_WaitForEdge(void);
 
 /**
  * @brief   Store the count and snapshot values.
  */
-void MXC_WUT_Store(void);
+__attribute__((deprecated("Use MXC_WUT_StoreCount instead.  See wut.h for more details."))) void
+MXC_WUT_Store(void);
+
+/**
+ * @brief   Store the count and snapshot values.
+ */
+void MXC_WUT_StoreCount(void);
 
 /**
  * @brief   Restore the DBB clock with the stored count and snapshot values.
