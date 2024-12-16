@@ -25,6 +25,8 @@ rm -rf ${hal_adi}/MAX/
 
 # Create parent folder
 mkdir -p ${hal_adi}/MAX/Libraries/CMSIS
+mkdir -p ${hal_adi}/MAX/Libraries/MAXUSB/include
+mkdir -p ${hal_adi}/MAX/Libraries/MAXUSB/src
 mkdir -p ${hal_adi}/MAX/Libraries/PeriphDrivers
 
 # Copy zephyr wrappers, system files and cmakefiles
@@ -38,11 +40,19 @@ cp -rf ${msdk}/Libraries/CMSIS/Include ${hal_adi}/MAX/Libraries/CMSIS/
 cp -rf ${msdk}/Libraries/PeriphDrivers/Include ${hal_adi}/MAX/Libraries/PeriphDrivers/
 cp -rf ${msdk}/Libraries/PeriphDrivers/Source  ${hal_adi}/MAX/Libraries/PeriphDrivers/
 
+# Copy MAXUSB folder
+cp -rf ${msdk}/Libraries/MAXUSB/include/core ${hal_adi}/MAX/Libraries/MAXUSB/include/
+cp -rf ${msdk}/Libraries/MAXUSB/src/core     ${hal_adi}/MAX/Libraries/MAXUSB/src/
+
 # Remove unneeded files
 rm -rf ${hal_adi}/MAX/Libraries/CMSIS/Device/Maxim/GCC
 rm -rf ${hal_adi}/MAX/Libraries/CMSIS/Device/Maxim/MAX*/Source/IAR
 rm -rf ${hal_adi}/MAX/Libraries/CMSIS/Device/Maxim/MAX*/Source/GCC
 rm -rf ${hal_adi}/MAX/Libraries/CMSIS/Device/Maxim/MAX*/Source/ARM
+rm -rf ${hal_adi}/MAX/Libraries/MAXUSB/include/core/arm
+rm -rf ${hal_adi}/MAX/Libraries/MAXUSB/include/core/maxq
+rm -rf ${hal_adi}/MAX/Libraries/MAXUSB/src/core/arm
+rm -rf ${hal_adi}/MAX/Libraries/MAXUSB/src/core/maxq
 
 # Check either dirty or clean
 cd ${hal_adi}
