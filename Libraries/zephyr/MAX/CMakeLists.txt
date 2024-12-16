@@ -46,6 +46,24 @@ zephyr_include_directories(
     ${MSDK_PERIPH_INC_DIR}
 )
 
+if (CONFIG_UDC_MAX32)
+    zephyr_compile_definitions(
+        -DUSE_ZEPHYR_USB_STACK=1
+    )
+
+    set(MSDK_MAXUSB_DIR ${MSDK_LIBRARY_DIR}/MAXUSB)
+
+    zephyr_include_directories(
+        ${MSDK_MAXUSB_DIR}/include/core
+        ${MSDK_MAXUSB_DIR}/include/core/musbhsfc
+    )
+
+    zephyr_library_sources(
+        ${MSDK_MAXUSB_DIR}/src/core/usb_event.c
+        ${MSDK_MAXUSB_DIR}/src/core/musbhsfc/usb.c
+    )
+endif()
+
 add_subdirectory_ifdef(CONFIG_SOC_MAX32520 Source/MAX32520)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32570 Source/MAX32570)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32572 Source/MAX32572)
