@@ -258,7 +258,7 @@ int32_t tot_usec = -100000;
 void WUT_IRQHandler(void)
 {
     i2s_flag = 1;
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
 
     tot_usec += WUT_USEC;
     //LED_On(LED2);
