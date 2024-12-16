@@ -941,7 +941,9 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
 
     /* Check for follow-on data and advance state machine */
     if (sud->wLength > 0) {
+#ifndef USE_ZEPHYR_USB_STACK
         MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_SERV_OUTPKTRDY;
+#endif
         /* Determine if IN or OUT data follows */
         if (sud->bmRequestType & RT_DEV_TO_HOST) {
             setup_phase = SETUP_DATA_IN;

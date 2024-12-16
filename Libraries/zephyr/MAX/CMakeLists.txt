@@ -47,6 +47,10 @@ zephyr_include_directories(
 )
 
 if (CONFIG_UDC_MAX32)
+    zephyr_compile_definitions(
+        -DUSE_ZEPHYR_USB_STACK=1
+    )
+
     set(MSDK_MAXUSB_DIR ${MSDK_LIBRARY_DIR}/MAXUSB)
 
     zephyr_include_directories(
