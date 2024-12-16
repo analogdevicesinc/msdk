@@ -11667,6 +11667,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>ASYNC</name>
+       <description>Allows asynchronous reads to the PWM and CNT registers.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>CLKSEL_B</name>
        <description>Timer Clock Select for Timer B</description>
        <bitOffset>16</bitOffset>
