@@ -233,6 +233,36 @@ int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t *buffer)
 void MXC_FLC_Read(int address, void *buffer, int len)
 {
     MXC_FLC_Com_Read(address, buffer, len);
+
+    /* ECC error detected */
+    if (MXC_GCR->eccerr & MXC_F_GCR_ECCERR_FLASH) {
+        /* Clear the ECC error */
+        MXC_GCR->eccerr = MXC_F_GCR_ECCERR_FLASH;
+
+        /*
+         * Erasing flash will also erase the ECC bits. These bits are not
+         * updated until a flash write. Reading from erased memory will
+         * signal a ECC error that is falsely corrected from 0xFF to 0xFD
+         * on the 16th byte of each 128-bit line.
+         *
+         * Workaround by setting the 16th byte of each line to 0xFF.
+         */
+
+        /* Get to the 16th byte of each line */
+        uint32_t addrOffset = (0xF - (address % 0x10));
+        uint8_t *buffer8 = buffer;
+
+        for (int i = 0; i < len; i++) {
+            /* Check for the erased flash ECC correction */
+            if (i == addrOffset && buffer8[i] == 0xFD) {
+                buffer8[i] = 0xFF;
+                addrOffset += 0x10;
+            } else if (buffer8[i] != 0xFF) {
+                /* This could be an actual ECC error */
+                break;
+            }
+        }
+    }
 }
 
 //******************************************************************************
