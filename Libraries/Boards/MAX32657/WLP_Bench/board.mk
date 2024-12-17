@@ -15,27 +15,27 @@
  # limitations under the License.
  #
  ##############################################################################
-# This file can be used to set build configuration
-# variables.  These variables are defined in a file called 
-# "Makefile" that is located next to this one.
 
-# For instructions on how to use this system, see
-# https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
+ifeq "$(BOARD_DIR)" ""
+BOARD_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
 
-# **********************************************************
+# Source files for this test (add path to VPATH below)
+SRCS += board.c
+SRCS += stdio.c
+SRCS += led.c
+SRCS += pb.c
 
-# Enable Cordio library
-LIB_CORDIO = 1
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
-CORDIO_DIR = $(LIBS_DIR)/Packetcraft-ADI
-LIB_PHY_DIR ?= $(LIBS_DIR)/RF-PHY
+# Where to find BSP source files
+VPATH += $(BOARD_DIR)/Source
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
 
-# Cordio library options
-BLE_HOST = 0
-BLE_CONTROLLER = 1
-
-# TRACE option
-# Set to 0 to disable
-# Set to 2 to enable serial port trace messages
-TRACE = 0
-DEBUG = 1
+# Where to find BSP header files
+IPATH += $(BOARD_DIR)/Include
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton
