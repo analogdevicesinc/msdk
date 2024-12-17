@@ -134,10 +134,10 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     MXC_GPIO_OutSet(uart_rts.port, uart_rts.mask);
 
     /* Snapshot the current WUT value */
-    MXC_WUT_Edge();
+    MXC_WUT_WaitForEdge();
     pre_capture = MXC_WUT_GetCount();
     MXC_WUT_SetCompare(pre_capture + wut_ticks);
-    MXC_WUT_Edge();
+    MXC_WUT_WaitForEdge();
 
     LED_Off(1);
 

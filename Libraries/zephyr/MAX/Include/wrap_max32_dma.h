@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 #define ADI_MAX32_DMA_CTRL_DIS_IE MXC_F_DMA_CFG_CHDIEN
 #define ADI_MAX32_DMA_CTRL_CTZIEN MXC_F_DMA_CFG_CTZIEN
 
@@ -50,7 +50,7 @@ extern "C" {
 
 static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     return dma->intr;
 #else
     return dma->intfl;
@@ -59,7 +59,7 @@ static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
 
 static inline int Wrap_MXC_DMA_Init(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     return MXC_DMA_Init(dma);
 #else
     (void)dma;
@@ -69,7 +69,7 @@ static inline int Wrap_MXC_DMA_Init(mxc_dma_regs_t *dma)
 
 static inline void Wrap_MXC_DMA_DeInit(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     MXC_DMA_DeInit(dma);
 #else
     (void)dma;
@@ -79,7 +79,7 @@ static inline void Wrap_MXC_DMA_DeInit(mxc_dma_regs_t *dma)
 
 static inline int Wrap_MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     return MXC_DMA_AcquireChannel(dma);
 #else
     (void)dma;
@@ -89,7 +89,7 @@ static inline int Wrap_MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)
 
 static inline void Wrap_MXC_DMA_Handler(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     MXC_DMA_Handler(dma);
 #else
     (void)dma;
@@ -100,7 +100,7 @@ static inline void Wrap_MXC_DMA_Handler(mxc_dma_regs_t *dma)
 static inline int Wrap_MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
                                       mxc_dma_complete_cb_t callback)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     return MXC_DMA_MemCpy(dma, dest, src, len, callback);
 #else
     (void)dma;
@@ -112,7 +112,7 @@ static inline int Wrap_MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t 
                                           mxc_dma_srcdst_t firstSrcDst,
                                           mxc_dma_trans_chain_t callback)
 {
-#if defined(CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
     return MXC_DMA_DoTransfer(dma, config, firstSrcDst, callback);
 #else
     (void)dma;

@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 // status flags
 #define ADI_MAX32_UART_RX_EMPTY MXC_F_UART_STATUS_RX_EMPTY
 #define ADI_MAX32_UART_TX_EMPTY MXC_F_UART_STATUS_TX_EMPTY
@@ -117,14 +117,15 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
 /*
  *  MAX32690, MAX32655 related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
-    (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
+    defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX78002)
 // status flags
 #define ADI_MAX32_UART_RX_EMPTY MXC_F_UART_STATUS_RX_EM
 #define ADI_MAX32_UART_TX_EMPTY MXC_F_UART_STATUS_TX_EM
 
-#if defined(CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32657)
+#if defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32657)
 // error flags
 #define ADI_MAX32_UART_ERROR_OVERRUN MXC_F_UART_INTFL_RX_OV
 #define ADI_MAX32_UART_ERROR_PARITY MXC_F_UART_INTFL_RX_PAR
@@ -215,11 +216,11 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
     uart->dma &= ~MXC_F_UART_DMA_RX_EN;
 }
 
-#endif // defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655)
+#endif // defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655)
 
 static inline unsigned int Wrap_MXC_UART_GetRegINTEN(mxc_uart_regs_t *uart)
 {
-#if defined(CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32657)
+#if defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32657)
     return uart->inten;
 #else
     return uart->int_en;

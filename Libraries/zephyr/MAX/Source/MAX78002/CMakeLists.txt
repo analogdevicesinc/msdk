@@ -142,7 +142,7 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_SOC_FLASH_MAX32)
+if (CONFIG_SOC_FLASH_MAX32 OR CONFIG_HWINFO_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_common.c
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_ai87.c
@@ -158,18 +158,22 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_ENTROPY_MAX32_TRNG)
+if (CONFIG_ENTROPY_MAX32_TRNG OR CONFIG_HWINFO_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/TRNG/trng_ai87.c
     ${MSDK_PERIPH_SRC_DIR}/TRNG/trng_revb.c
 )
 endif()
 
-if (CONFIG_CRYPTO_MAX32)
+if (CONFIG_CRYPTO_MAX32 OR CONFIG_HWINFO_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/AES/aes_ai87.c
     ${MSDK_PERIPH_SRC_DIR}/AES/aes_revb.c
+)
+endif()
 
+if (CONFIG_CRYPTO_MAX32)
+zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/CRC/crc_ai87.c
     ${MSDK_PERIPH_SRC_DIR}/CRC/crc_reva.c
 )

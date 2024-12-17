@@ -226,7 +226,7 @@ area_t area_2 = { 0, 260, 80, 30 };
 
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
 }
 
 uint32_t ticks_1;
