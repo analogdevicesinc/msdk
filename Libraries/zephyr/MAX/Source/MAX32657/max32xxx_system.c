@@ -24,5 +24,6 @@
  */
 void max32xx_system_init(void)
 {
+    /* Enable instruction cache */
     MXC_ICC_Enable();
 }
