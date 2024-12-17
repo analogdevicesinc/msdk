@@ -227,6 +227,8 @@ MCPU := cortex-m33
 # Single-precision with 16 double-word registers
 MFPU := fpv5-sp-d16
 
+PROJ_CFLAGS += -mno-unaligned-access
+
 # Include the rules and goals for building
 include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
 
