@@ -111,15 +111,6 @@ typedef struct {
 #define MXC_F_TRNG_CTRL_HEALTH_IE_POS                  2 /**< CTRL_HEALTH_IE Position */
 #define MXC_F_TRNG_CTRL_HEALTH_IE                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_IE_POS)) /**< CTRL_HEALTH_IE Mask */
 
-#define MXC_F_TRNG_CTRL_AESKG_MEU_POS                  3 /**< CTRL_AESKG_MEU Position */
-#define MXC_F_TRNG_CTRL_AESKG_MEU                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEU_POS)) /**< CTRL_AESKG_MEU Mask */
-
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_XIP_POS          4 /**< CTRL_AESKG_MEMPROT_XIP Position */
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_XIP              ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEMPROT_XIP_POS)) /**< CTRL_AESKG_MEMPROT_XIP Mask */
-
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_DIP_POS          5 /**< CTRL_AESKG_MEMPROT_DIP Position */
-#define MXC_F_TRNG_CTRL_AESKG_MEMPROT_DIP              ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEMPROT_DIP_POS)) /**< CTRL_AESKG_MEMPROT_DIP Mask */
-
 #define MXC_F_TRNG_CTRL_OD_ROMON_POS                   6 /**< CTRL_OD_ROMON Position */
 #define MXC_F_TRNG_CTRL_OD_ROMON                       ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_ROMON_POS)) /**< CTRL_OD_ROMON Mask */
 
@@ -134,9 +125,6 @@ typedef struct {
 
 #define MXC_F_TRNG_CTRL_EBLS_POS                       10 /**< CTRL_EBLS Position */
 #define MXC_F_TRNG_CTRL_EBLS                           ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_EBLS_POS)) /**< CTRL_EBLS Mask */
-
-#define MXC_F_TRNG_CTRL_KEYWIPE_POS                    15 /**< CTRL_KEYWIPE Position */
-#define MXC_F_TRNG_CTRL_KEYWIPE                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_KEYWIPE_POS)) /**< CTRL_KEYWIPE Mask */
 
 #define MXC_F_TRNG_CTRL_GET_TERO_CNT_POS               16 /**< CTRL_GET_TERO_CNT Position */
 #define MXC_F_TRNG_CTRL_GET_TERO_CNT                   ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_GET_TERO_CNT_POS)) /**< CTRL_GET_TERO_CNT Mask */
@@ -182,9 +170,6 @@ typedef struct {
 
 #define MXC_F_TRNG_STATUS_SRCFAIL_POS                  3 /**< STATUS_SRCFAIL Position */
 #define MXC_F_TRNG_STATUS_SRCFAIL                      ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_SRCFAIL_POS)) /**< STATUS_SRCFAIL Mask */
-
-#define MXC_F_TRNG_STATUS_AES_KEYGEN_POS               4 /**< STATUS_AES_KEYGEN Position */
-#define MXC_F_TRNG_STATUS_AES_KEYGEN                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_AES_KEYGEN_POS)) /**< STATUS_AES_KEYGEN Mask */
 
 #define MXC_F_TRNG_STATUS_OD_ROMON_POS                 6 /**< STATUS_OD_ROMON Position */
 #define MXC_F_TRNG_STATUS_OD_ROMON                     ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_OD_ROMON_POS)) /**< STATUS_OD_ROMON Mask */
