@@ -87,6 +87,16 @@ static inline int Wrap_MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)
 #endif
 }
 
+static inline int Wrap_MXC_DMA_GetChannelIndex(mxc_dma_regs_t *dma, uint8_t ch)
+{
+#if defined(CONFIG_SOC_MAX32657)
+    (void)dma;
+    return ch;
+#else
+    return (ch + MXC_DMA_GET_IDX(dma) * (MXC_DMA_CHANNELS / MXC_DMA_INSTANCES));
+#endif
+}
+
 static inline void Wrap_MXC_DMA_Handler(mxc_dma_regs_t *dma)
 {
 #if defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
