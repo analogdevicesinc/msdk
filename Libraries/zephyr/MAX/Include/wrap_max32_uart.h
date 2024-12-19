@@ -84,6 +84,16 @@ static inline int Wrap_MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int
     return MXC_UART_SetFrequency(uart, baud);
 }
 
+static inline int Wrap_MXC_UART_SetClockSource(mxc_uart_regs_t *uart, int clock_source)
+{
+    (void)uart;
+    if (clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK) {
+        return E_NO_ERROR;
+    } else {
+        return E_BAD_PARAM;
+    }
+}
+
 static inline void Wrap_MXC_UART_SetTxDMALevel(mxc_uart_regs_t *uart, uint8_t bytes)
 {
     uart->dma |= ((bytes & 0x1F) << MXC_F_UART_DMA_TXDMA_LEVEL_POS);
@@ -180,10 +190,63 @@ static inline int Wrap_MXC_UART_Init(mxc_uart_regs_t *uart)
     return ret;
 }
 
+static inline mxc_uart_clock_t wrap_get_clock_source_instance(int clock_source)
+{
+    mxc_uart_clock_t clk_src;
+
+    switch (clock_source) {
+    case 0: // ADI_MAX32_PRPH_CLK_SRC_PCLK
+        clk_src = MXC_UART_APB_CLK;
+        break;
+#if defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32670) || \
+    defined(CONFIG_SOC_MAX32672) || defined(CONFIG_SOC_MAX32675)
+    case 1: // ADI_MAX32_PRPH_CLK_SRC_EXTCLK
+        clk_src = MXC_UART_EXT_CLK;
+        break;
+#endif
+    case 2: // ADI_MAX32_PRPH_CLK_SRC_IBRO
+        clk_src = MXC_UART_IBRO_CLK;
+        break;
+#if defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32670) || \
+    defined(CONFIG_SOC_MAX32675) || defined(CONFIG_SOC_MAX32690)
+    case 3: // ADI_MAX32_PRPH_CLK_SRC_ERFO
+        clk_src = MXC_UART_ERFO_CLK;
+        break;
+#endif
+#if defined(CONFIG_SOC_MAX32655) || defined(CONFIG_SOC_MAX32670) || \
+    defined(CONFIG_SOC_MAX32672) || defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX78002)
+    case 4: // ADI_MAX32_PRPH_CLK_SRC_ERTCO
+        clk_src = MXC_UART_ERTCO_CLK;
+        break;
+#endif
+#if defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672)
+    case 5: // ADI_MAX32_PRPH_CLK_SRC_INRO
+        clk_src = MXC_UART_INRO_CLK;
+        break;
+#endif
+    default:
+        return -1;
+    }
+
+    return clk_src;
+}
 static inline int Wrap_MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud,
                                              int clock_source)
 {
-    return MXC_UART_SetFrequency(uart, baud, (mxc_uart_clock_t)clock_source);
+    mxc_uart_clock_t clk_src;
+
+    clk_src = wrap_get_clock_source_instance(clock_source);
+
+    return MXC_UART_SetFrequency(uart, baud, clk_src);
+}
+
+static inline int Wrap_MXC_UART_SetClockSource(mxc_uart_regs_t *uart, int clock_source)
+{
+    mxc_uart_clock_t clk_src;
+
+    clk_src = wrap_get_clock_source_instance(clock_source);
+
+    return MXC_UART_SetClockSource(uart, clk_src);
 }
 
 static inline void Wrap_MXC_UART_SetTxDMALevel(mxc_uart_regs_t *uart, uint8_t bytes)
