@@ -26,6 +26,7 @@
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
+#include "fcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -114,6 +115,13 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_64 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64,
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
+
+/** @brief Compare clock enumeration. Used in MXC_SYS_ClockMeasure function. */
+typedef enum {
+    MXC_SYS_COMPARE_CLOCK_RTC = MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC,
+    MXC_SYS_COMPARE_CLOCK_EXT_GPIO = MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO,
+    MXC_SYS_COMPARE_CLOCK_INRO = MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_INRO
+} mxc_sys_compare_clock_t;
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
 #define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
@@ -347,6 +355,18 @@ uint32_t MXC_SYS_RiscVClockRate(void);
  *          to reprogram the target micro.
  */
 int MXC_SYS_LockDAP_Permanent(void);
+
+/**
+ * @brief Measure the clock frequency.
+ * 
+ * @details Assumes that measurement clock and ERFO are enabled. 
+ * Increasing compareClockTicks will provide a more accurate measurement, 
+ * but there are limits that could cause overflow.
+ * 
+ * @param clock Enumeration for which clock to measure.
+ * @param compareClockTicks Number of ticks of the comparison clock to use for measurement.
+ */
+uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks);
 
 #ifdef __cplusplus
 }
