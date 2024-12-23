@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,7 +131,9 @@ static inline void Wrap_MXC_I2C_Stop(mxc_i2c_regs_t *i2c)
 #elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
     defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
     defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
-    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX78002)
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) ||   \
+    defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000)
+
 /*
  *  Control register bits
  */
