@@ -65,6 +65,33 @@ int MXC_RTC_SetSubsecondAlarm(uint32_t rssa)
     return MXC_RTC_RevA_SetSubsecondAlarm((mxc_rtc_reva_regs_t *)MXC_RTC, rssa);
 }
 
+int MXC_RTC_SetClockSource(mxc_rtc_clock_t clk_src)
+{
+    uint8_t retval = E_NO_ERROR;
+
+    switch (clk_src) {
+    case MXC_RTC_ERTCO_CLK:
+#ifndef MSDK_NO_GPIO_CLK_INIT
+        retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+#endif // MSDK_NO_GPIO_CLK_INIT
+        MXC_SETFIELD(MXC_MCR->ctrl, MXC_F_MCR_CTRL_CLKSEL, MXC_S_MCR_CTRL_CLKSEL_ERTCO);
+        break;
+
+    case MXC_RTC_INRO_CLK:
+        MXC_SETFIELD(MXC_MCR->ctrl, MXC_F_MCR_CTRL_CLKSEL, MXC_S_MCR_CTRL_CLKSEL_INRO_DIV4);
+        break;
+
+    case MXC_RTC_EXT_CLK:
+        return E_NOT_SUPPORTED;
+
+    default:
+        // Invalid clock source
+        return E_BAD_PARAM;
+    }
+
+    return retval;
+}
+
 int MXC_RTC_Start(void)
 {
     return MXC_RTC_RevA_Start((mxc_rtc_reva_regs_t *)MXC_RTC);
@@ -77,8 +104,6 @@ int MXC_RTC_Stop(void)
 
 int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
-    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
-
     return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
