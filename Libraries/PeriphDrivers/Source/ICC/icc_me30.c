@@ -37,20 +37,31 @@ Maxim Internal Use
 
 int MXC_ICC_ID(mxc_icc_info_t cid)
 {
+#if CONFIG_TRUSTED_EXECUTION_SECURE
     return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)MXC_ICC, cid);
+#else
+    return E_NOT_SUPPORTED;
+#endif
 }
 
 void MXC_ICC_Enable(void)
 {
+    /* Cache controller only accessible in secure world. */
+#if CONFIG_TRUSTED_EXECUTION_SECURE
     MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC);
+#endif
 }
 
 void MXC_ICC_Disable(void)
 {
+#if CONFIG_TRUSTED_EXECUTION_SECURE
     MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC);
+#endif
 }
 
 void MXC_ICC_Flush(void)
 {
+#if CONFIG_TRUSTED_EXECUTION_SECURE
     MXC_ICC_Com_Flush();
+#endif
 }
