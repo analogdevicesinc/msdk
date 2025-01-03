@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,12 +61,20 @@ static inline void Wrap_MXC_LP_EnterPowerDownMode(void)
 
 static inline void Wrap_MXC_LP_EnterLowPowerMode(void)
 {
+#if defined(CONFIG_SOC_MAX32657)
+    MXC_LP_EnterSleepMode();
+#else
     MXC_LP_EnterLowPowerMode();
+#endif
 }
 
 static inline void Wrap_MXC_LP_EnterMicroPowerMode(void)
 {
+#if defined(CONFIG_SOC_MAX32657)
+    MXC_LP_EnterSleepMode();
+#else
     MXC_LP_EnterMicroPowerMode();
+#endif
 }
 
 static inline void Wrap_MXC_LP_EnterStandbyMode(void)
