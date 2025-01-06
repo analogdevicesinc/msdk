@@ -103,14 +103,6 @@ OBJS_NOPATH += $(BINS_NOPATH:.bin=.o)
 OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
 OBJS        += $(PROJ_OBJS)
 
-################################################################################
-# Get the operating system name.  If this is Cygwin, the .d files will be
-# munged to convert c: into /cygdrive/c so that "make" will be happy with the
-# auto-generated dependencies. Also if this is Cygwin, file paths for ARM GCC
-# will be converted from /cygdrive/c to C:.
-################################################################################
-
-include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/detect_os.mk
 
 ################################################################################
 # Goals
