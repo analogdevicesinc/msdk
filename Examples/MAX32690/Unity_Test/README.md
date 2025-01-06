@@ -40,7 +40,6 @@ The Console UART of the device will output these messages:
 
 ```
 -----------------------
-2 Tests 0 Failures 0 Ignored 
+2 Tests 1 Failures 0 Ignored 
 OK
 ```
-
