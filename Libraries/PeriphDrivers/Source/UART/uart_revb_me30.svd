@@ -347,26 +347,6 @@
         </fields>
       </register>
       <register>
-        <name>PIN</name>
-        <description> Pin register</description>
-        <addressOffset>0x001C</addressOffset>
-        <fields>
-          <field>
-            <name>CTS</name>
-            <description>Current sampled value of CTS IO</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-only</access>
-          </field>
-          <field>
-            <name>RTS</name>
-            <description>This bit controls the value to apply on the RTS IO. If set to 1, the RTS IO is set to high level. If set to 0, the RTS IO is set to low level.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>FIFO</name>
         <description>FIFO Read/Write register</description>
         <addressOffset>0x0020</addressOffset>
