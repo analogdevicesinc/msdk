@@ -67,7 +67,7 @@ volatile int suspended;
 volatile unsigned int event_flags;
 int remote_wake_en;
 
-static mxc_uart_regs_t *ConsoleUart = NULL;
+#define PASSTHROUGH_UART MXC_UART2
 static mxc_uart_req_t rx_req;
 static mxc_uart_req_t tx_req;
 
@@ -179,17 +179,15 @@ int main(void)
     ring_buffer_init(&ring_buffer);
     oneshot_init();
 
-    ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
-
-    MXC_UART_Init(ConsoleUart, 115200, MXC_UART_APB_CLK);
-    rx_req.uart = ConsoleUart;
+    MXC_UART_Init(PASSTHROUGH_UART, 115200, MXC_UART_APB_CLK);
+    rx_req.uart = PASSTHROUGH_UART;
     rx_req.rxData = rxData;
     rx_req.rxLen = 1;
     rx_req.callback = uartRxCallback;
 
-    tx_req.uart = ConsoleUart;
+    tx_req.uart = PASSTHROUGH_UART;
 
-    MXC_UART_SetAutoDMAHandlers(ConsoleUart, true);
+    MXC_UART_SetAutoDMAHandlers(PASSTHROUGH_UART, true);
     MXC_UART_TransactionDMA(&rx_req);
 
     maxusb_cfg_options_t usb_opts;
