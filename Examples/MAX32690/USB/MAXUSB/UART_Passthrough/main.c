@@ -127,8 +127,14 @@ void startTx(void)
 }
 void uartRxCallback(mxc_uart_req_t *req, int error)
 {
+
     MXC_UART_TransactionDMA(&rx_req);
 
+    if(error != E_NO_ERROR)
+    {
+        return;
+    }
+    
     for (uint32_t i = 0; i < req->rxCnt; i++) {
         ring_buffer_put(&ring_buffer, rxData[i]);
     }
