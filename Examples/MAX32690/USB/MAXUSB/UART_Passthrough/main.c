@@ -69,12 +69,12 @@ volatile unsigned int event_flags;
 int remote_wake_en;
 
 #define PASSTHROUGH_UART MXC_UART2
-static mxc_uart_req_t rx_req;
-static mxc_uart_req_t tx_req;
+static volatile mxc_uart_req_t rx_req;
+static volatile mxc_uart_req_t tx_req;
 
-uint8_t txData[512] = { 0 };
-uint8_t rxData[512] = { 0 };
-bool txOngoing = false;
+volatile uint8_t txData[512] = { 0 };
+volatile uint8_t rxData[512] = { 0 };
+
 
 static RingBuffer ring_buffer;
 
@@ -127,6 +127,8 @@ void startTx(void)
 }
 void uartRxCallback(mxc_uart_req_t *req, int error)
 {
+    MXC_UART_TransactionDMA(&rx_req);
+
     for (uint32_t i = 0; i < req->rxCnt; i++) {
         ring_buffer_put(&ring_buffer, rxData[i]);
     }
@@ -141,8 +143,7 @@ void uartRxCallback(mxc_uart_req_t *req, int error)
         startTx();
     }
 
-    MXC_UART_TransactionDMA(&rx_req);
-}
+} 
 
 void txCallback(mxc_uart_req_t *req, int error) {}
 void oneshot_init(void)
@@ -295,9 +296,9 @@ int main(void)
         echo_usb();
 
         if (suspended || !configured) {
-            LED_Off(0);
+            LED_Off(1);
         } else {
-            LED_On(0);
+            LED_On(1);
         }
 
         if (event_flags) {
