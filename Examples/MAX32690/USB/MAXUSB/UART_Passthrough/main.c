@@ -128,16 +128,19 @@ void startTx(void)
 void uartRxCallback(mxc_uart_req_t *req, int error)
 {
 
-    MXC_UART_TransactionDMA(&rx_req);
 
     if(error != E_NO_ERROR)
     {
+        MXC_ASSERT(MXC_UART_TransactionDMA(&rx_req) == E_NO_ERROR);
         return;
     }
 
     for (uint32_t i = 0; i < req->rxCnt; i++) {
         ring_buffer_put(&ring_buffer, rxData[i]);
     }
+
+    MXC_ASSERT(MXC_UART_TransactionDMA(&rx_req) == E_NO_ERROR);
+
 
     /* 
         If we dont have a full buffer just keep restarting until idle. 
@@ -211,7 +214,7 @@ int main(void)
     tx_req.uart = PASSTHROUGH_UART;
 
     MXC_UART_SetAutoDMAHandlers(PASSTHROUGH_UART, true);
-    MXC_UART_TransactionDMA(&rx_req);
+    MXC_ASSERT(MXC_UART_TransactionDMA(&rx_req) == E_NO_ERROR);
 
     maxusb_cfg_options_t usb_opts;
 
