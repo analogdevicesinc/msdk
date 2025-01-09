@@ -72,8 +72,8 @@ int remote_wake_en;
 static volatile mxc_uart_req_t rx_req;
 static volatile mxc_uart_req_t tx_req;
 
-volatile uint8_t txData[512] = { 0 };
-volatile uint8_t rxData[512] = { 0 };
+uint8_t txData[512] = { 0 };
+uint8_t rxData[512] = { 0 };
 
 
 static RingBuffer ring_buffer;
@@ -134,7 +134,7 @@ void uartRxCallback(mxc_uart_req_t *req, int error)
     {
         return;
     }
-    
+
     for (uint32_t i = 0; i < req->rxCnt; i++) {
         ring_buffer_put(&ring_buffer, rxData[i]);
     }
@@ -168,7 +168,6 @@ void oneshot_init(void)
     tmr.pol = 0;
 
     if (MXC_TMR_Init(OST_TIMER, &tmr, true) != E_NO_ERROR) {
-        printf("Failed Continuous timer Initialization.\n");
         return;
     }
 
@@ -230,8 +229,6 @@ int main(void)
     __attribute__((aligned(4))) uint8_t prod_id_desc[64] = {0};
     format_product_id(id, strlen(id), prod_id_desc);
 
-    printf("\n\n***** " TOSTRING(TARGET) " USB CDC-ACM Example *****\n");
-    printf("Waiting for VBUS...\n");
 
     /* Initialize state */
     configured = 0;
@@ -247,13 +244,11 @@ int main(void)
 
     /* Initialize the usb module */
     if (MXC_USB_Init(&usb_opts) != 0) {
-        printf("usb_init() failed\n");
         while (1) {}
     }
 
     /* Initialize the enumeration module */
     if (enum_init() != 0) {
-        printf("enum_init() failed\n");
         while (1) {}
     }
 
@@ -282,7 +277,6 @@ int main(void)
 
     /* Initialize the class driver */
     if (acm_init(&config_descriptor.comm_interface_descriptor) != 0) {
-        printf("acm_init() failed\n");
         while (1) {}
     }
 
@@ -311,29 +305,21 @@ int main(void)
             /* Display events */
             if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_NOVBUS)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_NOVBUS);
-                printf("VBUS Disconnect\n");
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_VBUS)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_VBUS);
-                printf("VBUS Connect\n");
+
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_BRST)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_BRST);
-                printf("Bus Reset\n");
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_BRSTDN)) { ///
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_BRSTDN);
-                printf("Bus Reset Done: %s speed\n",
-                       (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) ? "High" : "Full");
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_SUSP)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_SUSP);
-                printf("Suspended\n");
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_DPACT)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_DPACT);
-                printf("Resume\n");
             } else if (MXC_GETBIT(&event_flags, EVENT_ENUM_COMP)) {
                 MXC_CLRBIT(&event_flags, EVENT_ENUM_COMP);
-                printf("Enumeration complete...\n");
             } else if (MXC_GETBIT(&event_flags, EVENT_REMOTE_WAKE)) {
                 MXC_CLRBIT(&event_flags, EVENT_REMOTE_WAKE);
-                printf("Remote Wakeup\n");
             }
         }
     }
@@ -352,16 +338,12 @@ static void echo_usb(void)
 
         /* Read the data from USB */
         if (acm_read(buffer, chars) != chars) {
-            printf("acm_read() failed\n");
+            
             return;
         }
 
         /* Echo it back */
         if (acm_present()) {
-            // if (acm_write(buffer, chars) != chars) {
-            //     printf("acm_write() failed\n");
-            // }
-
             memcpy(rxData, buffer, chars);
             tx_req.txData = rxData;
             tx_req.txLen = chars;
