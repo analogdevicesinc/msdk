@@ -49,6 +49,8 @@
 #include "mxc_device.h"
 #include "mxc_sys.h"
 
+
+
 /* **** Definitions **** */
 #define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS
 #define EVENT_REMOTE_WAKE (EVENT_ENUM_COMP + 1)
@@ -69,8 +71,10 @@ volatile unsigned int event_flags;
 int remote_wake_en;
 
 #define PASSTHROUGH_UART MXC_UART2
-static volatile mxc_uart_req_t rx_req;
-static volatile mxc_uart_req_t tx_req;
+#define UART_CLOCK MXC_UART_APB_CLK
+
+static mxc_uart_req_t rx_req;
+static mxc_uart_req_t tx_req;
 
 uint8_t txData[512] = { 0 };
 uint8_t rxData[512] = { 0 };
@@ -86,6 +90,7 @@ static int event_callback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
 static int usb_read_callback(void);
+static int usb_line_coding_callback(void);
 static void echo_usb(void);
 int usbStartupCallback(void);
 int usbShutdownCallback(void);
@@ -206,7 +211,7 @@ int main(void)
     oneshot_init();
 
     
-    MXC_UART_Init(PASSTHROUGH_UART, 115200, MXC_UART_APB_CLK);
+    MXC_UART_Init(PASSTHROUGH_UART, 115200, UART_CLOCK);
     rx_req.uart = PASSTHROUGH_UART;
     rx_req.rxData = rxData;
     rx_req.rxLen = 1;
@@ -289,6 +294,7 @@ int main(void)
     MXC_USB_EventEnable(MAXUSB_EVENT_NOVBUS, event_callback, NULL);
     MXC_USB_EventEnable(MAXUSB_EVENT_VBUS, event_callback, NULL);
     acm_register_callback(ACM_CB_READ_READY, usb_read_callback);
+    acm_register_callback(ACM_CB_SET_LINE_CODING, usb_line_coding_callback);
 
     usb_read_complete = 0;
 
@@ -506,6 +512,17 @@ static int event_callback(maxusb_event_t evt, void *data)
 static int usb_read_callback(void)
 {
     usb_read_complete = 1;
+    return 0;
+}
+static int usb_line_coding_callback(void)
+{
+    const acm_line_t *line_coding = acm_line_coding();
+    
+    MXC_UART_SetFrequency(PASSTHROUGH_UART, line_coding->speed, UART_CLOCK);
+    MXC_UART_SetStopBits(PASSTHROUGH_UART, line_coding->stopbits);
+    MXC_UART_SetParity(PASSTHROUGH_UART, line_coding->parity);
+    MXC_UART_SetDataSize(PASSTHROUGH_UART, line_coding->databits);
+
     return 0;
 }
 
