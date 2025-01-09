@@ -155,6 +155,7 @@ void uartRxCallback(mxc_uart_req_t *req, int error)
 } 
 
 void txCallback(mxc_uart_req_t *req, int error) {}
+
 void oneshot_init(void)
 {
     // Declare variables
@@ -212,6 +213,7 @@ int main(void)
     rx_req.callback = uartRxCallback;
 
     tx_req.uart = PASSTHROUGH_UART;
+    tx_req.callback = txCallback;
 
     MXC_UART_SetAutoDMAHandlers(PASSTHROUGH_UART, true);
     MXC_ASSERT(MXC_UART_TransactionDMA(&rx_req) == E_NO_ERROR);
