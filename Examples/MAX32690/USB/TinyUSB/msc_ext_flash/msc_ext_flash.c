@@ -220,7 +220,7 @@ int32_t tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void *buffer, u
 
 void spixf_disk_init()
 {
-    uint32_t id;
+    
     if (!is_initialized) {
         Ext_Flash_Init();
         Ext_Flash_Reset();
@@ -230,8 +230,6 @@ void spixf_disk_init()
         } else {
             Ext_Flash_Quad(0);
         }
-
-        id = Ext_Flash_ID();
 
         is_initialized = true;
     }
