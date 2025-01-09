@@ -73,12 +73,12 @@ void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
     //not supported yet
 }
 
-void MXC_LP_RetentionRegEnable(void)
+void MXC_LP_EnableRetentionReg(void)
 {
     MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_RETLDO_EN;
 }
 
-void MXC_LP_RetentionRegDisable(void)
+void MXC_LP_DisableRetentionReg(void)
 {
     MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_RETLDO_EN;
 }

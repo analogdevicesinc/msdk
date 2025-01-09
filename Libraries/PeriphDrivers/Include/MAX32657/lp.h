@@ -91,12 +91,12 @@ void MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
 /**
  * @brief      Enable retention regulator
  */
-void MXC_LP_RetentionRegEnable(void);
+void MXC_LP_EnableRetentionReg(void);
 
 /**
  * @brief      Disable retention regulator
  */
-void MXC_LP_RetentionRegDisable(void);
+void MXC_LP_DisableRetentionReg(void);
 
 /**
  * @brief      Is the retention regulator enabled
