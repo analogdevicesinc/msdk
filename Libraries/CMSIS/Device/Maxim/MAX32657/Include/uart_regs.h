@@ -83,7 +83,7 @@ typedef struct {
     __IO uint32_t clkdiv;               /**< <tt>\b 0x0010:</tt> UART CLKDIV Register */
     __IO uint32_t osr;                  /**< <tt>\b 0x0014:</tt> UART OSR Register */
     __IO uint32_t txpeek;               /**< <tt>\b 0x0018:</tt> UART TXPEEK Register */
-    __IO uint32_t pin;                  /**< <tt>\b 0x001C:</tt> UART PIN Register */
+    __R  uint32_t rsv_0x1c;
     __IO uint32_t fifo;                 /**< <tt>\b 0x0020:</tt> UART FIFO Register */
     __R  uint32_t rsv_0x24_0x2f[3];
     __IO uint32_t dma;                  /**< <tt>\b 0x0030:</tt> UART DMA Register */
@@ -105,7 +105,6 @@ typedef struct {
 #define MXC_R_UART_CLKDIV                  ((uint32_t)0x00000010UL) /**< Offset from UART Base Address: <tt> 0x0010</tt> */
 #define MXC_R_UART_OSR                     ((uint32_t)0x00000014UL) /**< Offset from UART Base Address: <tt> 0x0014</tt> */
 #define MXC_R_UART_TXPEEK                  ((uint32_t)0x00000018UL) /**< Offset from UART Base Address: <tt> 0x0018</tt> */
-#define MXC_R_UART_PIN                     ((uint32_t)0x0000001CUL) /**< Offset from UART Base Address: <tt> 0x001C</tt> */
 #define MXC_R_UART_FIFO                    ((uint32_t)0x00000020UL) /**< Offset from UART Base Address: <tt> 0x0020</tt> */
 #define MXC_R_UART_DMA                     ((uint32_t)0x00000030UL) /**< Offset from UART Base Address: <tt> 0x0030</tt> */
 #define MXC_R_UART_WKEN                    ((uint32_t)0x00000034UL) /**< Offset from UART Base Address: <tt> 0x0034</tt> */
@@ -305,20 +304,6 @@ typedef struct {
 #define MXC_F_UART_TXPEEK_DATA                         ((uint32_t)(0xFFUL << MXC_F_UART_TXPEEK_DATA_POS)) /**< TXPEEK_DATA Mask */
 
 /**@} end of group UART_TXPEEK_Register */
-
-/**
- * @ingroup  uart_registers
- * @defgroup UART_PIN UART_PIN
- * @brief     Pin register
- * @{
- */
-#define MXC_F_UART_PIN_CTS_POS                         0 /**< PIN_CTS Position */
-#define MXC_F_UART_PIN_CTS                             ((uint32_t)(0x1UL << MXC_F_UART_PIN_CTS_POS)) /**< PIN_CTS Mask */
-
-#define MXC_F_UART_PIN_RTS_POS                         1 /**< PIN_RTS Position */
-#define MXC_F_UART_PIN_RTS                             ((uint32_t)(0x1UL << MXC_F_UART_PIN_RTS_POS)) /**< PIN_RTS Mask */
-
-/**@} end of group UART_PIN_Register */
 
 /**
  * @ingroup  uart_registers
