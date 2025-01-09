@@ -47,6 +47,7 @@
 #include "ring_buffer.h"
 #include "tmr.h"
 #include "mxc_device.h"
+#include "mxc_sys.h"
 
 /* **** Definitions **** */
 #define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS
@@ -172,13 +173,32 @@ void TMR4_IRQHandler(void)
     MXC_TMR_ClearFlags(OST_TIMER);
     startTx();
 }
+uint32_t format_product_id(const char *id, uint32_t len, uint8_t *pid_buf)
+{
 
+
+
+    
+    const uint32_t total_len =  2*(len + 1);
+    pid_buf[0] = total_len;
+    pid_buf[1] = 3;
+    pid_buf += 2;
+
+    for(uint32_t i = 0; i < 2*len; i++)
+    {
+        pid_buf[i] = i % 2 ? 0 : id[i / 2];
+    }
+
+
+    return total_len;
+}
 /* ************************************************************************** */
 int main(void)
 {
     ring_buffer_init(&ring_buffer);
     oneshot_init();
 
+    
     MXC_UART_Init(PASSTHROUGH_UART, 115200, MXC_UART_APB_CLK);
     rx_req.uart = PASSTHROUGH_UART;
     rx_req.rxData = rxData;
@@ -191,6 +211,20 @@ int main(void)
     MXC_UART_TransactionDMA(&rx_req);
 
     maxusb_cfg_options_t usb_opts;
+
+    uint8_t checksum = 0;
+    uint8_t usn[MXC_SYS_USN_LEN] = {0};
+
+    MXC_ASSERT(MXC_SYS_GetUSN(usn, &checksum) == E_NO_ERROR);
+
+
+    char id[32] = {0};
+    const uint32_t sn = usn[6] | usn[7] << 8 | usn[8] << 16;
+    snprintf(id, sizeof(id), "MAX32690_UART-%u", sn);
+
+
+    __attribute__((aligned(4))) uint8_t prod_id_desc[64] = {0};
+    format_product_id(id, strlen(id), prod_id_desc);
 
     printf("\n\n***** " TOSTRING(TARGET) " USB CDC-ACM Example *****\n");
     printf("Waiting for VBUS...\n");
