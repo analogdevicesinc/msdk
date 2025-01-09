@@ -178,7 +178,7 @@ uint32_t format_product_id(const char *id, uint32_t len, uint8_t *pid_buf)
 
     const uint32_t total_len =  2*(len + 1);
     pid_buf[0] = total_len;
-    pid_buf[1] = 3; //bdDescriptor
+    pid_buf[1] = 3; //bDescriptorType
     pid_buf += 2;
 
     for(uint32_t i = 0; i < 2*len; i++)
@@ -217,7 +217,7 @@ int main(void)
 
     char id[32] = {0};
     const uint32_t sn = usn[6] | usn[7] << 8 | usn[8] << 16;
-    snprintf(id, sizeof(id), "MAX32690_UART-%u", sn);
+    snprintf(id, sizeof(id), "MAX32690 UART %u", sn);
 
 
     __attribute__((aligned(4))) uint8_t prod_id_desc[64] = {0};
