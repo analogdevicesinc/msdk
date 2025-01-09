@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@
 extern "C" {
 #endif
 
-static inline void Wrap_MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg,
-                                     mxc_can_unit_event_cb_t unit_cb,
-                                     mxc_can_object_event_cb_t obj_cb)
+static inline int Wrap_MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg,
+                                    mxc_can_unit_event_cb_t unit_cb,
+                                    mxc_can_object_event_cb_t obj_cb)
 {
     /* The only API difference between the MAX32662 and MAX32690 relevant to
      * implementing the max32 CAN driver in Zephyr is that the former requires a
@@ -40,11 +40,11 @@ static inline void Wrap_MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg,
     /* A value of -1 is invalid, will configure no GPIOs, but still pass through
      * to MXC_CAN_RevA_Init, even in case MSDK_NO_GPIO_CLK_INIT wasn't set.
      */
-    MXC_CAN_Init(can_idx, cfg, unit_cb, obj_cb, -1);
+    return MXC_CAN_Init(can_idx, cfg, unit_cb, obj_cb, -1);
 
     /* MAX32690 related mapping */
 #elif defined(CONFIG_SOC_MAX32690)
-    MXC_CAN_Init(can_idx, cfg, unit_cb, obj_cb);
+    return MXC_CAN_Init(can_idx, cfg, unit_cb, obj_cb);
 
 #endif // part number
 }
