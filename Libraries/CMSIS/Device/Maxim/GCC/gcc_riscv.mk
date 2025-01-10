@@ -103,7 +103,52 @@ OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
 
 ################################################################################
 
-include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/detect_os.mk
+# Detect target OS
+# windows : native windows
+# windows_msys : MSYS2 on windows
+# windows_cygwin : Cygwin on windows (legacy config from old sdk)
+# linux : Any linux distro
+# macos : MacOS
+ifeq "$(_OS)" ""
+
+ifeq "$(OS)" "Windows_NT"
+_OS = windows
+
+UNAME_RESULT := $(shell uname -s 2>&1)
+# MSYS2 may be present on Windows.  In this case,
+# linux utilities should be used.  However, the OS environment
+# variable will still be set to Windows_NT since we configure
+# MSYS2 to inherit from Windows by default.
+# Here we'll attempt to call uname (only present on MSYS2)
+# while routing stderr -> stdout to avoid throwing an error
+# if uname can't be found.
+ifneq ($(findstring CYGWIN, $(UNAME_RESULT)), )
+CYGWIN=True
+_OS = windows_cygwin
+endif
+
+ifneq ($(findstring MSYS, $(UNAME_RESULT)), )
+MSYS=True
+_OS = windows_msys
+endif
+ifneq ($(findstring MINGW, $(UNAME_RESULT)), )
+MSYS=True
+_OS = windows_msys
+endif
+
+else # OS
+
+UNAME_RESULT := $(shell uname -s)
+ifeq "$(UNAME_RESULT)" "Linux"
+_OS = linux
+endif
+ifeq "$(UNAME_RESULT)" "Darwin"
+_OS = macos
+endif
+
+endif
+
+endif
 
 ################################################################################
 # Goals
