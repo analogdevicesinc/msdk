@@ -89,7 +89,19 @@ void MXC_WUT_IntClear(void)
 }
 
 /* ************************************************************************* */
+void MXC_WUT_ClearFlags(void)
+{
+    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************* */
 uint32_t MXC_WUT_IntStatus(void)
+{
+    return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************* */
+uint32_t MXC_WUT_GetFlags(void)
 {
     return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)MXC_WUT);
 }
@@ -126,7 +138,19 @@ void MXC_WUT_Edge(void)
 }
 
 /* ************************************************************************** */
+void MXC_WUT_WaitForEdge(void)
+{
+    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************** */
 void MXC_WUT_Store(void)
+{
+    MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)MXC_WUT);
+}
+
+/* ************************************************************************** */
+void MXC_WUT_StoreCount(void)
 {
     MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)MXC_WUT);
 }

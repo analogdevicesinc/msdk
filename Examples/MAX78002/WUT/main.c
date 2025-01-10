@@ -66,7 +66,7 @@ void setTrigger(int waitForTrigger)
 
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
 }
 
 // *****************************************************************************

@@ -26,6 +26,7 @@
 #include "system_max32657.h"
 #include "gcr_regs.h"
 #include "mpc.h"
+#include "icc.h"
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 #include "partition_max32657.h"
@@ -80,10 +81,9 @@ __weak void SystemCoreClockUpdate(void)
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
         base_freq = ERTCO_FREQ;
         break;
-    // case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-    //     base_freq = EXTCLK_FREQ;
-    //     break;
-    // TODO(JC): ^^^ Uncomment when EXTCLK register definition is added
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+        base_freq = EXTCLK_FREQ;
+        break;
     default:
         // Codes 001 and 111 are reserved.
         // This code should never execute, however, initialize to safe value.
@@ -131,6 +131,9 @@ __weak int Board_Init(void)
     return 0;
 }
 
+/* This function is used for the Bluetooth stack initialization */
+__weak void PalSysInit(void) {}
+
 /**
  * This function is called just before control is transferred to main().
  *
@@ -172,8 +175,8 @@ __weak void SystemInit(void)
     /* Enable interrupts */
     __enable_irq();
 
-    // TODO(ICC): Enable the internal cache controller after testing.
-    // MXC_ICC_Enable();
+    // Enable the internal cache controller.
+    MXC_ICC_Enable();
 
     /* Change system clock source to the main high-speed clock */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
@@ -182,6 +185,8 @@ __weak void SystemInit(void)
 
     PinInit();
     Board_Init();
+
+    PalSysInit();
 }
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)

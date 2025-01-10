@@ -28,6 +28,7 @@
 
 /***** Global Variables *****/
 // Predefined GPIO Configurations
+extern const mxc_gpio_cfg_t gpio_cfg_extclk;
 extern const mxc_gpio_cfg_t gpio_cfg_i3c;
 
 extern const mxc_gpio_cfg_t gpio_cfg_uart;

@@ -193,12 +193,12 @@ static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
     switch (MXC_UART_GET_IDX(uart)) {
     case 0:
-        MXC_AFE_GPIO_Config(&gpio_cfg_uart0);
+        MXC_AFE_GPIO_Config(&gpio_cfg_hart);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
         break;
 
     case 2:
-        MXC_AFE_GPIO_Config(&gpio_cfg_uart2);
+        MXC_AFE_GPIO_Config(&gpio_cfg_hart);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
         break;
 

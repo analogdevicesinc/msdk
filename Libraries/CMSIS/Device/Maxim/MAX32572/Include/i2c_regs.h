@@ -25,8 +25,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_I2C_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_I2C_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_I2C_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_I2C_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -169,8 +173,8 @@ typedef struct {
 #define MXC_F_I2C_CTRL_SDA_POS                         9 /**< CTRL_SDA Position */
 #define MXC_F_I2C_CTRL_SDA                             ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_SDA_POS)) /**< CTRL_SDA Mask */
 
-#define MXC_F_I2C_CTRL_BB_EN_POS                       10 /**< CTRL_BB_EN Position */
-#define MXC_F_I2C_CTRL_BB_EN                           ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_BB_EN_POS)) /**< CTRL_BB_EN Mask */
+#define MXC_F_I2C_CTRL_BB_MODE_POS                     10 /**< CTRL_BB_MODE Position */
+#define MXC_F_I2C_CTRL_BB_MODE                         ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_BB_MODE_POS)) /**< CTRL_BB_MODE Mask */
 
 #define MXC_F_I2C_CTRL_READ_POS                        11 /**< CTRL_READ Position */
 #define MXC_F_I2C_CTRL_READ                            ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_READ_POS)) /**< CTRL_READ Mask */
@@ -448,8 +452,8 @@ typedef struct {
 #define MXC_F_I2C_TXCTRL0_FLUSH_POS                    7 /**< TXCTRL0_FLUSH Position */
 #define MXC_F_I2C_TXCTRL0_FLUSH                        ((uint32_t)(0x1UL << MXC_F_I2C_TXCTRL0_FLUSH_POS)) /**< TXCTRL0_FLUSH Mask */
 
-#define MXC_F_I2C_TXCTRL0_THD_VAL_POS                  8 /**< TXCTRL0_THD_VAL Position */
-#define MXC_F_I2C_TXCTRL0_THD_VAL                      ((uint32_t)(0xFUL << MXC_F_I2C_TXCTRL0_THD_VAL_POS)) /**< TXCTRL0_THD_VAL Mask */
+#define MXC_F_I2C_TXCTRL0_THD_LVL_POS                  8 /**< TXCTRL0_THD_LVL Position */
+#define MXC_F_I2C_TXCTRL0_THD_LVL                      ((uint32_t)(0xFUL << MXC_F_I2C_TXCTRL0_THD_LVL_POS)) /**< TXCTRL0_THD_LVL Mask */
 
 /**@} end of group I2C_TXCTRL0_Register */
 
@@ -461,9 +465,6 @@ typedef struct {
  */
 #define MXC_F_I2C_TXCTRL1_PRELOAD_RDY_POS              0 /**< TXCTRL1_PRELOAD_RDY Position */
 #define MXC_F_I2C_TXCTRL1_PRELOAD_RDY                  ((uint32_t)(0x1UL << MXC_F_I2C_TXCTRL1_PRELOAD_RDY_POS)) /**< TXCTRL1_PRELOAD_RDY Mask */
-
-#define MXC_F_I2C_TXCTRL1_LAST_POS                     1 /**< TXCTRL1_LAST Position */
-#define MXC_F_I2C_TXCTRL1_LAST                         ((uint32_t)(0x1UL << MXC_F_I2C_TXCTRL1_LAST_POS)) /**< TXCTRL1_LAST Mask */
 
 #define MXC_F_I2C_TXCTRL1_LVL_POS                      8 /**< TXCTRL1_LVL Position */
 #define MXC_F_I2C_TXCTRL1_LVL                          ((uint32_t)(0xFUL << MXC_F_I2C_TXCTRL1_LVL_POS)) /**< TXCTRL1_LVL Mask */
@@ -498,12 +499,6 @@ typedef struct {
 
 #define MXC_F_I2C_MSTCTRL_EX_ADDR_EN_POS               7 /**< MSTCTRL_EX_ADDR_EN Position */
 #define MXC_F_I2C_MSTCTRL_EX_ADDR_EN                   ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_EX_ADDR_EN_POS)) /**< MSTCTRL_EX_ADDR_EN Mask */
-
-#define MXC_F_I2C_MSTCTRL_CODE_POS                     8 /**< MSTCTRL_CODE Position */
-#define MXC_F_I2C_MSTCTRL_CODE                         ((uint32_t)(0x7UL << MXC_F_I2C_MSTCTRL_CODE_POS)) /**< MSTCTRL_CODE Mask */
-
-#define MXC_F_I2C_MSTCTRL_IGN_ACK_POS                  12 /**< MSTCTRL_IGN_ACK Position */
-#define MXC_F_I2C_MSTCTRL_IGN_ACK                      ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_IGN_ACK_POS)) /**< MSTCTRL_IGN_ACK Mask */
 
 /**@} end of group I2C_MSTCTRL_Register */
 
@@ -589,4 +584,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_I2C_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_I2C_REGS_H_

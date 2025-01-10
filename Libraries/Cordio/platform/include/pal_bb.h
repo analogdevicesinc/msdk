@@ -212,6 +212,15 @@ void PalBbEnable(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Checks to see if BB is enabled.
+ *
+ *  \return     true is BB is enabled
+ */
+/*************************************************************************************************/
+bool PalBbIsEnabled(void);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Disable the BB hardware.
  *
  *  This routine signals the BB hardware to go into low power (disable power and clocks) after all

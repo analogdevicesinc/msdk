@@ -496,10 +496,11 @@ static void mainWsfInit(void)
     const uint16_t dataBufSize =
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-/* Use single pool for data buffers. */
+    /* Use single pool for data buffers. */
 #if (BT_VER > 9)
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
 #endif
+
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
@@ -516,8 +517,13 @@ static void mainWsfInit(void)
 
     /* Initial buffer configuration. */
     uint16_t memUsed;
-    memUsed = WsfBufInit(numPools, poolDesc);
+    /* Initial buffer configuration. */
+    WsfCsEnter();
+    memUsed = WsfBufCalcSize(numPools, poolDesc);
     WsfHeapAlloc(memUsed);
+    WsfBufInit(numPools, poolDesc);
+    WsfCsExit();
+
     WsfOsInit();
     WsfTimerInit();
 #if (WSF_TRACE_ENABLED == TRUE)
@@ -645,11 +651,11 @@ void vCmdLineTask(void *pvParameters)
                                 }
                             } while (xMore != pdFALSE);
                         }
-
                         /* New prompt */
                         bufferIndex = 0;
                         memset(inputBuffer, 0x00, 100);
                         prompt();
+
                     } else if (bufferIndex < CMD_LINE_BUF_SIZE) {
                         putchar(tmp);
                         inputBuffer[bufferIndex++] = tmp;
@@ -660,6 +666,7 @@ void vCmdLineTask(void *pvParameters)
                         putchar(0x07);
                         fflush(stdout);
                     }
+
                     uartReadLen = 1;
                     /* If more characters are ready, process them here */
                 } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
@@ -702,6 +709,10 @@ void txTestTask(void *pvParameters)
         if (testConfig.testType == BLE_TX_TEST) {
             res = LlEnhancedTxTest(testConfig.channel, packetLen, packetType, phy, 0);
         } else {
+            // Transmitters decision if it is S2 or S8.
+            if (phy == LL_TEST_PHY_LE_CODED_S8 || phy == LL_TEST_PHY_LE_CODED_S2) {
+                phy = LL_PHY_LE_CODED;
+            }
             res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
         }
         xTaskResumeAll(); //Restore scheduler
@@ -857,26 +868,48 @@ void printConfigs(void)
 /*************************************************************************************************/
 int main(void)
 {
-    uint32_t memUsed;
+    uint32_t llmemUsed;
 
     mainLoadConfiguration();
     mainWsfInit();
 
 #if (WSF_TRACE_ENABLED == TRUE)
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
+    WsfCsEnter();
+    WsfHeapAlloc(PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfCsExit();
 #endif
 
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            .freeMemAvail = WsfHeapCountAvailable() };
+    /* Calculate how much memory we will need for the LL initialization */
+    WsfCsEnter();
 
-    memUsed = LlInitControllerInit(&llCfg);
-    WsfHeapAlloc(memUsed);
+    LlInitRtCfg_t llCfg = {
+        .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        /* Not significant yet, only being used for memory size requirement calculation. */
+        .freeMemAvail = WsfHeapCountAvailable()
+    };
+
+    llmemUsed = LlInitSetRtCfg(&llCfg);
+
+    /* Allocate the memory */
+    WsfHeapAlloc(llmemUsed);
+
+    /* Set the free memory pointers */
+    llCfg.pFreeMem = WsfHeapGetFreeStartAddress();
+    llCfg.freeMemAvail = WsfHeapCountAvailable();
+
+    /* Run the initialization with properly set the free memory pointers */
+    if (llmemUsed != LlInitControllerInit(&llCfg)) {
+        WSF_ASSERT(0);
+    }
+
+    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));

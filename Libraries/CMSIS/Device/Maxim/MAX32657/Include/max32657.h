@@ -705,7 +705,7 @@ We may want to handle GET_IRQ better...
 #define MXC_BASE_DMA0 MXC_BASE_DMA0_NS
 #define MXC_DMA0 MXC_DMA0_NS
 /* MXC_DMA1 is not defined because Non-Secure Code can only access DMA0. */
-#if MXC_DMA1
+#ifdef MXC_DMA1
 #warning "Secure DMA (DMA1) is not accessible from Non-Secure world."
 #endif
 

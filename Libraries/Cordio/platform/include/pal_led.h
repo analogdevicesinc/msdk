@@ -49,7 +49,10 @@ enum PalLedReserved_id
   PAL_LED_ID_BB_RX_OK       = 0x4,   /*!< Baseband RX success impulse. */
   PAL_LED_ID_BB_RX_TO       = 0x5,   /*!< Baseband RX timeout impulse. */
   PAL_LED_ID_BB_RX_CRC      = 0x6,   /*!< Baseband RX CRC error impulse. */
+  PAL_LED_ID_BB_ISR         = 0x7,  /*!< Baseband ISR impulse. */
+
 };
+
 
 /**************************************************************************************************
   Function Declarations

@@ -52,13 +52,23 @@ void MXC_FreeLock(uint32_t *lock)
 /* ************************************************************************** */
 int MXC_GetLock(uint32_t *lock, uint32_t value)
 {
-#warning "Unimplemented for RISCV"
+    __disable_irq();
+    if (*lock) {
+        __enable_irq();
+        return E_BUSY;
+    }
+
+    *lock = value;
+
+    __asm volatile("fence rw, rw");
+    __enable_irq();
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
 void MXC_FreeLock(uint32_t *lock)
 {
-#warning "Unimplemented for RISCV"
+    __asm volatile("fence" ::: "memory");
+    *lock = 0;
 }
 #endif
