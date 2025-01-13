@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,15 +76,6 @@ typedef enum {
 } mxc_rtc_int_fl_t;
 
 /**
- * @brief     Clock settings
- */
-typedef enum {
-    MXC_RTC_ERTCO_CLK = 0,
-    MXC_RTC_INRO_CLK = 1,
-    MXC_RTC_EXT_CLK = 2,
-} mxc_rtc_clock_t;
-
-/**
  * @brief     Set Time-of-Day alarm value and enable Interrupt
  * @param     ras    20-bit value 0-0xFFFFF
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
@@ -98,13 +89,6 @@ int MXC_RTC_SetTimeofdayAlarm(uint32_t ras);
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
 int MXC_RTC_SetSubsecondAlarm(uint32_t rssa);
-
-/**
- * @brief     Set the RTC clock source
- * @param     clk_src   Clock source to use
- * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
- */
-int MXC_RTC_SetClockSource(mxc_rtc_clock_t clk_src);
 
 /**
  * @brief     Start the Real Time Clock (Blocking function)
