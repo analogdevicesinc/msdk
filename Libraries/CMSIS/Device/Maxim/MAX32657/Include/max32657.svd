@@ -1266,18 +1266,6 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>BTLELDO_RF</name>
-       <description>BTLE LDO RF Trim.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>5</bitWidth>
-      </field>
-      <field>
-       <name>BTLELDO_BB</name>
-       <description>BTLE LDO BB Trim.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>5</bitWidth>
-      </field>
-      <field>
        <name>I3CDGEN0</name>
        <description>I3C SDA Glitch Filter Enable.</description>
        <bitOffset>20</bitOffset>
@@ -1504,8 +1492,8 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>ERTOC_RDY</name>
-       <description>ERTCO 32K Ready.</description>
+       <name>ERFO_RDY</name>
+       <description>ERFO Ready.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -1524,8 +1512,8 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>ERTOC_RDY</name>
-       <description>ERTCO 32K Ready Interrupt Enable.</description>
+       <name>ERFO_RDY</name>
+       <description>ERFO Ready Interrupt Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -2808,6 +2796,28 @@
        <description>Voltage Selection for BB LDO.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_9</name>
+         <description>0.9V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_0</name>
+         <description>1.0V</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_1</name>
+         <description>1.1V</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_2</name>
+         <description>1.2V</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>RF_EN</name>
@@ -2826,6 +2836,28 @@
        <description>LDO RF Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_9</name>
+         <description>0.9V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_0</name>
+         <description>1.0V</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_1</name>
+         <description>1.1V</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_2</name>
+         <description>1.2V</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>RF_BP_EN</name>
@@ -10050,6 +10082,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>ASYNC</name>
+       <description>Allows asynchronous reads to the PWM and CNT registers.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>CLKSEL_B</name>
        <description>Timer Clock Select for Timer B</description>
        <bitOffset>16</bitOffset>
@@ -10280,24 +10318,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>AESKG_MEU</name>
-       <description>Generate and transfer 256 bit MEU key to AES Key storage.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>AESKG_MEMPROT_XIP</name>
-       <description>Generate and transfer 128 bit MEMPROT_XIP key to AES key storage.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>AESKG_MEMPROT_DIP</name>
-       <description>Generate and transfer 128 bit MEMPROT_DIP key to AES key storage.</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>OD_ROMON</name>
        <description>Start ring oscillator monitor on demand test.</description>
        <bitOffset>6</bitOffset>
@@ -10325,12 +10345,6 @@
        <name>EBLS</name>
        <description>Entropy Bit Load Select.</description>
        <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEYWIPE</name>
-       <description>To wipe the Battery Backed key.</description>
-       <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -10432,12 +10446,6 @@
        <name>SRCFAIL</name>
        <description>Entropy source has failed.</description>
        <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>AES_KEYGEN</name>
-       <description>AESKGD.</description>
-       <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -10917,26 +10925,6 @@
        <description>Read TX FIFO next data. Reading from this field does not affect the contents of TX FIFO. Note that the parity bit is available from this field.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>PIN</name>
-     <description> Pin register</description>
-     <addressOffset>0x001C</addressOffset>
-     <fields>
-      <field>
-       <name>CTS</name>
-       <description>Current sampled value of CTS IO</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-only</access>
-      </field>
-      <field>
-       <name>RTS</name>
-       <description>This bit controls the value to apply on the RTS IO. If set to 1, the RTS IO is set to high level. If set to 0, the RTS IO is set to low level.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>

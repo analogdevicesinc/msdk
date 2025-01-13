@@ -25,8 +25,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_DMA_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_DMA_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_DMA_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_DMA_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -88,7 +92,7 @@ typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x000:</tt> DMA INTEN Register */
     __I  uint32_t intfl;                /**< <tt>\b 0x004:</tt> DMA INTFL Register */
     __R  uint32_t rsv_0x8_0xff[62];
-    __IO mxc_dma_ch_regs_t    ch[16];   /**< <tt>\b 0x100:</tt> DMA CH Register */
+    __IO mxc_dma_ch_regs_t ch[12];      /**< <tt>\b 0x100:</tt> DMA CH Register */
 } mxc_dma_regs_t;
 
 /* Register offsets for module DMA */
@@ -114,7 +118,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTEN DMA_INTEN
- * @brief    DMA Interrupt Enable Register.
+ * @brief    DMA Control Register.
  * @{
  */
 #define MXC_F_DMA_INTEN_CH0_POS                        0 /**< INTEN_CH0 Position */
@@ -141,36 +145,12 @@ typedef struct {
 #define MXC_F_DMA_INTEN_CH7_POS                        7 /**< INTEN_CH7 Position */
 #define MXC_F_DMA_INTEN_CH7                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH7_POS)) /**< INTEN_CH7 Mask */
 
-#define MXC_F_DMA_INTEN_CH8_POS                        8 /**< INTEN_CH8 Position */
-#define MXC_F_DMA_INTEN_CH8                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH8_POS)) /**< INTEN_CH8 Mask */
-
-#define MXC_F_DMA_INTEN_CH9_POS                        9 /**< INTEN_CH9 Position */
-#define MXC_F_DMA_INTEN_CH9                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH9_POS)) /**< INTEN_CH9 Mask */
-
-#define MXC_F_DMA_INTEN_CH10_POS                       10 /**< INTEN_CH10 Position */
-#define MXC_F_DMA_INTEN_CH10                           ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH10_POS)) /**< INTEN_CH10 Mask */
-
-#define MXC_F_DMA_INTEN_CH11_POS                       11 /**< INTEN_CH11 Position */
-#define MXC_F_DMA_INTEN_CH11                           ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH11_POS)) /**< INTEN_CH11 Mask */
-
-#define MXC_F_DMA_INTEN_CH12_POS                       12 /**< INTEN_CH12 Position */
-#define MXC_F_DMA_INTEN_CH12                           ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH12_POS)) /**< INTEN_CH12 Mask */
-
-#define MXC_F_DMA_INTEN_CH13_POS                       13 /**< INTEN_CH13 Position */
-#define MXC_F_DMA_INTEN_CH13                           ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH13_POS)) /**< INTEN_CH13 Mask */
-
-#define MXC_F_DMA_INTEN_CH14_POS                       14 /**< INTEN_CH14 Position */
-#define MXC_F_DMA_INTEN_CH14                           ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH14_POS)) /**< INTEN_CH14 Mask */
-
-#define MXC_F_DMA_INTEN_CH15_POS                       15 /**< INTEN_CH15 Position */
-#define MXC_F_DMA_INTEN_CH15                           ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH15_POS)) /**< INTEN_CH15 Mask */
-
 /**@} end of group DMA_INTEN_Register */
 
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTFL DMA_INTFL
- * @brief    DMA Interrupt Flag Register.
+ * @brief    DMA Interrupt Register.
  * @{
  */
 #define MXC_F_DMA_INTFL_CH0_POS                        0 /**< INTFL_CH0 Position */
@@ -196,30 +176,6 @@ typedef struct {
 
 #define MXC_F_DMA_INTFL_CH7_POS                        7 /**< INTFL_CH7 Position */
 #define MXC_F_DMA_INTFL_CH7                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH7_POS)) /**< INTFL_CH7 Mask */
-
-#define MXC_F_DMA_INTFL_CH8_POS                        8 /**< INTFL_CH8 Position */
-#define MXC_F_DMA_INTFL_CH8                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH8_POS)) /**< INTFL_CH8 Mask */
-
-#define MXC_F_DMA_INTFL_CH9_POS                        9 /**< INTFL_CH9 Position */
-#define MXC_F_DMA_INTFL_CH9                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH9_POS)) /**< INTFL_CH9 Mask */
-
-#define MXC_F_DMA_INTFL_CH10_POS                       10 /**< INTFL_CH10 Position */
-#define MXC_F_DMA_INTFL_CH10                           ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH10_POS)) /**< INTFL_CH10 Mask */
-
-#define MXC_F_DMA_INTFL_CH11_POS                       11 /**< INTFL_CH11 Position */
-#define MXC_F_DMA_INTFL_CH11                           ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH11_POS)) /**< INTFL_CH11 Mask */
-
-#define MXC_F_DMA_INTFL_CH12_POS                       12 /**< INTFL_CH12 Position */
-#define MXC_F_DMA_INTFL_CH12                           ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH12_POS)) /**< INTFL_CH12 Mask */
-
-#define MXC_F_DMA_INTFL_CH13_POS                       13 /**< INTFL_CH13 Position */
-#define MXC_F_DMA_INTFL_CH13                           ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH13_POS)) /**< INTFL_CH13 Mask */
-
-#define MXC_F_DMA_INTFL_CH14_POS                       14 /**< INTFL_CH14 Position */
-#define MXC_F_DMA_INTFL_CH14                           ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH14_POS)) /**< INTFL_CH14 Mask */
-
-#define MXC_F_DMA_INTFL_CH15_POS                       15 /**< INTFL_CH15 Position */
-#define MXC_F_DMA_INTFL_CH15                           ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH15_POS)) /**< INTFL_CH15 Mask */
 
 /**@} end of group DMA_INTFL_Register */
 
@@ -254,90 +210,58 @@ typedef struct {
 #define MXC_S_DMA_CTRL_REQUEST_SPI0RX                  (MXC_V_DMA_CTRL_REQUEST_SPI0RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI0RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_SPI1RX                  ((uint32_t)0x2UL) /**< CTRL_REQUEST_SPI1RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_SPI1RX                  (MXC_V_DMA_CTRL_REQUEST_SPI1RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI1RX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_SPI2RX                  ((uint32_t)0x3UL) /**< CTRL_REQUEST_SPI2RX Value */
+#define MXC_S_DMA_CTRL_REQUEST_SPI2RX                  (MXC_V_DMA_CTRL_REQUEST_SPI2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI2RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART0RX                 ((uint32_t)0x4UL) /**< CTRL_REQUEST_UART0RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART0RX                 (MXC_V_DMA_CTRL_REQUEST_UART0RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART0RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART1RX                 ((uint32_t)0x5UL) /**< CTRL_REQUEST_UART1RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART1RX                 (MXC_V_DMA_CTRL_REQUEST_UART1RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART1RX Setting */
-#define MXC_V_DMA_CTRL_REQUEST_SC0RX                   ((uint32_t)0x6UL) /**< CTRL_REQUEST_SC0RX Value */
-#define MXC_S_DMA_CTRL_REQUEST_SC0RX                   (MXC_V_DMA_CTRL_REQUEST_SC0RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SC0RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_I2C0RX                  ((uint32_t)0x7UL) /**< CTRL_REQUEST_I2C0RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_I2C0RX                  (MXC_V_DMA_CTRL_REQUEST_I2C0RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C0RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_I2C1RX                  ((uint32_t)0x8UL) /**< CTRL_REQUEST_I2C1RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_I2C1RX                  (MXC_V_DMA_CTRL_REQUEST_I2C1RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C1RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_ADC                     ((uint32_t)0x9UL) /**< CTRL_REQUEST_ADC Value */
 #define MXC_S_DMA_CTRL_REQUEST_ADC                     (MXC_V_DMA_CTRL_REQUEST_ADC << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_ADC Setting */
-#define MXC_V_DMA_CTRL_REQUEST_MSRADC                  ((uint32_t)0xBUL) /**< CTRL_REQUEST_MSRADC Value */
-#define MXC_S_DMA_CTRL_REQUEST_MSRADC                  (MXC_V_DMA_CTRL_REQUEST_MSRADC << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_MSRADC Setting */
+#define MXC_V_DMA_CTRL_REQUEST_I2C2RX                  ((uint32_t)0xAUL) /**< CTRL_REQUEST_I2C2RX Value */
+#define MXC_S_DMA_CTRL_REQUEST_I2C2RX                  (MXC_V_DMA_CTRL_REQUEST_I2C2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C2RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART2RX                 ((uint32_t)0xEUL) /**< CTRL_REQUEST_UART2RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART2RX                 (MXC_V_DMA_CTRL_REQUEST_UART2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART2RX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_SPI3RX                  ((uint32_t)0xFUL) /**< CTRL_REQUEST_SPI3RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_SPI3RX                  (MXC_V_DMA_CTRL_REQUEST_SPI3RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI3RX Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP1                ((uint32_t)0x11UL) /**< CTRL_REQUEST_USBRXEP1 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP1                (MXC_V_DMA_CTRL_REQUEST_USBRXEP1 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP1 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP2                ((uint32_t)0x12UL) /**< CTRL_REQUEST_USBRXEP2 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP2                (MXC_V_DMA_CTRL_REQUEST_USBRXEP2 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP2 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP3                ((uint32_t)0x13UL) /**< CTRL_REQUEST_USBRXEP3 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP3                (MXC_V_DMA_CTRL_REQUEST_USBRXEP3 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP3 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP4                ((uint32_t)0x14UL) /**< CTRL_REQUEST_USBRXEP4 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP4                (MXC_V_DMA_CTRL_REQUEST_USBRXEP4 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP4 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP5                ((uint32_t)0x15UL) /**< CTRL_REQUEST_USBRXEP5 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP5                (MXC_V_DMA_CTRL_REQUEST_USBRXEP5 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP5 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP6                ((uint32_t)0x16UL) /**< CTRL_REQUEST_USBRXEP6 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP6                (MXC_V_DMA_CTRL_REQUEST_USBRXEP6 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP6 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP7                ((uint32_t)0x17UL) /**< CTRL_REQUEST_USBRXEP7 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP7                (MXC_V_DMA_CTRL_REQUEST_USBRXEP7 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP7 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP8                ((uint32_t)0x18UL) /**< CTRL_REQUEST_USBRXEP8 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP8                (MXC_V_DMA_CTRL_REQUEST_USBRXEP8 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP8 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP9                ((uint32_t)0x19UL) /**< CTRL_REQUEST_USBRXEP9 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP9                (MXC_V_DMA_CTRL_REQUEST_USBRXEP9 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP9 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP10               ((uint32_t)0x1AUL) /**< CTRL_REQUEST_USBRXEP10 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP10               (MXC_V_DMA_CTRL_REQUEST_USBRXEP10 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP10 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBRXEP11               ((uint32_t)0x1BUL) /**< CTRL_REQUEST_USBRXEP11 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBRXEP11               (MXC_V_DMA_CTRL_REQUEST_USBRXEP11 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBRXEP11 Setting */
+#define MXC_V_DMA_CTRL_REQUEST_AESRX                   ((uint32_t)0x10UL) /**< CTRL_REQUEST_AESRX Value */
+#define MXC_S_DMA_CTRL_REQUEST_AESRX                   (MXC_V_DMA_CTRL_REQUEST_AESRX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_AESRX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART3RX                 ((uint32_t)0x1CUL) /**< CTRL_REQUEST_UART3RX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART3RX                 (MXC_V_DMA_CTRL_REQUEST_UART3RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART3RX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_I2SRX                   ((uint32_t)0x1EUL) /**< CTRL_REQUEST_I2SRX Value */
+#define MXC_S_DMA_CTRL_REQUEST_I2SRX                   (MXC_V_DMA_CTRL_REQUEST_I2SRX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2SRX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_SPI0TX                  ((uint32_t)0x21UL) /**< CTRL_REQUEST_SPI0TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_SPI0TX                  (MXC_V_DMA_CTRL_REQUEST_SPI0TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI0TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_SPI1TX                  ((uint32_t)0x22UL) /**< CTRL_REQUEST_SPI1TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_SPI1TX                  (MXC_V_DMA_CTRL_REQUEST_SPI1TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI1TX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_SPI2TX                  ((uint32_t)0x23UL) /**< CTRL_REQUEST_SPI2TX Value */
+#define MXC_S_DMA_CTRL_REQUEST_SPI2TX                  (MXC_V_DMA_CTRL_REQUEST_SPI2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI2TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART0TX                 ((uint32_t)0x24UL) /**< CTRL_REQUEST_UART0TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART0TX                 (MXC_V_DMA_CTRL_REQUEST_UART0TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART0TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART1TX                 ((uint32_t)0x25UL) /**< CTRL_REQUEST_UART1TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART1TX                 (MXC_V_DMA_CTRL_REQUEST_UART1TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART1TX Setting */
-#define MXC_V_DMA_CTRL_REQUEST_SC0TX                   ((uint32_t)0x26UL) /**< CTRL_REQUEST_SC0TX Value */
-#define MXC_S_DMA_CTRL_REQUEST_SC0TX                   (MXC_V_DMA_CTRL_REQUEST_SC0TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SC0TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_I2C0TX                  ((uint32_t)0x27UL) /**< CTRL_REQUEST_I2C0TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_I2C0TX                  (MXC_V_DMA_CTRL_REQUEST_I2C0TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C0TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_I2C1TX                  ((uint32_t)0x28UL) /**< CTRL_REQUEST_I2C1TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_I2C1TX                  (MXC_V_DMA_CTRL_REQUEST_I2C1TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C1TX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_I2C2TX                  ((uint32_t)0x2AUL) /**< CTRL_REQUEST_I2C2TX Value */
+#define MXC_S_DMA_CTRL_REQUEST_I2C2TX                  (MXC_V_DMA_CTRL_REQUEST_I2C2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C2TX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_CRCTX                   ((uint32_t)0x2CUL) /**< CTRL_REQUEST_CRCTX Value */
+#define MXC_S_DMA_CTRL_REQUEST_CRCTX                   (MXC_V_DMA_CTRL_REQUEST_CRCTX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_CRCTX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART2TX                 ((uint32_t)0x2EUL) /**< CTRL_REQUEST_UART2TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART2TX                 (MXC_V_DMA_CTRL_REQUEST_UART2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART2TX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_SPI3TX                  ((uint32_t)0x2FUL) /**< CTRL_REQUEST_SPI3TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_SPI3TX                  (MXC_V_DMA_CTRL_REQUEST_SPI3TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI3TX Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP1                ((uint32_t)0x31UL) /**< CTRL_REQUEST_USBTXEP1 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP1                (MXC_V_DMA_CTRL_REQUEST_USBTXEP1 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP1 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP2                ((uint32_t)0x32UL) /**< CTRL_REQUEST_USBTXEP2 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP2                (MXC_V_DMA_CTRL_REQUEST_USBTXEP2 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP2 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP3                ((uint32_t)0x33UL) /**< CTRL_REQUEST_USBTXEP3 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP3                (MXC_V_DMA_CTRL_REQUEST_USBTXEP3 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP3 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP4                ((uint32_t)0x34UL) /**< CTRL_REQUEST_USBTXEP4 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP4                (MXC_V_DMA_CTRL_REQUEST_USBTXEP4 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP4 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP5                ((uint32_t)0x35UL) /**< CTRL_REQUEST_USBTXEP5 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP5                (MXC_V_DMA_CTRL_REQUEST_USBTXEP5 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP5 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP6                ((uint32_t)0x36UL) /**< CTRL_REQUEST_USBTXEP6 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP6                (MXC_V_DMA_CTRL_REQUEST_USBTXEP6 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP6 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP7                ((uint32_t)0x37UL) /**< CTRL_REQUEST_USBTXEP7 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP7                (MXC_V_DMA_CTRL_REQUEST_USBTXEP7 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP7 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP8                ((uint32_t)0x38UL) /**< CTRL_REQUEST_USBTXEP8 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP8                (MXC_V_DMA_CTRL_REQUEST_USBTXEP8 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP8 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP9                ((uint32_t)0x39UL) /**< CTRL_REQUEST_USBTXEP9 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP9                (MXC_V_DMA_CTRL_REQUEST_USBTXEP9 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP9 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP10               ((uint32_t)0x3AUL) /**< CTRL_REQUEST_USBTXEP10 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP10               (MXC_V_DMA_CTRL_REQUEST_USBTXEP10 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP10 Setting */
-#define MXC_V_DMA_CTRL_REQUEST_USBTXEP11               ((uint32_t)0x3BUL) /**< CTRL_REQUEST_USBTXEP11 Value */
-#define MXC_S_DMA_CTRL_REQUEST_USBTXEP11               (MXC_V_DMA_CTRL_REQUEST_USBTXEP11 << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_USBTXEP11 Setting */
+#define MXC_V_DMA_CTRL_REQUEST_AESTX                   ((uint32_t)0x30UL) /**< CTRL_REQUEST_AESTX Value */
+#define MXC_S_DMA_CTRL_REQUEST_AESTX                   (MXC_V_DMA_CTRL_REQUEST_AESTX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_AESTX Setting */
 #define MXC_V_DMA_CTRL_REQUEST_UART3TX                 ((uint32_t)0x3CUL) /**< CTRL_REQUEST_UART3TX Value */
 #define MXC_S_DMA_CTRL_REQUEST_UART3TX                 (MXC_V_DMA_CTRL_REQUEST_UART3TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART3TX Setting */
+#define MXC_V_DMA_CTRL_REQUEST_I2STX                   ((uint32_t)0x3EUL) /**< CTRL_REQUEST_I2STX Value */
+#define MXC_S_DMA_CTRL_REQUEST_I2STX                   (MXC_V_DMA_CTRL_REQUEST_I2STX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2STX Setting */
 
 #define MXC_F_DMA_CTRL_TO_WAIT_POS                     10 /**< CTRL_TO_WAIT Position */
 #define MXC_F_DMA_CTRL_TO_WAIT                         ((uint32_t)(0x1UL << MXC_F_DMA_CTRL_TO_WAIT_POS)) /**< CTRL_TO_WAIT Mask */
@@ -519,4 +443,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_DMA_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_DMA_REGS_H_

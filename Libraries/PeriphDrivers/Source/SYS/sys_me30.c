@@ -226,11 +226,10 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
         break;
 
-        // TODO(ME30): EXTCLK is missing from register definitions
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     // No "RDY" bit to monitor, so just configure the GPIO
-        //     return MXC_GPIO_Config(&gpio_cfg_extclk);
-        //     break;
+    case MXC_SYS_CLOCK_EXTCLK:
+        // No "RDY" bit to monitor, so just configure the GPIO
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
+        break;
 
     case MXC_SYS_CLOCK_INRO:
         // The 80k clock is always enabled
@@ -291,19 +290,18 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IBRO_EN;
         break;
 
-        // TODO(ME30): Missing EXTCLK register definition
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     /*
-        //     There's not a great way to disable the external clock.
-        //     Deinitializing the GPIO here may have unintended consequences
-        //     for application code.
-        //     Selecting a different system clock source is sufficient
-        //     to "disable" the EXT_CLK source.
-        //     */
-        //     break;
+    case MXC_SYS_CLOCK_EXTCLK:
+        /*
+        There's not a great way to disable the external clock.
+        Deinitializing the GPIO here may have unintended consequences
+        for application code.
+        Selecting a different system clock source is sufficient
+        to "disable" the EXT_CLK source.
+        */
+        break;
 
     case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
+        // The 131k clock is always enabled
         break;
 
     case MXC_SYS_CLOCK_ERFO:
@@ -353,6 +351,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
+    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
@@ -394,21 +393,20 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         break;
 
-        // TODO(ME30): Missing EXTCLK register definition
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     /*
-        //     There's not "EXT_CLK RDY" bit for the ME17, so we'll
-        //     blindly enable (configure GPIO) the external clock every time.
-        //     */
-        //     err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-        //     if (err)
-        //         return err;
+    case MXC_SYS_CLOCK_EXTCLK:
+        /*
+        There's not "EXT_CLK RDY" bit for the ME17, so we'll
+        blindly enable (configure GPIO) the external clock every time.
+        */
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err)
+            return err;
 
-        //     // Set EXT clock as System Clock
-        //     MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-        //                  MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        // Set EXT clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
-        //     break;
+        break;
 
     case MXC_SYS_CLOCK_ERFO:
 
@@ -544,5 +542,37 @@ int MXC_SYS_LockDAP_Permanent(void)
 #endif
 }
 #endif
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks)
+{
+    /* Assuming that both clocks are already enabled */
+
+    /* Setup the comparison clock */
+    MXC_FCR->frqcntctrl = (MXC_FCR->frqcntctrl & ~(MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL)) | clock;
+
+    /* Set ticks of the comparison clock */
+    MXC_FCR->frqcntcmp = compareClockTicks;
+
+    /*
+     * Enable interrupt, note that we don't see the flag if we leave
+     * this disabled.
+     */
+    MXC_FCR->inten |= MXC_F_FCR_INTFL_FRQCNT;
+
+    /* Clear the interrupt flag */
+    MXC_FCR->intfl = MXC_F_FCR_INTFL_FRQCNT;
+
+    /* Start the procedure */
+    MXC_FCR->frqcntctrl |= MXC_F_FCR_FRQCNTCTRL_START;
+
+    /* Wait for the procedure to finish */
+    while (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {}
+
+    /* Calculate the frequency */
+    uint64_t freq = (uint64_t)ERFO_FREQ * (uint64_t)MXC_FCR->cmpclk / (uint64_t)MXC_FCR->refclk;
+
+    return (uint32_t)freq;
+}
 
 /**@} end of mxc_sys */

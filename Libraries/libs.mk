@@ -78,8 +78,9 @@ INIT_EXTENDED ?= 0
 # Default directory for libphy
 LIB_PHY_DIR ?= $(LIBS_DIR)/BlePhy
 
+BLE_API ?= Cordio
 # Include the Cordio Library
-CORDIO_DIR ?= $(LIBS_DIR)/Cordio
+CORDIO_DIR ?= $(LIBS_DIR)/$(BLE_API)
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 PROJ_CFLAGS += -D__CORDIO__
 
@@ -331,6 +332,14 @@ LIB_CLI ?= 0
 ifeq ($(LIB_CLI), 1)
 LIB_CLI_DIR ?= $(LIBS_DIR)/CLI
 include $(LIB_CLI_DIR)/CLI.mk
+endif
+
+# Unity (Disabled by default)
+# ************************
+LIB_UNITY ?= 0
+ifeq ($(LIB_UNITY), 1)
+LIB_UNITY_DIR ?= $(LIBS_DIR)/Unity
+include $(LIB_UNITY_DIR)/unity.mk
 endif
 # ************************
 
