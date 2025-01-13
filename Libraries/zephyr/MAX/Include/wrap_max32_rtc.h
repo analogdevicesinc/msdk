@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@
 
 /***** Includes *****/
 #include <rtc.h>
+#include <mxc_sys.h>
+#include "wrap_max32_sys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,32 +30,11 @@ extern "C" {
 
 #if defined(CONFIG_SOC_MAX32657)
 
-static inline mxc_rtc_clock_t wrap_get_clock_source_instance(uint8_t clock_source)
-{
-    mxc_rtc_clock_t clk_src;
-
-    switch (clock_source) {
-    case 4: // ADI_MAX32_PRPH_CLK_SRC_ERTCO
-        clk_src = MXC_RTC_ERTCO_CLK;
-        break;
-    case 5: // ADI_MAX32_PRPH_CLK_SRC_INRO
-        clk_src = MXC_RTC_INRO_CLK;
-        break;
-    default:
-        return -1;
-    }
-
-    return clk_src;
-}
-
 static inline int Wrap_MXC_RTC_Init(uint32_t sec, uint16_t ssec, uint8_t clock_source)
 {
     int ret;
-    mxc_rtc_clock_t clk_src;
 
-    clk_src = wrap_get_clock_source_instance(clock_source);
-
-    if (MXC_RTC_SetClockSource(clk_src) == E_NO_ERROR) {
+    if (Wrap_MXC_SYS_Select32KClockSource(clock_source) == E_NO_ERROR) {
         ret = MXC_RTC_Init(sec, ssec);
     } else {
         ret = E_BAD_PARAM;
