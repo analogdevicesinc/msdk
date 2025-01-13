@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,8 @@ static inline int Wrap_MXC_TRNG_RandomInt_NonBlocking(uint32_t *data)
 #elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
     defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
     defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
-    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX78002)
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) ||   \
+    defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000)
 
 static inline int Wrap_MXC_TRNG_RandomInt_NonBlocking(uint32_t *data)
 {

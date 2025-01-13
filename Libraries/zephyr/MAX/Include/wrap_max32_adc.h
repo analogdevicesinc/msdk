@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ typedef enum {
 #define ADI_MAX32_ADC_REF_VDD_1_2 2
 
 /*
- *  MAX32655, MAX32665, MAX32666 related mapping
+ *  MAX32655, MAX32665, MAX32666, MAX32680, MAX78000 related mapping
  */
 #if defined(CONFIG_SOC_MAX32655) || defined(CONFIG_SOC_MAX32665) || \
-    defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32680)
+    defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX78000)
 
 #define WRAP_MXC_F_ADC_CONV_DONE_IE MXC_F_ADC_INTR_DONE_IE
 #define WRAP_MXC_F_ADC_CONV_DONE_IF MXC_F_ADC_INTR_DONE_IF
