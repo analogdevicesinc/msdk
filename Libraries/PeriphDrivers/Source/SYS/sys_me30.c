@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,19 +198,17 @@ int MXC_SYS_RTCClockDisable(void)
     }
 }
 
-#if TARGET_NUM == 32655
-/******************************************************************************/
-void MXC_SYS_RTCClockPowerDownEn(void)
+int MXC_SYS_Select32KClockSource(mxc_sys_32k_clock_t clock)
 {
-    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_32KOSC_EN;
-}
+    if (clock > MXC_SYS_32K_CLOCK_RTC_IN) {
+        return E_BAD_PARAM;
+    }
 
-/******************************************************************************/
-void MXC_SYS_RTCClockPowerDownDis(void)
-{
-    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_32KOSC_EN;
+    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_CLKSEL;
+    MXC_MCR->ctrl |= (clock << MXC_F_MCR_CTRL_CLKSEL_POS);
+
+    return E_NO_ERROR;
 }
-#endif //TARGET_NUM == 32655
 
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
@@ -232,7 +230,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
+        // The 131k clock is always enabled
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_INRO_RDY);
         break;
 

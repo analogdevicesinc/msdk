@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@
 #include "mxc_device.h"
 #include "gcr_regs.h"
 #include "fcr_regs.h"
+#include "mcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -88,7 +89,6 @@ typedef enum {
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
-// TODO(ME30): CLKCTRL sysclk_sel values seem incorrect.
 typedef enum {
     MXC_SYS_CLOCK_IPO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
@@ -115,6 +115,17 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_64 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64,
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
+
+/** @brief Enumeration to select 32KHz Clock source used by the RTC, the timers, the wakeup timers, 
+ * and the system clock */
+typedef enum {
+    MXC_SYS_32K_CLOCK_ERTCO =
+        MXC_V_MCR_CTRL_CLKSEL_ERTCO, /**< Select the External Real-Time Clock Oscillator (ERTCO) */
+    MXC_SYS_32K_CLOCK_INRO =
+        MXC_V_MCR_CTRL_CLKSEL_INRO_DIV4, /**< Select the Internal Baud Rate Oscillator (INRO) */
+    MXC_SYS_32K_CLOCK_RTC_IN =
+        MXC_V_MCR_CTRL_CLKSEL_RTC_IN_DIV8, /**< Select the External clock input (RTC_CLK_IN) */
+} mxc_sys_32k_clock_t;
 
 /** @brief Compare clock enumeration. Used in MXC_SYS_ClockMeasure function. */
 typedef enum {
@@ -270,22 +281,14 @@ void MXC_SYS_RTCClockEnable(void);
 int MXC_SYS_RTCClockDisable(void);
 
 /**
- * @brief Enables the 32kHz oscillator to be powered down when not in use.
- *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
- *        Rev. A chips.
+ * @brief Selects the 32KHz clock source used by the RTC, the timers, the wakeup timers, 
+ * and the system clock.
  * 
- * @returns  E_NO_ERROR if everything is successful
+ * @param       clock Clock source to use. See @ref mxc_sys_32k_clock_t for options.
+ * @return      E_NO_ERROR if everything is successful
+ *              E_BAD_PARAM if the clock is not valid 
  */
-void MXC_SYS_RTCClockPowerDownEn(void);
-
-/**
- * @brief Disables the 32kHz oscillator from being powered down when not in use.
- *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
- *        Rev. A chips.
- * 
- * @returns  E_NO_ERROR if everything is successful
- */
-void MXC_SYS_RTCClockPowerDownDis(void);
+int MXC_SYS_Select32KClockSource(mxc_sys_32k_clock_t clock);
 
 /**
  * @brief Enable System Clock Source without switching to it

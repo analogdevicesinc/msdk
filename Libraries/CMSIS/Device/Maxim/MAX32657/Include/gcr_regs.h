@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -312,7 +312,7 @@ typedef struct {
 #define MXC_F_GCR_PM_RTC_WE_POS                        5 /**< PM_RTC_WE Position */
 #define MXC_F_GCR_PM_RTC_WE                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_RTC_WE_POS)) /**< PM_RTC_WE Mask */
 
-#define MXC_F_GCR_PM_WUT_WE_POS                        7 /**< PM_WUT_WE Position */
+#define MXC_F_GCR_PM_WUT_WE_POS                        6 /**< PM_WUT_WE Position */
 #define MXC_F_GCR_PM_WUT_WE                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_WUT_WE_POS)) /**< PM_WUT_WE Mask */
 
 #define MXC_F_GCR_PM_ERFO_BP_POS                       20 /**< PM_ERFO_BP Position */

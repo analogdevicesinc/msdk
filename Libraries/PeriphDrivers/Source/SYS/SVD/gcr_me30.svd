@@ -434,7 +434,7 @@
           <field derivedFrom="GPIO_WE">
             <name>WUT_WE</name>
             <description>Enable Wakeup Timer as wakeup source.</description>
-            <bitOffset>7</bitOffset>
+            <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>

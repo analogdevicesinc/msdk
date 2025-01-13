@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@
 #define SET_SLEEPDEEP(X) (SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk)
 #define CLR_SLEEPDEEP(X) (SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk)
 
-// TODO(SW): Update this.
-
 void MXC_LP_EnterSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
@@ -39,19 +37,15 @@ void MXC_LP_EnterSleepMode(void)
     __WFI();
 }
 
-void MXC_LP_EnterLowPowerMode(void)
-{
-    return;
-}
-
-void MXC_LP_EnterMicroPowerMode(void)
-{
-    return;
-}
-
 void MXC_LP_EnterStandbyMode(void)
 {
-    return;
+    MXC_LP_ClearWakeStatus();
+
+    /* Clear SLEEPDEEP bit */
+    SET_SLEEPDEEP();
+
+    /* Go into Standby mode and wait for an interrupt to wake the processor */
+    __WFI();
 }
 
 void MXC_LP_EnterBackupMode(void)
@@ -77,6 +71,31 @@ void MXC_LP_EnterPowerDownMode(void)
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 {
     //not supported yet
+}
+
+void MXC_LP_EnableRetentionReg(void)
+{
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_RETLDO_EN;
+}
+
+void MXC_LP_DisableRetentionReg(void)
+{
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_RETLDO_EN;
+}
+
+int MXC_LP_RetentionRegIsEnabled(void)
+{
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_RETLDO_EN);
+}
+
+void MXC_LP_EnableSramRetention(uint32_t mask)
+{
+    MXC_PWRSEQ->lpctrl |= (mask & 0x1F) << MXC_F_PWRSEQ_LPCTRL_SRAMRET_EN_POS;
+}
+
+void MXC_LP_DisableSramRetention(uint32_t mask)
+{
+    MXC_PWRSEQ->lpctrl &= ~((mask & 0x1F) << MXC_F_PWRSEQ_LPCTRL_SRAMRET_EN_POS);
 }
 
 void MXC_LP_BandgapOn(void)
@@ -135,16 +154,6 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_RTC_WE;
 }
 
-void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t *tmr)
-{
-    return;
-}
-
-void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t *tmr)
-{
-    return;
-}
-
 void MXC_LP_EnableWUTAlarmWakeup(void)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_WUT_WE;
@@ -157,6 +166,11 @@ void MXC_LP_DisableWUTAlarmWakeup(void)
 
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {
-    MXC_GCR->pm |= mask;
+    if (!(mask & MXC_F_MCR_CTRL_ERTCO_EN)) {
+        return E_BAD_PARAM;
+    }
+
+    MXC_MCR->ctrl &= ~mask;
+
     return E_NO_ERROR;
 }
