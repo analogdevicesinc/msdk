@@ -24,5 +24,5 @@
  */
 void max32xx_system_init(void)
 {
-        MXC_ICC_Enable(MXC_ICC0);
+    MXC_ICC_Enable(MXC_ICC0);
 }
