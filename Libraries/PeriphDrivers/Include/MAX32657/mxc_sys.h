@@ -364,12 +364,15 @@ int MXC_SYS_LockDAP_Permanent(void);
  * 
  * @details Assumes that measurement clock and ERFO are enabled. 
  * Increasing compareClockTicks will provide a more accurate measurement, 
- * but there are limits that could cause overflow.
+ * but there are limits that could cause overflow. Start and Get function
+ * are used for non-blocking implementations.
  * 
  * @param clock Enumeration for which clock to measure.
  * @param compareClockTicks Number of ticks of the comparison clock to use for measurement.
  */
 uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks);
+void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks);
+uint32_t MXC_SYS_GetClockMeasure(void);
 
 #ifdef __cplusplus
 }
