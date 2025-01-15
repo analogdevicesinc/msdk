@@ -569,7 +569,7 @@ void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareCl
 uint32_t MXC_SYS_GetClockMeasure(void)
 {
     /* Return 0 if the procedure is incomplete */
-    if(!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {
+    if (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {
         return 0;
     }
 
