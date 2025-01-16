@@ -360,7 +360,7 @@ uint32_t MXC_SYS_RiscVClockRate(void);
 int MXC_SYS_LockDAP_Permanent(void);
 
 /**
- * @brief Measure the clock frequency.
+ * @brief Measure the clock frequency, blocking.
  * 
  * @details Assumes that measurement clock and ERFO are enabled. 
  * Increasing compareClockTicks will provide a more accurate measurement, 
@@ -369,9 +369,25 @@ int MXC_SYS_LockDAP_Permanent(void);
  * 
  * @param clock Enumeration for which clock to measure.
  * @param compareClockTicks Number of ticks of the comparison clock to use for measurement.
+ * @return clock frequency
  */
 uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks);
+
+/**
+ * @brief Start clock frequency measurement, non blocking.
+ *
+ * @param clock Enumeration for which clock to measure.
+ * @param compareClockTicks Number of ticks of the comparison clock to use for measurement.
+ */
 void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks);
+
+/**
+ * @brief Get clock frequency measurement after calling start, non blocking.
+ *
+ * @param clock Enumeration for which clock to measure.
+ * @param compareClockTicks Number of ticks of the comparison clock to use for measurement.
+ * @return clock frequency, 0 if measurement is unfinished.
+ */
 uint32_t MXC_SYS_GetClockMeasure(void);
 
 #ifdef __cplusplus
