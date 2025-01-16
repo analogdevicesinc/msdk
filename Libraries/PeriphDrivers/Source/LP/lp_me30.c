@@ -46,6 +46,9 @@ void MXC_LP_EnterStandbyMode(void)
 
     /* Go into Standby mode and wait for an interrupt to wake the processor */
     __WFI();
+
+    /* Clear SLEEPDEEP bit to prevent WFI from entering deep sleep */
+    CLR_SLEEPDEEP();
 }
 
 void MXC_LP_EnterBackupMode(void)

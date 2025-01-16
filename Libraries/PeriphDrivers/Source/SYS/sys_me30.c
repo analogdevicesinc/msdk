@@ -542,7 +542,7 @@ int MXC_SYS_LockDAP_Permanent(void)
 #endif
 
 /* ************************************************************************** */
-uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks)
+void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks)
 {
     /* Assuming that both clocks are already enabled */
 
@@ -563,14 +563,32 @@ uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClo
 
     /* Start the procedure */
     MXC_FCR->frqcntctrl |= MXC_F_FCR_FRQCNTCTRL_START;
+}
 
-    /* Wait for the procedure to finish */
-    while (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {}
+/* ************************************************************************** */
+uint32_t MXC_SYS_GetClockMeasure(void)
+{
+    /* Return 0 if the procedure is incomplete */
+    if (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {
+        return 0;
+    }
 
     /* Calculate the frequency */
     uint64_t freq = (uint64_t)ERFO_FREQ * (uint64_t)MXC_FCR->cmpclk / (uint64_t)MXC_FCR->refclk;
 
     return (uint32_t)freq;
+}
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks)
+{
+    /* Assuming that both clocks are already enabled */
+    MXC_SYS_StartClockMeasure(clock, compareClockTicks);
+
+    /* Wait for the procedure to finish */
+    while (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {}
+
+    return MXC_SYS_GetClockMeasure();
 }
 
 /**@} end of mxc_sys */
