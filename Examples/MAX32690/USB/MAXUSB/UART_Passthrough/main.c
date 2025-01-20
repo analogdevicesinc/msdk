@@ -64,6 +64,8 @@
 #define OST_TIMER MXC_TMR4
 #define OST_FREQ 1000 // 1khz = 1ms
 
+#define LED_PORT MXC_GPIO1
+
 /* **** Global Data **** */
 volatile int configured;
 volatile int suspended;
@@ -207,6 +209,10 @@ uint32_t format_product_id(const char *id, uint32_t len, uint8_t *pid_buf)
 /* ************************************************************************** */
 int main(void)
 {
+    const mxc_gpio_cfg_t led = { MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_OUT,
+                                MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0};
+    MXC_GPIO_Config(&led);
+
     ring_buffer_init(&ring_buffer);
     oneshot_init();
 
@@ -307,9 +313,9 @@ int main(void)
         echo_usb();
 
         if (suspended || !configured) {
-            LED_Off(1);
+            MXC_GPIO_OutSet(MXC_GPIO1, MXC_GPIO_PIN_21);
         } else {
-            LED_On(1);
+            MXC_GPIO_OutClr(MXC_GPIO1, MXC_GPIO_PIN_21);
         }
 
         if (event_flags) {
