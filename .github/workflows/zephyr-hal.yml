@@ -69,10 +69,19 @@ jobs:
 
       - name: Push changes to hal_adi repository
         run: |
-          echo "$(pwd) - $(ls)"
+          echo -e "$(pwd)\n\n$(ls)\n"
           cd ./hal_adi
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add *
-          git commit -m "Update Zephyr MSDK Hal based on MSDK PR: https://github.com/analogdevicesinc/msdk/pull/${PR_NUM}"
-          git push 
+          if [[ -n $(git status -s) ]]; then
+            echo "Starting to commit changes to hal_adi repository"
+            cd ${msdk}
+            msdk_head=$(git rev-parse HEAD)
+            commit_author=$(git show --no-patch --format="%an <%ae>" ${msdk_head})
+            commit_msg=$(git show --no-patch --format="%B" ${msdk_head})
+
+            cd ${hal_adi}
+            git add *
+            git commit --author="${commit_author}" -m "${commit_msg}"
+            git push
+          else
+            echo "No changes to commit"
+          fi
