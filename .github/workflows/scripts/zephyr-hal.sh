@@ -19,6 +19,10 @@ cd ${msdk}
 msdk_head=$(git rev-parse HEAD)
 cd ${root_dir}
 
+# Store msdk_sha file if exist
+if [ -e "${hal_adi}/MAX/msdk_sha" ]; then
+    mv ${hal_adi}/MAX/msdk_sha ${root_dir}
+fi
 
 # Cleanup hal_adi
 rm -rf ${hal_adi}/MAX/
@@ -31,6 +35,11 @@ mkdir -p ${hal_adi}/MAX/Libraries/PeriphDrivers
 
 # Copy zephyr wrappers, system files and cmakefiles
 cp -rf ${msdk}/Libraries/zephyr/MAX/*  ${hal_adi}/MAX/
+
+# Move "msdk_sha" file again to not create a difference.
+if [ -e "${root_dir}/msdk_sha" ]; then
+    mv ${root_dir}/msdk_sha ${hal_adi}/MAX
+fi
 
 # Copy CMSIS folder
 cp -rf ${msdk}/Libraries/CMSIS/Device  ${hal_adi}/MAX/Libraries/CMSIS/
