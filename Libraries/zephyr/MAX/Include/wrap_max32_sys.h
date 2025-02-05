@@ -35,7 +35,6 @@ void max32xx_system_init(void);
  *  MAX32665, MAX32666 related mapping
  */
 #if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
-
 #define ADI_MAX32_CLK_IPO MXC_SYS_CLOCK_HIRC96
 #define ADI_MAX32_CLK_ERFO MXC_SYS_CLOCK_XTAL32M
 #define ADI_MAX32_CLK_IBRO MXC_SYS_CLOCK_HIRC8
@@ -57,15 +56,19 @@ static inline int Wrap_MXC_SYS_Select32KClockSource(int clock)
 }
 
 /*
- *  MAX32690, MAX32655 related mapping
+ *  MAX32660, MAX32690, MAX32655 related mapping
  */
 #elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
     defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
     defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
     defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) ||   \
-    defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000)
+    defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000) || defined(CONFIG_SOC_MAX32660)
 
+#if defined(CONFIG_SOC_MAX32660)
+#define ADI_MAX32_CLK_IPO MXC_SYS_CLOCK_HIRC
+#else
 #define ADI_MAX32_CLK_IPO MXC_SYS_CLOCK_IPO
+#endif
 #if defined(CONFIG_SOC_MAX78002)
 #define ADI_MAX32_CLK_IPLL MXC_SYS_CLOCK_IPLL
 #define ADI_MAX32_CLK_EBO MXC_SYS_CLOCK_EBO
