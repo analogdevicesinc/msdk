@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2024 Analog Devices, Inc.
  *
@@ -50,6 +50,7 @@
 #include "uart.h"
 #include "nvic_table.h"
 #include "ecc_regs.h"
+#include "mxc_delay.h"
 
 #define DELAY_IN_SEC 2
 #define USE_CONSOLE 1
