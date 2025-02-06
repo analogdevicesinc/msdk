@@ -185,6 +185,15 @@ void configure_gpio(void)
 
 int main(void)
 {
+    /** PLEASE READ **/
+    // MCU shuts down SWD interface in LP modes
+    // Delay at application start to prevent debugger losing access on restarts
+    //
+    // Only remove this if you are okay with losing debug access
+    // If you can't flash/debug the device, please consult this guide:
+    // https://analogdevicesinc.github.io/msdk//USERGUIDE/#how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed
+    MXC_Delay(MXC_DELAY_SEC(2));
+
     MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
 
     PRINT("****Low Power Mode Example****\n\n");
