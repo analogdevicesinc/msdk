@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,8 +113,8 @@ typedef enum {
     MXC_GPIO_PAD_NONE, /**< No pull-up or pull-down */
     MXC_GPIO_PAD_WEAK_PULL_UP, /**< Set pad to weak pull-up */
     MXC_GPIO_PAD_WEAK_PULL_DOWN, /**< Set pad to weak pull-down */
-    MXC_GPIO_PAD_STRONG_PULL_UP, /**< Set pad to strong pull-up */
-    MXC_GPIO_PAD_STRONG_PULL_DOWN, /**< Set pad to strong pull-down */
+    MXC_GPIO_PAD_PULL_UP, /**< Set pad to strong pull-up */
+    MXC_GPIO_PAD_PULL_DOWN, /**< Set pad to strong pull-down */
 } mxc_gpio_pad_t;
 
 /**
