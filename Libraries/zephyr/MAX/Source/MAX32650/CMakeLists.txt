@@ -60,7 +60,8 @@ zephyr_library_sources(
      
     ${MSDK_PERIPH_SRC_DIR}/ICC/icc_me10.c
     ${MSDK_PERIPH_SRC_DIR}/ICC/icc_reva.c
-    
+    ${MSDK_PERIPH_SRC_DIR}/ICC/icc_common.c
+
     ${MSDK_PERIPH_SRC_DIR}/LP/lp_me10.c
     
     ${MSDK_PERIPH_SRC_DIR}/PT/pt_me10.c
