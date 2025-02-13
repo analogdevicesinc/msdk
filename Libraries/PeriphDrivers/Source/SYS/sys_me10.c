@@ -350,8 +350,8 @@ int MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 /* ************************************************************************** */
 uint8_t MXC_SYS_GetRev(void)
 {
-    uint8_t serialNumber[13];
-    MXC_SYS_GetUSN(serialNumber, 13);
+    uint8_t serialNumber[MXC_SYS_USN_LEN];
+    MXC_SYS_GetUSN(serialNumber, MXC_SYS_USN_LEN);
 
     if ((serialNumber[0] < 0x9F) | ((serialNumber[0] & 0x0F) > 0x09)) {
         // Fail back to the hardware register
@@ -363,7 +363,7 @@ uint8_t MXC_SYS_GetRev(void)
 /* ************************************************************************** */
 int MXC_SYS_GetUSN(uint8_t *serialNumber, int len)
 {
-    if (len != 13) {
+    if (len != MXC_SYS_USN_LEN) {
         return E_BAD_PARAM;
     } else if (serialNumber == NULL) {
         return E_NULL_PTR;

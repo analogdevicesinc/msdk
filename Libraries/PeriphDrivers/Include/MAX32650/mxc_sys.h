@@ -28,7 +28,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_SYS_H_
 
 /* **** Includes **** */
-#include "max32650.h"
+#include "mxc_device.h"
 #include "uart_regs.h"
 #include "i2c_regs.h"
 #include "pt_regs.h"
@@ -227,6 +227,7 @@ typedef mxc_sys_cfg_t mxc_sys_cfg_usbhs_t;
 
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
 #define MXC_SYS_TPU_CLK 1 // Enable TPU CLK
+#define MXC_SYS_USN_LEN 13 // Size of the USN
 
 /***** Function Prototypes *****/
 
