@@ -26,8 +26,9 @@
 extern "C" {
 #endif
 
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
-#if !defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660)
+#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32660)
 // status flags
 #define ADI_MAX32_UART_RX_EMPTY MXC_F_UART_STATUS_RX_EMPTY
 #define ADI_MAX32_UART_TX_EMPTY MXC_F_UART_STATUS_TX_EMPTY
@@ -52,7 +53,7 @@ extern "C" {
 #define ADI_MAX32_UART_INT_BE MXC_F_UART_INT_EN_BREAK // Break Error Interrupt
 #define ADI_MAX32_UART_INT_PE MXC_F_UART_INT_EN_RX_PARITY_ERROR // Parity Error Interrupt
 #define ADI_MAX32_UART_INT_FE MXC_F_UART_INT_EN_RX_FRAME_ERROR // Framing Error Interrupt
-#if !defined(CONFIG_SOC_MAX32650)
+#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32660)
 #define ADI_MAX32_UART_INT_RT MXC_F_UART_INT_EN_RX_TIMEOUT // Receive Timeout Interrupt
 #define ADI_MAX32_UART_INT_TX MXC_F_UART_INT_EN_TX_FIFO_THRESH // Transmit Interrupt
 #define ADI_MAX32_UART_INT_RX MXC_F_UART_INT_EN_RX_FIFO_THRESH // Receive Interrupt
@@ -92,7 +93,7 @@ static inline int Wrap_MXC_UART_Init(mxc_uart_regs_t *uart)
         return ret;
     }
 
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660)
     uart->ctrl0 |= MXC_F_UART_CTRL0_ENABLE;
 #else
     uart->ctrl |= MXC_F_UART_CTRL_ENABLE;

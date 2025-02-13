@@ -370,11 +370,11 @@ typedef struct {
 #define MXC_F_UART_DMA_RXDMA_EN_POS                    1 /**< DMA_RXDMA_EN Position */
 #define MXC_F_UART_DMA_RXDMA_EN                        ((uint32_t)(0x1UL << MXC_F_UART_DMA_RXDMA_EN_POS)) /**< DMA_RXDMA_EN Mask */
 
-#define MXC_F_UART_DMA_TXDMA_LVL_POS                   8 /**< DMA_TXDMA_LVL Position */
-#define MXC_F_UART_DMA_TXDMA_LVL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_TXDMA_LVL_POS)) /**< DMA_TXDMA_LVL Mask */
+#define MXC_F_UART_DMA_TXDMA_LEVEL_POS                   8 /**< DMA_TXDMA_LVL Position */
+#define MXC_F_UART_DMA_TXDMA_LEVEL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_TXDMA_LEVEL_POS)) /**< DMA_TXDMA_LVL Mask */
 
-#define MXC_F_UART_DMA_RXDMA_LVL_POS                   16 /**< DMA_RXDMA_LVL Position */
-#define MXC_F_UART_DMA_RXDMA_LVL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_RXDMA_LVL_POS)) /**< DMA_RXDMA_LVL Mask */
+#define MXC_F_UART_DMA_RXDMA_LEVEL_POS                   16 /**< DMA_RXDMA_LVL Position */
+#define MXC_F_UART_DMA_RXDMA_LEVEL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_RXDMA_LEVEL_POS)) /**< DMA_RXDMA_LVL Mask */
 
 /**@} end of group UART_DMA_Register */
 
