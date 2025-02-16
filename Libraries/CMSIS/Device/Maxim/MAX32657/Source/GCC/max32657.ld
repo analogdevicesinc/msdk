@@ -15,9 +15,16 @@
  * limitations under the License.
  *
  ******************************************************************************/
+ _PAL_NVM_SIZE =  0x4000;
+ _ARM_FLASH_SIZE = 0x00100000;
+ _ARM_FLASH_ORIGIN = 0x11000000;
+ _ARM_FLASH_SIZE = _ARM_FLASH_SIZE - _PAL_NVM_SIZE;
+PAL_NVM_ORIGIN = _ARM_FLASH_SIZE - _PAL_NVM_SIZE + _ARM_FLASH_ORIGIN;
 
 MEMORY {
-    FLASH         (rx) : ORIGIN = 0x11000000, LENGTH = 0x00100000 /* 1MB Flash */
+    FLASH         (rx) : ORIGIN = _ARM_FLASH_ORIGIN, LENGTH = _ARM_FLASH_SIZE /* 1MB Flash */
+    PAL_NVM_DB    (r)  : ORIGIN = PAL_NVM_ORIGIN,      LENGTH = _PAL_NVM_SIZE
+
     FLASH_INFO_S  (rx) : ORIGIN = 0x12000000, LENGTH = 0x00010000 /* 16KB secure Flash Info */
     SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00040000 /* 256KB SRAM */
 }
@@ -73,6 +80,14 @@ SECTIONS {
         _esram_code = .;
     } > SRAM
 
+    .pal_nvm_db :
+    {
+    /* Align to the sector size */
+    . = ALIGN(0x2000);
+    __pal_nvm_db_start__ = .;
+    . = . + _PAL_NVM_SIZE;
+    __pal_nvm_db_end__ = .;
+    } > PAL_NVM_DB
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :
