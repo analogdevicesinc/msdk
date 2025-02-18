@@ -563,6 +563,13 @@ static void event_in_data(uint32_t irqs)
 
             if (!ep) {
                 if (MXC_USB_Request[ep]->actlen == MXC_USB_Request[ep]->reqlen) {
+#ifdef USE_ZEPHYR_USB_STACK
+                    /* Send ZLP */
+                    if (MXC_USB_Request[ep]->has_zlp) {
+                        MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
+                        continue;
+                    }
+#endif
                     /* Implicit status-stage ACK, move state machine back to IDLE */
                     setup_phase = SETUP_IDLE;
                     MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY | MXC_F_USBHS_CSR0_DATA_END;
@@ -584,6 +591,19 @@ static void event_in_data(uint32_t irqs)
 
         } else {
             /* all done sending data */
+#ifdef USE_ZEPHYR_USB_STACK
+            if (MXC_USB_Request[ep]->has_zlp) {
+                MXC_USB_Request[ep]->has_zlp = false;
+
+                if (!ep) { /* For EP0, ZLP is sent, complete transmission */
+                    setup_phase = SETUP_IDLE;
+                    MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY | MXC_F_USBHS_CSR0_DATA_END;
+                } else { /* Send ZLP */
+                    MXC_USBHS->incsrl = MXC_F_USBHS_INCSRL_INPKTRDY;
+                    return;
+                }
+            }
+#endif
 
             /* free request */
             MXC_USB_Request[ep] = NULL;
@@ -1045,6 +1065,15 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 
         if (!ep) {
             if (MXC_USB_Request[ep]->actlen == MXC_USB_Request[ep]->reqlen) {
+#ifdef USE_ZEPHYR_USB_STACK
+                /* Send ZLP */
+                if (MXC_USB_Request[ep]->has_zlp) {
+                    MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
+                    MXC_SYS_Crit_Exit();
+                    return 0;
+                }
+#endif
+
                 /* Implicit status-stage ACK, move state machine back to IDLE */
                 setup_phase = SETUP_IDLE;
                 MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY | MXC_F_USBHS_CSR0_DATA_END;
