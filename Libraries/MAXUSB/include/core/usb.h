@@ -122,6 +122,9 @@ typedef struct {
   void *cbdata;
   maxusb_req_type_t type;
   void *driver_xtra; /* driver-specific data, do not modify */
+#ifdef USE_ZEPHYR_USB_STACK
+  bool has_zlp; /* ZLP is requested by host if reqlen is equal to or multiple of MPS */
+#endif
 } MXC_USB_Req_t;
 
 
