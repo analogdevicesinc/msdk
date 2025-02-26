@@ -45,7 +45,12 @@ PROJ_CFLAGS += -DLIB_BOARD
 # in this case we want to avoid building with mismatched BSPs.
 export BOARD
 export BSP_SEARCH_DIR
+ifeq "$(MAXIM_PATH)" ""
+$(warning Warning:  MAXIM_PATH is not set!  Unable to find the MiscDrivers directory.)
+else
 include $(BOARD_DIR)/board.mk
+endif
+
 endif
 # ************************
 
