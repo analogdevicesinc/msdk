@@ -89,6 +89,22 @@ int MXC_FLC_PageErase(uint32_t address);
 void MXC_FLC_Read(int address, void *buffer, int len);
 
 /**
+ * @brief       Read Data out of flash from an address and check for ECC errors.
+ * @details     If ECC errors are detected, data read is checked against ECC bits
+ *              to make sure the error is not caused by an unwritten part of the
+ *              memory.   
+ * @note        This function must be executed from RAM. Cache must be disabled or
+ *              the address must be in a noncacheable region.
+ * 
+ * @param       address  The address to read from. 
+ * @param       buffer   The buffer to read the data into.
+ * @param       len      The length of the buffer.
+ * @return      #E_NO_ERROR If function is successful.
+ *              #E_BAD_STATE If the ECC error is not correctable.
+ */
+int MXC_FLC_ReadECC(uint32_t address, void *buffer, int len);
+
+/**
  * @brief      Writes data to flash.
  * @note       This function must be executed from RAM.
  * @param      address  Address in flash to start writing from.
