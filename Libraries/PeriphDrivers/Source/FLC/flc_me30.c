@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,10 @@
 #include "flc_reva.h"
 #include "flc_common.h"
 #include "mcr_regs.h" // For ECCEN registers.
+
+/* Line buffer size in bytes */
+#define MXC_FLC_LINE_BUFFER_SIZE 32
+#define MXC_FLC_LINE_BUFFER_MASK (MXC_FLC_LINE_BUFFER_SIZE - 1)
 
 //******************************************************************************
 void MXC_FLC_ME30_Flash_Operation(void)
@@ -229,40 +233,157 @@ int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t *buffer)
     return MXC_FLC_Com_Write(address, length, buffer);
 }
 
+/* Using memcpy could cause the CPU to fetch instructions from the flash,
+ * which will then update ECC data and flags. To avoid that, an in-RAM
+ * version of memcpy is declared here.
+ */
+#if IAR_PRAGMAS
+#pragma section = ".flashprog"
+#else
+__attribute__((section(".flashprog")))
+#endif
+static void MXC_FLC_MemCopy(uint8_t *dest, uint8_t *src, int len)
+{
+    for (int i = 0; i < len; i++) {
+        dest[i] = src[i];
+    }
+}
+
+/* Using memcpy could cause the CPU to fetch instructions from the flash,
+ * which will then update ECC data and flags. To avoid that, an in-RAM
+ * version of memcpy is declared here.
+ */
+#if IAR_PRAGMAS
+#pragma section = ".flashprog"
+#else
+__attribute__((section(".flashprog")))
+#endif
+static void MXC_FLC_MemCopy32(uint32_t *dest, uint32_t *src, int len)
+{
+    for (int i = 0; i < len; i++) {
+        dest[i] = src[i];
+    }
+}
+
+#if IAR_PRAGMAS
+#pragma section = ".flashprog"
+#else
+__attribute__((section(".flashprog")))
+#endif
+int MXC_FLC_ReadAligned32(uint32_t address, void *buffer)
+{
+    uint32_t eccdata;
+    uint16_t ecc_odd, ecc_even;
+    uint8_t *buf = buffer;
+
+    /* Align the address to 32 bytes */
+    uint32_t aligned = address & (~MXC_FLC_LINE_BUFFER_MASK);
+
+    /* Do not use built-in memcpy, we do not want to jump to a flash section */
+    MXC_FLC_MemCopy32((uint32_t *)buffer, (uint32_t *)aligned, (MXC_FLC_LINE_BUFFER_SIZE >> 2));
+
+    if (MXC_GCR->eccerr & MXC_F_GCR_ECCERR_FLASH) {
+        /* Get the ECC data */
+        eccdata = MXC_FLC->eccdata;
+        /* Clear the ECC error */
+        MXC_GCR->eccerr = MXC_F_GCR_ECCERR_FLASH;
+
+        if (MXC_GCR->eccced & MXC_F_GCR_ECCCED_FLASH) {
+            /* Clear the ECC correctable error */
+            MXC_GCR->eccced = MXC_F_GCR_ECCCED_FLASH;
+        } else {
+            return E_BAD_STATE;
+        }
+
+        /* Get the ECC odd and even */
+        ecc_odd = (uint16_t)((eccdata >> 16) & 0x1FF);
+        ecc_even = (uint16_t)(eccdata & 0x1FF);
+
+        /* Check if the line is unwritten and correct the ECC flip if necessary */
+        if (ecc_even == 0x1FF) {
+            for (int i = 0; i < (MXC_FLC_LINE_BUFFER_SIZE / 2); i++) {
+                if ((i == (MXC_FLC_LINE_BUFFER_SIZE / 2) - 1) && (buf[i] == 0xFD)) {
+                    buf[(MXC_FLC_LINE_BUFFER_SIZE / 2) - 1] = 0xFF;
+                } else if (buf[i] != 0xFF) {
+                    break;
+                }
+            }
+        }
+
+        /* Check if the line is unwritten and correct the ECC flip if necessary */
+        if (ecc_odd == 0x1FF) {
+            for (int i = (MXC_FLC_LINE_BUFFER_SIZE / 2); i < MXC_FLC_LINE_BUFFER_SIZE; i++) {
+                if ((i == (MXC_FLC_LINE_BUFFER_SIZE - 1)) && (buf[i] == 0xFD)) {
+                    buf[MXC_FLC_LINE_BUFFER_SIZE - 1] = 0xFF;
+                } else if (buf[i] != 0xFF) {
+                    break;
+                }
+            }
+        }
+    }
+
+    return E_SUCCESS;
+}
+
+//******************************************************************************
+#if IAR_PRAGMAS
+#pragma section = ".flashprog"
+#else
+__attribute__((section(".flashprog")))
+#endif
+int MXC_FLC_ReadECC(uint32_t address, void *buffer, int len)
+{
+    int ret;
+    uint8_t buf[MXC_FLC_LINE_BUFFER_SIZE];
+    /* Bytes to read before next 32-byte aligned address */
+    uint8_t bytes_to_align;
+    uint8_t *ptr = buffer;
+
+    /* Align the read to 32-byte address boundary */
+    if (address & MXC_FLC_LINE_BUFFER_MASK) {
+        ret = MXC_FLC_ReadAligned32(address, buf);
+        if (ret != E_SUCCESS) {
+            return ret;
+        }
+
+        bytes_to_align = (address & ~MXC_FLC_LINE_BUFFER_MASK) + MXC_FLC_LINE_BUFFER_SIZE - address;
+        bytes_to_align = (len < bytes_to_align) ? len : bytes_to_align;
+        MXC_FLC_MemCopy(ptr, buf + (address & MXC_FLC_LINE_BUFFER_MASK), bytes_to_align);
+        len -= bytes_to_align;
+        address += bytes_to_align;
+        ptr += bytes_to_align;
+    }
+
+    /* Read the data in chunks */
+    while (len >= MXC_FLC_LINE_BUFFER_SIZE) {
+        ret = MXC_FLC_ReadAligned32(address, buf);
+        if (ret != E_SUCCESS) {
+            return ret;
+        }
+
+        MXC_FLC_MemCopy32((uint32_t *)ptr, (uint32_t *)buf, MXC_FLC_LINE_BUFFER_SIZE >> 2);
+        len -= MXC_FLC_LINE_BUFFER_SIZE;
+        address += MXC_FLC_LINE_BUFFER_SIZE;
+        ptr += MXC_FLC_LINE_BUFFER_SIZE;
+    }
+
+    /* Read the remaining bytes */
+    if (len > 0) {
+        ret = MXC_FLC_ReadAligned32(address, buf);
+        if (ret != E_SUCCESS) {
+            return ret;
+        }
+
+        MXC_FLC_MemCopy(ptr, buf, len);
+    }
+
+    return E_SUCCESS;
+}
+
 //******************************************************************************
 void MXC_FLC_Read(int address, void *buffer, int len)
 {
     MXC_FLC_Com_Read(address, buffer, len);
-
-    /* ECC error detected */
-    if (MXC_GCR->eccerr & MXC_F_GCR_ECCERR_FLASH) {
-        /* Clear the ECC error */
-        MXC_GCR->eccerr = MXC_F_GCR_ECCERR_FLASH;
-
-        /*
-         * Erasing flash will also erase the ECC bits. These bits are not
-         * updated until a flash write. Reading from erased memory will
-         * signal a ECC error that is falsely corrected from 0xFF to 0xFD
-         * on the 16th byte of each 128-bit line.
-         *
-         * Workaround by setting the 16th byte of each line to 0xFF.
-         */
-
-        /* Get to the 16th byte of each line */
-        uint32_t addrOffset = (0xF - (address % 0x10));
-        uint8_t *buffer8 = buffer;
-
-        for (int i = 0; i < len; i++) {
-            /* Check for the erased flash ECC correction */
-            if (i == addrOffset && buffer8[i] == 0xFD) {
-                buffer8[i] = 0xFF;
-                addrOffset += 0x10;
-            } else if (buffer8[i] != 0xFF) {
-                /* This could be an actual ECC error */
-                break;
-            }
-        }
-    }
 }
 
 //******************************************************************************
