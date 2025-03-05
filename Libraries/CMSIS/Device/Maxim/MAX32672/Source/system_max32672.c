@@ -126,6 +126,12 @@ __weak void PinInit(void)
     /* Do nothing */
 }
 
+__weak int PeripheralInit(void)
+{
+    /* Do nothing */
+    return E_NO_ERROR;
+}
+
 /* This function can be implemented by the application to initialize the board */
 __weak int Board_Init(void)
 {
@@ -167,4 +173,9 @@ __weak void SystemInit(void)
 
     PinInit();
     Board_Init();
+
+    /* Call peripheral init after board init to ensure the user's configuration
+     * is not overwritten    
+     */
+    PeripheralInit();
 }
