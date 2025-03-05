@@ -151,7 +151,7 @@ __weak void SystemInit(void)
 
     PinInit();
     Board_Init();
-    
+
     /* Call peripheral init after board init to ensure the user's configuration
      * is not overwritten    
      */
