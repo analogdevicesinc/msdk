@@ -781,7 +781,7 @@ __weak void SystemInit(void)
     MXC_ICC_Flush(MXC_ICC1);
 
     Board_Init();
-    
+
     /* Call peripheral init after board init to ensure the user's configuration
      * is not overwritten    
      */

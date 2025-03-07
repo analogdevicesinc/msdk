@@ -126,7 +126,7 @@ __weak void SystemInit(void)
     __enable_irq();
 
     Board_Init();
-    
+
     /* Call peripheral init after board init to ensure the user's configuration
      * is not overwritten    
      */
