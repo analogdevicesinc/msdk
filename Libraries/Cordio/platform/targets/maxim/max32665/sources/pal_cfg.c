@@ -197,7 +197,7 @@ void palCfgLoadBdAddress(uint8_t *pDevAddr)
   pDevAddr[4] = 0x18;
   pDevAddr[3] = 0x80;
 
-  pDevAddr[2] = checksum[2];
+  pDevAddr[2] = id[6] | id[7] | id[8];
   pDevAddr[1] = checksum[1];
   pDevAddr[0] = checksum[0];
 }
