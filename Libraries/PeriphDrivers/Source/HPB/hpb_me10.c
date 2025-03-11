@@ -63,9 +63,13 @@ void MXC_HPB_RegWrite16(const mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_
 /* ************************************************************************** */
 int MXC_HPB_Init(const mxc_hpb_mem_config_t *mem0, const mxc_hpb_mem_config_t *mem1)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
+
     /* Enable HyperBus Clocks */
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_HBC);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SCACHE);
+
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     /* Select drive strength on CK pin */
     MXC_BBFC->bbfcr0 = (2 << MXC_F_BBFC_BBFCR0_CKPDRV_POS) | (MXC_S_BBFC_BBFCR0_RDSDLLEN_EN);
@@ -76,6 +80,8 @@ int MXC_HPB_Init(const mxc_hpb_mem_config_t *mem0, const mxc_hpb_mem_config_t *m
         MXC_BBFC->bbfcr0 |= (2 << MXC_F_BBFC_BBFCR0_CKNPDRV_POS);
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
+
     /* Configure HyperBus GPIO Pins */
     if (mem0) {
         MXC_GPIO_Config(&gpio_cfg_hyp_cs0);
@@ -84,6 +90,8 @@ int MXC_HPB_Init(const mxc_hpb_mem_config_t *mem0, const mxc_hpb_mem_config_t *m
         MXC_GPIO_Config(&gpio_cfg_hyp_cs1);
     }
     MXC_GPIO_Config(&gpio_cfg_hyp);
+
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     /* Reset the controller */
     MXC_SYS_Reset_Periph(MXC_SYS_RESET_HBC);
