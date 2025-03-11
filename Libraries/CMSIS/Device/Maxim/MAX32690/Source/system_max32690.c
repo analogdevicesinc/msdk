@@ -111,6 +111,12 @@ __weak void PinInit(void)
     /* Do nothing */
 }
 
+__weak int PeripheralInit(void)
+{
+    /* Do nothing */
+    return E_NO_ERROR;
+}
+
 __weak int ClockInit(void)
 {
     /* Do nothing */
@@ -171,6 +177,11 @@ __weak void SystemInit(void)
     PinInit();
     ClockInit();
     Board_Init();
+
+    /* Call peripheral init after board init to ensure the user's configuration
+     * is not overwritten    
+     */
+    PeripheralInit();
 
     __enable_irq();
 }
