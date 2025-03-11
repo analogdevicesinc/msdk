@@ -41,7 +41,8 @@ void MXC_HPB_RegRead8(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, un
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegWrite8(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegWrite8(const mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr,
+                       unsigned int index)
 {
     MXC_HPB_RevA_RegWrite8((mxc_hpb_reva_regs_t *)MXC_HPB, cfg_reg_val, base_addr, index);
 }
@@ -53,13 +54,14 @@ void MXC_HPB_RegRead16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, u
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegWrite16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegWrite16(const mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr,
+                        unsigned int index)
 {
     MXC_HPB_RevA_RegWrite16((mxc_hpb_reva_regs_t *)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-int MXC_HPB_Init(mxc_hpb_mem_config_t *mem0, mxc_hpb_mem_config_t *mem1)
+int MXC_HPB_Init(const mxc_hpb_mem_config_t *mem0, const mxc_hpb_mem_config_t *mem1)
 {
     /* Enable HyperBus Clocks */
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_HPB);
