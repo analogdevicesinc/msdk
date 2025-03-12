@@ -56,7 +56,9 @@ int MXC_TRNG_Shutdown(void)
 {
     int error = MXC_TRNG_RevB_Shutdown();
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TRNG);
+#endif
 
     return error;
 }
