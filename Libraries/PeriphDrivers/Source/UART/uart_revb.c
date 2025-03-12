@@ -749,9 +749,11 @@ int MXC_UART_RevB_AsyncTxCallback(mxc_uart_revb_regs_t *uart, int retVal)
 
     mxc_uart_req_t *req = (mxc_uart_req_t *)AsyncTxRequests[uart_num];
     if ((req != NULL) && (req->callback != NULL)) {
-        AsyncTxRequests[uart_num] = NULL;
         req->callback(req, retVal);
     }
+
+    // Cleanup Async Transaction
+    AsyncTxRequests[uart_num] = NULL;
 
     return E_NO_ERROR;
 }
@@ -762,9 +764,11 @@ int MXC_UART_RevB_AsyncRxCallback(mxc_uart_revb_regs_t *uart, int retVal)
 
     mxc_uart_req_t *req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];
     if ((req != NULL) && (req->callback != NULL)) {
-        AsyncRxRequests[uart_num] = NULL;
         req->callback(req, retVal);
     }
+
+    // Cleanup Async Transaction
+    AsyncRxRequests[uart_num] = NULL;
 
     return E_NO_ERROR;
 }
