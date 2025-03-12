@@ -65,13 +65,12 @@ __weak void SystemCoreClockUpdate(void)
         break;
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
         base_freq = IPO_FREQ;
-		
-		// Use output voltage range (OVR / VCORE) to adjust maximum IPO frequency
-		ovr = (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_OVR) >> MXC_F_PWRSEQ_LPCN_OVR_POS;
+
+        // Use output voltage range (OVR / VCORE) to adjust maximum IPO frequency
+        ovr = (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_OVR) >> MXC_F_PWRSEQ_LPCN_OVR_POS;
         if (ovr == 0) { // 0.9 V
             base_freq = 12000000;
-        }
-        else if (ovr == 1) { // 1.0 V
+        } else if (ovr == 1) { // 1.0 V
             base_freq = 50000000;
         }
         break;
