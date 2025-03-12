@@ -119,7 +119,7 @@ int MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
     MXC_SETFIELD(MXC_PWRSEQ->lpcn, MXC_F_PWRSEQ_LPCN_OVR, ovr);
 
     // Set LVE bit
-    if (ovr == MXC_LP_OVR_0_9) {
+    if ((ovr == MXC_LP_OVR_0_9) || (ovr == MXC_LP_OVR_1_0)) {
         MXC_FLC0->ctrl |= MXC_F_FLC_CTRL_LVE;
 
     } else {
