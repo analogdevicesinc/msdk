@@ -87,9 +87,37 @@ static inline void Wrap_MXC_LP_EnterStandbyMode(void)
     MXC_LP_EnterStandbyMode();
 }
 
+static inline int Wrap_MXC_LP_EnterBackupMode(void)
+{
+    MXC_LP_EnterBackupMode();
+
+    /* For compatibility with Zephyr PM */
+    return -1;
+}
+
 static inline void Wrap_MXC_LP_EnterPowerDownMode(void)
 {
     MXC_LP_EnterPowerDownMode();
+}
+
+static inline void Wrap_MXC_LP_EnableSramRetention(uint32_t mask)
+{
+    MXC_LP_EnableSramRetention(mask);
+}
+
+static inline void Wrap_MXC_LP_DisableSramRetention()
+{
+    MXC_LP_DisableSramRetention(0x1F);
+}
+
+static inline void Wrap_MXC_LP_EnableRetentionReg(void)
+{
+    MXC_LP_EnableRetentionReg();
+}
+
+static inline void Wrap_MXC_LP_DisableRetentionReg(void)
+{
+    MXC_LP_DisableRetentionReg();
 }
 
 #endif // part number

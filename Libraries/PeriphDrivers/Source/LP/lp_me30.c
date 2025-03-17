@@ -55,11 +55,12 @@ void MXC_LP_EnterBackupMode(void)
 {
     MXC_LP_ClearWakeStatus();
 
+    /* Enable backup mode */
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
 
     while (1) {}
-    // Should never reach this line - device will jump to backup vector on exit from background mode.
+    // Should never reach this line - device will jump to backup vector on exit from backup mode.
 }
 
 void MXC_LP_EnterPowerDownMode(void)
