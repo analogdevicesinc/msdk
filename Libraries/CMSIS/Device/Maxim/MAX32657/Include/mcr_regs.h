@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,6 +149,17 @@ typedef struct {
 #define MXC_F_MCR_CTRL_ERTCO_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_EN_POS)) /**< CTRL_ERTCO_EN Mask */
 
 /**@} end of group MCR_CTRL_Register */
+
+/**
+ * @ingroup  mcr_registers
+ * @defgroup MCR_BYPASS0 MCR_BYPASS0
+ * @brief    Flash Signature Check Bypass Register
+ * @{
+ */
+#define MXC_V_MCR_BYPASS0                              ((uint32_t)0xB0CCF487UL) /**< MCR_BYPASS0 Flash Signature Check Bypass Value */
+#define MXC_S_MCR_BYPASS0                              MXC_V_MCR_BYPASS0 /**< MCR_BYPASS0 Flash Signature Check Bypass Setting */
+
+/**@} end of group MCR_BYPASS0_Register */
 
 #ifdef __cplusplus
 }
