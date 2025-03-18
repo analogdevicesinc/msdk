@@ -87,17 +87,18 @@ static inline void Wrap_MXC_LP_EnterStandbyMode(void)
     MXC_LP_EnterStandbyMode();
 }
 
+static inline void Wrap_MXC_LP_EnterPowerDownMode(void)
+{
+    MXC_LP_EnterPowerDownMode();
+}
+
+#if defined(CONFIG_SOC_MAX32657)
 static inline int Wrap_MXC_LP_EnterBackupMode(void)
 {
     MXC_LP_EnterBackupMode();
 
     /* For compatibility with Zephyr PM */
     return -1;
-}
-
-static inline void Wrap_MXC_LP_EnterPowerDownMode(void)
-{
-    MXC_LP_EnterPowerDownMode();
 }
 
 static inline void Wrap_MXC_LP_EnableSramRetention(uint32_t mask)
@@ -119,6 +120,7 @@ static inline void Wrap_MXC_LP_DisableRetentionReg(void)
 {
     MXC_LP_DisableRetentionReg();
 }
+#endif // CONFIG_SOC_MAX32657
 
 #endif // part number
 
