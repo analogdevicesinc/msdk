@@ -753,7 +753,7 @@ int MXC_UART_RevB_AsyncTxCallback(mxc_uart_revb_regs_t *uart, int retVal)
 
     if ((req != NULL) && (req->callback != NULL)) {
         req->callback(req, retVal);
-    }    
+    }
 
     return E_NO_ERROR;
 }
@@ -763,7 +763,7 @@ int MXC_UART_RevB_AsyncRxCallback(mxc_uart_revb_regs_t *uart, int retVal)
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
     // Store and Cleanup Async Transaction
-    mxc_uart_req_t *req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];    
+    mxc_uart_req_t *req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];
     AsyncRxRequests[uart_num] = NULL;
 
     if ((req != NULL) && (req->callback != NULL)) {
