@@ -63,6 +63,12 @@ void MXC_LP_EnterBackupMode(void)
     // Should never reach this line - device will jump to backup vector on exit from backup mode.
 }
 
+void MXC_LP_ExitBackupMode(void)
+{
+    MXC_LP_ClearWakeStatus();
+    CLR_SLEEPDEEP();
+}
+
 void MXC_LP_EnterPowerDownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
