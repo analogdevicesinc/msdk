@@ -210,7 +210,7 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, uint32_t us)
         ++clk_shift;
     }
 
-    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)clk_shift << MXC_F_TMR_REVA_CN_PRES_POS;
+    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)(clk_shift << MXC_F_TMR_REVA_CN_PRES_POS);
 
     memset(&cfg, 0, sizeof(mxc_tmr_cfg_t));
 
@@ -231,9 +231,10 @@ int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *tim
 {
     uint64_t temp_time = 0;
     uint32_t timerClock = PeripheralClock;
+    uint32_t tmr_cn = tmr->cn;
     uint32_t prescale =
-        ((tmr->cn & MXC_F_TMR_REVA_CN_PRES) >> MXC_F_TMR_REVA_CN_PRES_POS) |
-        (((tmr->cn & MXC_F_TMR_REVA_CN_PRES3) >> (MXC_F_TMR_REVA_CN_PRES3_POS)) << 3);
+        ((tmr_cn & MXC_F_TMR_REVA_CN_PRES) >> MXC_F_TMR_REVA_CN_PRES_POS) |
+        (((tmr_cn & MXC_F_TMR_REVA_CN_PRES3) >> (MXC_F_TMR_REVA_CN_PRES3_POS)) << 3);
 
     temp_time = (uint64_t)ticks * 1000000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
 

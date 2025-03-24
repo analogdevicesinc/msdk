@@ -53,8 +53,9 @@ void MXC_SDHC_RevA_Set_Clock_Config(mxc_sdhc_reva_regs_t *sdhc, unsigned int clk
 unsigned int MXC_SDHC_RevA_Get_Clock_Config(mxc_sdhc_reva_regs_t *sdhc)
 {
     /* clk_div is split across two fields in the register.  Build it up accordingly */
-    return ((((sdhc->clk_cn >> MXC_F_SDHC_REVA_CLK_CN_UPPER_SDCLK_FREQ_SEL_POS) << 8) & 0x300) |
-            ((sdhc->clk_cn >> MXC_F_SDHC_REVA_CLK_CN_SDCLK_FREQ_SEL_POS) & 0xff));
+    unsigned int clk_cn = sdhc->clk_cn;
+    return ((((clk_cn >> MXC_F_SDHC_REVA_CLK_CN_UPPER_SDCLK_FREQ_SEL_POS) << 8) & 0x300) |
+            ((clk_cn >> MXC_F_SDHC_REVA_CLK_CN_SDCLK_FREQ_SEL_POS) & 0xff));
 }
 
 /* ************************************************************************** */

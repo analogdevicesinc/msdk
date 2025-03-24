@@ -52,7 +52,7 @@ int MXC_DMA_Init(mxc_dma_regs_t *dma)
 
 void MXC_DMA_DeInit(mxc_dma_regs_t *dma)
 {
-    return MXC_DMA_RevA_DeInit((mxc_dma_reva_regs_t *)dma);
+    MXC_DMA_RevA_DeInit((mxc_dma_reva_regs_t *)dma);
 }
 
 int MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)

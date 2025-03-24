@@ -121,16 +121,21 @@ uint32_t MXC_PT_RevA_IsActive(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 void MXC_PT_RevA_SetPattern(unsigned pts, uint32_t pattern)
 {
     mxc_pt_reva_regs_t *temp;
-    uint32_t pt;
 
-    for (uint8_t i = 0; i < 32 && (pts >> i) > 0; i++) {
-        pt = 1 << i;
-
-        if (pts & pt) {
+    int i = 0;
+    while(pts > 0) {
+      if(pts & 1) {
             temp = (mxc_pt_reva_regs_t *)MXC_PT_GET_PT(i);
             MXC_ASSERT(temp);
             temp->train = pattern;
         }
+      
+      i++;
+      /* PT numbers 16 to 31 are on bus 1 and given ids of 0x8000 to 0x800F. */
+      if(i == 16) {
+        i = 0x8000;
+      }
+      pts >>= 1;
     }
 }
 

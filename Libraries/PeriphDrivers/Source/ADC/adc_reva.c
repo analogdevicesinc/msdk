@@ -419,7 +419,7 @@ int MXC_ADC_RevA_StartConversionDMA(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t ch
     channelDMA = MXC_DMA_AcquireChannel();
 #endif
 
-    config.reqsel = MXC_S_DMA_REVA_CTRL_REQUEST_MEMTOMEM;
+    config.reqsel = (mxc_dma_reqsel_t)MXC_S_DMA_REVA_CTRL_REQUEST_MEMTOMEM;
     config.ch = channelDMA;
 
     config.srcwd = MXC_DMA_WIDTH_HALFWORD;

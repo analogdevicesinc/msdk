@@ -681,7 +681,7 @@ int MXC_UART_RevA_GetRXDMAChannel(mxc_uart_reva_regs_t *uart)
     return states[n].channelRx;
 }
 
-unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
+int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
                                           unsigned char *bytes, unsigned int len,
                                           mxc_uart_dma_complete_cb_t callback,
                                           mxc_dma_config_t config)

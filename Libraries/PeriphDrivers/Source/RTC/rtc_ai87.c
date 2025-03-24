@@ -172,7 +172,7 @@ int MXC_RTC_TrimCrystal(mxc_tmr_regs_t *tmr)
     err = MXC_RTC_RevA_TrimCrystal((mxc_rtc_reva_regs_t *)MXC_RTC, tmr);
 
     if (sys_clk != MXC_SYS_CLOCK_EBO) { // Restore previous system clock if we changed it
-        MXC_SYS_Clock_Select(sys_clk);
+        MXC_SYS_Clock_Select((mxc_sys_system_clock_t)sys_clk);
     }
 
     return err;

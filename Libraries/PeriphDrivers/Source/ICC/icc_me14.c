@@ -25,7 +25,6 @@
 #include "mxc_sys.h"
 #include "icc.h"
 #include "icc_reva.h"
-#include "icc_common.h"
 
 /* **** Functions **** */
 

@@ -180,7 +180,7 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
 /* ************************************************************************ */
 int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 {
-    return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, spiWidth);
+    return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, (mxc_spi_reva_width_t)spiWidth);
 }
 
 /* ************************************************************************ */

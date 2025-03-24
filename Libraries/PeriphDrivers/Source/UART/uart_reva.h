@@ -67,7 +67,7 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
 unsigned int MXC_UART_RevA_GetRXFIFOAvailable(mxc_uart_reva_regs_t *uart);
 unsigned int MXC_UART_RevA_WriteTXFIFO(mxc_uart_reva_regs_t *uart, unsigned char *bytes,
                                        unsigned int len);
-unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
+int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
                                           unsigned char *bytes, unsigned int len,
                                           mxc_uart_dma_complete_cb_t callback,
                                           mxc_dma_config_t config);
