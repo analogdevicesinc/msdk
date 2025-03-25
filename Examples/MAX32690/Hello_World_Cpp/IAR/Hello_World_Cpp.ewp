@@ -222,7 +222,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32670</state>
+                    <state>TARGET=32690</state>
                     <state>TARGET_REV=0x4131</state>
                     <state>EXT_FLASH_MX25</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
@@ -657,7 +657,7 @@
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>Hello_World.srec</state>
+                    <state>Hello_World_Cpp.srec</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -704,7 +704,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>Hello_World.out</state>
+                    <state>Hello_World_Cpp.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
@@ -768,7 +768,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$.iar\config\linker\MAX32670_IAR.icf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$.iar\config\linker\MAX32690_IAR.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1001,7 +1001,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>Hello_World_import_lib.o</state>
+                    <state>Hello_World_Cpp_import_lib.o</state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>
@@ -2162,9 +2162,6 @@
             </data>
         </settings>
     </configuration>
-    <file>
-        <name>$PROJ_DIR$\..\main.c</name>
-    </file>
         <!-- C_ProjectFilesHere -->
 
 
@@ -2172,209 +2169,309 @@
         <name>CMSIS-Pack</name>
         <tag>CMSISPack.Component</tag>
         <group>
-            <name>Maxim Maxim API _Device.Startup_1.2.0</name>
+            <name>Maxim Maxim API _Device.Startup_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\low_level_init.c</name>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32690_Cortex-M4\low_level_init.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</name>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32690_Cortex-M4\startup_max32690.s</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\low_level_init.c</name>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32690_Cortex-M4\low_level_init.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\cmain.s</name>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32690_Cortex-M4\cmain.s</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\max32670.h</name>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32690_Cortex-M4\max32690.h</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.SYS_1.2.0</name>
+            <name>Maxim Maxim API _Device.SYS_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SYS/pins_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SYS/pins_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SYS/sys_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SYS/sys_me18.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.AES_1.2.0</name>
+            <name>Maxim Maxim API _Device.ADC_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/AES/aes_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/ADC/adc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/AES/aes_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/ADC/adc_revb.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.CRC_1.2.0</name>
+            <name>Maxim Maxim API _Device.CAN_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/CRC/crc_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/CAN/can_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/CRC/crc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/CAN/can_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.DMA_1.2.0</name>
+            <name>Maxim Maxim API _Device.CTB_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/DMA/dma_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/CTB/ctb_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/DMA/dma_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/CTB/ctb_reva.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/CTB/ctb_common.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.FLC_1.2.0</name>
+            <name>Maxim Maxim API _Device.DMA_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/DMA/dma_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/FLC/flc_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/DMA/dma_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.GPIO_1.2.0</name>
+            <name>Maxim Maxim API _Device.EMCC_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/EMCC/emcc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/EMCC/emcc_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.I2C_1.2.0</name>
+            <name>Maxim Maxim API _Device.FLC_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/I2C/i2c_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/I2C/i2c_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/FLC/flc_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.I2S_1.2.0</name>
+            <name>Maxim Maxim API _Device.GPIO_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/I2S/i2s_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/I2S/i2s_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.ICC_1.2.0</name>
+            <name>Maxim Maxim API _Device.HPB_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/ICC/icc_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/HPB/hpb_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/ICC/icc_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/ICC/icc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/HPB/hpb_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.LP_1.2.0</name>
+            <name>Maxim Maxim API _Device.I2C_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/LP/lp_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/I2C/i2c_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/I2C/i2c_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.RTC_1.2.0</name>
+            <name>Maxim Maxim API _Device.I2S_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/RTC/rtc_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/I2S/i2s_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/RTC/rtc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/I2S/i2s_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.SPI_1.2.0</name>
+            <name>Maxim Maxim API _Device.ICC_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SPI/spi_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/ICC/icc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/SPI/spi_reva1.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/ICC/icc_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.TRNG_1.2.0</name>
+            <name>Maxim Maxim API _Device.LP_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/TRNG/trng_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/TRNG/trng_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/LP/lp_me18.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.TMR_1.2.0</name>
+            <name>Maxim Maxim API _Device.LPCMP_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/LPCMP/lpcmp_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/LPCMP/lpcmp_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.UART_1.2.0</name>
+            <name>Maxim Maxim API _Device.OWM_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/OWM/owm_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/UART/uart_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/OWM/owm_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.WDT_1.2.0</name>
+            <name>Maxim Maxim API _Device.PT_1.4.0</name>
           <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/WDT/wdt_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/PT/pt_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/WDT/wdt_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/PT/pt_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.RTC_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/RTC/rtc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\Libraries/PeriphDrivers/Source/WDT/wdt_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/RTC/rtc_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.SEMA_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SEMA/sema_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SEMA/sema_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.SPI_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SPI/spi_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SPI/spi_reva1.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.SPIXF_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SPIXF/spixf_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SPIXF/spixf_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.SPIXR_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SPIXR/spixr_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/SPIXR/spixr_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.TRNG_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/TRNG/trng_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/TRNG/trng_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.TMR_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.UART_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/UART/uart_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.WDT_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/WDT/wdt_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/WDT/wdt_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/WDT/wdt_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.WUT_1.4.0</name>
+          <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/WUT/wut_me18.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.4.0}$\Libraries/PeriphDrivers/Source/WUT/wut_reva.c</name>
             </file>
         </group>
     </group>
@@ -2382,9 +2479,9 @@
         <rte>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;configuration xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"&gt;
 
-  &lt;device Dclock="96000000" Dcore="Cortex-M4" DcoreVersion="r0p1" Dendian="Little-endian" Dfamily="MAX32670 family" Dfpu="FPU" Dmpu="NO_MPU" Dname="MAX32670" Dvendor="Maxim:23" Pname="Cortex-M4" Punits="2" info="ARM Cortex-M4 96 MHz, 512 kB RAM, 1 MB ROM" url="http://www.keil.com/dd2/maxim/max32670"&gt;
+  &lt;device Dclock="96000000" Dcore="Cortex-M4" DcoreVersion="r0p1" Dendian="Little-endian" Dfamily="MAX32690 family" Dfpu="FPU" Dmpu="NO_MPU" Dname="MAX32690" Dvendor="Maxim:23" Pname="Cortex-M4" Punits="2" info="ARM Cortex-M4 96 MHz, 512 kB RAM, 1 MB ROM" url="http://www.keil.com/dd2/maxim/max32690"&gt;
 
-    &lt;package info="Maxim Integrated MAX32670 Series Device Support, Board Support Package and Examples" name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="r0p1"/&gt;
+    &lt;package info="Maxim Integrated MAX32690 Series Device Support, Board Support Package and Examples" name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="r0p1"/&gt;
 
   &lt;/device&gt;
 
@@ -2392,159 +2489,227 @@
 
   &lt;components&gt;
 
-    &lt;component Cbundle="MAX32670 BSP" Cbundleversion="1.2.0" Cclass="BSP" Cgroup="Board Type" Cvariant="EvKit_V1" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32670/EvKit_V1/Include/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32670/EvKit_V1/Source/board.c" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/ADC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Camera/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/CODEC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Display/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/ExtMemory/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/LED/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PMIC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PushButton/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/TempSensor/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Touchscreen/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/stdio.c" version="1.2.0"/&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0" Cclass="BSP" Cgroup="Board Type" Cvariant="EvKit_V1" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32690/EvKit_V1/Include/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32690/EvKit_V1/Source/board.c" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/ADC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Camera/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/CODEC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Display/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/ExtMemory/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/LED/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PMIC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PushButton/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/TempSensor/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Touchscreen/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/stdio.c" version="1.4.0"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="MAX32670 BSP" Cbundleversion="1.2.0+" Cclass="BSP" Cgroup="LED" Cvariant="LED" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/LED/led.c" version="1.2.0"/&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="Display" Cvariant="TFT_ST7735" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/Display/tft_st7735.c" version="1.4.0"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="MAX32670 BSP" Cbundleversion="1.2.0+" Cclass="BSP" Cgroup="PMIC" Cvariant="MAX20303" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PMIC/max20303.c" version="1.2.0"/&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="ExtMemory" Cvariant="MX25" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/ExtMemory/mx25.c" version="1.4.0"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="MAX32670 BSP" Cbundleversion="1.2.0+" Cclass="BSP" Cgroup="PushButton" Cvariant="PB" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PushButton/pb.c" version="1.2.0"/&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="LED" Cvariant="LED" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/LED/led.c" version="1.4.0"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="PMIC" Cvariant="MAX20303" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PMIC/max20303.c" version="1.4.0"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="PushButton" Cvariant="PB" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PushButton/pb.c" version="1.4.0"/&gt;
     &lt;/component&gt;
     &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0"&gt;
       &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/&gt;
       &lt;file category="doc" name="CMSIS/Documentation/Core/html/index.html"/&gt;
       &lt;file category="include" name="CMSIS/Core/Include/"/&gt;
       &lt;file category="header" condition="TrustZone" name="CMSIS/Core/Include/tz_context.h"/&gt;
-      &lt;file attr="template" category="sourceC" condition="TZ Secure" name="CMSIS/Core/Template/ARMv8-M/main_s.c" select="Secure mode 'main' module for ARMv8-M" version="1.2.0"/&gt;
-      &lt;file attr="template" category="sourceC" condition="TZ Secure" name="CMSIS/Core/Template/ARMv8-M/tz_context.c" select="RTOS Context Management (TrustZone for ARMv8-M)" version="1.2.0"/&gt;
+      &lt;file attr="template" category="sourceC" condition="TZ Secure" name="CMSIS/Core/Template/ARMv8-M/main_s.c" select="Secure mode 'main' module for ARMv8-M" version="1.1.1"/&gt;
+      &lt;file attr="template" category="sourceC" condition="TZ Secure" name="CMSIS/Core/Template/ARMv8-M/tz_context.c" select="RTOS Context Management (TrustZone for ARMv8-M)" version="1.1.1"/&gt;
     &lt;/component&gt;
 
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Include/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Include/MAX32670/" version="1.2.0"/&gt;
-      &lt;file category="sourceAsm" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/ARM/startup_max32670.s"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/low_level_init.c" version="1.2.0"/&gt;
-      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/startup_max32670.s" version="1.2.0"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/low_level_init.c" version="1.2.0"/&gt;
-      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/cmain.s" version="1.2.0"/&gt;
-      &lt;file attr="config" category="header" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Include/max32670.h" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/system_max32670.c"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.2.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Include/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Include/MAX32690/" version="1.4.0"/&gt;
+      &lt;file category="sourceAsm" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/ARM/startup_max32690.s"/&gt;
+      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/low_level_init.c" version="1.4.0"/&gt;
+      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/startup_max32690.s" version="1.4.0"/&gt;
+      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/low_level_init.c" version="1.4.0"/&gt;
+      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/cmain.s" version="1.4.0"/&gt;
+      &lt;file attr="config" category="header" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Include/max32690.h" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/system_max32690.c"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ADC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CAN/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/EMCC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/HPB/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LPCMP/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/OWM/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/PT/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SEMA/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXF/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXR/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.4.0"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/" version="1.4.0"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="SYS" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="SYS" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_assert.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_delay.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_lock.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me15.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/sys_me15.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/sys_me18.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="AES" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/aes_me15.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/aes_revb.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="ADC" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ADC/adc_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ADC/adc_revb.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="CRC" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/crc_me15.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/crc_reva.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="CAN" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CAN/can_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CAN/can_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="DMA" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="CTB" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_reva.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_common.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="DMA" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="FLC" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="EMCC" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/EMCC/emcc_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/EMCC/emcc_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="FLC" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_common.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_me15.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_common.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_me15.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="I2C" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="HPB" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/HPB/hpb_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/HPB/hpb_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="I2C" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="I2S" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/i2s_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="I2S" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/i2s_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/i2s_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="ICC" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_common.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="ICC" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="LP" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/lp_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="LP" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/lp_me18.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="RTC" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="LPCMP" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LPCMP/lpcmp_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LPCMP/lpcmp_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="OWM" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/OWM/owm_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/OWM/owm_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="PT" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/PT/pt_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/PT/pt_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="RTC" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_reva.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="SPI" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/spi_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="SEMA" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SEMA/sema_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SEMA/sema_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="SPI" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/spi_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/spi_reva1.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="TRNG" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_me15.c"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="SPIXF" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXF/spixf_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXF/spixf_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="SPIXR" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXR/spixr_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXR/spixr_reva.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="TRNG" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_revb.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="TMR" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="TMR" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_common.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_me15.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_revb.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_common.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_me15.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_revb.c"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.2.0" Cclass="Device" Cgroup="WDT" Cvendor="Maxim" Cversion="1.2.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32670" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.2.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="WDT" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/wdt_common.c"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/wdt_me15.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/wdt_me18.c"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/wdt_revb.c"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.4.0" Cclass="Device" Cgroup="WUT" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/wut_me18.c"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/wut_reva.c"/&gt;
     &lt;/component&gt;
   &lt;/components&gt;
   &lt;apis/&gt;

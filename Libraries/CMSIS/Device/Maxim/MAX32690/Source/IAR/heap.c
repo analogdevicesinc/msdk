@@ -1,31 +1,46 @@
-/******************************************************************************
+/*******************************************************************************
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
- * is proprietary to Analog Devices, Inc. and its licensors.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ * $Date: 2016-03-11 10:46:02 -0700 (Fri, 11 Mar 2016) $
+ * $Revision: 21838 $
  *
  ******************************************************************************/
-
-#if defined __ICCARM__
-#pragma diag_suppress = Pe513, Pe042
+#if defined __ICCARM__ 
+#pragma diag_suppress=Pe513,Pe042
 #endif
 
 #include <stdlib.h>
-#pragma section = "CSTACK"
-#pragma section = "HEAP"
+#pragma section="CSTACK"
+#pragma section="HEAP"
+
 
 //#include <sys/types.h>
 #include <errno.h>
@@ -40,26 +55,31 @@
    @return  A pointer to the start of the new block of memory                */
 /* ------------------------------------------------------------------------- */
 
-unsigned char *HeapBase = __section_begin("HEAP");
-unsigned char *HeapLimit = __section_end("HEAP");
+//extern char __HeapBase;//set by linker
+//extern char __HeapLimit;//set by linker
 
-void *_sbrk(int incr)
+    unsigned char *HeapBase   = __section_begin("HEAP");
+    unsigned char *HeapLimit  = __section_end("HEAP"); 
+
+void * _sbrk (int  incr)
 {
-    static char *heap_end = 0; /* Previous end of heap or 0 if none */
-    char *prev_heap_end;
 
-    if (0 == heap_end) {
-        heap_end = HeapBase; /* Initialize first time round */
-    }
+	static char *heap_end=0;	  	/* Previous end of heap or 0 if none */
+	char        *prev_heap_end;
 
-    prev_heap_end = heap_end;
-    heap_end += incr;
+	if (0 == heap_end) {
+		heap_end = HeapBase; //&__HeapBase;			/* Initialize first time round */
+	}
 
-    //check
-    if (heap_end >= HeapLimit) {
-        errno = 132; //ENOMEM;
-        return (char *)-1;
-    }
+	prev_heap_end  = heap_end;
+	heap_end      += incr;
+	//check
+	if( heap_end < HeapLimit /*(&__HeapLimit)*/) {
 
-    return (void *)prev_heap_end;
-} /* _sbrk () */
+	} else {
+		errno = 132; //ENOMEM;
+		return (char*)-1;
+	}
+	return (void *) prev_heap_end;
+
+}	/* _sbrk () */
