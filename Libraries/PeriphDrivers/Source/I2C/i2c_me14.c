@@ -90,7 +90,8 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
         return E_NO_DEVICE;
     }
 
-    int i2cNum = MXC_I2C_GET_IDX(i2c);
+    /* Get i2c instance, masking off upper byte - it contains which bus to use. */
+    int i2cNum = MXC_I2C_GET_IDX(i2c) & 0xFF;
 
     // Reconcile this with MXC_SYS_I2C_Init when we figure out what to do abotu system level things
     switch (i2cNum) {
@@ -164,7 +165,8 @@ int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    /* Get i2c instance, masking off upper byte - it contains which bus to use. */
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF; 
 
     if (txData != NULL) {
         switch (i2cNum) {

@@ -36,8 +36,10 @@
 static int MXC_TPU_RevA_TRNG_Read_Status(mxc_trng_revc_regs_t *trng);
 /* ************************************************************************ */
 /* Prevent GCC from optimimzing this function to memset */
+#ifndef __ARMCC_VERSION
 #ifdef __GNUC__
 __attribute__((optimize("no-tree-loop-distribute-patterns")))
+#endif
 #endif
 static void 
 memset32(uint32_t *dst, uint32_t value, unsigned int len)
@@ -51,8 +53,10 @@ memset32(uint32_t *dst, uint32_t value, unsigned int len)
 
 /* ************************************************************************ */
 /* Prevent GCC from optimimzing this function to memcpy */
+#ifndef __ARMCC_VERSION
 #ifdef __GNUC__
 __attribute__((optimize("no-tree-loop-distribute-patterns")))
+#endif
 #endif
 static void 
 memcpy32(uint32_t *dst, uint32_t *src, unsigned int len)

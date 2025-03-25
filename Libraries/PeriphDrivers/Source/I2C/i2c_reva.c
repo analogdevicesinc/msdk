@@ -73,7 +73,8 @@ int MXC_I2C_RevA_Init(mxc_i2c_reva_regs_t *i2c, int masterMode, unsigned int sla
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     if ((err = MXC_I2C_Recover((mxc_i2c_regs_t *)i2c, 16)) != E_NO_ERROR) {
         return err;
@@ -89,10 +90,10 @@ int MXC_I2C_RevA_Init(mxc_i2c_reva_regs_t *i2c, int masterMode, unsigned int sla
 
     if (!masterMode) {
         MXC_I2C_SetSlaveAddr((mxc_i2c_regs_t *)i2c, slaveAddr, 0);
-        states[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)].master = 0;
+        states[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF].master = 0;
     } else {
         i2c->ctrl |= MXC_F_I2C_REVA_CTRL_MST_MODE;
-        states[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)].master = 1;
+        states[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF].master = 1;
     }
 
     // Prepare I2C instance state.
@@ -140,7 +141,8 @@ int MXC_I2C_RevA_Shutdown(mxc_i2c_reva_regs_t *i2c)
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     i2c->ctrl = 0;
     i2c->inten0 = 0;
@@ -263,7 +265,7 @@ int MXC_I2C_RevA_ReadyForSleep(mxc_i2c_reva_regs_t *i2c)
         return E_BAD_PARAM;
     }
 
-    if (AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] != NULL) {
+    if (AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF] != NULL) {
         return E_BUSY;
     }
 
@@ -305,7 +307,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     if (states[i2cNum].dma_initialized == false) {
 #if TARGET_NUM == 32665
@@ -421,7 +424,8 @@ int MXC_I2C_RevA_DMA_GetTXChannel(mxc_i2c_reva_regs_t *i2c)
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     return states[i2cNum].channelTx;
 }
@@ -434,7 +438,8 @@ int MXC_I2C_RevA_DMA_GetRXChannel(mxc_i2c_reva_regs_t *i2c)
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     return states[i2cNum].channelRx;
 }
@@ -450,7 +455,8 @@ int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_reg
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     txChannel = states[i2cNum].channelTx;
     rxChannel = states[i2cNum].channelRx;
@@ -644,7 +650,8 @@ int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, u
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     if (states[i2cNum].channelRx == E_NO_DEVICE) {
         return E_BAD_STATE;
@@ -697,7 +704,8 @@ int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, 
         return E_NULL_PTR;
     }
 
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_START;
 
@@ -1012,7 +1020,8 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
 
 int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
 {
-    int i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)(req->i2c));
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    int i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)(req->i2c)) & 0xFF;
     mxc_i2c_reva_regs_t *i2c = req->i2c;
 
     if (i2cNum < 0) {
@@ -1074,7 +1083,9 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
     int8_t i2cNum;
 
     mxc_i2c_reva_regs_t *i2c = req->i2c; // Save off pointer for faster access
-    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
         return E_NOT_SUPPORTED;
@@ -1267,7 +1278,8 @@ int MXC_I2C_RevA_SlaveTransactionAsync(mxc_i2c_reva_regs_t *i2c,
                                        mxc_i2c_reva_slave_handler_t callback,
                                        uint32_t interruptCheck)
 {
-    int i2cnum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    int i2cnum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
 
     if (i2cnum < 0) {
         return E_BAD_PARAM;
@@ -1337,7 +1349,7 @@ void MXC_I2C_RevA_AsyncCallback(mxc_i2c_reva_regs_t *i2c, int retVal)
     // Don't need to check for return value as this function is not accessible to user
     // i2c is already cheked for NULL from where this function is being called
     mxc_i2c_reva_req_t *req =
-        (mxc_i2c_reva_req_t *)AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)];
+        (mxc_i2c_reva_req_t *)AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF];
 
     if (req->callback != NULL) {
         req->callback(req, retVal);
@@ -1355,7 +1367,7 @@ void MXC_I2C_RevA_AsyncStop(mxc_i2c_reva_regs_t *i2c)
 
     // Don't need to check for return value as this function is not accessible to user
     // i2c is already cheked for NULL from where this function is being called
-    AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+    AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF] = NULL;
 }
 
 void MXC_I2C_RevA_AbortAsync(mxc_i2c_reva_regs_t *i2c)
@@ -1493,7 +1505,7 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
         MXC_I2C_RevA_ClearRXFIFO(i2c);
         int_en[0] = 0;
         int_en[1] = 0;
-        AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+        AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF] = NULL;
     }
 
     // Check whether data is available if we received an interrupt occurred while receiving
@@ -1544,7 +1556,7 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
             int_en[0] = 0;
             int_en[1] = 0;
-            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF] = NULL;
         }
     }
 
@@ -1561,7 +1573,7 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
             int_en[0] = 0;
             int_en[1] = 0;
-            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF] = NULL;
         } else if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
             // Restart detected, re-arm address match interrupt
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
@@ -1609,7 +1621,8 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
 
 void MXC_I2C_RevA_AsyncHandler(mxc_i2c_reva_regs_t *i2c, uint32_t interruptCheck)
 {
-    int i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+    // Get i2c instance, masking off upper byte - it contains which bus to use.
+    int i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c) & 0xFF;
     int slaveRetVal;
     uint32_t int_en[2];
 
