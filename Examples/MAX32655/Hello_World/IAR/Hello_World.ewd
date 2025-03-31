@@ -44,7 +44,7 @@
                 </option>
                 <option>
                     <name>MemFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32655#1.0.0}$\.iar\config\debugger\MAX32655.ddf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32655#1.3.0}$\.iar\config\debugger\MAX32655.ddf</state>
                 </option>
                 <option>
                     <name>RunToEnable</name>
@@ -112,7 +112,7 @@
                 </option>
                 <option>
                     <name>FlashLoadersV3</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32655#1.0.0}$\.iar\config\flashloader\MAX32655.board</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32655#1.3.0}$\.iar\config\flashloader\MAX32655.board</state>
                 </option>
                 <option>
                     <name>OCImagesSuppressCheck1</name>
