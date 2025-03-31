@@ -287,7 +287,7 @@ int MXC_LP_RISCVClockSelect(mxc_lp_riscv_clock_t clock)
         MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
         break;
     case MXC_LP_RISCV_CLOCK_ISO:
-        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_ISO);
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
         MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_ISOCLK_SELECT;
         break;
     default:

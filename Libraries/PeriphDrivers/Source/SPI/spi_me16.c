@@ -142,7 +142,7 @@ int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 
 mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA1_GetWidth(spi);
+    return (mxc_spi_width_t)MXC_SPI_RevA1_GetWidth(spi);
 }
 
 int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)

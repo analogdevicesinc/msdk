@@ -1,37 +1,22 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- ; Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
- ;
- ; Permission is hereby granted, free of charge, to any person obtaining a
- ; copy of this software and associated documentation files (the "Software"),
- ; to deal in the Software without restriction, including without limitation
- ; the rights to use, copy, modify, merge, publish, distribute, sublicense,
- ; and/or sell copies of the Software, and to permit persons to whom the
- ; Software is furnished to do so, subject to the following conditions:
- ;
- ; The above copyright notice and this permission notice shall be included
- ; in all copies or substantial portions of the Software.
- ;
- ; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- ; OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- ; MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- ; IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- ; OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- ; ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- ; OTHER DEALINGS IN THE SOFTWARE.
- ;
- ; Except as contained in this notice, the name of Maxim Integrated
- ; Products, Inc. shall not be used except as stated in the Maxim Integrated
- ; Products, Inc. Branding Policy.
- ;
- ; The mere transfer of this software does not imply any licenses
- ; of trade secrets, proprietary technology, copyrights, patents,
- ; trademarks, maskwork rights, or any other form of intellectual
- ; property whatsoever. Maxim Integrated Products, Inc. retains all
- ; ownership rights.
- ;
- ; $Date: 2020-01-15 14:54:54 -0600 (Wed, 15 Jan 2020) $
- ; $Revision: 50656 $
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;******************************************************************************
+;
+; Copyright (C) 2018-2023 Maxim Integrated Products, Inc. (now owned by 
+; Analog Devices, Inc.),
+; Copyright (C) 2023-2025 Analog Devices, Inc.
+;
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+;
+;     http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+;
+;******************************************************************************
 
 ; To map FreeRTOS function names to their CMSIS equivalents add following lines to FreeRTOSConfig.h
 ; #define vPortSVCHandler SVC_Handler
@@ -227,16 +212,17 @@ __SPIN
 
 ; Dummy Exception Handlers (infinite loops which can be modified)
 
-NMI_Handler     PROC
-                EXPORT  NMI_Handler             [WEAK]
-                BL      NMI_Handler
-                ENDP
+; This is defined in the Board Support Packages (BSP). Uncomment if BSP does not define this.
+;NMI_Handler     PROC
+;                EXPORT  NMI_Handler             [WEAK]
+;                BL      NMI_Handler
+;                ENDP
 
-HardFault_Handler\
-                PROC
-                EXPORT  HardFault_Handler       [WEAK]
-                B       .
-                ENDP
+;HardFault_Handler\
+;                PROC
+;                EXPORT  HardFault_Handler       [WEAK]
+;                B       .
+;                ENDP
 
 MemManage_Handler\
                 PROC
@@ -409,7 +395,7 @@ RSV22_IRQHandler              ; 0x26  0x0098  38: Reserved
 FLC0_IRQHandler               ; 0x27  0x009C  39: Flash Controller 0
 GPIO0_IRQHandler              ; 0x28  0x00A0  40: GPIO0 
 GPIO1_IRQHandler              ; 0x29  0x00A4  41: GPIO1 
-GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2
+;GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2             <----- [UNCOMMENT NOTE] This is defined in the BSP for the push button library. Check your BSP if it already defines this or not.
 RSV27_IRQHandler              ; 0x2B  0x00AC  43: Reserved
 DMA0_IRQHandler               ; 0x2C  0x00B0  44: DMA0 
 DMA1_IRQHandler               ; 0x2D  0x00B4  45: DMA1 
@@ -437,8 +423,8 @@ BTLE_RX_AES_IRQHandler        ; 0x42  0x0108  66: BTLE_RX_AES_IRQHandler
 BTLE_INV_APB_ADDR_IRQHandler  ; 0x43  0x010C  67: BTLE_INV_APB_ADDR_IRQHandler
 BTLE_IQ_DATA_VALID_IRQHandler ; 0x44  0x0110  68: BTLE_IQ_DATA_VALID_IRQHandler
 WUT_IRQHandler                ; 0x45  0x0114  69: Wake up Timer 
-GPIOWAKE_IRQHandler           ; 0x46  0x0118  70: GPIO Wakeup
-RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved 
+;GPIOWAKE_IRQHandler           ; 0x46  0x0118  70: GPIO Wakeup      <----- [UNCOMMENT NOTE] This is defined in the BSP for the push button library. Check your BSP if it already defines this or not.
+RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved
 SPI0_IRQHandler               ; 0x48  0x0120  72: SPI 0 
 WDT1_IRQHandler               ; 0x49  0x0124  73: Watchdog 1 
 RSV57_IRQHandler              ; 0x4A  0x0128  74: Reserved 

@@ -68,12 +68,12 @@ int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth)
 
 void MXC_PCIF_SetDataWidth(mxc_pcif_datawidth_t gpioDatawidth)
 {
-    MXC_PCIF_RevA_SetDatawidth((mxc_cameraif_reva_regs_t *)MXC_PCIF, gpioDatawidth);
+    MXC_PCIF_RevA_SetDatawidth((mxc_cameraif_reva_regs_t *)MXC_PCIF, (mxc_pcif_reva_datawith_t)gpioDatawidth);
 }
 
 void MXC_PCIF_SetTimingSel(mxc_pcif_timingsel_t timingsel)
 {
-    MXC_PCIF_RevA_SetTimingSel((mxc_cameraif_reva_regs_t *)MXC_PCIF, timingsel);
+    MXC_PCIF_RevA_SetTimingSel((mxc_cameraif_reva_regs_t *)MXC_PCIF, (mxc_pcif_reva_timingsel_t)timingsel);
 }
 
 void MXC_PCIF_SetThreshold(int fifo_thrsh)
@@ -93,7 +93,7 @@ void MXC_PCIF_DisableInt(uint32_t flags)
 
 void MXC_PCIF_Start(mxc_pcif_readmode_t readmode)
 {
-    MXC_PCIF_RevA_Start((mxc_cameraif_reva_regs_t *)MXC_PCIF, readmode);
+    MXC_PCIF_RevA_Start((mxc_cameraif_reva_regs_t *)MXC_PCIF, (mxc_pcif_reva_readmode_t)readmode);
 }
 
 void MXC_PCIF_Stop(void)

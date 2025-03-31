@@ -503,6 +503,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
+#if !defined(__CC_ARM) && !defined(__ICCARM__)
 /* ************************************************************************** */
 void MXC_SYS_RISCVRun(void)
 {
@@ -537,6 +538,7 @@ uint32_t MXC_SYS_RiscVClockRate(void)
         return PeripheralClock;
     }
 }
+#endif // !__CC_ARM and !__ICCARM__
 
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)
