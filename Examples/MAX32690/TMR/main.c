@@ -270,5 +270,8 @@ int main(void)
         }
     }
 
+// Unreachable statement that results in warning for IAREW Arm compiler
+#ifndef __ICCARM__
     return 0;
+#endif
 }

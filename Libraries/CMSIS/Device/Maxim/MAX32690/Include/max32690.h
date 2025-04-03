@@ -45,7 +45,7 @@
 
 #elif defined(__ICCARM__)
 #ifndef __weak
-#define __weak #pragma weak
+#define __weak __attribute__((weak))
 #endif
 
 #elif defined(__CC_ARM)

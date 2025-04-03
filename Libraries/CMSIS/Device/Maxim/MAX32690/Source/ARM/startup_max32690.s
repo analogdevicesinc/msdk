@@ -138,7 +138,7 @@ __isr_vector    DCD     __initial_sp            ; Top of Stack
                 DCD     RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved 
                 DCD     SPI0_IRQHandler               ; 0x48  0x0120  72: SPI 0 
                 DCD     WDT1_IRQHandler               ; 0x49  0x0124  73: Watchdog 1 
-                DCD     RSV57_IRQHandler              ; 0x4A  0x0128  74: Reserved 
+                DCD     GPIO3_IRQHandler              ; 0x4A  0x0128  74: GPIO3
                 DCD     PT_IRQHandler                 ; 0x4B  0x012C  75: Pulse Train
                 DCD     RSV59_IRQHandler              ; 0x4C  0x0130  76: Reserved 
                 DCD     RSV61_IRQHandler              ; 0x4D  0x0134  77: Reserved 
@@ -212,17 +212,16 @@ __SPIN
 
 ; Dummy Exception Handlers (infinite loops which can be modified)
 
-; This is defined in the Board Support Packages (BSP). Uncomment if BSP does not define this.
-;NMI_Handler     PROC
-;                EXPORT  NMI_Handler             [WEAK]
-;                BL      NMI_Handler
-;                ENDP
+NMI_Handler     PROC
+                EXPORT  NMI_Handler             [WEAK]
+                BL      NMI_Handler
+                ENDP
 
-;HardFault_Handler\
-;                PROC
-;                EXPORT  HardFault_Handler       [WEAK]
-;                B       .
-;                ENDP
+HardFault_Handler\
+                PROC
+                EXPORT  HardFault_Handler       [WEAK]
+                B       .
+                ENDP
 
 MemManage_Handler\
                 PROC
@@ -289,7 +288,7 @@ Default_Handler\
                 EXPORT    RSV22_IRQHandler              [WEAK]  ; 0x26  0x0098  38: Reserved
                 EXPORT    FLC0_IRQHandler               [WEAK]  ; 0x27  0x009C  39: Flash Controller 0
                 EXPORT    GPIO0_IRQHandler              [WEAK]  ; 0x28  0x00A0  40: GPIO0 
-                EXPORT    GPIO1_IRQHandler              [WEAK]  ; 0x29  0x00A4  41: GPIO1 
+                EXPORT    GPIO1_IRQHandler              [WEAK]  ; 0x29  0x00A4  41: GPIO1
                 EXPORT    GPIO2_IRQHandler              [WEAK]  ; 0x2A  0x00A8  42: GPIO2
                 EXPORT    RSV27_IRQHandler              [WEAK]  ; 0x2B  0x00AC  43: Reserved
                 EXPORT    DMA0_IRQHandler               [WEAK]  ; 0x2C  0x00B0  44: DMA0 
@@ -317,17 +316,17 @@ Default_Handler\
                 EXPORT    BTLE_RX_AES_IRQHandler        [WEAK]  ; 0x42  0x0108  66: BTLE RX AES Done 
                 EXPORT    BTLE_INV_APB_ADDR_IRQHandler  [WEAK]  ; 0x43  0x010C  67: BTLE Invalid APB Address
                 EXPORT    BTLE_IQ_DATA_VALID_IRQHandler [WEAK]  ; 0x44  0x0110  68: BTLE IQ Data Valid
-                EXPORT    WUT_IRQHandler                [WEAK]  ; 0x45  0x0114  69: Reserved 
+                EXPORT    WUT_IRQHandler                [WEAK]  ; 0x45  0x0114  69: Reserved
                 EXPORT    GPIOWAKE_IRQHandler           [WEAK]  ; 0x46  0x0118  70: GPIO Wakeup
                 EXPORT    RSV55_IRQHandler              [WEAK]  ; 0x47  0x011C  71: Reserved 
                 EXPORT    SPI0_IRQHandler               [WEAK]  ; 0x48  0x0120  72: SPI0 
-                EXPORT    WDT1_IRQHandler               [WEAK]  ; 0x49  0x0124  73: Watchdog 1 
-                EXPORT    RSV57_IRQHandler              [WEAK]  ; 0x4A  0x0128  74: Reserved 
+                EXPORT    WDT1_IRQHandler               [WEAK]  ; 0x49  0x0124  73: Watchdog 1
+                EXPORT    GPIO3_IRQHandler              [WEAK]  ; 0x4A  0x0128  74: GPIO3 
                 EXPORT    PT_IRQHandler                 [WEAK]  ; 0x4B  0x012C  75: Pulse Train
                 EXPORT    RSV59_IRQHandler              [WEAK]  ; 0x4C  0x0130  76: Reserved 
                 EXPORT    RSV61_IRQHandler              [WEAK]  ; 0x4D  0x0134  77: Reserved 
                 EXPORT    I2C2_IRQHandler               [WEAK]  ; 0x4E  0x0138  78: I2C 2 
-                EXPORT    RISCV_IRQHandler               [WEAK]  ; 0x4F  0x013C  79: RISCV
+                EXPORT    RISCV_IRQHandler              [WEAK]  ; 0x4F  0x013C  79: RISCV
                 EXPORT    RSV64_IRQHandler              [WEAK]  ; 0x50  0x0140  80: Reserved
                 EXPORT    RSV65_IRQHandler              [WEAK]  ; 0x51  0x0144  81: Reserved 
                 EXPORT    RSV66_IRQHandler              [WEAK]  ; 0x52  0x0148  82: Reserved 
@@ -395,7 +394,7 @@ RSV22_IRQHandler              ; 0x26  0x0098  38: Reserved
 FLC0_IRQHandler               ; 0x27  0x009C  39: Flash Controller 0
 GPIO0_IRQHandler              ; 0x28  0x00A0  40: GPIO0 
 GPIO1_IRQHandler              ; 0x29  0x00A4  41: GPIO1 
-;GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2             <----- [UNCOMMENT NOTE] This is defined in the BSP for the push button library. Check your BSP if it already defines this or not.
+GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2
 RSV27_IRQHandler              ; 0x2B  0x00AC  43: Reserved
 DMA0_IRQHandler               ; 0x2C  0x00B0  44: DMA0 
 DMA1_IRQHandler               ; 0x2D  0x00B4  45: DMA1 
@@ -423,11 +422,11 @@ BTLE_RX_AES_IRQHandler        ; 0x42  0x0108  66: BTLE_RX_AES_IRQHandler
 BTLE_INV_APB_ADDR_IRQHandler  ; 0x43  0x010C  67: BTLE_INV_APB_ADDR_IRQHandler
 BTLE_IQ_DATA_VALID_IRQHandler ; 0x44  0x0110  68: BTLE_IQ_DATA_VALID_IRQHandler
 WUT_IRQHandler                ; 0x45  0x0114  69: Wake up Timer 
-;GPIOWAKE_IRQHandler           ; 0x46  0x0118  70: GPIO Wakeup      <----- [UNCOMMENT NOTE] This is defined in the BSP for the push button library. Check your BSP if it already defines this or not.
+GPIOWAKE_IRQHandler           ; 0x46  0x0118  70: GPIO Wakeup
 RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved
 SPI0_IRQHandler               ; 0x48  0x0120  72: SPI 0 
 WDT1_IRQHandler               ; 0x49  0x0124  73: Watchdog 1 
-RSV57_IRQHandler              ; 0x4A  0x0128  74: Reserved 
+GPIO3_IRQHandler              ; 0x4A  0x0128  74: GPIO3 
 PT_IRQHandler                 ; 0x4B  0x012C  75: Pulse Train
 RSV59_IRQHandler              ; 0x4C  0x0130  76: Reserved 
 RSV61_IRQHandler              ; 0x4D  0x0134  77: Reserved 

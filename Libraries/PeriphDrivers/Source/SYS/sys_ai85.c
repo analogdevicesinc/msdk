@@ -55,7 +55,9 @@
 /* **** Globals **** */
 
 /* Symbol defined by the build system when loading RISCV image */
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 extern volatile void const *_riscv_boot; // Defined in linker file
+#endif
 
 /* **** Functions **** */
 
@@ -321,7 +323,7 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
 {
-    return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
+    return (mxc_sys_system_clock_div_t)(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
 }
 
 /* ************************************************************************** */
@@ -521,7 +523,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
-#if !defined(__CC_ARM) && !defined(__ICCARM__)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /* ************************************************************************** */
 void MXC_SYS_RISCVRun(void)
 {

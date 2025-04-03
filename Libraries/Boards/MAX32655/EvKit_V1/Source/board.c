@@ -63,7 +63,10 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
  * NOTE: This weak definition is included to support Push Button/Touchscreen interrupt
  *       in case the user does not define this interrupt handler in their application.
  **/
-__weak void GPIO0_IRQHandler(void)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
+__weak
+#endif
+void GPIO0_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
 }
@@ -483,6 +486,7 @@ int Debug_Init(void)
 }
 #endif // __riscv
 
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /******************************************************************************/
 __weak void NMI_Handler(void)
 {
@@ -500,3 +504,24 @@ __weak void HardFault_Handler(void)
 #endif
     while (1) {}
 }
+#endif
+
+/******************************************************************************
+ *
+ *  These functions are defined multiple times in IAR and Keil startup files.
+ *  Similar to the NMI and HardFault handlers, the GPIOn Handler functions
+ *  that aren't used by the push button library will be defined here for the
+ *  IAR and Keil.
+ * 
+ */
+#if defined(__ARMCC_VERSION) || defined(__ICCARM__)
+void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
+void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+#endif

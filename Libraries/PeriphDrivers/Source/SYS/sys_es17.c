@@ -247,7 +247,7 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
 /* ************************************************************************** */
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
 {
-    return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
+    return (mxc_sys_system_clock_div_t)(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
 }
 
 /* ************************************************************************** */

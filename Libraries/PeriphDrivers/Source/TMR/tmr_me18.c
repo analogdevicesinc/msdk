@@ -27,7 +27,7 @@
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 {
     uint8_t tmr_id;
-    uint8_t clockSource = MXC_TMR_CLK0;
+    int clockSource = MXC_TMR_CLK0;
 
     if (cfg == NULL) {
         return E_NULL_PTR;
@@ -146,11 +146,11 @@ void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock)
     MXC_TMR_RevB_LockClockSource((mxc_tmr_revb_regs_t *)tmr, lock);
 }
 
-uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
+int MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
                                mxc_tmr_clock_t clk_src)
 {
     uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
-    uint8_t clockSource = MXC_TMR_CLK0;
+    int clockSource = MXC_TMR_CLK0;
 
     switch (clk_src) {
     case MXC_TMR_ISO_CLK:

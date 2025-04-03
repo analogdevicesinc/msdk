@@ -55,8 +55,10 @@
 
 /* **** Globals **** */
 
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /* Symbol defined when loading RISCV image */
 extern uint32_t _binary_riscv_bin_start;
+#endif
 
 /* **** Functions **** */
 
@@ -482,7 +484,7 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
 /* ************************************************************************** */
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
 {
-    return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
+    return (mxc_sys_system_clock_div_t)(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
 }
 
 /* ************************************************************************** */
@@ -503,7 +505,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
-#if !defined(__CC_ARM) && !defined(__ICCARM__)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /* ************************************************************************** */
 void MXC_SYS_RISCVRun(void)
 {
@@ -538,7 +540,7 @@ uint32_t MXC_SYS_RiscVClockRate(void)
         return PeripheralClock;
     }
 }
-#endif // !__CC_ARM and !__ICCARM__
+#endif // __GNUC__ only
 
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)

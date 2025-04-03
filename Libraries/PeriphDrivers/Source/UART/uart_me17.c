@@ -323,7 +323,7 @@ mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
         case 2:
             return MXC_UART_IBRO_CLK;
         default:
-            return E_BAD_STATE;
+            return (mxc_uart_clock_t)E_BAD_STATE;
         }
         break;
     case 3:
@@ -333,11 +333,11 @@ mxc_uart_clock_t MXC_UART_GetClockSource(mxc_uart_regs_t *uart)
         case 1:
             return MXC_UART_ERTCO_CLK;
         default:
-            return E_BAD_STATE;
+            return (mxc_uart_clock_t)E_BAD_STATE;
         }
         break;
     default:
-        return E_BAD_PARAM;
+        return (mxc_uart_clock_t)E_BAD_PARAM;
     }
 }
 

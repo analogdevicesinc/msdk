@@ -657,7 +657,7 @@
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>Hello_World.srec</state>
+                    <state>TFT_Demo.srec</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -704,7 +704,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>Hello_World.out</state>
+                    <state>TFT_Demo.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
@@ -1001,7 +1001,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>Hello_World_import_lib.o</state>
+                    <state>TFT_Demo_import_lib.o</state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>
@@ -2527,10 +2527,6 @@
     &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="PushButton" Cvariant="PB" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
       &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/PushButton/pb.c" version="1.4.0"/&gt;
-    &lt;/component&gt;
-    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.4.0+" Cclass="BSP" Cgroup="TempSensor" Cvariant="MAX31889_DRIVER" Cvendor="Maxim" Cversion="1.4.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/TempSensor/max31889_driver.c" version="1.4.0"/&gt;
     &lt;/component&gt;
     &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0"&gt;
       &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/&gt;

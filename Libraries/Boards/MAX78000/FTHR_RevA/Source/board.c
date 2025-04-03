@@ -67,7 +67,10 @@ void mxc_assert(const char *expr, const char *file, int line)
  * NOTE: This weak definition is included to support Push Button 0 interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
-__weak void GPIO0_IRQHandler(void)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
+__weak
+#endif
+void GPIO0_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
 }
@@ -76,7 +79,10 @@ __weak void GPIO0_IRQHandler(void)
  * NOTE: This weak definition is included to support Push Button 1 interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
-__weak void GPIO1_IRQHandler(void)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
+__weak
+#endif
+void GPIO1_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
 }
@@ -86,7 +92,10 @@ __weak void GPIO1_IRQHandler(void)
  *       GPIO2 pins in case user does not define this interrupt handler in their
  *       application.
  **/
-__weak void GPIO2_IRQHandler(void)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
+__weak
+#endif
+void GPIO2_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
 }

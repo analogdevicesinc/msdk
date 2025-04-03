@@ -40,13 +40,17 @@
 void example_func1(void)
 {
     volatile int i, j, k;
+    int temp_i, temp_j;
 
     for (i = 0; i < 5000; i++) {
         for (j = 0; j < 500; j++) {
-            k = i * j;
+            // Define order of volatile accesses.
+            temp_i = i;
+            temp_j = j;
+            k = temp_i * temp_j;
 
             if (((i % 500) == 0) && (j == 1)) {
-                printf("%d%%,\t k=%d\n", i / 50, k);
+                printf("%d%%,\t k=%d\n", temp_i / 50, k);
             }
         }
     }

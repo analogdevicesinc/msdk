@@ -284,7 +284,7 @@ Reset_Handler:
     def_irq_handler    SVC_Handler
     def_irq_handler    DebugMon_Handler
     def_irq_handler    PendSV_Handler
-    def_irq_handler    SysTick_Handler
+//    def_irq_handler    SysTick_Handler
     def_irq_handler    Default_Handler
 
     /* Device-specific Interrupts */
