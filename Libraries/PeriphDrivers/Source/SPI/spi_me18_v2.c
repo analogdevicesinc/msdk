@@ -130,7 +130,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
 
             // Target Select 1 - TS1 (L. SS1 pin)
             if (pins.ss1 == true) {
-                temp_ts_cfg = gpio_cfg_spi0_ts0;
+                temp_ts_cfg = gpio_cfg_spi0_ts1;
                 temp_ts_cfg.vssel = vssel;
                 temp_ts_cfg.drvstr = pins.drvstr;
 
