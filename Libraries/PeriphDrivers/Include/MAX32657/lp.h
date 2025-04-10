@@ -76,6 +76,11 @@ void MXC_LP_EnterStandbyMode(void);
 void MXC_LP_EnterBackupMode(void);
 
 /**
+ * @brief      Routine for when exiting Backup mode via warmboot.
+ */
+void MXC_LP_ExitBackupMode(void);
+
+/**
  * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so this function never returns.
  *             Instead, the device will restart once an RTC, USB wakeup, or external interrupt occur.
  */
