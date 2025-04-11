@@ -42,8 +42,19 @@ int MXC_Delay(uint32_t us)
     CSR_SetPCER(1); // Enable counting of cycles
     CSR_SetPCMR(3); // Turn on counter
 
+    // define a ticks num for a delay less than 1 us but long enough to prevent the PCCR
+    uint32_t num_ticks_half_us = MXC_SYS_RiscVClockRate() / 1000000 / 3;
+    volatile uint32_t counter;
+
     while (CSR_GetPCCR() < ticks) {
-        // Wait for counter to reach the tick count.
+        // Wait about 1 us
+        // and re-check if the counter reaches the tick count or not.
+        // Need this waiting to prevent CPU bothers PCCR too much
+        // to avoid PCCR hardware cannot maintain the correct timing.
+        counter = 0;
+        while (counter < num_ticks_half_us) {
+            counter++;
+        }
     }
     return E_NO_ERROR;
 }
