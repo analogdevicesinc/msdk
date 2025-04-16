@@ -1,5 +1,8 @@
 /*
  * Copyright (C) 2010-2018 Arm Limited or its affiliates. All rights reserved.
+ * 
+ * Portions Copyright (C) 2020 Maxim Integrated Products, Inc. (now owned 
+ * by Analog Devices, Inc.).
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -15,26 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2025 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- ******************************************************************************/
 
 /* ----------------------------------------------------------------------
  * Project:      NN Library
@@ -60,7 +43,7 @@
  * @{
  */
 
-/**
+  /**
    * @brief Q17.14 fixed point softmax function, returns Q15
    * @param[in]       vec_in      pointer to input vector
    * @param[in]       dim_vec     input vector dimension
@@ -79,16 +62,18 @@
    *  with a log(2) scaling factor.
    */
 
-void softmax_q17p14_q15(const q31_t *vec_in, const uint16_t dim_vec, q15_t *p_out)
+void softmax_q17p14_q15(const q31_t * vec_in, const uint16_t dim_vec, q15_t * p_out)
 {
-    q31_t sum;
-    int16_t i;
-    uint8_t shift;
-    q31_t base;
+    q31_t     sum;
+    int16_t   i;
+    uint8_t   shift;
+    q31_t     base;
     base = -1 * 0x80000000;
 
-    for (i = 0; i < dim_vec; i++) {
-        if (vec_in[i] > base) {
+    for (i = 0; i < dim_vec; i++)
+    {
+        if (vec_in[i] > base)
+        {
             base = vec_in[i];
         }
     }
@@ -98,16 +83,19 @@ void softmax_q17p14_q15(const q31_t *vec_in, const uint16_t dim_vec, q15_t *p_ou
      * to q15_t
      */
 
-    base = base - (16 << 14);
+    base = base - (16<<14);
 
     sum = 0;
 
-    for (i = 0; i < dim_vec; i++) {
-        if (vec_in[i] > base) {
+    for (i = 0; i < dim_vec; i++)
+    {
+        if (vec_in[i] > base)
+        {
             shift = (uint8_t)((8192 + vec_in[i] - base) >> 14);
             sum += (0x1 << shift);
         }
     }
+
 
     /* This is effectively (0x1 << 32) / sum */
     int64_t div_base = 0x100000000LL;
@@ -119,25 +107,30 @@ void softmax_q17p14_q15(const q31_t *vec_in, const uint16_t dim_vec, q15_t *p_ou
      * and vec_in[i]-base = 16
      */
 
-    for (i = 0; i < dim_vec; i++) {
-        if (vec_in[i] > base) {
+    for (i = 0; i < dim_vec; i++)
+    {
+        if (vec_in[i] > base)
+        {
             /* Here minimum value of 17+base-vec[i] will be 1 */
-            shift = (uint8_t)(17 + ((8191 + base - vec_in[i]) >> 14));
+            shift = (uint8_t)(17+((8191 + base - vec_in[i]) >> 14));
 
             out = (output_base >> shift);
 
             if (out > 32767)
-                out = 32767;
+            	out = 32767;
 
             p_out[i] = (q15_t)out;
 
-        } else {
+
+        } else
+        {
             p_out[i] = 0;
         }
     }
+
 }
 
-/**
+  /**
    * @brief Q17.14 fixed point softmax function with input shift, returns Q15
    * @param[in]       vec_in      pointer to input vector
    * @param[in]       dim_vec     input vector dimension
@@ -157,11 +150,12 @@ void softmax_q17p14_q15(const q31_t *vec_in, const uint16_t dim_vec, q15_t *p_ou
    *  with a log(2) scaling factor.
    */
 
-void softmax_shift_q17p14_q15(q31_t *vec_in, const uint16_t dim_vec, uint8_t in_shift, q15_t *p_out)
+void softmax_shift_q17p14_q15(q31_t * vec_in, const uint16_t dim_vec, uint8_t in_shift, q15_t * p_out)
 {
-    int16_t i;
+    int16_t   i;
 
-    for (i = 0; i < dim_vec; i++) {
+    for (i = 0; i < dim_vec; i++)
+    {
         vec_in[i] <<= in_shift;
     }
 
