@@ -67,28 +67,28 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
     }
 }
 
-void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
+static inline void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
     (void)tmr;
     (void)cfg;
 }
 
-void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
 {
     (void)tmr;
 }
 
-void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
 {
     (void)tmr;
 }
 
-void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
 {
     (void)tmr;
 }
 
-int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
+static inline int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 {
     uint32_t mask = MXC_F_TMR_INTR_IRQ;
     uint32_t flags;
@@ -163,7 +163,7 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
     return -1; /* Not supported */
 }
 
-void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
+static inline void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
 #if defined(CONFIG_SOC_MAX32657)
     (void)tmr;
@@ -185,7 +185,7 @@ void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 #endif
 }
 
-void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
 {
     if (tmr->wkfl & MXC_F_TMR_WKFL_A) {
         // Write 1 to clear
@@ -193,17 +193,17 @@ void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
     }
 }
 
-void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
 {
     MXC_TMR_DisableInt(tmr);
 }
 
-void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
 {
     MXC_TMR_EnableInt(tmr);
 }
 
-int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
+static inline int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 {
     uint32_t mask = MXC_F_TMR_INTFL_IRQ_A | MXC_F_TMR_INTFL_IRQ_B;
     uint32_t flags;
