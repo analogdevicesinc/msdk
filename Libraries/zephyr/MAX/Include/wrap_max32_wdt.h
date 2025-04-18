@@ -37,7 +37,7 @@ typedef struct {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
 
 #define WRAP_MXC_F_WDT_CTRL_EN MXC_F_WDT_CTRL_WDT_EN
 

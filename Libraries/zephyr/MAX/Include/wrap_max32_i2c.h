@@ -29,7 +29,7 @@ extern "C" {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
 
 /*
  *  Control register bits
@@ -39,6 +39,21 @@ extern "C" {
 /*
  *  Interrupt enable bits
  */
+#if defined(CONFIG_SOC_MAX32650)
+#define ADI_MAX32_I2C_INT_EN0_RX_THD MXC_F_I2C_INT_EN0_RXTHIE
+#define ADI_MAX32_I2C_INT_EN0_TX_LOCK_OUT MXC_F_I2C_INT_EN0_TXLOIE
+#define ADI_MAX32_I2C_INT_EN0_TX_THD MXC_F_I2C_INT_EN0_TXTHIE
+#define ADI_MAX32_I2C_INT_EN0_DONE MXC_F_I2C_INT_EN0_DONEIE
+#define ADI_MAX32_I2C_INT_EN0_STOP MXC_F_I2C_INT_EN0_STOPIE
+#define ADI_MAX32_I2C_INT_EN0_ADDR_MATCH MXC_F_I2C_INT_EN0_AMIE
+#define ADI_MAX32_I2C_INT_EN0_ADDR_ACK MXC_F_I2C_INT_EN0_ADRACKIE
+#define ADI_MAX32_I2C_INT_EN1_RX_OVERFLOW MXC_F_I2C_INT_EN1_RXOFIE
+#define ADI_MAX32_I2C_INT_EN1_TX_UNDERFLOW MXC_F_I2C_INT_EN1_TXUFIE
+#define ADI_MAX32_I2C_INT_EN0_ERR                                                          \
+    (MXC_F_I2C_INT_EN0_ARBERIE | MXC_F_I2C_INT_EN0_TOERIE | MXC_F_I2C_INT_EN0_ADRERIE |    \
+     MXC_F_I2C_INT_EN0_DATAERIE | MXC_F_I2C_INT_EN0_DNRERIE | MXC_F_I2C_INT_EN0_STRTERIE | \
+     MXC_F_I2C_INT_EN0_STOPERIE)
+#else
 #define ADI_MAX32_I2C_INT_EN0_RX_THD MXC_F_I2C_INT_EN0_RX_THRESH
 #define ADI_MAX32_I2C_INT_EN0_TX_LOCK_OUT MXC_F_I2C_INT_EN0_TX_LOCK_OUT
 #define ADI_MAX32_I2C_INT_EN0_TX_THD MXC_F_I2C_INT_EN0_TX_THRESH
@@ -48,15 +63,29 @@ extern "C" {
 #define ADI_MAX32_I2C_INT_EN0_ADDR_ACK MXC_F_I2C_INT_EN0_ADDR_ACK
 #define ADI_MAX32_I2C_INT_EN1_RX_OVERFLOW MXC_F_I2C_INT_EN1_RX_OVERFLOW
 #define ADI_MAX32_I2C_INT_EN1_TX_UNDERFLOW MXC_F_I2C_INT_EN1_TX_UNDERFLOW
-
 #define ADI_MAX32_I2C_INT_EN0_ERR                                                                \
     (MXC_F_I2C_INT_EN0_ARB_ER | MXC_F_I2C_INT_EN0_TO_ER | MXC_F_I2C_INT_EN0_ADDR_NACK_ER |       \
      MXC_F_I2C_INT_EN0_DATA_ER | MXC_F_I2C_INT_EN0_DO_NOT_RESP_ER | MXC_F_I2C_INT_EN0_START_ER | \
      MXC_F_I2C_INT_EN0_STOP_ER)
+#endif
 
 /*
  *  Interrupt flags
  */
+#if defined(CONFIG_SOC_MAX32650)
+#define ADI_MAX32_I2C_INT_FL0_RX_THD MXC_F_I2C_INT_FL0_RXTHI
+#define ADI_MAX32_I2C_INT_FL0_TX_LOCK_OUT MXC_F_I2C_INT_FL0_TXLOI
+#define ADI_MAX32_I2C_INT_FL0_TX_THD MXC_F_I2C_INT_FL0_TXTHI
+#define ADI_MAX32_I2C_INT_FL0_ADDR_MATCH MXC_F_I2C_INT_FL0_AMI
+#define ADI_MAX32_I2C_INT_FL0_ADDR_ACK MXC_F_I2C_INT_FL0_ADRACKI
+#define ADI_MAX32_I2C_INT_FL0_STOP MXC_F_I2C_INT_FL0_STOPI
+#define ADI_MAX32_I2C_INT_FL0_DONE MXC_F_I2C_INT_FL0_DONEI
+#define ADI_MAX32_I2C_INT_FL1_RX_OVERFLOW MXC_F_I2C_INT_FL1_RXOFI
+#define ADI_MAX32_I2C_INT_FL0_ERR                                                       \
+    (MXC_F_I2C_INT_FL0_ARBERI | MXC_F_I2C_INT_FL0_TOERI | MXC_F_I2C_INT_FL0_ADRERI |    \
+     MXC_F_I2C_INT_FL0_DATAERI | MXC_F_I2C_INT_FL0_DNRERI | MXC_F_I2C_INT_FL0_STRTERI | \
+     MXC_F_I2C_INT_FL0_STOPERI)
+#else
 #define ADI_MAX32_I2C_INT_FL0_RX_THD MXC_F_I2C_INT_FL0_RX_THRESH
 #define ADI_MAX32_I2C_INT_FL0_TX_LOCK_OUT MXC_F_I2C_INT_FL0_TX_LOCK_OUT
 #define ADI_MAX32_I2C_INT_FL0_TX_THD MXC_F_I2C_INT_FL0_TX_THRESH
@@ -65,11 +94,11 @@ extern "C" {
 #define ADI_MAX32_I2C_INT_FL0_STOP MXC_F_I2C_INT_FL0_STOP
 #define ADI_MAX32_I2C_INT_FL0_DONE MXC_F_I2C_INT_FL0_DONE
 #define ADI_MAX32_I2C_INT_FL1_RX_OVERFLOW MXC_F_I2C_INT_FL1_RX_OVERFLOW
-
 #define ADI_MAX32_I2C_INT_FL0_ERR                                                                \
     (MXC_F_I2C_INT_FL0_ARB_ER | MXC_F_I2C_INT_FL0_TO_ER | MXC_F_I2C_INT_FL0_ADDR_NACK_ER |       \
      MXC_F_I2C_INT_FL0_DATA_ER | MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER | MXC_F_I2C_INT_FL0_START_ER | \
      MXC_F_I2C_INT_FL0_STOP_ER)
+#endif
 
 /*
  *  DMA enable bits
@@ -107,22 +136,65 @@ static inline void Wrap_MXC_I2C_SetRxCount(mxc_i2c_regs_t *i2c, unsigned int len
 
 static inline void Wrap_MXC_I2C_WaitForRestart(mxc_i2c_regs_t *i2c)
 {
+#if defined(CONFIG_SOC_MAX32650)
+    while (i2c->mstr_mode & MXC_F_I2C_MSTR_MODE_RESTART) {}
+#else
     while (i2c->master_ctrl & MXC_F_I2C_MASTER_CTRL_RESTART) {}
+#endif
 }
 
 static inline void Wrap_MXC_I2C_Start(mxc_i2c_regs_t *i2c)
 {
+#if defined(CONFIG_SOC_MAX32650)
+    i2c->mstr_mode |= MXC_F_I2C_MSTR_MODE_START;
+#else
     i2c->master_ctrl |= MXC_F_I2C_MASTER_CTRL_START;
+#endif
 }
 
 static inline void Wrap_MXC_I2C_Restart(mxc_i2c_regs_t *i2c)
 {
+#if defined(CONFIG_SOC_MAX32650)
+    i2c->mstr_mode |= MXC_F_I2C_MSTR_MODE_RESTART;
+#else
     i2c->master_ctrl |= MXC_F_I2C_MASTER_CTRL_RESTART;
+#endif
 }
 
 static inline void Wrap_MXC_I2C_Stop(mxc_i2c_regs_t *i2c)
 {
+#if defined(CONFIG_SOC_MAX32650)
+    i2c->mstr_mode |= MXC_F_I2C_MSTR_MODE_STOP;
+#else
     i2c->master_ctrl |= MXC_F_I2C_MASTER_CTRL_STOP;
+#endif
+}
+
+static inline void Wrap_MXC_I2C_WaitForBusyClear(mxc_i2c_regs_t *i2c)
+{
+#if defined(CONFIG_SOC_MAX32650)
+    while (i2c->stat & MXC_F_I2C_STAT_CKMD) {}
+#else
+    while (i2c->status & MXC_F_I2C_STATUS_CLK_MODE) {}
+#endif
+}
+
+static inline void Wrap_MXC_I2C_GetCtrl(mxc_i2c_regs_t *i2c, unsigned int *ctrl)
+{
+#if defined(CONFIG_SOC_MAX32650)
+    *ctrl = i2c->ctrl0;
+#else
+    *ctrl = i2c->ctrl;
+#endif
+}
+
+static inline uint32_t Wrap_MXC_I2C_GetReadWriteBitStatus(mxc_i2c_regs_t *i2c)
+{
+#if defined(CONFIG_SOC_MAX32650)
+    return i2c->ctrl0 & MXC_F_I2C_CTRL0_READ;
+#else
+    return i2c->ctrl & MXC_F_I2C_CTRL_READ;
+#endif
 }
 
 /*
@@ -225,6 +297,21 @@ static inline void Wrap_MXC_I2C_Restart(mxc_i2c_regs_t *i2c)
 static inline void Wrap_MXC_I2C_Stop(mxc_i2c_regs_t *i2c)
 {
     i2c->mstctrl |= MXC_F_I2C_MSTCTRL_STOP;
+}
+
+static inline void Wrap_MXC_I2C_WaitForBusyClear(mxc_i2c_regs_t *i2c)
+{
+    while (i2c->status & MXC_F_I2C_STATUS_MST_BUSY) {}
+}
+
+static inline void Wrap_MXC_I2C_GetCtrl(mxc_i2c_regs_t *i2c, unsigned int *ctrl)
+{
+    *ctrl = i2c->ctrl;
+}
+
+static inline uint32_t Wrap_MXC_I2C_GetReadWriteBitStatus(mxc_i2c_regs_t *i2c)
+{
+    return i2c->ctrl & MXC_F_I2C_CTRL_READ;
 }
 
 #endif
