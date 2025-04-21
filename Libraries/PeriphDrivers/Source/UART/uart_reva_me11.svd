@@ -646,13 +646,13 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TXDMA_LVL</name>
+            <name>TXDMA_LEVEL</name>
             <description>TX threshold for DMA transmission.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>6</bitWidth>
           </field>
           <field>
-            <name>RXDMA_LVL</name>
+            <name>RXDMA_LEVEL</name>
             <description>RX threshold for DMA transmission.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>6</bitWidth>
