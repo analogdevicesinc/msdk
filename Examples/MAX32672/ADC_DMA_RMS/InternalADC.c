@@ -103,10 +103,10 @@ void InternalADC_StartSampling(ADC_Callback callback)
     adcConv.avg_number = MXC_ADC_AVG_1; //No averaging
     adcConv.fifo_format = MXC_ADC_DATA; //Data only.
     adcConv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_DISABLE;
-    adcConv.num_slots = 0; //1 slot/single channel
-    adcConv.fifo_threshold = 0;
+    adcConv.num_slots = 1; //1 slot/single channel
+    adcConv.fifo_threshold = 1;
     MXC_ADC_Configuration(&adcConv);
-    MXC_ADC_SlotConfiguration(&adcSingleSlot, 0);
+    MXC_ADC_SlotConfiguration(&adcSingleSlot, 1);
 
     //Default the buffer indexes
     activeIndex = 0;

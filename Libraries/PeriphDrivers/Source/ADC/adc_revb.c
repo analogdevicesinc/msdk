@@ -234,7 +234,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_DMA_EN; //Enable ADC DMA
 
-    num_bytes = (req->num_slots + 1) * 4; //Support 8 slots (32 bytes) only. (TODO)
+    num_bytes = (req->num_slots) * 4; //Support 8 slots (32 bytes) only. (TODO)
 
     channel = req->dma_channel;
 

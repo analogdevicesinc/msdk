@@ -186,16 +186,16 @@ void adc_example1_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_16;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 0;
+    adc_conv.fifo_threshold = 1;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 0;
+    adc_conv.num_slots = 1;
 
     MXC_ADC_Configuration(&adc_conv);
 
-    MXC_ADC_SlotConfiguration(&single_slot, 0);
+    MXC_ADC_SlotConfiguration(&single_slot, 1);
 }
 
 /* Multi Channel Example */
@@ -211,7 +211,7 @@ void adc_example2_configuration(void)
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 1; // Match number of channels - 1
+    adc_conv.num_slots = 1; // Match number of channels
 
     MXC_ADC_Configuration(&adc_conv);
 

@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -404,16 +404,16 @@ void adc_example1_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_16;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 0;
+    adc_conv.fifo_threshold = 1;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 0;
+    adc_conv.num_slots = 1;
 
     MXC_ADC_Configuration(&adc_conv);
 
-    MXC_ADC_SlotConfiguration(&single_slot, 0);
+    MXC_ADC_SlotConfiguration(&single_slot, 1);
 }
 
 /* Temperature Sensor */
@@ -426,16 +426,16 @@ void adc_example2_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_8;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 2;
+    adc_conv.fifo_threshold = 3;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 2;
+    adc_conv.num_slots = 3;
 
     MXC_ADC_Configuration(&adc_conv);
 
-    MXC_ADC_SlotConfiguration(three_slots, 2);
+    MXC_ADC_SlotConfiguration(three_slots, 3);
 }
 
 /* Multi Channel Example */
@@ -448,17 +448,17 @@ void adc_example3_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_1;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 7;
+    adc_conv.fifo_threshold = 8;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     //    adc_conv.fifo_threshold = 8;
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 7;
+    adc_conv.num_slots = 8;
 
     MXC_ADC_Configuration(&adc_conv);
 
-    MXC_ADC_SlotConfiguration(multi_slots, 7);
+    MXC_ADC_SlotConfiguration(multi_slots, 8);
 }
 
 void temperature_average(float temperature)
