@@ -165,7 +165,10 @@ int MXC_SPI_SetSlave(mxc_spi_regs_t *spi, int ssIdx)
 int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
 {
     int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
 
     int slvSel = (spi->ctrl0 & MXC_F_SPI_CTRL0_SS_SEL) >> MXC_F_SPI_CTRL0_SS_SEL_POS;
 

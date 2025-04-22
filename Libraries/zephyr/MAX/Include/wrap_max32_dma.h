@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
 #define ADI_MAX32_DMA_CTRL_DIS_IE MXC_F_DMA_CFG_CHDIEN
 #define ADI_MAX32_DMA_CTRL_CTZIEN MXC_F_DMA_CFG_CTZIEN
 
@@ -50,7 +50,7 @@ extern "C" {
 
 static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
     return dma->intr;
 #else
     return dma->intfl;
