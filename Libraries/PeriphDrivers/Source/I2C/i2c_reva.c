@@ -902,6 +902,11 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
         return E_BAD_STATE;
     }
 
+    // Check and return BUSY if the Bus is not ready
+    if (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {
+        return E_BUSY;
+    }
+
     // if(!read | write)
     //  Start
     //  send addr w/ write bit
