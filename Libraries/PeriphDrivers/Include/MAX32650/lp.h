@@ -381,6 +381,11 @@ void MXC_LP_USBClearPONRST(void);
  */
 void MXC_LP_USBSetPONRST(void);
 
+/**
+ * @brief      clear all wake up status
+ */
+void MXC_LP_ClearWakeStatus(void);
+
 /**@} end of group lp */
 
 #ifdef __cplusplus
