@@ -44,10 +44,12 @@ extern "C" {
  * @{
  */
 
-/* MAX32672 Specific */
-#define MAX_ADC_SLOT_NUM 29
+/* MAX32690 Specific */
+#define MAX_ADC_SLOT_NUM \
+    21 ///< Channels 8-11 and 16-17 are reserved. This definition is used to check max slot ID limit
 #define MAX_ADC_FIFO_LEN 16
 #define MAX_ADC_RES_DIV_CH 12
+
 /***************************************************************************************************************
                                     DATA STRUCTURES FOR ADC INITIALIZATION
 ***************************************************************************************************************/
@@ -69,6 +71,9 @@ typedef enum {
     MXC_ADC_CH_TEMP_SENS = 13, ///< Select Channel 13
     MXC_ADC_CH_VCOREA = 14, ///< Select Channel 14
     MXC_ADC_CH_VSS = 15, ///< Select Channel 15
+    MXC_ADC_CH_VDBB3A_DIV4 = 18, ///< Select Channel 18
+    MXC_ADC_CH_VDBB_DIV4 = 19, ///< Select Channel 19
+    MXC_ADC_CH_VSSA = 20, ///< Select Channel 20
 } mxc_adc_chsel_t;
 
 /**

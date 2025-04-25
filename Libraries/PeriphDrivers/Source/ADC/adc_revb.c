@@ -234,7 +234,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_DMA_EN; //Enable ADC DMA
 
-    num_bytes = (req->num_slots + 1) * 4; //Support 8 slots (32 bytes) only. (TODO)
+    num_bytes = (req->num_slots) * 4; //Support 8 slots (32 bytes) only.
 
     channel = req->dma_channel;
 
@@ -412,12 +412,12 @@ int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
 
 int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
-    if (req->num_slots >= MAX_ADC_SLOT_NUM) {
+    if (req->num_slots > MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
     }
 
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_NUM_SLOTS;
-    adc->ctrl1 |= (uint32_t)(req->num_slots) << MXC_F_ADC_REVB_CTRL1_NUM_SLOTS_POS;
+    adc->ctrl1 |= (uint32_t)(req->num_slots - 1) << MXC_F_ADC_REVB_CTRL1_NUM_SLOTS_POS;
 
     return E_NO_ERROR;
 }
@@ -429,10 +429,11 @@ int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, ui
     uint32_t offset;
     uint32_t bitposition;
 
-    if (slot_num >= MAX_ADC_SLOT_NUM) {
+    if (slot_num > MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
     }
 
+    // 4 slot IDs per ADC_CHSELn register
     offset = slot_num >> 2;
 
     bitposition = ch << ((slot_num & 0x03) << 3);
