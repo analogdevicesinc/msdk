@@ -108,9 +108,9 @@ void ADC_IRQHandler(void)
 
 void adc_dma_callback(int ch, int err)
 {
-    adc_index = adc_conv.num_slots + 1;
+    adc_index = adc_conv.num_slots;
 
-    //    MXC_ADC_DisableConversion();
+    MXC_ADC_DisableConversion();
 
     dma_done = 1;
 }
@@ -206,16 +206,16 @@ void adc_example2_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_8;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 1; // Match number of channels - 1
+    adc_conv.fifo_threshold = 2; // Match number of channels
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 1; // Match number of channels
+    adc_conv.num_slots = 2; // Match number of channels
 
     MXC_ADC_Configuration(&adc_conv);
 
-    MXC_ADC_SlotConfiguration(multi_slots, 1); // Match number of channels - 1
+    MXC_ADC_SlotConfiguration(multi_slots, 2); // Match number of channels
 }
 
 void WaitforConversionComplete(void)

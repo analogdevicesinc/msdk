@@ -128,7 +128,7 @@ void ADC_IRQHandler(void)
 
 void adc_dma_callback(int ch, int err)
 {
-    adc_index = adc_conv.num_slots + 1;
+    adc_index = adc_conv.num_slots;
 
     MXC_ADC_DisableConversion();
 
