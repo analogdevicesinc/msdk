@@ -412,12 +412,12 @@ int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
 
 int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
-    if (req->num_slots >= MAX_ADC_SLOT_NUM) {
+    if (req->num_slots > MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
     }
 
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_NUM_SLOTS;
-    adc->ctrl1 |= (uint32_t)(req->num_slots) << MXC_F_ADC_REVB_CTRL1_NUM_SLOTS_POS;
+    adc->ctrl1 |= (uint32_t)(req->num_slots - 1) << MXC_F_ADC_REVB_CTRL1_NUM_SLOTS_POS;
 
     return E_NO_ERROR;
 }
