@@ -46,8 +46,7 @@ extern "C" {
 
 /* MAX32690 Specific */
 #define MAX_ADC_SLOT_NUM \
-    21 ///< Channels 8-11 and 16-17 are reserved \
-        ///< This definition is used to check max slot ID limit
+    21 ///< Channels 8-11 and 16-17 are reserved. This definition is used to check max slot ID limit
 #define MAX_ADC_FIFO_LEN 16
 #define MAX_ADC_RES_DIV_CH 12
 
