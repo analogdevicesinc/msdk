@@ -104,7 +104,7 @@ void InternalADC_StartSampling(ADC_Callback callback)
     adcConv.fifo_format = MXC_ADC_DATA; //Data only.
     adcConv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_DISABLE;
     adcConv.num_slots = 1; //1 slot/single channel
-    adcConv.fifo_threshold = 1;
+    adcConv.fifo_threshold = 0; //Threshold for DMA set to num_slots - 1 to trigger DMA request
     MXC_ADC_Configuration(&adcConv);
     MXC_ADC_SlotConfiguration(&adcSingleSlot, 1);
 

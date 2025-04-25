@@ -351,7 +351,7 @@ int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t *adc, uint32_t fifo_t
     }
 
     adc->fifodmactrl &= ~MXC_F_ADC_REVB_FIFODMACTRL_THRESH;
-    adc->fifodmactrl |= (uint32_t)(fifo_threshold << MXC_F_ADC_REVB_FIFODMACTRL_THRESH_POS);
+    adc->fifodmactrl |= (uint32_t)((fifo_threshold) << MXC_F_ADC_REVB_FIFODMACTRL_THRESH_POS);
 
     return E_NO_ERROR;
 }

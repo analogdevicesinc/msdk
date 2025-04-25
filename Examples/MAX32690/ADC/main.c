@@ -404,7 +404,8 @@ void adc_example1_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_16;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 1;
+    // The threshold for DMA should be set to num_slots - 1 to trigger DMA request
+    adc_conv.fifo_threshold = 0;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
@@ -426,7 +427,8 @@ void adc_example2_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_8;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 3;
+    // The threshold for DMA should be set to num_slots - 1 to trigger DMA request
+    adc_conv.fifo_threshold = 2;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
@@ -448,7 +450,8 @@ void adc_example3_configuration(void)
     adc_conv.avg_number = MXC_ADC_AVG_1;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
-    adc_conv.fifo_threshold = 8;
+    // The threshold for DMA should be set to num_slots - 1 to trigger DMA request
+    adc_conv.fifo_threshold = 7;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif

@@ -170,7 +170,8 @@ void adc_example1_configuration(void)
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
     adc_conv.num_slots = 1;
 #ifdef DMA
-    adc_conv.fifo_threshold = 1;
+    // The threshold for DMA should be set to num_slots - 1 to trigger DMA request
+    adc_conv.fifo_threshold = 0;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
@@ -191,7 +192,8 @@ void adc_example2_configuration(void)
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
     adc_conv.num_slots = 3;
 #ifdef DMA
-    adc_conv.fifo_threshold = 3;
+    // The threshold for DMA should be set to num_slots - 1 to trigger DMA request
+    adc_conv.fifo_threshold = 2;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
