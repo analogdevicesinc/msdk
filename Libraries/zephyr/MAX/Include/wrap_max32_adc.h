@@ -227,7 +227,7 @@ static inline void Wrap_MXC_ADC_ChannelSelect(uint32_t *sample_channels)
     uint8_t slot_index = 0;
     int channel_id;
 
-    req.num_slots = num_of_channels - 1;
+    req.num_slots = num_of_channels;
 
     for (slot_index = 0; slot_index < num_of_channels; slot_index++) {
         channel_id = wrap_utils_find_lsb_set(*sample_channels);
@@ -242,7 +242,7 @@ static inline void Wrap_MXC_ADC_ChannelSelect(uint32_t *sample_channels)
 
     MXC_ADC_Clear_ChannelSelect();
     MXC_ADC_SlotsConfig(&req);
-    MXC_ADC_SlotConfiguration(slots, num_of_channels - 1);
+    MXC_ADC_SlotConfiguration(slots, num_of_channels);
 }
 
 static inline int Wrap_MXC_ADC_ReferenceSelect(uint8_t ref)
