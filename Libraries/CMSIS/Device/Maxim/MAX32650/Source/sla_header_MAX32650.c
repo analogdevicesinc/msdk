@@ -58,7 +58,11 @@ typedef struct {
     unsigned int AppVersionNumber; //> Version of this application
 } flash_app_header_t;
 
+#ifdef USE_ZEPHYR_SECTIONS
+__attribute__((section(".rom_start"))) __attribute__((__used__))
+#else
 __attribute__((section(".sb_sla_header"))) __attribute__((__used__))
+#endif
 const flash_app_header_t sb_header = {
     .Magic =
         {
