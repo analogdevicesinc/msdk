@@ -32,6 +32,13 @@ zephyr_compile_definitions(
     -DMSDK_NO_LOCKING=1
 )
 
+if (CONFIG_MAX32_SECURE_SOC)
+zephyr_compile_definitions(
+    -D__SLA_FWK__
+    -DUSE_ZEPHYR_SECTIONS=1
+)
+endif()
+
 get_filename_component(MSDK_LIBRARY_DIR "./Libraries" ABSOLUTE)
 set(MSDK_CMSIS_DIR       ${MSDK_LIBRARY_DIR}/CMSIS/Device/Maxim/${TARGET_UC})
 set(MSDK_PERIPH_DIR      ${MSDK_LIBRARY_DIR}/PeriphDrivers)

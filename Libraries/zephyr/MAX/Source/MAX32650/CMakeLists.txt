@@ -70,6 +70,10 @@ zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/DMA/dma_reva.c
 )
 
+if (CONFIG_MAX32_SECURE_SOC)
+zephyr_library_sources(${MSDK_CMSIS_DIR}/Source/sla_header_MAX32650.c)
+endif()
+
 if (CONFIG_UART_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/UART/uart_common.c
