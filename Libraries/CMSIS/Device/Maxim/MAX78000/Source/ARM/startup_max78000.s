@@ -1,6 +1,6 @@
 ;******************************************************************************
 ;
-; Copyright (C) 2024 Analog Devices, Inc.
+; Copyright (C) 2024-2025 Analog Devices, Inc.
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
 ; you may not use this file except in compliance with the License.
@@ -269,7 +269,7 @@ Default_Handler PROC
     EXPORT  RSV22_IRQHandler    [WEAK]    ; 0x26  0x0098  38: Reserved
     EXPORT  FLC0_IRQHandler     [WEAK]    ; 0x27  0x009C  39: Flash Controller 0
     IMPORT  GPIO0_IRQHandler              ; 0x28  0x00A0  40: GPIO0                 DEFINED IN board.c
-    EXPORT  GPIO1_IRQHandler    [WEAK]    ; 0x29  0x00A4  41: GPIO1
+    IMPORT  GPIO1_IRQHandler              ; 0x29  0x00A4  41: GPIO1                 DEFINED IN board.c
     IMPORT  GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2 (LP)            DEFINED IN board.c
     EXPORT  RSV27_IRQHandler    [WEAK]    ; 0x2B  0x00AC  43: Reserved
     EXPORT  DMA0_IRQHandler     [WEAK]    ; 0x2C  0x00B0  44: DMA0
@@ -376,9 +376,9 @@ ADC_IRQHandler
 RSV21_IRQHandler
 RSV22_IRQHandler
 FLC0_IRQHandler
-; GPIO0_IRQHandler - Defined in board.c
-GPIO1_IRQHandler
-; GPIO2_IRQHandler - Defined in board.c
+; GPIO0_IRQHandler ;<- Defined in board.c
+; GPIO1_IRQHandler ;<- Defined in board.c
+; GPIO2_IRQHandler ;<- Defined in board.c
 RSV27_IRQHandler
 DMA0_IRQHandler
 DMA1_IRQHandler

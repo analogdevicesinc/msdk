@@ -171,7 +171,9 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
 }
 
 /******************************************************************************/
-void NMI_Handler(void)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
+__weak void NMI_Handler(void)
 {
     __NOP();
 }
+#endif

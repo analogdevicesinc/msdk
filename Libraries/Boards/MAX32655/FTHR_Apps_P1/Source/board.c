@@ -372,11 +372,13 @@ void GPIO_PrepForSleep(void)
     /* TODO: Setup the unused GPIO high */
 }
 
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /******************************************************************************/
-void NMI_Handler(void)
+__weak void NMI_Handler(void)
 {
     __NOP();
 }
+#endif
 
 #ifdef __riscv
 /******************************************************************************/

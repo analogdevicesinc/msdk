@@ -227,11 +227,19 @@ void SendGridToARMCore(void)
             i++;
         }
     }
+
+    // Finish cache maintenance operations.
+    __DSB();
+    __DMB();
 }
 
 inline void SendKeypressToARMCore(void)
 {
     SEMA_ARM_MAILBOX->payload[MAILBOX_KEYPRESS_IDX] = (CONTROLLER_KEYPRESS >> (8 * 0)) & 0xFF;
+
+    // Finish cache maintenance operations.
+    __DSB();
+    __DMB();
 }
 
 void SendNewBlockIndexToARMCore(uint8_t *new_block_idx, uint8_t did_block_move_or_is_init)
@@ -239,11 +247,19 @@ void SendNewBlockIndexToARMCore(uint8_t *new_block_idx, uint8_t did_block_move_o
     SEMA_ARM_MAILBOX->payload[MAILBOX_IF_BLOCK_MOVED_IDX] = (did_block_move_or_is_init >> (8 * 0)) &
                                                             0xFF;
     SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] = (*new_block_idx >> (8 * 0)) & 0xFF;
+
+    // Finish cache maintenance operations.
+    __DSB();
+    __DMB();
 }
 
 void SendGameStateToARMCore(game_state_t state)
 {
     SEMA_ARM_MAILBOX->payload[MAILBOX_GAME_STATE_IDX] = (state >> (8 * 0)) & 0xFF;
+
+    // Finish cache maintenance operations.
+    __DSB();
+    __DMB();
 }
 
 void SendMovesCountToARMCore(uint32_t moves_count)
@@ -252,6 +268,10 @@ void SendMovesCountToARMCore(uint32_t moves_count)
     SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 1] = (moves_count >> (8 * 1)) & 0xFF;
     SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 2] = (moves_count >> (8 * 2)) & 0xFF;
     SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 3] = (moves_count >> (8 * 3)) & 0xFF;
+
+    // Finish cache maintenance operations.
+    __DSB();
+    __DMB();
 }
 
 // *****************************************************************************

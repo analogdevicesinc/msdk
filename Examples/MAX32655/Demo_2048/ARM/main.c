@@ -74,6 +74,9 @@ void ReceiveGridFromRISCVCore(void)
 {
     int i = MAILBOX_MAIN_GRID_IDX;
 
+    // Invalidate the ARM core cache for mailbox region (may be stale since RISC-V last wrote).
+    MXC_ICC_Invalidate();
+
     // Grid state.
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
@@ -124,6 +127,9 @@ graphics_slide_direction_t ReceiveDirectionFromRISCVCore(void)
 
 bool ReceiveNewBlockLocationFromRISCVCore(uint16_t *row, uint16_t *col)
 {
+    // Invalidate the ARM core cache for mailbox region (may be stale since RISC-V last wrote).
+    MXC_ICC_Invalidate();
+
     uint8_t new_block_added = SEMA_ARM_MAILBOX->payload[MAILBOX_IF_BLOCK_MOVED_IDX];
     if (new_block_added) { // true
         *row = (uint16_t)(SEMA_ARM_MAILBOX->payload[MAILBOX_NEW_BLOCK_LOCATION_IDX] / 4);
@@ -138,12 +144,19 @@ bool ReceiveNewBlockLocationFromRISCVCore(uint16_t *row, uint16_t *col)
 
 game_state_t ReceiveGameStateFromRISCVCore(void)
 {
+    // Invalidate the ARM core cache for mailbox region (may be stale since RISC-V last wrote).
+    MXC_ICC_Invalidate();
+
     return SEMA_ARM_MAILBOX->payload[MAILBOX_GAME_STATE_IDX];
 }
 
 uint32_t ReceiveMovesCountFromRISCVCore(void)
 {
     uint32_t moves_count = 0;
+
+    // Invalidate the ARM core cache for mailbox region (may be stale since RISC-V last wrote).
+    MXC_ICC_Invalidate();
+
     moves_count = SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX] << (8 * 0);
     moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 1] << (8 * 1);
     moves_count += SEMA_ARM_MAILBOX->payload[MAILBOX_MOVES_COUNT_IDX + 2] << (8 * 2);

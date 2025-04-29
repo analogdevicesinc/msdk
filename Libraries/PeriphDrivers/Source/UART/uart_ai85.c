@@ -483,7 +483,7 @@ int MXC_UART_SetTXThreshold(mxc_uart_regs_t *uart, unsigned int numBytes)
 
 unsigned int MXC_UART_GetTXThreshold(mxc_uart_regs_t *uart)
 {
-    return E_NOT_SUPPORTED;
+    return (unsigned int)E_NOT_SUPPORTED;
 }
 
 unsigned int MXC_UART_GetFlags(mxc_uart_regs_t *uart)

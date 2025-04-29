@@ -2532,7 +2532,7 @@
       &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.0"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/MiscDrivers/TempSensor/max31889_driver.c" version="1.4.0"/&gt;
     &lt;/component&gt;
-    &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.6.0"&gt;
+    &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.9.0"&gt;
       &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.9.0"/&gt;
       &lt;file category="doc" name="CMSIS/Documentation/Core/html/index.html"/&gt;
       &lt;file category="include" name="CMSIS/Core/Include/"/&gt;

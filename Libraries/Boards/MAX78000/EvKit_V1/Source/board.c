@@ -262,11 +262,13 @@ int Console_Shutdown(void)
     return E_NO_ERROR;
 }
 
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /******************************************************************************/
-void NMI_Handler(void)
+__weak void NMI_Handler(void)
 {
     __NOP();
 }
+#endif
 
 #ifdef __riscv
 /******************************************************************************/

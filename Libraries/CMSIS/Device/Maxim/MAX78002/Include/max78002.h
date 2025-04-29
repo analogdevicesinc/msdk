@@ -149,7 +149,7 @@ typedef enum {
     RSV77_IRQn, /* 0x5D  0x0174  93: Reserved */
     RSV78_IRQn, /* 0x5E  0x0178  94: Reserved */
     RSV79_IRQn, /* 0x5F  0x017C  95: Reserved */
-    USBDMA_IRQn, /* 0x60  0x0180  96: USB DMA */
+    RSV80_IRQn, /* 0x60  0x0180  96: Reserved */
     RSV81_IRQn, /* 0x61  0x0184  97: Reserved */
     ECC_IRQn, /* 0x62  0x0188  98: ECC */
     DVS_IRQn, /* 0x63  0x018C  99: DVS */

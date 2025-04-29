@@ -287,9 +287,9 @@ Default_Handler\
                 EXPORT    RSV21_IRQHandler              [WEAK]  ; 0x25  0x0094  37: Reserved 
                 EXPORT    RSV22_IRQHandler              [WEAK]  ; 0x26  0x0098  38: Reserved
                 EXPORT    FLC0_IRQHandler               [WEAK]  ; 0x27  0x009C  39: Flash Controller 0
-                EXPORT    GPIO0_IRQHandler              [WEAK]  ; 0x28  0x00A0  40: GPIO0 
-                EXPORT    GPIO1_IRQHandler              [WEAK]  ; 0x29  0x00A4  41: GPIO1
-                EXPORT    GPIO2_IRQHandler              [WEAK]  ; 0x2A  0x00A8  42: GPIO2
+                IMPORT    GPIO0_IRQHandler                      ; 0x28  0x00A0  40: GPIO0  <- Defined in board.c
+                IMPORT    GPIO1_IRQHandler                      ; 0x29  0x00A4  41: GPIO1  <- Defined in board.c
+                IMPORT    GPIO2_IRQHandler                      ; 0x2A  0x00A8  42: GPIO2  <- Defined in board.c
                 EXPORT    RSV27_IRQHandler              [WEAK]  ; 0x2B  0x00AC  43: Reserved
                 EXPORT    DMA0_IRQHandler               [WEAK]  ; 0x2C  0x00B0  44: DMA0 
                 EXPORT    DMA1_IRQHandler               [WEAK]  ; 0x2D  0x00B4  45: DMA1 
@@ -321,7 +321,7 @@ Default_Handler\
                 EXPORT    RSV55_IRQHandler              [WEAK]  ; 0x47  0x011C  71: Reserved 
                 EXPORT    SPI0_IRQHandler               [WEAK]  ; 0x48  0x0120  72: SPI0 
                 EXPORT    WDT1_IRQHandler               [WEAK]  ; 0x49  0x0124  73: Watchdog 1
-                EXPORT    GPIO3_IRQHandler              [WEAK]  ; 0x4A  0x0128  74: GPIO3 
+                IMPORT    GPIO3_IRQHandler                      ; 0x4A  0x0128  74: GPIO3  <- Defined in board.c
                 EXPORT    PT_IRQHandler                 [WEAK]  ; 0x4B  0x012C  75: Pulse Train
                 EXPORT    RSV59_IRQHandler              [WEAK]  ; 0x4C  0x0130  76: Reserved 
                 EXPORT    RSV61_IRQHandler              [WEAK]  ; 0x4D  0x0134  77: Reserved 
@@ -392,9 +392,9 @@ ADC_IRQHandler                ; 0x24  0x0090  36: ADC
 RSV21_IRQHandler              ; 0x25  0x0094  37: Reserved 
 RSV22_IRQHandler              ; 0x26  0x0098  38: Reserved
 FLC0_IRQHandler               ; 0x27  0x009C  39: Flash Controller 0
-GPIO0_IRQHandler              ; 0x28  0x00A0  40: GPIO0 
-GPIO1_IRQHandler              ; 0x29  0x00A4  41: GPIO1 
-GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2
+; GPIO0_IRQHandler              ; 0x28  0x00A0  40: GPIO0  <- Defined in board.c
+; GPIO1_IRQHandler              ; 0x29  0x00A4  41: GPIO1  <- Defined in board.c
+; GPIO2_IRQHandler              ; 0x2A  0x00A8  42: GPIO2  <- Defined in board.c
 RSV27_IRQHandler              ; 0x2B  0x00AC  43: Reserved
 DMA0_IRQHandler               ; 0x2C  0x00B0  44: DMA0 
 DMA1_IRQHandler               ; 0x2D  0x00B4  45: DMA1 
@@ -426,7 +426,7 @@ GPIOWAKE_IRQHandler           ; 0x46  0x0118  70: GPIO Wakeup
 RSV55_IRQHandler              ; 0x47  0x011C  71: Reserved
 SPI0_IRQHandler               ; 0x48  0x0120  72: SPI 0 
 WDT1_IRQHandler               ; 0x49  0x0124  73: Watchdog 1 
-GPIO3_IRQHandler              ; 0x4A  0x0128  74: GPIO3 
+; GPIO3_IRQHandler              ; 0x4A  0x0128  74: GPIO3  <- Defined in board.c
 PT_IRQHandler                 ; 0x4B  0x012C  75: Pulse Train
 RSV59_IRQHandler              ; 0x4C  0x0130  76: Reserved 
 RSV61_IRQHandler              ; 0x4D  0x0134  77: Reserved 
@@ -468,9 +468,6 @@ RSV96_IRQHandler              ; 0x70  0x01C0  112: Reserved
 AES_IRQHandler                ; 0x71  0x01C4  113: AES  
 CRC_IRQHandler                ; 0x72  0x01C8  114: CRC
 I2S_IRQHandler                ; 0x73  0x01CC  115: I2S
-
-			
-
 
                 B       .
                 ENDP

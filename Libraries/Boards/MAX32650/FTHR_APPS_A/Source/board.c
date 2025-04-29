@@ -78,7 +78,10 @@ void mxc_assert(const char *expr, const char *file, int line)
  * NOTE: This weak definition is included to support Push Button interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
-__weak void GPIO1_IRQHandler(void)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
+__weak
+#endif
+void GPIO1_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
 }
@@ -133,7 +136,7 @@ int Console_Init(void)
     return E_NO_ERROR;
 }
 
-#if defined(__GNUC__)
+#if !defined(__ARMCC_VERSION) && !defined(__ICCARM__)
 /* ************************************************************************** */
 void NMI_Handler(void)
 {
@@ -205,5 +208,30 @@ int MAX11261_Init(void)
     max11261_adc_set_ready_func(max11261_ready);
 
     return E_NO_ERROR;
+}
+#endif
+
+/******************************************************************************
+ *
+ *  These functions are defined multiple times in IAR and Keil startup files.
+ *  Similar to the NMI and HardFault handlers, the GPIOn Handler functions
+ *  that aren't used by the push button library will be defined here for the
+ *  IAR and Keil.
+ * 
+ */
+#if defined(__ARMCC_VERSION) || defined(__ICCARM__)
+void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
+void GPIO3_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO3));
 }
 #endif
