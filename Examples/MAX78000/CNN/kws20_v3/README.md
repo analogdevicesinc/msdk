@@ -29,33 +29,32 @@ The Console UART of the device will output these messages:
 ```
 Waiting...
 
-*** CNN Inference Test ***
+*** CNN Inference Test kws20_v3_msnoise_mixed ***
 
 *** PASS ***
 
 Approximate inference time: 1442 us
 
 Classification results:
-[    191] -> Class 0: 0.0%
-[-235607] -> Class 1: 0.0%
-[-113863] -> Class 2: 0.0%
-[ -66589] -> Class 3: 0.0%
-[ -38249] -> Class 4: 0.0%
-[ 161338] -> Class 5: 30.1%
-[-336965] -> Class 6: 0.0%
-[  -8646] -> Class 7: 0.0%
-[  24210] -> Class 8: 0.1%
-[ 109081] -> Class 9: 1.9%
-[   9228] -> Class 10: 0.0%
-[ -96418] -> Class 11: 0.0%
-[-115699] -> Class 12: 0.0%
-[ 184492] -> Class 13: 60.3%
-[-192648] -> Class 14: 0.0%
-[-130068] -> Class 15: 0.0%
-[-240222] -> Class 16: 0.0%
-[-208509] -> Class 17: 0.0%
-[-288923] -> Class 18: 0.0%
-[ -88923] -> Class 19: 0.0%
-[ 142498] -> Class 20: 7.5%
-```
+[  17488] -> Class 0: 21.7%
+[ -76122] -> Class 1: 0.3%
+[ -25209] -> Class 2: 2.7%
+[ -57584] -> Class 3: 0.7%
+[ -31752] -> Class 4: 2.7%
+[ -22422] -> Class 5: 2.7%
+[ -63525] -> Class 6: 0.7%
+[ -23944] -> Class 7: 2.7%
+[  12535] -> Class 8: 10.8%
+[  39749] -> Class 9: 43.3%
+[ -36939] -> Class 10: 1.4%
+[ -71097] -> Class 11: 0.3%
+[ -84904] -> Class 12: 0.2%
+[ -11567] -> Class 13: 5.4%
+[ -46028] -> Class 14: 1.4%
+[ -89064] -> Class 15: 0.2%
+[ -71201] -> Class 16: 0.3%
+[ -74598] -> Class 17: 0.3%
+[ -87440] -> Class 18: 0.2%
+[ -60752] -> Class 19: 0.7%
+[ -44343] -> Class 20: 1.4%
 
