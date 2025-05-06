@@ -1,25 +1,12 @@
-/******************************************************************************
- *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
- * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- ******************************************************************************/
+/**************************************************************************************************
+* Copyright (C) 2019-2021 Maxim Integrated Products, Inc. All Rights Reserved.
+*
+* Maxim Integrated Products, Inc. Default Copyright Notice:
+* https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+**************************************************************************************************/
 
 /*
- * This header file was automatically generated for the imagenet network from a template.
+ * This header file was automatically @generated for the imagenet network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
@@ -73,8 +60,8 @@ typedef int16_t q15_t;
     Layer 33 (l33): 1,224,704 ops (1,024,000 macc; 0 comp; 200,704 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
-  Weight memory: 1,686,080 bytes out of 2,396,160 bytes total (70%)
-  Bias memory:   5,544 bytes out of 8,192 bytes total (68%)
+  Weight memory: 1,686,080 bytes out of 2,396,160 bytes total (70.4%)
+  Bias memory:   5,544 bytes out of 8,192 bytes total (67.7%)
 */
 
 /* Number of outputs for this network */
@@ -91,10 +78,9 @@ typedef int16_t q15_t;
 #define SYS_COMPLETE LED_Off(0)
 
 /* Run software SoftMax on unloaded data */
-void softmax_q17p14_q15(const q31_t *vec_in, const uint16_t dim_vec, q15_t *p_out);
+void softmax_q17p14_q15(const q31_t * vec_in, const uint16_t dim_vec, q15_t * p_out);
 /* Shift the input, then calculate SoftMax */
-void softmax_shift_q17p14_q15(q31_t *vec_in, const uint16_t dim_vec, uint8_t in_shift,
-                              q15_t *p_out);
+void softmax_shift_q17p14_q15(q31_t * vec_in, const uint16_t dim_vec, uint8_t in_shift, q15_t * p_out);
 
 /* Stopwatch - holds the runtime when accelerator finishes */
 extern volatile uint32_t cnn_time;
