@@ -1,0 +1,139 @@
+{
+    "configurations": [
+        {
+            "name": "CFS: Debug with GDB and OpenOCD (ARM Embedded)",
+            "executable": "${command:cfs.selectProgramFile}",
+            "cwd": "${command:cfs.setDebugPath}",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "openocd",
+            "serverpath": "${config:cfs.openocd.path}/bin/openocd",
+            "armToolchainPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin",
+            "svdFile": "${command:cfs.cmsis.selectSvdFile}",
+            "searchDir": ["{config:cfs.openocd.path}/share/openocd/scripts"],
+            "configFiles": [
+                "${command:cfs.openocd.selectInterface}",
+                "${command:cfs.openocd.selectTarget}"
+            ],
+            "gdbTarget": "localhost:3333",
+            "preLaunchCommands": [
+                "set logging overwrite on",
+                "set logging file debug-arm.log",
+                "set logging on",
+                "set remotetimeout 60",
+                "tbreak abort",
+                "tbreak _exit"
+            ]
+        },
+        {
+            "name": "CFS: Debug with JlinkGDBServer and JLink (ARM Embedded)",
+            "executable": "${command:cfs.selectProgramFile}",
+            "cwd": "${command:cfs.setDebugPath}",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "jlink",
+            "linux": {
+                "serverpath": "${command:cfs.jlink.setJlinkPath}/JLinkGDBServerCLExe"
+            },
+            "windows": {
+                "serverpath": "${command:cfs.jlink.setJlinkPath}/JLinkGDBServerCL.exe"
+            },
+            "osx": {
+                "serverpath": "${command:cfs.jlink.setJlinkPath}/JLinkGDBServerCLExe"
+            },
+            "device": "${command:cfs.jlink.setDevice}",
+            "interface": "swd",
+            "armToolchainPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin",
+            "svdFile": "${command:cfs.cmsis.selectSvdFile}",
+            "gdbTarget": "localhost:2331",
+            "preLaunchCommands": [
+                "set logging overwrite on",
+                "set logging file debug-arm.log",
+                "set logging on",
+                "set remotetimeout 60",
+                "tbreak abort",
+                "tbreak _exit"
+            ],
+            "preLaunchTask": "CFS: build",
+            "overrideLaunchCommands": [
+                "monitor halt",
+                "monitor reset",
+                "-target-download"
+            ],
+            "overrideResetCommands": ["monitor reset"],
+            "overrideRestartCommands": ["monitor reset"]
+        },
+        {
+            "name": "CFS: Debug with GDB and OpenOCD (RISC-V)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${command:cfs.selectRiscvProgramFile}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${command:cfs.setRiscvDebugPath}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "linux": {
+                "miDebuggerPath": "${config:cfs.toolchain.riscVGCC.path}/bin/riscv-none-elf-gdb",
+                "debugServerPath": "${config:cfs.openocd.path}/bin/openocd"
+            },
+            "windows": {
+                "miDebuggerPath": "${config:cfs.toolchain.riscVGCC.path}/bin/riscv-none-elf-gdb.exe",
+                "debugServerPath": "${config:cfs.openocd.path}/bin/openocd.exe"
+            },
+            "osx": {
+                "miDebuggerPath": "${config:cfs.toolchain.riscVGCC.path}/bin/riscv-none-elf-gdb",
+                "debugServerPath": "${config:cfs.openocd.path}/bin/openocd"
+            },
+            "logging": {
+                "exceptions": true
+            },
+            "miDebuggerServerAddress": "localhost:3334",
+            "debugServerArgs": "-c \"gdb_port 3334\" -s '${config:cfs.openocd.path}/share/openocd/scripts/' -f ${command:cfs.openocd.selectRiscvInterface} -f ${command:cfs.openocd.selectRiscvTarget}",
+            "serverStarted": "Info : Listening on port 3334 for gdb connections",
+            "filterStderr": true,
+            "customLaunchSetupCommands": [
+                {
+                    "text": "-list-features"
+                }
+            ],
+            "targetArchitecture": "arm",
+            "setupCommands": [
+                {
+                    "text": "set logging overwrite on"
+                },
+                {
+                    "text": "set logging file debug-riscv.log"
+                },
+                {
+                    "text": "set logging on"
+                },
+                {
+                    "text": "cd ${command:cfs.setRiscvDebugPath}"
+                },
+                {
+                    "text": "set architecture riscv:rv32",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "exec-file ${command:cfs.selectRiscvProgramFile}",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "symbol-file ${command:cfs.selectRiscvProgramFile}",
+                    "ignoreFailures": false
+                },
+                {
+                    "text": "target remote localhost:3334"
+                },
+                {
+                    "text": "set $pc=Reset_Handler",
+                    "ignoreFailures": false
+                }
+            ]
+        }
+    ]
+}
