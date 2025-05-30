@@ -82,10 +82,10 @@ int check_output(void)
     while ((addr = (volatile uint32_t *)*ptr) != 0) {
         mask = *ptr;
         len = *ptr;
-        for (i = 0; i < len; i)
+        for (i = 0; i < len; i++)
             if ((*addr & mask) != *ptr) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
-                       i 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
+                       i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
                 return CNN_FAIL;
             }
     }
