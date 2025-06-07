@@ -96,12 +96,17 @@
 /*-----------------------------------------------------------*/
 
 /* Critical section management. */
+/* enable nesting with outside libs */
+    extern UBaseType_t vPortIncCriticalNesting( void );
+    extern UBaseType_t vPortDecCriticalNesting( void );
     extern void vPortEnterCritical( void );
     extern void vPortExitCritical( void );
     #define portSET_INTERRUPT_MASK_FROM_ISR()         ulPortRaiseBASEPRI()
     #define portCLEAR_INTERRUPT_MASK_FROM_ISR( x )    vPortSetBASEPRI( x )
     #define portDISABLE_INTERRUPTS()                  vPortRaiseBASEPRI()
     #define portENABLE_INTERRUPTS()                   vPortSetBASEPRI( 0 )
+    #define portINC_CRITICAL_NESTING()                vPortIncCriticalNesting()
+    #define portDEC_CRITICAL_NESTING()                vPortDecCriticalNesting()
     #define portENTER_CRITICAL()                      vPortEnterCritical()
     #define portEXIT_CRITICAL()                       vPortExitCritical()
 
