@@ -42,7 +42,32 @@
 #include "svc_core.h"
 #include "sec_api.h"
 #include "hci_defs.h"
+#include "pal_led.h"
+#include "wsf_timer.h"
 
+wsfHandlerId_t myTimerHandlerId2;
+wsfTimer_t myTimer2;
+
+static bool toggle = 0;
+//this is the callback to the timer
+void myTimerHandlerCB(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    uint32_t delayStart_ms = 500;
+    //do stuff
+    if (toggle == 1)
+    {
+        toggle = 0;
+        PalLedOff(PAL_LED_ID_ERROR);
+    }
+    else
+    {
+        toggle = 1;
+        PalLedOn(PAL_LED_ID_ERROR);
+    }
+    //kick off timer again
+     WsfTimerStartMs(&myTimer2, delayStart_ms);
+
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Initialize stack.
@@ -59,10 +84,10 @@ void StackInitFit(void)
     SecCmacInit();
     SecEccInit();
 
-    handlerId = WsfOsSetNextHandler(HciHandler);
+    handlerId = WsfOsSetNextHandler(HciHandler); // Host Controller Interface Handler
     HciHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(DmHandler);
+    handlerId = WsfOsSetNextHandler(DmHandler); // Device Manager Handler
     DmDevVsInit(0);
     DmConnInit();
     DmAdvInit();
@@ -93,4 +118,12 @@ void StackInitFit(void)
 
     handlerId = WsfOsSetNextHandler(FitHandler);
     FitHandlerInit(handlerId);
+
+    /* Setup the timer handler */
+    myTimerHandlerId2 = WsfOsSetNextHandler(myTimerHandlerCB);
+    myTimer2.handlerId = myTimerHandlerId2;
+
+    // somewhere you have to start the timer
+    WsfTimerStartMs(&myTimer2, 100);
 }
+

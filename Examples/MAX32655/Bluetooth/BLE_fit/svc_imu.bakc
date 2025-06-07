@@ -1,0 +1,227 @@
+/*************************************************************************************************/
+/*!
+ *  \file
+ *
+ *  \brief  Example IMU service implementation.
+ *
+ *  Copyright (c) 2011-2018 Arm Ltd. All Rights Reserved.
+ *
+ *  Copyright (c) 2019 Packetcraft, Inc.
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+/*************************************************************************************************/
+
+#include "wsf_types.h"
+#include "att_api.h"
+#include "wsf_trace.h"
+#include "util/bstream.h"
+#include "svc_ch.h"
+#include "svc_imu.h"
+#include "svc_cfg.h"
+
+/**************************************************************************************************
+  Macros
+**************************************************************************************************/
+
+/*! Characteristic read permissions */
+#ifndef IMU_SEC_PERMIT_READ
+#define IMU_SEC_PERMIT_READ SVC_SEC_PERMIT_READ
+#endif
+
+/*! Characteristic write permissions */
+#ifndef IMU_SEC_PERMIT_WRITE
+#define IMU_SEC_PERMIT_WRITE SVC_SEC_PERMIT_WRITE
+#endif
+
+/* Custom UUIDs for IMU Service and Characteristics (LSB) */
+// IMU Service: 12345678-1234-1234-1234-1234567890AB
+static const uint8_t imuServiceUuid[] = {0xAB, 0x90, 0x78, 0x56, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x78, 0x56, 0x34, 0x12};
+// Gyroscope Characteristic: 12345678-1234-1234-1234-1234567890AC
+#define GYRO_CHAR_UUID 0xAC, 0x90, 0x78, 0x56, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x78, 0x56, 0x34, 0x12
+static const uint8_t gyroCharUuid[] = {GYRO_CHAR_UUID};
+// Accelerometer Characteristic: 12345678-1234-1234-1234-1234567890AD
+#define ACCEL_CHAR_UUID 0xAD, 0x90, 0x78, 0x56, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x78, 0x56, 0x34, 0x12
+static const uint8_t accelCharUuid[] = {ACCEL_CHAR_UUID};
+// Magnetometer Characteristic: 12345678-1234-1234-1234-1234567890AE
+#define MAG_CHAR_UUID 0xAE, 0x90, 0x78, 0x56, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x78, 0x56, 0x34, 0x12
+static const uint8_t magCharUuid[] = {MAG_CHAR_UUID};
+
+// IMU Service Declaration
+// static const uint8_t imuService[] = {UINT16_TO_BYTES(0x180D)}; // Example UUID
+// static const uint16_t imuServiceLen = sizeof(imuService);
+static const uint16_t imuServiceLen = sizeof(imuServiceUuid);
+
+/* Gyroscope */ 
+// Gyroscope Characteristic Declaration
+static const uint8_t gyroChar[] = {ATT_PROP_NOTIFY, 
+                                    UINT16_TO_BYTES(IMU_GYRO_VAL_HDL),
+                                    GYRO_CHAR_UUID};
+static const uint16_t gyroCharLen = sizeof(gyroChar);
+// Gyroscope Characteristic Value
+static uint8_t gyroVal[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const uint16_t gyroValLen = sizeof(gyroVal);
+// Gyroscope client characteristic configuration
+static uint8_t gyroCcc[] = {UINT16_TO_BYTES(0x0000)};
+static const uint16_t gyroCccLen = sizeof(gyroCcc);
+
+/* Accelerometer */
+// Accelerometer Characteristic Declaration
+static const uint8_t accelChar[] = {ATT_PROP_NOTIFY, 
+                                    UINT16_TO_BYTES(IMU_ACCL_VAL_HDL), 
+                                    ACCEL_CHAR_UUID};
+static const uint16_t accelCharLen = sizeof(accelChar);
+// Accelerometer Characteristic Value
+static uint8_t accelVal[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const uint16_t accelValLen = sizeof(accelVal);
+// Accelerometer client characteristic configuration
+static uint8_t accelCcc[] = {UINT16_TO_BYTES(0x0000)};
+static const uint16_t accelCccLen = sizeof(accelCcc);
+
+/* Magnetometer */
+// Magnetometer Characteristic Declaration
+static const uint8_t magChar[] = {ATT_PROP_NOTIFY, 
+                                    UINT16_TO_BYTES(IMU_MGNT_VAL_HDL), 
+                                    MAG_CHAR_UUID};
+static const uint16_t magCharLen = sizeof(magChar);
+// Magnetometer Characteristic Value
+static uint8_t magVal[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const uint16_t magValLen = sizeof(magVal);
+// Magnetometer client characteristic configuration
+static uint8_t magCcc[] = {UINT16_TO_BYTES(0x0000)};
+static const uint16_t magCccLen = sizeof(magCcc);
+
+// Attribute List for IMU Service
+static const attsAttr_t imuAttrList[] = {
+    // IMU Service Declaration
+    {
+        attPrimSvcUuid,
+        (uint8_t *)imuServiceUuid,
+        (uint16_t *)&imuServiceLen,
+        sizeof(imuServiceUuid),
+        0, // No special settings
+        ATTS_PERMIT_READ
+    },
+    // Gyroscope Characteristic Declaration
+    {
+        attChUuid,
+        (uint8_t *)gyroChar,
+        (uint16_t *)&gyroCharLen,
+        sizeof(gyroChar),
+        0, // No special settings
+        ATTS_PERMIT_READ
+    },
+    // Gyroscope Characteristic Value
+    {
+        gyroCharUuid,           // Full 128-bit UUID
+        (uint8_t *)gyroVal,    // Value will be updated dynamicall
+        (uint16_t *)&gyroValLen,
+        sizeof(gyroVal),
+        ATTS_SET_UUID_128,      // 128-bit UUID
+        ATTS_PERMIT_READ
+// #if 0
+    },
+    // Gyroscope CCCD
+    {
+        attCliChCfgUuid,
+        (uint8_t *)gyroCcc,
+        (uint16_t *)&gyroCccLen,
+        sizeof(gyroCcc),
+        ATTS_SET_CCC,
+        (ATTS_PERMIT_READ | ATTS_PERMIT_WRITE)
+    },
+    // Accelerometer Characteristic Declaration
+    {
+        attChUuid,
+        (uint8_t *)accelChar,
+        (uint16_t *)&accelCharLen,
+        sizeof(accelChar),
+        0,
+        ATTS_PERMIT_READ
+    },
+    // Accelerometer Characteristic Value
+    {
+        accelCharUuid,              // Full 128-bit UUID
+        (uint8_t *) accelVal,       // Value will be updated dynamicall
+        (uint16_t *) &accelValLen,
+        sizeof(accelVal),           // 6 bytes (e.g., X, Y, Z values, 2 bytes each)
+        ATTS_SET_UUID_128,          // 128-bit UUID
+        0
+    },
+    // Accelerometer CCCD
+    {
+        attCliChCfgUuid,
+        (uint8_t *)accelCcc,
+        (uint16_t *)&accelCccLen,
+        sizeof(accelCcc),
+        ATTS_SET_CCC,
+        (ATTS_PERMIT_READ | ATTS_PERMIT_WRITE)
+    },
+    // Magnetometer Characteristic Declaration
+    {
+        attChUuid,
+        (uint8_t *)magChar,
+        (uint16_t *)&magCharLen,
+        sizeof(magChar),
+        0,
+        ATTS_PERMIT_READ
+    },
+    // Magnetometer Characteristic Value
+    {
+        magCharUuid,                // Full 128-bit UUID
+        (uint8_t *) magVal,       // Value will be updated dynamicall
+        (uint16_t *) &magValLen,
+        sizeof(magVal),
+        ATTS_SET_UUID_128,          // 128-bit UUID
+        0
+    },
+    // Magnetometer CCCD
+    {
+        attCliChCfgUuid,
+        (uint8_t *)magCcc,
+        (uint16_t *)&magCccLen,
+        sizeof(magCcc),
+        ATTS_SET_CCC,
+        (ATTS_PERMIT_READ | ATTS_PERMIT_WRITE)
+// #endif // #if 0
+    }
+};
+
+// IMU Service Group
+static attsGroup_t imuSvcGroup = {
+    NULL,
+    (attsAttr_t *)imuAttrList,
+    NULL,
+    NULL,
+    IMU_START_HDL, // Start handle
+    IMU_END_HDL // End handle
+};
+
+// Add IMU Service to GATT Server
+void SvcImuAddGroup(void)
+{
+    AttsAddGroup(&imuSvcGroup);
+}
+
+// Remove IMU Service from GATT Server
+void SvcImuRemoveGroup(void)
+{
+    AttsRemoveGroup(IMU_START_HDL);
+}
+
+// Register Callbacks for IMU Service
+void SvcImuCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
+{
+    imuSvcGroup.readCback = readCback;
+    imuSvcGroup.writeCback = writeCback;
+}

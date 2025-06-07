@@ -1,0 +1,118 @@
+/*************************************************************************************************/
+/*!
+ *  \file
+ *
+ *  \brief  Example IMU service implementation.
+ *
+ *  Copyright (c) 2011-2018 Arm Ltd. All Rights Reserved.
+ *
+ *  Copyright (c) 2019 Packetcraft, Inc.
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *  
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+/*************************************************************************************************/
+
+#ifndef SVC_IMU_H
+#define SVC_IMU_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*! \addtogroup IMU_SERVICE
+ *  \{ */
+
+/**************************************************************************************************
+  Macros
+**************************************************************************************************/
+
+/** \name IMU Error Codes
+ *
+ */
+/**@{*/
+#define IMU_ERR_CP_NOT_SUP          0x80    /*!< \brief Control Point value not supported */
+/**@}*/
+
+/**************************************************************************************************
+ Handle Ranges
+**************************************************************************************************/
+
+/** \name IMU Service Handles
+ *
+ */
+/**@{*/
+#define IMU_START_HDL               0x70              /*!< \brief Start handle. */
+#define IMU_END_HDL                 (IMU_MAX_HDL - 1) // IMU_GYRO_CH_CCC_HDL /*!< \brief End handle. */
+
+/**************************************************************************************************
+ Handles
+**************************************************************************************************/
+
+/*! \brief IMU Service Handles */
+enum
+{
+  IMU_SVC_HDL = IMU_START_HDL,      /*!< \brief IMU service declaration */
+  IMU_GYRO_CH_HDL,                   /*!< \brief IMU gyroscope measurement characteristic */
+  IMU_GYRO_VAL_HDL,                      /*!< \brief IMU gyroscope measurement */
+  IMU_GYRO_CH_CCC_HDL,               /*!< \brief IMU gyroscope measurement client characteristic configuration */
+  IMU_ACCL_CH_HDL,                   /*!< \brief IMU accelerometer measurement characteristic */
+  IMU_ACCL_VAL_HDL,                      /*!< \brief IMU accelerometer measurement */
+  IMU_ACCL_CH_CCC_HDL,               /*!< \brief IMU accelerometer measurement client characteristic configuration */
+  IMU_MGNT_CH_HDL,                   /*!< \brief IMU magnetometer measurement characteristic */
+  IMU_MGNT_VAL_HDL,                      /*!< \brief IMU magnetometer measurement */
+  IMU_MGNT_CH_CCC_HDL,               /*!< \brief IMU magnetometer measurement client characteristic configuration */
+  IMU_MAX_HDL                       /*!< \brief Maximum handle. */
+};
+/**@}*/
+
+/**************************************************************************************************
+  Function Declarations
+**************************************************************************************************/
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Add the services to the attribute server.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void SvcImuAddGroup(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Remove the services from the attribute server.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void SvcImuRemoveGroup(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Register callbacks for the service.
+ *
+ *  \param  readCback   Read callback function.
+ *  \param  writeCback  Write callback function.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+// void SvcImuCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
+// TODO: Do we need to implement above function?
+/*! \} */    /* HEART_RATE_SERVICE */
+
+#ifdef __cplusplus
+};
+#endif
+
+#endif /* SVC_IMU_H */

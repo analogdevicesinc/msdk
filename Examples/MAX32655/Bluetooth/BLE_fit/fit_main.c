@@ -45,6 +45,9 @@
 #include "svc_dis.h"
 #include "svc_batt.h"
 #include "svc_rscs.h"
+#include "svc_gyro.h"
+#include "svc_imu.h"
+#include "imu_api.h"
 #include "gatt/gatt_api.h"
 #include "bas/bas_api.h"
 #include "hrps/hrps_api.h"
@@ -67,7 +70,8 @@
 enum {
     FIT_HR_TIMER_IND = FIT_MSG_START, /*! Heart rate measurement timer expired */
     FIT_BATT_TIMER_IND, /*! Battery measurement timer expired */
-    FIT_RUNNING_TIMER_IND /*! Running speed and cadence measurement timer expired */
+    FIT_RUNNING_TIMER_IND, /*! Running speed and cadence measurement timer expired */
+    FIT_IMU_TIMER_IND /* IMU timer expired */
 };
 
 /*! Button press handling constants */
@@ -131,6 +135,11 @@ static const hrpsCfg_t fitHrpsCfg = {
     2000 /*! Measurement timer expiration period in ms */
 };
 
+/*! IMU measurement configuration */
+static const imuCfg_t fitImuCfg = {
+    1000 /*! Measurement timer expiration period in ms */
+};
+
 /*! battery measurement configuration */
 static const basCfg_t fitBasCfg = {
     30, /*! Battery measurement timer expiration period in seconds */
@@ -180,7 +189,7 @@ static const uint8_t fitScanDataDisc[] = {
     /*! device name */
     4, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'F', 'i', 't'
+    'I', 'M', 'U',
 };
 
 /**************************************************************************************************
@@ -193,6 +202,7 @@ enum {
     FIT_HRS_HRM_CCC_IDX, /*! Heart rate service, heart rate monitor characteristic */
     FIT_BATT_LVL_CCC_IDX, /*! Battery service, battery level characteristic */
     FIT_RSCS_SM_CCC_IDX, /*! Runninc speed and cadence measurement characteristic */
+    FIT_IMU_GYRO_CCC_IDX, /* IMU Gyroscope service charcteristic */
     FIT_NUM_CCC_IDX
 };
 
@@ -202,7 +212,8 @@ static const attsCccSet_t fitCccSet[FIT_NUM_CCC_IDX] = {
     { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* FIT_GATT_SC_CCC_IDX */
     { HRS_HRM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* FIT_HRS_HRM_CCC_IDX */
     { BATT_LVL_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* FIT_BATT_LVL_CCC_IDX */
-    { RSCS_RSM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* FIT_RSCS_SM_CCC_IDX */
+    { RSCS_RSM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* FIT_RSCS_SM_CCC_IDX */
+    { IMU_GYRO_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* FIT_IMU_GYRO_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -373,6 +384,19 @@ static void fitProcCccState(fitMsg_t *pMsg)
         }
         return;
     }
+
+    /* handle gyroscope CCC */
+    if (pMsg->ccc.idx == FIT_IMU_GYRO_CCC_IDX) {
+        if (pMsg->ccc.value == ATT_CLIENT_CFG_NOTIFY) {
+            APP_TRACE_INFO0("Calling ImuMeasStart\n");
+            ImuMeasStart((dmConnId_t)pMsg->ccc.hdr.param, FIT_IMU_TIMER_IND,
+                        FIT_IMU_GYRO_CCC_IDX);
+        } else {
+            APP_TRACE_INFO0("Calling ImuMeasStop\n");
+            ImuMeasStop((dmConnId_t)pMsg->ccc.hdr.param);
+        }
+        return;
+    }
 }
 
 /*************************************************************************************************/
@@ -538,7 +562,13 @@ static void fitProcMsg(fitMsg_t *pMsg)
         fitSendRunningSpeedMeasurement((dmConnId_t)pMsg->ccc.hdr.param);
         break;
 
+    case FIT_IMU_TIMER_IND:
+        APP_TRACE_INFO0("FIT_IMU_TIMER_IND -------------------------------------------------------");
+        ImuProcMsg(&pMsg->hdr);
+        break;
+
     case FIT_HR_TIMER_IND:
+        APP_TRACE_INFO0("FIT_HR_TIMER_IND -------------------------------------------------------\n");
         HrpsProcMsg(&pMsg->hdr);
         break;
 
@@ -547,15 +577,19 @@ static void fitProcMsg(fitMsg_t *pMsg)
         break;
 
     case ATTS_HANDLE_VALUE_CNF:
+        // APP_TRACE_INFO0("ATTS_HANDLE_VALUE_CNF -------------------------------------------------------\n");
         HrpsProcMsg(&pMsg->hdr);
         BasProcMsg(&pMsg->hdr);
+        ImuProcMsg(&pMsg->hdr);
         break;
 
     case ATTS_CCC_STATE_IND:
+        APP_TRACE_INFO0("ATTS_CCC_STATE_IND -------------------------------------------------------\n");
         fitProcCccState(pMsg);
         break;
 
     case DM_RESET_CMPL_IND:
+        APP_TRACE_INFO0("DM_RESET_CMPL_IND -------------------------------------------------------\n");
         AttsCalculateDbHash();
         DmSecGenerateEccKeyReq();
         fitSetup(pMsg);
@@ -579,22 +613,27 @@ static void fitProcMsg(fitMsg_t *pMsg)
         break;
 
     case DM_CONN_OPEN_IND:
+        APP_TRACE_INFO0("DM_CONN_OPEN_IND -------------------------------------------------------\n");
         HrpsProcMsg(&pMsg->hdr);
         BasProcMsg(&pMsg->hdr);
+        ImuProcMsg(&pMsg->hdr);
         uiEvent = APP_UI_CONN_OPEN;
         break;
 
     case DM_CONN_CLOSE_IND:
+        APP_TRACE_INFO0("DM_CONN_CLOSE_IND -------------------------------------------------------\n");
         fitClose(pMsg);
         uiEvent = APP_UI_CONN_CLOSE;
         break;
 
     case DM_SEC_PAIR_CMPL_IND:
+        APP_TRACE_INFO0("DM_SEC_PAIR_CMPL_IND -------------------------------------------------------\n");
         DmSecGenerateEccKeyReq();
         uiEvent = APP_UI_SEC_PAIR_CMPL;
         break;
 
     case DM_SEC_PAIR_FAIL_IND:
+        APP_TRACE_INFO0("DM_SEC_PAIR_FAIL_IND -------------------------------------------------------\n");
         DmSecGenerateEccKeyReq();
         uiEvent = APP_UI_SEC_PAIR_FAIL;
         break;
@@ -608,14 +647,17 @@ static void fitProcMsg(fitMsg_t *pMsg)
         break;
 
     case DM_SEC_AUTH_REQ_IND:
+        APP_TRACE_INFO0("DM_SEC_AUTH_REQ_IND -------------------------------------------------------\n");     
         AppHandlePasskey(&pMsg->dm.authReq);
         break;
 
     case DM_SEC_ECC_KEY_IND:
+        APP_TRACE_INFO0("DM_SEC_ECC_KEY_IND -------------------------------------------------------\n");
         DmSecSetEccKey(&pMsg->dm.eccMsg.data.key);
         break;
 
     case DM_SEC_COMPARE_IND:
+        APP_TRACE_INFO0("DM_SEC_COMPARE_IND -------------------------------------------------------\n");
         AppHandleNumericComparison(&pMsg->dm.cnfInd);
         break;
 
@@ -632,6 +674,7 @@ static void fitProcMsg(fitMsg_t *pMsg)
     }
 
     if (uiEvent != APP_UI_NONE) {
+        APP_TRACE_INFO1("AppUiAction arg = %d -------------------------------------------------------\n", uiEvent);
         AppUiAction(uiEvent);
     }
 }
@@ -727,6 +770,9 @@ void FitHandlerInit(wsfHandlerId_t handlerId)
     HrpsInit(handlerId, (hrpsCfg_t *)&fitHrpsCfg);
     HrpsSetFlags(fitHrmFlags);
 
+    /* Initialize IMU profile sensor */
+    ImuInit(handlerId, (imuCfg_t *)&fitImuCfg);
+
     /* initialize battery service server */
     BasInit(handlerId, (basCfg_t *)&fitBasCfg);
 }
@@ -744,7 +790,7 @@ void FitHandlerInit(wsfHandlerId_t handlerId)
 void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     if (pMsg != NULL) {
-        APP_TRACE_INFO1("Fit got evt %d", pMsg->event);
+        // APP_TRACE_INFO1("Fit got evt %d", pMsg->event);
 
         /* process ATT messages */
         if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
@@ -787,12 +833,13 @@ void FitStart(void)
     /* Initialize attribute server database */
     SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
     SvcCoreAddGroup();
-    SvcHrsCbackRegister(NULL, HrpsWriteCback);
-    SvcHrsAddGroup();
-    SvcDisAddGroup();
-    SvcBattCbackRegister(BasReadCback, NULL);
-    SvcBattAddGroup();
-    SvcRscsAddGroup();
+    // SvcHrsCbackRegister(NULL, HrpsWriteCback);
+    // SvcHrsAddGroup(); // Heart Rate Sensor
+    // SvcDisAddGroup(); // Device Info Service
+    // SvcBattCbackRegister(BasReadCback, NULL);
+    // SvcBattAddGroup();
+    // SvcRscsAddGroup(); // Runnin Speed and Cadence
+    SvcImuAddGroup(); // IMU Service
 
     /* Set Service Changed CCCD index. */
     GattSetSvcChangedIdx(FIT_GATT_SC_CCC_IDX);
