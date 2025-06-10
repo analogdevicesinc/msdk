@@ -94,7 +94,7 @@ int main(void)
     MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_UART);
 
     // Transition to Non-Secure world.
-    //  Weakly defined in system_max32657.c as a weak function.
+    //  Defined in system_max32657.c as a weak function.
     error = NonSecure_Init();
 
     // Should never reach here.
