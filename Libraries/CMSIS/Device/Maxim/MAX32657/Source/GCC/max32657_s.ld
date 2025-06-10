@@ -171,8 +171,8 @@ SECTIONS {
      *  be placed above secure stack space.
      *  
      *  Cases:
-     *      1) Exception exit from Non-Secure ISR back into Secure world
-     *      2) Secure world calls a Non-Secure defined function and returns back to secure world.
+     *      1. Exception exit from Non-Secure ISR back into Secure world
+     *      2. Secure world calls a Non-Secure defined function and returns back to secure world.
      */
     .stackseal __StackLimit (COPY) :
     {
