@@ -31,7 +31,7 @@
 #include "mxc_device.h"
 
 // clang-format off
-#if IS_SECURE_ENVIRONMENT
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
@@ -55,7 +55,7 @@
 //   <i> Value for SAU->CTRL register bit ALLNS
 //   <i> When all Memory is Non-Secure (ALLNS is 1), IDAU can override memory map configuration.
 */
-#define SAU_INIT_CTRL_ALLNS  0
+#define SAU_INIT_CTRL_ALLNS    0
 
 /*
 // </e>
@@ -70,45 +70,45 @@
 */
 /**
  *  Analog Devices, Inc.
- *  4 Memory Spaces in the MAX32657.
+ *  6 Memory Spaces in the MAX32657 that must be configured by the SAU.
  *    1. Non-Secure Flash
  *    2. Secure Flash
  *    3. Non-Secure SRAM
  *    4. Secure SRAM
+ *    5. Non-Secure Peripheral Address Space (MMIO)
+ *    6. Secure Peripheral Address Space (MMIO)
  * 
  *  Finer grain control can be achieved depending on the application
  *  requirements by updating the regions of this file.
  *  
- *    Non-Secure Flash (1MB)  0x0100.0000 - 0x010F.FFFF
- *    Non-Secure SRAM0 (32kB) 0x2000.0000 - 0x2000.7FFF
- *    Non-Secure SRAM1 (32kB) 0x2000.8000 - 0x2000.FFFF
- *    Non-Secure SRAM2 (64kB) 0x2001.0000 - 0x2001.FFFF
- *    Non-Secure SRAM3 (64kB) 0x2002.0000 - 0x2002.FFFF
- *    Non-Secure SRAM4 (64kB) 0x2003.0000 - 0x2003.FFFF
+ *    Non-Secure Flash (1MB)      0x0100.0000 - 0x010F.FFFF
+ *    Non-Secure SRAM0 (32kB)     0x2000.0000 - 0x2000.7FFF
+ *    Non-Secure SRAM1 (32kB)     0x2000.8000 - 0x2000.FFFF
+ *    Non-Secure SRAM2 (64kB)     0x2001.0000 - 0x2001.FFFF
+ *    Non-Secure SRAM3 (64kB)     0x2002.0000 - 0x2002.FFFF
+ *    Non-Secure SRAM4 (64kB)     0x2003.0000 - 0x2003.FFFF
+ *    Non-Secure Periphal Space   0x4000.0000 - 0x4FFF.FFFF
  * 
- *    Secure Flash (1MB)      0x1100.0000 - 0x110F.FFFF
- *    Secure SRAM0 (32kB)     0x3000.0000 - 0x3000.7FFF
- *    Secure SRAM1 (32kB)     0x3000.8000 - 0x3000.FFFF
- *    Secure SRAM2 (64kB)     0x3001.0000 - 0x3001.FFFF
- *    Secure SRAM3 (64kB)     0x3002.0000 - 0x3002.FFFF
- *    Secure SRAM4 (64kB)     0x3003.0000 - 0x3003.FFFF
+ *    Secure Flash (1MB)          0x1100.0000 - 0x110F.FFFF
+ *    Secure SRAM0 (32kB)         0x3000.0000 - 0x3000.7FFF
+ *    Secure SRAM1 (32kB)         0x3000.8000 - 0x3000.FFFF
+ *    Secure SRAM2 (64kB)         0x3001.0000 - 0x3001.FFFF
+ *    Secure SRAM3 (64kB)         0x3002.0000 - 0x3002.FFFF
+ *    Secure SRAM4 (64kB)         0x3003.0000 - 0x3003.FFFF
+ *    Secure Periphal Space       0x5000.0000 - 0x5FFF.FFFF
  * 
- *  Note: The total physical space for Flash is 1MB, and SRAM is 256KB.
- *    The total size between the non-secure and secure Flash regions
- *    should be 1MB.
- *    The total size between the non-secure and secure SRAM regions
- *    should be 256KB.
- *      - By default, this file sets the following regions:
- *          Secure Flash            (504KB): 0x1100.0000 - 0x1107.DFFF
- *          Non-Secure Callable Flash (8KB): 0x1107.E000 - 0x1107.FFFF
- *          Non-Secure Flash        (512KB): 0x0108.0000 - 0x010F.FFFF
- *          Secure SRAM (0-2)       (128KB): 0x3000.0000 - 0x3001.FFFF
- *          Non-Secure SRAM (3-4)   (128KB): 0x2002.0000 - 0x2003.FFFF
+ *  Use the SAU to confine Non-Secure memory spaces:
+ *    1. Flash (Code)
+ *    2. SRAM (Data)
+ *    3. Peripheral Space
+ *    4. Secure, Non-Secure Callable Memory Space
+ *
+ *  NOTE: The SAU regions must match with memory sections in linker script.
  */
 #define SAU_REGIONS_MAX     4                 /* Max. number of SAU regions */
 
 /*
-//   <e>Initialize SAU Region 0 (Secure Flash)
+//   <e>Initialize SAU Region 0 (Non-Secure Flash)
 //   <i> Setup SAU Region 0 memory attributes   
 */
 #define SAU_INIT_REGION0    1
@@ -116,25 +116,25 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START0     0x11000000      /* start address of SAU region 0 (ROM) */
+#define SAU_INIT_START0     0x01008000      /* start address of SAU region 0 (ROM) */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0x1107ffff      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x010fffff      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC0       1
+#define SAU_INIT_NSC0       0
 /*
 //   </e>
 */
 
 /*
-//   <e>Initialize SAU Region 1 (Non-Secure Flash)
+//   <e>Initialize SAU Region 1 (Non-Secure SRAM2-3)
 //   <i> Setup SAU Region 1 memory attributes
 */
 #define SAU_INIT_REGION1    1
@@ -142,12 +142,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START1     0x01080000
+#define SAU_INIT_START1     0x20020000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END1       0x010fffff
+#define SAU_INIT_END1       0x2003ffff
 
 /*
 //     <o>Region is
@@ -160,7 +160,7 @@
 */
 
 /*
-//   <e>Initialize SAU Region 2 (Secure SRAM (0-2))
+//   <e>Initialize SAU Region 2 (Non-Secure Peripheral Space)
 //   <i> Setup SAU Region 2 memory attributes
 */
 #define SAU_INIT_REGION2    1
@@ -168,25 +168,25 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START2     0x30000000
+#define SAU_INIT_START2     0x40000000
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END2       0x3001ffff
+#define SAU_INIT_END2       0x4fffffff
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC2       1
+#define SAU_INIT_NSC2       0
 /*
 //   </e>
 */
 
 /*
-//   <e>Initialize SAU Region 3 (Non-Secure SRAM (3-4))
+//   <e>Initialize SAU Region 3 (Secure/Non-Secure Callable Space)
 //   <i> Setup SAU Region 3 memory attributes
 */
 #define SAU_INIT_REGION3    1
@@ -194,19 +194,19 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START3     0x20020000
+#define SAU_INIT_START3     0x11078000      /* Match with Non-Secure Callable Region in linker script */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END3       0x2003ffff
+#define SAU_INIT_END3       0x1107ffff
 
 /*
 //     <o>Region is
 //         <0=>Non-Secure
 //         <1=>Secure, Non-Secure Callable
 */
-#define SAU_INIT_NSC3       0
+#define SAU_INIT_NSC3       1
 /*
 //   </e>
 */

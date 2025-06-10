@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2025 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@
 #define MXC_UART_REVB_ERRINT_FL \
     (MXC_F_UART_REVB_INT_FL_RX_FERR | MXC_F_UART_REVB_INT_FL_RX_PAR | MXC_F_UART_REVB_INT_FL_RX_OV)
 
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE)
 #ifndef MXC_DMA0
 // TrustZone support to keep up with naming convention.
 //  For ME30, non-secure DMA (DMA0) is accessible from Secure code using non-secure mapping.
@@ -49,7 +49,7 @@
 // Placing this here to limit scope of this definition to this file.
 #define MXC_DMA0 MXC_DMA0_NS
 #endif
-#else
+#elif (defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0))
 #ifndef MXC_DMA1
 // Non-Secure world can not access Secure DMA (DMA1).
 // Placing this here to limit scope of this definition to this file.
@@ -896,7 +896,7 @@ void MXC_UART_RevA_DMA0_Handler(void)
     MXC_DMA_Handler(MXC_DMA0);
 }
 
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 void MXC_UART_RevA_DMA1_Handler(void)
 {
     MXC_DMA_Handler(MXC_DMA1);
@@ -921,7 +921,7 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
     if (dma_instance == MXC_DMA0) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA0_Handler);
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
         // Only secure code has access to Secure DMA (DMA1).
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
