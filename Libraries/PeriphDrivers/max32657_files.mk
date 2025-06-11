@@ -1,6 +1,6 @@
 ###############################################################################
  #
- # Copyright (C) 2024 Analog Devices, Inc.
+ # Copyright (C) 2024-2025 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -62,10 +62,12 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me30.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
 
+ifeq "$(MSECURITY_MODE)" "SECURE"
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_me30.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_reva.c
+endif
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/GPIO
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/GPIO/gpio_common.c
@@ -76,10 +78,12 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/I3C
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/I3C/i3c_me30.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/I3C/i3c_reva.c
 
+ifeq "$(MSECURITY_MODE)" "SECURE"
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ICC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_me30.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_reva.c
+endif
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me30.c

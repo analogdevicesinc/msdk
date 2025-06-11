@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,17 +66,17 @@ mxc_mpc_regs_t *MXC_MPC_GetInstance(uint32_t addr);
 int MXC_MPC_GetBlockIdx(mxc_mpc_regs_t *mpc, uint32_t addr);
 
 /**
- * @brief   Sets the region to Secure.
- * @param   start_addr  Starting address of region to check.
- * @param   end_addr    Ending address of region to check.
+ * @brief   Sets MPCs for a specified region to Secure.
+ * @param   start_addr  Starting address of region.
+ * @param   end_addr    Ending address of region (inclusive).
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_MPC_SetSecure(uint32_t start_addr, uint32_t end_addr);
 
 /**
- * @brief   Sets the region to Non-Secure.
- * @param   start_addr  Starting address of region to check.
- * @param   end_addr    Ending address of region to check.
+ * @brief   Sets MPCs for a specified region to Non-Secure.
+ * @param   start_addr  Starting address of region.
+ * @param   end_addr    Ending address of region (inclusive).
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_MPC_SetNonSecure(uint32_t start_addr, uint32_t end_addr);
