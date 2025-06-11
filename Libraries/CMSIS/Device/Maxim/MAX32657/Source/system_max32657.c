@@ -26,7 +26,6 @@
 #include "max32657.h"
 #include "system_max32657.h"
 #include "gcr_regs.h"
-#include "mpc.h"
 #include "icc.h"
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
