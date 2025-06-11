@@ -39,7 +39,8 @@ extern "C" {
 #endif
 
 #if (CONSOLE_BAUD != 115200)
-#error "CONSOLE_BAUD must be 115200. The MAX32690 On-board Debugger (OBD) receives incoming Console UART messages from MAX32657 and outputs to serial COM port all at 115200 baud rate."
+#error \
+    "CONSOLE_BAUD must be 115200. The MAX32690 On-board Debugger (OBD) receives incoming Console UART messages from MAX32657 and outputs to serial COM port all at 115200 baud rate."
 #endif
 
 #ifdef LED_OFF

@@ -82,7 +82,7 @@ int main(void)
     printf("Beginning transition to the non-secure world.\n");
 
     // Wait for Console UART to finish printing before setting the peripheral to Non-Secure.
-    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) == E_BUSY);
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) == E_BUSY) {}
 
     // Set Flash (Code region) as Non-Secure Callable for the IncrementCount_S function.
     MXC_SPC_SetCode_NSC(true);
@@ -100,7 +100,8 @@ int main(void)
     // Should never reach here.
     //  Set Console UART accessible to Secure world to print out error message.
     MXC_SPC_SetSecure(MXC_SPC_PERIPH_UART);
-    printf("[Error] Code should not reach here. Transition not successful. Error Code: %d\n", error);
+    printf("[Error] Code should not reach here. Transition not successful. Error Code: %d\n",
+           error);
 
     while (1) {}
 }

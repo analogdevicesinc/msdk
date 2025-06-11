@@ -46,7 +46,7 @@ extern uint32_t _sram_ns_start, _sram_ns_end;
 
 #define VECTOR_TABLE_START_ADDR_NS \
     (uint32_t)(&_nonsecure_start) // Now setting the start of the vector table using a linker symbol
-#define MXC_Reset_Handler_NS (mxc_ns_call_t)*((uint32_t *)(VECTOR_TABLE_START_ADDR_NS + 4))
+#define MXC_Reset_Handler_NS (mxc_ns_call_t) * ((uint32_t *)(VECTOR_TABLE_START_ADDR_NS + 4))
 #define MXC_MSP_NS *((uint32_t *)(VECTOR_TABLE_START_ADDR_NS))
 
 #endif
