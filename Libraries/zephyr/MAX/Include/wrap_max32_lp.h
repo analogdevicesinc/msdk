@@ -31,7 +31,8 @@ extern "C" {
  */
 #if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
     defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) || \
-    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) || defined(CONFIG_SOC_MAX32650)
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660)
 
 static inline void Wrap_MXC_LP_EnterLowPowerMode(void)
 {
