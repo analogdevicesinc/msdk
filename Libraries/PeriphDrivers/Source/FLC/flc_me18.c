@@ -39,7 +39,7 @@
 /* **** Functions **** */
 
 //******************************************************************************
-void MXC_FLC_ME18_Flash_Operation(void)
+void MXC_FLC_ME18_Flash_Operation(mxc_flc_regs_t *flc)
 {
     /*
     This function should be called after modifying the contents of flash memory.
@@ -62,11 +62,12 @@ void MXC_FLC_ME18_Flash_Operation(void)
     MXC_ICC_Flush(MXC_ICC1);
 
     // Clear the line fill buffer by reading 2 pages from flash
+    uint32_t base = (flc == MXC_FLC0 ? MXC_FLASH0_MEM_BASE : MXC_FLASH1_MEM_BASE);
     volatile uint32_t *line_addr;
     volatile uint32_t line;
-    line_addr = (uint32_t *)(MXC_FLASH_MEM_BASE);
+    line_addr = (uint32_t *)(base);
     line = *line_addr;
-    line_addr = (uint32_t *)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
+    line_addr = (uint32_t *)(base + MXC_FLASH_PAGE_SIZE);
     line = *line_addr;
     (void)line; // Silence build warnings that this variable is not used.
 }
@@ -141,7 +142,8 @@ int MXC_FLC_MassErase(void)
     }
 
     // Flush the cache
-    MXC_FLC_ME18_Flash_Operation();
+    MXC_FLC_ME18_Flash_Operation(MXC_FLC0);
+    MXC_FLC_ME18_Flash_Operation(MXC_FLC1);
 
     return E_NO_ERROR;
 }
@@ -171,7 +173,7 @@ int MXC_FLC_PageErase(uint32_t address)
     }
 
     // Flush the cache
-    MXC_FLC_ME18_Flash_Operation();
+    MXC_FLC_ME18_Flash_Operation(flc);
 
     return E_NO_ERROR;
 }
@@ -211,7 +213,7 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
     err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t *)flc, address, data, physicalAddress);
 
     // Flush the cache
-    MXC_FLC_ME18_Flash_Operation();
+    MXC_FLC_ME18_Flash_Operation(flc);
 
     return err;
 }
@@ -243,7 +245,7 @@ int MXC_FLC_Write128(uint32_t address, uint32_t *data)
     }
 
     // Flush the cache
-    MXC_FLC_ME18_Flash_Operation();
+    MXC_FLC_ME18_Flash_Operation(flc);
 
     return MXC_FLC_Com_VerifyData(address, 4, data);
 }
