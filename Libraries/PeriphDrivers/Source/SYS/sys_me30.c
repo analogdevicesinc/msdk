@@ -51,13 +51,10 @@
 
 /* **** Globals **** */
 
-/* Symbol defined when loading RISCV image */
-extern uint32_t _binary_riscv_bin_start;
-
 /* **** Functions **** */
 
 /* ************************************************************************** */
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     int err = E_NO_ERROR;
@@ -320,12 +317,6 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 int MXC_SYS_Clock_Timeout(uint32_t ready)
 {
-#ifdef __riscv
-    // The current RISC-V implementation is to block until the clock is ready.
-    // We do not have access to a system tick in the RV core.
-    while (!(MXC_GCR->clkctrl & ready)) {}
-    return E_NO_ERROR;
-#else
 #ifndef BOARD_ME17_TESTER
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
@@ -342,8 +333,6 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 
     return E_NO_ERROR;
 #endif
-
-#endif // __riscv
 }
 /* ************************************************************************** */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
@@ -500,7 +489,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)
 {

@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,19 +26,28 @@
 #include "max32657.h"
 #include "system_max32657.h"
 #include "gcr_regs.h"
-#include "mpc.h"
 #include "icc.h"
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#include "spc.h"
+#include "mpc.h"
 #include "partition_max32657.h"
 
-// From linker script.
+/**
+ *  Memory boundaries from linker scripts to help configure the MPC.
+ */
 extern uint32_t _nonsecure_start, _nonsecure_end;
+extern uint32_t _flash_s_start, _flash_s_end;
+extern uint32_t _flash_nsc_start, _flash_nsc_end;
+extern uint32_t _flash_ns_start, _flash_ns_end;
+extern uint32_t _sram_s_start, _sram_s_end;
+extern uint32_t _sram_ns_start, _sram_ns_end;
 
 #define VECTOR_TABLE_START_ADDR_NS \
     (uint32_t)(&_nonsecure_start) // Now setting the start of the vector table using a linker symbol
 #define MXC_Reset_Handler_NS (mxc_ns_call_t) * ((uint32_t *)(VECTOR_TABLE_START_ADDR_NS + 4))
 #define MXC_MSP_NS *((uint32_t *)(VECTOR_TABLE_START_ADDR_NS))
+
 #endif
 
 extern void (*const __isr_vector[])(void);
@@ -164,7 +174,7 @@ __weak void SystemInit(void)
      *
      *  Note: ARMv8-M without the Main Extension disables unaligned access by default.
      */
-#if defined(UNALIGNED_SUPPORT_DISABLE) || defined(__ARM_FEATURE_UNALIGNED)
+#if defined(UNALIGNED_SUPPORT_DISABLE) || (__ARM_FEATURE_UNALIGNED == 0)
     SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
 #endif
 
@@ -181,6 +191,8 @@ __weak void SystemInit(void)
     /* Enable interrupts */
     __enable_irq();
 
+    // Internal cache controller only accessible in secure world.
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     // Enable the internal cache controller.
     MXC_ICC_Enable();
 
@@ -188,6 +200,7 @@ __weak void SystemInit(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     MXC_SYS_SetClockDiv(MXC_SYS_CLOCK_DIV_1);
     SystemCoreClockUpdate();
+#endif
 
     PinInit();
     Board_Init();
@@ -220,9 +233,30 @@ __weak int NonSecure_Init(void)
     int error;
     mxc_ns_call_t Reset_Handler_NS;
 
+    // Set MPCs for Non-Secure region.
+    //  (Not setting up Secure regions as, by default, MPC regions are set as secure on startup).
+    error = MXC_MPC_SetNonSecure((uint32_t)(&_flash_ns_start), (uint32_t)(&_flash_ns_end));
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    error = MXC_MPC_SetNonSecure((uint32_t)(&_sram_ns_start), (uint32_t)(&_sram_ns_end));
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    // Prepare Non-Secure Reset_Handler.
+    //  Non-Secure memory region reads 0 by Secure code until MPCs are configured.
+    Reset_Handler_NS = MXC_Reset_Handler_NS;
+
     // Secure world must enable FPU for non-secure world. (Turned off by default).
 #if (__FPU_PRESENT == 1U)
-    /* Enable FPU - coprocessor slots 10 & 11 full access */
+    /* Enables Non-Secure access to floating point extension. */
+#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+    SCB->NSACR |= SCB_NSACR_CP10_Msk | SCB_NSACR_CP11_Msk;
+#endif
+
+    /* Enable FPU for Non-Secure world - coprocessor slots 10 & 11 full access. */
     SCB_NS->CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
 #endif /* __FPU_PRESENT check */
 
@@ -234,24 +268,6 @@ __weak int NonSecure_Init(void)
     // Setup Non-Secure Main Stack Pointer (MSP_NS).
     //  Start of vector table contains top of stack value.
     __TZ_set_MSP_NS(MXC_MSP_NS);
-
-    // Get Non-Secure Reset_Handler.
-    Reset_Handler_NS = MXC_Reset_Handler_NS;
-
-    // Set MPCs for Non-Secure region.
-    //  (Not setting up Secure regions as, by default, MPC regions are set as secure on startup).
-    error = MXC_MPC_SetNonSecure((uint32_t)(&_nonsecure_start), (uint32_t)(&_nonsecure_end));
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    // Lock MPCs.
-    MXC_MPC_Lock(MXC_MPC_FLASH);
-    MXC_MPC_Lock(MXC_MPC_SRAM0);
-    MXC_MPC_Lock(MXC_MPC_SRAM1);
-    MXC_MPC_Lock(MXC_MPC_SRAM2);
-    MXC_MPC_Lock(MXC_MPC_SRAM3);
-    MXC_MPC_Lock(MXC_MPC_SRAM4);
 
     // Start Non-Secure code.
     Reset_Handler_NS();
