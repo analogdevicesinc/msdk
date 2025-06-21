@@ -49,6 +49,28 @@ static inline int Wrap_MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t
 
 #endif // part number
 
+#if defined(CONFIG_SOC_MAX32657)
+
+static inline int Wrap_MXC_FLC_Read(uint32_t address, void *buffer, int len)
+{
+    int ret = 0;
+
+    ret = MXC_FLC_ReadECC(address, buffer, len);
+
+    return ret;
+}
+
+#else
+
+static inline int Wrap_MXC_FLC_Read(uint32_t address, void *buffer, int len)
+{
+    MXC_FLC_Read(address, buffer, len);
+
+    return 0;
+}
+
+#endif /* CONFIG_SOC_MAX32657 */
+
 #ifdef __cplusplus
 }
 #endif
