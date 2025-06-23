@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,8 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
-#include "mxc_device.h"
+#include "mxc.h"
 #include "led.h"
-#include "pb.h"
-#include "board.h"
-#include "mxc_delay.h"
 
 /***** Definitions *****/
 
@@ -51,9 +48,9 @@ int main(void)
     printf("Hello from Non-Secure World!\n");
 
     while (1) {
-        LED_On(LED_RED);
+        LED_On(LED_GREEN);
         MXC_Delay(500000);
-        LED_Off(LED_RED);
+        LED_Off(LED_GREEN);
         MXC_Delay(500000);
 
         IncrementCount_S(&count);
