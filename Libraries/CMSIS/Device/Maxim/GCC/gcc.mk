@@ -2,7 +2,7 @@
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  # Analog Devices, Inc.),
- # Copyright (C) 2023-2024 Analog Devices, Inc.
+ # Copyright (C) 2023-2025 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -333,7 +333,7 @@ PROJ_CFLAGS += -mcmse
 ifeq ($(GEN_CMSE_IMPLIB_OBJ),1)
 PROJ_LDFLAGS := -Xlinker --cmse-implib -Xlinker --out-implib=$(CURDIR)/build/build_s/secure_implib.o
 endif # GEN_CMSE_IMPLIB_OBJ
-endif # MSECUIRTY_MODE
+endif # MSECURITY_MODE
 endif # TRUSTZONE
 endif # MCPU
 
