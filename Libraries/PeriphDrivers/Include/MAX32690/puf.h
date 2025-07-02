@@ -36,14 +36,14 @@ extern "C" {
 /**
  * @defgroup puf Physically Unclonable Function
  * @ingroup periphlibs
- * @brief This is the high level API for the PUF.
+ * @brief This is the high-level API for the PUF.
  * @{
  */
 
 /***** Definitions *****/
 
 /**
- * @brief   Brief of any definitions, enumes, structures, etc
+ * @brief   Brief of any definitions, enums, structures, etc
  */
 typedef struct {
     uint32_t template;
@@ -60,10 +60,10 @@ typedef struct {
  */
 int MXC_PUF_TemplateFunction(uint32_t param1);
 
-/**@} end of group pulsetrains*/
+/**@} end of group puf*/
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_PT_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_PUF_H_
