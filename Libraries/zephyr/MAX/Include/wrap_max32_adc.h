@@ -284,6 +284,14 @@ static inline int Wrap_MXC_ADC_StartConversionAsync(uint32_t *sample_channels,
     return MXC_ADC_StartConversionAsync(callback);
 }
 
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    MXC_ADC_FIFO_Threshold_Config(MAX_ADC_FIFO_LEN >> 1);
+    Wrap_MXC_ADC_ChannelSelect(sample_channels);
+    return MXC_ADC_StartConversionAsyncStream(callback);
+}
+
 static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 {
     mxc_adc_regs_t *adc = MXC_ADC;
