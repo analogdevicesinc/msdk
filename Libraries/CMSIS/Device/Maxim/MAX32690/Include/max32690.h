@@ -163,7 +163,7 @@ typedef enum {
     RSV92_IRQn, /* 0x6C  0x01B0 108: Reserved */
     RSV93_IRQn, /* 0x6D  0x01B4 109: Reserved */
     RSV94_IRQn, /* 0x6E  0x01B8 110: Reserved */
-    RSV95_IRQn, /* 0x6F  0x01BC 111: Reserved */
+    PUF_IRQn, /* 0x6F  0x01BC 111: Physically Unclonable Function */
     RSV96_IRQn, /* 0x70  0x01C0 112: Reserved */
     RSV97_IRQn, /* 0x71  0x01C4 113: Reserved */
     RSV98_IRQn, /* 0x72  0x01C8 114: Reserved */
@@ -171,7 +171,7 @@ typedef enum {
     RSV100_IRQn, /* 0x74  0x01D0 116: Reserved */
     RSV101_IRQn, /* 0x75  0x01D4 117: Reserved */
     RSV102_IRQn, /* 0x76  0x01D8 118: Reserved */
-    LPCMP_IRQn, /* 0x77  0x01Dc 119: LP Comparator */
+    LPCMP_IRQn, /* 0x77  0x01DC 119: LP Comparator */
     RSV104_IRQn, /* 0x78  0x01E0  120: Reserved */
     SPI4_IRQn, /* 0x79  0x01E4  121: SPI4 */
     RSV106_IRQn, /* 0x7A  0x01E8  122: Reserved */
