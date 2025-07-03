@@ -967,6 +967,13 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
         i2c->fifo = (req->addr << 1) | 0x1; // Load slave address with read bit.
     }
 
+    if ((req->rx_len != 0) && (req->tx_len != 0)) {
+        while (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE)) {}
+        // Wait for Transaction to finish
+
+        i2c->intfl0 |= MXC_F_I2C_REVA_INTFL0_DONE;
+    }
+
     while (req->rx_len > read) {
         if (i2c->intfl0 & (MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE)) {
             read +=
