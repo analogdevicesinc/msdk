@@ -289,7 +289,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
             // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
             //   Target Select (TS) pin is asserted or deasserted in their application.
             if (STATES[spi_num].callback) {
-                STATES[spi_num].callback(STATES[spi_num].callback_data, E_NO_ERROR);
+                STATES[spi_num].callback(STATES[spi_num].callback_data, (int)SPI_ST_COMP);
             }
 
             // Target is done after callback (if valid) is handled.
@@ -844,7 +844,7 @@ int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi)
 
     // Callback if not NULL
     if (STATES[spi_num].callback != NULL) {
-        STATES[spi_num].callback(STATES[spi_num].callback_data, E_ABORT);
+        STATES[spi_num].callback(STATES[spi_num].callback_data, (int)SPI_ST_ABORT);
     }
 
     return E_NO_ERROR;
@@ -1386,11 +1386,11 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
                                    false);
 
-    // Start the SPI transaction.
-    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
-
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
     MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Complete transaction once it started.
     while (STATES[spi_num].transaction_done == false) {
@@ -1435,11 +1435,11 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
     // Enable Controller Done Interrupt.
     spi->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
 
-    // Start the SPI transaction.
-    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
-
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
     MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     return E_SUCCESS;
 }
@@ -1474,11 +1474,11 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
                                    true);
 
-    // Start the SPI transaction.
-    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
-
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
     MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     return E_SUCCESS;
 }
@@ -1592,13 +1592,13 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 
     // Master done (TX complete)
     if (status & MXC_F_SPI_REVA_INTFL_MST_DONE) {
-        spi->intfl |= MXC_F_SPI_REVA_INTFL_MST_DONE; // Clear flag
+        spi->intfl = MXC_F_SPI_REVA_INTFL_MST_DONE; // Clear flag
 
         // Callback if valid.
         // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
         //   Target Select (TS) pin is asserted or deasserted in their application.
         if (STATES[spi_num].callback) {
-            STATES[spi_num].callback(STATES[spi_num].callback_data, E_NO_ERROR);
+            STATES[spi_num].callback(STATES[spi_num].callback_data, (int)SPI_ST_COMP);
         }
 
         // Controller is done after callback (if valid) is handled.
@@ -1607,7 +1607,7 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 
     // Handle RX Threshold
     if (status & MXC_F_SPI_REVA_INTFL_RX_THD) {
-        spi->intfl |= MXC_F_SPI_REVA_INTFL_RX_THD;
+        spi->intfl = MXC_F_SPI_REVA_INTFL_RX_THD;
 
         // RX threshold has been crossed, there's data to unload from the FIFO
         MXC_SPI_RevA2_process(spi);
@@ -1615,7 +1615,7 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 
     // Handle TX Threshold
     if (status & MXC_F_SPI_REVA_INTFL_TX_THD) {
-        spi->intfl |= MXC_F_SPI_REVA_INTFL_TX_THD;
+        spi->intfl = MXC_F_SPI_REVA_INTFL_TX_THD;
 
         // TX threshold has been crossed, we need to refill the FIFO
         MXC_SPI_RevA2_process(spi);
@@ -1636,7 +1636,7 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
     // Count-to-Zero (DMA TX complete)
     if (status & MXC_F_DMA_REVA_STATUS_CTZ_IF) {
         STATES[spi_num].tx_done = true;
-        STATES[spi_num].dma->ch[tx_ch].status |= MXC_F_DMA_REVA_STATUS_CTZ_IF;
+        STATES[spi_num].dma->ch[tx_ch].status = MXC_F_DMA_REVA_STATUS_CTZ_IF;
 
         // For completeness-sake.
         STATES[spi_num].tx_count_bytes = STATES[spi_num].tx_length_bytes;
@@ -1646,7 +1646,7 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
         //   Target Select (TS) pin is asserted or deasserted in their application.
         if (STATES[spi_num].rx_buffer == NULL) {
             if (STATES[spi_num].callback) {
-                STATES[spi_num].callback(STATES[spi_num].callback_data, E_NO_ERROR);
+                STATES[spi_num].callback(STATES[spi_num].callback_data, (int)SPI_ST_TX_COMP);
             }
         }
 
@@ -1658,7 +1658,7 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
 
     // Bus Error
     if (status & MXC_F_DMA_REVA_STATUS_BUS_ERR) {
-        STATES[spi_num].dma->ch[tx_ch].status |= MXC_F_DMA_REVA_STATUS_BUS_ERR;
+        STATES[spi_num].dma->ch[tx_ch].status = MXC_F_DMA_REVA_STATUS_BUS_ERR;
     }
 }
 
@@ -1683,7 +1683,7 @@ void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
         }
 
         STATES[spi_num].rx_done = 1;
-        STATES[spi_num].dma->ch[rx_ch].status |= MXC_F_DMA_STATUS_CTZ_IF;
+        STATES[spi_num].dma->ch[rx_ch].status = MXC_F_DMA_STATUS_CTZ_IF;
 
         // For completeness-sake.
         STATES[spi_num].rx_count_bytes = STATES[spi_num].rx_length_bytes;
@@ -1692,7 +1692,7 @@ void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
         // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
         //   Target Select (TS) pin is asserted or deasserted in their application.
         if (STATES[spi_num].callback) {
-            STATES[spi_num].callback(STATES[spi_num].callback_data, E_NO_ERROR);
+            STATES[spi_num].callback(STATES[spi_num].callback_data, (int)SPI_ST_RX_COMP);
         }
 
         // RX transaction determines the controller is done if TX transaction is also present.
@@ -1703,6 +1703,6 @@ void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
 
     // Bus Error
     if (status & MXC_F_DMA_REVA_STATUS_BUS_ERR) {
-        STATES[spi_num].dma->ch[rx_ch].status |= MXC_F_DMA_STATUS_BUS_ERR;
+        STATES[spi_num].dma->ch[rx_ch].status = MXC_F_DMA_STATUS_BUS_ERR;
     }
 }

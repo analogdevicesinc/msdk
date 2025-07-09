@@ -138,6 +138,17 @@ typedef enum {
 } mxc_spi_mode_t;
 ///<<< Deprecated
 
+/**
+ * @brief The list of possible status codes returned in the result parameter
+ * of the mxc_spi_callback_t function.
+ */
+typedef enum {
+    SPI_ST_COMP = E_NO_ERROR, ///< SPI transaction completed without error
+    SPI_ST_TX_COMP,           ///< All requested bytes have been transmitted
+    SPI_ST_RX_COMP,           ///< All requested bytes have been received
+    SPI_ST_ABORT = E_ABORT,       ///< SPI transaction completed without error
+} mxc_spi_callback_status_t;
+
 typedef struct _mxc_spi_req_t mxc_spi_req_t;
 
 /**
