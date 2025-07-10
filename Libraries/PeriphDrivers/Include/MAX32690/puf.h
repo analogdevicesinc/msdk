@@ -43,22 +43,32 @@ extern "C" {
 /***** Definitions *****/
 
 /**
- * @brief   Brief of any definitions, enums, structures, etc
+ * @brief   Enumeration type to select PUF key
  */
-typedef struct {
-    uint32_t template;
-} mxc_puf_struct_template_t;
+typedef enum {
+    MXC_PUF_KEY0 = (1<<0),
+    MXC_PUF_KEY1 = (1<<1),
+    MXC_PUF_KEY_BOTH = (MXC_PUF_KEY0 | MXC_PUF_KEY1),
+} mxc_puf_key_t;
 
 /***** Function Prototypes *****/
 
 /**
- * @brief   Template Brief.
- * @param   param1   First Parameter.
+ * @brief   Generate selected PUF key.
+ * @param   key   Key selection.  See \ref mxc_puf_key_t for key selection options.
  * 
  * @return  #E_NO_ERROR if everything is successful, @ref MXC_Error_Codes
  *             "error" if unsuccessful.
  */
-int MXC_PUF_TemplateFunction(uint32_t param1);
+int MXC_PUF_Generate_Key(mxc_puf_key_t key);
+
+/**
+ * @brief   Clear all PUF keys.
+ * 
+ * @return  #E_NO_ERROR if everything is successful, @ref MXC_Error_Codes
+ *             "error" if unsuccessful.
+ */
+int MXC_PUF_Clear_Keys(void);
 
 /**@} end of group puf*/
 

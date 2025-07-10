@@ -386,6 +386,11 @@ typedef enum {
 #define MXC_MCR ((mxc_mcr_regs_t *)MXC_BASE_MCR)
 
 /******************************************************************************/
+/*                                                                        PUF */
+#define MXC_BASE_PUF ((uint32_t)0x40007000UL)
+#define MXC_PUF ((mxc_puf_regs_t *)MXC_BASE_PUF)
+
+/******************************************************************************/
 /*                                                                       GPIO */
 #define MXC_CFG_GPIO_INSTANCES (5)
 #define MXC_CFG_GPIO_PINS_PORT (32)

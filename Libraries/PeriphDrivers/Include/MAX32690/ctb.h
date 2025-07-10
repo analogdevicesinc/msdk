@@ -212,7 +212,9 @@ typedef enum {
 typedef enum {
     MXC_CTB_CIPHER_KEY_SOFTWARE = 0,
     MXC_CTB_CIPHER_KEY_AES_KEY2 = 2,
-    MXC_CTB_CIPHER_KEY_AES_KEY3 = 3
+    MXC_CTB_CIPHER_KEY_AES_KEY3 = 3,
+    MXC_CTB_CIPHER_KEY_AES_PUFKEY0 = 4,
+    MXC_CTB_CIPHER_KEY_AES_PUFKEY1 = 5
 } mxc_ctb_cipher_key_t;
 
 /** 
