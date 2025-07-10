@@ -77,9 +77,9 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
     uint8_t ciphertext[16];
     uint8_t key0_checkval[4];
     uint8_t key1_checkval[4];
-    volatile uint8_t *infoblock_key0_checkval = (volatile uint8_t *)PUF_KEY0_CHECK_VAL_ADDR;
-    volatile uint8_t *infoblock_key1_checkval = (volatile uint8_t *)PUF_KEY1_CHECK_VAL_ADDR;
-    volatile uint8_t *infoblock_rawusn = (volatile uint8_t *)RAW_USN_ADDR;
+    uint8_t *infoblock_key0_checkval = (uint8_t *)PUF_KEY0_CHECK_VAL_ADDR;
+    uint8_t *infoblock_key1_checkval = (uint8_t *)PUF_KEY1_CHECK_VAL_ADDR;
+    uint8_t *infoblock_rawusn = (uint8_t *)RAW_USN_ADDR;
 
     // Check for valid key generation selection.
     if ((MXC_PUF_KEY0 != key) && (MXC_PUF_KEY1 != key) && (MXC_PUF_KEY_BOTH != key))
