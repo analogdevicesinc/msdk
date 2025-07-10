@@ -410,6 +410,16 @@ void vPortEndScheduler( void )
 }
 /*-----------------------------------------------------------*/
 
+UBaseType_t vPortIncCriticalNesting( void ) {
+    uxCriticalNesting++;
+    return uxCriticalNesting;
+}
+
+UBaseType_t vPortDecCriticalNesting( void ) {
+    uxCriticalNesting--;
+    return uxCriticalNesting;
+}
+
 void vPortEnterCritical( void )
 {
     portDISABLE_INTERRUPTS();
