@@ -34,6 +34,9 @@
 
 /***** Definitions *****/
 
+#warning FIXME: Remove PUF_SKIP_CHECKVAL
+#define PUF_SKIP_CHECKVAL
+
 #define PUF_KEY0_CHECK_VAL_ADDR (MXC_INFO0_MEM_BASE+0x1FC0)
 #define PUF_KEY1_CHECK_VAL_ADDR (MXC_INFO0_MEM_BASE+0x1FD0)
 #define RAW_USN_ADDR            (MXC_INFO0_MEM_BASE+0x0000)
@@ -108,13 +111,13 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
     MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
     // ********* End Access of Information Block *********
 #warning FIXME: Re-enable data fetch error check when testing with trimmed parts.
-#if 0
+#ifndef PUF_SKIP_CHECKVAL
     // If error during infoblock data fetch, return a fatal error.
     if (infoblock_fetch_error)
     {
         return E_ABORT;
     }
-#endif
+#endif // PUF_SKIP_CHECKVAL
 
 
     // Enable PUF peripheral clocks if not already enabled
@@ -181,10 +184,14 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             aes256_ecb_oneblock(MXC_CTB_CIPHER_KEY_AES_PUFKEY0,raw_usn,ciphertext);
 
 #warning FIXME: Check endianness of AES plain/ciphertext and check value.
+#ifdef PUF_SKIP_CHECKVAL
+return E_NO_ERROR;
+#else
             if (!memcmp(key0_checkval,ciphertext,4))
             {
                 return E_NO_ERROR;
             }
+#endif // PUF_SKIP_CHECKVAL
         }
         else if ((MXC_PUF_KEY1 == key) || (MXC_PUF_KEY_BOTH == key))
         {
@@ -194,10 +201,14 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             aes256_ecb_oneblock(MXC_CTB_CIPHER_KEY_AES_PUFKEY1,raw_usn,ciphertext);
 
 #warning FIXME: Check endianness of AES plain/ciphertext and check value.
+#ifdef PUF_SKIP_CHECKVAL
+return E_NO_ERROR;
+#else
             if (!memcmp(key1_checkval,ciphertext,4))
             {
                 return E_NO_ERROR;
             }
+#endif // PUF_SKIP_CHECKVAL
         }
         else
         {
@@ -216,14 +227,9 @@ int MXC_PUF_Clear_Keys(void)
     if (!(MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_PUF)))
     {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PUF);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_PUF);
     }
-
-    // Enable PUF peripheral if not already enabled.
-    if (!(MXC_PUF->ctrl & MXC_F_PUF_CTRL_PUF_EN))
-    {
-        MXC_PUF->ctrl |= MXC_F_PUF_CTRL_PUF_EN;
-    }
+    // Reset PUF peripheral
+    MXC_SYS_Reset_Periph(MXC_SYS_RESET1_PUF);
 
     // Trigger key clear.
     MXC_PUF->ctrl |= MXC_F_PUF_CTRL_KEY_CLR_EN;

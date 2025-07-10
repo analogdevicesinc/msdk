@@ -59,7 +59,7 @@ uint8_t inputData1[16] = { 0xFF, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 /***** Functions *****/
 
 // *****************************************************************************
-void hexdump(uint8_t *data, int length)
+static void hexdump(uint8_t *data, int length)
 {
     for (int i = 0;i < length;i++)
     {
@@ -80,26 +80,6 @@ int main(void)
     mxc_ctb_cipher_req_t aesReq;
 
     printf("\n***** PUF Example *****\n");
-
-    printf("PUF KEY0 Generation: ");
-    if (MXC_PUF_Generate_Key(MXC_PUF_KEY0) == E_NO_ERROR)
-    {
-        printf("Success\n");
-    }
-    else
-    {
-        printf("FAIL\n");
-    }
-
-    printf("PUF KEY1 Generation: ");
-    if (MXC_PUF_Generate_Key(MXC_PUF_KEY1) == E_NO_ERROR)
-    {
-        printf("Success\n");
-    }
-    else
-    {
-        printf("FAIL\n");
-    }
 
     // Initialize CTB and TRNG
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -126,6 +106,58 @@ int main(void)
     aesReq.ciphertext = (uint8_t *)ciphertext;
     MXC_CTB_Cipher_Encrypt(&aesReq);
     hexdump(ciphertext,16);
+
+    printf("\nPUF KEY0 Generation: ");
+    if (MXC_PUF_Generate_Key(MXC_PUF_KEY0) == E_NO_ERROR)
+    {
+        printf("Success\n");
+    }
+    else
+    {
+        printf("FAIL\n");
+    }
+
+    printf("\n***** AES ECB Encryption with PUF Key0 *****\n");
+    MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY0);
+
+    // Prepare and execute encryption
+    aesReq.plaintext = inputData0;
+    aesReq.ptLen = 16;
+    aesReq.iv = NULL;
+    aesReq.ciphertext = (uint8_t *)ciphertext;
+    MXC_CTB_Cipher_Encrypt(&aesReq);
+    hexdump(ciphertext,16);
+
+    printf("\nPUF KEY1 Generation: ");
+    if (MXC_PUF_Generate_Key(MXC_PUF_KEY1) == E_NO_ERROR)
+    {
+        printf("Success\n");
+    }
+    else
+    {
+        printf("FAIL\n");
+    }
+
+    printf("\n***** AES ECB Encryption with PUF Key1 *****\n");
+    MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY1);
+
+    // Prepare and execute encryption
+    aesReq.plaintext = inputData0;
+    aesReq.ptLen = 16;
+    aesReq.iv = NULL;
+    aesReq.ciphertext = (uint8_t *)ciphertext;
+    MXC_CTB_Cipher_Encrypt(&aesReq);
+    hexdump(ciphertext,16);
+
+    printf("\nPUF KEY0 and KEY1 Generation: ");
+    if (MXC_PUF_Generate_Key(MXC_PUF_KEY_BOTH) == E_NO_ERROR)
+    {
+        printf("Success\n");
+    }
+    else
+    {
+        printf("FAIL\n");
+    }
 
     printf("\n***** AES ECB Encryption with PUF Key0 *****\n");
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY0);
@@ -170,4 +202,5 @@ int main(void)
         printf("count = %d\n", count++);
     }
 }
+
 
