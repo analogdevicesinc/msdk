@@ -145,22 +145,32 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             // Enable key gen for this key
             MXC_PUF->ctrl |= MXC_F_PUF_CTRL_KEY0_GEN_EN;
         }
-        else if ((MXC_PUF_KEY1 == key) || (MXC_PUF_KEY_BOTH == key))
+        if ((MXC_PUF_KEY1 == key) || (MXC_PUF_KEY_BOTH == key))
         {
             // Clear key gen done bit
             MXC_PUF->stat |= MXC_F_PUF_STAT_KEY1_DN;
             // Enable key gen for this key
             MXC_PUF->ctrl |= MXC_F_PUF_CTRL_KEY1_GEN_EN;
         }
-        else
-        {
-            return E_BAD_PARAM;
-        }
 
         // Enable PUF peripheral.  Start the key generation.
         MXC_PUF->ctrl |= MXC_F_PUF_CTRL_PUF_EN;
 #warning FIXME: Put in something to break out of infinite loop during key gen.  One failure mode has no error flags and no key gen flags, BUSY stays busy forever.
-        while (!(MXC_PUF->stat & (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) && !(MXC_PUF->stat & PUF_ERROR_FLAGS)){};
+        if (MXC_PUF_KEY_BOTH == key)
+        {
+            // Wait for both keys to complete, or error flags.
+            while (((MXC_PUF->stat & (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) != (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) && 
+                   !(MXC_PUF->stat & PUF_ERROR_FLAGS))
+            {
+            };
+        }
+        else
+        {
+            // Wait for one key to complete, or error flags.
+            while (!(MXC_PUF->stat & (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) && !(MXC_PUF->stat & PUF_ERROR_FLAGS))
+            {
+            };
+        }
 
         // Check for any errors during key generation
         if (MXC_PUF->stat & PUF_ERROR_FLAGS)
