@@ -634,7 +634,7 @@
      <dimIncrement>4</dimIncrement>
      <name>KEY1[%s]</name>
      <description>AES Key 1.</description>
-     <addressOffset>0x20</addressOffset>
+     <addressOffset>0x080</addressOffset>
      <size>32</size>
     </register>
     <register>
