@@ -34,9 +34,6 @@
 
 /***** Definitions *****/
 
-#warning FIXME: Remove PUF_SKIP_CHECKVAL
-#define PUF_SKIP_CHECKVAL
-
 #define PUF_KEY0_CHECK_VAL_ADDR (MXC_INFO0_MEM_BASE+0x1FC0)
 #define PUF_KEY1_CHECK_VAL_ADDR (MXC_INFO0_MEM_BASE+0x1FD0)
 #define RAW_USN_ADDR            (MXC_INFO0_MEM_BASE+0x0000)
@@ -44,6 +41,7 @@
                     MXC_F_PUF_STAT_KEY0_INIT_ERR | MXC_F_PUF_STAT_KEY0_CNST_ERR | \
                     MXC_F_PUF_STAT_KEY1_INIT_ERR | MXC_F_PUF_STAT_KEY1_CNST_ERR | \
                     MXC_F_PUF_STAT_MAGIC_ERR)
+#define PUF_CHECK_VAL_LENGTH 4
 
 /***** Functions *****/
 static void aes256_ecb_oneblock(mxc_ctb_cipher_key_t key,uint8_t *plaintext, uint8_t *ciphertext)
@@ -103,21 +101,19 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
     }
     else
     {
-        memcpy(key0_checkval,infoblock_key0_checkval,4);
-        memcpy(key1_checkval,infoblock_key1_checkval,4);
+        memcpy(key0_checkval,infoblock_key0_checkval,PUF_CHECK_VAL_LENGTH);
+        memcpy(key1_checkval,infoblock_key1_checkval,PUF_CHECK_VAL_LENGTH);
     }
     // Fetch raw USN
     memcpy(raw_usn,infoblock_rawusn,16);
     MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
     // ********* End Access of Information Block *********
-#warning FIXME: Re-enable data fetch error check when testing with trimmed parts.
-#ifndef PUF_SKIP_CHECKVAL
+ 
     // If error during infoblock data fetch, return a fatal error.
     if (infoblock_fetch_error)
     {
         return E_ABORT;
     }
-#endif // PUF_SKIP_CHECKVAL
 
 
     // Enable PUF peripheral clocks if not already enabled
@@ -175,9 +171,8 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
         // Check for any errors during key generation
         if (MXC_PUF->stat & PUF_ERROR_FLAGS)
         {
-#warning FIXME: On keygen error flags, should we try again or return error?
-            continue;
-            // return E_FAIL;
+            // On keygen error flags return error
+            return E_FAIL;
         }
 
 
@@ -193,15 +188,10 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             // Check 4 bytes of ciphertext against stored PUF key check value.
             aes256_ecb_oneblock(MXC_CTB_CIPHER_KEY_AES_PUFKEY0,raw_usn,ciphertext);
 
-#warning FIXME: Check endianness of AES plain/ciphertext and check value.
-#ifdef PUF_SKIP_CHECKVAL
-return E_NO_ERROR;
-#else
-            if (!memcmp(key0_checkval,ciphertext,4))
+            if (!memcmp(key0_checkval,ciphertext,PUF_CHECK_VAL_LENGTH))
             {
                 return E_NO_ERROR;
             }
-#endif // PUF_SKIP_CHECKVAL
         }
         else if ((MXC_PUF_KEY1 == key) || (MXC_PUF_KEY_BOTH == key))
         {
@@ -210,15 +200,10 @@ return E_NO_ERROR;
             // Check 4 bytes of ciphertext against stored PUF key check value.
             aes256_ecb_oneblock(MXC_CTB_CIPHER_KEY_AES_PUFKEY1,raw_usn,ciphertext);
 
-#warning FIXME: Check endianness of AES plain/ciphertext and check value.
-#ifdef PUF_SKIP_CHECKVAL
-return E_NO_ERROR;
-#else
-            if (!memcmp(key1_checkval,ciphertext,4))
+            if (!memcmp(key1_checkval,ciphertext,PUF_CHECK_VAL_LENGTH))
             {
                 return E_NO_ERROR;
             }
-#endif // PUF_SKIP_CHECKVAL
         }
         else
         {
