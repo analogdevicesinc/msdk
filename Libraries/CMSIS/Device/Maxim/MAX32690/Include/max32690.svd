@@ -2564,6 +2564,24 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>PUFKEYSEL</name>
+       <description>PUF Key Selector.</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>KEY0</name>
+         <description>Select PUF KEY0</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>KEY1</name>
+         <description>Select PUF KEY1</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
      </fields>
     </register>
     <register>
