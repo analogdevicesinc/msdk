@@ -34,6 +34,8 @@
 #include "puf.h"
 #include "ctb.h"
 
+#include "string.h" // for memcmp()
+
 /***** Definitions *****/
 
 /***** Globals *****/
@@ -42,13 +44,12 @@ uint8_t NULL_key[32] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-uint8_t inputData0[16] = { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+uint8_t plaintext0[16] = { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-// Expected ciphertext using zero key
-// Input: 80000000000000000000000000000000
-// ddc6bf790c15760d8d9aeb6f9a75fd4e
-
+// ciphertext using NULL key
+uint8_t ciphertext0_null_key[16] = {0xdd, 0xc6, 0xbf, 0x79, 0x0c, 0x15, 0x76, 0x0d, 
+                                    0x8d, 0x9a, 0xeb, 0x6f, 0x9a, 0x75, 0xfd, 0x4e};
 
 /***** Functions *****/
 
@@ -69,10 +70,10 @@ static void hexdump(uint8_t *data, int length)
 // *****************************************************************************
 int main(void)
 {
-    int count = 0;
     uint8_t ciphertext[16];
     mxc_ctb_cipher_req_t aesReq;
     int result;
+    int fail = 0;
 
     printf("\n***** PUF Example *****\n");
 
@@ -87,7 +88,7 @@ int main(void)
     MXC_CTB_Cipher_SetKey(NULL_key, 32);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -95,11 +96,19 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
         printf("Ciphertext:\n");
         hexdump(ciphertext,16);
+        if (memcmp(ciphertext,ciphertext0_null_key,16))
+        {
+            printf("Expected ciphertext output does not match.\n");
+            printf("Expected Ciphertext:\n");
+            hexdump(ciphertext0_null_key,16);
+            fail++;
+        }
     }
 
     printf("\nPUF KEY0 Generation: ");
@@ -110,6 +119,7 @@ int main(void)
     else
     {
         printf("FAIL\n");
+        fail++;
     }
 
     printf("\n***** AES ECB Encryption with PUF Key0 *****\n");
@@ -119,7 +129,7 @@ int main(void)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY0);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -127,6 +137,7 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
@@ -142,6 +153,7 @@ int main(void)
     else
     {
         printf("FAIL\n");
+        fail++;
     }
 
     printf("\n***** AES ECB Encryption with PUF Key1 *****\n");
@@ -151,7 +163,7 @@ int main(void)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY1);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -159,6 +171,7 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
@@ -174,6 +187,7 @@ int main(void)
     else
     {
         printf("FAIL\n");
+        fail++;
     }
 
     printf("\n***** AES ECB Encryption with PUF Key0 *****\n");
@@ -183,7 +197,7 @@ int main(void)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY0);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -191,6 +205,7 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
@@ -205,7 +220,7 @@ int main(void)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY1);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -213,6 +228,7 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
@@ -230,7 +246,7 @@ int main(void)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY0);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -238,11 +254,19 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
         printf("Ciphertext:\n");
         hexdump(ciphertext,16);
+        if (memcmp(ciphertext,ciphertext0_null_key,16))
+        {
+            printf("Expected ciphertext output does not match.\n");
+            printf("Expected Ciphertext:\n");
+            hexdump(ciphertext0_null_key,16);
+            fail++;
+        }
     }
 
     printf("\n***** AES ECB Encryption with Cleared PUF Key1 *****\n");
@@ -252,7 +276,7 @@ int main(void)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_AES_PUFKEY1);
 
     // Prepare and execute encryption
-    aesReq.plaintext = inputData0;
+    aesReq.plaintext = plaintext0;
     aesReq.ptLen = 16;
     aesReq.iv = NULL;
     aesReq.ciphertext = (uint8_t *)ciphertext;
@@ -260,21 +284,31 @@ int main(void)
     if (result)
     {
         printf("Encrypt call failed with result: %d\n",result);
+        fail++;
     }
     else
     {
         printf("Ciphertext:\n");
         hexdump(ciphertext,16);
+        if (memcmp(ciphertext,ciphertext0_null_key,16))
+        {
+            printf("Expected ciphertext output does not match.\n");
+            printf("Expected Ciphertext:\n");
+            hexdump(ciphertext0_null_key,16);
+            fail++;
+        }
     }
 
-
-    while (1) {
-        LED_On(LED_RED);
-        MXC_Delay(500000);
-        LED_Off(LED_RED);
-        MXC_Delay(500000);
-        printf("count = %d\n", count++);
+    if (fail)
+    {
+        printf("\nExample Failed\n");
     }
+    else
+    {
+        printf("\nExample Succeded\n");
+    }
+
+    while (1);
 }
 
 
