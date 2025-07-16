@@ -74,6 +74,7 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
 {
     // Try a maximum of 2 times to generate requested PUF key
     int puf_iteration_max = 2;
+    int puf_checkval_comparefail = 0;
     uint8_t raw_usn[16];
     uint8_t ciphertext[16];
     uint8_t key0_checkval[4];
@@ -180,7 +181,8 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
         MXC_CTB_Cipher_SetMode(MXC_CTB_MODE_ECB);
         MXC_CTB_Cipher_SetCipher(MXC_CTB_CIPHER_AES256);
 
-        // Setup which keys to generate.
+        // Compare KEY0, KEY1 or both keys against the PUF check value.
+        puf_checkval_comparefail = 0;
         if ((MXC_PUF_KEY0 == key) || (MXC_PUF_KEY_BOTH == key))
         {
             // OK, now verify key was generated correctly by comparing against a check value.
@@ -188,9 +190,10 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             // Check 4 bytes of ciphertext against stored PUF key check value.
             aes256_ecb_oneblock(MXC_CTB_CIPHER_KEY_AES_PUFKEY0,raw_usn,ciphertext);
 
-            if (!memcmp(key0_checkval,ciphertext,PUF_CHECK_VAL_LENGTH))
+            if (memcmp(key0_checkval,ciphertext,PUF_CHECK_VAL_LENGTH))
             {
-                return E_NO_ERROR;
+                // Signal at least one key comparison failed.
+                puf_checkval_comparefail = 1;
             }
         }
         else if ((MXC_PUF_KEY1 == key) || (MXC_PUF_KEY_BOTH == key))
@@ -200,17 +203,25 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             // Check 4 bytes of ciphertext against stored PUF key check value.
             aes256_ecb_oneblock(MXC_CTB_CIPHER_KEY_AES_PUFKEY1,raw_usn,ciphertext);
 
-            if (!memcmp(key1_checkval,ciphertext,PUF_CHECK_VAL_LENGTH))
+            if (memcmp(key1_checkval,ciphertext,PUF_CHECK_VAL_LENGTH))
             {
-                return E_NO_ERROR;
+                // Signal at least one key comparison failed.
+                puf_checkval_comparefail = 1;
             }
         }
         else
         {
+            // Invalid key selection.
             return E_BAD_PARAM;
         }
 
-        // If no match, fall through and try PUF key generation again, or fail if too many attempts.
+        // If all requested keys have good check values, return immediately, else loop and try PUF key generation again.
+        if (!puf_checkval_comparefail)
+        {
+            return E_NO_ERROR;
+        }
+
+        // If check value comparision fails, fall through and try PUF key generation again, or return failure if too many attempts.
     }
 
     return E_FAIL;
