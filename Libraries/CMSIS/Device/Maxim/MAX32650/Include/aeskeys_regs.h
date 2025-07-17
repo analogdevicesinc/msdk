@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ extern "C" {
 typedef struct {
     __IO uint32_t key0[4];              /**< <tt>\b 0x00:</tt> AESKEYS KEY0 Register */
     __R  uint32_t rsv_0x10_0x1f[4];
-    __IO uint32_t key1[4];              /**< <tt>\b 0x20:</tt> AESKEYS KEY1 Register */
+    __IO uint32_t key1[4];              /**< <tt>\b 0x080:</tt> AESKEYS KEY1 Register */
     __R  uint32_t rsv_0x30_0xff[52];
     __IO uint32_t key2[4];              /**< <tt>\b 0x100:</tt> AESKEYS KEY2 Register */
     __R  uint32_t rsv_0x110_0x17f[28];
@@ -96,7 +96,7 @@ typedef struct {
  * @{
  */
 #define MXC_R_AESKEYS_KEY0                 ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
-#define MXC_R_AESKEYS_KEY1                 ((uint32_t)0x00000020UL) /**< Offset from AESKEYS Base Address: <tt> 0x0020</tt> */
+#define MXC_R_AESKEYS_KEY1                 ((uint32_t)0x00000080UL) /**< Offset from AESKEYS Base Address: <tt> 0x0080</tt> */
 #define MXC_R_AESKEYS_KEY2                 ((uint32_t)0x00000100UL) /**< Offset from AESKEYS Base Address: <tt> 0x0100</tt> */
 #define MXC_R_AESKEYS_KEY3                 ((uint32_t)0x00000180UL) /**< Offset from AESKEYS Base Address: <tt> 0x0180</tt> */
 /**@} end of group aeskeys_registers */
