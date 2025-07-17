@@ -34,9 +34,6 @@
   Global Variables
 **************************************************************************************************/
 
-/*! \brief  Critical section nesting level. */
-uint8_t wsfCsNesting = 0;
-
 /*************************************************************************************************/
 /*!
  *  \brief  Enter a critical section.
@@ -46,7 +43,7 @@ void WsfCsEnter(void)
 {
     portDISABLE_INTERRUPTS();
 
-    wsfCsNesting++;
+    portINC_CRITICAL_NESTING();
 }
 
 /*************************************************************************************************/
@@ -56,9 +53,9 @@ void WsfCsEnter(void)
 /*************************************************************************************************/
 void WsfCsExit(void)
 {
-    wsfCsNesting--;
+    UBaseType_t uxCriticalNesting = portDEC_CRITICAL_NESTING();
 
-    if (wsfCsNesting == 0) {
+    if (uxCriticalNesting == 0) {
         portENABLE_INTERRUPTS();
     }
 }
