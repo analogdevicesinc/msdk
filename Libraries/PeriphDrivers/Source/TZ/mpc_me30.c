@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,11 @@
 /**
  *  The MPC is only accessible from Secure World.
  */
-#if CONFIG_TRUSTED_EXECUTION_SECURE == 1
+#if (CONFIG_TRUSTED_EXECUTION_SECURE == 1)
 
 /**** Includes ****/
 
+#include <stdbool.h>
 #include <stdint.h>
 #include "mxc_device.h"
 #include "mpc.h"
@@ -49,14 +50,18 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
 {
     int error;
     uint32_t phy_start_addr, phy_end_addr;
+    uint32_t width;
 
-    int i, j;
+    int i;
     uint32_t curr_addr, start_mpc_region_addr, end_mpc_region_addr;
     uint32_t start_block_idx;
     uint32_t end_block_idx;
     mxc_mpc_regs_t *start_mpc;
     mxc_mpc_regs_t *end_mpc;
     mxc_mpc_regs_t *curr_mpc;
+
+    // Keep track of what memory type to help with sorting different MPCs.
+    bool is_mem_flash;
 
     // Check for supported address ranges.
     if (start_addr > end_addr) {
@@ -89,21 +94,30 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
     }
 
     curr_addr = phy_start_addr;
+
+    // Select memory type for its corresponding instance.
+    if (MXC_MPC_IS_FOR_FLASH(start_mpc)) {
+        is_mem_flash = true;
+    } else {
+        is_mem_flash = false;
+    }
+
     for (i = MXC_MPC_GET_IDX(start_mpc); i <= MXC_MPC_GET_IDX(end_mpc); i++) {
         // Get current MPC, whether in Flash or SRAM.
-        curr_mpc = MXC_MPC_SRAM_GET_BASE(i);
-        if (curr_mpc == NULL) {
+        if (is_mem_flash == true) {
             curr_mpc = MXC_MPC_FLASH_GET_BASE(i);
+        } else {
+            curr_mpc = MXC_MPC_SRAM_GET_BASE(i);
         }
 
         // Get the address range of the current MPC region.
         start_mpc_region_addr = curr_addr;
 
         // NOTE: Project Owner/Developer must be aware of the memory settings for Secure and Non-Secure
-        //  boundaries do not share an MPC block. An MPC block can only be set to one security
+        //  boundaries do not share a single unit MPC block. An MPC block can only be set to one security
         //  policy (Secure or Non-Secure).
         if (i == MXC_MPC_GET_IDX(end_mpc)) {
-            // The physical ending address is within the final MPC region - stop there.
+            // The physical ending address is within the final MPC region - mark end with caller requested end address.
             end_mpc_region_addr = phy_end_addr;
         } else {
             // -1 to get the last address of the current region.
@@ -125,13 +139,13 @@ static int MXC_MPC_SetBlockSecurity(int start_addr, int end_addr, mxc_mpc_state_
         //          32KB * 32 (bits in MPC_BLK_LUT[n] register) = 1MB.
         curr_mpc->ctrl &= ~MXC_F_MPC_CTRL_AUTO_INC;
 
+        width = end_block_idx - start_block_idx + 1;
+
         // Set the security state of each block.
-        for (j = start_block_idx; j <= end_block_idx; j++) {
-            if (state == MXC_MPC_STATE_NONSECURE) {
-                curr_mpc->blk_lut |= (1 << j);
-            } else {
-                curr_mpc->blk_lut &= ~(1 << j);
-            }
+        if (state == MXC_MPC_STATE_NONSECURE) {
+            curr_mpc->blk_lut |= (((1 << width) - 1) << start_block_idx);
+        } else {
+            curr_mpc->blk_lut &= ~(((1 << width) - 1) << start_block_idx);
         }
 
         // Update curr_addr to start at the beginning of the next MPC region for the next iteration of this for loop.
@@ -201,10 +215,9 @@ mxc_mpc_regs_t *MXC_MPC_GetInstance(uint32_t addr)
 
 int MXC_MPC_GetBlockIdx(mxc_mpc_regs_t *mpc, uint32_t addr)
 {
-    uint32_t physical_addr;
     uint32_t block_size;
     uint32_t start_mpc_region_addr, mpc_region_size;
-    int base, block, remainder;
+    int base, block;
 
     if (mpc == NULL) {
         return E_NO_DEVICE;
@@ -220,17 +233,8 @@ int MXC_MPC_GetBlockIdx(mxc_mpc_regs_t *mpc, uint32_t addr)
     // Block size = 1 << (BLK_CFG.size + 5)
     block_size = 1 << ((mpc->blk_cfg & MXC_F_MPC_BLK_CFG_SIZE) + 5);
 
-    // Clear bit 28 (Security State of Region) to get the physical memory address.
-    physical_addr &= ~(1 << 28);
-
     base = addr - start_mpc_region_addr;
     block = base / block_size;
-    remainder = base % block_size;
-
-    // Get the current block if the address does not start at the beginning of a whole block.
-    if (remainder != 0) {
-        block += 1;
-    }
 
     return block;
 }

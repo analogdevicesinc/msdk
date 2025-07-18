@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@
 
 #include <stdio.h>
 
-// TODO(ME30): Update this file to match first EVKIT
-
 #ifndef LIBRARIES_BOARDS_MAX32657_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32657_EVKIT_V1_INCLUDE_BOARD_H_
 
@@ -40,21 +38,23 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
+#if (CONSOLE_BAUD != 115200)
+#error \
+    "CONSOLE_BAUD must be 115200. The MAX32690 On-board Debugger (OBD) receives incoming Console UART messages from MAX32657 and outputs to serial COM port all at 115200 baud rate."
+#endif
+
 #ifdef LED_OFF
 #undef LED_OFF
 #endif
-#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_OFF 0 /// Override inactive state of LEDs
 
 #ifdef LED_ON
 #undef LED_ON
 #endif
-#define LED_ON 0 /// Override active state of LEDs
+#define LED_ON 1 /// Override active state of LEDs
 
-#define LED1 0
-#define LED_RED LED1
-
-#define LED2 1
-#define LED_GREEN LED2
+#define LED0 0
+#define LED_GREEN LED0
 
 /**
  * \brief   Initialize the BSP and board interfaces.
