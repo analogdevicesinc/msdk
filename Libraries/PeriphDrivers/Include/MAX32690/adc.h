@@ -337,6 +337,20 @@ int MXC_ADC_StartConversion(void);
 int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback);
 
 /**
+ * @brief   Perform a stream conversion on a specific channel
+ * @note    The channel must be configured separately
+ *          The ADC interrupt must be enabled and MXC_ADC_Handler() called in the ISR
+ *          places data in the error parameter of the callback function
+ *          Has different flags but behaves same as MXC_ADC_StartConversionAsync.
+ *          Enables interrupts for FIFO level only and starts ADC in continuous mode.
+ *
+ * @param   callback the function to call when the conversion is complete
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_ADC_StartConversionAsyncStream(mxc_adc_complete_cb_t callback);
+
+/**
  * @brief   Perform a conversion on a specific channel using a DMA transfer.
  *          DMA channel must be acquired using \ref MXC_DMA_AcquireChannel and should
  *          be passed to this function via "dma_channel" member of "req" input struct.
@@ -360,6 +374,15 @@ int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, int *data,
  */
 
 int MXC_ADC_Handler(void);
+
+/**
+ * @brief   Free the continous conversion resources.
+ * @note    Free the callback without need to change current
+ *          Revb Handler to keep backward compatibility.
+ *
+ * @param   None
+ */
+void MXC_ADC_Free(void);
 
 /**
  * @brief   Selects the analog input divider.

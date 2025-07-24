@@ -59,6 +59,9 @@ int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t *adcq);
 
 int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t *adc, mxc_adc_complete_cb_t callback);
 
+int MXC_ADC_RevB_StartConversionAsyncStream(mxc_adc_revb_regs_t *adc,
+                                            mxc_adc_complete_cb_t callback);
+
 int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req,
                                     int *data, void (*callback)(int, int));
 
@@ -73,6 +76,8 @@ void MXC_ADC_RevB_TS_SelectEnable(mxc_adc_revb_regs_t *adc);
 void MXC_ADC_RevB_TS_SelectDisable(mxc_adc_revb_regs_t *adc);
 
 int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t *adc, int *outdata);
+
+void MXC_ADC_RevB_Free(mxc_adc_revb_regs_t *adc);
 
 uint16_t MXC_ADC_RevB_FIFO_Level(mxc_adc_revb_regs_t *adc);
 

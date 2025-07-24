@@ -67,8 +67,7 @@ static inline int Wrap_MXC_SYS_GetUSN(uint8_t *usn)
 #if defined(CONFIG_SOC_MAX32650)
     return MXC_SYS_GetUSN(usn, MXC_SYS_USN_LEN);
 #else
-    uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
-    return MXC_SYS_GetUSN(usn, checksum);
+    return MXC_SYS_GetUSN(usn, NULL);
 #endif
 }
 
@@ -146,9 +145,7 @@ static inline int Wrap_MXC_SYS_GetUSN(uint8_t *usn)
 #if defined(CONFIG_SOC_MAX32660)
     return MXC_SYS_GetUSN(usn, MXC_SYS_USN_LEN, 0);
 #else
-    uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
-
-    return MXC_SYS_GetUSN(usn, checksum);
+    return MXC_SYS_GetUSN(usn, NULL);
 #endif
 }
 

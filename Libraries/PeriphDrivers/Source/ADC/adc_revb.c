@@ -208,6 +208,26 @@ int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t *adc, mxc_adc_complete
     return E_NO_ERROR;
 }
 
+int MXC_ADC_RevB_StartConversionAsyncStream(mxc_adc_revb_regs_t *adc,
+                                            mxc_adc_complete_cb_t callback)
+{
+    if (callback == NULL) {
+        return E_BAD_PARAM;
+    }
+
+    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; //Flush data FIFO
+
+    MXC_ADC_RevB_ClearFlags(adc, ADC_IF_MASK);
+
+    while (MXC_GetLock((uint32_t *)&async_callback, (uint32_t)callback) != E_NO_ERROR) {}
+
+    MXC_ADC_RevB_EnableInt(adc, MXC_F_ADC_REVB_INTEN_FIFO_LVL);
+
+    adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_START | MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+
+    return E_NO_ERROR;
+}
+
 int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req,
                                     int *data, void (*callback)(int, int))
 {
@@ -302,6 +322,17 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t *adc)
     }
 
     return E_NO_ERROR;
+}
+
+void MXC_ADC_RevB_Free(mxc_adc_revb_regs_t *adc)
+{
+    if ((adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
+        MXC_ADC_RevB_DisableInt(adc,
+                                (MXC_F_ADC_REVB_INTFL_SEQ_DONE | MXC_F_ADC_REVB_INTFL_CONV_DONE |
+                                 MXC_F_ADC_REVB_INTEN_FIFO_LVL));
+
+        MXC_FreeLock((uint32_t *)&async_callback);
+    }
 }
 
 int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t *adc, int *outdata)

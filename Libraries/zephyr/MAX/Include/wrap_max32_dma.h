@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,8 @@ static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
 {
 #if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
     return dma->intr;
+#elif defined(CONFIG_SOC_MAX32660)
+    return dma->int_fl;
 #else
     return dma->intfl;
 #endif

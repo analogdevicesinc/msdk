@@ -144,6 +144,12 @@ static inline int Wrap_MXC_ADC_StartConversionAsync(uint32_t *sample_channels,
     return MXC_ADC_StartConversionAsync((mxc_adc_chsel_t)channel_id, callback);
 }
 
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    return E_NOT_SUPPORTED;
+}
+
 static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 {
     MXC_ADC_GetData(*outdata);
@@ -283,6 +289,26 @@ static inline int Wrap_MXC_ADC_StartConversionAsync(uint32_t *sample_channels,
     Wrap_MXC_ADC_ChannelSelect(sample_channels);
     return MXC_ADC_StartConversionAsync(callback);
 }
+
+#if defined(CONFIG_SOC_MAX32690)
+
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    MXC_ADC_FIFO_Threshold_Config(MAX_ADC_FIFO_LEN >> 1);
+    Wrap_MXC_ADC_ChannelSelect(sample_channels);
+    return MXC_ADC_StartConversionAsyncStream(callback);
+}
+
+#else
+
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    return E_NOT_SUPPORTED;
+}
+
+#endif
 
 static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 {

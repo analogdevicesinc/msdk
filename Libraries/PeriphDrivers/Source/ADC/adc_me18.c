@@ -176,6 +176,11 @@ int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback)
     return MXC_ADC_RevB_StartConversionAsync((mxc_adc_revb_regs_t *)MXC_ADC, callback);
 }
 
+int MXC_ADC_StartConversionAsyncStream(mxc_adc_complete_cb_t callback)
+{
+    return MXC_ADC_RevB_StartConversionAsyncStream((mxc_adc_revb_regs_t *)MXC_ADC, callback);
+}
+
 int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, int *data, void (*callback)(int, int))
 {
     return MXC_ADC_RevB_StartConversionDMA((mxc_adc_revb_regs_t *)MXC_ADC, req, data, callback);
@@ -184,6 +189,11 @@ int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, int *data, void (*
 int MXC_ADC_Handler(void)
 {
     return MXC_ADC_RevB_Handler((mxc_adc_revb_regs_t *)MXC_ADC);
+}
+
+void MXC_ADC_Free(void)
+{
+    MXC_ADC_RevB_Free((mxc_adc_revb_regs_t *)MXC_ADC);
 }
 
 int MXC_ADC_GetData(int *outdata)
