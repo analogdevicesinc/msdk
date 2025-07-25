@@ -30,7 +30,6 @@
 #include "ctb.h"  // For AES encrypt
 #include "flc.h"  // For Information Block access
 #include "string.h"  // For memcpy()
-#include "mxc_delay.h"  // For MXC_Delay()
 
 /***** Definitions *****/
 
@@ -42,6 +41,8 @@
                     MXC_F_PUF_STAT_KEY1_INIT_ERR | MXC_F_PUF_STAT_KEY1_CNST_ERR | \
                     MXC_F_PUF_STAT_MAGIC_ERR)
 #define PUF_CHECK_VAL_LENGTH 4
+
+#define PUF_GEN_WAIT_MAXIMUM_LOOP_COUNT (IPO_FREQ/2)
 
 /***** Functions *****/
 static void aes256_ecb_oneblock(mxc_ctb_cipher_key_t key,uint8_t *plaintext, uint8_t *ciphertext)
@@ -65,7 +66,6 @@ static void aes256_ecb_oneblock(mxc_ctb_cipher_key_t key,uint8_t *plaintext, uin
     MXC_CTB_Cipher_Encrypt(&aesReq);
     do {
         ctb_stat = MXC_CTB->ctrl;
-        MXC_Delay(5);
     } while (!(ctb_stat & MXC_F_CTB_CTRL_CPH_DONE) && !(ctb_stat & MXC_F_CTB_CTRL_DMA_DONE) &&
              !(ctb_stat & MXC_F_CTB_CTRL_DONE));
 }
@@ -75,6 +75,7 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
     // Try a maximum of 2 times to generate requested PUF key
     int puf_iteration_max = 2;
     int puf_checkval_comparefail = 0;
+    int puf_gen_loopcount;
     uint8_t raw_usn[16];
     uint8_t ciphertext[16];
     uint8_t key0_checkval[4];
@@ -152,13 +153,21 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
 
         // Enable PUF peripheral.  Start the key generation.
         MXC_PUF->ctrl |= MXC_F_PUF_CTRL_PUF_EN;
-#warning FIXME: Put in something to break out of infinite loop during key gen.  One failure mode has no error flags and no key gen flags, BUSY stays busy forever.
+        // Set maximum wait loops for key generation
+        puf_gen_loopcount = PUF_GEN_WAIT_MAXIMUM_LOOP_COUNT;
+        // Wait for key or keys to be generated.
         if (MXC_PUF_KEY_BOTH == key)
         {
             // Wait for both keys to complete, or error flags.
             while (((MXC_PUF->stat & (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) != (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) && 
                    !(MXC_PUF->stat & PUF_ERROR_FLAGS))
             {
+                // Return timeout if PUF key generation exceeds wait loop.
+                puf_gen_loopcount--;
+                if (puf_gen_loopcount <= 0)
+                {
+                    return E_TIME_OUT;
+                }
             };
         }
         else
@@ -166,6 +175,12 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
             // Wait for one key to complete, or error flags.
             while (!(MXC_PUF->stat & (MXC_F_PUF_STAT_KEY0_DN | MXC_F_PUF_STAT_KEY1_DN)) && !(MXC_PUF->stat & PUF_ERROR_FLAGS))
             {
+                // Return timeout if PUF key generation exceeds wait loop.
+                puf_gen_loopcount--;
+                if (puf_gen_loopcount <= 0)
+                {
+                    return E_TIME_OUT;
+                }
             };
         }
 

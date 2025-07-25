@@ -55,6 +55,7 @@ typedef enum {
 
 /**
  * @brief   Generate selected PUF key.
+ * NOTE: PUF Key generate uses the CTB AES engine during the generation process.
  * @param   key   Key selection.  See \ref mxc_puf_key_t for key selection options.
  * 
  * @return  #E_NO_ERROR if everything is successful, @ref MXC_Error_Codes
