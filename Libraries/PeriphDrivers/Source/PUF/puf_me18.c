@@ -42,7 +42,7 @@
                     MXC_F_PUF_STAT_MAGIC_ERR)
 #define PUF_CHECK_VAL_LENGTH 4
 
-#define PUF_GEN_WAIT_MAXIMUM_LOOP_COUNT (IPO_FREQ/2)
+#define PUF_GEN_WAIT_MAXIMUM_LOOP_COUNT (IPO_FREQ/100)
 
 /***** Functions *****/
 static void aes256_ecb_oneblock(mxc_ctb_cipher_key_t key,uint8_t *plaintext, uint8_t *ciphertext)
@@ -168,7 +168,7 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
                 {
                     return E_TIME_OUT;
                 }
-            };
+            }
         }
         else
         {
@@ -181,7 +181,7 @@ int MXC_PUF_Generate_Key(mxc_puf_key_t key)
                 {
                     return E_TIME_OUT;
                 }
-            };
+            }
         }
 
         // Check for any errors during key generation
