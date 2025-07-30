@@ -57,6 +57,11 @@ int MXC_CTB_Init(uint32_t features)
     return E_NO_ERROR;
 }
 
+void MXC_CTB_InternalReset(void)
+{
+    MXC_CTB_RevA_InternalReset((mxc_ctb_reva_regs_t *)MXC_CTB);
+}
+
 uint32_t MXC_CTB_CheckFeatures(void)
 {
     return MXC_CTB_FEATURE_DMA | MXC_CTB_FEATURE_ECC | MXC_CTB_FEATURE_CIPHER |
