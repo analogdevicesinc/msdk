@@ -72,8 +72,7 @@ static int MXC_CTB_Cipher_EncDecAsc(mxc_ctb_cipher_req_t *req);
 
 int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
 {
-    ctb_regs->ctrl = MXC_F_CTB_REVA_CTRL_RST;
-    while (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RST) {}
+    MXC_CTB_InternalReset();
 
     ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_FLAG_MODE;
 
@@ -109,6 +108,13 @@ int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
     MXC_CTB_DoneClear(features);
 
     return E_NO_ERROR;
+}
+
+void MXC_CTB_RevA_InternalReset(mxc_ctb_reva_regs_t *ctb_regs)
+{
+    ctb_regs->ctrl = MXC_F_CTB_REVA_CTRL_RST;
+    // User guide states this bit clears after 1 cycle.
+    __NOP();
 }
 
 static int MXC_CTB_CheckInterrupts(void)
@@ -568,7 +574,12 @@ static int MXC_CTB_ECC_Setup(mxc_ctb_ecc_req_t *req)
 
 int MXC_CTB_RevA_ECC_Compute(mxc_ctb_reva_ecc_req_t *req)
 {
-    uint32_t error = MXC_CTB_ECC_Setup((mxc_ctb_ecc_req_t *)req);
+    uint32_t error;
+
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
+    error = MXC_CTB_ECC_Setup((mxc_ctb_ecc_req_t *)req);
 
     if (error != E_NO_ERROR) {
         return error;
@@ -580,7 +591,12 @@ int MXC_CTB_RevA_ECC_Compute(mxc_ctb_reva_ecc_req_t *req)
 
 int MXC_CTB_RevA_ECC_ErrorCheck(mxc_ctb_reva_ecc_req_t *req)
 {
-    uint32_t error = MXC_CTB_ECC_Setup((mxc_ctb_ecc_req_t *)req);
+    uint32_t error;
+
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
+    error = MXC_CTB_ECC_Setup((mxc_ctb_ecc_req_t *)req);
 
     if (error != E_NO_ERROR) {
         return error;
@@ -613,6 +629,9 @@ static void MXC_CTB_ECC_SetupAsync(mxc_ctb_ecc_req_t *req)
 
 void MXC_CTB_RevA_ECC_ComputeAsync(mxc_ctb_reva_ecc_req_t *req)
 {
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
     MXC_CTB_ECC_SetupAsync((mxc_ctb_ecc_req_t *)req);
 
     dma_cb_func = DMA_CALLBACK_ECC_Compute;
@@ -621,6 +640,9 @@ void MXC_CTB_RevA_ECC_ComputeAsync(mxc_ctb_reva_ecc_req_t *req)
 
 void MXC_CTB_RevA_ECC_ErrorCheckAsync(mxc_ctb_reva_ecc_req_t *req)
 {
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
     MXC_CTB_ECC_SetupAsync((mxc_ctb_ecc_req_t *)req);
 
     dma_cb_func = DMA_CALLBACK_ECC_Error;
@@ -689,6 +711,9 @@ int MXC_CTB_RevA_CRC_Compute(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_crc_req
     enabled = MXC_CTB_CheckInterrupts();
     MXC_CTB_DisableInt();
 
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
     ctb_regs->crc_val = crc_seed; // Preset CRC value to all 1's
 
     dma_req.sourceBuffer = req->dataBuffer;
@@ -715,6 +740,9 @@ void MXC_CTB_RevA_CRC_ComputeAsync(mxc_ctb_reva_regs_t *ctb_regs, mxc_ctb_reva_c
     MXC_ASSERT(req->callback);
 
     while (MXC_GetLock((void *)&MXC_CTB_Callbacks[DMA_ID], 1) != E_NO_ERROR) {}
+
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
 
     MXC_CTB_DisableInt();
 
@@ -819,6 +847,9 @@ int MXC_CTB_RevA_Hash_Compute(mxc_ctb_reva_hash_req_t *req)
     int enabled = MXC_CTB_CheckInterrupts();
     MXC_CTB_DisableInt();
 
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
     MXC_CTB_Hash_SetMessageSize(req->len);
     MXC_CTB_Hash_SetSource((mxc_ctb_hash_source_t)MXC_CTB_REVA_HASH_SOURCE_INFIFO);
     MXC_CTB_Hash_InitializeHash();
@@ -886,6 +917,9 @@ void MXC_CTB_RevA_Hash_ComputeAsync(mxc_ctb_reva_hash_req_t *req)
     }
 
     while (MXC_GetLock((void *)&MXC_CTB_Callbacks[HSH_ID], 1) != E_NO_ERROR) {}
+
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
 
     MXC_CTB_DisableInt();
 
@@ -1019,6 +1053,9 @@ static int MXC_CTB_Cipher_Generic(mxc_ctb_cipher_req_t *req, int op)
     enabled = MXC_CTB_CheckInterrupts();
     MXC_CTB_DisableInt();
 
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
+
     int dataLength = MXC_CTB_Cipher_GetBlockSize(MXC_CTB_Cipher_GetCipher());
     int numBlocks = ((int)req->ptLen - 1) / dataLength + 1;
 
@@ -1088,6 +1125,9 @@ static void MXC_CTB_Cipher_GenericAsync(mxc_ctb_cipher_req_t *req, int op)
     MXC_ASSERT(req->plaintext && req->ciphertext && req->callback);
 
     while (MXC_GetLock((void *)&MXC_CTB_Callbacks[CPH_ID], 1) != E_NO_ERROR) {}
+
+    // User guide indicates CTB block should be reset before each operation.
+    MXC_CTB_InternalReset();
 
     MXC_CTB_DisableInt();
 
