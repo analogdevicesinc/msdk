@@ -578,7 +578,7 @@ int MXC_CTB_RevA_ECC_Compute(mxc_ctb_reva_ecc_req_t *req)
 
     // User guide indicates CTB block should be reset before each operation.
     MXC_CTB_InternalReset();
-    
+
     error = MXC_CTB_ECC_Setup((mxc_ctb_ecc_req_t *)req);
 
     if (error != E_NO_ERROR) {
