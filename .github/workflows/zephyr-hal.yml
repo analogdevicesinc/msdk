@@ -49,7 +49,7 @@ jobs:
           # The working directory for scripts will be the root of the runner workspace.
           # Using the checkout commands above, the script will start out in the same 
           # directory that contains the 'msdk' and 'hal_adi' folders.
-          sh ./msdk/.github/workflows/scripts/zephyr_hal_sync.sh
+          bash ./msdk/.github/workflows/scripts/zephyr_hal_sync.sh
 
       - name: Push changes to hal_adi repository
         run: |
