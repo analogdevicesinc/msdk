@@ -56,4 +56,4 @@ jobs:
       - name: Push changes to hal_adi repository
         run: |
           cd ./hal_adi
-          git push
+          git push --set-upstream origin msdk-export
