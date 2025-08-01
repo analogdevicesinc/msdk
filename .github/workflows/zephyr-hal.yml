@@ -45,6 +45,8 @@ jobs:
       
       - name: Copy necessary files from msdk to hal_adi
         run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
           # Call or run any tasks here
           # The working directory for scripts will be the root of the runner workspace.
           # Using the checkout commands above, the script will start out in the same 
@@ -54,4 +56,4 @@ jobs:
       - name: Push changes to hal_adi repository
         run: |
           cd ./hal_adi
-          git push
+          git push --set-upstream origin msdk-export
