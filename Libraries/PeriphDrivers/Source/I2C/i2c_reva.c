@@ -1035,6 +1035,9 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
         return E_BAD_STATE;
     }
 
+    while (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {}
+    // Wait for the last Transaction to finish and the Bus is ready
+
     if (AsyncRequests[i2cNum] == NULL) {
         if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
             return E_NOT_SUPPORTED;
