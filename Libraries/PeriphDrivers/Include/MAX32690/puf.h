@@ -46,8 +46,8 @@ extern "C" {
  * @brief   Enumeration type to select PUF key
  */
 typedef enum {
-    MXC_PUF_KEY0 = (1<<0),
-    MXC_PUF_KEY1 = (1<<1),
+    MXC_PUF_KEY0 = (1 << 0),
+    MXC_PUF_KEY1 = (1 << 1),
     MXC_PUF_KEY_BOTH = (MXC_PUF_KEY0 | MXC_PUF_KEY1),
 } mxc_puf_key_t;
 
