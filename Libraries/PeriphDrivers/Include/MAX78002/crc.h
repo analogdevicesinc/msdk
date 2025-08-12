@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,46 @@ typedef struct _mxc_crc_req_t {
  */
 typedef enum { CRC_LSB_FIRST, CRC_MSB_FIRST } mxc_crc_bitorder_t;
 
+/** 
+ * @brief CRC data byte order
+ *  
+ */
+typedef enum { CRC_LSBYTE_FIRST, CRC_MSBYTE_FIRST } mxc_crc_byteorder_t;
+
+/** 
+ * @brief CRC reflected
+ *  
+ */
+typedef enum { CRC_REFLECTED, CRC_NOT_REFLECTED } mxc_crc_reflected_t;
+
+/** 
+ * @brief CRC request state DONE or NOT
+ *  
+ */
+typedef enum { CRC_NOT_DONE, CRC_DONE } mxc_crc_req_state_t;
+
+/**
+  * @brief  Structure used to set up Full CRC request
+  *
+  */
+typedef struct _mxc_crc_full_req_t {
+    mxc_crc_reflected_t inputReflected; ///< Input reflected or not
+    mxc_crc_reflected_t resultReflected; ///< Result reflected or not
+    uint32_t polynominal; ///< The polynominal to calculate CRC
+    uint32_t initialValue; ///< The initial value to calculate CRC
+    uint32_t finalXorValue; ///< The final xor value to calculate CRC
+    uint8_t *dataBuffer; ///< Pointer to the data
+    uint32_t dataLen; ///< Length of the data
+
+    volatile mxc_crc_reflected_t manual_reflected_input_required;
+    volatile uint8_t dmaChannel;
+    volatile uint32_t nextPosDMA;
+    volatile mxc_crc_req_state_t req_state;
+
+    volatile uint32_t resultCRC; ///< Calculated CRC value
+    volatile int error;
+} mxc_crc_full_req_t;
+
 /***** Function Prototypes *****/
 
 /* ************************************************************************* */
@@ -82,11 +122,16 @@ int MXC_CRC_Shutdown(void);
  *          when using Async functions
  * @param   ch      DMA channel
  * @param   error   error
- * 
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-// AI87-TODO: Changed because of redundancy in MXC_CRC_RevA_Handler?
 void MXC_CRC_Handler(int ch, int error);
+
+/**
+ * @brief   This function should be called from the CRC ISR Handler
+ *          when using Async functions for full request
+ * @param   ch      DMA channel
+ * @param   error   error
+ */
+void MXC_CRC_Full_Req_Handler(int ch, int error);
 
 /**
  * @brief   Set the bit-order of CRC calculation
@@ -163,6 +208,28 @@ int MXC_CRC_Compute(mxc_crc_req_t *req);
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_CRC_ComputeAsync(mxc_crc_req_t *req);
+
+/**
+ * @brief   Perform a CRC calculation
+ * @note    The result of the CRC calculation will be placed in the
+ *          mxc_crc_full_req_t structure
+ *
+ * @param   req   Structure containing the CRC detailed parameters and data for calculation
+ *
+ * @return  see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_CRC_Calculate(mxc_crc_full_req_t *req);
+
+/**
+ * @brief   Perform a CRC calculation
+ * @note    The result of the CRC calculation will be placed in the
+ *          mxc_crc_full_req_t structure
+ *
+ * @param   req   Structure containing the CRC detailed parameters and data for calculation
+ *
+ * @return  see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_CRC_CalculateAsync(mxc_crc_full_req_t *req);
 
 #ifdef __cplusplus
 }
