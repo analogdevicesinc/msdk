@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1039,6 +1039,9 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
         if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
             return E_NOT_SUPPORTED;
         }
+
+        while (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {}
+        // Wait for the last Transaction to finish and the Bus is ready
 
         AsyncRequests[i2cNum] = (void *)req;
         AsyncWritten[i2cNum] = 0;
