@@ -364,6 +364,10 @@ uint32_t MXC_TMR_RevB_GetPeriod(mxc_tmr_revb_regs_t *tmr, uint32_t clk_frequency
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
+    // convert prescalar value in register to actual prescalar value in power of 2 for periodTicks calculation
+    uint32_t exponent = prescalar >> 4;
+    prescalar = 1 << exponent;
+
     periodTicks = clk_frequency / (frequency * prescalar);
 
     return periodTicks;
