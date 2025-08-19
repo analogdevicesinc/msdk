@@ -203,8 +203,8 @@ int MXC_DMA_RevA_AdvConfigChannel(mxc_dma_adv_config_t advConfig)
         dma_resource[advConfig.ch].regs->ctrl &= ~(0x1F00FC0C); // Clear all fields we set here
         /* Designed to be safe, not speedy. Should not be called often */
         dma_resource[advConfig.ch].regs->ctrl |=
-            ((advConfig.reqwait_en ? MXC_F_DMA_REVA_CTRL_TO_WAIT : 0) | advConfig.prio |
-             advConfig.tosel | advConfig.pssel |
+            ((advConfig.reqwait_en ? MXC_F_DMA_REVA_CTRL_TO_WAIT : 0) |
+             (advConfig.prio << MXC_F_DMA_REVA_CTRL_PRI_POS) | advConfig.tosel | advConfig.pssel |
              (((advConfig.burst_size - 1) << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS) &
               MXC_F_DMA_REVA_CTRL_BURST_SIZE));
     } else {
