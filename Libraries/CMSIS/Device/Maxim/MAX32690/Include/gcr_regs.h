@@ -82,13 +82,16 @@ typedef struct {
     __IO uint32_t rst0;                 /**< <tt>\b 0x04:</tt> GCR RST0 Register */
     __IO uint32_t clkctrl;              /**< <tt>\b 0x08:</tt> GCR CLKCTRL Register */
     __IO uint32_t pm;                   /**< <tt>\b 0x0C:</tt> GCR PM Register */
-    __R  uint32_t rsv_0x10_0x17[2];
+    __IO uint32_t pfrst;                /**< <tt>\b 0x10:</tt> GCR PFRST Register */
+    __I  uint32_t pfstat;               /**< <tt>\b 0x14:</tt> GCR PFSTAT Register */
     __IO uint32_t pclkdiv;              /**< <tt>\b 0x18:</tt> GCR PCLKDIV Register */
     __R  uint32_t rsv_0x1c_0x23[2];
     __IO uint32_t pclkdis0;             /**< <tt>\b 0x24:</tt> GCR PCLKDIS0 Register */
     __IO uint32_t memctrl;              /**< <tt>\b 0x28:</tt> GCR MEMCTRL Register */
     __IO uint32_t memz;                 /**< <tt>\b 0x2C:</tt> GCR MEMZ Register */
-    __R  uint32_t rsv_0x30_0x3f[4];
+    __R  uint32_t rsv_0x30;
+    __I  uint32_t pfbuf;                /**< <tt>\b 0x34:</tt> GCR PFBUF Register */
+    __R  uint32_t rsv_0x38_0x3f[2];
     __IO uint32_t sysst;                /**< <tt>\b 0x40:</tt> GCR SYSST Register */
     __IO uint32_t rst1;                 /**< <tt>\b 0x44:</tt> GCR RST1 Register */
     __IO uint32_t pclkdis1;             /**< <tt>\b 0x48:</tt> GCR PCLKDIS1 Register */
@@ -117,10 +120,13 @@ typedef struct {
 #define MXC_R_GCR_RST0                     ((uint32_t)0x00000004UL) /**< Offset from GCR Base Address: <tt> 0x0004</tt> */
 #define MXC_R_GCR_CLKCTRL                  ((uint32_t)0x00000008UL) /**< Offset from GCR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_GCR_PM                       ((uint32_t)0x0000000CUL) /**< Offset from GCR Base Address: <tt> 0x000C</tt> */
+#define MXC_R_GCR_PFRST                    ((uint32_t)0x00000010UL) /**< Offset from GCR Base Address: <tt> 0x0010</tt> */
+#define MXC_R_GCR_PFSTAT                   ((uint32_t)0x00000014UL) /**< Offset from GCR Base Address: <tt> 0x0014</tt> */
 #define MXC_R_GCR_PCLKDIV                  ((uint32_t)0x00000018UL) /**< Offset from GCR Base Address: <tt> 0x0018</tt> */
 #define MXC_R_GCR_PCLKDIS0                 ((uint32_t)0x00000024UL) /**< Offset from GCR Base Address: <tt> 0x0024</tt> */
 #define MXC_R_GCR_MEMCTRL                  ((uint32_t)0x00000028UL) /**< Offset from GCR Base Address: <tt> 0x0028</tt> */
 #define MXC_R_GCR_MEMZ                     ((uint32_t)0x0000002CUL) /**< Offset from GCR Base Address: <tt> 0x002C</tt> */
+#define MXC_R_GCR_PFBUF                    ((uint32_t)0x00000034UL) /**< Offset from GCR Base Address: <tt> 0x0034</tt> */
 #define MXC_R_GCR_SYSST                    ((uint32_t)0x00000040UL) /**< Offset from GCR Base Address: <tt> 0x0040</tt> */
 #define MXC_R_GCR_RST1                     ((uint32_t)0x00000044UL) /**< Offset from GCR Base Address: <tt> 0x0044</tt> */
 #define MXC_R_GCR_PCLKDIS1                 ((uint32_t)0x00000048UL) /**< Offset from GCR Base Address: <tt> 0x0048</tt> */
@@ -408,6 +414,28 @@ typedef struct {
 
 /**
  * @ingroup  gcr_registers
+ * @defgroup GCR_PFRST GCR_PFRST
+ * @brief    Power Fail Reset Register.
+ * @{
+ */
+#define MXC_F_GCR_PFRST_EN_POS                         0 /**< PFRST_EN Position */
+#define MXC_F_GCR_PFRST_EN                             ((uint32_t)(0x1UL << MXC_F_GCR_PFRST_EN_POS)) /**< PFRST_EN Mask */
+
+/**@} end of group GCR_PFRST_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_PFSTAT GCR_PFSTAT
+ * @brief    Power Fail Reset Status Register.
+ * @{
+ */
+#define MXC_F_GCR_PFSTAT_RST_POS                       1 /**< PFSTAT_RST Position */
+#define MXC_F_GCR_PFSTAT_RST                           ((uint32_t)(0x1UL << MXC_F_GCR_PFSTAT_RST_POS)) /**< PFSTAT_RST Mask */
+
+/**@} end of group GCR_PFSTAT_Register */
+
+/**
+ * @ingroup  gcr_registers
  * @defgroup GCR_PCLKDIV GCR_PCLKDIV
  * @brief    Peripheral Clock Divider.
  * @{
@@ -582,6 +610,20 @@ typedef struct {
 #define MXC_F_GCR_MEMZ_DCACHE_TAG                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_DCACHE_TAG_POS)) /**< MEMZ_DCACHE_TAG Mask */
 
 /**@} end of group GCR_MEMZ_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_PFBUF GCR_PFBUF
+ * @brief    Power Fail Reset Buffer Register.
+ * @{
+ */
+#define MXC_F_GCR_PFBUF_PWRGOOD_BUF_POS                15 /**< PFBUF_PWRGOOD_BUF Position */
+#define MXC_F_GCR_PFBUF_PWRGOOD_BUF                    ((uint32_t)(0x7UL << MXC_F_GCR_PFBUF_PWRGOOD_BUF_POS)) /**< PFBUF_PWRGOOD_BUF Mask */
+
+#define MXC_F_GCR_PFBUF_PWRGOOD_POS                    31 /**< PFBUF_PWRGOOD Position */
+#define MXC_F_GCR_PFBUF_PWRGOOD                        ((uint32_t)(0x1UL << MXC_F_GCR_PFBUF_PWRGOOD_POS)) /**< PFBUF_PWRGOOD Mask */
+
+/**@} end of group GCR_PFBUF_Register */
 
 /**
  * @ingroup  gcr_registers
