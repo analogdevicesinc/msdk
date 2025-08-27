@@ -28,15 +28,15 @@
 
 static void MXC_LP_DisablePowerFailDetection(void)
 {
-	MXC_GCR->pfrst &= ~MXC_F_GCR_PFRST_EN;
+    MXC_GCR->pfrst &= ~MXC_F_GCR_PFRST_EN;
 }
 
 static void MXC_LP_EnablePowerFailDetection(void)
 {
-	// Wait for power to be stable before enabling.
-	while((MXC_GCR->pfbuf & (MXC_F_GCR_PFBUF_PWRGOOD_BUF | MXC_F_GCR_PFBUF_PWRGOOD)) == 
-          (MXC_F_GCR_PFBUF_PWRGOOD_BUF | MXC_F_GCR_PFBUF_PWRGOOD));
-	MXC_GCR->pfrst |= MXC_F_GCR_PFRST_EN;
+    // Wait for power to be stable before enabling.
+    while ((MXC_GCR->pfbuf & (MXC_F_GCR_PFBUF_PWRGOOD_BUF | MXC_F_GCR_PFBUF_PWRGOOD)) ==
+           (MXC_F_GCR_PFBUF_PWRGOOD_BUF | MXC_F_GCR_PFBUF_PWRGOOD)) {}
+    MXC_GCR->pfrst |= MXC_F_GCR_PFRST_EN;
 }
 
 void MXC_LP_EnterSleepMode(void)
