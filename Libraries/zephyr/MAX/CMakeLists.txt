@@ -19,7 +19,7 @@
 
 if (${CONFIG_SOC} MATCHES "max32666")
     set(TARGET_LC "max32665")
-elseif (${CONFIG_SOC} MATCHES "max326651")
+elseif (${CONFIG_SOC} MATCHES "max32651")
     set(TARGET_LC "max32650")
 else ()
     set(TARGET_LC ${CONFIG_SOC})
