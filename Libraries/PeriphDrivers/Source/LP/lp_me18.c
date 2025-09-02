@@ -26,6 +26,19 @@
 #include "mcr_regs.h"
 #include "lp.h"
 
+static void MXC_LP_DisablePowerFailDetection(void)
+{
+    MXC_GCR->pfrst &= ~MXC_F_GCR_PFRST_EN;
+}
+
+static void MXC_LP_EnablePowerFailDetection(void)
+{
+    // Wait for power to be stable before enabling.
+    while ((MXC_GCR->pfbuf & (MXC_F_GCR_PFBUF_PWRGOOD_BUF | MXC_F_GCR_PFBUF_PWRGOOD)) ==
+           (MXC_F_GCR_PFBUF_PWRGOOD_BUF | MXC_F_GCR_PFBUF_PWRGOOD)) {}
+    MXC_GCR->pfrst |= MXC_F_GCR_PFRST_EN;
+}
+
 void MXC_LP_EnterSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
@@ -58,9 +71,13 @@ void MXC_LP_EnterMicroPowerMode(void)
     /* Set SLEEPDEEP bit */
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
+    MXC_LP_DisablePowerFailDetection(); // Workaround for issue ME18-191
+
     /* Go into Deepsleep mode and wait for an interrupt to wake the processor */
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_UPM; // UPM mode
     __WFI();
+
+    MXC_LP_EnablePowerFailDetection(); // Workaround for issue ME18-191
 }
 
 void MXC_LP_EnterStandbyMode(void)
@@ -71,9 +88,13 @@ void MXC_LP_EnterStandbyMode(void)
     /* Set SLEEPDEEP bit */
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
+    MXC_LP_DisablePowerFailDetection(); // Workaround for issue ME18-191
+
     /* Go into standby mode and wait for an interrupt to wake the processor */
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_STANDBY; // standby mode
     __WFI();
+
+    MXC_LP_EnablePowerFailDetection(); // Workaround for issue ME18-191
 }
 
 void MXC_LP_EnterBackupMode(void)

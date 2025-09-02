@@ -6442,6 +6442,35 @@ memory.
      </fields>
     </register>
     <register>
+     <name>PFRST</name>
+     <description>Power Fail Reset Register.</description>
+     <addressOffset>0x10</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Power Fail Reset Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PFSTAT</name>
+     <description>Power Fail Reset Status Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RST</name>
+       <description>Power Fail Reset Status</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
      <name>PCLKDIV</name>
      <description>Peripheral Clock Divider.</description>
      <addressOffset>0x18</addressOffset>
@@ -6796,6 +6825,28 @@ memory.
        <description>Data-Cache Controller Tag Zeroization.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PFBUF</name>
+     <description>Power Fail Reset Buffer Register.</description>
+     <addressOffset>0x34</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>PWRGOOD_BUF</name>
+       <description>Power Good Detection.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>3</bitWidth>
+       <access>read-only</access>
+      </field>
+      <field>
+       <name>PWRGOOD</name>
+       <description>Power Good Detected.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
       </field>
      </fields>
     </register>
