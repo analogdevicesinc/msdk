@@ -434,8 +434,30 @@ mxc_ctb_cipher_t MXC_CTB_Cipher_GetCipher(void)
 
 void MXC_CTB_Cipher_SetKeySource(mxc_ctb_cipher_key_t source)
 {
-    MXC_CTB_RevA_Cipher_SetKeySource((mxc_ctb_reva_regs_t *)MXC_CTB,
-                                     (mxc_ctb_reva_cipher_key_t)source);
+    switch (source) {
+    case MXC_CTB_CIPHER_KEY_AES_PUFKEY0:
+        // Select which PUF key to use, Key 0
+        MXC_SETFIELD(MXC_CTB->cipher_ctrl, MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL,
+                     MXC_V_CTB_CIPHER_CTRL_PUFKEYSEL_KEY0 << MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL_POS);
+        // CTB Key 2 is PUF key source
+        MXC_CTB_RevA_Cipher_SetKeySource(
+            (mxc_ctb_reva_regs_t *)MXC_CTB,
+            (mxc_ctb_reva_cipher_key_t)MXC_CTB_REVA_CIPHER_KEY_AES_KEY2);
+        break;
+    case MXC_CTB_CIPHER_KEY_AES_PUFKEY1:
+        // Select which PUF key to use, Key 1
+        MXC_SETFIELD(MXC_CTB->cipher_ctrl, MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL,
+                     MXC_V_CTB_CIPHER_CTRL_PUFKEYSEL_KEY1 << MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL_POS);
+        // CTB Key 2 is PUF key source
+        MXC_CTB_RevA_Cipher_SetKeySource(
+            (mxc_ctb_reva_regs_t *)MXC_CTB,
+            (mxc_ctb_reva_cipher_key_t)MXC_CTB_REVA_CIPHER_KEY_AES_KEY2);
+        break;
+    default:
+        MXC_CTB_RevA_Cipher_SetKeySource((mxc_ctb_reva_regs_t *)MXC_CTB,
+                                         (mxc_ctb_reva_cipher_key_t)source);
+        break;
+    }
 }
 
 mxc_ctb_cipher_key_t MXC_CTB_Cipher_GetKeySource(void)

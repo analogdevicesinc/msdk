@@ -2,7 +2,7 @@
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  # Analog Devices, Inc.),
- # Copyright (C) 2023-2024 Analog Devices, Inc.
+ # Copyright (C) 2023-2025 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -118,6 +118,9 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_reva.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/PT
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_me18.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_reva.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/PT
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PUF/puf_me18.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/RTC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RTC/rtc_me18.c
