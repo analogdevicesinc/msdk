@@ -238,6 +238,15 @@ typedef enum { MXC_CTB_CIPHER_ENCRYPTION, MXC_CTB_CIPHER_DECRYPTION } mxc_ctb_ci
 int MXC_CTB_Init(uint32_t features);
 
 /**
+ * @brief   Perform an internal reset of the CTB
+ *
+ * All internal cryptographic states and related registers are reset to their
+ * default reset values. Control registers retain their values.
+ *
+ */
+void MXC_CTB_InternalReset(void);
+
+/**
  * @brief   Detects what CTB features exist, see \ref mxc_ctb_features_t
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.

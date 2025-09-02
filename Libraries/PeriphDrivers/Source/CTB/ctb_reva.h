@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,6 +146,7 @@ typedef enum {
 /* ************************************************************************* */
 
 int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features);
+void MXC_CTB_RevA_InternalReset(mxc_ctb_reva_regs_t *ctb_regs);
 void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t *ctb_regs);
 void MXC_CTB_RevA_DisableInt(mxc_ctb_reva_regs_t *ctb_regs);
 int MXC_CTB_RevA_Ready(mxc_ctb_reva_regs_t *ctb_regs);
