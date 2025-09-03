@@ -5,15 +5,15 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 ## Quick Links
 
 * [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/)
-* [VSCode-Maxim Github](https://github.com/analogdevicesinc/VSCode-Maxim)
+* [VSCode-Maxim GitHub](https://github.com/analogdevicesinc/VSCode-Maxim)
 
 ## Introduction
 
-VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/analogdevicesinc/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
+VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Devices MSDK](https://github.com/analogdevicesinc/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
 
 The following features are supported:
 
-* Code editing with intellisense down to the register level
+* Code editing with Intellisense down to the register level
 * Code compilation with the ability to easily re-target a project for different microcontrollers and boards
 * Flashing programs
 * GUI and command-line debugging
@@ -27,7 +27,7 @@ The following features are supported:
 
 ## Installation
 
-Install the MSDK, then set `"MAXIM_PATH"` in your _user_ VS Code settings.
+Install the MSDK, then set `MAXIM_PATH` in your _user_ VS Code settings.
 
 See [Getting Started with Visual Studio Code](https://analogdevicesinc.github.io/msdk/USERGUIDE/#getting-started-with-visual-studio-code) in the MSDK User Guide for detailed instructions.
 
@@ -37,7 +37,7 @@ See the [MSDK User Guide](https://analogdevicesinc.github.io/msdk/USERGUIDE/#vis
 
 ## Issue Tracker
 
-Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/analogdevicesinc/VSCode-Maxim/issues) tracker on Github.
+Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/analogdevicesinc/VSCode-Maxim/issues) tracker on GitHub.
 
 New issues should contain _at minimum_ the following information:
 

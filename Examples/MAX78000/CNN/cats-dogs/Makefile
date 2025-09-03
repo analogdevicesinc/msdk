@@ -1,43 +1,44 @@
 ###############################################################################
- #
- # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
- # Analog Devices, Inc.),
- # Copyright (C) 2023-2024 Analog Devices, Inc.
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #     http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
- #
- ##############################################################################
+#
+# Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved.
+# (now owned by Analog Devices, Inc.),
+# Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+# is proprietary to Analog Devices, Inc. and its licensors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+###############################################################################
 
 # ** Readme! **
-# Don't edit this file! This is the core Makefile for a MaximSDK 
-# project. The available configuration options can be overridden 
-# in "project.mk", on the command-line, or with system environment 
+# Don't edit this file! This is the core Makefile for an MSDK
+# project. The available configuration options can be overridden
+# in "project.mk", on the command-line, or with system environment
 # variables.
 
 # See https://analogdevicesinc.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
-# The detailed instructions mentioned above are easier to read than 
-# this file, but the comments found in this file also outline the 
-# available configuration variables. This file is organized into 
+# The detailed instructions mentioned above are easier to read than
+# this file, but the comments found in this file also outline the
+# available configuration variables. This file is organized into
 # sub-sections, some of which expose config variables.
 
 
 # *******************************************************************************
-# Set the target microcontroller and board to compile for.  
+# Set the target microcontroller and board to compile for.
 
-# Every TARGET microcontroller has some Board Support Packages (BSPs) that are 
-# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP 
+# Every TARGET microcontroller has some Board Support Packages (BSPs) that are
+# available for it under the MaximSDK/Libraries/Boards/TARGET folder.  The BSP
 # that gets selected is MaximSDK/Libraries/Boards/TARGET/BOARD.
 
 # Configuration Variables:
@@ -62,17 +63,17 @@ endif
 BOARD ?= EvKit_V1
 
 # *******************************************************************************
-# Locate the MaximSDK
+# Locate the MSDK
 
-# This Makefile needs to know where to find the MaximSDK, and the MAXIM_PATH variable 
-# should point to the root directory of the MaximSDK installation.  Setting this manually
+# This Makefile needs to know where to find the MSDK, and the MAXIM_PATH variable
+# should point to the root directory of the MSDK installation.  Setting this manually
 # is usually only required if you're working on the command-line.
 
-# If MAXIM_PATH is not specified, we assume the project still lives inside of the MaximSDK 
+# If MAXIM_PATH is not specified, we assume the project still lives inside of the MSDK
 # and move up from this project's original location.
 
 # Configuration Variables:
-# - MAXIM_PATH : Tell this Makefile where to find the MaximSDK.  Ex:  MAXIM_PATH=C:/MaximSDK
+# - MAXIM_PATH : Tell this Makefile where to find the MSDK.  Ex:  MAXIM_PATH=C:/MaximSDK
 
 
 ifneq "$(MAXIM_PATH)" ""
@@ -84,23 +85,21 @@ CMSIS_ROOT := $(LIBS_DIR)/CMSIS
 endif
 
 # *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
+# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH
 # in case project.mk needs to reference those values.  However, we also include
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
 
 
-PROJECTMK ?= $(abspath ./project.mk)
-include $(PROJECTMK)
+include ./project.mk
 $(info Loaded project.mk)
-# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH := ../../../../
+DEPTH := ../../../../../../../../../
 MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
@@ -137,10 +136,10 @@ export CMSIS_ROOT
 
 # Configuration Variables:
 # - VPATH : Tell this Makefile to search additional locations for source (.c) files.
-# 			You should use the "+=" operator with this option.  
+# 			You should use the "+=" operator with this option.
 #			Ex:  VPATH += your/new/path
 # - IPATH : Tell this Makefile to search additional locations for header (.h) files.
-# 			You should use the "+=" operator with this option.  
+# 			You should use the "+=" operator with this option.
 #			Ex:  VPATH += your/new/path
 # - SRCS : Tell this Makefile to explicitly add a source (.c) file to the build.
 # 			This is really only useful if you want to add a source file that isn't
@@ -166,9 +165,8 @@ IPATH := $(IPATH)
 
 AUTOSEARCH ?= 1
 ifeq ($(AUTOSEARCH), 1)
-# Auto-detect all C/C++ source files on VPATH
+# Auto-detect all C source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
-SRCS += $(wildcard $(addsuffix /*.cpp, $(VPATH)))
 endif
 
 # Collapse SRCS before passing them on to the next stage
@@ -188,12 +186,10 @@ PROJECT ?= $(TARGET_LC)
 # Compiler options
 
 # Configuration Variables:
-# - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
-#			symbols and sets -Og as the default optimization level.
-# - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
+# - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
-#			You should use the "+=" operator with this option. 
+#			You should use the "+=" operator with this option.
 #			Ex:  PROJ_CFLAGS += -Wextra
 # - MFLOAT_ABI : Set the floating point acceleration level.
 #			The only options are "hard", "soft", or "softfp".
@@ -218,18 +214,22 @@ DEBUG = 0
 endif
 
 ifeq ($(DEBUG),1)
-# Optimizes for debugging as recommended
-# by GNU for code-edit-debug cycles
-# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+# Default optimization level for debug builds (make DEBUG=1 ...)
+# gcc.mk checks for this flag to add some additional debug
+# info to the build, and should be used when you really need to
+# debug.
 MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
-# Default level if not building for release or explicitly for debug
+# Fallback default optimizes for debugging as recommended
+# by GNU for code-edit-debug cycles
+# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
 MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
-PROJ_CFLAGS += -Wall # Enable warnings
+PROJ_CFLAGS += -Wall -Wcast-align # Enable warnings
 PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
+PROJ_CFLAGS += -DARM_MATH_CM4
 
 # Set hardware floating point acceleration.
 # Options are:
@@ -237,10 +237,26 @@ PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
 # - soft
 # - softfp (default if MFLOAT_ABI is not set)
 MFLOAT_ABI ?= softfp
-# MFLOAT_ABI must be exported to other Makefiles
+# MFLOAT_ABI must be exported to other Makefiles, who check this too
 export MFLOAT_ABI
 
-# This path contains system-level intialization files for the target micro.  Add to the build.
+ifeq "$(RISCV_CORE)" ""
+# Default linkerfile is only specified for standard Arm-core projects.
+# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
+LINKERFILE ?= $(TARGET_LC).ld
+LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+
+# Check if linkerfile exists
+ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
+# Doesn't exists, attempt to use root project folder.
+LINKERPATH:=.
+endif
+
+# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
+LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
+endif
+
+# This path contains system-level initialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # *******************************************************************************
@@ -255,7 +271,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 #	SBT : 	Toggle SBT integration.  Set to 1 to enable, or 0
 # 			to disable
 #	MAXIM_SBT_DIR : Specify the location of the SBT tool binaries.  This defaults to
-#					Tools/SBT in the MaximSDK.  The standalone SBT installer will override
+#					Tools/SBT in the MSDK.  The standalone SBT installer will override
 #					this via an environment variable.
 #	TARGET_SEC : 	Specify the part number to be passed into the SBT.  This should match
 #					the secure variant part #.  The default value will depend on TARGET.
@@ -283,7 +299,7 @@ endif # SBT
 # (ie. just running 'make' instead of 'make all')
 
 # Configuration variables:
-#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the 
+#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the
 #			command-line
 #			** "override" must be used with this variable. **
 #			Ex: "override .DEFAULT_GOAL = mygoal"
@@ -305,16 +321,6 @@ ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
 endif
 
-# Enable colors when --sync-output is used.
-# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
-ifneq ($(MAKE_TERMOUT),)
-PROJ_CFLAGS += -fdiagnostics-color=always
-endif
-
-ifneq ($(FORCE_COLOR),)
-PROJ_CFLAGS += -fdiagnostics-color=always
-endif
-
 # *******************************************************************************
 # Include SBT config.  We need to do this here because it needs to know
 # the current MAKECMDGOAL.
@@ -326,7 +332,7 @@ endif
 # Libraries
 
 # This section offers "toggle switches" to include or exclude the libraries that
-# are available in the MaximSDK.  Set a configuration variable to 1 to include the
+# are available in the MSDK.  Set a configuration variable to 1 to include the
 # library in the build, or 0 to exclude.
 
 # Each library may also have its own library specific configuration variables.  See
@@ -370,12 +376,12 @@ endif
 
 all:
 # 	Extend the functionality of the "all" recipe here
-	$(PREFIX)-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 
-libclean: 
+libclean:
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
-	
-clean: 
+
+clean:
 #	Extend the functionality of the "clean" recipe here
 
 # The rule to clean out all the build products.
