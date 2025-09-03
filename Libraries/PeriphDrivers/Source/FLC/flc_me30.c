@@ -67,7 +67,7 @@ int MXC_FLC_ME30_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 {
     if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
         *result = addr & (MXC_FLASH_MEM_SIZE - 1);
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE == 1)
     } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
 #endif
@@ -190,7 +190,7 @@ int MXC_FLC_MassErase(void)
 int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
     /* Flash Controller only accessible in secure world. */
-#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
@@ -214,7 +214,7 @@ int MXC_FLC_UnlockInfoBlock(uint32_t address)
 int MXC_FLC_LockInfoBlock(uint32_t address)
 {
     /* Flash Controller only accessible in secure world. */
-#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) || (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
     if ((address < MXC_INFO_MEM_BASE) ||
         (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
