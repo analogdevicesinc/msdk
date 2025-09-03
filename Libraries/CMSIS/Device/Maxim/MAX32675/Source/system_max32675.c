@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ __weak void SystemCoreClockUpdate(void)
  * implemented by the application for early initializations. If a value other
  * than '0' is returned, the C runtime initialization will be skipped.
  *
- * You may over-ride this function in your program by defining a custom 
+ * You may override this function in your program by defining a custom 
  *  PreInit(), but care should be taken to reproduce the initialization steps
  *  or a non-functional system may result.
  */
@@ -118,7 +118,7 @@ __weak int PreInit(void)
 }
 
 /* This function is called before the Board_Init function.  This weak 
- * implementation does nothing, but you may over-ride this function in your 
+ * implementation does nothing, but you may override this function in your 
  * program if you want to configure the state of all pins prior to the 
  * application running.  This is useful when using external tools (like a
  * Pin Mux configuration tool) that generate code to initialize the pins.
@@ -143,7 +143,7 @@ __weak int Board_Init(void)
 
 /* This function is called just before control is transferred to main().
  *
- * You may over-ride this function in your program by defining a custom 
+ * You may override this function in your program by defining a custom 
  *  SystemInit(), but care should be taken to reproduce the initialization
  *  steps or a non-functional system may result.
  */
