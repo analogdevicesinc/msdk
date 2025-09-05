@@ -151,6 +151,15 @@ static inline int Wrap_MXC_SYS_GetUSN(uint8_t *usn)
 
 #endif // part number
 
+static inline int Wrap_MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
+{
+#if defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32690)
+    return MXC_SYS_ClockCalibrate(clock);
+#else
+    return E_NOT_SUPPORTED;
+#endif
+}
+
 #ifdef __cplusplus
 }
 #endif
