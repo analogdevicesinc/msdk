@@ -8,7 +8,7 @@
  # you may not use this file except in compliance with the License.
  # You may obtain a copy of the License at
  #
- #     http://www.apache.org/licenses/LICENSE-2.0
+ #	 http://www.apache.org/licenses/LICENSE-2.0
  #
  # Unless required by applicable law or agreed to in writing, software
  # distributed under the License is distributed on an "AS IS" BASIS,
@@ -86,7 +86,7 @@ endif
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
-BUILD_DIR=$(CURDIR)/build
+BUILD_DIR?=$(CURDIR)/build
 endif
 
 # Make sure VPATH has the location of any absolute paths given to SRCS
@@ -100,8 +100,8 @@ SRCS_NOPATH := $(foreach NAME,$(SRCS),$(basename $(notdir $(NAME))).c)
 BINS_NOPATH := $(foreach NAME,$(BINS),$(basename $(notdir $(NAME))).bin)
 OBJS_NOPATH := $(SRCS_NOPATH:.c=.o)
 OBJS_NOPATH += $(BINS_NOPATH:.bin=.o)
-OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
-OBJS        += $(PROJ_OBJS)
+OBJS		:= $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
+OBJS		+= $(PROJ_OBJS)
 
 
 ################################################################################
@@ -262,7 +262,7 @@ ifeq "$(MCPU)" "cortex-m33"
 # Build a project with TrustZone.
 # Acceptable values are
 # - 0 (default) : The project builds as a Secure-only project (development similar to Cortex-M4 examples).
-# - 1 		    : The project builds with both Secure and Non-Secure context.
+# - 1 			: The project builds with both Secure and Non-Secure context.
 #
 # When "0" is selected, the project will build as a Secure-only project with no TrustZone features enabled.
 # Development is similar to other Cortex-M4 examples.
@@ -331,7 +331,14 @@ PROJ_CFLAGS += -mcmse
 # Generate an object file with empty definitions of the secure image symbols at the correct locations.
 # The object file needs to be linked with the non-secure image.
 ifeq ($(GEN_CMSE_IMPLIB_OBJ),1)
-PROJ_LDFLAGS := -Xlinker --cmse-implib -Xlinker --out-implib=$(CURDIR)/build/build_s/secure_implib.o
+# Linker arguments are placed into ln_args.txt and must be formatted with full windows path for
+# MSYS environments because not all tools perform automatic path translations from UNIX to 
+# native Windows paths.
+LDFLAGS+=-Xlinker --cmse-implib	\
+		 -Xlinker --out-implib=$(if $(filter "${_OS}","windows_msys"),						\
+		 						 $(shell cygpath -m ${BUILD_DIR}/build_s/secure_implib.o),	\
+								 ${BUILD_DIR}/build_s/secure_implib.o						\
+								)
 endif # GEN_CMSE_IMPLIB_OBJ
 endif # MSECURITY_MODE
 endif # TRUSTZONE
@@ -371,16 +378,16 @@ endif
 
 # The flags passed to the compiler.
 # fno-isolate-erroneous-paths-dereference disables the check for pointers with the value of 0
-#  add this below when arm-none-eabi-gcc version is past 4.8 -fno-isolate-erroneous-paths-dereference                                \
+# add this below when arm-none-eabi-gcc version is past 4.8 -fno-isolate-erroneous-paths-dereference
 
 # Universal optimization flags added to all builds
 DEFAULT_OPTIMIZE_FLAGS ?= -ffunction-sections -fdata-sections -fsingle-precision-constant
 DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion
 
 # The flags passed to the assembler.
-AFLAGS=-mthumb         \
-       -mcpu=$(MCPU) \
-       -MD
+AFLAGS=-mthumb		 \
+	   -mcpu=$(MCPU) \
+	   -MD
 ifneq "$(HEAP_SIZE)" ""
 AFLAGS+=-D__HEAP_SIZE=$(HEAP_SIZE)
 endif
@@ -392,24 +399,24 @@ AFLAGS+=-D__SRAM_SIZE=$(SRAM_SIZE)
 endif
 AFLAGS+=$(PROJ_AFLAGS)
 
-CFLAGS=-mthumb                                                                 \
-       -mcpu=$(MCPU)                                                         \
-       -mfloat-abi=$(MFLOAT_ABI)                                               \
-       -mfpu=$(MFPU)                                                           \
-       -Wa,-mimplicit-it=thumb                                                 \
-       $(MXC_OPTIMIZE_CFLAGS)   											   \
-       $(DEFAULT_OPTIMIZE_FLAGS)   										       \
-       $(DEFAULT_WARNING_FLAGS)   										       \
-       -MD                                                                     \
-       -c
+CFLAGS=-mthumb																\
+	   -mcpu=$(MCPU)														\
+	   -mfloat-abi=$(MFLOAT_ABI)											\
+	   -mfpu=$(MFPU)														\
+	   -Wa,-mimplicit-it=thumb												\
+	   $(MXC_OPTIMIZE_CFLAGS)   											\
+	   $(DEFAULT_OPTIMIZE_FLAGS)   											\
+	   $(DEFAULT_WARNING_FLAGS)   											\
+	   -MD																	\
+	   -c
 
 # The flags passed to the C++ compiler.
 CXXFLAGS := $(CFLAGS)
 CXX_STANDARD?=17
 CXXFLAGS += \
 	-fno-rtti				\
-	-fno-exceptions				\
-	-std=c++$(CXX_STANDARD)				
+	-fno-exceptions			\
+	-std=c++$(CXX_STANDARD)
 
 # On GCC version > 4.8.0 use the -fno-isolate-erroneous-paths-dereference flag
 ifeq "$(GCCVERSIONGTEQ4)" "1"
@@ -453,13 +460,28 @@ AR=${PREFIX}-ar
 LD=${PREFIX}-gcc
 
 # The flags passed to the linker.
-LDFLAGS=-mthumb                                                                \
-        -mcpu=$(MCPU)                                                          \
-        -mfloat-abi=$(MFLOAT_ABI)                                              \
-        -mfpu=$(MFPU)                                                          \
-        -Xlinker --gc-sections                                                 \
-        -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map                     \
-        -Xlinker --print-memory-usage
+# Including any file paths to linker flags must be handled separately for proper
+# path handling in different build environments.
+LDFLAGS=-mthumb																\
+		-mcpu=$(MCPU)														\
+		-mfloat-abi=$(MFLOAT_ABI)											\
+		-mfpu=$(MFPU)														\
+		-Xlinker --gc-sections												\
+		-Xlinker --print-memory-usage										\
+		-Xlinker -Map -Xlinker $(if $(filter "${_OS}","windows_msys"),		\
+									$(shell cygpath -m ${LINKERFILE}),		\
+									${LINKERFILE})
+
+# The linker arguments are stored into ln_args.txt, and ln_args.txt is passed
+# into the linker as an input. For isolated, MSYS build environments, the linker
+# does not perform automatic path translations after reading an input file which
+# can cause incorrect or missing file path errors. This conditional ensures
+# the full, extended path is used with the linker.
+ifeq "$(_OS)" "windows_msys"
+LDFLAGS+=-Xlinker -Map -Xlinker $(shell cygpath -m ${BUILD_DIR}/$(PROJECT).map)
+else
+LDFLAGS+=-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
+endif
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
@@ -485,6 +507,12 @@ endif
 
 # Add project-specific linker flags
 LDFLAGS+=$(PROJ_LDFLAGS)
+ifneq "$(strip $(PROJ_LDFLAGS))" ""
+ifeq "$(_OS)" "windows_msys"
+$(info [NOTE]: 'PROJ_LDFLAGS' additions detected. Any paths added to 'PROJ_LDFLAGS' MUST use the full \
+	Windows drive path with forward slashes (e.g. C:/path/used/in/proj_ldflags))
+endif
+endif
 
 # Include math library
 STD_LIBS=-lc -lm
@@ -539,7 +567,7 @@ else
 ifneq "${VERBOSE}" ""
 	@echo ${CC} ${CFLAGS} -o ${@} ${<}
 else
-	@echo -  CC    ${<}
+	@echo -  CC	${<}
 endif
 endif
 
@@ -557,7 +585,7 @@ else
 ifneq "${VERBOSE}" ""
 	@echo ${CXX} ${CXXFLAGS} -o ${@} ${<}
 else
-	@echo -  CXX    ${<}
+	@echo -  CXX	${<}
 endif
 endif
 
@@ -572,7 +600,7 @@ ${BUILD_DIR}/%.o: %.S $(PROJECTMK) | $(BUILD_DIR)
 ifneq "${VERBOSE}" ""
 	@echo ${CC} ${AFLAGS} -o ${@} -c ${<}
 else
-	@echo -  AS    ${<}
+	@echo -  AS	${<}
 endif
 
 	@${CC} ${AFLAGS} -o ${@} -c ${<}
@@ -584,16 +612,27 @@ endif
 # The rule for creating an object library.
 ${BUILD_DIR}/%.a: $(PROJECTMK)
 ifeq "$(_OS)" "windows_msys"
-	@echo -cr ${@} ${^}                          \
-	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
+# Certain MinGW tools and programs running in Windows MSYS are not guaranteed to perform
+# automatic path translations from UNIX-style to native Windows paths especially when
+# input file paths are read from a text file (e.g. ar_args.txt). This can cause missing or
+# incorrect file path errors. Using 'cygpath' ensures proper path handling.
+# Notes:
+#	- 'cygpath' is a default utility that comes with MSYS
+#	- The '-m' option format conversions to Windows path with forward slahes (e.g. C:/windows/path)
+#   - Does not impact files that are generated (ouput binaries, .map files, etc)
+	@echo -cr $(shell cygpath -m ${@}) $(shell cygpath -m ${^}) > ${BUILD_DIR}/ar_args.txt
 else
 	@echo -cr ${@} ${^} > ${BUILD_DIR}/ar_args.txt
 endif
 
 ifneq "$(VERBOSE)" ""
-	@echo ${AR} -cr ${@} ${^}
+ifeq "$(_OS)" "windows_msys"
+	@echo ${AR} -cr $(shell cygpath -m ${@}) $(shell cygpath -m ${^})
 else
-	@echo -  AR    ${@}
+	@echo ${AR} -cr ${@} ${^}
+endif
+else
+	@echo -  AR	${@}
 endif
 	@${AR} @${BUILD_DIR}/ar_args.txt
 
@@ -621,66 +660,71 @@ endif # STRIP_LIBRARIES
 # _binary_<file_name>_bin_size
 ${BUILD_DIR}/%.o: %.bin $(PROJECTMK) | $(BUILD_DIR)
 ifneq "$(VERBOSE)" ""
-	echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section    \
+	echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section	\
 	    .data=.text ${<} ${@}
 else
-	echo -  CP    ${<}
+	echo -  CP	${<}
 endif
 
-	@${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section            \
+	@${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section		\
 	.data=.text ${<} ${@}
 
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
+##
+# Macro for linker arguments for easier argument handing with linking recipe.
+# The default path format is UNIX-style.
+#
+# Note: The parameters are set up to allow for easier and proper path handling
+# when automatic path translations can not be assumed for Windows MSYS environments.
+#
+# Parameters:
+#	$(1) <= Linker rule target (${@})
+#	$(2) <= File inputs for linker (${^})
+define get_ln_args
+	-T $(if $(filter "${_OS}","windows_msys"),$(shell cygpath -m ${LINKERFILE}),${LINKERFILE})	\
+	--entry ${ENTRY}																			\
+	${LDFLAGS}																					\
+	-o ${1}																						\
+	$(filter %.o, ${2})																			\
+	-Xlinker --start-group																		\
+	$(filter %.a, ${2})																			\
+	${PROJ_LIBS}																				\
+	${STD_LIBS}																					\
+	-Xlinker --end-group
+endef
+
 # The rule for linking the application.
 ${BUILD_DIR}/%.elf: $(PROJECTMK) | $(BUILD_DIR)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
+#
+# Certain MinGW tools and programs running in Windows MSYS are not guaranteed to run
+# automatic path translations from UNIX-style to native Windows paths especially when
+# input file paths are read from a text file (e.g. ln_args.txt). This can cause missing
+# or incorrect file path errors. Using 'cygpath' ensures proper path handling.
+#
+# Notes:
+#	- 'cygpath' is a default utility for MSYS
+#	- The '-m' option format conversions to Windows path with forward slahes (e.g. C:/windows/path)
+# 	- Does not impact files that are generated (ouput binaries, .map files, etc)
 ifeq "$(_OS)" "windows_msys"
-# MSYS2 will create /c/-like paths, but GCC needs C:/-like paths on Windows.
-# So the only difference between this command and the "standard" command for
-# creating ln_args.txt is the sed call to perform the path replacement.
-	@echo -T ${LINKERFILE}                                       \
-	      --entry ${ENTRY}                                                       \
-	      ${LDFLAGS}                                             \
-	      -o ${@}                                                \
-	      $(filter %.o, ${^})                                    \
-	      -Xlinker --start-group                                                 \
-	      $(filter %.a, ${^})                                    \
-	      ${PROJ_LIBS}                                                           \
-	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group                                                   \
-		  | sed -r -e 's/\/([A-Za-z])\//\1:\//g'    \
-	      > ${BUILD_DIR}/ln_args.txt
+	@echo $(call get_ln_args,$(shell cygpath -m ${@}),$(shell cygpath -m ${^}))	\
+			> ${BUILD_DIR}/ln_args.txt
 else
-	@echo -T ${LINKERFILE}                                       \
-	      --entry ${ENTRY}                                                       \
-	      ${LDFLAGS}                                             \
-	      -o ${@}                                                \
-	      $(filter %.o, ${^})                                    \
-	      -Xlinker --start-group                                                 \
-	      $(filter %.a, ${^})                                    \
-	      ${PROJ_LIBS}                                                           \
-	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group                                                   \
-	      > ${BUILD_DIR}/ln_args.txt
+	@echo $(call get_ln_args,${@},${^}) > ${BUILD_DIR}/ln_args.txt
 endif
 
 ifneq "$(VERBOSE)" ""
-	@echo ${LD} -T ${LINKERFILE}                          \
-	        --entry ${ENTRY}                                             \
-	        ${LDFLAGS}                                   \
-	        -o ${@}                                      \
-	        $(filter %.o, ${^})                          \
-	        -Xlinker --start-group                                       \
-	        $(filter %.a, ${^})                          \
-	        ${PROJ_LIBS}                                                 \
-	        ${STD_LIBS}                                                  \
-	        -Xlinker --end-group
+ifeq "$(_OS)" "windows_msys"
+	@echo ${LD} $(call get_ln_args,$(shell cygpath -m ${@}),$(shell cygpath -m ${^}))
 else
-	@echo -  LD    ${@}
+	@echo ${LD} $(call get_ln_args,${@},${^})
+endif
+else
+	@echo -  LD	${@}
 endif
 
 	@${LD} @${BUILD_DIR}/ln_args.txt
