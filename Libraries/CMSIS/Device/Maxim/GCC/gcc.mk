@@ -462,26 +462,21 @@ LD=${PREFIX}-gcc
 # The flags passed to the linker.
 # Including any file paths to linker flags must be handled separately for proper
 # path handling in different build environments.
-LDFLAGS=-mthumb																\
-		-mcpu=$(MCPU)														\
-		-mfloat-abi=$(MFLOAT_ABI)											\
-		-mfpu=$(MFPU)														\
-		-Xlinker --gc-sections												\
-		-Xlinker --print-memory-usage										\
-		-Xlinker -Map -Xlinker $(if $(filter "${_OS}","windows_msys"),		\
-									$(shell cygpath -m ${LINKERFILE}),		\
-									${LINKERFILE})
-
 # The linker arguments are stored into ln_args.txt, and ln_args.txt is passed
 # into the linker as an input. For isolated, MSYS build environments, the linker
 # does not perform automatic path translations after reading an input file which
-# can cause incorrect or missing file path errors. This conditional ensures
+# can cause incorrect or missing file path errors. The conditional for the Map ensures
 # the full, extended path is used with the linker.
-ifeq "$(_OS)" "windows_msys"
-LDFLAGS+=-Xlinker -Map -Xlinker $(shell cygpath -m ${BUILD_DIR}/$(PROJECT).map)
-else
-LDFLAGS+=-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
-endif
+LDFLAGS=-mthumb																			\
+		-mcpu=$(MCPU)																	\
+		-mfloat-abi=$(MFLOAT_ABI)														\
+		-mfpu=$(MFPU)																	\
+		-Xlinker --gc-sections															\
+		-Xlinker --print-memory-usage													\
+		-Xlinker -Map -Xlinker $(if $(filter "${_OS}","windows_msys"),					\
+									$(shell cygpath -m ${BUILD_DIR}/$(PROJECT).map),	\
+									${BUILD_DIR}/$(PROJECT).map)
+
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
@@ -531,8 +526,17 @@ PROJ_LIBS:=$(addprefix -l, $(PROJ_LIBS))
 OBJCOPY=${PREFIX}-objcopy
 OBJDUMP=${PREFIX}-objdump
 
-ifeq "$(CYGWIN)" "True"
-fixpath=$(shell echo $(1) | sed -r 's/\/cygdrive\/([A-Na-n])/\U\1:/g' )
+# cygpath utility ships by default with Cygwin and MSYS2
+# This change minimizes the different fixpath calls
+# made from MSYS, CYGWIN, and other OS environments.
+ifeq "$(or $(MSYS),$(CYGWIN))" "True"
+# 2-27-2023:  This workaround was added to resolve a linker bug introduced
+# when we started using ln_args.txt.  The GCC linker expects C:/-like paths
+# on Windows if arguments are passed in from a text file.  However, ln_args
+# is parsed through a regex that misses the edge case -L/C/Path/... because
+# of the leading "-L".  We use cygpath here to handle that edge case before
+# parsing ln_args.txt.
+fixpath=$(shell cygpath -m $(1))
 else
 fixpath=$(1)
 endif
@@ -541,17 +545,7 @@ endif
 AFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CXXFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
-ifneq ($(MSYS),)
-# 2-27-2023:  This workaround was added to resolve a linker bug introduced
-# when we started using ln_args.txt.  The GCC linker expects C:/-like paths
-# on Windows if arguments are passed in from a text file.  However, ln_args
-# is parsed through a regex that misses the edge case -L/C/Path/... because
-# of the leading "-L".  We use cygpath here to handle that edge case before
-# parsing ln_args.txt.
-LDFLAGS+=${patsubst %,-L%,$(shell cygpath -m $(LIBPATH))}
-else
 LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
-endif
 
 # Add an option for stripping unneeded symbols from archive files
 STRIP_LIBRARIES ?= 0
@@ -700,17 +694,16 @@ endef
 ${BUILD_DIR}/%.elf: $(PROJECTMK) | $(BUILD_DIR)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
-#
+ifeq "$(_OS)" "windows_msys"
 # Certain MinGW tools and programs running in Windows MSYS are not guaranteed to run
 # automatic path translations from UNIX-style to native Windows paths especially when
 # input file paths are read from a text file (e.g. ln_args.txt). This can cause missing
 # or incorrect file path errors. Using 'cygpath' ensures proper path handling.
 #
 # Notes:
-#	- 'cygpath' is a default utility for MSYS
+#	- 'cygpath' is a default utility for MSYS and Cygwin
 #	- The '-m' option format conversions to Windows path with forward slahes (e.g. C:/windows/path)
 # 	- Does not impact files that are generated (ouput binaries, .map files, etc)
-ifeq "$(_OS)" "windows_msys"
 	@echo $(call get_ln_args,$(shell cygpath -m ${@}),$(shell cygpath -m ${^}))	\
 			> ${BUILD_DIR}/ln_args.txt
 else

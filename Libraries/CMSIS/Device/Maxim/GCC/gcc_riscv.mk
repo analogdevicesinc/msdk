@@ -329,13 +329,20 @@ CFLAGS += -Wstrict-prototypes
 # endif
 # ----
 
-# The flags passed to the linker
-LDFLAGS+=-Xlinker --gc-sections       \
-      -nostartfiles 	\
-	  -march=$(MARCH) 	\
-	  -mabi=$(MABI)		\
-      -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map \
-      -Xlinker --print-memory-usage
+# The flags passed to the linker.
+# The linker arguments are stored into ln_args.txt, and ln_args.txt is passed
+# into the linker as an input. For isolated, MSYS build environments, the linker
+# does not perform automatic path translations after reading an input file which
+# can cause incorrect or missing file path errors. The conditional for the Map ensures
+# the full, extended path is used with the linker.
+LDFLAGS+=-nostartfiles 																		\
+		 -march=$(MARCH) 																	\
+		 -mabi=$(MABI)																		\
+		 -Xlinker --gc-sections       														\
+		 -Xlinker --print-memory-usage														\
+		 -Xlinker -Map -Xlinker $(if $(filter "${_OS}","windows_msys"),						\
+										$(shell cygpath -m ${BUILD_DIR}/$(PROJECT).map),	\
+										${BUILD_DIR}/$(PROJECT).map)
 
 # Add --no-warn-rwx-segments on GCC 12+
 # This is not universally supported or enabled by default, so we need to check whether the linker supports it first
@@ -361,6 +368,12 @@ endif
 
 # Add project-specific linker flags
 LDFLAGS+=$(PROJ_LDFLAGS)
+ifneq "$(strip $(PROJ_LDFLAGS))" ""
+ifeq "$(_OS)" "windows_msys"
+$(info [NOTE]: 'PROJ_LDFLAGS' additions detected. Any paths added to 'PROJ_LDFLAGS' MUST use the full \
+	Windows drive path with forward slashes (e.g. C:/path/used/in/proj_ldflags))
+endif
+endif
 
 # Include math library
 STD_LIBS=-lc_nano -lm
@@ -375,8 +388,17 @@ STD_LIBS+=-lnosys
 
 PROJ_LIBS:=$(addprefix -l, $(PROJ_LIBS))
 
-ifeq "$(CYGWIN)" "True"
-fixpath=$(shell echo $(1) | sed -r 's/\/cygdrive\/([A-Na-n])/\U\1:/g' )
+# cygpath utility ships by default with Cygwin and MSYS2
+# This change minimizes the different fixpath calls
+# made from MSYS, CYGWIN, and other OS environments.
+ifeq "$(or $(MSYS),$(CYGWIN))" "True"
+# 2-27-2023:  This workaround was added to resolve a linker bug introduced
+# when we started using ln_args.txt.  The GCC linker expects C:/-like paths
+# on Windows if arguments are passed in from a text file.  However, ln_args
+# is parsed through a regex that misses the edge case -L/C/Path/... because
+# of the leading "-L".  We use cygpath here to handle that edge case before
+# parsing ln_args.txt.
+fixpath=$(shell cygpath -m $(1))
 else
 fixpath=$(1)
 endif
@@ -401,7 +423,7 @@ else
 ifneq "${VERBOSE}" ""
 	@echo ${CC} ${CFLAGS} -o ${@} ${<}
 else
-	@echo -  CC    ${<}
+	@echo -  CC	${<}
 endif
 endif
 
@@ -446,14 +468,17 @@ endif
 # The rule for creating an object library.
 ${BUILD_DIR}/%.a: $(PROJECTMK)
 ifeq "$(_OS)" "windows_msys"
-	@echo -cr ${@} ${^}                          \
-	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
+	@echo -cr $(shell cygpath -m ${@}) $(shell cygpath -m ${^}) > ${BUILD_DIR}/ar_args.txt
 else
 	@echo -cr ${@} ${^} > ${BUILD_DIR}/ar_args.txt
 endif
 
 ifneq "$(VERBOSE)" ""
+ifeq "$(_OS)" "windows_msys"
+	@echo ${AR} -cr $(shell cygpath -m ${@}) $(shell cygpath -m ${^})
+else
 	@echo ${AR} -cr ${@} ${^}
+endif
 else
 	@echo -  AR    ${@}
 endif
@@ -486,7 +511,7 @@ ifneq "$(VERBOSE)" ""
 	echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section    \
 	    .data=.text ${<} ${@}
 else
-	echo -  CP    ${<}
+	echo -  CP	${<}
 endif
 
 	@${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section            \
@@ -496,6 +521,29 @@ ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
+##
+# Macro for linker arguments for easier argument handing with linking recipe.
+# The default path format is UNIX-style.
+#
+# Note: The parameters are set up to allow for easier and proper path handling
+# when automatic path translations can not be assumed for Windows MSYS environments.
+#
+# Parameters:
+#	$(1) <= Linker rule target (${@})
+#	$(2) <= File inputs for linker (${^})
+define get_ln_args
+	-T $(if $(filter "${_OS}","windows_msys"),$(shell cygpath -m ${LINKERFILE}),${LINKERFILE})	\
+	--entry ${ENTRY}																			\
+	${LDFLAGS}																					\
+	-o ${1}																						\
+	$(filter %.o, ${2})																			\
+	-Xlinker --start-group																		\
+	$(filter %.a, ${2})																			\
+	${PROJ_LIBS}																				\
+	${STD_LIBS}																					\
+	-Xlinker --end-group
+endef
+
 # The rule for linking the application.
 # Note "RISCV_COMMON_LD" in the dependency tree.  Part-specific makefiles (ie. max78000.mk)
 # are responsible for defining this optional variable.
@@ -503,48 +551,29 @@ ${BUILD_DIR}/%.elf: $(PROJECTMK) $(RISCV_COMMON_LD) | $(BUILD_DIR)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
 ifeq "$(_OS)" "windows_msys"
-# MSYS2 will create /c/-like paths, but GCC needs C:/-like paths on Windows.
-# So the only difference between this command and the "standard" command for
-# creating ln_args.txt is the sed call to perform the path replacement.
-	@echo -T ${LINKERFILE}                                       \
-	      --entry ${ENTRY}                                                       \
-	      ${LDFLAGS}                                             \
-	      -o ${@}                                                \
-	      $(filter %.o, ${^})                                    \
-	      -Xlinker --start-group                                                 \
-	      $(filter %.a, ${^})                                    \
-	      ${PROJ_LIBS}                                                           \
-	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group                                                   \
-		  | sed -r -e 's/\/([A-Za-z])\//\1:\//g'    \
-	      > ${BUILD_DIR}/ln_args.txt
+# Certain MinGW tools and programs running in Windows MSYS are not guaranteed to run
+# automatic path translations from UNIX-style to native Windows paths especially when
+# input file paths are read from a text file (e.g. ln_args.txt). This can cause missing
+# or incorrect file path errors. Using 'cygpath' ensures proper path handling.
+#
+# Notes:
+#	- 'cygpath' is a default utility for MSYS/Cygwin
+#	- The '-m' option format conversions to Windows path with forward slahes (e.g. C:/windows/path)
+# 	- Does not impact files that are generated (ouput binaries, .map files, etc)
+	@echo $(call get_ln_args,$(shell cygpath -m ${@}),$(shell cygpath -m ${^}))	\
+			> ${BUILD_DIR}/ln_args.txt
 else
-	@echo -T ${LINKERFILE}                                       \
-	      --entry ${ENTRY}                                                       \
-	      ${LDFLAGS}                                             \
-	      -o ${@}                                                \
-	      $(filter %.o, ${^})                                    \
-	      -Xlinker --start-group                                                 \
-	      $(filter %.a, ${^})                                    \
-	      ${PROJ_LIBS}                                                           \
-	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group                                                   \
-	      > ${BUILD_DIR}/ln_args.txt
+	@echo $(call get_ln_args,${@},${^}) > ${BUILD_DIR}/ln_args.txt
 endif
 
 ifneq "$(VERBOSE)" ""
-	@echo ${LD} -T ${LINKERFILE}                          \
-	        --entry ${ENTRY}                                             \
-	        ${LDFLAGS}                                   \
-	        -o ${@}                                      \
-	        $(filter %.o, ${^})                          \
-	        -Xlinker --start-group                                       \
-	        $(filter %.a, ${^})                          \
-	        ${PROJ_LIBS}                                                 \
-	        ${STD_LIBS}                                                  \
-	        -Xlinker --end-group
+ifeq "$(_OS)" "windows_msys"
+	@echo ${LD} $(call get_ln_args,$(shell cygpath -m ${@}),$(shell cygpath -m ${^}))
 else
-	@echo -  LD    ${@}
+	@echo ${LD} $(call get_ln_args,${@},${^})
+endif
+else
+	@echo -  LD	${@}
 endif
 
 	@${LD} @${BUILD_DIR}/ln_args.txt
