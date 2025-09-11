@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ MEMORY {
     SRAM         (rwx) : ORIGIN = 0x30000000, LENGTH = 0x00020000 /* User-selected Secure SRAM */
     SRAM_NS      (rwx) : ORIGIN = 0x20020000, LENGTH = 0x00020000 /* User-selected Non-Secure SRAM */
 
-    NSC_REGION    (rx) : ORIGIN = 0x11078000, LENGTH = 0x11078000 /* User-selected Non-Secure Callable Region */
+    NSC_REGION    (rx) : ORIGIN = 0x11078000, LENGTH = 0x00002000 /* User-selected Non-Secure Callable Region */
 }
 
 SECTIONS {
@@ -156,10 +156,25 @@ SECTIONS {
     } > SRAM
 
     /**
-     *  Stack Seal section is required for secure builds. Stack sealing protects
-     *  secure stack from illegal access by non-secure code.
+     *  Heap is placed at end of program and grows down in memory (increasing address).
      */
-    .stackseal (COPY):
+    .heap (COPY):
+    {
+        . = ALIGN(4);
+        KEEP(*(.heap*))
+        __HeapLimit = .;
+    } > SRAM
+
+    /**
+     *  Stack Seal section is required for secure builds to protect secure stack
+     *  from illegal access by non-secure code. Double word aligned stack seal must
+     *  be placed above secure stack space.
+     *  
+     *  Cases:
+     *      1. Exception exit from Non-Secure ISR back into Secure world
+     *      2. Secure world calls a Non-Secure defined function and returns back to secure world.
+     */
+    .stackseal __StackLimit (COPY) :
     {
         . = ALIGN(8);
         __StackSeal = .;
@@ -168,32 +183,44 @@ SECTIONS {
     } > SRAM
 
     /**
-     *   Set stack top to end of RAM, and stack limit move down by
-     *      size of stack_dummy section.
-     */
-    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
-    __StackLimit = __StackTop - SIZEOF(.stack_dummy);
-
-    /**
      *  .stack_dummy section doesn't contains any symbols. It is only
      *  used for linker to calculate size of stack sections, and assign
      *  values to stack symbols later.
      */
     .stack_dummy (COPY):
     {
+        /* Account for extra space with stack seal for __StackLimit. */
+        . = . + SIZEOF(.stackseal);
         KEEP(*(.stack*))
-        KEEP(*(.stackseal*))
     } > SRAM
 
-    .heap (COPY):
-    {
-        . = ALIGN(4);
-        *(.heap*)
-        __HeapLimit = ABSOLUTE(__StackLimit);
-    } > SRAM
+    /**
+     *  Set stack top to end of RAM, and stack limit move down by
+     *      size of stack_dummy section. This includes the usable
+     *      stack size set by startup_*.S, and the extra (8 bytes)
+     *      for stack seal.
+     */
+    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
+    __StackLimit = __StackTop - SIZEOF(.stack_dummy);
+    __StackTotalSize = SIZEOF(.stack_dummy);
+    __StackUsableSize = SIZEOF(.stack_dummy) - SIZEOF(.stackseal);
+
+    /**
+     *  Define memory region symbols to help set up MPCs.
+     */
+    PROVIDE(_flash_s_start = ORIGIN(FLASH));
+    PROVIDE(_flash_s_end = ORIGIN(FLASH) + LENGTH(FLASH) - 1); /* -1 for inclusive range */
+    PROVIDE(_flash_nsc_start = ORIGIN(NSC_REGION));
+    PROVIDE(_flash_nsc_end = ORIGIN(NSC_REGION) + LENGTH(NSC_REGION) - 1);
+    PROVIDE(_flash_ns_start = ORIGIN(FLASH_NS));
+    PROVIDE(_flash_ns_end = ORIGIN(FLASH_NS) + LENGTH(FLASH_NS) - 1);
+    PROVIDE(_sram_s_start = ORIGIN(SRAM));
+    PROVIDE(_sram_s_end = ORIGIN(SRAM) + LENGTH(SRAM) - 1);
+    PROVIDE(_sram_ns_start = ORIGIN(SRAM_NS));
+    PROVIDE(_sram_ns_end = ORIGIN(SRAM_NS) + LENGTH(SRAM_NS) - 1);
 
     PROVIDE(__stack = __StackTop);
 
     /* Check if data + heap + stack exceeds RAM limit */
-    ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
+    ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 }
