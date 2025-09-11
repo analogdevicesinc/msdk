@@ -530,12 +530,13 @@ OBJDUMP=${PREFIX}-objdump
 # This change minimizes the different fixpath calls
 # made from MSYS, CYGWIN, and other OS environments.
 ifeq "$(or $(MSYS),$(CYGWIN))" "True"
-# 2-27-2023:  This workaround was added to resolve a linker bug introduced
-# when we started using ln_args.txt.  The GCC linker expects C:/-like paths
-# on Windows if arguments are passed in from a text file.  However, ln_args
-# is parsed through a regex that misses the edge case -L/C/Path/... because
-# of the leading "-L".  We use cygpath here to handle that edge case before
-# parsing ln_args.txt.
+# The GNU utilities require Windows-style paths (e.g., C:/...) when arguments are
+# passed via an input text file (e.g., ln_args.txt). However, with this implementation,
+# the tools do not perform automatic path translation, so the paths must be
+# preformatted before its written to the text files.
+# 
+# cygpath is the most reliable utility to ensure the paths stored into the
+# input txt files are formatted properly.
 fixpath=$(shell cygpath -m $(1))
 else
 fixpath=$(1)
