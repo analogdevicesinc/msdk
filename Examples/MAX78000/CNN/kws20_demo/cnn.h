@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,6 @@
  * limitations under the License.
  *
  ******************************************************************************/
-
-/*
- * This header file was automatically generated for the kws20_v3 network from a template.
- * Please do not edit; instead, edit the template and regenerate.
- */
-
 #ifndef __CNN_H__
 #define __CNN_H__
 
@@ -48,8 +42,8 @@ typedef int16_t q15_t;
     Layer 8: 5,376 ops (5,376 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
-  Weight memory: 169,472 bytes out of 442,368 bytes total (38%)
-  Bias memory:   0 bytes out of 2,048 bytes total (0%)
+  Weight memory: 169,472 bytes out of 442,368 bytes total (38.3%)
+  Bias memory:   0 bytes out of 2,048 bytes total (0.0%)
 */
 
 /* Number of outputs for this network */

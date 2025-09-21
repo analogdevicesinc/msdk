@@ -13,15 +13,15 @@
             "servertype": "openocd",
             "linux": {
                 "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
-                "serverpath": "${config:OCD_path}/openocd",
+                "serverpath": "${config:OCD_path}/openocd"
             },
             "windows": {
                 "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
-                "serverpath": "${config:OCD_path}/openocd.exe",
+                "serverpath": "${config:OCD_path}/openocd.exe"
             },
             "osx": {
                 "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
-                "serverpath": "${config:OCD_path}/openocd",
+                "serverpath": "${config:OCD_path}/openocd"
             },
             "searchDir": ["${config:OCD_path}/scripts"],
             "configFiles": ["interface/${config:M4_OCD_interface_file}", "target/${config:M4_OCD_target_file}"],
@@ -42,15 +42,15 @@
             "MIMode": "gdb",
             "linux": {
                 "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
-                "debugServerPath": "${config:OCD_path}/openocd",
+                "debugServerPath": "${config:OCD_path}/openocd"
             },
             "windows": {
                 "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
-                "debugServerPath": "${config:OCD_path}/openocd.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe"
             },
             "osx": {
                 "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
-                "debugServerPath": "${config:OCD_path}/bin/openocd",
+                "debugServerPath": "${config:OCD_path}/bin/openocd"
             },
             "logging": {
                 "exceptions": true,
@@ -92,15 +92,15 @@
             "MIMode": "gdb",
             "linux": {
                 "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb",
-                "debugServerPath": "${config:OCD_path}/openocd",
+                "debugServerPath": "${config:OCD_path}/openocd"
             },
             "windows": {
                 "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb.exe",
-                "debugServerPath": "${config:OCD_path}/openocd.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe"
             },
             "osx": {
                 "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb",
-                "debugServerPath": "${config:OCD_path}/bin/openocd",
+                "debugServerPath": "${config:OCD_path}/bin/openocd"
             },
             "logging": {
                 "exceptions": true,
