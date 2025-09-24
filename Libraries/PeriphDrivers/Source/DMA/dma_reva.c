@@ -131,7 +131,7 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
 
 #if TARGET_NUM == 32665
     numCh = MXC_DMA_CH_OFFSET;
-    offset = MXC_DMA_CH_OFFSET * dma_idx;
+    offset = numCh * dma_idx;
 #else
     numCh = MXC_DMA_CHANNELS;
     offset = 0;
@@ -417,14 +417,21 @@ mxc_dma_ch_regs_t *MXC_DMA_RevA_GetCHRegs(int ch)
 
 void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma)
 {
-    int numCh = MXC_DMA_CHANNELS / MXC_DMA_INSTANCES;
+    int numCh;
     int dma_idx;
     int offset;
 
     dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
     MXC_ASSERT(dma_idx >= 0);
 
+#if TARGET_NUM == 32665
+    numCh = MXC_DMA_CH_OFFSET;
     offset = numCh * dma_idx;
+#else
+    numCh = MXC_DMA_CHANNELS;
+    offset = 0;
+#endif
+
     /* Do callback, if enabled */
     for (int i = offset; i < (offset + numCh); i++) {
         if (CHECK_HANDLE(i)) {
