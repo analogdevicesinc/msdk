@@ -304,7 +304,7 @@ int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, 
 int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c);
 
 /**
- * @brief   Retrieve the DMA RX Channel associated with I2C instance.
+ * @brief   Retrieve the DMA RX Channel associated with the I2C instance.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used).
  *
