@@ -245,7 +245,7 @@ int MXC_I2C_GetFrequency(mxc_i2c_regs_t *i2c);
  * @brief   Checks if the given I2C bus can be placed in sleep more.
  *
  * This function checks whether any I2C transactions are currently in progress.
- * progress. If there are transactions in progress, the application should
+ * If there are transactions in progress, the application should
  * wait until the I2C bus is free before entering a low-power state.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
