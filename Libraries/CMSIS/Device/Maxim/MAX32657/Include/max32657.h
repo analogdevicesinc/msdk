@@ -150,7 +150,6 @@ typedef enum {
 #define __VTOR_PRESENT 1U /**< Presence of VTOR register in SCB  */
 #define __NVIC_PRIO_BITS 3U /**< NVIC interrupt priority bits */
 #define __Vendor_SysTickConfig 0U /**< Is 1 if different SysTick counter is used */
-#define __ARM_FEATURE_UNALIGNED 1U /**< Enable unaligned access support */
 
 #include <core_cm33.h>
 #if (__CM_CMSIS_VERSION == 0x60000)
