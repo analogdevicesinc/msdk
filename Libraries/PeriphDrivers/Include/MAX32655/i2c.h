@@ -174,7 +174,8 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
  * @note    By default this function enables I2C peripheral clock and i2c gpio pins.
  *          if you wish to manage clock and gpio related things in the upper level instead of here.
  *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
- *          By this flag, this function will remove the clock‑ and GPIO‑related code from the file.
+ *          When this flag is set, the compiler will strip all clock and GPIO
+ *          handling code from the file.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   masterMode  Whether to put the device in master or slave mode. Use
