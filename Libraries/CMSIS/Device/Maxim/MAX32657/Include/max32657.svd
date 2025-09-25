@@ -1667,7 +1667,7 @@
      <name>CLKDIV</name>
      <description>Flash Clock Divide. The clock (PLL0) is divided by this value to generate a 1 MHz clock for Flash controller.</description>
      <addressOffset>0x04</addressOffset>
-     <resetValue>0x00000064</resetValue>
+     <resetValue>0x00000032</resetValue>
      <fields>
       <field>
        <name>CLKDIV</name>
