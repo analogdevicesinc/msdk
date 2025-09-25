@@ -258,7 +258,7 @@ int MXC_I2C_ReadyForSleep(mxc_i2c_regs_t *i2c);
  * @brief   Enables or disables clock stretching by the slave.
  *
  * Enables or disables clock stretching by the slave. This function has no
- * effect when operating as the master.
+ * effect when operating as a master.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   enable      Enables clock stretching if non-zero, disables if zero.
