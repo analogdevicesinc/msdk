@@ -696,10 +696,10 @@ We may want to handle GET_IRQ better...
                  ((p) == MXC_DMA0_NS && (i) == 1) ? DMA0_CH1_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 0)  ? DMA1_CH0_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 1)  ? DMA1_CH1_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 2)  ? DMA1_CH2_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 3)  ? DMA1_CH3_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 4)  ? DMA1_CH0_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 5)  ? DMA1_CH1_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 6)  ? DMA1_CH2_IRQn : \
+                 ((p) == MXC_DMA1_S && (i) == 7)  ? DMA1_CH3_IRQn : \
                                                     0))
 
 #else
