@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -147,6 +147,7 @@ typedef enum {
     MXC_TMR_IBRO_CLK = 3, /**< 7.3728MHz Clock */
     MXC_TMR_ERTCO_CLK = 4, /**< 32.768KHz Clock */
     MXC_TMR_INRO_CLK = 5, /**< 8-30KHz Clock */
+    MXC_TMR_IBRO_DIV8_CLK = 6, /**< (7.3728/8)MHz Clock */
 
     // Legacy names
     /*8M and 60M clocks can be used for Timers 0,1,2 and 3*/
