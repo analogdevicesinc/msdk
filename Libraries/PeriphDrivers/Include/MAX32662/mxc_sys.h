@@ -322,6 +322,14 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
 
 /**
+ * @brief Calibrate the specified system clock.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.
+ *          Check the microcontroller's UG for more details.
+ * @returns         E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
+
+/**
  * @brief Wait for a clock to enable with timeout
  * @param      ready The clock to wait for
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
