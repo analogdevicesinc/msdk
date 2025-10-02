@@ -147,7 +147,13 @@ int MXC_FLC_Write128(uint32_t address, uint32_t *data)
     return err;
 }
 
+#include <stdio.h>
 //******************************************************************************
+#if IAR_PRAGMAS
+#pragma section = ".flashprog"
+#else
+__attribute__((section(".flashprog")))
+#endif
 int MXC_FLC_Write32(uint32_t address, uint32_t data)
 {
     uint32_t addr, aligned;
@@ -165,6 +171,8 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
         return err;
     }
 
+    printf("@0x%x | @0x%08x: 0x%08x &=> 0x%08x\n", addr, address, data, 0xfdffffff & data);
+
     err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t *)MXC_FLC, address, data, addr);
 
     // Flush the cache
@@ -174,6 +182,11 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
 }
 
 //******************************************************************************
+#if IAR_PRAGMAS
+#pragma section = ".flashprog"
+#else
+__attribute__((section(".flashprog")))
+#endif
 int MXC_FLC_MassErase(void)
 {
     int err;

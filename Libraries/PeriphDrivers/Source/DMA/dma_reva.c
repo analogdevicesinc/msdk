@@ -63,7 +63,8 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
     dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
     MXC_ASSERT(dma_idx >= 0);
 
-#if TARGET_NUM == 32665
+    // MXC_DMA_INSTANCES defined in the devices' header file (CMSIS)
+#if (MXC_DMA_INSTANCES > 1)
     numCh = MXC_DMA_CH_OFFSET;
     offset = numCh * dma_idx;
 #else
@@ -129,7 +130,8 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
         return E_BAD_STATE;
     }
 
-#if TARGET_NUM == 32665
+    // MXC_DMA_INSTANCES defined in the devices' header file (CMSIS)
+#if (MXC_DMA_INSTANCES > 1)
     numCh = MXC_DMA_CH_OFFSET;
     offset = MXC_DMA_CH_OFFSET * dma_idx;
 #else
@@ -333,7 +335,8 @@ int MXC_DMA_RevA_ChannelDisableInt(int ch, int flags)
 int MXC_DMA_RevA_EnableInt(mxc_dma_reva_regs_t *dma, int ch)
 {
     if (CHECK_HANDLE(ch)) {
-#if TARGET_NUM == 32665
+    // MXC_DMA_INSTANCES defined in the devices' header file (CMSIS)
+#if (MXC_DMA_INSTANCES > 1)
         ch %= MXC_DMA_CH_OFFSET;
 #endif
         dma->inten |= (1 << ch);
@@ -347,7 +350,8 @@ int MXC_DMA_RevA_EnableInt(mxc_dma_reva_regs_t *dma, int ch)
 int MXC_DMA_RevA_DisableInt(mxc_dma_reva_regs_t *dma, int ch)
 {
     if (CHECK_HANDLE(ch)) {
-#if TARGET_NUM == 32665
+    // MXC_DMA_INSTANCES defined in the devices' header file (CMSIS)
+#if (MXC_DMA_INSTANCES > 1)
         ch %= MXC_DMA_CH_OFFSET;
 #endif
         dma->inten &= ~(1 << ch);
@@ -470,7 +474,8 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t *dma, void *dest, void *src, int len
     mxc_dma_srcdst_t transfer;
     int channel;
 
-#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
+    // MXC_DMA_INSTANCES defined in the devices' header file (CMSIS)
+#if (MXC_DMA_INSTANCES > 1)
     channel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
 #else
     channel = MXC_DMA_AcquireChannel();
@@ -500,7 +505,7 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t *dma, void *dest, void *src, int len
         return retval;
     }
 
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
     retval = MXC_DMA_EnableInt((mxc_dma_regs_t *)dma, channel);
 #else
     retval = MXC_DMA_EnableInt(channel);
@@ -539,7 +544,8 @@ int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t *dma, mxc_dma_config_t config,
 {
     int retval, channel;
 
-#if (TARGET_NUM == 32665 || TARGET_NUM == 32657)
+    // MXC_DMA_INSTANCES defined in the devices' header file (CMSIS)
+#if (MXC_DMA_INSTANCES > 1)
     channel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
 #else
     channel = MXC_DMA_AcquireChannel();
@@ -557,7 +563,7 @@ int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t *dma, mxc_dma_config_t config,
         return retval;
     }
 
-#if (TARGET_NUM == 32657)
+#if (MXC_DMA_INSTANCES > 1)
     retval = MXC_DMA_EnableInt((mxc_dma_regs_t *)dma, channel);
 #else
     retval = MXC_DMA_EnableInt(channel);

@@ -231,7 +231,8 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
 
 /**
  * @brief      Initialize DMA resources
- * @details    This initialization is required before using the DMA driver functions.
+ * @details    This function does not reset the DMA driver state. Call
+ *             'MXC_DMA_DeInit(...)' to reset driver state after initialization.
  * @note       On default this function enables DMA peripheral clock.
  *             if you wish to manage clock and gpio related things in upper level instead of here.
  *             Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 

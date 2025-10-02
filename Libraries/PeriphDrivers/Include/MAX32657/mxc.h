@@ -32,6 +32,8 @@
 #include "nvic_table.h"
 #ifdef LIB_BOARD
 #include "board.h"
+#include "led.h"
+#include "pb.h"
 #endif
 
 /**

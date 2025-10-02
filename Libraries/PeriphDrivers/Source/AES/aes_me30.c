@@ -36,6 +36,9 @@ int MXC_AES_Init(mxc_dma_regs_t *dma)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 #endif
 
+    MXC_SYS_Reset_Periph(MXC_SYS_PERIPH_CLOCK_AES);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
+
     return MXC_AES_RevB_Init((mxc_aes_revb_regs_t *)MXC_AES, dma);
 }
 
@@ -59,6 +62,8 @@ int MXC_AES_Shutdown(void)
     int error = MXC_AES_RevB_Shutdown((mxc_aes_revb_regs_t *)MXC_AES);
 
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_AES);
+
+    MXC_SYS_Reset_Periph(MXC_SYS_PERIPH_CLOCK_AES);
 
     return error;
 }
@@ -124,16 +129,6 @@ int MXC_AES_Decrypt(mxc_aes_req_t *req)
     return MXC_AES_RevB_Decrypt((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req);
 }
 
-int MXC_AES_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma)
-{
-    return MXC_AES_RevB_TXDMAConfig(src_addr, len, dma);
-}
-
-int MXC_AES_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma)
-{
-    return MXC_AES_RevB_RXDMAConfig(dest_addr, len, dma);
-}
-
 int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc)
 {
     return MXC_AES_RevB_GenericAsync((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req,
@@ -148,6 +143,57 @@ int MXC_AES_EncryptAsync(mxc_aes_req_t *req)
 int MXC_AES_DecryptAsync(mxc_aes_req_t *req)
 {
     return MXC_AES_RevB_DecryptAsync((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req);
+}
+
+void MXC_AES_Handler(void)
+{
+    MXC_AES_RevB_Handler((mxc_aes_revb_regs_t *)MXC_AES);
+}
+
+int MXC_AES_PreInitDMA(int8_t *rx_channel, int8_t *tx_channel)
+{
+    return MXC_AES_RevB_PreInitDMA(rx_channel, tx_channel);
+}
+
+int MXC_AES_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma)
+{
+    return MXC_AES_RevB_TXDMAConfig(src_addr, len, dma);
+}
+
+int MXC_AES_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma)
+{
+    return MXC_AES_RevB_RXDMAConfig(dest_addr, len, dma);
+}
+
+int MXC_AES_GetTXDMAChannel(int8_t *channel)
+{
+    return MXC_AES_RevB_GetTXDMAChannel(channel);
+}
+
+int MXC_AES_GetRXDMAChannel(int8_t *channel)
+{
+    return MXC_AES_RevB_GetRXDMAChannel(channel);
+}
+
+int MXC_AES_GenericDMA(mxc_aes_req_t *req, uint8_t enc)
+{
+    return MXC_AES_RevB_GenericDMA((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req,
+                                     enc);
+}
+
+int MXC_AES_EncryptDMA(mxc_aes_req_t *req)
+{
+    return MXC_AES_RevB_EncryptDMA((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req);
+}
+
+int MXC_AES_DecryptDMA(mxc_aes_req_t *req)
+{
+    return MXC_AES_RevB_DecryptDMA((mxc_aes_revb_regs_t *)MXC_AES, (mxc_aes_revb_req_t *)req);
+}
+
+int MXC_AES_ChangeByteOrder(void)
+{
+    return 0;
 }
 
 void MXC_AES_SetExtKey(const void *key, mxc_aes_keys_t len)

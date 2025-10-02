@@ -74,8 +74,8 @@ typedef enum {
   */
 typedef struct _mxc_aes_cipher_req_t {
     uint32_t length; ///< Length of the data
-    uint32_t *inputData; ///< Pointer to input data
-    uint32_t *resultData; ///< Pointer to encrypted data
+    uint32_t *inputData; ///< Pointer to input data. Buffer length MUST be a multiple of 4 words
+    uint32_t *resultData; ///< Pointer to encrypted data. Buffer length MUST be a multiple of 4 words
     mxc_aes_keys_t keySize; ///< Size of AES key
     mxc_aes_enc_type_t encryption; ///< Encrytion type or \ref mxc_aes_enc_type_t
     mxc_aes_complete_t callback; ///< Callback function
@@ -181,7 +181,7 @@ uint32_t MXC_AES_GetFlags(void);
 void MXC_AES_ClearFlags(uint32_t flags);
 
 /**
- * @brief 
+ * @brief   Perform generic AES operation (no interrupt handling).
  * @note    The result will be stored in the req structure
  *
  * @param   req  Structure containing data for the encryption
@@ -191,7 +191,7 @@ void MXC_AES_ClearFlags(uint32_t flags);
 int MXC_AES_Generic(mxc_aes_req_t *req);
 
 /**
- * @brief   Perform an encryption
+ * @brief   Perform an encryption (no interrrupt handling)
  * @note    The result will be stored in the req structure
  *
  * @param   req  Structure containing data for the encryption
@@ -201,7 +201,7 @@ int MXC_AES_Generic(mxc_aes_req_t *req);
 int MXC_AES_Encrypt(mxc_aes_req_t *req);
 
 /**
- * @brief   Perform a decryption
+ * @brief   Perform a decryption (no interrupt handling)
  * @note    The result will be stored in the req structure
  *
  * @param   req  Structure containing data for the decryption
@@ -209,6 +209,70 @@ int MXC_AES_Encrypt(mxc_aes_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_Decrypt(mxc_aes_req_t *req);
+
+/**
+ * @brief   Perform encryption or decryption using interrupts
+ * @details Although the function name says 'Async', an AES DMA operation does
+ *          not use the AES IRQ but rather the DMAn_CHm IRQs. THe AES interrupt is
+ *          only used for non-DMA AES operations.
+ * 
+ * @param   req The result will be stored in the req structure. The user needs
+ *          to call MXC_DMA_Handler() in the appropriate DMAn_CHm ISR
+ * @param   enc 0 for encryption and 1 for decryption
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc);
+
+/**
+ * @brief   Perform an encryption using interrupts
+ * @details Although the function name says 'Async', an AES DMA operation does
+ *          not use the AES IRQ but rather the DMAn_CHm IRQs. THe AES interrupt is
+ *          only used for non-DMA AES operations.
+ * @note    The result will be stored in the req structure. The user needs
+ *          to call MXC_DMA_Handler() in the appropriate DMAn_CHm ISR
+ *
+ * @param   req  Structure containing data for the encryption
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_AES_EncryptAsync(mxc_aes_req_t *req);
+
+/**
+ * @brief   Perform a decryption using interrupts.
+ * @details Although the function name says 'Async', an AES DMA operation does
+ *          not use the AES IRQ but rather the DMAn_CHm IRQs. THe AES interrupt is
+ *          only used for non-DMA AES operations.
+ * @note    The result will be stored in the req structure. The user needs
+ *          to call MXC_DMA_Handler() in the appropriate DMAn_CHm ISR
+ *
+ * @param   req  Structure containing data for the decryption
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_AES_DecryptAsync(mxc_aes_req_t *req);
+
+/**
+ * @brief   Performs AES handler operation.
+ * @details This function must be called in the AES ISR when using
+ *          'MXC_AES_*Async(...)' functions.
+ */
+void MXC_AES_Handler(void);
+
+/**
+ * @brief   Initializes the DMA and acquire channels before AES operations. Simplifies
+ *          DMA interrupt handling for AES async operations.
+ * @details This optional function is called before MXC_AES_EncryptAsync(...),
+ *          MXC_AES_DecryptAsync(...), or MXC_AES_GenericAsync(...) to retrieve the
+ *          DMA channels associated with AES transmit and receive operations. The
+ *          previous implementation required the application to know the DMA channel
+ *          that AES will use at compile time. However, the driver can NOT assume
+ *          that the compile time selected DMA channel will always be acquired.
+ *          This functipn also uses the DMA instance passed and internally saved
+ *          with MXC_AES_Init(...).
+ * 
+ * @param   rx_channel  Pointer to store RX DMA Channel used in AES DMA operations.
+ * @param   tx_channel  Pointer to store TX DMA Channel used in AES DMA operations.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ */
+int MXC_AES_PreInitDMA(int8_t *rx_channel, int8_t *tx_channel);
 
 /**
  * @brief   Perform AES TX using DMA. Configures DMA request and starts the transmission.
@@ -231,34 +295,61 @@ int MXC_AES_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma);
 int MXC_AES_RXDMAConfig(void *dest_addr, int len, mxc_dma_regs_t *dma);
 
 /**
- * @brief   Perform encryption or decryption using DMA 
+ * @brief   Get the DMA TX channel assigned to AES DMA (Async) operations.
+ * 
+ * @param   channel   Pointer to store assigned TX DMA Channel
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ */
+int MXC_AES_GetTXDMAChannel(int8_t *channel);
+
+/**
+ * @brief   Get the DMA RX channel assigned to AES DMA (Async) operations.
+ * 
+ * @param   channel   Pointer to store assigned RX DMA Channel
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ */
+int MXC_AES_GetRXDMAChannel(int8_t *channel);
+
+
+
+/**
+ * @brief   Perform encryption or decryption using DMA
+ * @details Although the function name says 'Async', an AES DMA operation does
+ *          not use the AES IRQ but rather the DMAn_CHm IRQs. THe AES interrupt is
+ *          only used for non-DMA AES operations.
  * 
  * @param   req The result will be stored in the req structure. The user needs
- *              to call MXC_AES_Handler() in the ISR
+ *          to call MXC_DMA_Handler() in the appropriate DMAn_CHm ISR
  * @param   enc 0 for encryption and 1 for decryption
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc);
+int MXC_AES_GenericDMA(mxc_aes_req_t *req, uint8_t enc);
 
 /**
- * @brief   Perform an encryption using Interrupt
+ * @brief   Perform an encryption using DMA
+ * @details Although the function name says 'Async', an AES DMA operation does
+ *          not use the AES IRQ but rather the DMAn_CHm IRQs. THe AES interrupt is
+ *          only used for non-DMA AES operations.
  * @note    The result will be stored in the req structure. The user needs
- *          to call MXC_AES_Handler() in the ISR
+ *          to call MXC_DMA_Handler() in the appropriate DMAn_CHm ISR
  *
  * @param   req  Structure containing data for the encryption
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_EncryptAsync(mxc_aes_req_t *req);
+int MXC_AES_EncryptDMA(mxc_aes_req_t *req);
 
 /**
- * @brief   Perform a decryption using Interrupt
+ * @brief   Perform a decryption using DMA
+ * @details Although the function name says 'Async', an AES DMA operation does
+ *          not use the AES IRQ but rather the DMAn_CHm IRQs. THe AES interrupt is
+ *          only used for non-DMA AES operations.
  * @note    The result will be stored in the req structure. The user needs
- *          to call MXC_AES_Handler() in the ISR
+ *          to call MXC_DMA_Handler() in the appropriate DMAn_CHm ISR
  *
  * @param   req  Structure containing data for the decryption
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_DecryptAsync(mxc_aes_req_t *req);
+int MXC_AES_DecryptDMA(mxc_aes_req_t *req);
 
 /**
  * @brief   Set the external key

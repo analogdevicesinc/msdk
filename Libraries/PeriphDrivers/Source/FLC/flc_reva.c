@@ -243,6 +243,8 @@ int MXC_FLC_RevA_Write32(mxc_flc_reva_regs_t *flc, uint32_t logicAddr, uint32_t 
 }
 
 //******************************************************************************
+
+#include <stdio.h>
 #if IAR_PRAGMAS
 #pragma section = ".flashprog"
 #else
@@ -263,7 +265,25 @@ int MXC_FLC_RevA_Write32Using128(mxc_flc_reva_regs_t *flc, uint32_t logicAddr, u
     }
 
     // Check if the location trying to be written has 1's in to be written to 0's
-    if ((*(uint32_t *)logicAddr & data) != data) {
+    uint32_t mem_contents = *(uint32_t *)logicAddr;
+    // printf("@0x%08x: 0x%08x => err: %u\n", logicAddr, mem_contents, MXC_GCR->eccerr);
+
+#if (TARGET_NUM == 32657)
+    // There is a bug in the MAX32657 ECC where erasing flash will also erase the ECC bits.
+    // Reading from erased memory will signal an ECC error that is falsely corrected from
+    // 0xFF to 0xFD on 16th byte of each 128-bit line.
+    // Workaround by setting 16th bit of each line to 0xFF when reading back.
+    if (MXC_GCR->eccerr & MXC_F_GCR_ECCERR_FLASH) {
+        // Clear ECC error and correct read bit.
+        MXC_GCR->eccerr = MXC_F_GCR_ECCERR_FLASH;
+
+        if (logicAddr & 0x0C && mem_contents == 0xFDFFFFFF) {
+            mem_contents = 0xFFFFFFFF;
+        }
+    }
+#endif
+
+    if ((mem_contents & data) != data) {
         return E_BAD_STATE;
     }
 

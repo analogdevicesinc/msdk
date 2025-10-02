@@ -660,11 +660,16 @@ We may want to handle GET_IRQ better...
 
 /******************************************************************************/
 /*                                                                        DMA */
-#define MXC_DMA_CHANNELS (4)
 #if (CONFIG_TRUSTED_EXECUTION_SECURE == 1)
 #define MXC_DMA_INSTANCES (2)
+#define MXC_DMA_CH_OFFSET (4)
+#define MXC_DMA_CHANNELS  (8) // Total number across all DMA instances
+
 #else
 #define MXC_DMA_INSTANCES (1)
+#define MXC_DMA_CH_OFFSET (0)
+#define MXC_DMA_CHANNELS  (4)
+
 #endif
 
 /* Non-secure Mapping */
@@ -695,10 +700,10 @@ We may want to handle GET_IRQ better...
                  ((p) == MXC_DMA0_NS && (i) == 1) ? DMA0_CH1_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 2) ? DMA0_CH2_IRQn : \
                  ((p) == MXC_DMA0_NS && (i) == 3) ? DMA0_CH3_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 0)  ? DMA1_CH0_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 1)  ? DMA1_CH1_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 2)  ? DMA1_CH2_IRQn : \
-                 ((p) == MXC_DMA1_S && (i) == 3)  ? DMA1_CH3_IRQn : \
+                 ((p) == MXC_DMA1_S && (i % MXC_DMA_CH_OFFSET) == 0)  ? DMA1_CH0_IRQn : \
+                 ((p) == MXC_DMA1_S && (i % MXC_DMA_CH_OFFSET) == 1)  ? DMA1_CH1_IRQn : \
+                 ((p) == MXC_DMA1_S && (i % MXC_DMA_CH_OFFSET) == 2)  ? DMA1_CH2_IRQn : \
+                 ((p) == MXC_DMA1_S && (i % MXC_DMA_CH_OFFSET) == 3)  ? DMA1_CH3_IRQn : \
                                                     0))
 
 #else
