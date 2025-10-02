@@ -195,6 +195,10 @@ int example2(void)
 int main(void)
 {
     int fail = 0;
+
+    // Clear screen (ANSI escape code supported terminals only)
+    printf("\033[H\033[J");
+
     printf("***** DMA Example *****\n");
 
     NVIC_EnableIRQ(DMA1_CH0_IRQn);
