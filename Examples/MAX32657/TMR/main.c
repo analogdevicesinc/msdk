@@ -208,14 +208,6 @@ void OneshotTimer(void)
     MXC_GPIO_OutClr(ost_pin.port, ost_pin.mask);
 }
 
-void PB_Handler(void *pb)
-{
-    MXC_GPIO_OutSet(ost_pin.port, ost_pin.mask);
-    MXC_TMR_Start(OST_TIMER);
-    printf("Oneshot timer started.\n\n");
-    LED_Toggle(0);
-}
-
 // *****************************************************************************
 int main(void)
 {
@@ -235,9 +227,6 @@ int main(void)
     ContinuousTimer();
     PWMTimer();
     OneshotTimer();
-
-    // NVIC_EnableIRQ(GPIO0_IRQn);
-    // PB_RegisterCallback(0, PB_Handler);
 
     while (1) {
         if (PB_Get(0)) {
