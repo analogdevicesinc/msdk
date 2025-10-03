@@ -36,7 +36,7 @@ int MXC_WDT_RevB_Init(mxc_wdt_revb_regs_t *wdt, mxc_wdt_revb_cfg_t *cfg)
         return E_NULL_PTR;
     }
 
-    if (cfg->mode & MXC_WDT_REVB_WINDOWED) {
+    if (cfg->mode == MXC_WDT_REVB_WINDOWED) {
         wdt->ctrl |= MXC_F_WDT_REVB_CTRL_WIN_EN;
     } else {
         wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_WIN_EN);

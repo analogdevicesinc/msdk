@@ -54,6 +54,7 @@ void MXC_WUT_RevA_Init(mxc_wut_reva_regs_t *wut, mxc_wut_reva_pres_t pres)
     wut_snapshot = 0;
 }
 
+/* ************************************************************************** */
 void MXC_WUT_RevA_Shutdown(mxc_wut_reva_regs_t *wut)
 {
     // Disable timer and clear settings

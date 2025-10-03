@@ -85,7 +85,7 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_AES = (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */
     MXC_SYS_PERIPH_CLOCK_DMA1 =
         (MXC_F_GCR_PCLKDIS1_DMA1_POS + 32), /**< Disable Secure DMA1 clock */
-    MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS), /**< Disable WDT clock */
+    MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS + 32), /**< Disable WDT clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */

@@ -30,13 +30,13 @@
 #include "mxc.h"
 
 /***** Definitions *****/
-#define MXC_AES_DATA_LENGTH 4 //4 words
+#define MXC_AES_DATA_LENGTH 8 //4 words
 
-#define MXC_AES_ENC_DATA_LENGTH 4 //Always multiple of 4
+#define MXC_AES_ENC_DATA_LENGTH 8 //Always multiple of 4
 //(equal to or greater than MXC_AES_DATA_LENGTH)
 
 /***** Globals *****/
-uint32_t inputData[MXC_AES_DATA_LENGTH] = { 0x873AC125, 0x2F45A7C8, 0x3EB7190,  0x486FA931,
+uint32_t inputData[MXC_AES_DATA_LENGTH] = { 0x873AC125, 0x2F45A7C8, 0x3EB7190,  0x486FA931, \
                                             0x94AE56F2, 0x89B4D0C1, 0x2F45A7C8, 0x3EB7190 };
 uint32_t encryptedData[MXC_AES_ENC_DATA_LENGTH] = { 0 };
 uint32_t decryptedData[MXC_AES_DATA_LENGTH] = { 0 };
@@ -194,11 +194,6 @@ int AES_decrypt(bool asynchronous, bool dma, mxc_aes_keys_t key)
 
     MXC_AES_Shutdown();
 
-    printf("\nINPUT         |       RESULT\n");
-    for (int i = 0; i < MXC_AES_DATA_LENGTH; i++) {
-        printf("0x%08x    |   0x%08x\n", req.inputData[i], req.resultData[i]);
-    }
-
     if (memcmp(inputData, decryptedData, MXC_AES_DATA_LENGTH) != 0) {
         printf("\nData Mismatch");
         return 1;
@@ -212,9 +207,6 @@ int AES_decrypt(bool asynchronous, bool dma, mxc_aes_keys_t key)
 // *****************************************************************************
 int main(void)
 {
-    // Clear screen (ANSI escape code supported terminals only)
-    printf("\033[H\033[J");
-
     printf("\n***** AES Example *****\n");
 
     int fail = 0;
@@ -243,6 +235,7 @@ int main(void)
     fail += AES_encrypt(1, 0, MXC_AES_256BITS);
     fail += AES_decrypt(1, 0, MXC_AES_256BITS);
 
+    // TODO(SW): DMA broke with latest main changes (10-3-2025)
     printf("\n\nAES 128 bits Key Test (dma)");
     fail += AES_encrypt(0, 1, MXC_AES_128BITS);
     fail += AES_decrypt(0, 1, MXC_AES_128BITS);

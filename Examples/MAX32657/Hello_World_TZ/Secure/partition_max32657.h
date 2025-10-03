@@ -8,7 +8,7 @@
 /*
  * Copyright (c) 2009-2021 Arm Limited. All rights reserved.
  *
- * Portions Copyright (C) 2024 Analog Devices, Inc.
+ * Portions Copyright (C) 2025 Analog Devices, Inc.
  *
  * SPDX-License-Identifier: Apache-2.0
  *

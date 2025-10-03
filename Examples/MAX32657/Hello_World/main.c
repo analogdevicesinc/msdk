@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ int main(void)
     printf("Hello World!\n");
 
     while (1) {
-        LED_On(LED_RED);
+        LED_On(LED_GREEN);
         MXC_Delay(500000);
-        LED_Off(LED_RED);
+        LED_Off(LED_GREEN);
         MXC_Delay(500000);
         printf("count = %d\n", count++);
     }

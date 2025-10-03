@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -428,7 +428,7 @@ void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma)
     dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
     MXC_ASSERT(dma_idx >= 0);
 
-#if TARGET_NUM == 32665
+#if (MXC_DMA_INSTANCES > 1)
     numCh = MXC_DMA_CH_OFFSET;
     offset = numCh * dma_idx;
 #else

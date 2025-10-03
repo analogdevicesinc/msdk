@@ -487,7 +487,7 @@ int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len, mxc_dma_regs_t *dma)
     }
 
     srcdst.ch = channel;
-    srcdst.source = dma_state.inputBuffer;
+    srcdst.source = (void *)dma_state.inputBuffer;
     srcdst.dest = NULL;
     srcdst.len = 4;
 
@@ -669,8 +669,6 @@ int MXC_AES_RevB_DecryptDMA(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
 
 void MXC_AES_RevB_DMACallback(int ch, int error)
 {
-    int i;
-
     if (error != E_NO_ERROR) {
     } else {
         if (dma_state.channelTX == ch) {

@@ -26,8 +26,8 @@ The Secure Project must set these flags:
 The **partition_max32657.h** file SAU regios must match the linker script memory sections.
 
 ## Required Connections
-
--   Connect a USB-C cable between the PC and the J1 (PWR-OBD-UART0) connector.
+-   Connect a USB cable between the PC and the J1 (PWR-OBD-UART0) connector.
+-   Connect pins JP19 (OBD VCOM EN) RX and TX header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output

@@ -4,8 +4,8 @@ This example demonstrates the time differences when running code with the instru
 
 1. Perform 2.5 million multiplies in a loop with the instruction cache on.  The variables used in the loop are all declared as 'volatile'.
 2.  Perform 2.5 million multiplies in a loop with the instruction cache off.  The variables used in the loop are all declared as 'volatile'.
-3. Perform 25 million multiplies in a loop with the instruction cache on.  The variables used in the loop are all local variables.
-4.  Perform 25 million multiplies in a loop with the instruction cache off.    The variables used in the loop are all local variables.
+3. Perform 2.5 million multiplies in a loop with the instruction cache on.  The variables used in the loop are all local variables.
+4.  Perform 2.5 million multiplies in a loop with the instruction cache off.    The variables used in the loop are all local variables.
 
 
 ## Software
@@ -16,19 +16,12 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+(None - this project builds as a standard example)
 
-## Setup
-
-### Required Connections
-If using the Standard EV Kit (EvKit_V1):
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
+## Required Connections
+-   Connect a USB cable between the PC and the J1 (PWR-OBD-UART0) connector.
+-   Connect pins JP19 (OBD VCOM EN) RX and TX header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
-
-If using the Featherboard (FTHR\_Apps\_P1):
--   Connect a USB cable between the PC and the J4 (USB/PWR) connector.
--   Open an terminal application on the PC and connect to the board's console UART at 115200, 8-N-1.
 
 ## Expected Output
 
@@ -51,7 +44,7 @@ With instruction cache enabled:
 80%,     k=4000
 90%,     k=4500
 
-Time Elapsed: 1.17713 Seconds
+Time Elapsed: 1.507196 Seconds
 
 
 With instruction cache disabled:
@@ -66,7 +59,7 @@ With instruction cache disabled:
 80%,     k=4000
 90%,     k=4500
 
-Time Elapsed: 2.599812 Seconds
+Time Elapsed: 4.612422 Seconds
 
 
 ***** Non-volatile Example *****
@@ -83,7 +76,7 @@ With instruction cache enabled:
 90%,     k=4500
 100%,    k=5000
 
-Time Elapsed: 2.92432 Seconds
+Time Elapsed: 0.855976 Seconds
 
 
 With instruction cache disabled:
@@ -98,8 +91,7 @@ With instruction cache disabled:
 90%,     k=4500
 100%,    k=5000
 
-Time Elapsed: 15.845614 Seconds
-
+Time Elapsed: 4.713633 Seconds
 
 Example Succeeded
 ```

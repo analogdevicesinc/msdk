@@ -25,9 +25,14 @@ The Non-Secure Project must set these flags:
 - `TRUSTZONE=1`
 - `MSECURITY_MODE=NONSECURE`
 
-## Required Connections
+### Project-Specific Build Notes
 
-TODO
+(None - this project builds as a standard example)
+
+## Required Connections
+-   Connect a USB cable between the PC and the J1 (PWR-OBD-UART0) connector.
+-   Connect pins JP19 (OBD VCOM EN) RX and TX header.
+-   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

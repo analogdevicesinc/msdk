@@ -13,12 +13,11 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+(None - this project builds as a standard example)
 
 ## Required Connections
-If using the MAX32657EVKIT (EvKit\_V1):
--   Connect a USB cable between the PC and the J1 (PWR-OBD_UART0) connector.
--   Connect jumper to RX and TX pins at JP19 (OBD VCOM EN).
+-   Connect a USB cable between the PC and the J1 (PWR-OBD-UART0) connector.
+-   Connect pins JP19 (OBD VCOM EN) RX and TX header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output

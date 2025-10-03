@@ -111,11 +111,29 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     case 4:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR4);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
+
+        if (init_pins) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
+                MXC_GPIO_Config(&gpio_cfg_tmr4);
+            } else {
+                MXC_GPIO_Config(&gpio_cfg_tmr4b);
+            }
+        }
+
         break;
 
     case 5:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR5);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
+
+        if (init_pins) {
+            if (cfg->bitMode != MXC_TMR_BIT_MODE_16B) {
+                MXC_GPIO_Config(&gpio_cfg_tmr5);
+            } else {
+                MXC_GPIO_Config(&gpio_cfg_tmr5b);
+            }
+        }
+
         break;
     }
 #else
