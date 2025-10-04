@@ -368,10 +368,14 @@ endif
 
 # Add project-specific linker flags
 LDFLAGS+=$(PROJ_LDFLAGS)
+space := $(subst ,, )
 ifneq "$(strip $(PROJ_LDFLAGS))" ""
 ifeq "$(_OS)" "windows_msys"
+L_PATH := $(patsubst -L%,%,$(PROJ_LDFLAGS))
+ifneq "$(or $(filter $(PROJ_LDFLAGS),$(L_PATH)),$(if $(findstring :,$(L_PATH)),,fail),$(findstring \,$(L_PATH)),$(findstring $(space),$(PROJ_LDFLAGS)))" ""
 $(info [NOTE]: 'PROJ_LDFLAGS' additions detected. Any paths added to 'PROJ_LDFLAGS' MUST use the full \
 	Windows drive path with forward slashes (e.g. C:/path/used/in/proj_ldflags))
+endif
 endif
 endif
 
