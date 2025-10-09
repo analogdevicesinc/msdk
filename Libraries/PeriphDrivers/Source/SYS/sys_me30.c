@@ -464,7 +464,7 @@ int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
     }
 
     int err = E_NO_ERROR;
-    // The following section implements section 4.1.2.1 of the MAX32690 UG Rev 1
+    // The following section implements section 4.1.2.1 of the MAX32657 UG
     if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO)))
         return err;
     MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_DIV, 3662 << MXC_F_FCR_AUTOCAL2_DIV_POS);
