@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -183,6 +183,16 @@ uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
         clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ);
+        break;
+
+    case MXC_TMR_IBRO_DIV8_CLK:
+        if (tmr_id != 5) { // Only Timer 5 supports this clock source divide
+            return E_NOT_SUPPORTED;
+        }
+
+        clockSource = MXC_TMR_CLK1;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, (IBRO_FREQ / 8));
         break;
 
     default:
