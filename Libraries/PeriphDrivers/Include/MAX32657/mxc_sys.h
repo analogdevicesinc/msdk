@@ -313,6 +313,14 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
 
 /**
+ * @brief Calibrate the specified system clock.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.  
+ *          Check the microcontroller's UG for more details.
+ * @returns         E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
+
+/**
  * @brief Set the system clock divider.
  * @param div       Enumeration for desired clock divider.
  */

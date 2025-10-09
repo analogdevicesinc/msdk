@@ -457,6 +457,30 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 }
 
 /* ************************************************************************** */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
+{
+    if (clock != MXC_SYS_CLOCK_IPO) {
+        return E_BAD_PARAM; // Only the IPO supports calibration
+    }
+
+    int err = E_NO_ERROR;
+    // The following section implements section 4.1.2.1 of the MAX32690 UG Rev 1
+    if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO)))
+        return err;
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_DIV, 3662 << MXC_F_FCR_AUTOCAL2_DIV_POS);
+    MXC_SETFIELD(MXC_FCR->autocal1, MXC_F_FCR_AUTOCAL1_INIT_TRIM,
+                 0x40 << MXC_F_FCR_AUTOCAL1_INIT_TRIM_POS);
+    MXC_FCR->autocal0 |= 0x7;
+    MXC_Delay(MXC_DELAY_MSEC(10)); // Wait 10ms for calibration to complete
+    // Calculated trim is loaded to MXC_FCR->trim_out and is used by the hardware as long as
+    // MXC_FCR->autocal0.en is set to 1
+    MXC_FCR->autocal0 &= ~MXC_F_FCR_AUTOCAL0_RUN; // Stop the calibration
+    MXC_FCR->autocal0 |= MXC_F_FCR_AUTOCAL0_EN; // Enable use of calibration value
+    return E_NO_ERROR;
+}
+
+
+/* ************************************************************************** */
 void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
 {
     /* Return if this setting is already current */
