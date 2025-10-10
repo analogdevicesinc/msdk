@@ -49,7 +49,9 @@ typedef struct {
 static unsigned int dma_initialized[MXC_DMA_INSTANCES] = { 0 };
 static mxc_dma_channel_t dma_resource[MXC_DMA_CHANNELS];
 static mxc_dma_highlevel_t memcpy_resource[MXC_DMA_CHANNELS];
+#ifndef __riscv
 static uint32_t dma_lock;
+#endif
 
 /****** Functions ******/
 static void memcpy_callback(int ch, int error);
@@ -166,14 +168,18 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
 int MXC_DMA_RevA_ReleaseChannel(int ch)
 {
     if (CHECK_HANDLE(ch)) {
+#ifndef __riscv
         if (MXC_GetLock(&dma_lock, 1) != E_NO_ERROR) {
             return E_BUSY;
         }
+#endif
 
         dma_resource[ch].valid = 0;
         dma_resource[ch].regs->ctrl = 0;
         dma_resource[ch].regs->status = dma_resource[ch].regs->status;
+#ifndef __riscv
         MXC_FreeLock(&dma_lock);
+#endif
     } else {
         return E_BAD_PARAM;
     }
