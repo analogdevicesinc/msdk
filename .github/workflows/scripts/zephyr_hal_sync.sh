@@ -105,6 +105,8 @@ check_is_adi_hal_zephyr_file () {
   return 1
 }
 
+beginswith() { case $2 in "$1"*) true;; *) false;; esac; }
+
 for ((index=1; index<=num_of_sha; index++)); do
     echo
     echo "Processing commit $index of $num_of_sha"
@@ -128,7 +130,7 @@ for ((index=1; index<=num_of_sha; index++)); do
 	if check_is_adi_hal_lib "$NAME"; then
 		dest="${hal_adi}/MAX/${NAME}"
 		mkdir -p $(dirname "${dest}")
-		if [ "${NAME##*.}" = "svd" ]; then
+		if [ "${NAME##*.}" = "svd" ] && ! beginswith "Libraries/CMSIS" "$NAME"; then
 			echo "Skipping ignored suffix svd: ${NAME}"
 		elif [ -e "${msdk}/${NAME}" ]; then
 			cp "${msdk}/${NAME}" "${dest}"
