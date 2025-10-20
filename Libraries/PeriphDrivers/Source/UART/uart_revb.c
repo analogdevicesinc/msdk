@@ -167,6 +167,9 @@ int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_r
     states[i].auto_dma_handlers = false;
     states[i].dma = NULL;
 
+    AsyncTxRequests[i] = NULL;
+    AsyncRxRequests[i] = NULL;
+
     return E_NO_ERROR;
 }
 
