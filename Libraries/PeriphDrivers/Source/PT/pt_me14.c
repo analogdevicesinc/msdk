@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@
 void MXC_PT_Init(mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale)
 {
     MXC_ASSERT(clk_scale <= 128);
+
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_GCR->perckcn0 &= ~MXC_F_GCR_PERCKCN0_PTD;
 
     MXC_GCR->rstr1 |= MXC_F_GCR_RSTR1_PT;
@@ -69,21 +71,27 @@ void MXC_PT_Init(mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale)
         MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV128;
         break;
     }
+#endif
 
     MXC_PT_RevA_Init((mxc_ptg_reva_regs_t *)ptg, clk_scale);
 }
 
 void MXC_PT_Shutdown(mxc_ptg_regs_t *ptg, uint32_t pts)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (MXC_PT_RevA_Shutdown((mxc_ptg_reva_regs_t *)ptg, pts)) {
         MXC_GCR->perckcn0 |= MXC_F_GCR_PERCKCN0_PTD;
     }
+#else
+    MXC_PT_RevA_Shutdown((mxc_ptg_reva_regs_t *)ptg, pts);
+#endif
 }
 
 int MXC_PT_Config(mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg)
 {
     MXC_PT_RevA_Config((mxc_ptg_reva_regs_t *)ptg, cfg);
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (cfg->channel) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_pt0);
@@ -153,6 +161,7 @@ int MXC_PT_Config(mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg)
         return E_BAD_PARAM;
         break;
     }
+#endif
 
     return E_NO_ERROR;
 }
