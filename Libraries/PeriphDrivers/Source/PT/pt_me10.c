@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,10 @@
 /* ************************************************************************* */
 void MXC_PT_Init(mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PT);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET_PT);
+#endif
 
     MXC_PT_RevA_Init((mxc_ptg_reva_regs_t *)ptg, clk_scale);
 }
@@ -39,12 +41,15 @@ void MXC_PT_Init(mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale)
 void MXC_PT_Shutdown(mxc_ptg_regs_t *ptg, uint32_t pts)
 {
     MXC_PT_RevA_Shutdown((mxc_ptg_reva_regs_t *)ptg, pts);
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_PT);
+#endif
 }
 
 /* ************************************************************************* */
 int MXC_PT_Config(mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (cfg->outputSelect) {
         switch (cfg->channel) {
         case 0:
@@ -152,6 +157,7 @@ int MXC_PT_Config(mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg)
             return E_BAD_PARAM;
         }
     }
+#endif
 
     return MXC_PT_RevA_Config((mxc_ptg_reva_regs_t *)ptg, cfg);
 }
