@@ -8,7 +8,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,16 +91,16 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 
     switch (MXC_SPI_GET_IDX(spi)) {
     case 0:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
         break;
     case 1:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
         break;
     case 2:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI2);
         break;
     case 3:
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI3);
         break;
     default:
         return E_BAD_PARAM;
