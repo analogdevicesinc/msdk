@@ -8,7 +8,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,13 +83,18 @@ typedef enum {
 /**
  * @brief      This function initializes the pulse trains to a known stopped
  *             state and sets the global PT clock scale.
- * @param      clk_scale  Scale the system clock for the global PT clock.
+ * @note       If you wish to manage clock settings externally, define the flag
+ *             MSDK_NO_GPIO_CLK_INIT.
+ * @param      clk_scale  Scale the system clock for the global PT clock. Has no
+ *                        effect if MSDK_NO_GPIO_CLK_INIT is defined.
  */
 void MXC_PT_Init(mxc_clk_scale_t clk_scale);
 
 /**
  * @brief      Shutdown the pulse train channel/channels.
- * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train clock.
+ * @details    Shutdown pulse train and if all pulse trains are shut down then
+ *             turn off pulse train clock. If MSDK_NO_GPIO_CLK_INIT is defined,
+ *             pulse train clock remains enabled.
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      pts    Pulse train channel to operate on.
@@ -100,7 +105,8 @@ void MXC_PT_Shutdown(uint32_t pts);
  * @brief      Configures the pulse train in the specified mode.
  * @details    The parameters in the config structure must be set before calling
  *             this function. This function should be used for configuring pulse
- *             train mode only.
+ *             train mode only. If MSDK_NO_GPIO_CLK_INIT is defined, GPIO
+ *             configuration is skipped.
  * @note       The pulse train cannot be running when this function is called.
  *
  * @param      cfg     Pointer to pulse train configuration.
