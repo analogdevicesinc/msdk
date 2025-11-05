@@ -19,17 +19,23 @@
 #include "max32650.h"
 #include "mxc_sys.h"
 #include "icc.h"
+#include "system_max32650.h"
+
+extern uint8_t ChipRevision; /* Defined in system_max32650.c */
 
 /* 
  * This function is called during boot up.
  */
 void max32xx_system_init(void)
 {
-    /* Workaround: Write to SCON register on power up to fix trim issue for SRAM */
-    MXC_GCR->scon = (MXC_GCR->scon & ~(MXC_F_GCR_SCON_OVR)) | (MXC_S_GCR_SCON_OVR_1V1);
-
     /* Erratum #?: Adjust register timing for VCORE == 1.1v, prevents USB failure. 2017-10-04 ZNM/HTN */
     MXC_GCR->scon |= MXC_S_GCR_SCON_OVR_1V1;
+
+    /* Get Chip Revision */
+    ChipRevision = MXC_SYS_GetRev();
+
+    /* Set system clock value according to default clock settings */
+    SystemCoreClockUpdate();
 
     // Flush and enable instruction cache
     MXC_ICC->invalidate = 1;
