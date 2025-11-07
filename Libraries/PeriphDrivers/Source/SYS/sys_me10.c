@@ -255,7 +255,8 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         }
 
         // Set 32k clock as System Clock
-        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL, MXC_F_GCR_CLK_CTRL_X32K_RDY);
+        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
+                     MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_X32K);
 
         break;
     default:

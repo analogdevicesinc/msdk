@@ -68,6 +68,10 @@ zephyr_library_sources(
 
     ${MSDK_PERIPH_SRC_DIR}/DMA/dma_me10.c
     ${MSDK_PERIPH_SRC_DIR}/DMA/dma_reva.c
+
+    ${MSDK_PERIPH_SRC_DIR}/FLC/flc_common.c
+    ${MSDK_PERIPH_SRC_DIR}/FLC/flc_me10.c
+    ${MSDK_PERIPH_SRC_DIR}/FLC/flc_reva.c
 )
 
 if (CONFIG_MAX32_SECURE_SOC)
@@ -116,14 +120,6 @@ if (CONFIG_RTC_MAX32 OR CONFIG_COUNTER_RTC_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/RTC/rtc_me10.c
     ${MSDK_PERIPH_SRC_DIR}/RTC/rtc_reva.c
-)
-endif()
-
-if (CONFIG_SOC_FLASH_MAX32 OR CONFIG_HWINFO_MAX32)
-zephyr_library_sources(
-    ${MSDK_PERIPH_SRC_DIR}/FLC/flc_common.c
-    ${MSDK_PERIPH_SRC_DIR}/FLC/flc_me10.c
-    ${MSDK_PERIPH_SRC_DIR}/FLC/flc_reva.c
 )
 endif()
 
