@@ -129,7 +129,7 @@ int MXC_WDT_SetClockSource(mxc_wdt_regs_t *wdt, mxc_wdt_clock_t clock_source)
     uint8_t idx = 0;
     uint8_t instance = 0;
 
-#if TARGET_NUM == 32655 || TARGET_NUM == 78000
+#if TARGET_NUM == 32655 || TARGET_NUM == 78000 || TARGET_NUM == 78002
     mxc_wdt_clock_t clock_sources[2][8] = {
         { MXC_WDT_PCLK, MXC_WDT_IBRO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
         { MXC_WDT_IBRO_CLK, MXC_WDT_INRO_CLK, MXC_WDT_ERTCO_CLK, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
