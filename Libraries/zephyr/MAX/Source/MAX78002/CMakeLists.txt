@@ -130,7 +130,7 @@ endif()
 if (CONFIG_WDT_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/WDT/wdt_common.c
-    ${MSDK_PERIPH_SRC_DIR}/WDT/wdt_ai87.c
+    ${MSDK_PERIPH_SRC_DIR}/WDT/wdt_me17.c
     ${MSDK_PERIPH_SRC_DIR}/WDT/wdt_revb.c
 )
 endif()
