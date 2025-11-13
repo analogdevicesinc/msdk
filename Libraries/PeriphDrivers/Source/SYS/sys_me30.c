@@ -43,6 +43,7 @@
 
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(1)
+#define MXC_SYS_USN_AES_LEN 16
 
 // DAP Lock macros
 #define INFOBLOCK_DAP_LOCK_OFFSET 0x30
@@ -85,11 +86,17 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     /* If requested, verify and return the checksum */
     if (checksum != NULL) {
-        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
-        uint8_t aes_key[MXC_SYS_USN_CHECKSUM_LEN] = { 0 }; // NULL Key (per checksum spec)
+        uint8_t check_csum[MXC_SYS_USN_AES_LEN];
+        uint8_t check_usn[MXC_SYS_USN_AES_LEN] = { 0 }; // NULL plain text, add USN
+        uint8_t aes_key[MXC_SYS_USN_AES_LEN] = { 0 }; // NULL Key (per checksum spec)
 
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+
+        /* Setup a plain text buffer that is the correct length
+		 * for an AES calculation, copy in the USN.
+		 */
+        memcpy(check_usn, usn, MXC_SYS_USN_LEN);
 
         // Info block only accessible from secure code.
         //  Use Secure DMA1.
@@ -104,8 +111,8 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
         // Compute Checksum
         mxc_aes_req_t aes_req;
-        aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
-        aes_req.inputData = (uint32_t *)usn;
+        aes_req.length = MXC_SYS_USN_AES_LEN / sizeof(uint32_t);
+        aes_req.inputData = (uint32_t *)check_usn;
         aes_req.resultData = (uint32_t *)check_csum;
         aes_req.keySize = MXC_AES_128BITS;
         aes_req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
