@@ -53,6 +53,9 @@ int AES_Test(mxc_ctb_cipher_t aesKey)
     uint8_t key[MXC_AES_256_KEY_LEN] = { 0 };
     uint32_t stat;
 
+    // The user guide indicates the CTB should be reset at the start of each operation.
+    MXC_CTB_InternalReset();
+
     // Set encryption/decryption key
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
     switch (aesKey) {

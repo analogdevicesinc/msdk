@@ -147,6 +147,7 @@ typedef enum {
 
 int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features);
 void MXC_CTB_RevA_InternalReset(mxc_ctb_reva_regs_t *ctb_regs);
+void MXC_CTB_RevA_DisableBlocks(mxc_ctb_reva_regs_t *ctb_regs);
 void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t *ctb_regs);
 void MXC_CTB_RevA_DisableInt(mxc_ctb_reva_regs_t *ctb_regs);
 int MXC_CTB_RevA_Ready(mxc_ctb_reva_regs_t *ctb_regs);
