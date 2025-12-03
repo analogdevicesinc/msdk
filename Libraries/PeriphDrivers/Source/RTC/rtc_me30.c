@@ -82,7 +82,7 @@ int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 
 int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 {
-    // TODO(RTC): Use MCR registers for GPIO Port 1 configuration.
+    MXC_GPIO_Config(&gpio_cfg_rtcsqw);
 
     MXC_MCR->outen |= MXC_F_MCR_OUTEN_SQWOUT_EN;
 
