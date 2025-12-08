@@ -888,6 +888,7 @@ int MXC_CTB_RevA_Hash_Compute(mxc_ctb_reva_hash_req_t *req)
     MXC_CTB_DMA_SetupOperation((mxc_ctb_dma_req_t *)&dma_req);
 
     for (block = 0; block < numBlocks; block++) {
+        MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_HASH);
         if (block != numBlocks - 1) {
             // Send data to the crypto data register 32-bits at a time
             MXC_CTB_DMA_StartTransfer(blockSize);
@@ -1110,6 +1111,7 @@ static int MXC_CTB_Cipher_Generic(mxc_ctb_cipher_req_t *req, int op)
         // Wait until ready for data
         while (!MXC_CTB_Ready()) {}
 
+    	MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_CIPHER);
         MXC_CTB_DMA_StartTransfer(dataLength);
 
         // Wait until operation is complete
