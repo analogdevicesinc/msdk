@@ -119,6 +119,7 @@ void MXC_CTB_RevA_DisableBlocks(mxc_ctb_reva_regs_t *ctb_regs)
     ctb_regs->cipher_ctrl &= ~(MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER);
     ctb_regs->hash_ctrl &= ~(MXC_F_CTB_REVA_HASH_CTRL_HASH);
     ctb_regs->crc_ctrl &= ~(MXC_F_CTB_REVA_CRC_CTRL_CRC);
+    ctb_regs->crc_ctrl &= ~(MXC_F_CTB_REVA_CRC_CTRL_HAM);
 }
 
 void MXC_CTB_RevA_InternalReset(mxc_ctb_reva_regs_t *ctb_regs)
