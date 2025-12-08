@@ -1112,7 +1112,7 @@ static int MXC_CTB_Cipher_Generic(mxc_ctb_cipher_req_t *req, int op)
         // Wait until ready for data
         while (!MXC_CTB_Ready()) {}
 
-    	MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_CIPHER);
+        MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_CIPHER);
         MXC_CTB_DMA_StartTransfer(dataLength);
 
         // Wait until operation is complete
