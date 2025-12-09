@@ -390,6 +390,13 @@ void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareCl
  */
 uint32_t MXC_SYS_GetClockMeasure(void);
 
+/**
+ * @brief Calibrate the specified system clock. Check the microcontroller's UG for more details.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.
+ * @returns E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
+
 #ifdef __cplusplus
 }
 #endif
