@@ -525,15 +525,15 @@ int run_demo_crc(int asynchronous)
             printf("PASSED!\n");
         } else {
             printf("FAILED!\n");
-			fail++;
+            fail++;
         }
 
         MXC_CRC_Shutdown();
 
         printf("\n");
     }
-	
-	return fail;
+
+    return fail;
 }
 
 void DMA0_IRQHandler(void)
@@ -545,7 +545,7 @@ void DMA0_IRQHandler(void)
 int main(void)
 {
     int fail = 0;
-	
+
     MXC_NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler); // TBD
     NVIC_EnableIRQ(DMA0_IRQn);
 
