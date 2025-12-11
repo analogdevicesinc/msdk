@@ -453,8 +453,9 @@ test_case_mxc_crc_full_req_t test_cases_crc[] = {
 };
 
 /***** Functions *****/
-void run_demo_crc(int asynchronous)
+int run_demo_crc(int asynchronous)
 {
+    int fail = 0;
     int total_cases = sizeof(test_cases_crc) / sizeof(test_case_mxc_crc_full_req_t);
     int i = 0;
     int j = 0;
@@ -524,12 +525,15 @@ void run_demo_crc(int asynchronous)
             printf("PASSED!\n");
         } else {
             printf("FAILED!\n");
+			fail++;
         }
 
         MXC_CRC_Shutdown();
 
         printf("\n");
     }
+	
+	return fail;
 }
 
 void DMA0_IRQHandler(void)
@@ -540,13 +544,19 @@ void DMA0_IRQHandler(void)
 // *****************************************************************************
 int main(void)
 {
+    int fail = 0;
+	
     MXC_NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler); // TBD
     NVIC_EnableIRQ(DMA0_IRQn);
 
-    run_demo_crc(0);
-    run_demo_crc(1);
+    fail += run_demo_crc(0);
+    fail += run_demo_crc(1);
 
-    while (1) {}
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }
