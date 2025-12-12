@@ -97,7 +97,7 @@ int32_t ow_romid_test(uint8_t od)
     MXC_OWM_SetOverdrive(0);
 
     /* Error if presence pulse not detected. */
-    if (MXC_OWM_Reset() == 1) {
+    if (MXC_OWM_Reset() == 0) {
         return -2;
     }
 
@@ -107,7 +107,7 @@ int32_t ow_romid_test(uint8_t od)
         MXC_OWM_Write(buffer, 1);
         MXC_OWM_SetOverdrive(1);
         /* Error if presence pulse not detected. */
-        if (MXC_OWM_Reset() == 1) {
+        if (MXC_OWM_Reset() == 0) {
             return -4;
         }
     }
