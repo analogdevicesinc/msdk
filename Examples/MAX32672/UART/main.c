@@ -90,10 +90,6 @@ int main(void)
     NVIC_EnableIRQ(MXC_UART_GET_IRQ(READING_UART_IDX));
 #endif //
 
-    // Set UART2 to use MAP_B for correct pin mapping
-    // UART2 TX is on P0.15 and UART2 RX is on P0.14 in MAP_B
-    MXC_UART_SetPinMapping(WRITING_UART, MAP_B);
-
     // Initialize the UART
     error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK);
     if (error < E_NO_ERROR) {
@@ -104,6 +100,9 @@ int main(void)
     printf("-->Reading UART Initialized\n");
 
     // Initialize writing UART
+    // Set UART2 to use MAP_B for correct pin mapping
+    // UART2 TX is on P0.15 and UART2 RX is on P0.14 in MAP_B
+    MXC_UART_SetPinMapping(WRITING_UART, MAP_B);
     error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK);
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
