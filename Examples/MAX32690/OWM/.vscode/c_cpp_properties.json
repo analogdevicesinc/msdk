@@ -1,0 +1,67 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "${config:cfs.project.board}",
+                "TARGET=${config:cfs.project.target}",
+                "__GNUC__"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gcc.exe",
+            "browse": {
+                "path": [
+                    "${default}",
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/**"
+                ]
+            }
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${default}"
+            ],
+            "defines": [
+                "${config:cfs.project.board}",
+                "TARGET=${config:cfs.project.target}",
+                "__GNUC__"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gcc",
+            "browse": {
+                "path": [
+                    "${default}",
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/**"
+                ]
+            }
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "${default}"
+            ],
+            "defines": [
+                "${config:cfs.project.board}",
+                "TARGET=${config:cfs.project.target}",
+                "__GNUC__"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gcc",
+            "browse": {
+                "path": [
+                    "${default}",
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/**"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
