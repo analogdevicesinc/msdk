@@ -885,6 +885,16 @@ int afe_setup(mxc_tmr_regs_t *tmr)
     }
 
     retval = afe_spi_poll_for_ready(&true_por);
+    if (retval == E_TIME_OUT) {
+        //
+        // If polling for ready times out, AFE is not in either expected mode.
+        // Treat as POR and fully reinitialize.
+        // Sometimes seen when using debugger.
+        //
+        true_por = 1;
+        retval = E_NO_ERROR;
+    }
+
     if (retval != E_NO_ERROR) {
         return retval;
     }
