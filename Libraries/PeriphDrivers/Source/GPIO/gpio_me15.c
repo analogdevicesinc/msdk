@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@
 
 int MXC_GPIO_Init(uint32_t portmask)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (portmask & MXC_GPIO_PORT_0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     }
@@ -38,12 +39,14 @@ int MXC_GPIO_Init(uint32_t portmask)
     if (portmask & MXC_GPIO_PORT_1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_GPIO_Common_Init(portmask);
 }
 
 int MXC_GPIO_Shutdown(uint32_t portmask)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (portmask & MXC_GPIO_PORT_0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     }
@@ -51,6 +54,7 @@ int MXC_GPIO_Shutdown(uint32_t portmask)
     if (portmask & MXC_GPIO_PORT_1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return E_NO_ERROR;
 }
