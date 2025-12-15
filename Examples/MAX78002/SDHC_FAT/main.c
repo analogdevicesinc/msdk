@@ -48,7 +48,7 @@ int main(void)
 {
     mxc_sdhc_cfg_t cfg;
     int err;
-    printf("\n\n***** MAX78000 SDHC FAT Filesystem Example *****\n");
+    printf("\n\n***** MAX78002 SDHC FAT Filesystem Example *****\n");
 
     // Enable Power To Card
     printf("Enabling card power...\n");
