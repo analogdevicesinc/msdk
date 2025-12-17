@@ -17,8 +17,8 @@ If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Close jumper JP5 (LED1 EN).
--   Close jumper JP6 (LED2 EN).
+-   Close jumper JP5 (LED0 EN).
+-   Close jumper JP6 (LED1 EN).
 -   Select the proper pullup voltage for I2C0 using jumper JP2.
 -   Enable I2C0 pullup resistors by installing jumpers JP3 and JP4.
 -   Connect I2C0 (SDA - P2.7, SCL - P2.8) to I2C bus.
