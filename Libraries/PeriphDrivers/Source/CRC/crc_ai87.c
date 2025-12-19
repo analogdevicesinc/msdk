@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,11 @@ void MXC_CRC_Handler(int ch, int error)
     MXC_CRC_RevA_Handler(ch, error);
 }
 
+void MXC_CRC_Full_Req_Handler(int ch, int error)
+{
+    MXC_CRC_RevA_Full_Req_Handler(ch, error);
+}
+
 void MXC_CRC_SetDirection(mxc_crc_bitorder_t bitOrder)
 {
     MXC_CRC_RevA_SetDirection((mxc_crc_reva_regs_t *)MXC_CRC, (mxc_crc_reva_bitorder_t)bitOrder);
@@ -98,4 +103,15 @@ int MXC_CRC_Compute(mxc_crc_req_t *req)
 int MXC_CRC_ComputeAsync(mxc_crc_req_t *req)
 {
     return MXC_CRC_RevA_ComputeAsync((mxc_crc_reva_regs_t *)MXC_CRC, (mxc_crc_reva_req_t *)req);
+}
+
+int MXC_CRC_Calculate(mxc_crc_full_req_t *req)
+{
+    return MXC_CRC_RevA_Calculate((mxc_crc_reva_regs_t *)MXC_CRC, (mxc_crc_reva_full_req_t *)req);
+}
+
+int MXC_CRC_CalculateAsync(mxc_crc_full_req_t *req)
+{
+    return MXC_CRC_RevA_CalculateAsync((mxc_crc_reva_regs_t *)MXC_CRC,
+                                       (mxc_crc_reva_full_req_t *)req);
 }
