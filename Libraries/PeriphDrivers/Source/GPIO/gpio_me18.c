@@ -60,6 +60,7 @@
 /* **** Functions **** */
 int MXC_GPIO_Init(uint32_t portmask)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (portmask & 0x1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     }
@@ -75,12 +76,14 @@ int MXC_GPIO_Init(uint32_t portmask)
     if (portmask & 0x8) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO3);
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_GPIO_Common_Init(portmask);
 }
 
 int MXC_GPIO_Shutdown(uint32_t portmask)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (portmask & 0x1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     }
@@ -96,6 +99,7 @@ int MXC_GPIO_Shutdown(uint32_t portmask)
     if (portmask & 0x8) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO3);
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return E_NO_ERROR;
 }
