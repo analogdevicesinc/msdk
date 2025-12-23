@@ -87,9 +87,9 @@ unsigned int MXC_SDHC_Get_Clock_Config(void)
 unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
 {
     if (MXC_GCR->pclk_div & MXC_F_GCR_PCLK_DIV_SDHCFRQ) {
-        return HIRC96_FREQ >> 1; // Div by 2
-    } else {
         return 50000000; // UG specifies a hard-coded 50Mhz low-power oscillator
+    } else {
+        return HIRC96_FREQ >> 1; // Div by 2
     }
 }
 
