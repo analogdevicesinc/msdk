@@ -207,7 +207,7 @@ int main(void)
                 printf("Resume\n");
             } else if (MXC_GETBIT(&event_flags, EVENT_ENUM_COMP)) {
                 MXC_CLRBIT(&event_flags, EVENT_ENUM_COMP);
-                printf("Enumeration complete. Press SW2 to send character.\n");
+                printf("Enumeration complete. Press SW4 to send character.\n");
             } else if (MXC_GETBIT(&event_flags, EVENT_REMOTE_WAKE)) {
                 MXC_CLRBIT(&event_flags, EVENT_REMOTE_WAKE);
                 printf("Remote Wakeup\n");
