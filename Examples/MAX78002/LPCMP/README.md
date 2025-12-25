@@ -39,7 +39,7 @@ Connect the analog signal used as the negative comparator input to P2.0 (AIN0/AI
 The device will be placed in sleep mode and requires a rising edge of the
 comparator output to wakeup.
 
-Press SW2 to begin.
+Press SW4 to begin.
 
 Entering sleep mode.
 Waking up.
