@@ -60,7 +60,7 @@ int main(void)
     printf("\nThe device will be placed in sleep mode and requires a rising edge of the\n");
     printf("comparator output to wakeup.\n\n");
 
-    printf("Press SW2 to begin.\n");
+    printf("Press SW4 to begin.\n");
     while (!PB_Get(0)) {}
 
     // Enable comparator 0
