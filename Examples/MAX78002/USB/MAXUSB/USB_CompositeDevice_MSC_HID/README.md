@@ -1,6 +1,6 @@
 ## Description
 
-The example demonstartes the use of USB composite device with Mass Storage driver class and HID driver class. After doing the required connections given below, run the program and two new devices appear in the device manager, a Portable device and a HID keyboard device. The portable device can be read and written to. Open any text editor in the PC, pressing the switch SW4 on the evkit wil print out 'Maxin Integrated' in the editor one letter at a time.
+The example demonstrates the use of USB composite device with Mass Storage driver class and HID driver class. After doing the required connections given below, run the program and two new devices will appear in the device manager, a Portable device and a HID keyboard device. The portable device can be read and written to. Open any text editor in the PC, pressing the switch SW4 on the evkit will print out 'Maxim Integrated' in the editor one letter at a time.
 
 ## Software
 
