@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,7 +173,7 @@ int main(void)
                 printf("Resume\n");
             } else if (MXC_GETBIT(&evtFlags, EVENT_ENUM_COMP)) {
                 MXC_CLRBIT(&evtFlags, EVENT_ENUM_COMP);
-                printf("Enumeration complete. Press SW2 to send character.\n");
+                printf("Enumeration complete. Press SW4 to send character.\n");
             } else if (MXC_GETBIT(&evtFlags, EVENT_REMOTE_WAKE)) {
                 MXC_CLRBIT(&evtFlags, EVENT_REMOTE_WAKE);
                 printf("Remote Wakeup\n");
