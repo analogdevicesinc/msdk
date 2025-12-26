@@ -1,6 +1,6 @@
 ## Description
 
-The example demonstartes the use of USB HID driver class. After doing the required connections given below, run the program and a new HID keyboard device appears in the device manager. Open any text editor in the PC, pressing the switch SW4 on the EV Kit will print out 'Maxim Integrated' in the editor one letter at a time.
+The example demonstrates the use of USB HID driver class. After doing the required connections given below, run the program and a new HID keyboard device will appear in the device manager. Open any text editor in the PC, pressing the switch SW4 on the EV Kit will print out 'Maxim Integrated' in the editor one letter at a time.
 
 ## Software
 
