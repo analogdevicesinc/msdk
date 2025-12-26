@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ int main(void)
     printf("\nThe device will be placed in sleep mode and requires a rising edge of the\n");
     printf("comparator output to wakeup.\n\n");
 
-    printf("Press SW2 to begin.\n");
+    printf("Press SW4 to begin.\n");
     while (!PB_Get(0)) {}
 
     // Enable comparator 0
