@@ -22,6 +22,7 @@
 #include "mxc_device.h"
 #include "mxc_pins.h"
 #include "mxc_assert.h"
+#include "mxc_sys.h"
 #include "uart_reva.h"
 #include "uart_common.h"
 #include "dma.h"
@@ -193,7 +194,17 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
 
 int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, int usePCLK)
 {
-    return MXC_UART_RevA_SetClockSource((mxc_uart_reva_regs_t *)uart, usePCLK);
+    int ret;
+    if (MXC_UART_GET_IDX(uart) < 0) {
+        return E_BAD_PARAM;
+    }
+    if (usePCLK) {
+        ret = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_HIRC8);
+        if (ret != E_NO_ERROR) {
+            return ret;
+        }
+    }
+    return MXC_UART_RevA_SetClockSource((mxc_uart_reva_regs_t *)uart, !usePCLK);
 }
 
 int MXC_UART_SetNullModem(mxc_uart_regs_t *uart, int nullModem)

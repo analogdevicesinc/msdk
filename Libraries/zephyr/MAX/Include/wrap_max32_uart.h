@@ -111,12 +111,24 @@ static inline int Wrap_MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int
 
 static inline int Wrap_MXC_UART_SetClockSource(mxc_uart_regs_t *uart, int clock_source)
 {
-    (void)uart;
-    if (clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK) {
-        return E_NO_ERROR;
-    } else {
-        return E_BAD_PARAM;
+#if defined(CONFIG_SOC_MAX32660)
+    {
+        if (clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK) {
+            return E_NO_ERROR;
+        } else {
+            return E_BAD_PARAM;
+        }
     }
+#else
+    {
+        if (clock_source == ADI_MAX32_PRPH_CLK_SRC_IBRO ||
+            clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK) {
+            return MXC_UART_SetClockSource(uart, clock_source);
+        } else {
+            return E_BAD_PARAM;
+        }
+    }
+#endif
 }
 
 static inline void Wrap_MXC_UART_SetTxDMALevel(mxc_uart_regs_t *uart, uint8_t bytes)
