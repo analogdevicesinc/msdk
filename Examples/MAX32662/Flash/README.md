@@ -41,7 +41,7 @@ MAX32662EVKIT:
 
 ## Expected Output
 
-After flashing and launching the example, an LED on the board will blink once every second.  This is the application waiting for SW2 to be pressed, and gives a window for a serial terminal to be connected. After connecting the serial terminal, the application will output the following contents:
+After flashing and launching the example, an LED on the board will blink once every second. This is the application waiting for SW2 to be pressed, and gives a window for a serial terminal to be connected. After connecting the serial terminal, the application will output the following contents:
 
 ```
 ***** Flash Control Example *****
@@ -61,11 +61,11 @@ Now reset or power cycle the board...
 
 ```
 
-At this point, the "magic" and test pattern values have been written to flash. Press SW1 to reset the board, after which the application will restart. Push SW1 to continue the application again, which will print out the following contents:
+At this point, the "magic" and test pattern values have been written to flash. Press SW1 to reset the board, after which the application will restart. Push SW2 to continue the application again, which will print out the following contents:
 
 ```
 ***** Flash Control Example *****
-Press SW1 to continue...
+Press SW2 to continue...
 
 ** Magic value 0xfeedbeef found at address 0x1007e000! **
 
