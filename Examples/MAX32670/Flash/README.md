@@ -41,7 +41,7 @@ MAX32670EVKIT:
 
 ## Expected Output
 
-After flashing and launching the example, an LED on the board will blink once every second.  This is the application waiting for PushButton 1 (PB1) to be pressed, and gives a window for a serial terminal to be connected.  After connecting the serial terminal, the application will output the following contents:
+After flashing and launching the example, an LED on the board will blink once every second.  This is the application waiting for PushButton 1 (SW3) to be pressed, and gives a window for a serial terminal to be connected.  After connecting the serial terminal, the application will output the following contents:
 
 ```
 ***** Flash Control Example *****
@@ -61,7 +61,7 @@ Now reset or power cycle the board...
 
 ```
 
-At this point, the "magic" and test pattern values have been written to flash.  Press SW5 to reset the board, after which the application will restart.  Push PB1 to continue the application again, which will print out the following contents:
+At this point, the "magic" and test pattern values have been written to flash.  Press SW2 to reset the board, after which the application will restart.  Push SW3 to continue the application again, which will print out the following contents:
 
 ```
 ***** Flash Control Example *****
