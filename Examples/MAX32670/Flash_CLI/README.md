@@ -1,9 +1,8 @@
 ## Description
 
-This example demonstates various features of the Flash Controller (page erase and write), and how to use the CRC to compute a CRC value. In the terminal window, type the command that you wish to execute. The available commands are "write" (writes a text string to flash), "read" (reads text from flash), "erase" (erases the flash page being operated on) and "crc" (computes the CRC value of the entire flash page.) For more details on how to input these commands, enter "help" in the terminal window.
+This example demonstrates various features of the Flash Controller (page erase and write), and how to use the CRC to compute a CRC value. In the terminal window, you can just type the command that you'd like to execute. The available commands are "write" (writes a text string to flash), "read" (reads text from flash), "erase" (erases the flash page being operated on), and "crc" (computes the CRC value of the entire flash page). For more details on how to input these commands, enter "help" in the terminal window.
 
-*** NOTE ***: Attempting to overwrite flash will return error. If you want to overwrite an address you must first erase.
-
+*** NOTE ***: Attempting to overwrite flash will return an error. To overwrite an address, you must first delete it.
 
 ## Software
 
@@ -20,8 +19,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 ### Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select RX0 and TX0 on Headers JP1 and JP3 (UART 0).
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Select RX0 and TX0 on Headers JP3 and JP4 (UART 0).
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
 
