@@ -1,9 +1,8 @@
 ## Description
 
-A basic getting started program.
+This example demonstrates the use of the Analog Comparator to wake up the device from sleep mode. 
 
-This version of Hello_World prints an incrementing count to the console UART and toggles a GPIO (P1.14 - LED1) once every 500 ms.
-
+The example is configured to use analog channels 0 (P2.0) and 1 (P2.1) as the negative and positive comparator inputs respectively. A wakeup event is triggered when the comparator output transitions from low to high (analog 1 needs to transition from a voltage lower than analog 0 to voltage higher than analog 0).
 
 ## Software
 
@@ -13,26 +12,38 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+(None - this project builds as a standard example)
 
 ## Required Connections
 If using the MAX32655EVKIT (EvKit\_V1):
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Install JP4(RX) and JP5(TX) headers for UART0.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Apply the negative comparator input to P2.0 (AIN0/AIN0N).
+-   Apply the positive comparator input to P2.1 (AIN1/AIN0P).
 
 ## Expected Output
 
 The Console UART of the device will output these messages:
 
 ```
-***********Hello World!***********
+********** Comparator Example **********
 
-LED1 on P1.14 toggles every 500 ms
+Connect the analog signal used as the positive comparator input to analog pin 1.
+Connect the analog signal used as the negative comparator input to analog pin 0.
 
-Count = 0
-Count = 1
-Count = 2
-Count = 3
+The device will be placed in sleep mode and requires a rising edge of the
+comparator output to wakeup.
+
+Press SW3 or SW4 to begin.
+
+Entering sleep mode.
+Waking up.
+
+Entering sleep mode.
+Waking up.
+
+Entering sleep mode.
+...
 ```
 
