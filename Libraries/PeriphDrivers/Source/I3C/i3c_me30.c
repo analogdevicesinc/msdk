@@ -29,32 +29,11 @@
 /* **** Functions **** */
 int MXC_I3C_Init(mxc_i3c_regs_t *i3c, mxc_i3c_config_t *config)
 {
-    int ret;
-
 #ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I3C);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I3C);
     MXC_GPIO_Config(&gpio_cfg_i3c);
 #endif
-
-    if (!config->target_mode) {
-        /* Controller mode initialization */
-        /* 1. SCL frequency and duty cycle */
-        ret = MXC_I3C_SetPPFrequency(i3c, config->pp_hz);
-        if (ret < 0) {
-            return ret;
-        }
-
-        ret = MXC_I3C_SetODFrequency(i3c, config->od_hz, false);
-        if (ret < 0) {
-            return ret;
-        }
-
-        ret = MXC_I3C_SetI2CFrequency(i3c, config->i2c_hz);
-        if (ret < 0) {
-            return ret;
-        }
-    }
 
     return MXC_I3C_RevA_Init((mxc_i3c_reva_regs_t *)i3c, config->target_mode, config->static_addr);
 }

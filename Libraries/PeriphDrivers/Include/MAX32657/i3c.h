@@ -125,9 +125,6 @@ typedef enum {
 typedef struct {
     bool target_mode; ///< If the driver should be initialized in target mode.
     uint8_t static_addr; ///< Static address to use if target mode is used.
-    uint32_t pp_hz; ///< SCL frequency to be used in push-pull operation.
-    uint32_t od_hz; ///< SCL frequency to be used in open-drain operation.
-    uint32_t i2c_hz; ///< SCL frequency to be used in I2C operation.
 } mxc_i3c_config_t;
 
 /**
