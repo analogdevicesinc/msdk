@@ -65,6 +65,11 @@ int MXC_I3C_SetPPFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency)
     return MXC_I3C_RevA_SetPPFrequency((mxc_i3c_reva_regs_t *)i3c, frequency);
 }
 
+int MXC_I3C_SetPPPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs)
+{
+    return MXC_I3C_RevA_SetPPPeriod((mxc_i3c_reva_regs_t *)i3c, highPeriodNs, lowPeriodNs);
+}
+
 unsigned int MXC_I3C_GetPPFrequency(mxc_i3c_regs_t *i3c)
 {
     return MXC_I3C_RevA_GetPPFrequency((mxc_i3c_reva_regs_t *)i3c);
@@ -75,6 +80,11 @@ int MXC_I3C_SetODFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency, bool hig
     return MXC_I3C_RevA_SetODFrequency((mxc_i3c_reva_regs_t *)i3c, frequency, highPP);
 }
 
+int MXC_I3C_SetODPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs)
+{
+    return MXC_I3C_RevA_SetODPeriod((mxc_i3c_reva_regs_t *)i3c, highPeriodNs, lowPeriodNs);
+}
+
 unsigned int MXC_I3C_GetODFrequency(mxc_i3c_regs_t *i3c)
 {
     return MXC_I3C_RevA_GetODFrequency((mxc_i3c_reva_regs_t *)i3c);
@@ -83,6 +93,11 @@ unsigned int MXC_I3C_GetODFrequency(mxc_i3c_regs_t *i3c)
 int MXC_I3C_SetI2CFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency)
 {
     return MXC_I3C_RevA_SetI2CFrequency((mxc_i3c_reva_regs_t *)i3c, frequency);
+}
+
+int MXC_I3C_SetI2CPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs)
+{
+    return MXC_I3C_RevA_SetI2CPeriod((mxc_i3c_reva_regs_t *)i3c, highPeriodNs, lowPeriodNs);
 }
 
 unsigned int MXC_I3C_GetI2CFrequency(mxc_i3c_regs_t *i3c)

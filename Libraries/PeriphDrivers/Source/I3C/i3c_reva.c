@@ -305,6 +305,34 @@ int MXC_I3C_RevA_SetPPFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency
     return (int)MXC_I3C_RevA_GetPPFrequency(i3c);
 }
 
+int MXC_I3C_RevA_SetPPPeriod(mxc_i3c_reva_regs_t *i3c, unsigned int highPeriodNs,
+                             unsigned int lowPeriodNs)
+{
+    uint8_t highPeriod, lowPeriod;
+    uint32_t i3cTickNs = 1000000000 / PeripheralClock;
+
+    if (highPeriodNs < i3cTickNs || lowPeriodNs < i3cTickNs) {
+        return E_BAD_PARAM;
+    }
+
+    if (highPeriodNs > lowPeriodNs) {
+        lowPeriodNs = highPeriodNs;
+    }
+
+    highPeriod = (highPeriodNs + (i3cTickNs >> 1)) / i3cTickNs;
+    lowPeriod = (lowPeriodNs + (i3cTickNs >> 1)) / i3cTickNs;
+    if (lowPeriod > highPeriod + MXC_V_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD_15_FCLK) {
+        lowPeriod = highPeriod + MXC_V_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD_15_FCLK;
+    }
+
+    i3c->cont_ctrl0 &= ~MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD;
+    i3c->cont_ctrl0 &= ~MXC_F_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD;
+    i3c->cont_ctrl0 |= (highPeriod - 1) << MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD_POS;
+    i3c->cont_ctrl0 |= (lowPeriod - highPeriod) << MXC_F_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD_POS;
+
+    return (int)MXC_I3C_RevA_GetPPFrequency(i3c);
+}
+
 unsigned int MXC_I3C_RevA_GetPPFrequency(mxc_i3c_reva_regs_t *i3c)
 {
     uint8_t highPeriod, lowPeriod;
@@ -356,6 +384,57 @@ int MXC_I3C_RevA_SetODFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency
     return (int)MXC_I3C_RevA_GetODFrequency(i3c);
 }
 
+int MXC_I3C_RevA_SetODPeriod(mxc_i3c_reva_regs_t *i3c, unsigned int highPeriodNs,
+                             unsigned int lowPeriodNs)
+{
+    uint8_t ppBaud, lowPeriod;
+    uint32_t ppHighNs, odLowNsMax;
+    uint32_t i3cTickNs = 1000000000 / PeripheralClock;
+
+    ppBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD) >>
+             MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD_POS;
+    ppBaud = ppBaud + 1;
+    ppHighNs = ppBaud * i3cTickNs;
+
+    /* OD low and high periods cannot be shorter than PP high period */
+    if (lowPeriodNs < ppHighNs) {
+        lowPeriodNs = ppHighNs;
+    }
+
+    if (highPeriodNs < ppHighNs) {
+        highPeriodNs = ppHighNs;
+    }
+
+    /* OD high period must either be PP high period (ODHPP=1),
+     * or same as OD low period (ODHPP=0)
+     */
+    if ((highPeriodNs != lowPeriodNs) && (highPeriodNs != ppHighNs)) {
+        return E_BAD_PARAM;
+    }
+
+    /* Calculate the maximum OD low period */
+    odLowNsMax = (MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD >> MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD_POS) + 1;
+    odLowNsMax = odLowNsMax * ppHighNs;
+
+    if (lowPeriodNs > odLowNsMax) {
+        lowPeriodNs = odLowNsMax;
+    }
+
+    if (highPeriodNs > lowPeriodNs) {
+        highPeriodNs = lowPeriodNs;
+    }
+
+    lowPeriod = (lowPeriodNs + (ppHighNs >> 1)) / ppHighNs;
+
+    i3c->cont_ctrl0 &= ~(MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD | MXC_F_I3C_REVA_CONT_CTRL0_OD_HP);
+    i3c->cont_ctrl0 |= (lowPeriod - 1) << MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD_POS;
+    if (highPeriodNs == ppHighNs) {
+        i3c->cont_ctrl0 |= 1 << MXC_F_I3C_REVA_CONT_CTRL0_OD_HP_POS;
+    }
+
+    return (int)MXC_I3C_RevA_GetODFrequency(i3c);
+}
+
 unsigned int MXC_I3C_RevA_GetODFrequency(mxc_i3c_reva_regs_t *i3c)
 {
     uint8_t highPeriod, lowPeriod, odBaud, ppBaud;
@@ -399,6 +478,72 @@ int MXC_I3C_RevA_SetI2CFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequenc
 
     i3c->cont_ctrl0 &= ~MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD;
     i3c->cont_ctrl0 |= highPeriod << MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD_POS;
+
+    return (int)MXC_I3C_RevA_GetI2CFrequency(i3c);
+}
+
+int MXC_I3C_RevA_SetI2CPeriod(mxc_i3c_reva_regs_t *i3c, unsigned int highPeriodNs,
+                              unsigned int lowPeriodNs)
+{
+    uint8_t i2cHighBaud, ppBaud, odBaud, i2cLowBaud;
+    uint32_t odLowNs, i2cHighNsMax;
+    uint32_t i3cTickNs = 1000000000 / PeripheralClock;
+
+    if (highPeriodNs > lowPeriodNs) {
+        return E_BAD_PARAM;
+    }
+
+    ppBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD) >>
+             MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD_POS;
+    ppBaud = ppBaud + 1;
+
+    odBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD) >>
+             MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD_POS;
+    odBaud = odBaud + 1;
+
+    odLowNs = odBaud * ppBaud * i3cTickNs;
+
+    if (highPeriodNs < odLowNs) {
+        highPeriodNs = odLowNs;
+    }
+
+    /* High period must always be less than or equal to low period */
+    if (lowPeriodNs < highPeriodNs) {
+        lowPeriodNs = highPeriodNs;
+    }
+
+    /* Calculate the maximum I2C high period */
+    i2cHighNsMax = (MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD >> MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD_POS);
+    i2cHighNsMax = (i2cHighNsMax >> 1) + 1;
+    i2cHighNsMax = i2cHighNsMax * odLowNs;
+    /* High period cannot exceed maximum possible I2C high period
+     * and low period cannot exceed high period + one OD low period
+     */
+    if ((highPeriodNs > i2cHighNsMax)) {
+        highPeriodNs = i2cHighNsMax;
+    }
+
+    if (lowPeriodNs > (highPeriodNs + odLowNs)) {
+        lowPeriodNs = highPeriodNs + odLowNs;
+        /* Make sure we do not end up with maximum I2C_BAUD setting (0xF),
+         * it does not produce a proper signal.
+         */
+        if (lowPeriodNs == (i2cHighNsMax + odLowNs)) {
+            lowPeriodNs = i2cHighNsMax;
+        }
+    }
+
+    i2cHighBaud = (highPeriodNs + (odLowNs >> 1)) / odLowNs;
+    i2cLowBaud = (lowPeriodNs + (odLowNs >> 1)) / odLowNs;
+
+    if (i2cHighBaud == i2cLowBaud) {
+        i2cHighBaud = (i2cHighBaud - 1) << 1;
+    } else {
+        i2cHighBaud = ((i2cHighBaud - 1) << 1) + 1;
+    }
+
+    i3c->cont_ctrl0 &= ~MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD;
+    i3c->cont_ctrl0 |= i2cHighBaud << MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD_POS;
 
     return (int)MXC_I3C_RevA_GetI2CFrequency(i3c);
 }

@@ -148,10 +148,16 @@ int MXC_I3C_RevA_Init(mxc_i3c_reva_regs_t *i3c, bool targetMode, uint8_t staticA
 int MXC_I3C_RevA_Recover(mxc_i3c_reva_regs_t *i3c);
 int MXC_I3C_RevA_Shutdown(mxc_i3c_reva_regs_t *i3c);
 int MXC_I3C_RevA_SetPPFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency);
+int MXC_I3C_RevA_SetPPPeriod(mxc_i3c_reva_regs_t *i3c, unsigned int highPeriodNs,
+                             unsigned int lowPeriodNs);
 unsigned int MXC_I3C_RevA_GetPPFrequency(mxc_i3c_reva_regs_t *i3c);
 int MXC_I3C_RevA_SetODFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency, bool highPP);
+int MXC_I3C_RevA_SetODPeriod(mxc_i3c_reva_regs_t *i3c, unsigned int highPeriodNs,
+                             unsigned int lowPeriodNs);
 unsigned int MXC_I3C_RevA_GetODFrequency(mxc_i3c_reva_regs_t *i3c);
 int MXC_I3C_RevA_SetI2CFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency);
+int MXC_I3C_RevA_SetI2CPeriod(mxc_i3c_reva_regs_t *i3c, unsigned int highPeriodNs,
+                              unsigned int lowPeriodNs);
 unsigned int MXC_I3C_RevA_GetI2CFrequency(mxc_i3c_reva_regs_t *i3c);
 uint8_t MXC_I3C_RevA_GetDynamicAddress(mxc_i3c_reva_regs_t *i3c);
 int MXC_I3C_RevA_SetSkew(mxc_i3c_reva_regs_t *i3c, uint8_t skew);
