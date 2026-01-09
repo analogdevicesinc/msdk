@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,11 +122,6 @@ int MXC_I3C_RevA_Init(mxc_i3c_reva_regs_t *i3c, bool targetMode, uint8_t staticA
             MXC_I3C_RevA_SetRXTXThreshold(i3c, MXC_I3C_REVA_RX_TH_NOT_EMPTY,
                                           MXC_I3C_REVA_TX_TH_ALMOST_FULL);
         }
-
-        /* 3. Optionally write IBIRULES reg to optimize response to incoming IBIs */
-
-        /* 4. Enable controller mode */
-        SET_FIELD(cont_ctrl0, CONT_CTRL0_EN, MXC_V_I3C_REVA_CONT_CTRL0_EN_ON);
     } else {
         /* Target mode initialization */
         /* 1. After reset, write setup registers needed for optional features */
@@ -158,9 +153,6 @@ int MXC_I3C_RevA_Init(mxc_i3c_reva_regs_t *i3c, bool targetMode, uint8_t staticA
 
         /* Enable CCC handling */
         MXC_I3C_RevA_Target_EnableInt(i3c, MXC_F_I3C_REVA_TARG_INTEN_CCC);
-
-        /* 2. Write 1 to CONFIG.TGTENA */
-        SET_FIELD(targ_ctrl0, TARG_CTRL0_EN, 1);
 
         /* Clear STOP bit */
         SET_FIELD(targ_status, TARG_STATUS_STOP, 0);
@@ -472,6 +464,22 @@ int MXC_I3C_RevA_SetHighKeeperMode(mxc_i3c_reva_regs_t *i3c, mxc_i3c_reva_high_k
     i3c->cont_ctrl0 |= hkeep;
 
     return E_SUCCESS;
+}
+
+int MXC_I3C_RevA_Controller_Enable(mxc_i3c_reva_regs_t *i3c)
+{
+    if (GET_FIELD(targ_ctrl0, TARG_CTRL0_EN)) {
+        return E_BAD_STATE;
+    }
+
+    SET_FIELD(cont_ctrl0, CONT_CTRL0_EN, MXC_V_I3C_REVA_CONT_CTRL0_EN_ON);
+
+    return E_NO_ERROR;
+}
+
+void MXC_I3C_RevA_Controller_Disable(mxc_i3c_reva_regs_t *i3c)
+{
+    SET_FIELD(cont_ctrl0, CONT_CTRL0_EN, MXC_V_I3C_REVA_CONT_CTRL0_EN_OFF);
 }
 
 /**
@@ -878,6 +886,22 @@ int MXC_I3C_RevA_Controller_GetError(mxc_i3c_reva_regs_t *i3c)
 void MXC_I3C_RevA_Controller_ClearError(mxc_i3c_reva_regs_t *i3c)
 {
     i3c->cont_errwarn = MXC_F_I3C_REVA_CONT_ERRWARN_MASK;
+}
+
+int MXC_I3C_RevA_Target_Enable(mxc_i3c_reva_regs_t *i3c)
+{
+    if (GET_FIELD(cont_ctrl0, CONT_CTRL0_EN)) {
+        return E_BAD_STATE;
+    }
+
+    SET_FIELD(targ_ctrl0, TARG_CTRL0_EN, MXC_F_I3C_REVA_TARG_CTRL0_EN);
+
+    return E_NO_ERROR;
+}
+
+void MXC_I3C_RevA_Target_Disable(mxc_i3c_reva_regs_t *i3c)
+{
+    SET_FIELD(targ_ctrl0, TARG_CTRL0_EN, 0);
 }
 
 int MXC_I3C_RevA_SetRXTXThreshold(mxc_i3c_reva_regs_t *i3c, mxc_i3c_reva_rx_threshold_t rxth,

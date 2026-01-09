@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -353,6 +353,22 @@ void MXC_I3C_EmitI2CStop(mxc_i3c_regs_t *i3c);
 void MXC_I3C_EmitStop(mxc_i3c_regs_t *i3c);
 
 /**
+ * @brief   Enable I3C controller mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ *
+ * @return  E_NO_ERROR if successful, E_BAD_STATE if target mode is enabled.
+ */
+int MXC_I3C_Controller_Enable(mxc_i3c_regs_t *i3c);
+
+/**
+ * @brief   Disable I3C controller mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ */
+void MXC_I3C_Controller_Disable(mxc_i3c_regs_t *i3c);
+
+/**
  * @brief   Send or broadcast a Common Command Code (CCC).
  *
  * @param   i3c         Pointer to I3C registers.
@@ -600,6 +616,22 @@ unsigned int MXC_I3C_Controller_GetFlags(mxc_i3c_regs_t *i3c);
  * @param   mask        Interrupt mask to clear.
  */
 void MXC_I3C_Controller_ClearFlags(mxc_i3c_regs_t *i3c, uint32_t mask);
+
+/**
+ * @brief   Enable I3C target mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ *
+ * @return  E_NO_ERROR if successful, E_BAD_STATE if controller mode is enabled.
+ */
+int MXC_I3C_Target_Enable(mxc_i3c_regs_t *i3c);
+
+/**
+ * @brief   Disable I3C target mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ */
+void MXC_I3C_Target_Disable(mxc_i3c_regs_t *i3c);
 
 /**
  * @brief   Enable target interrupts.

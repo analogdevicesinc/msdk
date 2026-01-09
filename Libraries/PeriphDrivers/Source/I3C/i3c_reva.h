@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -179,8 +179,12 @@ int MXC_I3C_RevA_Wakeup(mxc_i3c_reva_regs_t *i3c);
 /* ************************************************************************* */
 /* Low-level functions                                                       */
 /* ************************************************************************* */
+int MXC_I3C_RevA_Controller_Enable(mxc_i3c_reva_regs_t *i3c);
+void MXC_I3C_RevA_Controller_Disable(mxc_i3c_reva_regs_t *i3c);
 int MXC_I3C_RevA_Controller_GetError(mxc_i3c_reva_regs_t *i3c);
 void MXC_I3C_RevA_Controller_ClearError(mxc_i3c_reva_regs_t *i3c);
+int MXC_I3C_RevA_Target_Enable(mxc_i3c_reva_regs_t *i3c);
+void MXC_I3C_RevA_Target_Disable(mxc_i3c_reva_regs_t *i3c);
 
 int MXC_I3C_RevA_SetRXTXThreshold(mxc_i3c_reva_regs_t *i3c, mxc_i3c_reva_rx_threshold_t rxth,
                                   mxc_i3c_reva_tx_threshold_t txth);
