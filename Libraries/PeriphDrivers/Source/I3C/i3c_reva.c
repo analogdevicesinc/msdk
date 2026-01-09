@@ -288,12 +288,14 @@ int MXC_I3C_RevA_SetPPFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency
     highPeriod = ticks / 2;
     lowPeriod = ticks / 2;
 
-    while (highPeriod > (MXC_V_I3C_REVA_CONT_CTRL0_PP_BAUD_16_FCLK + 1)) {
+    while (highPeriod > (MXC_V_I3C_REVA_CONT_CTRL0_PP_BAUD_1_FCLK + 1) &&
+           (lowPeriod - highPeriod) < (MXC_V_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD_15_FCLK - 1)) {
         highPeriod--;
         lowPeriod++;
     }
 
-    if (ticks % 2) {
+    if ((ticks % 2) &&
+        (lowPeriod - highPeriod) < (MXC_V_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD_15_FCLK)) {
         lowPeriod++;
     }
 
