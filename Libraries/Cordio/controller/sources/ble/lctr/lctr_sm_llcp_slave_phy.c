@@ -835,7 +835,17 @@ bool_t lctrSlvLlcpExecutePhyUpdateSm(lctrConnCtx_t *pCtx, uint8_t event)
         pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
         pCtx->llcpActiveProc = LCTR_PROC_PHY_UPD;
         pCtx->llcpInstantComp = FALSE;
+
+        /* Now that state variables are set, send deferred LCTR_CONN_ARQ_Q_FLUSHED. */
+        if (pCtx->arqQFlushedPending)
+        {
+          // LL_TRACE_INFO1("sending deferred LCTR_CONN_ARQ_Q_FLUSHED, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+          lctrSendConnMsg(pCtx, LCTR_CONN_ARQ_Q_FLUSHED);
+        }
       }
+
+      /* for sure no longer pending */
+      pCtx->arqQFlushedPending = FALSE;
       break;
 
     case LCTR_LLCP_STATE_BUSY:
