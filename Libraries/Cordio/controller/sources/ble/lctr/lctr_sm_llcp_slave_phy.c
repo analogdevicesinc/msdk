@@ -828,6 +828,8 @@ bool_t lctrSlvLlcpExecutePhyUpdateSm(lctrConnCtx_t *pCtx, uint8_t event)
     case LCTR_LLCP_STATE_IDLE:
       LL_TRACE_INFO3("lctrSlvLlcpExecutePhyUpdateSm: handle=%u, llcpState=IDLE, phyUpdState=%u, event=%u", LCTR_GET_CONN_HANDLE(pCtx), pCtx->phyUpdState, event);
 
+      /* for sure not pending yet */
+      pCtx->arqQFlushedPending = FALSE;
       lctrExecAction(pCtx, event);
 
       if (pCtx->phyUpdState != LCTR_PU_STATE_IDLE)
