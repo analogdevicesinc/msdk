@@ -2,7 +2,7 @@
 
 This example determines the Coremark rating for the MAX32xxx and MAX78xxx series microcontrollers.
 
-The Coremark benchmark is an industry standard benchmark which gives an MCU core a rating based on how fast it can execute multiple iterations of the standard Coremark test (which includes executing list processing, matrix manipulation and state machine algorithms, and computing CRC values). The final score is the number of Coremark test iterations/sec. For example, in the sample print out below, the micro received a score of 251.685201 iterations/sec.
+The Coremark benchmark is an industry standard benchmark that gives an MCU core a rating based on how fast it can execute multiple iterations of the standard Coremark test (which includes executing list processing, matrix manipulation and state machine algorithms, and computing CRC values). The final score is the number of Coremark test iterations/sec. For example, in the sample printout below, the micro received a score of 251.685201 iterations/sec.
 
 For more information, visit the [CoreMark webpage](https://www.eembc.org/coremark/) and look through the [README](../../../Libraries/Coremark/README.md).
 
@@ -14,13 +14,13 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-To comply with the CoreMark rules, the only source files which are included in this example directory are the core_portme.c/.h files, the rest (including main) are located in the [Coremark](../../../Libraries/Coremark/) library.
+To comply with the CoreMark rules, the only source files that  are included in this example directory are the core_portme.c/.h files; the rest (including main) are located in the [Coremark](../../../Libraries/Coremark/) library.
 
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select RX0 and TX0 on Headers JP1 and JP3 (UART 0).
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Select RX0 and TX0 on Headers JP3 and JP4 (UART 0).
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
 
@@ -31,7 +31,7 @@ The Console UART of the device will output these messages:
 ```
 SystemCoreClock 96000000
 I-Cache enabled
-2K performance run parameters for coremark.
+2K performance run parameters for CoreMark.
 CoreMark Size    : 666
 Total ticks      : 11919652
 Total time (secs): 11.919652

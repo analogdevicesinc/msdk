@@ -1,8 +1,8 @@
 ## Description
 
-A basic example demonstrating how to switch the system clock to use the external clock input.  The example initializes off of the default system clock, then switches to the external clock input before running the standard Hello World example to a count of 10.  Once the Hello World example completes, the example switches back to the IPO and shuts down.
+This is a basic example that demonstrates how to switch the system clock to use the external clock input. The example initializes off of the default system clock, then switches to the external clock input before running the standard Hello World example for a count of 10.  Once the Hello World example is completed, the example switches back to the IPO and shuts down.
 
-Operation requires a clean external clock signal (square wave, 50% duty cycle) from a waveform generator.  Check your microcontroller's datasheet/EVKIT schematic to ensure the correct voltage levels.  When testing over the P0.12 GPIO header it's recommended to keep the clock frequency around the 2Mhz range to avoid signal degradation.
+The operation requires a clean external clock signal (square wave, 50% duty cycle) from a waveform generator. Check your microcontroller's datasheet/EVKIT schematic to ensure the correct voltage levels. When testing over the P0.12 GPIO header, it's recommended to keep the clock frequency around the 2MHz range to avoid signal degradation.
 
 ## Software
 
@@ -12,16 +12,16 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* The system header file for the target microcontroller expects `EXTCLK_FREQ` frequency to match the provided clock input.  This is defined for the build in [project.mk](project.mk).  The default value is 2Mhz.
+* The system header file for the target microcontroller expects `EXTCLK_FREQ` frequency to match the provided clock input. This is defined for the build in [project.mk](project.mk).  The default value is 2MHz.
 
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select RX0 and TX0 on Headers JP1 and JP3 (UART 0).
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Select RX0 and TX0 on Headers JP3 and JP4 (UART 0).
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
--   Provide an external clock signal (square wave 50% duty cycle) on P0.12 with the frequency defined by `EXTCLK_FREQ` in [project.mk](project.mk).  At higher clock frequencies be careful to preserve the signal integrity when routing the signal to P0.12.  Otherwise, operation could become unreliable.
+-   Provide an external clock signal (square wave 50% duty cycle) on P0.12 with the frequency defined by `EXTCLK_FREQ` in [project.mk](project.mk).  At higher clock frequencies, be careful to preserve the signal integrity when routing the signal to P0.12.  Otherwise, the operation could become unreliable.
 
 ## Expected Output
 
