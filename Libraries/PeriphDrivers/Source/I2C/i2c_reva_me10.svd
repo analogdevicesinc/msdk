@@ -168,7 +168,7 @@
           </field>
           <field>
             <name>SDA</name>
-            <description>SDA status. THis bit reflects the logic gate of SDA signal.</description>
+            <description>SDA status. This bit reflects the logic gate of SDA signal.</description>
             <bitRange>[9:9]</bitRange>
             <access>read-only</access>
             <enumeratedValues>
