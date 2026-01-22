@@ -406,7 +406,7 @@ int MXC_UART_RevA_SetClockSource(mxc_uart_reva_regs_t *uart, int usePCLK)
         }
     } else {
         MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVA_CTRL_CLKSEL, 1 << MXC_F_UART_REVA_CTRL_CLKSEL_POS);
-#if (TARGET_NUM  == 32660)
+#if (TARGET_NUM == 32660)
         return E_NOT_SUPPORTED;
 #else
         if (baudRate > IBRO_FREQ / 8) {
