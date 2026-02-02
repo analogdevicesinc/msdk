@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,9 +125,6 @@ typedef enum {
 typedef struct {
     bool target_mode; ///< If the driver should be initialized in target mode.
     uint8_t static_addr; ///< Static address to use if target mode is used.
-    uint32_t pp_hz; ///< SCL frequency to be used in push-pull operation.
-    uint32_t od_hz; ///< SCL frequency to be used in open-drain operation.
-    uint32_t i2c_hz; ///< SCL frequency to be used in I2C operation.
 } mxc_i3c_config_t;
 
 /**
@@ -231,7 +228,30 @@ int MXC_I3C_Shutdown(mxc_i3c_regs_t *i3c);
 int MXC_I3C_SetPPFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency);
 
 /**
- * @brief   Get the frequency of the I3C push-pull mode. Should only be used in 
+ * @brief   Sets the SCL high and low periods for I3C push-pull operation.
+ *
+ * Allows fine-grained control over the push-pull SCL period in controller mode.
+ *
+ * @note
+ * - The minimum SCL high or low periods can be minimum Tclk/2, where Tclk is the
+ *   I3C peripheral clock period. The function will fail if either highPeriodNs or
+ *   lowPeriodNs is set below this limit.
+ * - The low period must be greater than or equal to the high period. The function
+ *   will adjust lowPeriodNs to match highPeriodNs if this condition is not met.
+ *
+ * @see     MXC_I3C_SetPPFrequency()
+ *
+ * @param   i3c           Pointer to I3C registers (selects the I3C block used).
+ * @param   highPeriodNs  Desired SCL high period in nanoseconds.
+ * @param   lowPeriodNs   Desired SCL low period in nanoseconds.
+ *
+ * @return  Negative if error, otherwise actual speed set. See \ref
+ *          MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_I3C_SetPPPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs);
+
+/**
+ * @brief   Get the frequency of the I3C push-pull mode. Should only be used in
  * controller mode.
  *
  * @param   i3c         Pointer to I3C registers.
@@ -257,7 +277,38 @@ unsigned int MXC_I3C_GetPPFrequency(mxc_i3c_regs_t *i3c);
 int MXC_I3C_SetODFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency, bool highPP);
 
 /**
- * @brief   Get the frequency of the I3C open-drain mode. Should only be used in 
+ * @brief   Sets the SCL high and low periods for I3C open-drain operation.
+ *
+ * Allows fine-grained control over the open-drain SCL period in controller mode.
+ * Open-drain SCL period is calculated in units of the push-pull SCL high period.
+ *
+ * @note
+ * - The low period must be integer multiplies of the push-pull high period.
+ *   The function will adjust lowPeriodNs to match the nearest multiply of
+ *   push-pull high period if this condition is not met.
+ * - If low period exceeds the maximum possible low period, it will be adjusted
+ *   down to the maximum possible low period.
+ * - The high period must be either:
+ *      - One push-pull high period, or
+ *      - Equal to the open-drain low period.
+ *   The function will fail if neither condition is satisfied.
+ * - Unlike MXC_I3C_SetODFrequency(), this function does not limit the minimum
+ *   open-drain low period to 200ns. It is up to the caller to ensure that the
+ *   minimum low period requirement is met.
+ *
+ * @see     MXC_I3C_SetODFrequency()
+ *
+ * @param   i3c           Pointer to I3C registers (selects the I3C block used).
+ * @param   highPeriodNs  Desired SCL high period in nanoseconds.
+ * @param   lowPeriodNs   Desired SCL low period in nanoseconds.
+ *
+ * @return  Negative if error, otherwise actual speed set. See \ref
+ *          MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_I3C_SetODPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs);
+
+/**
+ * @brief   Get the frequency of the I3C open-drain mode. Should only be used in
  * controller mode.
  *
  * @param   i3c         Pointer to I3C registers.
@@ -278,7 +329,37 @@ unsigned int MXC_I3C_GetODFrequency(mxc_i3c_regs_t *i3c);
 int MXC_I3C_SetI2CFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency);
 
 /**
- * @brief   Get the frequency of the I3C in I2C mode. Should only be used in controller 
+ * @brief   Sets the SCL high and low periods for I2C mode. Should only be used in
+ * controller mode.
+ *
+ * Allows fine-grained control over the I2C SCL period in controller mode. I2C SCL
+ * periods are calculated in units of the open-drain SCL low period.
+ *
+ * @notes
+ * - The high period cannot be greater than the low period. The function will fail
+ *   if this condition is not met.
+ * - If the high period is less than one open-drain low period, it will be adjusted
+ *   up to one open-drain low period.
+ * - If the high period exceeds the maximum possible high period, it will be adjusted
+ *   down to the maximum possible high period.
+ * - The maximum low period is high period plus one open-drain low period. If the low
+ *   period exceeds this value, it will be adjusted down to this value.
+ * - Maximum possible I2C period (I2C_BAUD field is 0xF) is not supported. The function
+ *   will adjust the low period so that I2C_BAUD is at most 0xE.
+ *
+ * @see     MXC_I3C_SetI2CFrequency()
+ *
+ * @param   i3c           Pointer to I3C registers (selects the I3C block used).
+ * @param   highPeriodNs  SCL high period in nanoseconds.
+ * @param   lowPeriodNs   SCL low period in nanoseconds.
+ *
+ * @return  Negative if error, otherwise actual speed set. See \ref
+ *          MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_I3C_SetI2CPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs);
+
+/**
+ * @brief   Get the frequency of the I3C in I2C mode. Should only be used in controller
  * mode.
  *
  * @param   i3c         Pointer to I3C registers.
@@ -302,7 +383,7 @@ unsigned int MXC_I3C_GetI2CFrequency(mxc_i3c_regs_t *i3c);
 int MXC_I3C_SetSkew(mxc_i3c_regs_t *i3c, uint8_t skew);
 
 /**
- * @brief   Sets the high-keeper implementation for the device. Should only be used 
+ * @brief   Sets the high-keeper implementation for the device. Should only be used
  * in controller mode.
  *
  * See \ref mxc_i3c_high_keeper_t.
@@ -351,6 +432,22 @@ void MXC_I3C_EmitI2CStop(mxc_i3c_regs_t *i3c);
  * @param   i3c         Pointer to I3C registers.
  */
 void MXC_I3C_EmitStop(mxc_i3c_regs_t *i3c);
+
+/**
+ * @brief   Enable I3C controller mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ *
+ * @return  E_NO_ERROR if successful, E_BAD_STATE if target mode is enabled.
+ */
+int MXC_I3C_Controller_Enable(mxc_i3c_regs_t *i3c);
+
+/**
+ * @brief   Disable I3C controller mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ */
+void MXC_I3C_Controller_Disable(mxc_i3c_regs_t *i3c);
 
 /**
  * @brief   Send or broadcast a Common Command Code (CCC).
@@ -600,6 +697,22 @@ unsigned int MXC_I3C_Controller_GetFlags(mxc_i3c_regs_t *i3c);
  * @param   mask        Interrupt mask to clear.
  */
 void MXC_I3C_Controller_ClearFlags(mxc_i3c_regs_t *i3c, uint32_t mask);
+
+/**
+ * @brief   Enable I3C target mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ *
+ * @return  E_NO_ERROR if successful, E_BAD_STATE if controller mode is enabled.
+ */
+int MXC_I3C_Target_Enable(mxc_i3c_regs_t *i3c);
+
+/**
+ * @brief   Disable I3C target mode.
+ *
+ * @param   i3c         Pointer to I3C registers.
+ */
+void MXC_I3C_Target_Disable(mxc_i3c_regs_t *i3c);
 
 /**
  * @brief   Enable target interrupts.
