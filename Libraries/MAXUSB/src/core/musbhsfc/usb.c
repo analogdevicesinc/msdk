@@ -28,7 +28,7 @@
 #include "usbhs_regs.h"
 #include "usb.h"
 
-#ifdef MAX32690
+#if defined(MAX32690) || defined(MAX78002)
 #include "fcr_regs.h"
 static bool g_is_clock_locked = false;
 #endif
@@ -178,7 +178,7 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     return 0;
 }
 
-#ifdef MAX32690
+#if defined(MAX32690) || defined(MAX78002)
 
 int MXC_USB_LockClockSource(bool lock)
 {
