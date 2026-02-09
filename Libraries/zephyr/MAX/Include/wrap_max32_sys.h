@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,8 @@ void max32xx_system_init(void);
 #define ADI_MAX32_CLK_ISO MXC_SYS_CLOCK_CRYPTO
 #define ADI_MAX32_CLK_INRO MXC_SYS_CLOCK_NANORING
 #define ADI_MAX32_CLK_ERTCO MXC_SYS_CLOCK_X32K
+
+#define MXC_SYS_RESET0_USB MXC_SYS_RESET_USB
 #endif
 
 #define z_sysclk_prescaler(v) MXC_SYS_SYSTEM_DIV_##v
