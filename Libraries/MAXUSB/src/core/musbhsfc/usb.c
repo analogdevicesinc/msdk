@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 #include "usbhs_regs.h"
 #include "usb.h"
 
-#ifdef MAX32690
+#if defined(MAX32690) || defined(MAX78002)
 #include "fcr_regs.h"
 static bool g_is_clock_locked = false;
 #endif
@@ -178,7 +178,7 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     return 0;
 }
 
-#ifdef MAX32690
+#if defined(MAX32690) || defined(MAX78002)
 
 int MXC_USB_LockClockSource(bool lock)
 {
