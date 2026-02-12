@@ -19,10 +19,18 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output whatever the expected output for the `RISCV_APP`-selected project is.  By default, that's the `Hello_World` output:
 
 ```
+ARM: RV_ARM Loader
 Hello World!
 count : 0
 count : 1
 count : 2
 count : 3
+count : 4
+count : 5
+count : 6
+count : 7
+count : 8
+count : 9
+count : 10
 ```
 
