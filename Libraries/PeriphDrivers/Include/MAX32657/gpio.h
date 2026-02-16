@@ -200,6 +200,9 @@ typedef enum {
 
 /**
  * @brief      Initialize GPIO.
+ * @note       By default this function enables the GPIO clocks for the specified ports.
+ *             If you wish to manage the clock settings externally, define the flag
+ *             MSDK_NO_GPIO_CLK_INIT.
  * @param      portMask     Mask for the port to be initialized
  * @return     #E_NO_ERROR if everything is successful.
  */
@@ -207,7 +210,10 @@ int MXC_GPIO_Init(uint32_t portMask);
 
 /**
  * @brief      Shutdown GPIO.
- * @param      portMask     Mask for the port to be initialized
+ * @note       By default this function disables the GPIO clocks for the specified ports.
+ *             If you wish to manage the clock settings externally, define the flag
+ *             MSDK_NO_GPIO_CLK_INIT.
+ * @param      portMask     Mask for the port to shutdown
  * @return     #E_NO_ERROR if everything is successful.
  */
 int MXC_GPIO_Shutdown(uint32_t portMask);

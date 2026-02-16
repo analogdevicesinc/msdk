@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -202,6 +202,9 @@ typedef enum {
 
 /**
  * @brief      Initialize GPIO.
+ * @note       By default this function enables the GPIO clocks for the specified ports.
+ *             If you wish to manage the clock settings externally, define the flag
+ *             MSDK_NO_GPIO_CLK_INIT.
  * @param      portMask     Mask for the port to be initialized
  * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
  */
@@ -209,6 +212,9 @@ int MXC_GPIO_Init(uint32_t portMask);
 
 /**
  * @brief      Shutdown GPIO.
+ * @note       By default this function disables the GPIO clocks for the specified ports.
+ *             If you wish to manage the clock settings externally, define the flag
+ *             MSDK_NO_GPIO_CLK_INIT.
  * @param      portMask     Mask for the port to shutdown
  * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
  */
