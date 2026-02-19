@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,14 +44,35 @@ typedef struct {
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 
+/* Prescaler lookup table range for MAX32650/665/666
+ * These devices require special register mapping for prescaler values > 128
+ */
+#define TMR_PRES_MIN_LOG2 8 /* LOG2(256) - minimum extended prescaler */
+#define TMR_PRES_MAX_LOG2 12 /* LOG2(4096) - maximum extended prescaler */
+
 static inline int Wrap_MXC_TMR_Init(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
+    mxc_tmr_pres_t tmr_prescaler_lut[] = { TMR_PRES_256, TMR_PRES_512, TMR_PRES_1024, TMR_PRES_2048,
+                                           TMR_PRES_4096 };
     mxc_tmr_cfg_t mxc_cfg;
+    uint32_t pres_log2;
 
-    mxc_cfg.pres = cfg->pres;
     mxc_cfg.mode = cfg->mode;
     mxc_cfg.cmp_cnt = cfg->cmp_cnt;
     mxc_cfg.pol = cfg->pol;
+
+    if (cfg->pres <= TMR_PRES_128) {
+        mxc_cfg.pres = cfg->pres;
+    } else {
+        /* cfg->pres is equal to (LOG2(prescaler) * TMR_PRES_2) */
+        pres_log2 = cfg->pres / TMR_PRES_2;
+
+        /* Limit prescaler to valid range (TMR_PRES_256 to TMR_PRES_4096) */
+        if (pres_log2 < TMR_PRES_MIN_LOG2 || pres_log2 > TMR_PRES_MAX_LOG2) {
+            return -1;
+        }
+        mxc_cfg.pres = tmr_prescaler_lut[pres_log2 - TMR_PRES_MIN_LOG2];
+    }
 
     MXC_TMR_Init(tmr, &mxc_cfg);
     return 0;
@@ -60,7 +81,7 @@ static inline int Wrap_MXC_TMR_Init(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg
 static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
 {
     if (z_clock == 0) {
-        /* Only peripheral clock is supported, just retunr 0 */
+        /* Only peripheral clock is supported, just return 0 */
         return 0;
     } else {
         return -1; /* Not supported */
