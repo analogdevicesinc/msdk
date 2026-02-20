@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,32 +29,11 @@
 /* **** Functions **** */
 int MXC_I3C_Init(mxc_i3c_regs_t *i3c, mxc_i3c_config_t *config)
 {
-    int ret;
-
 #ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I3C);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I3C);
     MXC_GPIO_Config(&gpio_cfg_i3c);
 #endif
-
-    if (!config->target_mode) {
-        /* Controller mode initialization */
-        /* 1. SCL frequency and duty cycle */
-        ret = MXC_I3C_SetPPFrequency(i3c, config->pp_hz);
-        if (ret < 0) {
-            return ret;
-        }
-
-        ret = MXC_I3C_SetODFrequency(i3c, config->od_hz, false);
-        if (ret < 0) {
-            return ret;
-        }
-
-        ret = MXC_I3C_SetI2CFrequency(i3c, config->i2c_hz);
-        if (ret < 0) {
-            return ret;
-        }
-    }
 
     return MXC_I3C_RevA_Init((mxc_i3c_reva_regs_t *)i3c, config->target_mode, config->static_addr);
 }
@@ -86,6 +65,11 @@ int MXC_I3C_SetPPFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency)
     return MXC_I3C_RevA_SetPPFrequency((mxc_i3c_reva_regs_t *)i3c, frequency);
 }
 
+int MXC_I3C_SetPPPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs)
+{
+    return MXC_I3C_RevA_SetPPPeriod((mxc_i3c_reva_regs_t *)i3c, highPeriodNs, lowPeriodNs);
+}
+
 unsigned int MXC_I3C_GetPPFrequency(mxc_i3c_regs_t *i3c)
 {
     return MXC_I3C_RevA_GetPPFrequency((mxc_i3c_reva_regs_t *)i3c);
@@ -96,6 +80,11 @@ int MXC_I3C_SetODFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency, bool hig
     return MXC_I3C_RevA_SetODFrequency((mxc_i3c_reva_regs_t *)i3c, frequency, highPP);
 }
 
+int MXC_I3C_SetODPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs)
+{
+    return MXC_I3C_RevA_SetODPeriod((mxc_i3c_reva_regs_t *)i3c, highPeriodNs, lowPeriodNs);
+}
+
 unsigned int MXC_I3C_GetODFrequency(mxc_i3c_regs_t *i3c)
 {
     return MXC_I3C_RevA_GetODFrequency((mxc_i3c_reva_regs_t *)i3c);
@@ -104,6 +93,11 @@ unsigned int MXC_I3C_GetODFrequency(mxc_i3c_regs_t *i3c)
 int MXC_I3C_SetI2CFrequency(mxc_i3c_regs_t *i3c, unsigned int frequency)
 {
     return MXC_I3C_RevA_SetI2CFrequency((mxc_i3c_reva_regs_t *)i3c, frequency);
+}
+
+int MXC_I3C_SetI2CPeriod(mxc_i3c_regs_t *i3c, unsigned int highPeriodNs, unsigned int lowPeriodNs)
+{
+    return MXC_I3C_RevA_SetI2CPeriod((mxc_i3c_reva_regs_t *)i3c, highPeriodNs, lowPeriodNs);
 }
 
 unsigned int MXC_I3C_GetI2CFrequency(mxc_i3c_regs_t *i3c)
@@ -140,6 +134,16 @@ void MXC_I3C_EmitStop(mxc_i3c_regs_t *i3c)
 void MXC_I3C_EmitI2CStop(mxc_i3c_regs_t *i3c)
 {
     return MXC_I3C_RevA_EmitI2CStop((mxc_i3c_reva_regs_t *)i3c);
+}
+
+int MXC_I3C_Controller_Enable(mxc_i3c_regs_t *i3c)
+{
+    return MXC_I3C_RevA_Controller_Enable((mxc_i3c_reva_regs_t *)i3c);
+}
+
+void MXC_I3C_Controller_Disable(mxc_i3c_regs_t *i3c)
+{
+    MXC_I3C_RevA_Controller_Disable((mxc_i3c_reva_regs_t *)i3c);
 }
 
 int MXC_I3C_Controller_CCC(mxc_i3c_regs_t *i3c, const mxc_i3c_ccc_req_t *req)
@@ -258,6 +262,16 @@ unsigned int MXC_I3C_Controller_GetFlags(mxc_i3c_regs_t *i3c)
 void MXC_I3C_Controller_ClearFlags(mxc_i3c_regs_t *i3c, uint32_t mask)
 {
     MXC_I3C_RevA_Controller_ClearFlags((mxc_i3c_reva_regs_t *)i3c, mask);
+}
+
+int MXC_I3C_Target_Enable(mxc_i3c_regs_t *i3c)
+{
+    return MXC_I3C_RevA_Target_Enable((mxc_i3c_reva_regs_t *)i3c);
+}
+
+void MXC_I3C_Target_Disable(mxc_i3c_regs_t *i3c)
+{
+    MXC_I3C_RevA_Target_Disable((mxc_i3c_reva_regs_t *)i3c);
 }
 
 void MXC_I3C_Target_EnableInt(mxc_i3c_regs_t *i3c, uint32_t mask)
