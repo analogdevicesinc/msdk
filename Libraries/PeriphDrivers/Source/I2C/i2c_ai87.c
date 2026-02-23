@@ -45,6 +45,7 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
         return E_NULL_PTR;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_I2C_Shutdown(i2c); // Clear everything out
 
     if (i2c == MXC_I2C0) {
@@ -59,6 +60,7 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
     } else {
         return E_NO_DEVICE;
     }
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_I2C_RevA_Init((mxc_i2c_reva_regs_t *)i2c, masterMode, slaveAddr);
 }
