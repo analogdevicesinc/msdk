@@ -28,6 +28,7 @@
 #define PAL_BB_H
 
 #include "pal_types.h"
+#include "pal_led.h"
 #include <stdbool.h>
 
 #ifdef __cplusplus
@@ -155,6 +156,7 @@ typedef enum
 
 /*! \brief  IRQ callback datatypes. */
 typedef void (*bbDrvIrqCback_t)(void);
+typedef void (*bbEventCback_t)(PalLedId_t eventId);
 
 /*! \brief  BB configuration. */
 typedef struct {
@@ -357,6 +359,17 @@ static inline bool PalBbIsValidPrbsType(uint8_t maybeType)
         return false;
     }
 }
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Register and Event Callback
+ *  \details    Baseband events such as transmitter/receiver on/off. Refer to pal_led.h for event codes.
+ *
+ *  \param      eventOn Callback to indicate the start of an event
+ *  \param      eventOff Callback to indicate the end of an event
+ */
+/*************************************************************************************************/
+void PalBbRegiserEventCback(bbEventCback_t eventOn, bbEventCback_t eventOff);
 
 /*! \} */ /* PAL_BB */
 

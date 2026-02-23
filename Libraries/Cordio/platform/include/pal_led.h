@@ -37,7 +37,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Reserved LED IDs. */
-enum PalLedReserved_id
+typedef enum
 {
   /* System signals. */
   PAL_LED_ID_CPU_ACTIVE     = 0x30,  /*!< CPU active LED ID. */
@@ -51,7 +51,7 @@ enum PalLedReserved_id
   PAL_LED_ID_BB_RX_CRC      = 0x6,   /*!< Baseband RX CRC error impulse. */
   PAL_LED_ID_BB_ISR         = 0x7,  /*!< Baseband ISR impulse. */
 
-};
+} PalLedId_t;
 
 
 /**************************************************************************************************
