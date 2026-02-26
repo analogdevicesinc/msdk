@@ -795,21 +795,19 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
             aborted = 1;
         }
         /* Now, check for a SETUP packet */
-        if (!aborted) {
-            if ((setup_phase == SETUP_IDLE) && (MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_OUTPKTRDY)) {
-                /* Flag that we got a SETUP packet */
-                evt->sudav = 1;
-                /* Remove this from the IN flags so that it is not erroneously processed as data */
+        if ((setup_phase == SETUP_IDLE) && (MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_OUTPKTRDY)) {
+            /* Flag that we got a SETUP packet */
+            evt->sudav = 1;
+            /* Remove this from the IN flags so that it is not erroneously processed as data */
+            in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
+        } else if (!aborted) {
+            /* Otherwise, we are in endpoint 0 data IN/OUT */
+            /* Fix interrupt flags so that OUTs are processed properly */
+            if (setup_phase == SETUP_DATA_OUT) {
                 in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
-            } else {
-                /* Otherwise, we are in endpoint 0 data IN/OUT */
-                /* Fix interrupt flags so that OUTs are processed properly */
-                if (setup_phase == SETUP_DATA_OUT) {
-                    in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
-                    out_flags |= MXC_F_USBHS_INTRIN_EP0_IN_INT;
-                }
-                /* SETUP_NODATA is silently ignored by event_in_data() right now.. could fix this later */
+                out_flags |= MXC_F_USBHS_INTRIN_EP0_IN_INT;
             }
+            /* SETUP_NODATA is silently ignored by event_in_data() right now.. could fix this later */
         }
     }
     /* do cleanup in cases of bus reset */
@@ -1132,12 +1130,12 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
     /* Select endpoint */
     MXC_USBHS->index = ep;
 
-    /* Since the OUT interrupt for EP 0 doesn't really exist, only do this logic for other endpoints */
+    /* EP0 and other endpoints have different status/count/int register sets */
     if (ep) {
         armed = 0;
 
         if (!armed) {
-            /* EP0 or no free DMA channel found, fall back to PIO */
+            /* No free DMA channel found, fall back to PIO */
 
             /* See if data already in FIFO for this EP */
             if (MXC_USBHS->outcsrl & MXC_F_USBHS_OUTCSRL_OUTPKTRDY) {
@@ -1168,6 +1166,34 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
             } else {
                 /* No data, will need an interrupt to service later */
                 MXC_USBHS->introuten |= (1 << ep);
+            }
+        }
+    } else {
+        /* See if data already in FIFO for EP0 */
+        if (MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_OUTPKTRDY) {
+            reqsize = MXC_USBHS->count0;
+            if (reqsize > (req->reqlen - req->actlen)) {
+                reqsize = (req->reqlen - req->actlen);
+            }
+
+            unload_fifo(&req->data[req->actlen], get_fifo_ptr(ep), reqsize);
+
+            req->actlen += reqsize;
+
+            /* Signal to H/W that FIFO has been read */
+            MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_SERV_OUTPKTRDY;
+            if (req->actlen == req->reqlen) {
+                /* Signal end of transaction to hardware */
+                MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_DATA_END;
+
+                /* Done with request, callback fires if configured */
+                MXC_SYS_Crit_Exit();
+                MXC_USB_Request[ep] = NULL;
+
+                if (req->callback) {
+                    req->callback(req->cbdata);
+                }
+                return 0;
             }
         }
     }
