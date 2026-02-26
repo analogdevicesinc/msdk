@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
  * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
@@ -35,12 +35,7 @@ static bool g_is_clock_locked = false;
 
 #define USBHS_M31_CLOCK_RECOVERY
 
-typedef enum {
-    SETUP_IDLE,
-    SETUP_NODATA,
-    SETUP_DATA_OUT,
-    SETUP_DATA_IN
-} setup_phase_t;
+typedef enum { SETUP_IDLE, SETUP_NODATA, SETUP_DATA_OUT, SETUP_DATA_IN } setup_phase_t;
 
 /* storage for active endpoint data request objects */
 static MXC_USB_Req_t *MXC_USB_Request[MXC_USBHS_NUM_EP];
@@ -149,9 +144,8 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
 #endif
     MXC_USBHS->m31_phy_xcfgi_31_0 = (0x1 << 3) | (0x1 << 11);
     MXC_USBHS->m31_phy_xcfgi_63_32 = 0;
-    MXC_USBHS->m31_phy_xcfgi_95_64 = 0x1 << (72-64);
+    MXC_USBHS->m31_phy_xcfgi_95_64 = 0x1 << (72 - 64);
     MXC_USBHS->m31_phy_xcfgi_127_96 = 0;
-
 
 #ifdef USBHS_M31_CLOCK_RECOVERY
     MXC_USBHS->m31_phy_noncry_rstb = 1;
@@ -201,12 +195,14 @@ int MXC_USB_SetClockSource(mxc_usb_clock_t clock_source)
         return E_BAD_PARAM;
     }
 
-    mxc_sys_system_clock_t current_sys_clk = (mxc_sys_system_clock_t)(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
+    mxc_sys_system_clock_t current_sys_clk =
+        (mxc_sys_system_clock_t)(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     if (current_sys_clk != MXC_SYS_CLOCK_IPO && clock_source == MXC_USB_CLOCK_SYS_DIV_10) {
         return E_BAD_STATE; // System clock must be set to the IPO for the USB PHY to use the internal clock
     }
 
-    MXC_SETFIELD(MXC_FCR->fctrl0, MXC_F_FCR_FCTRL0_USBCLKSEL, ((unsigned int)clock_source) << MXC_F_FCR_FCTRL0_USBCLKSEL_POS);
+    MXC_SETFIELD(MXC_FCR->fctrl0, MXC_F_FCR_FCTRL0_USBCLKSEL,
+                 ((unsigned int)clock_source) << MXC_F_FCR_FCTRL0_USBCLKSEL_POS);
 
     return E_NO_ERROR;
 }
@@ -298,25 +294,25 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
     MXC_USBHS->index = ep;
 
     switch (type) {
-        case MAXUSB_EP_TYPE_DISABLED:
-            break;
-        case MAXUSB_EP_TYPE_OUT:
-            MXC_USBHS->outcsrl = MXC_F_USBHS_OUTCSRL_CLRDATATOG;
-            MXC_USBHS->outcsru = MXC_F_USBHS_OUTCSRU_DPKTBUFDIS;
-            MXC_USBHS->outmaxp = size;
-            ep_size[ep] = size;
-            MXC_USBHS->introuten &= ~(1 << ep);
-            break;
-        case MAXUSB_EP_TYPE_IN:
-            MXC_USBHS->incsrl = MXC_F_USBHS_INCSRL_CLRDATATOG;
-            MXC_USBHS->incsru = MXC_F_USBHS_INCSRU_DPKTBUFDIS | MXC_F_USBHS_INCSRU_MODE;
-            MXC_USBHS->inmaxp = size;
-            ep_size[ep] = size;
-            MXC_USBHS->intrinen |= (1 << ep);
-            break;
-        default:
-            MXC_SYS_Crit_Exit();
-            return -1;
+    case MAXUSB_EP_TYPE_DISABLED:
+        break;
+    case MAXUSB_EP_TYPE_OUT:
+        MXC_USBHS->outcsrl = MXC_F_USBHS_OUTCSRL_CLRDATATOG;
+        MXC_USBHS->outcsru = MXC_F_USBHS_OUTCSRU_DPKTBUFDIS;
+        MXC_USBHS->outmaxp = size;
+        ep_size[ep] = size;
+        MXC_USBHS->introuten &= ~(1 << ep);
+        break;
+    case MAXUSB_EP_TYPE_IN:
+        MXC_USBHS->incsrl = MXC_F_USBHS_INCSRL_CLRDATATOG;
+        MXC_USBHS->incsru = MXC_F_USBHS_INCSRU_DPKTBUFDIS | MXC_F_USBHS_INCSRU_MODE;
+        MXC_USBHS->inmaxp = size;
+        ep_size[ep] = size;
+        MXC_USBHS->intrinen |= (1 << ep);
+        break;
+    default:
+        MXC_SYS_Crit_Exit();
+        return -1;
     }
 
     MXC_SYS_Crit_Exit();
@@ -520,7 +516,7 @@ int MXC_USB_Ackstat(unsigned int ep)
 
 void MXC_USB_DmaIsr(void)
 {
-  /* Not implemented */
+    /* Not implemented */
 }
 
 /* sent packet done handler*/
@@ -761,14 +757,16 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
     MXC_USBHS->mxm_int = MXC_USB_mxm_flags;
 
     /* Map hardware-specific signals to generic stack events */
-    evt->dpact  = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SOF_INT);
-    evt->rwudn  = 0;        /* Not supported by this hardware */
-    evt->bact   = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SOF_INT);
-    evt->brst   = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_RESET_INT);
-    evt->susp   = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SUSPEND_INT);
+    evt->dpact = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SOF_INT);
+    evt->rwudn = 0; /* Not supported by this hardware */
+    evt->bact = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SOF_INT);
+    evt->brst = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_RESET_INT);
+    evt->susp = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SUSPEND_INT);
     evt->novbus = !!(MXC_USB_mxm_flags & MXC_F_USBHS_MXM_INT_NOVBUS);
-    evt->vbus   = !!(MXC_USB_mxm_flags & MXC_F_USBHS_MXM_INT_VBUS);
-    evt->brstdn = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_RESET_INT); /* Hardware does not signal this, so simulate it */
+    evt->vbus = !!(MXC_USB_mxm_flags & MXC_F_USBHS_MXM_INT_VBUS);
+    evt->brstdn =
+        !!(MXC_USB_flags &
+           MXC_F_USBHS_INTRUSB_RESET_INT); /* Hardware does not signal this, so simulate it */
     evt->sudav = 0; /* Overwritten, if necessary, below */
 
     /* Handle control state machine */
@@ -815,7 +813,7 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
         setup_phase = SETUP_IDLE;
         /* kill any pending requests */
         for (i = 0; i < MXC_USBHS_NUM_EP; i++) {
-                MXC_USB_ResetEp(i);
+            MXC_USB_ResetEp(i);
         }
         /* no need to process events after reset */
         return;
@@ -840,40 +838,40 @@ int MXC_USB_IrqEnable(maxusb_event_t event)
     }
 
     switch (event) {
-        case MAXUSB_EVENT_BACT:
-            /* Bus Active */
-            MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_SOF_INT_EN;
-            break;
+    case MAXUSB_EVENT_BACT:
+        /* Bus Active */
+        MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_SOF_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_BRST:
-            /* Bus Reset */
-            MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_RESET_INT_EN;
-            break;
+    case MAXUSB_EVENT_BRST:
+        /* Bus Reset */
+        MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_RESET_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_SUSP:
-            /* Suspend */
-            MXC_USBHS->power |= MXC_F_USBHS_POWER_EN_SUSPENDM;
-            MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
-            break;
+    case MAXUSB_EVENT_SUSP:
+        /* Suspend */
+        MXC_USBHS->power |= MXC_F_USBHS_POWER_EN_SUSPENDM;
+        MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_SUDAV:
-            /* Setup Data Available */
-            MXC_USBHS->intrinen |= MXC_F_USBHS_INTRINEN_EP0_INT_EN;
-            break;
+    case MAXUSB_EVENT_SUDAV:
+        /* Setup Data Available */
+        MXC_USBHS->intrinen |= MXC_F_USBHS_INTRINEN_EP0_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_VBUS:
-            /* VBUS Detect */
-            MXC_USBHS->mxm_int_en |= MXC_F_USBHS_MXM_INT_EN_VBUS;
-            break;
+    case MAXUSB_EVENT_VBUS:
+        /* VBUS Detect */
+        MXC_USBHS->mxm_int_en |= MXC_F_USBHS_MXM_INT_EN_VBUS;
+        break;
 
-        case MAXUSB_EVENT_NOVBUS:
-            /* NOVBUS Detect */
-            MXC_USBHS->mxm_int_en |= MXC_F_USBHS_MXM_INT_EN_NOVBUS;
-            break;
+    case MAXUSB_EVENT_NOVBUS:
+        /* NOVBUS Detect */
+        MXC_USBHS->mxm_int_en |= MXC_F_USBHS_MXM_INT_EN_NOVBUS;
+        break;
 
-        default:
-            /* Other events not supported by this hardware */
-            break;
+    default:
+        /* Other events not supported by this hardware */
+        break;
     }
 
     return 0;
@@ -886,40 +884,40 @@ int MXC_USB_IrqDisable(maxusb_event_t event)
     }
 
     switch (event) {
-        case MAXUSB_EVENT_BACT:
-            /* Bus Active */
-            MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_SOF_INT_EN;
-            break;
+    case MAXUSB_EVENT_BACT:
+        /* Bus Active */
+        MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_SOF_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_BRST:
-            /* Bus Reset */
-            MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_RESET_INT_EN;
-            break;
+    case MAXUSB_EVENT_BRST:
+        /* Bus Reset */
+        MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_RESET_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_SUSP:
-            /* Suspend */
-            MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
-            MXC_USBHS->power &= ~MXC_F_USBHS_POWER_EN_SUSPENDM;
-            break;
+    case MAXUSB_EVENT_SUSP:
+        /* Suspend */
+        MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
+        MXC_USBHS->power &= ~MXC_F_USBHS_POWER_EN_SUSPENDM;
+        break;
 
-        case MAXUSB_EVENT_SUDAV:
-            /* Setup Data Available */
-            MXC_USBHS->intrinen &= ~MXC_F_USBHS_INTRINEN_EP0_INT_EN;
-            break;
+    case MAXUSB_EVENT_SUDAV:
+        /* Setup Data Available */
+        MXC_USBHS->intrinen &= ~MXC_F_USBHS_INTRINEN_EP0_INT_EN;
+        break;
 
-        case MAXUSB_EVENT_VBUS:
-            /* VBUS Detect */
-            MXC_USBHS->mxm_int_en &= ~MXC_F_USBHS_MXM_INT_EN_VBUS;
-            break;
+    case MAXUSB_EVENT_VBUS:
+        /* VBUS Detect */
+        MXC_USBHS->mxm_int_en &= ~MXC_F_USBHS_MXM_INT_EN_VBUS;
+        break;
 
-        case MAXUSB_EVENT_NOVBUS:
-            /* NOVBUS Detect */
-            MXC_USBHS->mxm_int_en &= ~MXC_F_USBHS_MXM_INT_EN_NOVBUS;
-            break;
+    case MAXUSB_EVENT_NOVBUS:
+        /* NOVBUS Detect */
+        MXC_USBHS->mxm_int_en &= ~MXC_F_USBHS_MXM_INT_EN_NOVBUS;
+        break;
 
-        default:
-            /* Other events not supported by this hardware */
-            break;
+    default:
+        /* Other events not supported by this hardware */
+        break;
     }
 
     return 0;
@@ -937,13 +935,13 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
     volatile uint8_t *fifoptr = (uint8_t *)&MXC_USBHS->fifo0;
 
     /* Interrupts must be disabled while banked registers are accessed */
-     MXC_SYS_Crit_Enter();
+    MXC_SYS_Crit_Enter();
 
     /* Select endpoint 0 */
     MXC_USBHS->index = 0;
 
     if ((sud == NULL) || !(MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_OUTPKTRDY)) {
-         MXC_SYS_Crit_Exit();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -1017,7 +1015,7 @@ int MXC_USB_RemoveRequest(MXC_USB_Req_t *req)
 
 int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 {
-    unsigned int ep  = req->ep;
+    unsigned int ep = req->ep;
     unsigned int len = req->reqlen;
     unsigned int armed;
 
@@ -1090,7 +1088,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 
 int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
 {
-    unsigned int ep  = req->ep;
+    unsigned int ep = req->ep;
     uint32_t reqsize;
     unsigned int armed;
 
@@ -1151,7 +1149,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
                 /* Signal to H/W that FIFO has been read */
                 MXC_USBHS->outcsrl &= ~MXC_F_USBHS_OUTCSRL_OUTPKTRDY;
                 if ((req->type == MAXUSB_TYPE_PKT) || (req->actlen == req->reqlen)) {
-                 /* Done with request, callback fires if configured */
+                    /* Done with request, callback fires if configured */
                     MXC_SYS_Crit_Exit();
                     MXC_USB_Request[ep] = NULL;
 
@@ -1213,13 +1211,12 @@ void MXC_USB_RemoteWakeup(void)
 
 int MXC_USB_TestMode(unsigned int value)
 {
-    const uint8_t test_packet[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                   0x00, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
-                   0xAA, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
-                   0xEE, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xBF, 0xDF,
-                   0xEF, 0xF7, 0xFB, 0xFD, 0xFC, 0x7E, 0xBF, 0xDF,
-                   0xEF, 0xF7, 0xFB, 0xFD, 0x7E};
+    const uint8_t test_packet[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                    0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xEE,
+                                    0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xFE, 0xFF,
+                                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                                    0xFF, 0x7F, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0xFC,
+                                    0x7E, 0xBF, 0xDF, 0xEF, 0xF7, 0xFB, 0xFD, 0x7E };
 
     switch (value) {
     case 0x01:
@@ -1238,7 +1235,7 @@ int MXC_USB_TestMode(unsigned int value)
         /* Test_Packet */
         /* Load EP 0 with data provided by section 11.4 of musbhsfc_pg.pdf */
         /* sizeof() considered safe, since we use uint8_t explicitly */
-        load_fifo(get_fifo_ptr(0), (uint8_t*)test_packet, sizeof(test_packet));
+        load_fifo(get_fifo_ptr(0), (uint8_t *)test_packet, sizeof(test_packet));
         MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
         MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_PKT;
         break;
