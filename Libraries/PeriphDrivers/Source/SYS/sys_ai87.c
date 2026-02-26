@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -231,14 +231,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // No EXT_CLK "RDY" bit for AI87 so we enable every time
-        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-        if (err)
-            return err;
-
-        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
-        break;
+        // No EXT_CLK "RDY" bit for the AI87 so we return the GPIO config
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
 
     case MXC_SYS_CLOCK_INRO:
         // The 80k clock is always enabled
@@ -449,7 +443,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // No EXT_CLK "RDY" bit for AI85 so we enable every time
+        // No EXT_CLK "RDY" bit for AI87 so we enable every time
         err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
         if (err)
             return err;
