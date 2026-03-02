@@ -1,47 +1,31 @@
-## Description
+# Description
 
-- **What:** A small CNN example for American Sign Language (ASL) classification targeting the MAX78000 MCU. The example demonstrates embedding pretrained network weights into firmware and running on-device inference.
-- **Goal:** Show how to build and flash a compiled CNN example for the MAX78000, run inference on sample data, and view results over serial.
+- **What:** A small CNN example for American Sign Language (ASL) classification targeting the MAX78000 MCU. It demonstrates how to build the firmware and perform on-device inference.
 
-## Software / Build
+## Getting Started
 
-Prerequisites:
+- This is a small CNN example for ASL classification targeting the MAX78000 MCU. The ASL utilizes an ASL dataset which consists of 26 hand symbols, one for each letter in the alphabet, and a total of 81000 images.
 
-- MSDK checkout and compatible toolchain (use the same toolchain referenced by your MSDK release).
-- GNU `make` and the cross-toolchain (see MSDK docs for exact tool versions).
-
-Quick build and flash (typical):
+- Compilation (use repository-specific build system; examples below are typical):
 
 ```bash
 cd Examples/MAX78000/CNN/asl
 make
-make flash
 ```
 
-If flashing fails, confirm your `project.mk`/toolchain `PREFIX` settings match your installed toolchain.
+### Build Configuration Guidelines
 
-## Running and Serial Output
+- Use the MSDK checkout and toolchain versions compatible with the example. Mismatched toolchains often cause build failures.
+- If the example uses a provided `ai8xize` or other conversion helper, follow its documented flags for quantization and IO layout (NHWC vs NCHW).
 
-- Connect the board and open a serial terminal (115200 baud typical).
-- After flashing, the example runs on reset and prints:
-  - Model initialization messages.
-  - Inference timings (cycles or ms).
-  - Predicted class and confidence/probabilities.
-  - Optional debug or sample data comparisons.
+### Required Connections
 
-## Notes on Model & Conversion
+- **Power & Debug:** Power the MAX78000 EVKit the board manual via USB port and flash the binary used by your toolchain.
+- **Serial I/O:** Connect the board’s UART-to-USB to your host PC for console output (common baud rate: 115200). Use a serial terminal (e.g., PuTTY, miniterm) to view logs and results.
+- **Host:** USB connection for flashing and (optionally) to stream input images from the host to the board if the example supports host-side image injection.
 
-- This example embeds compiled weights (`weights.h`) rather than loading a separate `.kmodel` file. To use a new model, convert and export weights into the same format expected by the firmware, then regenerate `weights.h` and rebuild.
-- Typical conversion steps (high level): export a trained model → quantize/pack weights → produce header/source with weight arrays → replace `weights.*` and rebuild.
+Check out the [MAX78000 EvKit](https://www.analog.com/en/resources/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) page for details.
 
-## Required Connections
+### Expected Output
 
-- Power and debugger (SWD) or programmer for flashing.
-- UART-to-USB for serial logging (115200 baud recommended).
-
-## Debugging Tips
-
-- If output is empty or predictions are incorrect:
-  - Verify input preprocessing matches training (image size, channel order, normalization).
-  - Ensure the embedded weights match the network architecture built into `cnn.c`.
-  - Check linker/memory settings if the program crashes on startup.
+- **Runtime Behavior:** Once flashed, the firmware runs the a sample input (provided in sampledata.h) and prints key information to the serial console.
