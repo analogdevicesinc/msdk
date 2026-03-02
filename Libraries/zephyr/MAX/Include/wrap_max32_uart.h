@@ -226,6 +226,16 @@ static inline int Wrap_MXC_UART_Init(mxc_uart_regs_t *uart)
 {
     int ret;
 
+#if defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672)
+    /* LPUART0 (UART3) requires MCR LPPIOCTRL register configuration
+     * to route LP peripheral IO signals to the GPIO pins.
+     */
+    if (uart == MXC_UART3) {
+        MXC_MCR->lppioctrl |= (MXC_F_MCR_LPPIOCTRL_LPUART0_RX | MXC_F_MCR_LPPIOCTRL_LPUART0_TX |
+                               MXC_F_MCR_LPPIOCTRL_LPUART0_CTS | MXC_F_MCR_LPPIOCTRL_LPUART0_RTS);
+    }
+#endif
+
     ret = MXC_UART_SetRXThreshold(uart, 1);
 
     return ret;
