@@ -30,7 +30,8 @@ extern "C" {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || \
+    defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 
 static inline int Wrap_MXC_USB_Init(maxusb_cfg_options_t *options)
 {

@@ -34,11 +34,12 @@ void max32xx_system_init(void);
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 
 #define ADI_MAX32_CLK_IPO MXC_SYS_CLOCK_HIRC96
 #define ADI_MAX32_CLK_IBRO MXC_SYS_CLOCK_HIRC8
-#if !defined(CONFIG_SOC_MAX32650)
+#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32651)
 #define ADI_MAX32_CLK_ERFO MXC_SYS_CLOCK_XTAL32M
 #define ADI_MAX32_CLK_ISO MXC_SYS_CLOCK_HIRC
 #define ADI_MAX32_CLK_INRO MXC_SYS_CLOCK_LIRC8K
@@ -66,7 +67,7 @@ static inline int Wrap_MXC_SYS_Select32KClockSource(int clock)
 
 static inline int Wrap_MXC_SYS_GetUSN(uint8_t *usn)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     return MXC_SYS_GetUSN(usn, MXC_SYS_USN_LEN);
 #else
     return MXC_SYS_GetUSN(usn, NULL);

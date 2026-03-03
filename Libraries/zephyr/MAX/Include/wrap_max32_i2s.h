@@ -44,7 +44,7 @@ static inline uint32_t Wrap_MXC_I2S_CalculateClockDiv(uint32_t sampleRate, uint1
 }
 
 #else
-/* CONFIG_SOC_MAX32650 ||  CONFIG_SOC_MAX32660 */
+/* CONFIG_SOC_MAX32650  ||  CONFIG_SOC_MAX32651 ||  CONFIG_SOC_MAX32660 */
 #error "Unsupported SoC for wrap_max32_i2s.h"
 
 #endif /* closing of line:29 */
