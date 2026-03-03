@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,8 @@ typedef struct {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 
 #define WRAP_MXC_F_WDT_CTRL_EN MXC_F_WDT_CTRL_WDT_EN
 

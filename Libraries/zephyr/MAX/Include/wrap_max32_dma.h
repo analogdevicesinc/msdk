@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,8 @@
 extern "C" {
 #endif
 
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 #define ADI_MAX32_DMA_CTRL_DIS_IE MXC_F_DMA_CFG_CHDIEN
 #define ADI_MAX32_DMA_CTRL_CTZIEN MXC_F_DMA_CFG_CTZIEN
 
@@ -50,7 +51,8 @@ extern "C" {
 
 static inline int MXC_DMA_GetIntFlags(mxc_dma_regs_t *dma)
 {
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     return dma->intr;
 #elif defined(CONFIG_SOC_MAX32660)
     return dma->int_fl;
