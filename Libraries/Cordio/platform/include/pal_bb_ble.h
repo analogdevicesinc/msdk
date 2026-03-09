@@ -309,6 +309,17 @@ void PalBbBleEnableDataWhitening(bool_t enable);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Enable or disable baseband TX/RX LED signaling.
+ *
+ *  \param      enable       Flag to indicate TX/RX signaling
+ *
+ *  Sets an internal variable that indicates if TX/RX signaling is enabled or not.
+ */
+/*************************************************************************************************/
+void PalBbBleEnableBbLed(bool_t enable);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Enable or disable PRBS15.
  *
  *  \param      enable       Flag to indicate PRBS15.

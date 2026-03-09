@@ -263,6 +263,17 @@ uint32_t PalBbGetCurrentTime(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Set the general purpose timer interrupt value.
+ *
+ *  \param      BB clock interrupt time.
+ *
+ *  This routine programs the general purpose timer interrupt based on the BB clock.
+ */
+/*************************************************************************************************/
+void PalBbSetTimer(uint32_t time);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Get the current FRC time.
  *
  *  \param      pTime   Pointer to return the current time.
