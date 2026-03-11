@@ -26,8 +26,8 @@ If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Close jumper JP5 (LED1 EN).
--   Close jumper JP6 (LED2 EN).
+-   Close jumper JP5 (LED0 EN).
+-   Close jumper JP6 (LED1 EN).
 -   Select "1V8" on the V_AUX_SEL jumper (JP11) and "VDDIO" on the I2C0 pullup level select jumper (JP2).
 -   Ensure the I2C0 pullup enable jumpers (JP3 and JP4) are installed.
 -   Make the following connections between the MAX32690 and MAX31889 EV Kits: P2.8-->SCL(J2.11), P2.7-->SDA(J2.12), VAUX-->VDD(J1.2), GND-->GND(J1.4)

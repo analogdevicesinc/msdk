@@ -20,8 +20,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
--   Close jumper JP5 (LED1 EN).
--   Close jumper JP6 (LED2 EN).
+-   Close jumper JP5 (LED0 EN).
+-   Close jumper JP6 (LED1 EN).
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 If using the MAX32690FTHR:
