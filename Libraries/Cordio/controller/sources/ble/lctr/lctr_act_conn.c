@@ -1502,7 +1502,10 @@ void lctrCheckPauseComplete(lctrConnCtx_t *pCtx)
 {
   if (WsfQueueEmpty(&pCtx->txArqQ))
   {
-    lctrSendConnMsg(pCtx, LCTR_CONN_ARQ_Q_FLUSHED);
+    /* Defer sending LCTR_CONN_ARQ_Q_FLUSHED to ensure that llcpState and llcpActiveProc */
+    /* are set before lctrSlvLlcpExecutePhyUpdateSm() is dispatched in response. */
+    // LL_TRACE_INFO1("deferring LCTR_CONN_ARQ_Q_FLUSHED, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+    pCtx->arqQFlushedPending = TRUE;
   }
 }
 

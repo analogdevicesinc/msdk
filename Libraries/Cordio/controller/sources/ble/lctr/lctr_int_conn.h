@@ -352,6 +352,7 @@ typedef struct
   bool_t            isSlvReadySent;     /*!< True if slave ready to initiate startup LLCP procedure is sent. */
   bool_t            isFirstNonCtrlPdu;  /*!< True if first non-control PDU from master and slave. */
   bool_t            isSlvPhyUpdInstant; /*!< True if slave is in PHY update instant state. */
+  bool_t            arqQFlushedPending; /*!< ARQ_Q_FLUSHED message send deferred until state vars set. */
   uint8_t           llcpActiveProc;     /*!< Current procedure. */
   uint32_t          llcpNotifyMask;     /*!< Host notification mask. */
   uint32_t          llcpPendMask;       /*!< Pending LLCP procedures. */
