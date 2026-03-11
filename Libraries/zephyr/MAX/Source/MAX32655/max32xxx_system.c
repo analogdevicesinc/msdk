@@ -22,6 +22,8 @@
 #include "simo.h"
 #include "mcr_regs.h"
 
+#ifndef CONFIG_SOC_MAX32655_RV32
+
 static int pre_init(void)
 {
     uint32_t psc = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV;
@@ -40,11 +42,15 @@ static int pre_init(void)
     return 0;
 }
 
+#endif
+
 /* 
  * This function is called during boot up.
  */
 void max32xx_system_init(void)
 {
+#ifndef CONFIG_SOC_MAX32655_RV32
+
     pre_init();
 
     /* Disable SRAM ECC until it is handled on zephyr side */
@@ -60,4 +66,6 @@ void max32xx_system_init(void)
     while (MXC_SIMO_GetOutReadyB() != E_NO_ERROR) {}
     MXC_SIMO_SetVregO_C(1100);
     while (MXC_SIMO_GetOutReadyC() != E_NO_ERROR) {}
+
+#endif
 }
