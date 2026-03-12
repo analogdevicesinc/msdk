@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,6 +167,11 @@ void MXC_LP_FastWakeupDisable(void)
 int MXC_LP_FastWakeupIsEnabled(void)
 {
     return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_FASTWK_EN);
+}
+
+int MXC_LP_IsBackupWake(void)
+{
+    return E_NOT_SUPPORTED;
 }
 
 void MXC_LP_ClearWakeStatus(void)

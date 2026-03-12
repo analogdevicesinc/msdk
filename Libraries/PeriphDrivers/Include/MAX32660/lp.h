@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,15 @@ typedef enum {
     MXC_LP_OVR_1_0 = MXC_S_PWRSEQ_LP_CTRL_OVR_1_0V, /**< Reset DMA */
     MXC_LP_OVR_1_1 = MXC_S_PWRSEQ_LP_CTRL_OVR_1_1V, /**< Reset DMA */
 } mxc_lp_ovr_t;
+
+/**
+ * @brief      Returns 1 if device wakes up from BACKUP mode.
+ *
+ * @return     1 if device woke up from BACKUP.
+ * @return     0 if device did not wake up from BACKUP.
+ * @return     #E_NOT_SUPPORTED if this function is not supported on the current device.
+ */
+int MXC_LP_IsBackupWake(void);
 
 /**
  * @brief 	   Clears the low power wakeup flags

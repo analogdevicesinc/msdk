@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,6 +121,11 @@ void MXC_LP_BandgapOff(void)
 int MXC_LP_BandgapIsOn(void)
 {
     return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_BG_DIS);
+}
+
+int MXC_LP_IsBackupWake(void)
+{
+    return !!(MXC_PWRSEQ->lppwst & MXC_F_PWRSEQ_LPPWST_BACKUP);
 }
 
 void MXC_LP_ClearWakeStatus(void)

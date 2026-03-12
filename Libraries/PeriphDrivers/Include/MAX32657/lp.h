@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,6 +142,15 @@ void MXC_LP_BandgapOff(void);
  * @return     1 = bandgap on , 0 = bandgap off
  */
 int MXC_LP_BandgapIsOn(void);
+
+/**
+ * @brief      Returns 1 if device wakes up from BACKUP mode.
+ *
+ * @return     1 if device woke up from BACKUP.
+ * @return     0 if device did not wake up from BACKUP.
+ * @return     #E_NOT_SUPPORTED if this function is not supported on the current device.
+ */
+int MXC_LP_IsBackupWake(void);
 
 /**
  * @brief      clear all wake up status

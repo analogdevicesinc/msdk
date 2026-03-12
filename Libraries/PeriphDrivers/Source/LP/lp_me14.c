@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,11 @@ extern void Backup_Handler(void);
 uint32_t icc0_state, icc1_state, clkcn_state;
 
 /***** Functions *****/
+int MXC_LP_IsBackupWake(void)
+{
+    return !!(MXC_PWRSEQ->lppwst & MXC_F_PWRSEQ_LPPWST_BBMODEST);
+}
+
 void MXC_LP_ClearWakeStatus(void)
 {
     /* Write 1 to clear */

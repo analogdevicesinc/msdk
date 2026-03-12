@@ -121,6 +121,11 @@ int MXC_LP_BandgapIsOn(void)
 }
 */
 
+int MXC_LP_IsBackupWake(void)
+{
+    return !!(MXC_PWRSEQ->lppwst & MXC_F_PWRSEQ_LPPWST_BACKUP);
+}
+
 void MXC_LP_ClearWakeStatus(void)
 {
     /* Write 1 to clear */
