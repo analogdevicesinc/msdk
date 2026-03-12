@@ -338,6 +338,35 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
+ * @brief       Get the enabled wakeup pins for a specific GPIO port. Returns 0 if the port
+ *              is not present on the device.
+ *
+ * @param       port  The GPIO port to check.
+ *
+ * @return      The enabled wakeup pins for the specified port.
+ */
+uint32_t MXC_LP_GetGPIOWakeupEnable(uint8_t port);
+
+/**
+ * @brief       Get the wakeup status of a specific GPIO port. Returns 0 if the port is not
+ *              present on the device.
+ *
+ * @param       port  The GPIO port to check.
+ *
+ * @return      The wakeup status of the specified port.
+ */
+uint32_t MXC_LP_GetGPIOWakeupStatus(uint8_t port);
+
+/**
+ * @brief       Clear the wakeup status of a specific GPIO port. Does nothing if the port is not
+ *              present on the device.
+ *
+ * @param       port  The GPIO port to clear the wakeup status for.
+ * @param       mask  The pins in the GPIO port to clear the wakeup status for.
+ */
+void MXC_LP_ClearGPIOWakeupStatus(uint8_t port, uint32_t mask);
+
+/**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.  
  */
 void MXC_LP_EnableRTCAlarmWakeup(void);

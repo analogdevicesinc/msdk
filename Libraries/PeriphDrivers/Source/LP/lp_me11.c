@@ -169,6 +169,37 @@ void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins)
     }
 }
 
+uint32_t MXC_LP_GetGPIOWakeupEnable(uint8_t port)
+{
+    switch (1 << port) {
+    case 0:
+        return MXC_PWRSEQ->lpwk_en;
+    default:
+        return 0;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupStatus(uint8_t port)
+{
+    switch (1 << port) {
+    case 0:
+        return MXC_PWRSEQ->lp_wakefl;
+    default:
+        return 0;
+    }
+}
+
+void MXC_LP_ClearGPIOWakeupStatus(uint8_t port, uint32_t mask)
+{
+    switch (1 << port) {
+    case 0:
+        MXC_PWRSEQ->lp_wakefl = mask;
+        break;
+    default:
+        break;
+    }
+}
+
 void MXC_LP_EnterSleepMode(void)
 {
     // Clear SLEEPDEEP bit
