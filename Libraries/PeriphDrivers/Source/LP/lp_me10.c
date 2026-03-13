@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,11 @@
 #include "mxc_sys.h"
 
 /* **** Variable Declaration **** */
+int MXC_LP_IsBackupWake(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
 void MXC_LP_ClearWakeStatus(void)
 {
     /* Write 1 to clear */
@@ -548,6 +553,58 @@ void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
     if ((MXC_PWRSEQ->gpio0_wk_en == 0) && (MXC_PWRSEQ->gpio1_wk_en == 0) &&
         (MXC_PWRSEQ->gpio2_wk_en == 0) && (MXC_PWRSEQ->gpio3_wk_en == 0)) {
         MXC_GCR->pmr &= ~MXC_F_GCR_PMR_GPIOWKEN;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupEnable(uint8_t port)
+{
+    switch (1 << port) {
+    case MXC_GPIO_PORT_0:
+        return MXC_PWRSEQ->gpio0_wk_en;
+    case MXC_GPIO_PORT_1:
+        return MXC_PWRSEQ->gpio1_wk_en;
+    case MXC_GPIO_PORT_2:
+        return MXC_PWRSEQ->gpio2_wk_en;
+    case MXC_GPIO_PORT_3:
+        return MXC_PWRSEQ->gpio3_wk_en;
+    default:
+        return 0;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupStatus(uint8_t port)
+{
+    switch (1 << port) {
+    case MXC_GPIO_PORT_0:
+        return MXC_PWRSEQ->gpio0_wk_fl;
+    case MXC_GPIO_PORT_1:
+        return MXC_PWRSEQ->gpio1_wk_fl;
+    case MXC_GPIO_PORT_2:
+        return MXC_PWRSEQ->gpio2_wk_fl;
+    case MXC_GPIO_PORT_3:
+        return MXC_PWRSEQ->gpio3_wk_fl;
+    default:
+        return 0;
+    }
+}
+
+void MXC_LP_ClearGPIOWakeupStatus(uint8_t port, uint32_t mask)
+{
+    switch (1 << port) {
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->gpio0_wk_fl = mask;
+        break;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->gpio1_wk_fl = mask;
+        break;
+    case MXC_GPIO_PORT_2:
+        MXC_PWRSEQ->gpio2_wk_fl = mask;
+        break;
+    case MXC_GPIO_PORT_3:
+        MXC_PWRSEQ->gpio3_wk_fl = mask;
+        break;
+    default:
+        break;
     }
 }
 

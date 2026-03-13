@@ -117,6 +117,11 @@ int MXC_LP_BandgapIsOn(void)
     return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_BG_DIS);
 }
 
+int MXC_LP_IsBackupWake(void)
+{
+    return !!(MXC_PWRSEQ->lppwst & MXC_F_PWRSEQ_LPPWST_BACKUP);
+}
+
 void MXC_LP_ClearWakeStatus(void)
 {
     /* Write 1 to clear */
@@ -173,6 +178,58 @@ void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
     if (MXC_PWRSEQ->lpwken3 == 0 && MXC_PWRSEQ->lpwken2 == 0 && MXC_PWRSEQ->lpwken1 == 0 &&
         MXC_PWRSEQ->lpwken0 == 0) {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_GPIO_WE;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupEnable(uint8_t port)
+{
+    switch (1 << port) {
+    case MXC_GPIO_PORT_0:
+        return MXC_PWRSEQ->lpwken0;
+    case MXC_GPIO_PORT_1:
+        return MXC_PWRSEQ->lpwken1;
+    case MXC_GPIO_PORT_2:
+        return MXC_PWRSEQ->lpwken2;
+    case MXC_GPIO_PORT_3:
+        return MXC_PWRSEQ->lpwken3;
+    default:
+        return 0;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupStatus(uint8_t port)
+{
+    switch (1 << port) {
+    case MXC_GPIO_PORT_0:
+        return MXC_PWRSEQ->lpwkst0;
+    case MXC_GPIO_PORT_1:
+        return MXC_PWRSEQ->lpwkst1;
+    case MXC_GPIO_PORT_2:
+        return MXC_PWRSEQ->lpwkst2;
+    case MXC_GPIO_PORT_3:
+        return MXC_PWRSEQ->lpwkst3;
+    default:
+        return 0;
+    }
+}
+
+void MXC_LP_ClearGPIOWakeupStatus(uint8_t port, uint32_t mask)
+{
+    switch (1 << port) {
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwkst0 = mask;
+        break;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwkst1 = mask;
+        break;
+    case MXC_GPIO_PORT_2:
+        MXC_PWRSEQ->lpwkst2 = mask;
+        break;
+    case MXC_GPIO_PORT_3:
+        MXC_PWRSEQ->lpwkst3 = mask;
+        break;
+    default:
+        break;
     }
 }
 

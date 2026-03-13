@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,11 @@
 #include "mxc_delay.h"
 
 /***** Functions *****/
+int MXC_LP_IsBackupWake(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
 void MXC_LP_ClearWakeStatus(void)
 {
     MXC_PWRSEQ->lp_wakefl = 0xFFFFFFFF;
@@ -161,6 +166,37 @@ void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins)
 
     if (MXC_PWRSEQ->lpwk_en == 0) {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_GPIOWK_EN;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupEnable(uint8_t port)
+{
+    switch (1 << port) {
+    case 0:
+        return MXC_PWRSEQ->lpwk_en;
+    default:
+        return 0;
+    }
+}
+
+uint32_t MXC_LP_GetGPIOWakeupStatus(uint8_t port)
+{
+    switch (1 << port) {
+    case 0:
+        return MXC_PWRSEQ->lp_wakefl;
+    default:
+        return 0;
+    }
+}
+
+void MXC_LP_ClearGPIOWakeupStatus(uint8_t port, uint32_t mask)
+{
+    switch (1 << port) {
+    case 0:
+        MXC_PWRSEQ->lp_wakefl = mask;
+        break;
+    default:
+        break;
     }
 }
 
