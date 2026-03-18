@@ -1,0 +1,33 @@
+disable-flash-signature-check %PARAM_0%
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   disable-flash-signature-check Option
+#       Option: Enable/Disable
+#
+#   This command selects whether the device performs the secure boot function of verifying 
+#   the application code before executing any commands. The encryption mode must be set to 
+#   0x02 (encrypted and authenticated) using WRITE_XIP_ENCRYPTION_MODE before this command 
+#   can be executed. 
+#   The Signature Bypass option is allowed if mode is ENC+AUTH
+#   In all other modes, the signature is always checked.
+#
+#   Caution: Disabling the secure boot compromises one of the major security features of 
+#   the device. This command can only be executed once. The value written is permanent and
+#   cannot be changed by any method.
+#
+# ----------------------------------------------------------|
+#               Option, PARAM_0 (HEX)                       |
+# ----------------------------------------------------------|
+#               00 -> Disable                               |
+#               01 -> Enable (Default)                      |
+#                                                           |
+# ----------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will disable external flash ECDSA signature check:    
+#               disable-flash-signature-check 00
+#
+#           Below command will enable external flash ECDSA signature check:    
+#               disable-flash-signature-check 01
+#

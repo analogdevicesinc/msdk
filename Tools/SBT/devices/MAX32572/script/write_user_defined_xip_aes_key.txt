@@ -1,0 +1,28 @@
+write-xip-aes-key 00000020 %PARAM_0% %PARAM_1%
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-xip-aes-key ID KeyStorage KeyValue
+#       ID: 00000020(fixed)
+#       KeyStorage: Sets where will be the key stored
+#       KeyValue: Selects key generator source
+#
+#   Load a user-defined AES key used to encrypt and decrypt the XIP flash. 
+#   The key is stored in the access register and can optionally be written to OTP. 
+#   Caution: This command can only be executed once. 
+#   The value written is permanent and cannot be changed by any method.
+#
+# ------------------------------|-------------------------------------------------------|
+#   KeyStorage  --> PARAM_0     |        KeyValue --> PARAM_1                           |
+# ------------------------------|-------------------------------------------------------|
+#   00 --> Register Only        |        128-bit AES Key in HEX                         |
+#   01 --> Register + OTP       |                                                       |
+#                               |                                                       |
+# ------------------------------|-------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will store 00112233445566778899AABBCCDDEEFF AES key in registers only
+#               write-xip-aes-key 00000020 00 00112233445566778899AABBCCDDEEFF 
+#
+#           Below command will store 00112233445566778899AABBCCDDEEFF AES key in registers + OTP
+#               write-xip-aes-key 00000020 01 00112233445566778899AABBCCDDEEFF
+#

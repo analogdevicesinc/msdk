@@ -1,0 +1,27 @@
+write-timeout %PARAM_0% %PARAM_1%
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-timeout Code TimeoutValue
+#   TimeoutValue: This is the timeout value in milliseconds, from 0x0001 to 0xFFFE. 
+#   An interval of 0x0000 03E8 corresponds to 1s. The timeout value is sent LSB first.
+# ------------------------------|---------------------------------------------------------------|
+#  Code  --> PARAM_0 Peripheral |      Timeout   --->   PARAM_1 (HEX and Little-endian)         |
+# ------------------------------|---------------------------------------------------------------|
+#       0   --> UART            |        250 ms  --->   FA00        (0x00FA ==  250)            |
+#       U   --> USB             |        500 ms  --->   F401        (0x01F4 ==  500)            |
+#       V   --> VBUS_USB        |       1000 ms  --->   E803        (0x03E8 == 1000)            |
+#                               |       2000 ms  --->   D007        (0x07D0 == 2000)            |
+#                               |          0 ms  --->   0000        (0x0000 == 0) (Disable)     |
+# ------------------------------|---------------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will set UART timeout to 250 ms:    
+#               write-timeout 0 FA00
+#
+#           Below command will set USB timeout to 500 ms:    
+#               write-timeout U F401
+#
+#           Below command will set VBUS_USB detection timeout to 0 ms:    
+#               write-timeout V 0000
+#
