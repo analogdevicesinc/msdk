@@ -3,11 +3,11 @@
 #
 #       write-stim          X                YY
 #    |--------------|------------------|-----------------------------------------------------------|
-#    |	 Command    |     Target       |   Parameter 2 bytes (16 bits)                             |
+#    |   Command    |     Target       |   Parameter 2 bytes (16 bits)                             |
 #    |--------------|------------------|-----------------------------------------------------------|
-#    |		        |     0 --> UART   |                     Port   PinLevel       Pin             |
-#    |		        |     U --> USB    |                     ----   --------       ---------       |
-#    |  	        |     S --> SPI    | Bit position:       8-7-6  5              4-3-2-1-0       |
+#    |              |     0 --> UART   |                     Port   PinLevel       Pin             |
+#    |              |     U --> USB    |                     ----   --------       ---------       |
+#    |              |     S --> SPI    | Bit position:       8-7-6  5              4-3-2-1-0       |
 #    |              |                  |                                                           |
 #    |              |                  | Example  (0027)     0-0-0  1              0-0-1-1-1       |
 #    |              |                  |                     Port0  Level:High     Pin7            |
