@@ -580,4 +580,46 @@ uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClo
     return MXC_SYS_GetClockMeasure();
 }
 
+/* ************************************************************************** */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
+{
+    static const int CAL_MS = 10;
+    /* IPO_FREQ / ERTCOCC_FREQ, integer divide, rounded */
+    static const int AUTOCAL2_DIV = (IPO_FREQ + (ERTCO_FREQ - 1)) / ERTCO_FREQ;
+    int err;
+
+    /* Only the IPO supports calibration */
+    if (clock != MXC_SYS_CLOCK_IPO) {
+        return E_BAD_PARAM;
+    }
+
+    /* Make sure the ERTCO is enabled */
+    if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO))) {
+        return err;
+    }
+
+    /* The following section implements section 4.1.2.1 of the MAX32657 UG */
+    MXC_FCR->autocal0 &= ~(MXC_F_FCR_AUTOCAL0_EN);
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_DIV,
+                 AUTOCAL2_DIV << MXC_F_FCR_AUTOCAL2_DIV_POS);
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_RUNTIME,
+                 CAL_MS << MXC_F_FCR_AUTOCAL2_RUNTIME_POS);
+    MXC_SETFIELD(MXC_FCR->autocal1, MXC_F_FCR_AUTOCAL1_INIT_TRIM,
+                 0x64 << MXC_F_FCR_AUTOCAL1_INIT_TRIM_POS);
+    MXC_SETFIELD(MXC_FCR->autocal0, MXC_F_FCR_AUTOCAL0_MU, 4 << MXC_F_FCR_AUTOCAL0_MU_POS);
+    MXC_FCR->autocal0 |= MXC_F_FCR_AUTOCAL0_LOAD_TRIM | MXC_F_FCR_AUTOCAL0_EN |
+                         MXC_F_FCR_AUTOCAL0_RUN;
+
+    MXC_Delay(MXC_DELAY_MSEC(CAL_MS));
+
+    /* Disable the calibration hardware.
+     * Optionally leave the calibration hardware running by leaving the AUTOCAL0_RUN bit set.
+     * This will result in a more accurate frequency on average. Trim settings will oscillate
+     * around the ideal frequency.
+     */
+    MXC_FCR->autocal0 &= ~(MXC_F_FCR_AUTOCAL0_RUN);
+
+    return E_NO_ERROR;
+}
+
 /**@} end of mxc_sys */

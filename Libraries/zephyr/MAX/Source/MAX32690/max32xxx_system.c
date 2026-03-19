@@ -24,6 +24,8 @@
  */
 void max32xx_system_init(void)
 {
+#ifndef CONFIG_SOC_MAX32690_RV32
+
     *(volatile uint32_t *)0x40000c00 = 1; // Enable test mode
     *(volatile uint32_t *)0x4000040c = (1 << 6); // Disable cache read buffer
     *(volatile uint32_t *)0x40000c00 = 0; // Disable test mode
@@ -32,4 +34,13 @@ void max32xx_system_init(void)
     MXC_ICC_Enable(MXC_ICC0);
     MXC_ICC_Disable(MXC_ICC0);
     MXC_ICC_Enable(MXC_ICC0);
+
+#else
+
+    // Enable then disable ICC to clear the cache
+    MXC_ICC_Enable(MXC_ICC1);
+    MXC_ICC_Disable(MXC_ICC1);
+    MXC_ICC_Enable(MXC_ICC1);
+
+#endif
 }

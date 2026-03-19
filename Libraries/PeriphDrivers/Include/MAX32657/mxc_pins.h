@@ -58,4 +58,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi_ts0;
 extern const mxc_gpio_cfg_t gpio_cfg_spi_ts1;
 extern const mxc_gpio_cfg_t gpio_cfg_spi_ts2;
 
+// RTC square wave output
+extern const mxc_gpio_cfg_t gpio_cfg_rtcsqw;
+
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_PINS_H_

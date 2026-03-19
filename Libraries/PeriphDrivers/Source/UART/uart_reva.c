@@ -395,18 +395,25 @@ int MXC_UART_RevA_SetFlowCtrl(mxc_uart_reva_regs_t *uart, mxc_uart_flow_t flowCt
 int MXC_UART_RevA_SetClockSource(mxc_uart_reva_regs_t *uart, int usePCLK)
 {
     int baudRate;
-
     baudRate = MXC_UART_GetFrequency((mxc_uart_regs_t *)uart);
     if (baudRate < 0) { // return error code
         return baudRate;
     }
-
     if (usePCLK) {
         MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVA_CTRL_CLKSEL, 0 << MXC_F_UART_REVA_CTRL_CLKSEL_POS);
+        if (baudRate > PeripheralClock / 8) {
+            baudRate = PeripheralClock / 8;
+        }
     } else {
         MXC_SETFIELD(uart->ctrl, MXC_F_UART_REVA_CTRL_CLKSEL, 1 << MXC_F_UART_REVA_CTRL_CLKSEL_POS);
+#if (TARGET_NUM == 32660)
+        return E_NOT_SUPPORTED;
+#else
+        if (baudRate > IBRO_FREQ / 8) {
+            baudRate = IBRO_FREQ / 8;
+        }
+#endif
     }
-
     return MXC_UART_SetFrequency((mxc_uart_regs_t *)uart, baudRate);
 }
 

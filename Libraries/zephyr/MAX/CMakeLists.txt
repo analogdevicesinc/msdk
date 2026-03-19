@@ -32,7 +32,7 @@ zephyr_compile_definitions(
     -DMSDK_NO_LOCKING=1
 )
 
-if (CONFIG_MAX32_SECURE_SOC)
+if (CONFIG_MAX32_SECURE_SOC_SIGNING)
 zephyr_compile_definitions(
     -D__SLA_FWK__
     -DUSE_ZEPHYR_SECTIONS=1
@@ -75,6 +75,7 @@ add_subdirectory_ifdef(CONFIG_SOC_MAX32520 Source/MAX32520)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32570 Source/MAX32570)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32572 Source/MAX32572)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32650 Source/MAX32650)
+add_subdirectory_ifdef(CONFIG_SOC_MAX32651 Source/MAX32650)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32655 Source/MAX32655)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32657 Source/MAX32657)
 add_subdirectory_ifdef(CONFIG_SOC_MAX32660 Source/MAX32660)

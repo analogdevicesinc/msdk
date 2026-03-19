@@ -21,8 +21,8 @@ If using the MAX32690EVKIT:
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pins P4.0 (on header JH5) and P2.11 (on header JH4).
--   Close jumper JP5 (LED1 EN).
--   Close jumper JP6 (LED2_EN).
+-   Close jumper JP5 (LED0 EN).
+-   Close jumper JP6 (LED1 EN).
 
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.

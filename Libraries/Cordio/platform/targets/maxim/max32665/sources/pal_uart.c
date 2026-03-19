@@ -92,7 +92,9 @@ void palUartCallback(int ch, int error)
         palUartCb[i].rdCback();
       }
 
+      WsfCsEnter();
       MXC_DMA_ReleaseChannel(ch);
+      WsfCsExit();
       return;
     }
 
@@ -102,8 +104,10 @@ void palUartCallback(int ch, int error)
       if(palUartCb[i].wrCback != NULL) {
         palUartCb[i].wrCback();
       }
-      
+
+      WsfCsEnter();
       MXC_DMA_ReleaseChannel(ch);
+      WsfCsExit();
       return;
     }
   }

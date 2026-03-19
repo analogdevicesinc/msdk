@@ -74,7 +74,7 @@ zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_reva.c
 )
 
-if (CONFIG_MAX32_SECURE_SOC)
+if (CONFIG_MAX32_SECURE_SOC_SIGNING)
 zephyr_library_sources(${MSDK_CMSIS_DIR}/Source/sla_header_MAX32650.c)
 endif()
 

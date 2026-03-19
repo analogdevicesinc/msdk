@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,8 +139,8 @@ typedef struct {
  */
 int MXC_USB_Init(maxusb_cfg_options_t *options);
 
-#ifdef MAX32690
-// Clock setter mux APIs are currently only supported on the MAX32690.  It does not exist
+#if defined(MAX32690) || defined(MAX78002)
+// Clock setter mux APIs are currently only supported on the MAX32690 and MAX78002.  It does not exist
 // on earlier hardware revisions such as the MAX32650
 
 #ifndef mxc_usb_clock_t

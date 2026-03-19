@@ -2,9 +2,9 @@
 
 Three timers are used to demonstrate three different modes of the general purpose timers.
 
-1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an interrupt at a freq of 1 Hz. The device will wake up and LED2 will toggle when the interrupt occurs.
+1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an interrupt at a freq of 1 Hz. The device will wake up and LED1 will toggle when the interrupt occurs.
 2. Timer 0 is used to output a PWM signal on Port 0.7. The PWM frequency is 1000 Hz and the duty cycle is 50%.
-3. Timer 1 is configured as 32-bit timer used in continuous mode to create an interrupt at a freq of 2 Hz. LED1 will toggle when the interrupt occurs.
+3. Timer 1 is configured as 32-bit timer used in continuous mode to create an interrupt at a freq of 2 Hz. LED0 will toggle when the interrupt occurs.
 
 Each of the frequencies, clock sources, and timer instances mentioned above can be changed using the defines at the top of _main.c_.
 
@@ -26,8 +26,8 @@ If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install headers JP7(RX_EN) and JP8(TX_EN).
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Close jumper JP5 (LED1\_EN).
--   Close jumper JP6 (LED2\_EN).
+-   Close jumper JP5 (LED0\_EN).
+-   Close jumper JP6 (LED1\_EN).
 
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
@@ -46,7 +46,7 @@ The Console UART of the device will output these messages:
 **************************Timer Example **************************
 
 1. A oneshot mode timer, Timer 4 (lptimer) is used to create
-   an interrupt at a freq of 1 Hz. LED 2 (Port 2.12) will toggle
+   an interrupt at a freq of 1 Hz. LED 1 (Port 2.12) will toggle
    when the interrupt occurs.
 
 2. Timer 0 is used to output a PWM signal on Port 0.7.
@@ -54,7 +54,7 @@ The Console UART of the device will output these messages:
 
 3. Timer 1 is configured as a 32-bit timer used in continuous
    mode which is used to create an interrupt at a freq of 2 Hz.
-   LED 1 (Port 0.14) will toggle each time the oneshot timer is
+   LED 0 (Port 0.14) will toggle each time the oneshot timer is
    finished running.
 
 Push SW2 to start the PWM and continuous timers initially. Then

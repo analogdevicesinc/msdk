@@ -10,15 +10,15 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32690 Ev-Kit.  It is only compatible with that board.
+(None - this project builds as a standard example)
 
 ## Setup
 
-Using the MAX78000 Feather board:
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
+Using the MAX32690 Ev kit board:
+-   Connect a USB cable between the PC and the CN2 (USB/PWR - UART) connector.
 -   Connect a line-in source to J5 connector.
 -   Connect a headphone to J6 connector.
--   Optionally open a terminal application on the PC and connect to the EV feather's console UART at 115200, 8-N-1.
+-   Optionally open a terminal application on the PC and connect to the Ev kit's console UART at 115200, 8-N-1.
 -   Change JP10 jumper to SCL
 -   Change JP9 jumper to SDA
 

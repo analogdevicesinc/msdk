@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ extern "C" {
 #if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
     defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) || \
     defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) || \
-    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660)
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || defined(CONFIG_SOC_MAX32660)
 
 static inline void Wrap_MXC_LP_EnterLowPowerMode(void)
 {
@@ -51,7 +51,7 @@ static inline void Wrap_MXC_LP_EnterStandbyMode(void)
 
 static inline void Wrap_MXC_LP_EnterPowerDownMode(void)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     MXC_LP_EnterBackupMode();
 #else
     MXC_LP_EnterShutDownMode();

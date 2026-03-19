@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -206,13 +206,11 @@ uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
         break;
 
     case MXC_TMR_EXT_CLK:
-        if (tmr_id < 3) { // GPIO3[5]
-            clockSource = MXC_TMR_CLK3;
-        } else {
+        if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
 
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        clockSource = MXC_TMR_CLK3;
         break;
 
     default:

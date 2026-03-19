@@ -24,6 +24,8 @@
 #include "simo_regs.h"
 #include "mcr_regs.h"
 
+#ifndef CONFIG_SOC_MAX32666_CPU1
+
 static int pre_init(void)
 {
     uint32_t psc = MXC_GCR->clkcn & MXC_F_GCR_CLKCN_PSC;
@@ -47,11 +49,15 @@ static int pre_init(void)
     return 0;
 }
 
+#endif
+
 /* 
  * This function is called during boot up.
  */
 void max32xx_system_init(void)
 {
+#ifndef CONFIG_SOC_MAX32666_CPU1
+
     pre_init();
 
     /* Disable SRAM ECC until it is handled on zephyr side */
@@ -94,4 +100,13 @@ void max32xx_system_init(void)
 
     /* Disable fast wakeup due to issues with SIMO in wakeup */
     MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_FWKM;
+#else
+
+    // Flush and enable instruction cache for secondary CPU1 core
+    MXC_ICC1->invalidate = 1;
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {}
+    MXC_ICC1->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {}
+
+#endif
 }

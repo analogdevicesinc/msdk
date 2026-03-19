@@ -195,7 +195,7 @@ int main(void)
     // https://analogdevicesinc.github.io/msdk//USERGUIDE/#how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed
     MXC_Delay(MXC_DELAY_SEC(2));
 
-    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
+    MXC_ECC->en = 0; // ECC_EN bit is reserved on MAX32670. Do not modify this register.
 
     PRINT("****Low Power Mode Example****\n\n");
 

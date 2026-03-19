@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ extern "C" {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 
 /*
  *  Control register bits
@@ -39,7 +40,7 @@ extern "C" {
 /*
  *  Interrupt enable bits
  */
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 #define ADI_MAX32_I2C_INT_EN0_RX_THD MXC_F_I2C_INT_EN0_RXTHIE
 #define ADI_MAX32_I2C_INT_EN0_TX_LOCK_OUT MXC_F_I2C_INT_EN0_TXLOIE
 #define ADI_MAX32_I2C_INT_EN0_TX_THD MXC_F_I2C_INT_EN0_TXTHIE
@@ -72,7 +73,7 @@ extern "C" {
 /*
  *  Interrupt flags
  */
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 #define ADI_MAX32_I2C_INT_FL0_RX_THD MXC_F_I2C_INT_FL0_RXTHI
 #define ADI_MAX32_I2C_INT_FL0_TX_LOCK_OUT MXC_F_I2C_INT_FL0_TXLOI
 #define ADI_MAX32_I2C_INT_FL0_TX_THD MXC_F_I2C_INT_FL0_TXTHI
@@ -136,7 +137,7 @@ static inline void Wrap_MXC_I2C_SetRxCount(mxc_i2c_regs_t *i2c, unsigned int len
 
 static inline void Wrap_MXC_I2C_WaitForRestart(mxc_i2c_regs_t *i2c)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     while (i2c->mstr_mode & MXC_F_I2C_MSTR_MODE_RESTART) {}
 #else
     while (i2c->master_ctrl & MXC_F_I2C_MASTER_CTRL_RESTART) {}
@@ -145,7 +146,7 @@ static inline void Wrap_MXC_I2C_WaitForRestart(mxc_i2c_regs_t *i2c)
 
 static inline void Wrap_MXC_I2C_Start(mxc_i2c_regs_t *i2c)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     i2c->mstr_mode |= MXC_F_I2C_MSTR_MODE_START;
 #else
     i2c->master_ctrl |= MXC_F_I2C_MASTER_CTRL_START;
@@ -154,7 +155,7 @@ static inline void Wrap_MXC_I2C_Start(mxc_i2c_regs_t *i2c)
 
 static inline void Wrap_MXC_I2C_Restart(mxc_i2c_regs_t *i2c)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     i2c->mstr_mode |= MXC_F_I2C_MSTR_MODE_RESTART;
 #else
     i2c->master_ctrl |= MXC_F_I2C_MASTER_CTRL_RESTART;
@@ -163,7 +164,7 @@ static inline void Wrap_MXC_I2C_Restart(mxc_i2c_regs_t *i2c)
 
 static inline void Wrap_MXC_I2C_Stop(mxc_i2c_regs_t *i2c)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     i2c->mstr_mode |= MXC_F_I2C_MSTR_MODE_STOP;
 #else
     i2c->master_ctrl |= MXC_F_I2C_MASTER_CTRL_STOP;
@@ -172,7 +173,7 @@ static inline void Wrap_MXC_I2C_Stop(mxc_i2c_regs_t *i2c)
 
 static inline void Wrap_MXC_I2C_WaitForBusyClear(mxc_i2c_regs_t *i2c)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     while (i2c->stat & MXC_F_I2C_STAT_CKMD) {}
 #else
     while (i2c->status & MXC_F_I2C_STATUS_CLK_MODE) {}
@@ -181,7 +182,7 @@ static inline void Wrap_MXC_I2C_WaitForBusyClear(mxc_i2c_regs_t *i2c)
 
 static inline void Wrap_MXC_I2C_GetCtrl(mxc_i2c_regs_t *i2c, unsigned int *ctrl)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     *ctrl = i2c->ctrl0;
 #else
     *ctrl = i2c->ctrl;
@@ -190,7 +191,7 @@ static inline void Wrap_MXC_I2C_GetCtrl(mxc_i2c_regs_t *i2c, unsigned int *ctrl)
 
 static inline uint32_t Wrap_MXC_I2C_GetReadWriteBitStatus(mxc_i2c_regs_t *i2c)
 {
-#if defined(CONFIG_SOC_MAX32650)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     return i2c->ctrl0 & MXC_F_I2C_CTRL0_READ;
 #else
     return i2c->ctrl & MXC_F_I2C_CTRL_READ;

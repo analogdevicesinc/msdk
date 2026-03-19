@@ -247,6 +247,16 @@ int MXC_CTB_Init(uint32_t features);
 void MXC_CTB_InternalReset(void);
 
 /**
+ * @brief   This function is used by other API calls and should not be called 
+ *          directly by application code.
+ *
+ * Disables the CRC, ECC, Hash, and Cipher blocks. Only one of these should
+ * be enable at a time. 
+ *
+ */
+void MXC_CTB_DisableBlocks(void);
+
+/**
  * @brief   Detects what CTB features exist, see \ref mxc_ctb_features_t
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.

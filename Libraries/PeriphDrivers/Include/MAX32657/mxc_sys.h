@@ -85,7 +85,7 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_AES = (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */
     MXC_SYS_PERIPH_CLOCK_DMA1 =
         (MXC_F_GCR_PCLKDIS1_DMA1_POS + 32), /**< Disable Secure DMA1 clock */
-    MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS), /**< Disable WDT clock */
+    MXC_SYS_PERIPH_CLOCK_WDT = (MXC_F_GCR_PCLKDIS1_WDT_POS + 32), /**< Disable WDT clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
@@ -389,6 +389,13 @@ void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareCl
  * @return clock frequency, 0 if measurement is unfinished.
  */
 uint32_t MXC_SYS_GetClockMeasure(void);
+
+/**
+ * @brief Calibrate the specified system clock. Check the microcontroller's UG for more details.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.
+ * @returns E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
 
 #ifdef __cplusplus
 }

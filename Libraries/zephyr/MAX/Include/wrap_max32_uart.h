@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ extern "C" {
 #endif
 
 #if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
-    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660)
-#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32660)
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660) || defined(CONFIG_SOC_MAX32651)
+#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32660) && !defined(CONFIG_SOC_MAX32651)
 // status flags
 #define ADI_MAX32_UART_RX_EMPTY MXC_F_UART_STATUS_RX_EMPTY
 #define ADI_MAX32_UART_TX_EMPTY MXC_F_UART_STATUS_TX_EMPTY
@@ -53,7 +53,7 @@ extern "C" {
 #define ADI_MAX32_UART_INT_BE MXC_F_UART_INT_EN_BREAK // Break Error Interrupt
 #define ADI_MAX32_UART_INT_PE MXC_F_UART_INT_EN_RX_PARITY_ERROR // Parity Error Interrupt
 #define ADI_MAX32_UART_INT_FE MXC_F_UART_INT_EN_RX_FRAME_ERROR // Framing Error Interrupt
-#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32660)
+#if !defined(CONFIG_SOC_MAX32650) && !defined(CONFIG_SOC_MAX32660) && !defined(CONFIG_SOC_MAX32651)
 #define ADI_MAX32_UART_INT_RT MXC_F_UART_INT_EN_RX_TIMEOUT // Receive Timeout Interrupt
 #define ADI_MAX32_UART_INT_TX MXC_F_UART_INT_EN_TX_FIFO_THRESH // Transmit Interrupt
 #define ADI_MAX32_UART_INT_RX MXC_F_UART_INT_EN_RX_FIFO_THRESH // Receive Interrupt
@@ -93,7 +93,7 @@ static inline int Wrap_MXC_UART_Init(mxc_uart_regs_t *uart)
         return ret;
     }
 
-#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660)
+#if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32660) || defined(CONFIG_SOC_MAX32651)
     uart->ctrl0 |= MXC_F_UART_CTRL0_ENABLE;
 #else
     uart->ctrl |= MXC_F_UART_CTRL_ENABLE;
@@ -111,12 +111,25 @@ static inline int Wrap_MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int
 
 static inline int Wrap_MXC_UART_SetClockSource(mxc_uart_regs_t *uart, int clock_source)
 {
+#if defined(CONFIG_SOC_MAX32660)
     (void)uart;
     if (clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK) {
         return E_NO_ERROR;
     } else {
         return E_BAD_PARAM;
     }
+#else
+    if (clock_source == ADI_MAX32_PRPH_CLK_SRC_IBRO ||
+        clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK) {
+        int ret = MXC_UART_SetClockSource(uart, (clock_source == ADI_MAX32_PRPH_CLK_SRC_PCLK));
+        /* MXC_UART_SetClockSource returns baudrate on success, error code on failure
+         * to match zephyr convention, convert any non-negative return to E_NO_ERROR
+         */
+        return (ret < 0) ? ret : E_NO_ERROR;
+    } else {
+        return E_BAD_PARAM;
+    }
+#endif
 }
 
 static inline void Wrap_MXC_UART_SetTxDMALevel(mxc_uart_regs_t *uart, uint8_t bytes)
@@ -212,6 +225,16 @@ static inline void Wrap_MXC_UART_DisableRxDMA(mxc_uart_regs_t *uart)
 static inline int Wrap_MXC_UART_Init(mxc_uart_regs_t *uart)
 {
     int ret;
+
+#if defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672)
+    /* LPUART0 (UART3) requires MCR LPPIOCTRL register configuration
+     * to route LP peripheral IO signals to the GPIO pins.
+     */
+    if (uart == MXC_UART3) {
+        MXC_MCR->lppioctrl |= (MXC_F_MCR_LPPIOCTRL_LPUART0_RX | MXC_F_MCR_LPPIOCTRL_LPUART0_TX |
+                               MXC_F_MCR_LPPIOCTRL_LPUART0_CTS | MXC_F_MCR_LPPIOCTRL_LPUART0_RTS);
+    }
+#endif
 
     ret = MXC_UART_SetRXThreshold(uart, 1);
 

@@ -80,7 +80,7 @@ zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/SPI/spi_me11.c
     ${MSDK_PERIPH_SRC_DIR}/SPI/spi_reva1.c
     ${MSDK_PERIPH_SRC_DIR}/SPIMSS/spimss_me11.c
-    ${MSDK_PERIPH_SRC_DIR}/SPIMSS/spimss_reva1.c
+    ${MSDK_PERIPH_SRC_DIR}/SPIMSS/spimss_reva.c
 )
 endif()
 
