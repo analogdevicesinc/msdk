@@ -114,13 +114,13 @@ static uint32_t MXC_SPI_RevA2_writeTXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *b
 
     while (length_bytes) {
         if (length_bytes > 3) {
-            memcpy((void *)(&spi->fifo32), (uint8_t *)(&buffer[count]), 4);
+            spi->fifo32 = *(uint32_t *)(&buffer[count]);
 
             length_bytes -= 4;
             count += 4;
 
         } else if (length_bytes > 1) {
-            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&buffer[count]), 2);
+            spi->fifo16[0] = ((uint16_t *)buffer)[count];
 
             length_bytes -= 2;
             count += 2;
@@ -167,12 +167,12 @@ static uint32_t MXC_SPI_RevA2_readRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *bu
         // Read from the FIFO
         while (length_bytes) {
             if (length_bytes > 3) {
-                memcpy((uint8_t *)(&buffer[count]), (void *)(&spi->fifo32), 4);
+                *(uint32_t *)(&buffer[count]) = spi->fifo32;
                 length_bytes -= 4;
                 count += 4;
 
             } else if (length_bytes > 1) {
-                memcpy((uint8_t *)(&buffer[count]), (void *)(&spi->fifo16[0]), 2);
+                *(uint16_t *)(&buffer[count]) = spi->fifo16[0];
                 length_bytes -= 2;
                 count += 2;
             }

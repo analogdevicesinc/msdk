@@ -146,7 +146,9 @@ int MXC_SPI_RevA1_Shutdown(mxc_spi_reva_regs_t *spi)
     if (states[spi_num].req != NULL) {
         //save the request
         temp_req = states[spi_num].req;
+#ifndef __riscv
         MXC_FreeLock((uint32_t *)(uint32_t *)&states[spi_num].req);
+#endif
 
         // Callback if not NULL
         if (states[spi_num].req->completeCB != NULL) {
@@ -476,7 +478,9 @@ int MXC_SPI_RevA1_AbortTransmission(mxc_spi_reva_regs_t *spi)
 
     // Unlock this SPI
     mxc_spi_reva_req_t *temp = states[spi_num].req;
+#ifndef __riscv
     MXC_FreeLock((uint32_t *)&states[spi_num].req);
+#endif
 
     // Callback if not NULL
     if (temp->completeCB != NULL) {
@@ -530,11 +534,11 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
         //      or FIFO32 register could result in '01, 00, 03, 02' - depending on the part.
         if (bits > 8) {
             if (len > 3) {
-                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo32), 4);
+                *(uint32_t *)(&bytes[count]) = spi->fifo32;
                 len -= 4;
                 count += 4;
             } else if (len > 1) {
-                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo16[0]), 2);
+                *(uint16_t *)(&bytes[count]) = spi->fifo16[0];
                 len -= 2;
                 count += 2;
             }
@@ -593,11 +597,11 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
         //      result in this message shifted out: '01, 00, 03, 02' - depending on the part.
         if (bits > 8) {
             if (len > 3) {
-                memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[count]), 4);
+                spi->fifo32 = *(uint32_t *)(&bytes[count]);
                 len -= 4;
                 count += 4;
             } else if (len > 1) {
-                memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[count]), 2);
+                spi->fifo16[0] = ((uint16_t *)bytes)[count];
                 len -= 2;
                 count += 2;
             }
@@ -843,7 +847,9 @@ uint32_t MXC_SPI_RevA1_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t
     if ((req->rxData == NULL) && (req->txCnt == tx_length)) {
         spi->inten = 0;
         int_en = 0;
+#ifndef __riscv
         MXC_FreeLock((uint32_t *)&states[spi_num].req);
+#endif
 
         // Callback if not NULL
         if (states[spi_num].async && req->completeCB != NULL) {
@@ -872,7 +878,9 @@ uint32_t MXC_SPI_RevA1_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t
         if ((req->txData == NULL) && (req->rxCnt == rx_length)) {
             spi->inten = 0;
             int_en = 0;
+#ifndef __riscv
             MXC_FreeLock((uint32_t *)&states[spi_num].req);
+#endif
 
             // Callback if not NULL
             if (states[spi_num].async && req->completeCB != NULL) {
@@ -884,7 +892,9 @@ uint32_t MXC_SPI_RevA1_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t
     if ((req->rxCnt == rx_length) && (req->txCnt == tx_length)) {
         spi->inten = 0;
         int_en = 0;
+#ifndef __riscv
         MXC_FreeLock((uint32_t *)&states[spi_num].req);
+#endif
 
         // Callback if not NULL
         if (states[spi_num].async && req->completeCB != NULL) {
@@ -1317,7 +1327,9 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error)
             if (!states[i].txrx_req || (states[i].txrx_req && states[i].req_done == 2)) {
                 //save the request
                 temp_req = states[i].req;
+#ifndef __riscv
                 MXC_FreeLock((uint32_t *)&states[i].req);
+#endif
                 // Callback if not NULL
                 if (temp_req->completeCB != NULL) {
                     temp_req->completeCB(temp_req, E_NO_ERROR);
