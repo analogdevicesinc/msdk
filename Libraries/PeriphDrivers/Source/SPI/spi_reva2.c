@@ -518,6 +518,15 @@ void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi)
     spi->intfl = spi->intfl;
 }
 
+unsigned int MXC_SPI_RevA2_GetAndClearFlags(mxc_spi_reva_regs_t *spi)
+{
+    unsigned int intfl = spi->intfl;
+
+    spi->intfl = intfl;
+
+    return intfl;
+}
+
 void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en)
 {
     spi->inten |= en;

@@ -678,6 +678,15 @@ void MXC_SPI_RevA1_ClearFlags(mxc_spi_reva_regs_t *spi)
     spi->intfl = spi->intfl;
 }
 
+unsigned int MXC_SPI_RevA1_GetAndClearFlags(mxc_spi_reva_regs_t *spi)
+{
+    unsigned int intfl = spi->intfl;
+
+    spi->intfl = intfl;
+
+    return intfl;
+}
+
 void MXC_SPI_RevA1_EnableInt(mxc_spi_reva_regs_t *spi, unsigned int intEn)
 {
     spi->inten |= intEn;

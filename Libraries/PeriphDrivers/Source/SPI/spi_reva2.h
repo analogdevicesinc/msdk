@@ -52,6 +52,8 @@ uint32_t MXC_SPI_RevA2_GetFlags(mxc_spi_reva_regs_t *spi);
 
 void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi);
 
+unsigned int MXC_SPI_RevA2_GetAndClearFlags(mxc_spi_reva_regs_t *spi);
+
 void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en);
 
 void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis);

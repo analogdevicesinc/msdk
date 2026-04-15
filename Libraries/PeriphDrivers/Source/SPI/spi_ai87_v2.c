@@ -273,6 +273,11 @@ void MXC_SPI_ClearFlags(mxc_spi_regs_t *spi)
     MXC_SPI_RevA2_ClearFlags((mxc_spi_reva_regs_t *)spi);
 }
 
+unsigned int MXC_SPI_GetAndClearFlags(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetAndClearFlags((mxc_spi_reva_regs_t *)spi);
+}
+
 void MXC_SPI_EnableInt(mxc_spi_regs_t *spi, unsigned int intEn)
 {
     MXC_SPI_RevA2_EnableInt((mxc_spi_reva_regs_t *)spi, (uint32_t)intEn);
