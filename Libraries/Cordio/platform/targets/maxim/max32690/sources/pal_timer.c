@@ -415,8 +415,8 @@ uint32_t PalTimerGetExpTime(void)
 
     /* Adjust time based on the calibrated value */
     time = time - ((time / PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff);
-    time = time - ((((int32_t)time % PAL_TMR_CALIB_TIME_US) * palTimerCb.usecDiff) /
-                   PAL_TMR_CALIB_TIME_US);
+    time = time - ((((int32_t)time % PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff) /
+                   PAL_TMR_CALIB_TIME);
 
     return time;
 }
