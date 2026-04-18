@@ -41,6 +41,10 @@
 #error Enable timers in FreeRTOSConfig.h by definiing configUSE_TIMERS as 1
 #endif
 
+#if (configTIMER_TASK_PRIORITY != (configMAX_PRIORITIES - 2))
+#error "Timer task priority must be set to configMAX_PRIORITIES - 2 in FreeRTOSConfig.h"
+#endif
+
 typedef struct TimerStruct {
     struct TimerStruct *next;
     struct TimerStruct *prev;
