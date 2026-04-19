@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -654,6 +654,18 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi);
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  */
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Enable/Disable HW CS control feature.
+ *
+ * Depending on the application, the user might need to manually drive the slave select pin.
+ * The SPI driver automatically drives the SS pin and this function enables/disables this
+ * feature.
+ *
+ * @param   spi             Pointer to SPI registers (selects the SPI block used.)
+ * @param   state           Non-zero values: enable HW SS mode. Zero: disable HW SS mode.
+ */
+void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state);
 /**@} end of group spi */
 
 #ifdef __cplusplus

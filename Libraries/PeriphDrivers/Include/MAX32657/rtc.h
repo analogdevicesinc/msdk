@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,6 +95,7 @@ int MXC_RTC_SetSubsecondAlarm(uint32_t rssa);
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
 int MXC_RTC_Start(void);
+
 /**
  * @brief     Stop the Real Time Clock (Blocking function)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES

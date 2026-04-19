@@ -57,7 +57,7 @@ void setTrigger(int waitForTrigger)
 
 void WUT0_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags(MXC_WUT0);
 }
 
 int main(void)
@@ -75,15 +75,15 @@ int main(void)
     printf("wakeup timer to wake the device in %d Miliseconds.\n\n", MILLISECONDS_WUT);
 
     // Initialize WUT
-    MXC_WUT_Init(MXC_WUT_PRES_1);
+    MXC_WUT_Init(MXC_WUT0, MXC_WUT_PRES_1);
 
     // Get ticks based off of milliseconds
-    MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
+    MXC_WUT_GetTicks(MXC_WUT0, MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
 
     // Config WUT
     cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
-    MXC_WUT_Config(&cfg);
+    MXC_WUT_Config(MXC_WUT0, &cfg);
     NVIC_EnableIRQ(WUT0_IRQn);
 
     // Enable WUT wakeup event
@@ -95,7 +95,7 @@ int main(void)
 
         // Start WUT
         printf("Entering SLEEP mode.\n");
-        MXC_WUT_Enable();
+        MXC_WUT_Enable(MXC_WUT0);
 
         // Put the chip to sleep
         MXC_LP_EnterSleepMode();

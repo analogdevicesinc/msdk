@@ -20,12 +20,8 @@ The Non-Secure Project must set these flags:
 
 ## Required Connections
 
-TODO
+- Refer to **Secure** README.md
 
 ## Expected Output
 
-TODO
-
-```
-TODO
-```
+- Refer to **Secure** README.md

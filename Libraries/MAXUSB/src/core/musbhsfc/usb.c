@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
 #include "usbhs_regs.h"
 #include "usb.h"
 
-#ifdef MAX32690
+#if defined(MAX32690) || defined(MAX78002)
 #include "fcr_regs.h"
 static bool g_is_clock_locked = false;
 #endif
@@ -178,7 +178,7 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     return 0;
 }
 
-#ifdef MAX32690
+#if defined(MAX32690) || defined(MAX78002)
 
 int MXC_USB_LockClockSource(bool lock)
 {
@@ -563,6 +563,13 @@ static void event_in_data(uint32_t irqs)
 
             if (!ep) {
                 if (MXC_USB_Request[ep]->actlen == MXC_USB_Request[ep]->reqlen) {
+#ifdef USE_ZEPHYR_USB_STACK
+                    /* Send ZLP */
+                    if (MXC_USB_Request[ep]->has_zlp) {
+                        MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
+                        continue;
+                    }
+#endif
                     /* Implicit status-stage ACK, move state machine back to IDLE */
                     setup_phase = SETUP_IDLE;
                     MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY | MXC_F_USBHS_CSR0_DATA_END;
@@ -584,6 +591,19 @@ static void event_in_data(uint32_t irqs)
 
         } else {
             /* all done sending data */
+#ifdef USE_ZEPHYR_USB_STACK
+            if (MXC_USB_Request[ep]->has_zlp) {
+                MXC_USB_Request[ep]->has_zlp = false;
+
+                if (!ep) { /* For EP0, ZLP is sent, complete transmission */
+                    setup_phase = SETUP_IDLE;
+                    MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY | MXC_F_USBHS_CSR0_DATA_END;
+                } else { /* Send ZLP */
+                    MXC_USBHS->incsrl = MXC_F_USBHS_INCSRL_INPKTRDY;
+                    return;
+                }
+            }
+#endif
 
             /* free request */
             MXC_USB_Request[ep] = NULL;
@@ -941,7 +961,9 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
 
     /* Check for follow-on data and advance state machine */
     if (sud->wLength > 0) {
+#ifndef USE_ZEPHYR_USB_STACK
         MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_SERV_OUTPKTRDY;
+#endif
         /* Determine if IN or OUT data follows */
         if (sud->bmRequestType & RT_DEV_TO_HOST) {
             setup_phase = SETUP_DATA_IN;
@@ -1043,6 +1065,15 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 
         if (!ep) {
             if (MXC_USB_Request[ep]->actlen == MXC_USB_Request[ep]->reqlen) {
+#ifdef USE_ZEPHYR_USB_STACK
+                /* Send ZLP */
+                if (MXC_USB_Request[ep]->has_zlp) {
+                    MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
+                    MXC_SYS_Crit_Exit();
+                    return 0;
+                }
+#endif
+
                 /* Implicit status-stage ACK, move state machine back to IDLE */
                 setup_phase = SETUP_IDLE;
                 MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY | MXC_F_USBHS_CSR0_DATA_END;

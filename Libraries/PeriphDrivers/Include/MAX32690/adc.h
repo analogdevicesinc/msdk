@@ -44,10 +44,12 @@ extern "C" {
  * @{
  */
 
-/* MAX32672 Specific */
-#define MAX_ADC_SLOT_NUM 29
+/* MAX32690 Specific */
+#define MAX_ADC_SLOT_NUM \
+    21 ///< Channels 8-11 and 16-17 are reserved. This definition is used to check max slot ID limit
 #define MAX_ADC_FIFO_LEN 16
 #define MAX_ADC_RES_DIV_CH 12
+
 /***************************************************************************************************************
                                     DATA STRUCTURES FOR ADC INITIALIZATION
 ***************************************************************************************************************/
@@ -69,6 +71,9 @@ typedef enum {
     MXC_ADC_CH_TEMP_SENS = 13, ///< Select Channel 13
     MXC_ADC_CH_VCOREA = 14, ///< Select Channel 14
     MXC_ADC_CH_VSS = 15, ///< Select Channel 15
+    MXC_ADC_CH_VDBB3A_DIV4 = 18, ///< Select Channel 18
+    MXC_ADC_CH_VDBB_DIV4 = 19, ///< Select Channel 19
+    MXC_ADC_CH_VSSA = 20, ///< Select Channel 20
 } mxc_adc_chsel_t;
 
 /**
@@ -332,6 +337,20 @@ int MXC_ADC_StartConversion(void);
 int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback);
 
 /**
+ * @brief   Perform a stream conversion on a specific channel
+ * @note    The channel must be configured separately
+ *          The ADC interrupt must be enabled and MXC_ADC_Handler() called in the ISR
+ *          places data in the error parameter of the callback function
+ *          Has different flags but behaves same as MXC_ADC_StartConversionAsync.
+ *          Enables interrupts for FIFO level only and starts ADC in continuous mode.
+ *
+ * @param   callback the function to call when the conversion is complete
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_ADC_StartConversionAsyncStream(mxc_adc_complete_cb_t callback);
+
+/**
  * @brief   Perform a conversion on a specific channel using a DMA transfer.
  *          DMA channel must be acquired using \ref MXC_DMA_AcquireChannel and should
  *          be passed to this function via "dma_channel" member of "req" input struct.
@@ -355,6 +374,15 @@ int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, int *data,
  */
 
 int MXC_ADC_Handler(void);
+
+/**
+ * @brief   Free the continous conversion resources.
+ * @note    Free the callback without need to change current
+ *          Revb Handler to keep backward compatibility.
+ *
+ * @param   None
+ */
+void MXC_ADC_Free(void);
 
 /**
  * @brief   Selects the analog input divider.

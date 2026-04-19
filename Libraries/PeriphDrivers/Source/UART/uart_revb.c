@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2025 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@
 #define MXC_UART_REVB_ERRINT_FL \
     (MXC_F_UART_REVB_INT_FL_RX_FERR | MXC_F_UART_REVB_INT_FL_RX_PAR | MXC_F_UART_REVB_INT_FL_RX_OV)
 
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE)
 #ifndef MXC_DMA0
 // TrustZone support to keep up with naming convention.
 //  For ME30, non-secure DMA (DMA0) is accessible from Secure code using non-secure mapping.
@@ -49,7 +49,7 @@
 // Placing this here to limit scope of this definition to this file.
 #define MXC_DMA0 MXC_DMA0_NS
 #endif
-#else
+#elif (defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0))
 #ifndef MXC_DMA1
 // Non-Secure world can not access Secure DMA (DMA1).
 // Placing this here to limit scope of this definition to this file.
@@ -382,11 +382,15 @@ int MXC_UART_RevB_AbortTransmission(mxc_uart_revb_regs_t *uart)
     MXC_UART_ClearTXFIFO((mxc_uart_regs_t *)uart);
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
+    MXC_UART_RevB_AsyncStop(uart);
+
     if (states[uart_num].channelTx >= 0) {
         MXC_DMA_Stop(states[uart_num].channelTx);
+        MXC_UART_RevB_DMACallback(states[uart_num].channelTx, E_ABORT);
     }
     if (states[uart_num].channelRx >= 0) {
         MXC_DMA_Stop(states[uart_num].channelRx);
+        MXC_UART_RevB_DMACallback(states[uart_num].channelRx, E_ABORT);
     }
 
     if (states[uart_num].auto_dma_handlers) {
@@ -636,7 +640,7 @@ int MXC_UART_RevB_Transaction(mxc_uart_revb_req_t *req)
 
         while (req->txCnt < req->txLen) {
             while (!(MXC_UART_GetFlags((mxc_uart_regs_t *)(req->uart)) &
-                     MXC_F_UART_REVB_INT_FL_TX_HE) &&
+                     (MXC_F_UART_REVB_INT_FL_TX_HE | MXC_F_UART_REVB_INT_FL_TX_OB)) &&
                    !(req->uart->status & MXC_F_UART_REVB_STATUS_TX_EM)) {}
 
             numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
@@ -644,7 +648,8 @@ int MXC_UART_RevB_Transaction(mxc_uart_revb_req_t *req)
                                                                   numToWrite;
             req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart),
                                                &req->txData[req->txCnt], numToWrite);
-            MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_FL_TX_HE);
+            MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart),
+                                (MXC_F_UART_REVB_INT_FL_TX_HE | MXC_F_UART_REVB_INT_FL_TX_OB));
         }
     }
 
@@ -709,7 +714,8 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
             NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uart_num));
         } else {
             /* Else enable the half empty interrupt */
-            MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE);
+            MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart),
+                               (MXC_F_UART_REVB_INT_EN_TX_HE | MXC_F_UART_REVB_INT_EN_TX_OB));
         }
     }
 
@@ -745,9 +751,11 @@ int MXC_UART_RevB_AsyncTxCallback(mxc_uart_revb_regs_t *uart, int retVal)
 {
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
+    // Store and Cleanup Async Transaction
     mxc_uart_req_t *req = (mxc_uart_req_t *)AsyncTxRequests[uart_num];
+    AsyncTxRequests[uart_num] = NULL;
+
     if ((req != NULL) && (req->callback != NULL)) {
-        AsyncTxRequests[uart_num] = NULL;
         req->callback(req, retVal);
     }
 
@@ -758,9 +766,11 @@ int MXC_UART_RevB_AsyncRxCallback(mxc_uart_revb_regs_t *uart, int retVal)
 {
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
+    // Store and Cleanup Async Transaction
     mxc_uart_req_t *req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];
+    AsyncRxRequests[uart_num] = NULL;
+
     if ((req != NULL) && (req->callback != NULL)) {
-        AsyncRxRequests[uart_num] = NULL;
         req->callback(req, retVal);
     }
 
@@ -783,7 +793,8 @@ int MXC_UART_RevB_AsyncCallback(mxc_uart_revb_regs_t *uart, int retVal)
 
 int MXC_UART_RevB_AsyncStopTx(mxc_uart_revb_regs_t *uart)
 {
-    MXC_UART_DisableInt((mxc_uart_regs_t *)uart, MXC_F_UART_REVB_INT_EN_TX_HE);
+    MXC_UART_DisableInt((mxc_uart_regs_t *)uart,
+                        (MXC_F_UART_REVB_INT_EN_TX_HE | MXC_F_UART_REVB_INT_EN_TX_OB));
 
     return E_NO_ERROR;
 }
@@ -838,7 +849,8 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
         numToWrite = MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
                                           numToWrite);
         req->txCnt += numToWrite;
-        MXC_UART_ClearFlags(req->uart, MXC_F_UART_REVB_INT_FL_TX_HE);
+        MXC_UART_ClearFlags(req->uart,
+                            (MXC_F_UART_REVB_INT_FL_TX_HE | MXC_F_UART_REVB_INT_FL_TX_OB));
     }
 
     req = (mxc_uart_req_t *)AsyncRxRequests[uart_num];
@@ -888,7 +900,7 @@ void MXC_UART_RevA_DMA0_Handler(void)
     MXC_DMA_Handler(MXC_DMA0);
 }
 
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 void MXC_UART_RevA_DMA1_Handler(void)
 {
     MXC_DMA_Handler(MXC_DMA1);
@@ -913,7 +925,7 @@ void MXC_UART_RevB_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
     if (dma_instance == MXC_DMA0) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA0_Handler);
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
         // Only secure code has access to Secure DMA (DMA1).
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_instance, channel), MXC_UART_RevA_DMA1_Handler);
@@ -1113,6 +1125,9 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req, mxc_dma_regs_t *dma)
     MXC_DMA_Init();
 #endif
 
+    // All error interrupts are related to RX
+    MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_UART_REVB_ERRINT_EN);
+
     // Reset rx/tx counters,
     req->rxCnt = 0;
     req->txCnt = 0;
@@ -1174,7 +1189,7 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
                 /* Only call TX callback if RX component is complete/disabled. Note that
                 we are checking the request associated with the _channel_ assignment, not
                 the other side of the state struct. */
-                temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
+                temp_req->callback((mxc_uart_req_t *)temp_req, error);
             }
             break;
         } else if (states[i].channelRx == ch) {
@@ -1189,7 +1204,7 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
             if (temp_req->callback != NULL &&
                 ((states[i].rx_req->txCnt == states[i].rx_req->txLen) ||
                  states[i].rx_req->txData == NULL)) {
-                temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
+                temp_req->callback((mxc_uart_req_t *)temp_req, error);
             }
             break;
         }

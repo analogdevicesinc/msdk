@@ -38,7 +38,7 @@ extern "C" {
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: INRO was previously named NANORING */
 #ifndef INRO_FREQ
-#define INRO_FREQ 100000
+#define INRO_FREQ 131000
 #endif
 
 #ifndef IPO_FREQ

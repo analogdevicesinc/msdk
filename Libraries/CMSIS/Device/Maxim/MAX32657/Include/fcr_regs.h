@@ -48,7 +48,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -114,12 +118,6 @@ typedef struct {
  * @brief    Function Control 0 Register.
  * @{
  */
-#define MXC_F_FCR_CTRL_BTLELDO_RF_POS                  0 /**< CTRL_BTLELDO_RF Position */
-#define MXC_F_FCR_CTRL_BTLELDO_RF                      ((uint32_t)(0x1FUL << MXC_F_FCR_CTRL_BTLELDO_RF_POS)) /**< CTRL_BTLELDO_RF Mask */
-
-#define MXC_F_FCR_CTRL_BTLELDO_BB_POS                  8 /**< CTRL_BTLELDO_BB Position */
-#define MXC_F_FCR_CTRL_BTLELDO_BB                      ((uint32_t)(0x1FUL << MXC_F_FCR_CTRL_BTLELDO_BB_POS)) /**< CTRL_BTLELDO_BB Mask */
-
 #define MXC_F_FCR_CTRL_I3CDGEN0_POS                    20 /**< CTRL_I3CDGEN0 Position */
 #define MXC_F_FCR_CTRL_I3CDGEN0                        ((uint32_t)(0x1UL << MXC_F_FCR_CTRL_I3CDGEN0_POS)) /**< CTRL_I3CDGEN0 Mask */
 
@@ -215,8 +213,8 @@ typedef struct {
  * @brief    Interrupt Flag Register.
  * @{
  */
-#define MXC_F_FCR_INTFL_ERTOC_RDY_POS                  0 /**< INTFL_ERTOC_RDY Position */
-#define MXC_F_FCR_INTFL_ERTOC_RDY                      ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_ERTOC_RDY_POS)) /**< INTFL_ERTOC_RDY Mask */
+#define MXC_F_FCR_INTFL_ERFO_RDY_POS                   0 /**< INTFL_ERFO_RDY Position */
+#define MXC_F_FCR_INTFL_ERFO_RDY                       ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_ERFO_RDY_POS)) /**< INTFL_ERFO_RDY Mask */
 
 #define MXC_F_FCR_INTFL_FRQCNT_POS                     1 /**< INTFL_FRQCNT Position */
 #define MXC_F_FCR_INTFL_FRQCNT                         ((uint32_t)(0x1UL << MXC_F_FCR_INTFL_FRQCNT_POS)) /**< INTFL_FRQCNT Mask */
@@ -229,8 +227,8 @@ typedef struct {
  * @brief    Interrupt Enable Register.
  * @{
  */
-#define MXC_F_FCR_INTEN_ERTOC_RDY_POS                  0 /**< INTEN_ERTOC_RDY Position */
-#define MXC_F_FCR_INTEN_ERTOC_RDY                      ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_ERTOC_RDY_POS)) /**< INTEN_ERTOC_RDY Mask */
+#define MXC_F_FCR_INTEN_ERFO_RDY_POS                   0 /**< INTEN_ERFO_RDY Position */
+#define MXC_F_FCR_INTEN_ERFO_RDY                       ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_ERFO_RDY_POS)) /**< INTEN_ERFO_RDY Mask */
 
 #define MXC_F_FCR_INTEN_FRQCNT_POS                     1 /**< INTEN_FRQCNT Position */
 #define MXC_F_FCR_INTEN_FRQCNT                         ((uint32_t)(0x1UL << MXC_F_FCR_INTEN_FRQCNT_POS)) /**< INTEN_FRQCNT Mask */

@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,21 +77,23 @@ typedef enum {
 /**
  * @brief      This function initializes the pulse trains to a known stopped
  *             state and sets the global PT clock scale.
+ * @note       If you wish to manage clock settings externally, define the flag
+ *             MSDK_NO_GPIO_CLK_INIT.
  * @param      ptg        pointer to pulse train global bus to use.
- * @param      clk_scale  Scale the system clock for the global PT clock.
+ * @param      clk_scale  Scale the system clock for the global PT clock. Does not
+ *                        have any effect if MSDK_NO_GPIO_CLK_INIT is defined.
  */
 void MXC_PT_Init(mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale);
 
 /**
  * @brief      Shutdown the pulse train channel/channels.
- * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train clock.
+ * @details    Shutdown pulse train and if all pulse trains are shut down then
+ *             turn off pulse train clock. If MSDK_NO_GPIO_CLK_INIT is defined,
+ *             pulse train clock remains enabled.
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      ptg    Pointer to pulse train global bus to use.
  * @param      pts    Pulse train channel to operate on.
- *
- * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes
- *             "error" if unsuccessful.
  */
 void MXC_PT_Shutdown(mxc_ptg_regs_t *ptg, uint32_t pts);
 
@@ -99,7 +101,8 @@ void MXC_PT_Shutdown(mxc_ptg_regs_t *ptg, uint32_t pts);
  * @brief      Configures the pulse train in the specified mode.
  * @details    The parameters in the config structure must be set before calling
  *             this function. This function should be used for configuring pulse
- *             train mode only.
+ *             train mode only. If MSDK_NO_GPIO_CLK_INIT is defined, GPIO
+ *             configuration is skipped.
  * @note       The pulse train cannot be running when this function is called.
  *
  * @param      ptg     Pointer to pulse train global bus to use.
@@ -118,7 +121,8 @@ int MXC_PT_Config(mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg);
  * @param   ptg             Pointer to pulse train global bus to use.
  * @param   channel         Pulse train channel to operate on
  * @param   freq            Square wave output frequency in Hz
- * @param   outputSelect    Select the output to route the pulse train channel to. 0 for output 0, non-zero for output 1.
+ * @param   outputSelect    Select the output to route the pulse train channel to.
+ *                          0 for output 0, non-zero for output 1.
  *
  * @returns #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */

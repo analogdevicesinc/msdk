@@ -88,30 +88,20 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     //clear mask
     gpio_cfg_spi.mask = 0;
 
-    // TODO(ME30): Validate pin assignments
-    // check rest of the pins
     if (pins.clock) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_23;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_6;
     }
 
     if (pins.miso) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_22;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_4;
     }
 
     if (pins.mosi) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_21;
-    }
-
-    if (pins.sdio2) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_24;
-    }
-
-    if (pins.sdio3) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_25;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_2;
     }
 
     if (pins.ss0) {
-        gpio_cfg_spi.mask |= MXC_GPIO_PIN_20;
+        gpio_cfg_spi.mask |= MXC_GPIO_PIN_3;
     }
 
     gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
@@ -146,40 +136,9 @@ int MXC_SPI_ReadyForSleep(mxc_spi_regs_t *spi)
 
 int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 {
-    int retval;
+    (void)spi;
 
-    // TODO(ME30): Validate this logic
-    int sys_clk = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
-                  MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
-    switch (sys_clk) {
-    case MXC_SYS_CLOCK_IPO:
-        retval = IPO_FREQ;
-        break;
-    case MXC_SYS_CLOCK_IBRO:
-        retval = IBRO_FREQ;
-        break;
-    case MXC_SYS_CLOCK_INRO:
-        retval = INRO_FREQ;
-        break;
-    case MXC_SYS_CLOCK_ERTCO:
-        retval = ERTCO_FREQ;
-        break;
-        // TODO(ME30): EXTCLK definition is missing from registers
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     retval = EXTCLK_FREQ;
-        //     break;
-#if TARGET_NUM == 32655 || TARGET_NUM == 32680
-    case MXC_SYS_CLOCK_ERFO:
-        retval = ERFO_FREQ;
-        break;
-#endif
-    default:
-        return E_BAD_STATE;
-    }
-
-    retval /= 2;
-
-    return retval;
+    return PeripheralClock / 2;
 }
 
 int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, unsigned int hz)

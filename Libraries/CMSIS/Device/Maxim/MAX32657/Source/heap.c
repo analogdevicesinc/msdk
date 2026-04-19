@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <unistd.h>
+#include <malloc.h>
 
 /*
  sbrk
@@ -47,4 +48,80 @@ caddr_t _sbrk(int incr)
     heap_end += incr;
 
     return (caddr_t)prev_heap_end;
+}
+
+// struct mallinfo {
+//   size_t arena;    /* total space allocated from system */
+//   size_t ordblks;  /* number of non-inuse chunks */
+//   size_t smblks;   /* unused -- always zero */
+//   size_t hblks;    /* number of mmapped regions */
+//   size_t hblkhd;   /* total space in mmapped regions */
+//   size_t usmblks;  /* unused -- always zero */
+//   size_t fsmblks;  /* unused -- always zero */
+//   size_t uordblks; /* total allocated space */
+//   size_t fordblks; /* total non-inuse space */
+//   size_t keepcost; /* top-most, releasable (via malloc_trim) space */
+// };
+
+/*
+The structure fields contain the following information:
+
+       arena  The total amount of memory allocated by means other than
+              mmap(2) (i.e., memory allocated on the heap).  This figure
+              includes both in-use blocks and blocks on the free list.
+
+       ordblks
+              The number of ordinary (i.e., non-fastbin) free blocks.
+
+       smblks The number of fastbin free blocks (see mallopt(3)).
+
+       hblks  The number of blocks currently allocated using mmap(2).
+              (See the discussion of M_MMAP_THRESHOLD in mallopt(3).)
+
+       hblkhd The number of bytes in blocks currently allocated using
+              mmap(2).
+
+       usmblks
+              This field is unused, and is always 0.  Historically, it
+              was the "highwater mark" for allocated space—that is, the
+              maximum amount of space that was ever allocated (in
+              bytes); this field was maintained only in nonthreading
+              environments.
+
+       fsmblks
+              The total number of bytes in fastbin free blocks.
+
+       uordblks
+              The total number of bytes used by in-use allocations.
+
+       fordblks
+              The total number of bytes in free blocks.
+
+       keepcost
+              The total amount of releasable free space at the top of
+              the heap.  This is the maximum number of bytes that could
+              ideally (i.e., ignoring page alignment restrictions, and
+              so on) be released by malloc_trim(3).
+*/
+
+struct mallinfo mallinfo(void)
+{
+    struct mallinfo temp_mallinfo;
+
+    if (heap_end == 0) {
+        heap_end = (caddr_t)&__HeapBase;
+    }
+
+    temp_mallinfo.arena = ((size_t)&__HeapLimit - (size_t)&__HeapBase);
+    temp_mallinfo.ordblks = 0; /* Unused */
+    temp_mallinfo.smblks = 0; /* Unused */
+    temp_mallinfo.hblks = 0; /* Unused */
+    temp_mallinfo.hblkhd = 0; /* Unused */
+    temp_mallinfo.usmblks = 0; /* Unused */
+    temp_mallinfo.fsmblks = 0; /* Unused */
+    temp_mallinfo.uordblks = (size_t)heap_end - (size_t)&__HeapBase;
+    temp_mallinfo.fordblks = (size_t)&__HeapLimit - (size_t)heap_end;
+    temp_mallinfo.keepcost = 0 /* Unused */;
+
+    return temp_mallinfo;
 }

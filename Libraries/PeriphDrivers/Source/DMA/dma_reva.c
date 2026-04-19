@@ -49,7 +49,9 @@ typedef struct {
 static unsigned int dma_initialized[MXC_DMA_INSTANCES] = { 0 };
 static mxc_dma_channel_t dma_resource[MXC_DMA_CHANNELS];
 static mxc_dma_highlevel_t memcpy_resource[MXC_DMA_CHANNELS];
+#ifndef __riscv
 static uint32_t dma_lock;
+#endif
 
 /****** Functions ******/
 static void memcpy_callback(int ch, int error);
@@ -131,7 +133,7 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
 
 #if TARGET_NUM == 32665
     numCh = MXC_DMA_CH_OFFSET;
-    offset = MXC_DMA_CH_OFFSET * dma_idx;
+    offset = numCh * dma_idx;
 #else
     numCh = MXC_DMA_CHANNELS;
     offset = 0;
@@ -166,14 +168,18 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
 int MXC_DMA_RevA_ReleaseChannel(int ch)
 {
     if (CHECK_HANDLE(ch)) {
+#ifndef __riscv
         if (MXC_GetLock(&dma_lock, 1) != E_NO_ERROR) {
             return E_BUSY;
         }
+#endif
 
         dma_resource[ch].valid = 0;
         dma_resource[ch].regs->ctrl = 0;
         dma_resource[ch].regs->status = dma_resource[ch].regs->status;
+#ifndef __riscv
         MXC_FreeLock(&dma_lock);
+#endif
     } else {
         return E_BAD_PARAM;
     }
@@ -203,8 +209,8 @@ int MXC_DMA_RevA_AdvConfigChannel(mxc_dma_adv_config_t advConfig)
         dma_resource[advConfig.ch].regs->ctrl &= ~(0x1F00FC0C); // Clear all fields we set here
         /* Designed to be safe, not speedy. Should not be called often */
         dma_resource[advConfig.ch].regs->ctrl |=
-            ((advConfig.reqwait_en ? MXC_F_DMA_REVA_CTRL_TO_WAIT : 0) | advConfig.prio |
-             advConfig.tosel | advConfig.pssel |
+            ((advConfig.reqwait_en ? MXC_F_DMA_REVA_CTRL_TO_WAIT : 0) |
+             (advConfig.prio << MXC_F_DMA_REVA_CTRL_PRI_POS) | advConfig.tosel | advConfig.pssel |
              (((advConfig.burst_size - 1) << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS) &
               MXC_F_DMA_REVA_CTRL_BURST_SIZE));
     } else {
@@ -417,14 +423,21 @@ mxc_dma_ch_regs_t *MXC_DMA_RevA_GetCHRegs(int ch)
 
 void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma)
 {
-    int numCh = MXC_DMA_CHANNELS / MXC_DMA_INSTANCES;
+    int numCh;
     int dma_idx;
     int offset;
 
     dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
     MXC_ASSERT(dma_idx >= 0);
 
+#if TARGET_NUM == 32665
+    numCh = MXC_DMA_CH_OFFSET;
     offset = numCh * dma_idx;
+#else
+    numCh = MXC_DMA_CHANNELS;
+    offset = 0;
+#endif
+
     /* Do callback, if enabled */
     for (int i = offset; i < (offset + numCh); i++) {
         if (CHECK_HANDLE(i)) {

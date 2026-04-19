@@ -52,24 +52,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>AESKG_MEU</name>
-            <description>Generate and transfer 256 bit MEU key to AES Key storage.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>AESKG_MEMPROT_XIP</name>
-            <description>Generate and transfer 128 bit MEMPROT_XIP key to AES key storage.</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>AESKG_MEMPROT_DIP</name>
-            <description>Generate and transfer 128 bit MEMPROT_DIP key to AES key storage.</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
             <name>OD_ROMON</name>
             <description>Start ring oscillator monitor on demand test.</description>
             <bitOffset>6</bitOffset>
@@ -97,12 +79,6 @@
             <name>EBLS</name>
             <description>Entropy Bit Load Select.</description>
             <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>KEYWIPE</name>
-            <description>To wipe the Battery Backed key.</description>
-            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
@@ -204,12 +180,6 @@
             <name>SRCFAIL</name>
             <description>Entropy source has failed.</description>
             <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>AES_KEYGEN</name>
-            <description>AESKGD.</description>
-            <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>

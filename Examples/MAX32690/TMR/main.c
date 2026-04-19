@@ -233,13 +233,13 @@ int main(void)
 
     printf("\n**************************Timer Example **************************\n\n");
     printf("1. A oneshot mode timer, Timer 4 (lptimer) is used to create\n");
-    printf("   an interrupt at a freq of %d Hz. LED 2 (Port 2.12) will toggle\n", OST_FREQ);
+    printf("   an interrupt at a freq of %d Hz. LED 1 (Port 2.12) will toggle\n", OST_FREQ);
     printf("   when the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 0.7.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
     printf("3. Timer 1 is configured as a 32-bit timer used in continuous\n");
     printf("   mode which is used to create an interrupt at a freq of %d Hz.\n", CONT_FREQ);
-    printf("   LED 1 (Port 0.14) will toggle each time the oneshot timer is\n   finished "
+    printf("   LED 0 (Port 0.14) will toggle each time the oneshot timer is\n   finished "
            "running.\n\n");
 #if defined(EvKit_V1)
     printf("Push SW2 to start the PWM and continuous timers initially. Then\nuse SW2 to run the "

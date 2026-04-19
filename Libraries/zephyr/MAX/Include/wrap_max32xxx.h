@@ -36,11 +36,11 @@ extern "C" {
 #elif defined(CONFIG_SOC_MAX32655)
 #include <max32655.h>
 #elif defined(CONFIG_SOC_MAX32660)
-#include <max326660.h>
+#include <max32660.h>
 #elif defined(CONFIG_SOC_MAX32662)
 #include <max32662.h>
 #elif defined(CONFIG_SOC_MAX32665)
-#include <max326665.h>
+#include <max32665.h>
 #elif defined(CONFIG_SOC_MAX32666)
 #include <max32665.h>
 #elif defined(CONFIG_SOC_MAX32670)

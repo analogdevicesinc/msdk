@@ -1,15 +1,15 @@
 /**
  * @file    main.c
  * @brief   SPI Master Demo
- * @details Shows Master loopback demo for QSPI1
+ * @details Shows Master loopback demo for MAX32650
  *          Read the printf() for instructions
  */
 
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,8 +56,34 @@
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
 
+/* Default to SPI1 if not specified */
+#ifndef TEST_SPI_NUM
+#define TEST_SPI_NUM 1
+#endif
+
+#if TEST_SPI_NUM == 0
+#define SPI MXC_SPI0
+#define SPI_IRQ SPI0_IRQn
+#define SPI_MISO_STR "P3.1"
+#define SPI_MOSI_STR "P3.2"
+#elif TEST_SPI_NUM == 1
 #define SPI MXC_SPI1
 #define SPI_IRQ SPI1_IRQn
+#define SPI_MISO_STR "P1.28"
+#define SPI_MOSI_STR "P1.29"
+#elif TEST_SPI_NUM == 2
+#define SPI MXC_SPI2
+#define SPI_IRQ SPI2_IRQn
+#define SPI_MISO_STR "P2.3"
+#define SPI_MOSI_STR "P2.4"
+#elif TEST_SPI_NUM == 3
+#define SPI MXC_SPI3
+#define SPI_IRQ SPI3_IRQn
+#define SPI_MISO_STR "P0.20"
+#define SPI_MOSI_STR "P0.21"
+#else
+#error "Invalid SPI Instance specified!"
+#endif
 
 /***** Globals *****/
 uint16_t rx_data[DATA_LEN];
@@ -66,7 +92,7 @@ volatile int SPI_FLAG;
 volatile uint8_t DMA_FLAG = 0;
 
 /***** Functions *****/
-void SPI0_IRQHandler(void)
+void SPI_IRQHandler(void)
 {
     MXC_SPI_AsyncHandler(SPI);
 }
@@ -94,11 +120,11 @@ int main(void)
     mxc_spi_req_t req;
 
     printf("\n************** SPI Loopback Demo ****************\n");
-    printf("This example configures the SPI to send data between the MISO (P1.28) and\n");
-    printf("MOSI (P1.29) pins.  Connect these two pins together.  This demo shows SPI\n");
-    printf("sending different bit sizes each run through. If successful, the green LED will\n");
-    printf("illuminate.\n");
-
+    printf("This example configures the SPI to send data between the MISO (" SPI_MISO_STR
+           ") and\n");
+    printf("MOSI (" SPI_MOSI_STR ") pins.  Connect these two pins together.\n");
+    printf("This demo shows SPI sending different bit sizes each run through.\n"
+           "If successful, the green LED will illuminate.\n");
     printf("\nThis demo shows Asynchronous, Synchronous and DMA transaction for SPI1\n");
 
     for (i = 1; i < 17; i++) {
@@ -149,7 +175,7 @@ int main(void)
 #endif
 
 #if MASTERASYNC
-        MXC_NVIC_SetVector(SPI_IRQ, SPI0_IRQHandler);
+        MXC_NVIC_SetVector(SPI_IRQ, SPI_IRQHandler);
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 

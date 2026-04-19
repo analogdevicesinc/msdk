@@ -124,7 +124,7 @@ typedef struct {
     mxc_hpb_device_t device_type;
 
     /** Pointer to array of address offset/value pairs */
-    mxc_hpb_cfg_reg_val_t *cfg_reg_val;
+    const mxc_hpb_cfg_reg_val_t *cfg_reg_val;
 
     /** number of configuration pairs */
     unsigned int cfg_reg_val_len;
@@ -174,7 +174,8 @@ void MXC_HPB_RegRead8(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, un
  * @param base_addr    Base address
  * @param index        0 or 1 to determine which configuration settings    
 */
-void MXC_HPB_RegWrite8(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index);
+void MXC_HPB_RegWrite8(const mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr,
+                       unsigned int index);
 
 /**
  * @brief Read a variable
@@ -190,7 +191,8 @@ void MXC_HPB_RegRead16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, u
  * @param base_addr    Base address
  * @param index        0 or 1 to determine which configuration settings    
 */
-void MXC_HPB_RegWrite16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index);
+void MXC_HPB_RegWrite16(const mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr,
+                        unsigned int index);
 
 /**
  * @brief Configure the HyperBus peripheral.
@@ -200,7 +202,7 @@ void MXC_HPB_RegWrite16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, 
  *             this memory not used)
  * @return #E_BAD_PARAM if configuration error, #E_NO_ERROR otherwise
  */
-int MXC_HPB_Init(mxc_hpb_mem_config_t *mem0, mxc_hpb_mem_config_t *mem1);
+int MXC_HPB_Init(const mxc_hpb_mem_config_t *mem0, const mxc_hpb_mem_config_t *mem1);
 
 /**
  * @brief   Returns the contents of the status register.

@@ -171,10 +171,11 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
 /**
  * @brief   Initialize and enable I2C peripheral.
  *
- * @note    On default this function enables I2C peripheral clock and i2c gpio pins.
- *          if you wish to manage clock and gpio related things in upper level instead of here.
+ * @note    By default this function enables I2C peripheral clock and i2c gpio pins.
+ *          if you wish to manage clock and gpio related things in the upper level instead of here.
  *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
- *          By this flag this function will remove clock and gpio related codes from file.
+ *          When this flag is set, the compiler will strip all clock and GPIO
+ *          handling code from the file.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   masterMode  Whether to put the device in master or slave mode. Use
@@ -243,8 +244,8 @@ int MXC_I2C_GetFrequency(mxc_i2c_regs_t *i2c);
 /**
  * @brief   Checks if the given I2C bus can be placed in sleep more.
  *
- * This functions checks to see if there are any on-going I2C transactions in
- * progress. If there are transactions in progress, the application should
+ * This function checks whether any I2C transactions are currently in progress.
+ * If there are transactions in progress, the application should
  * wait until the I2C bus is free before entering a low-power state.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
@@ -258,7 +259,7 @@ int MXC_I2C_ReadyForSleep(mxc_i2c_regs_t *i2c);
  * @brief   Enables or disables clock stretching by the slave.
  *
  * Enables or disables clock stretching by the slave. This function has no
- * affect when operating as the master.
+ * effect when operating as a master.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   enable      Enables clock stretching if non-zero, disables if zero.
@@ -294,7 +295,7 @@ int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
 int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
 
 /**
- * @brief   Retreive the DMA TX Channel associated with I2C instance.
+ * @brief   Retrieve the DMA TX Channel associated with the I2C instance.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used).
  *
@@ -304,7 +305,7 @@ int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, 
 int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c);
 
 /**
- * @brief   Retreive the DMA RX Channel associated with I2C instance.
+ * @brief   Retrieve the DMA RX Channel associated with the I2C instance.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used).
  *
@@ -429,7 +430,7 @@ int MXC_I2C_Write(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int *len);
 /**
  * @brief   Read multiple bytes from the I2C bus.
  *
- * Read multiple byte from the I2C bus.  This function assumes the I2C bus is
+ * Read multiple bytes from the I2C bus.  This function assumes the I2C bus is
  * already in the proper state (i.e. a start condition has already been
  * generated and the bus is in the read phase of an I2C transaction).
  *
@@ -754,7 +755,7 @@ int MXC_I2C_MasterTransactionDMA(mxc_i2c_req_t *req);
  *        transmit FIFO (see MXC_I2C_WriteFIFO()).
  *      - The transaction ends.  If the master was writing to the slave, the
  *        receive FIFO may still contain valid data that needs to be
- *        retreived (see MXC_I2C_ReadFIFO()).
+ *        retrieved (see MXC_I2C_ReadFIFO()).
  *      - The transmit FIFO underflows because the master requests data when
  *        the transmit FIFO is empty.
  *      - The receive FIFO overflows because the master writes data while the
@@ -775,7 +776,7 @@ int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t callba
  *
  * Performs a non-blocking I2C slave transaction. This request will remain active
  * until a complete transaction with this slave has been performed.  A
- * transaction begins with the master  begins with the master addressing the
+ * transaction begins with the master addressing the
  * slave and ends with a repeated start condition, a stop condition, or a bus
  * error. The provided callback function will be called for these events:
  *      - A slave address match occurs with the master requesting a write to
@@ -794,7 +795,7 @@ int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t callba
  *        transmit FIFO (see MXC_I2C_WriteFIFO()).
  *      - The transaction ends.  If the master was writing to the slave, the
  *        receive FIFO may still contain valid data that needs to be
- *        retreived (see MXC_I2C_ReadFIFO()).
+ *        retrieved (see MXC_I2C_ReadFIFO()).
  *      - The transmit FIFO underflows because the master requests data when
  *        the transmit FIFO is empty.
  *      - The receive FIFO overflows because the master writes data while the
@@ -803,7 +804,7 @@ int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t callba
  * If clock stretching is disabled, careful attention must be paid to the timing
  * of the callback to avoid losing data on write or unintentionally nacking a read.
  *
- * @note    MXC_I2C_AsyncHandler() must be called peridocally for this function
+ * @note    MXC_I2C_AsyncHandler() must be called periodically for this function
  *          to operate properly.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
@@ -825,7 +826,7 @@ int MXC_I2C_SlaveTransactionAsync(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t c
  * of bytes the slave transaction  functions should receive before issuing a
  * call to their callback function. Smaller values may consume more CPU
  * cycles, but reduce the risk of missing data from the master due to the
- * recieve FIFO being full. Larger values may reduce the number of CPU
+ * receive FIFO being full. Larger values may reduce the number of CPU
  * cycles, but may cause bytes sent from the master to be missed.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)

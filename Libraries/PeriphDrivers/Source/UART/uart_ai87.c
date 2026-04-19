@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -191,8 +191,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = IBRO_FREQ;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
-                   MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK1) {
             periphClock = ERTCO_FREQ * 2;
         } else {
             return E_BAD_PARAM;
@@ -226,14 +225,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
             MXC_GPIO_Config(&gpio_cfg_uart0_flow);
             break;
 
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow);
-            break;
-
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow);
-            break;
-
         default:
             return E_BAD_PARAM;
         }
@@ -241,14 +232,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
         switch (MXC_UART_GET_IDX(uart)) {
         case 0:
             MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable);
-            break;
-
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow_disable);
-            break;
-
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable);
             break;
 
         default:

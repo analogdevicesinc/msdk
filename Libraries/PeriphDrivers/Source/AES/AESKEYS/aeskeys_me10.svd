@@ -4,7 +4,7 @@
     <!-- AESKEYS-->
     <name>AESKEYS</name>
     <description>AES Key Registers.</description>
-    <baseAddress>0x40007800</baseAddress>
+    <baseAddress>0x40005000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x400</size>
@@ -24,7 +24,7 @@
         <dimIncrement>4</dimIncrement>
         <name>KEY1[%s]</name>
         <description>AES Key 1.</description>
-        <addressOffset>0x20</addressOffset>
+        <addressOffset>0x080</addressOffset>
         <size>32</size>
       </register>
       <register>

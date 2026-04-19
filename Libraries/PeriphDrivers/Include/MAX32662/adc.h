@@ -44,7 +44,8 @@ extern "C" {
  */
 
 /* MAX32662 Specific */
-#define MAX_ADC_SLOT_NUM 29
+#define MAX_ADC_SLOT_NUM \
+    19 ///< Channels 4-11, 13, 16-17 are reserved. This definition is used to check max slot ID limit
 #define MAX_ADC_FIFO_LEN 16
 #define MAX_ADC_RES_DIV_CH 12
 
@@ -64,6 +65,7 @@ typedef enum {
     MXC_ADC_CH_VDDA_DIV2 = 12, ///< Select Channel 12
     MXC_ADC_CH_VCOREA = 14, ///< Select Channel 14
     MXC_ADC_CH_VSS = 15, ///< Select Channel 15
+    MXC_ADC_CH_VDDIO_DIV4 = 18 ///< Select Channel 18
 } mxc_adc_chsel_t;
 
 /**

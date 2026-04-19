@@ -11667,6 +11667,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>ASYNC</name>
+       <description>Allows asynchronous reads to the PWM and CNT registers.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>CLKSEL_B</name>
        <description>Timer Clock Select for Timer B</description>
        <bitOffset>16</bitOffset>
@@ -12177,7 +12183,7 @@
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>External_Clock</name>
+         <name>CLK1</name>
          <description>Clock 1</description>
          <value>1</value>
         </enumeratedValue>

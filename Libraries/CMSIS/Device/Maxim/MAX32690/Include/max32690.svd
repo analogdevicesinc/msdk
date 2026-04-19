@@ -2564,6 +2564,24 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>PUFKEYSEL</name>
+       <description>PUF Key Selector.</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>KEY0</name>
+         <description>Select PUF KEY0</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>KEY1</name>
+         <description>Select PUF KEY1</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
      </fields>
     </register>
     <register>
@@ -4787,7 +4805,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <name>CLKDIV</name>
      <description>Flash Clock Divide. The clock (PLL0) is divided by this value to generate a 1 MHz clock for Flash controller.</description>
      <addressOffset>0x04</addressOffset>
-     <resetValue>0x00000064</resetValue>
+     <resetValue>0x00000078</resetValue>
      <fields>
       <field>
        <name>CLKDIV</name>
@@ -6424,6 +6442,35 @@ memory.
      </fields>
     </register>
     <register>
+     <name>PFRST</name>
+     <description>Power Fail Reset Register.</description>
+     <addressOffset>0x10</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Power Fail Reset Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PFSTAT</name>
+     <description>Power Fail Reset Status Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RST</name>
+       <description>Power Fail Reset Status</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
      <name>PCLKDIV</name>
      <description>Peripheral Clock Divider.</description>
      <addressOffset>0x18</addressOffset>
@@ -6778,6 +6825,28 @@ memory.
        <description>Data-Cache Controller Tag Zeroization.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PFBUF</name>
+     <description>Power Fail Reset Buffer Register.</description>
+     <addressOffset>0x34</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>PWRGOOD_BUF</name>
+       <description>Power Good Detection.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>3</bitWidth>
+       <access>read-only</access>
+      </field>
+      <field>
+       <name>PWRGOOD</name>
+       <description>Power Good Detected.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
       </field>
      </fields>
     </register>
@@ -10224,7 +10293,7 @@ memory.
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>INT_EN</name>
+       <name>INTEN</name>
        <description>IRQ Enable.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10236,7 +10305,7 @@ memory.
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>INT_FL</name>
+       <name>INTFL</name>
        <description>IRQ Flag</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12418,6 +12487,143 @@ memory.
    </registers>
   </peripheral>
 <!--PTG Pulse Train Generation-->
+  <peripheral>
+   <name>PUF</name>
+   <description>PUF Registers</description>
+   <baseAddress>0x40070000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>CTRL</name>
+     <description>PUF Control Register.</description>
+     <addressOffset>0x0000</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>PUF_EN</name>
+       <description>PUF Controller Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY_CLR_EN</name>
+       <description>Key Clear Enable or PUFSEC Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY0_GEN_EN</name>
+       <description>PUF Key0 Generation Enable.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY1_GEN_EN</name>
+       <description>PUF Key1 Generation Enable.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEYGEN_ERR_IE</name>
+       <description>Key Generation Error Interrupt Enable.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY0_DN_IE</name>
+       <description>Key0 Done Interrupt Enable.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY1_DN_IE</name>
+       <description>Key1 Done Interrupt Enable </description>
+       <bitOffset>25</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STAT</name>
+     <description>PUF Status Register.</description>
+     <addressOffset>0x0004</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>BUSY</name>
+       <description>PUF Controller Busy.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>MAGIC_ERR</name>
+       <description>PUF Magic Word Error.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEYGEN_EN_ERR</name>
+       <description>PUF Magic Word Error.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEYGEN_ERR</name>
+       <description>PUF Magic Word Error.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADC_FREQ_FL</name>
+       <description>ADC Frequency Flag</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY0_INIT_ERR</name>
+       <description>PUF Key0 Initialization Error.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY0_CNST_ERR</name>
+       <description> PUF Key0 Constant Key Mismatch Error</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY1_INIT_ERR</name>
+       <description>PUF Key1 Initialization Error.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY1_CNST_ERR</name>
+       <description> PUF Key1 Constant Key Mismatch Error</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY0_DN</name>
+       <description>Key0 Done.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEY1_DN</name>
+       <description>Key1 Done.</description>
+       <bitOffset>25</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--PUF PUF Registers-->
   <peripheral>
    <name>PWRSEQ</name>
    <description>Power Sequencer / Low Power Control Register.</description>
@@ -16304,7 +16510,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
   <peripheral derivedFrom="SPI0">
    <name>SPI1</name>
    <description>SPI peripheral. 1</description>
-   <baseAddress>0x400BE000</baseAddress>
+   <baseAddress>0x40047000</baseAddress>
    <interrupt>
     <name>SPI1</name>
     <description>SPI1 IRQ</description>
@@ -16315,7 +16521,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
   <peripheral derivedFrom="SPI0">
    <name>SPI2</name>
    <description>SPI peripheral. 2</description>
-   <baseAddress>0x400BE400</baseAddress>
+   <baseAddress>0x40048000</baseAddress>
    <interrupt>
     <name>SPI2</name>
     <description>SPI2 IRQ</description>
@@ -16323,6 +16529,28 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
    </interrupt>
   </peripheral>
 <!--SPI2 SPI peripheral. 2-->
+  <peripheral derivedFrom="SPI0">
+   <name>SPI3</name>
+   <description>SPI peripheral. 3</description>
+   <baseAddress>0x400BE000</baseAddress>
+   <interrupt>
+    <name>SPI3</name>
+    <description>SPI3 IRQ</description>
+    <value>56</value>
+   </interrupt>
+  </peripheral>
+<!--SPI3 SPI peripheral. 3-->
+  <peripheral derivedFrom="SPI0">
+   <name>SPI4</name>
+   <description>SPI peripheral. 4</description>
+   <baseAddress>0x400BE400</baseAddress>
+   <interrupt>
+    <name>SPI4</name>
+    <description>SPI4 IRQ</description>
+    <value>105</value>
+   </interrupt>
+  </peripheral>
+<!--SPI4 SPI peripheral. 4-->
   <peripheral>
    <name>SPIXR</name>
    <description>SPIXR peripheral.</description>
@@ -19430,6 +19658,12 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <name>OUTBEN_A</name>
        <description>PWM_CKB_EN_O Enable for Modes other than Mode 3 for Timer A</description>
        <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ASYNC</name>
+       <description>Allows asynchronous reads of the PWM and CNT registers.</description>
+       <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>

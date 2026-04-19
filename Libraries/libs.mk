@@ -45,7 +45,12 @@ PROJ_CFLAGS += -DLIB_BOARD
 # in this case we want to avoid building with mismatched BSPs.
 export BOARD
 export BSP_SEARCH_DIR
+ifeq "$(MAXIM_PATH)" ""
+$(warning Warning:  MAXIM_PATH is not set!  Unable to find the MiscDrivers directory.)
+else
 include $(BOARD_DIR)/board.mk
+endif
+
 endif
 # ************************
 
@@ -71,11 +76,16 @@ endif
 # Cordio (Disabled by default)
 # ************************
 LIB_CORDIO ?= 0
-CODED_PHY_DEMO ?= 0
-INIT_EXTENDED ?= 0
 ifeq ($(LIB_CORDIO), 1)
+# Include extended advertising features
+INIT_EXTENDED ?= 0
+
+# Default directory for libphy
+LIB_PHY_DIR ?= $(LIBS_DIR)/BlePhy
+
+BLE_API ?= Cordio
 # Include the Cordio Library
-CORDIO_DIR ?= $(LIBS_DIR)/Cordio
+CORDIO_DIR ?= $(LIBS_DIR)/$(BLE_API)
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 PROJ_CFLAGS += -D__CORDIO__
 
@@ -83,51 +93,33 @@ ifeq ($(INIT_EXTENDED),1)
 PROJ_CFLAGS += -DINIT_EXTENDED=1
 endif
 
-CHIP_REVISION ?= b
-export CHIP_REVISION
-
-# for CHIP_REVISION a ***********************************************
-ifeq ($(CHIP_REVISION),a)
+# Default libphy
 ifeq ($(RISCV_CORE),)
-
 ifeq ($(MFLOAT_ABI),hard)
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_hard.a
+LIB_PHY = $(LIB_PHY_DIR)/$(CHIP_UC)/libphy_hard.a
 else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1.a
+LIB_PHY = $(LIB_PHY_DIR)/$(CHIP_UC)/libphy.a
+endif
+else
+LIB_PHY = $(LIB_PHY_DIR)/$(CHIP_UC)/libphy_riscv.a
 endif
 
-else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_a1_riscv.a
-endif
-
-#*********************************************************************
-
-# for CHIP_REVISION b ***************************************************
-else ifeq ($(CHIP_REVISION),b)
-
-
+# libphy for MAX32655 A1
+ifeq ($(TARGET),MAX32655)
+ifeq ($(TARGET_REV),0x4131)
 ifeq ($(RISCV_CORE),)
-
 ifeq ($(MFLOAT_ABI),hard)
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
+LIB_PHY = $(LIB_PHY_DIR)/$(CHIP_UC)/libphy_a1_hard.a
 else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
+LIB_PHY = $(LIB_PHY_DIR)/$(CHIP_UC)/libphy_a1.a
 endif
-
 else
-LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
+LIB_PHY = $(LIB_PHY_DIR)/$(CHIP_UC)/libphy_a1_riscv.a
 endif
-#**************************************************************************
+endif
 endif
 
-#*********************************************************************
-
-
-ifeq ($(CODED_PHY_DEMO),1)
-PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=1
-else
-PROJ_CFLAGS += -DAPP_CODED_PHY_DEMO=0
-endif
+LIBS += $(LIB_PHY)
 
 query: query.cordio
 
@@ -345,6 +337,14 @@ LIB_CLI ?= 0
 ifeq ($(LIB_CLI), 1)
 LIB_CLI_DIR ?= $(LIBS_DIR)/CLI
 include $(LIB_CLI_DIR)/CLI.mk
+endif
+
+# Unity (Disabled by default)
+# ************************
+LIB_UNITY ?= 0
+ifeq ($(LIB_UNITY), 1)
+LIB_UNITY_DIR ?= $(LIBS_DIR)/Unity
+include $(LIB_UNITY_DIR)/unity.mk
 endif
 # ************************
 

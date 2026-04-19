@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ __weak int main_core1(void)
 }
 
 /**
- * You may over-ride this function in your program by defining a custom 
+ * You may override this function in your program by defining a custom 
  *  PreInit_Core1().
  */
 __weak void PreInit_Core1(void)
@@ -56,11 +56,17 @@ __weak void PreInit_Core1(void)
     return;
 }
 
+__weak int PeripheralInit_Core1(void)
+{
+    /* Do nothing */
+    return E_NO_ERROR;
+}
+
 /**
  * This function is called just before control is transferred to main()
  *  on Core 1.
  *
- * You may over-ride this function in your program by defining a custom 
+ * You may override this function in your program by defining a custom 
  *  SystemInit(), but care should be taken to reproduce the initialization
  *  steps or a non-functional system may result.
  */
@@ -80,4 +86,6 @@ __weak void SystemInit_Core1(void)
     SCB->CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
     __DSB();
     __ISB();
+
+    PeripheralInit_Core1();
 }

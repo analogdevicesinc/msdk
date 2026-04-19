@@ -59,9 +59,20 @@ int main(void)
     uint64_t avg_adc_1 = 0;
 
     status = afe_load_trims(AFE_TIMER_INSTANCE);
+    //
+    // If this fails, AFE may be in unknown state.  Reset it and retry.
+    //
     if (status != E_NO_ERROR) {
-        printf("Error during afe load trims: %d\n", status);
-        while (1) {}
+        printf("Error during afe load trims: %d\n Resting the AFE and trying again...", status);
+
+        afe_reset();
+
+        // Try loading trims again
+        status = afe_load_trims(AFE_TIMER_INSTANCE);
+        if (status != E_NO_ERROR) {
+            printf("Error during afe load trims: %d\n", status);
+            while (1) {}
+        }
     }
 
     printf("\n\n\n\n\nMAX32675 ADC Example\n\n");

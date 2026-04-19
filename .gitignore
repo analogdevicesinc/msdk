@@ -1,4 +1,5 @@
 Examples/*/*/build
+Examples/**/build
 Examples/*/*/buildrv
 Examples/*/*/*/build
 Examples/*/*/*/buildrv

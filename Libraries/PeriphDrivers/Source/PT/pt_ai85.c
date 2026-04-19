@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ void MXC_PT_Init(mxc_clk_scale_t clk_scale)
 {
     MXC_ASSERT(clk_scale <= 128);
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PT);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_PT);
 
@@ -68,21 +69,27 @@ void MXC_PT_Init(mxc_clk_scale_t clk_scale)
         MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128;
         break;
     }
+#endif
 
     MXC_PT_RevA_Init((mxc_ptg_reva_regs_t *)MXC_PTG, clk_scale);
 }
 
 void MXC_PT_Shutdown(uint32_t pts)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (MXC_PT_RevA_Shutdown((mxc_ptg_reva_regs_t *)MXC_PTG, pts)) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_PT);
     }
+#else
+    MXC_PT_RevA_Shutdown((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+#endif
 }
 
 int MXC_PT_Config(mxc_pt_cfg_t *cfg)
 {
     MXC_PT_RevA_Config((mxc_ptg_reva_regs_t *)MXC_PTG, cfg);
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (cfg->channel) {
     case 0:
         MXC_GPIO_Config(&gpio_cfg_pt0);
@@ -103,6 +110,7 @@ int MXC_PT_Config(mxc_pt_cfg_t *cfg)
     default:
         return E_BAD_PARAM;
     }
+#endif
 
     return E_NO_ERROR;
 }

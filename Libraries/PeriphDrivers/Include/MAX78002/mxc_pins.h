@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,8 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3;
-extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;
 
 // Timers are only defined once, depending on package, each timer could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;

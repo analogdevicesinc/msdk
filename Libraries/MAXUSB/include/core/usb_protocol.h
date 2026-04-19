@@ -149,7 +149,10 @@ typedef __packed struct {
 } MXC_USB_interface_descriptor_t;
 
 #define USB_EP_NUM_MASK   0x0F
+
+#ifndef USE_ZEPHYR_USB_STACK
 #define USB_EP_DIR_MASK   0x80
+#endif
 
 #if defined(__GNUC__)
 typedef struct __attribute__((packed)) {

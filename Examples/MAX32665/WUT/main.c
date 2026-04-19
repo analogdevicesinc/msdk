@@ -46,7 +46,7 @@
 /***** Functions *****/
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
 }
 
 // *****************************************************************************

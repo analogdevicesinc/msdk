@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,27 +19,37 @@
     .syntax unified
     .arch armv8-m.main
 
+/******************************************************************************
+ *  Stack Settings
+ *****************************************************************************/
     .section .stack
     .align 3
+
 #ifdef __STACK_SIZE
     .equ      Stack_Size, __STACK_SIZE
 #else
     // Default stack size
     .equ      Stack_Size, 0x00001000
 #endif
+
     .globl    __StackTop
     .globl    __StackLimit
+
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
     // __StackSeal defined in linker script
-    .equ      __STACK_SEAL,  __StackSeal
+    .equ      __STACK_SEAL, __StackSeal
     .globl    __StackSeal
-#endif
+#endif // CMSE
+
 __StackLimit:
     .space    Stack_Size
     .size     __StackLimit, . - __StackLimit
 __StackTop:
     .size     __StackTop, . - __StackTop
 
+/******************************************************************************
+ *  Heap Settings
+ *****************************************************************************/
     .section .heap
     .align 3
 #ifdef __HEAP_SIZE
@@ -58,6 +68,9 @@ __HeapBase:
 __HeapLimit:
     .size __HeapLimit, . - __HeapLimit
 
+/******************************************************************************
+ *  Define Interrupt Vector Table
+ *****************************************************************************/
     .section .isr_vector
     .align 9 /* must be aligned to 512 byte boundary. VTOR requirement */
     .globl __isr_vector
@@ -140,6 +153,11 @@ __isr_vector:
     .long RSV52_IRQHandler              /* 0x4A  0x0110  68: Reserved */
     .long RSV53_IRQHandler              /* 0x4B  0x0114  69: Reserved */
 
+/******************************************************************************
+ *  Define .text section
+ *      - Startup (Reset_Handler) routines
+ *      - Default interrupt service routines
+ *****************************************************************************/
     .text 	
     .thumb
     .thumb_func

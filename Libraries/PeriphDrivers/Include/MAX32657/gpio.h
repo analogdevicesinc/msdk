@@ -130,8 +130,8 @@ typedef enum {
  *
  *          For example:
  *              MXC_GPIO_DRVSTR_0: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 0
- *              MXC_GPIO_DRVSTR_1: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 1
- *              MXC_GPIO_DRVSTR_2: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_1: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 0
+ *              MXC_GPIO_DRVSTR_2: GPIO_DS1[pin] = 0; GPIO_DS0[pin] = 1
  *              MXC_GPIO_DRVSTR_3: GPIO_DS1[pin] = 1; GPIO_DS0[pin] = 1
  *
  *          Refer to the user guide and datasheet to select the
@@ -141,8 +141,8 @@ typedef enum {
  */
 typedef enum {
     MXC_GPIO_DRVSTR_0, /**< Drive Strength GPIO_DS[2][pin]=0b00 */
-    MXC_GPIO_DRVSTR_1, /**< Drive Strength GPIO_DS[2][pin]=0b01 */
-    MXC_GPIO_DRVSTR_2, /**< Drive Strength GPIO_DS[2][pin]=0b10 */
+    MXC_GPIO_DRVSTR_2, /**< Drive Strength GPIO_DS[2][pin]=0b01 */
+    MXC_GPIO_DRVSTR_1, /**< Drive Strength GPIO_DS[2][pin]=0b10 */
     MXC_GPIO_DRVSTR_3, /**< Drive Strength GPIO_DS[2][pin]=0b11 */
 } mxc_gpio_drvstr_t;
 

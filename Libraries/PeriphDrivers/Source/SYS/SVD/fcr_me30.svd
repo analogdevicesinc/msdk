@@ -17,18 +17,6 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>BTLELDO_RF</name>
-            <description>BTLE LDO RF Trim.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>5</bitWidth>
-          </field>
-          <field>
-            <name>BTLELDO_BB</name>
-            <description>BTLE LDO BB Trim.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>5</bitWidth>
-          </field>
-          <field>
             <name>I3CDGEN0</name>
             <description>I3C SDA Glitch Filter Enable.</description>
             <bitOffset>20</bitOffset>
@@ -255,8 +243,8 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>ERTOC_RDY</name>
-            <description>ERTCO 32K Ready.</description>
+            <name>ERFO_RDY</name>
+            <description>ERFO Ready.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -275,8 +263,8 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>ERTOC_RDY</name>
-            <description>ERTCO 32K Ready Interrupt Enable.</description>
+            <name>ERFO_RDY</name>
+            <description>ERFO Ready Interrupt Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>

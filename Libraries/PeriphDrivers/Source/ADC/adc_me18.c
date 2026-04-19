@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -176,6 +176,11 @@ int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback)
     return MXC_ADC_RevB_StartConversionAsync((mxc_adc_revb_regs_t *)MXC_ADC, callback);
 }
 
+int MXC_ADC_StartConversionAsyncStream(mxc_adc_complete_cb_t callback)
+{
+    return MXC_ADC_RevB_StartConversionAsyncStream((mxc_adc_revb_regs_t *)MXC_ADC, callback);
+}
+
 int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, int *data, void (*callback)(int, int))
 {
     return MXC_ADC_RevB_StartConversionDMA((mxc_adc_revb_regs_t *)MXC_ADC, req, data, callback);
@@ -184,6 +189,11 @@ int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, int *data, void (*
 int MXC_ADC_Handler(void)
 {
     return MXC_ADC_RevB_Handler((mxc_adc_revb_regs_t *)MXC_ADC);
+}
+
+void MXC_ADC_Free(void)
+{
+    MXC_ADC_RevB_Free((mxc_adc_revb_regs_t *)MXC_ADC);
 }
 
 int MXC_ADC_GetData(int *outdata)
@@ -314,7 +324,7 @@ int MXC_ADC_SlotConfiguration(mxc_adc_slot_req_t *req, uint32_t slot_length)
 {
     uint32_t loop_counter = 0;
 
-    for (loop_counter = 0; loop_counter <= slot_length; loop_counter++) {
+    for (loop_counter = 0; loop_counter < slot_length; loop_counter++) {
         initGPIOForChannel(req->channel);
 #if 0
         if (req->channel <= MAX_ADC_RES_DIV_CH) {

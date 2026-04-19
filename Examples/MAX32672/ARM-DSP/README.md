@@ -4,7 +4,7 @@ Porting ARM's DSP examples to Maxim's M4-series microcontrollers.
 
 ## Overview
 
-The projects in this folder are ports of ARM's DSP example projects that can be found in the <a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html" >CMSIS-DSP library</a>.  They have been made compatible with the build system in Analog Device's MSDK Toolchain.  Some slight modifications have been made to the source code to eliminate compiler errors/warnings, but the examples have been left mostly "as-is".  The major changes here have been made to the build system.
+The projects in this folder are ports of ARM's DSP example projects that can be found in the <a href="https://arm-software.github.io/CMSIS-DSP/latest/group__groupExamples.html" >CMSIS-DSP library</a>.  They have been made compatible with the build system in Analog Device's MSDK Toolchain.  Some slight modifications have been made to the source code to eliminate compiler errors/warnings, but the examples have been left mostly "as-is".  The major changes here have been made to the build system.
 
 Debug launch configurations are included in each project, and should appear in the "Favorites" menu in Eclipse.
 

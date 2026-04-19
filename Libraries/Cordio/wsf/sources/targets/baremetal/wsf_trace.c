@@ -266,7 +266,10 @@ void WsfTraceVerbose(const char *pStr, ...)
 /*************************************************************************************************/
 void WsfTraceEnable(bool_t enable)
 {
+  #if WSF_TRACE_ENABLED == TRUE
   WSF_ASSERT(wsfTraceCb.sendMsgCback);
+  #endif
+  
   wsfTraceCb.enabled = enable;
 
 /*

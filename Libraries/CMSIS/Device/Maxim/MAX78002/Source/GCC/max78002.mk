@@ -142,7 +142,7 @@ $(ARM_MAP_FILE):
 # complicates things significantly.  The RISC-V linkerfile (max78000_riscv.ld)
 # has a hard-coded INCLUDE "buildrv/common_riscv.ld" to look for this file.
 RISCV_COMMON_LD = $(BUILD_DIR)/buildrv/common_riscv.ld
-PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
+PROJ_LDFLAGS += -L$(if $(filter "${_OS}","windows_msys"),$(shell cygpath -m ${BUILD_DIR}),${BUILD_DIR})
 # ^ Add to search path to locate buildrv/common_riscv.ld
 
 .PHONY: rvcommonld
@@ -210,7 +210,7 @@ else # RISCV_LOAD
 # the Arm core, so this is really only useful for
 # being able to compile and link quickly for RISC-V.
 RISCV_COMMON_LD = $(BUILD_DIR)/common_riscv.ld
-PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
+PROJ_LDFLAGS += -L$(if $(filter "${_OS}","windows_msys"),$(shell cygpath -m ${BUILD_DIR}),${BUILD_DIR})
 # ^ Add to search path to locate buildrv/common_riscv.ld
 
 $(RISCV_COMMON_LD):

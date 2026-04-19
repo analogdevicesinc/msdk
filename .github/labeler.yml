@@ -9,8 +9,7 @@
  #
  # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  # Analog Devices, Inc.),
- # Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
- # is proprietary to Analog Devices, Inc. and its licensors.
+ # Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -72,6 +71,14 @@
 - '**/Libraries/CMSIS/Device/Maxim/MAX32655/**/*'
 - '**/Libraries/PeriphDrivers/max32655_files.mk'
 - '**/Libraries/PeriphDrivers/Include/MAX32655/**/*'
+
+'MAX32657':
+- '**/Examples/MAX32657/**/*'
+- '**/*me30*.*'
+- '**/Libraries/Boards/MAX32657/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32657/**/*'
+- '**/Libraries/PeriphDrivers/max32657_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32657/**/*'
 
 'MAX32660':
 - '**/Examples/MAX32660/**/*'
@@ -221,3 +228,6 @@
 'Workflow':
 - '**/.github/workflows/**/*'
 - '**/.github/**/*'
+
+'Zephyr':
+- '**/Libraries/zephyr/**/*'

@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -902,6 +902,11 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
         return E_BAD_STATE;
     }
 
+    // Check and return BUSY if the Bus is not ready
+    if (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {
+        return E_BUSY;
+    }
+
     // if(!read | write)
     //  Start
     //  send addr w/ write bit
@@ -962,6 +967,13 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
         i2c->fifo = (req->addr << 1) | 0x1; // Load slave address with read bit.
     }
 
+    if ((req->rx_len != 0) && (req->tx_len != 0)) {
+        while (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE)) {}
+        // Wait for Transaction to finish
+
+        i2c->intfl0 |= MXC_F_I2C_REVA_INTFL0_DONE;
+    }
+
     while (req->rx_len > read) {
         if (i2c->intfl0 & (MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE)) {
             read +=
@@ -994,7 +1006,7 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
     } else {
         i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
 
-        while (!(i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_STOP)) {}
+        while ((i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_STOP)) {}
         // Wait for Transaction to finish
     }
 
@@ -1027,6 +1039,9 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
         if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
             return E_NOT_SUPPORTED;
         }
+
+        while (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {}
+        // Wait for the last Transaction to finish and the Bus is ready
 
         AsyncRequests[i2cNum] = (void *)req;
         AsyncWritten[i2cNum] = 0;

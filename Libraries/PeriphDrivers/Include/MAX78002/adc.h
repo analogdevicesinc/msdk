@@ -43,8 +43,8 @@ extern "C" {
  * @{
  */
 
-/* MAX78002 Specific TODO */
-#define MAX_ADC_SLOT_NUM 20
+/* MAX78002 Specific */
+#define MAX_ADC_SLOT_NUM 17
 #define MAX_ADC_FIFO_LEN 16
 #define MAX_ADC_RES_DIV_CH 8
 

@@ -25,8 +25,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_UART_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_UART_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_UART_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_UART_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -76,8 +80,8 @@ extern "C" {
 typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0000:</tt> UART CTRL Register */
     __I  uint32_t status;               /**< <tt>\b 0x0004:</tt> UART STATUS Register */
-    __IO uint32_t inten;                /**< <tt>\b 0x0008:</tt> UART INTEN Register */
-    __IO uint32_t intfl;                /**< <tt>\b 0x000C:</tt> UART INTFL Register */
+    __IO uint32_t int_en;               /**< <tt>\b 0x0008:</tt> UART INT_EN Register */
+    __IO uint32_t int_fl;               /**< <tt>\b 0x000C:</tt> UART INT_FL Register */
     __IO uint32_t clkdiv;               /**< <tt>\b 0x0010:</tt> UART CLKDIV Register */
     __IO uint32_t osr;                  /**< <tt>\b 0x0014:</tt> UART OSR Register */
     __IO uint32_t txpeek;               /**< <tt>\b 0x0018:</tt> UART TXPEEK Register */
@@ -98,8 +102,8 @@ typedef struct {
  */
 #define MXC_R_UART_CTRL                    ((uint32_t)0x00000000UL) /**< Offset from UART Base Address: <tt> 0x0000</tt> */
 #define MXC_R_UART_STATUS                  ((uint32_t)0x00000004UL) /**< Offset from UART Base Address: <tt> 0x0004</tt> */
-#define MXC_R_UART_INTEN                   ((uint32_t)0x00000008UL) /**< Offset from UART Base Address: <tt> 0x0008</tt> */
-#define MXC_R_UART_INTFL                   ((uint32_t)0x0000000CUL) /**< Offset from UART Base Address: <tt> 0x000C</tt> */
+#define MXC_R_UART_INT_EN                  ((uint32_t)0x00000008UL) /**< Offset from UART Base Address: <tt> 0x0008</tt> */
+#define MXC_R_UART_INT_FL                  ((uint32_t)0x0000000CUL) /**< Offset from UART Base Address: <tt> 0x000C</tt> */
 #define MXC_R_UART_CLKDIV                  ((uint32_t)0x00000010UL) /**< Offset from UART Base Address: <tt> 0x0010</tt> */
 #define MXC_R_UART_OSR                     ((uint32_t)0x00000014UL) /**< Offset from UART Base Address: <tt> 0x0014</tt> */
 #define MXC_R_UART_TXPEEK                  ((uint32_t)0x00000018UL) /**< Offset from UART Base Address: <tt> 0x0018</tt> */
@@ -164,8 +168,8 @@ typedef struct {
 #define MXC_F_UART_CTRL_BCLKSRC                        ((uint32_t)(0x3UL << MXC_F_UART_CTRL_BCLKSRC_POS)) /**< CTRL_BCLKSRC Mask */
 #define MXC_V_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK       ((uint32_t)0x0UL) /**< CTRL_BCLKSRC_PERIPHERAL_CLOCK Value */
 #define MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK       (MXC_V_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_PERIPHERAL_CLOCK Setting */
-#define MXC_V_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK         ((uint32_t)0x1UL) /**< CTRL_BCLKSRC_EXTERNAL_CLOCK Value */
-#define MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK         (MXC_V_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_EXTERNAL_CLOCK Setting */
+#define MXC_V_UART_CTRL_BCLKSRC_CLK1                   ((uint32_t)0x1UL) /**< CTRL_BCLKSRC_CLK1 Value */
+#define MXC_S_UART_CTRL_BCLKSRC_CLK1                   (MXC_V_UART_CTRL_BCLKSRC_CLK1 << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_CLK1 Setting */
 #define MXC_V_UART_CTRL_BCLKSRC_CLK2                   ((uint32_t)0x2UL) /**< CTRL_BCLKSRC_CLK2 Value */
 #define MXC_S_UART_CTRL_BCLKSRC_CLK2                   (MXC_V_UART_CTRL_BCLKSRC_CLK2 << MXC_F_UART_CTRL_BCLKSRC_POS) /**< CTRL_BCLKSRC_CLK2 Setting */
 #define MXC_V_UART_CTRL_BCLKSRC_CLK3                   ((uint32_t)0x3UL) /**< CTRL_BCLKSRC_CLK3 Value */
@@ -222,61 +226,61 @@ typedef struct {
 
 /**
  * @ingroup  uart_registers
- * @defgroup UART_INTEN UART_INTEN
+ * @defgroup UART_INT_EN UART_INT_EN
  * @brief    Interrupt Enable control register
  * @{
  */
-#define MXC_F_UART_INTEN_RX_FERR_POS                   0 /**< INTEN_RX_FERR Position */
-#define MXC_F_UART_INTEN_RX_FERR                       ((uint32_t)(0x1UL << MXC_F_UART_INTEN_RX_FERR_POS)) /**< INTEN_RX_FERR Mask */
+#define MXC_F_UART_INT_EN_RX_FERR_POS                  0 /**< INT_EN_RX_FERR Position */
+#define MXC_F_UART_INT_EN_RX_FERR                      ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_RX_FERR_POS)) /**< INT_EN_RX_FERR Mask */
 
-#define MXC_F_UART_INTEN_RX_PAR_POS                    1 /**< INTEN_RX_PAR Position */
-#define MXC_F_UART_INTEN_RX_PAR                        ((uint32_t)(0x1UL << MXC_F_UART_INTEN_RX_PAR_POS)) /**< INTEN_RX_PAR Mask */
+#define MXC_F_UART_INT_EN_RX_PAR_POS                   1 /**< INT_EN_RX_PAR Position */
+#define MXC_F_UART_INT_EN_RX_PAR                       ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_RX_PAR_POS)) /**< INT_EN_RX_PAR Mask */
 
-#define MXC_F_UART_INTEN_CTS_EV_POS                    2 /**< INTEN_CTS_EV Position */
-#define MXC_F_UART_INTEN_CTS_EV                        ((uint32_t)(0x1UL << MXC_F_UART_INTEN_CTS_EV_POS)) /**< INTEN_CTS_EV Mask */
+#define MXC_F_UART_INT_EN_CTS_EV_POS                   2 /**< INT_EN_CTS_EV Position */
+#define MXC_F_UART_INT_EN_CTS_EV                       ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_CTS_EV_POS)) /**< INT_EN_CTS_EV Mask */
 
-#define MXC_F_UART_INTEN_RX_OV_POS                     3 /**< INTEN_RX_OV Position */
-#define MXC_F_UART_INTEN_RX_OV                         ((uint32_t)(0x1UL << MXC_F_UART_INTEN_RX_OV_POS)) /**< INTEN_RX_OV Mask */
+#define MXC_F_UART_INT_EN_RX_OV_POS                    3 /**< INT_EN_RX_OV Position */
+#define MXC_F_UART_INT_EN_RX_OV                        ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_RX_OV_POS)) /**< INT_EN_RX_OV Mask */
 
-#define MXC_F_UART_INTEN_RX_THD_POS                    4 /**< INTEN_RX_THD Position */
-#define MXC_F_UART_INTEN_RX_THD                        ((uint32_t)(0x1UL << MXC_F_UART_INTEN_RX_THD_POS)) /**< INTEN_RX_THD Mask */
+#define MXC_F_UART_INT_EN_RX_THD_POS                   4 /**< INT_EN_RX_THD Position */
+#define MXC_F_UART_INT_EN_RX_THD                       ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_RX_THD_POS)) /**< INT_EN_RX_THD Mask */
 
-#define MXC_F_UART_INTEN_TX_OB_POS                     5 /**< INTEN_TX_OB Position */
-#define MXC_F_UART_INTEN_TX_OB                         ((uint32_t)(0x1UL << MXC_F_UART_INTEN_TX_OB_POS)) /**< INTEN_TX_OB Mask */
+#define MXC_F_UART_INT_EN_TX_OB_POS                    5 /**< INT_EN_TX_OB Position */
+#define MXC_F_UART_INT_EN_TX_OB                        ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_TX_OB_POS)) /**< INT_EN_TX_OB Mask */
 
-#define MXC_F_UART_INTEN_TX_HE_POS                     6 /**< INTEN_TX_HE Position */
-#define MXC_F_UART_INTEN_TX_HE                         ((uint32_t)(0x1UL << MXC_F_UART_INTEN_TX_HE_POS)) /**< INTEN_TX_HE Mask */
+#define MXC_F_UART_INT_EN_TX_HE_POS                    6 /**< INT_EN_TX_HE Position */
+#define MXC_F_UART_INT_EN_TX_HE                        ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_TX_HE_POS)) /**< INT_EN_TX_HE Mask */
 
-/**@} end of group UART_INTEN_Register */
+/**@} end of group UART_INT_EN_Register */
 
 /**
  * @ingroup  uart_registers
- * @defgroup UART_INTFL UART_INTFL
+ * @defgroup UART_INT_FL UART_INT_FL
  * @brief    Interrupt status flags Control register
  * @{
  */
-#define MXC_F_UART_INTFL_RX_FERR_POS                   0 /**< INTFL_RX_FERR Position */
-#define MXC_F_UART_INTFL_RX_FERR                       ((uint32_t)(0x1UL << MXC_F_UART_INTFL_RX_FERR_POS)) /**< INTFL_RX_FERR Mask */
+#define MXC_F_UART_INT_FL_RX_FERR_POS                  0 /**< INT_FL_RX_FERR Position */
+#define MXC_F_UART_INT_FL_RX_FERR                      ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_RX_FERR_POS)) /**< INT_FL_RX_FERR Mask */
 
-#define MXC_F_UART_INTFL_RX_PAR_POS                    1 /**< INTFL_RX_PAR Position */
-#define MXC_F_UART_INTFL_RX_PAR                        ((uint32_t)(0x1UL << MXC_F_UART_INTFL_RX_PAR_POS)) /**< INTFL_RX_PAR Mask */
+#define MXC_F_UART_INT_FL_RX_PAR_POS                   1 /**< INT_FL_RX_PAR Position */
+#define MXC_F_UART_INT_FL_RX_PAR                       ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_RX_PAR_POS)) /**< INT_FL_RX_PAR Mask */
 
-#define MXC_F_UART_INTFL_CTS_EV_POS                    2 /**< INTFL_CTS_EV Position */
-#define MXC_F_UART_INTFL_CTS_EV                        ((uint32_t)(0x1UL << MXC_F_UART_INTFL_CTS_EV_POS)) /**< INTFL_CTS_EV Mask */
+#define MXC_F_UART_INT_FL_CTS_EV_POS                   2 /**< INT_FL_CTS_EV Position */
+#define MXC_F_UART_INT_FL_CTS_EV                       ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_CTS_EV_POS)) /**< INT_FL_CTS_EV Mask */
 
-#define MXC_F_UART_INTFL_RX_OV_POS                     3 /**< INTFL_RX_OV Position */
-#define MXC_F_UART_INTFL_RX_OV                         ((uint32_t)(0x1UL << MXC_F_UART_INTFL_RX_OV_POS)) /**< INTFL_RX_OV Mask */
+#define MXC_F_UART_INT_FL_RX_OV_POS                    3 /**< INT_FL_RX_OV Position */
+#define MXC_F_UART_INT_FL_RX_OV                        ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_RX_OV_POS)) /**< INT_FL_RX_OV Mask */
 
-#define MXC_F_UART_INTFL_RX_THD_POS                    4 /**< INTFL_RX_THD Position */
-#define MXC_F_UART_INTFL_RX_THD                        ((uint32_t)(0x1UL << MXC_F_UART_INTFL_RX_THD_POS)) /**< INTFL_RX_THD Mask */
+#define MXC_F_UART_INT_FL_RX_THD_POS                   4 /**< INT_FL_RX_THD Position */
+#define MXC_F_UART_INT_FL_RX_THD                       ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_RX_THD_POS)) /**< INT_FL_RX_THD Mask */
 
-#define MXC_F_UART_INTFL_TX_OB_POS                     5 /**< INTFL_TX_OB Position */
-#define MXC_F_UART_INTFL_TX_OB                         ((uint32_t)(0x1UL << MXC_F_UART_INTFL_TX_OB_POS)) /**< INTFL_TX_OB Mask */
+#define MXC_F_UART_INT_FL_TX_OB_POS                    5 /**< INT_FL_TX_OB Position */
+#define MXC_F_UART_INT_FL_TX_OB                        ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_TX_OB_POS)) /**< INT_FL_TX_OB Mask */
 
-#define MXC_F_UART_INTFL_TX_HE_POS                     6 /**< INTFL_TX_HE Position */
-#define MXC_F_UART_INTFL_TX_HE                         ((uint32_t)(0x1UL << MXC_F_UART_INTFL_TX_HE_POS)) /**< INTFL_TX_HE Mask */
+#define MXC_F_UART_INT_FL_TX_HE_POS                    6 /**< INT_FL_TX_HE Position */
+#define MXC_F_UART_INT_FL_TX_HE                        ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_TX_HE_POS)) /**< INT_FL_TX_HE Mask */
 
-/**@} end of group UART_INTFL_Register */
+/**@} end of group UART_INT_FL_Register */
 
 /**
  * @ingroup  uart_registers
@@ -397,4 +401,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_UART_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_UART_REGS_H_

@@ -64,7 +64,7 @@ static struct {
 __attribute__((weak)) void WUT_IRQHandler(void)
 {
     PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
     NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 

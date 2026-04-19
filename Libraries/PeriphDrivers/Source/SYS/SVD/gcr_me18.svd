@@ -687,6 +687,35 @@
         </fields>
       </register>
       <register>
+        <name>PFRST</name>
+        <description>Power Fail Reset Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Power Fail Reset Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PFSTAT</name>
+        <description>Power Fail Reset Status Register.</description>
+        <addressOffset>0x14</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>RST</name>
+            <description>Power Fail Reset Status</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>PCLKDIV</name>
         <description>Peripheral Clock Divider.</description>
         <addressOffset>0x18</addressOffset>
@@ -1041,6 +1070,28 @@
             <description>Data-Cache Controller Tag Zeroization.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PFBUF</name>
+        <description>Power Fail Reset Buffer Register.</description>
+        <addressOffset>0x34</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>PWRGOOD_BUF</name>
+            <description>Power Good Detection.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>3</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>PWRGOOD</name>
+            <description>Power Good Detected.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
         </fields>
       </register>
@@ -1596,161 +1647,161 @@
         <description>BTLE LDO Control Register</description>
         <addressOffset>0x74</addressOffset>
         <fields>
-         <field>
-          <name>LDOBBEN</name>
-          <description>LDOBB Enable.</description>
-          <bitOffset>0</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBPULLD</name>
-          <description>LDOBB Pull Down.</description>
-          <bitOffset>1</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBVSEL</name>
-          <description>LDOBB Voltage Setting.</description>
-          <bitOffset>2</bitOffset>
-          <bitWidth>2</bitWidth>
-          <enumeratedValues>
-           <enumeratedValue>
-            <name>0_85</name>
-            <description>0.85V</description>
-            <value>0</value>
-           </enumeratedValue>
-           <enumeratedValue>
-            <name>0_9</name>
-            <description>0.9V</description>
-            <value>1</value>
-           </enumeratedValue>
-           <enumeratedValue>
-            <name>1_0</name>
-            <description>1.0V</description>
-            <value>2</value>
-           </enumeratedValue>
-           <enumeratedValue>
-            <name>1_1</name>
-            <description>1.1V</description>
-            <value>3</value>
-           </enumeratedValue>
-          </enumeratedValues>
-         </field>
-         <field>
-          <name>LDORFEN</name>
-          <description>LDORF Enable.</description>
-          <bitOffset>4</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDORFPULLD</name>
-          <description>LDORF Pull Down.</description>
-          <bitOffset>5</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDORFVSEL</name>
-          <description>LDORF Voltage Setting.</description>
-          <bitOffset>6</bitOffset>
-          <bitWidth>2</bitWidth>
-           <enumeratedValues>
-           <enumeratedValue>
-            <name>0_85</name>
-            <description>0.85V</description>
-            <value>0</value>
-           </enumeratedValue>
-           <enumeratedValue>
-            <name>0_9</name>
-            <description>0.9V</description>
-            <value>1</value>
-           </enumeratedValue>
-           <enumeratedValue>
-            <name>1_0</name>
-            <description>1.0V</description>
-            <value>2</value>
-           </enumeratedValue>
-           <enumeratedValue>
-            <name>1_1</name>
-            <description>1.1V</description>
-            <value>3</value>
-           </enumeratedValue>
-          </enumeratedValues>
-         </field>
-         <field>
-          <name>LDORFBYP</name>
-          <description>LDORF Bypass Enable.</description>
-          <bitOffset>8</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDORFDISCH</name>
-          <description>LDORF Discharge.</description>
-          <bitOffset>9</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBBYP</name>
-          <description>LDOBB Bypass Enable.</description>
-          <bitOffset>10</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBDISCH</name>
-          <description>LDOBB Discharge.</description>
-          <bitOffset>11</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBENDLY</name>
-          <description>LDOBB Enable Delay.</description>
-          <bitOffset>12</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDORFENDLY</name>
-          <description>LDORF Enable Delay.</description>
-          <bitOffset>13</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDORFBYPENENDLY</name>
-          <description>LDORF Bypass Enable Delay.</description>
-          <bitOffset>14</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBBYPENENDLY</name>
-          <description>LDOBB Bypass Enable Delay.</description>
-          <bitOffset>15</bitOffset>
-          <bitWidth>1</bitWidth>
-         </field>
+          <field>
+            <name>LDOBBEN</name>
+            <description>LDOBB Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBPULLD</name>
+            <description>LDOBB Pull Down.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBVSEL</name>
+            <description>LDOBB Voltage Setting.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0_85</name>
+                <description>0.85V</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>0_9</name>
+                <description>0.9V</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_0</name>
+                <description>1.0V</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_1</name>
+                <description>1.1V</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LDORFEN</name>
+            <description>LDORF Enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORFPULLD</name>
+            <description>LDORF Pull Down.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORFVSEL</name>
+            <description>LDORF Voltage Setting.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0_85</name>
+                <description>0.85V</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>0_9</name>
+                <description>0.9V</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_0</name>
+                <description>1.0V</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_1</name>
+                <description>1.1V</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LDORFBYP</name>
+            <description>LDORF Bypass Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORFDISCH</name>
+            <description>LDORF Discharge.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBBYP</name>
+            <description>LDOBB Bypass Enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBDISCH</name>
+            <description>LDOBB Discharge.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBENDLY</name>
+            <description>LDOBB Enable Delay.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORFENDLY</name>
+            <description>LDORF Enable Delay.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORFBYPENENDLY</name>
+            <description>LDORF Bypass Enable Delay.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBBYPENENDLY</name>
+            <description>LDOBB Bypass Enable Delay.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
-       </register>
-       <register>
+      </register>
+      <register>
         <name>BTLELDODLY</name>
         <description>BTLE LDO Delay Register</description>
         <addressOffset>0x78</addressOffset>
         <fields>
-         <field>
-          <name>BYPDLYCNT</name>
-          <description>Bypass Delay Count.</description>
-          <bitOffset>0</bitOffset>
-          <bitWidth>8</bitWidth>
-         </field>
-         <field>
-          <name>LDORFDLYCNT</name>
-          <description>LDORF Delay Count.</description>
-          <bitOffset>8</bitOffset>
-          <bitWidth>9</bitWidth>
-         </field>
-         <field>
-          <name>LDOBBDLYCNT</name>
-          <description>LDOBB Delay Count.</description>
-          <bitOffset>20</bitOffset>
-          <bitWidth>9</bitWidth>
-         </field>
+          <field>
+            <name>BYPDLYCNT</name>
+            <description>Bypass Delay Count.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>LDORFDLYCNT</name>
+            <description>LDORF Delay Count.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+          <field>
+            <name>LDOBBDLYCNT</name>
+            <description>LDOBB Delay Count.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
         </fields>
-       </register>
+      </register>
       <register>
         <name>GPR0</name>
         <description>General Purpose Register 0</description>

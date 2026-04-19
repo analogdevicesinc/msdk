@@ -132,19 +132,27 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         return E_BAD_PARAM;
     }
 
-    // check if the uart is LPUART
-    if (uart == MXC_UART3) {
-        // OSR default value
-        uart->osr = 5;
+    // OSR default value
+    uart->osr = 5;
 
-        switch (clock) {
-        case MXC_UART_IBRO_CLK:
-            clkdiv = ((IBRO_FREQ) / baud);
-            mod = ((IBRO_FREQ) % baud);
-            break;
+    switch (clock) {
+    case MXC_UART_APB_CLK:
+        clkdiv = PeripheralClock / baud;
+        mod = PeripheralClock % baud;
+        break;
 
-        case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+    case MXC_UART_ERFO_CLK:
+        clkdiv = ERFO_FREQ / baud;
+        mod = ERFO_FREQ % baud;
+        break;
+
+    case MXC_UART_IBRO_CLK:
+        clkdiv = ((IBRO_FREQ) / baud);
+        mod = ((IBRO_FREQ) % baud);
+        break;
+
+    case MXC_UART_ERTCO_CLK:
+        if (uart == MXC_UART3) {
             uart->ctrl |= MXC_F_UART_CTRL_FDM;
             if (baud == 9600) {
                 clkdiv = 7;
@@ -159,51 +167,21 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
             } else {
                 uart->osr = 1;
             }
-            break;
-
-        default:
+        } else {
             return E_BAD_PARAM;
         }
+        break;
 
-        if (!clkdiv || mod > (baud / 2)) {
-            clkdiv++;
-        }
-        uart->clkdiv = clkdiv;
-
-        freq = MXC_UART_GetFrequency(uart);
-    } else {
-        uart->osr = 5;
-
-        switch (clock) {
-        case MXC_UART_APB_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK;
-            clkdiv = PeripheralClock / baud;
-            mod = PeripheralClock % baud;
-            break;
-
-        case MXC_UART_ERFO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            clkdiv = ERFO_FREQ / baud;
-            mod = ERFO_FREQ % baud;
-            break;
-
-        case MXC_UART_IBRO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
-            clkdiv = IBRO_FREQ / baud;
-            mod = IBRO_FREQ % baud;
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
-
-        if (!clkdiv || mod > (baud / 2)) {
-            clkdiv++;
-        }
-        uart->clkdiv = clkdiv;
-
-        freq = MXC_UART_GetFrequency(uart);
+    default:
+        return E_BAD_PARAM;
     }
+
+    if (!clkdiv || mod > (baud / 2)) {
+        clkdiv++;
+    }
+    uart->clkdiv = clkdiv;
+
+    freq = MXC_UART_GetFrequency(uart);
 
     if (freq > 0) {
         // Enable baud clock and wait for it to become ready.

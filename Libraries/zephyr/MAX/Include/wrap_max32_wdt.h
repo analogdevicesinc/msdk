@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,8 @@ typedef struct {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 
 #define WRAP_MXC_F_WDT_CTRL_EN MXC_F_WDT_CTRL_WDT_EN
 
@@ -83,9 +84,11 @@ static inline int Wrap_MXC_WDT_SelectClockSource(mxc_wdt_regs_t *wdt, uint32_t c
 /*
  *  MAX32690, MAX32655 related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
-    (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
+    defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) ||   \
+    defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000)
 
 #define WRAP_MXC_F_WDT_CTRL_EN MXC_F_WDT_CTRL_EN
 
@@ -138,7 +141,7 @@ static inline int Wrap_MXC_WDT_SelectClockSource(mxc_wdt_regs_t *wdt, uint32_t c
         clk_src = MXC_WDT_INRO_CLK;
 #endif
         break;
-#if !(defined(CONFIG_SOC_MAX32675) || (CONFIG_SOC_MAX32680))
+#if !(defined(CONFIG_SOC_MAX32675) || defined(CONFIG_SOC_MAX32680))
     case 4: // ADI_MAX32_PRPH_CLK_SRC_ERTCO
         clk_src = MXC_WDT_ERTCO_CLK;
         break;

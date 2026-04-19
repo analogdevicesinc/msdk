@@ -202,7 +202,7 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_ClearFlags();
     NVIC_ClearPendingIRQ(WUT_IRQn);
     MXC_WUT_Handler();
     PalTimerIRQCallBack();

@@ -5,9 +5,9 @@
  */
 /******************************************************************************
  *
- * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
+ * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ int MXC_FLC_ME10_GetByAddress(mxc_flc_regs_t **flc, uint32_t addr)
 int MXC_FLC_ME10_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 {
     if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
-        *result = (addr & (MXC_FLASH_MEM_SIZE - 1));
+        *result = (addr - MXC_FLASH_MEM_BASE);
     } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + (MXC_INFO_MEM_BASE - MXC_FLASH_MEM_BASE);
     } else {

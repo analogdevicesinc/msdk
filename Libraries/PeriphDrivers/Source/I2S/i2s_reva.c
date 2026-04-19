@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,8 @@ int MXC_I2S_RevA_Init(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req)
     }
 
     //Set RX Threshold 2 (default)
-    i2s->ctrl0ch0 |= (2 << MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL,
+                 (2 << MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL_POS)); // Set RX threshold
 
     //Set justify
     MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_ALIGN,
@@ -239,7 +240,8 @@ int MXC_I2S_RevA_SetRXThreshold(mxc_i2s_reva_regs_t *i2s, uint8_t threshold)
         return E_NOT_SUPPORTED;
     }
 
-    i2s->ctrl0ch0 |= (threshold << MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL,
+                 (threshold << MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL_POS)); // Set RX threshold
 
     return E_NO_ERROR;
 }

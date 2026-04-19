@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,19 +39,41 @@ typedef struct {
 /*
  *  MAX32665, MAX32666 related mapping
  */
-#if defined(CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666)
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
 
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 
+/* Prescaler lookup table range for MAX32650/665/666
+ * These devices require special register mapping for prescaler values > 128
+ */
+#define TMR_PRES_MIN_LOG2 8 /* LOG2(256) - minimum extended prescaler */
+#define TMR_PRES_MAX_LOG2 12 /* LOG2(4096) - maximum extended prescaler */
+
 static inline int Wrap_MXC_TMR_Init(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
+    mxc_tmr_pres_t tmr_prescaler_lut[] = { TMR_PRES_256, TMR_PRES_512, TMR_PRES_1024, TMR_PRES_2048,
+                                           TMR_PRES_4096 };
     mxc_tmr_cfg_t mxc_cfg;
+    uint32_t pres_log2;
 
-    mxc_cfg.pres = cfg->pres;
     mxc_cfg.mode = cfg->mode;
     mxc_cfg.cmp_cnt = cfg->cmp_cnt;
     mxc_cfg.pol = cfg->pol;
+
+    if (cfg->pres <= TMR_PRES_128) {
+        mxc_cfg.pres = cfg->pres;
+    } else {
+        /* cfg->pres is equal to (LOG2(prescaler) * TMR_PRES_2) */
+        pres_log2 = cfg->pres / TMR_PRES_2;
+
+        /* Limit prescaler to valid range (TMR_PRES_256 to TMR_PRES_4096) */
+        if (pres_log2 < TMR_PRES_MIN_LOG2 || pres_log2 > TMR_PRES_MAX_LOG2) {
+            return -1;
+        }
+        mxc_cfg.pres = tmr_prescaler_lut[pres_log2 - TMR_PRES_MIN_LOG2];
+    }
 
     MXC_TMR_Init(tmr, &mxc_cfg);
     return 0;
@@ -60,35 +82,35 @@ static inline int Wrap_MXC_TMR_Init(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg
 static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
 {
     if (z_clock == 0) {
-        /* Only peripheral clock is supported, just retunr 0 */
+        /* Only peripheral clock is supported, just return 0 */
         return 0;
     } else {
         return -1; /* Not supported */
     }
 }
 
-void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
+static inline void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
     (void)tmr;
     (void)cfg;
 }
 
-void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
 {
     (void)tmr;
 }
 
-void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
 {
     (void)tmr;
 }
 
-void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
 {
     (void)tmr;
 }
 
-int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
+static inline int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 {
     uint32_t mask = MXC_F_TMR_INTR_IRQ;
     uint32_t flags;
@@ -101,12 +123,14 @@ int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 /*
  *  MAX32690, MAX32655 related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32670) || \
-    (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || (CONFIG_SOC_MAX32675) ||          \
-    (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32657) || (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32655) || \
+    defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) ||   \
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
+    defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) ||   \
+    defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000)
 
-#if defined(CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32675) || (CONFIG_SOC_MAX32657) || \
-    (CONFIG_SOC_MAX32670)
+#if defined(CONFIG_SOC_MAX32672) || defined(CONFIG_SOC_MAX32675) || \
+    defined(CONFIG_SOC_MAX32657) || defined(CONFIG_SOC_MAX32670)
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 #elif defined(CONFIG_SOC_MAX32662)
@@ -143,7 +167,7 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
         return MXC_TMR_EXT_CLK;
     case 2: // ADI_MAX32_PRPH_CLK_SRC_IBRO
         return MXC_TMR_8M_CLK;
-#if !defined(CONFIG_SOC_MAX78002)
+#if !defined(CONFIG_SOC_MAX78002) && !defined(CONFIG_SOC_MAX78000)
     case 3: //ADI_MAX32_PRPH_CLK_SRC_ERFO
         return MXC_TMR_32M_CLK;
 #endif
@@ -151,8 +175,8 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
         return MXC_TMR_32K_CLK;
     case 5: //ADI_MAX32_PRPH_CLK_SRC_INRO
         return MXC_TMR_INRO_CLK;
-#if defined(CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32680) || (CONFIG_SOC_MAX32690) || \
-    (CONFIG_SOC_MAX78002)
+#if defined(CONFIG_SOC_MAX32655) || defined(CONFIG_SOC_MAX32680) || \
+    defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000)
     case 6: //ADI_MAX32_PRPH_CLK_SRC_ISO
         return MXC_TMR_ISO_CLK;
 #endif
@@ -161,7 +185,7 @@ static inline int Wrap_MXC_TMR_GetClockIndex(int z_clock)
     return -1; /* Not supported */
 }
 
-void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
+static inline void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 {
 #if defined(CONFIG_SOC_MAX32657)
     (void)tmr;
@@ -183,7 +207,7 @@ void Wrap_MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, wrap_mxc_tmr_cfg_t *cfg)
 #endif
 }
 
-void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
 {
     if (tmr->wkfl & MXC_F_TMR_WKFL_A) {
         // Write 1 to clear
@@ -191,17 +215,17 @@ void Wrap_MXC_TMR_ClearWakeupFlags(mxc_tmr_regs_t *tmr)
     }
 }
 
-void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
 {
     MXC_TMR_DisableInt(tmr);
 }
 
-void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
+static inline void Wrap_MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
 {
     MXC_TMR_EnableInt(tmr);
 }
 
-int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
+static inline int Wrap_MXC_TMR_GetPendingInt(mxc_tmr_regs_t *tmr)
 {
     uint32_t mask = MXC_F_TMR_INTFL_IRQ_A | MXC_F_TMR_INTFL_IRQ_B;
     uint32_t flags;

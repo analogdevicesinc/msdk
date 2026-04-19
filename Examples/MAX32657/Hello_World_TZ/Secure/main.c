@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,13 +29,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_delay.h"
-#include "led.h"
-#include "pb.h"
-#include "board.h"
-#include "spc.h"
+#include "mxc.h"
 
 /***** Definitions *****/
 
@@ -51,8 +45,10 @@
  *  world can access all of Secure memory. Secure code must also
  *  handle non-secure memory as volatile.
  * 
- * By design, illegal accesses would trigger a hardfault unless
+ * By design, illegal accesses would trigger a hard/secure fault unless
  *  handled by the MPC/PPC.
+ * 
+ * __ns_entry => __attribute((cmse_nonsecure_entry))
  * 
  * Param:   *count    Pointer of counter value to increment.
  * Return:  Error code.
@@ -75,6 +71,8 @@ __ns_entry int IncrementCount_S(volatile int *count_ns)
 // *****************************************************************************
 int main(void)
 {
+    int error;
+
     printf("**** Hello_World example with TrustZone ****\n");
     printf("Currently in the secure world.\n");
 
@@ -83,23 +81,27 @@ int main(void)
 
     printf("Beginning transition to the non-secure world.\n");
 
-    // Set UART (serial console) and GPIO (LED) peripheral to Non-Secure.
-    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_UART);
-    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_GPIO0);
-
-    // Set LED pins to be accessible in Non-Secure code.
-    MXC_SPC_GPIO_SetNonSecure(MXC_GPIO0, led_pin[0].mask);
+    // Wait for Console UART to finish printing before setting the peripheral to Non-Secure.
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) == E_BUSY) {}
 
     // Set Flash (Code region) as Non-Secure Callable for the IncrementCount_S function.
     MXC_SPC_SetCode_NSC(true);
 
+    // Set UART (serial console), SYS, and GPIO (LED) peripheral to Non-Secure.
+    //  Note: These peripherals will no longer be accessible in Secure world.
+    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_GPIO0);
+    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_GCR);
+    MXC_SPC_SetNonSecure(MXC_SPC_PERIPH_UART);
+
     // Transition to Non-Secure world.
     //  Defined in system_max32657.c as a weak function.
-    printf("Transitioning to non-secure world.\n");
-    NonSecure_Init();
+    error = NonSecure_Init();
 
     // Should never reach here.
-    printf("Error: Code should not reach here. Transition not successful.\n");
+    //  Set Console UART accessible to Secure world to print out error message.
+    MXC_SPC_SetSecure(MXC_SPC_PERIPH_UART);
+    printf("[Error] Code should not reach here. Transition not successful. Error Code: %d\n",
+           error);
 
     while (1) {}
 }

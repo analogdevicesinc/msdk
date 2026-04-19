@@ -208,6 +208,26 @@ int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t *adc, mxc_adc_complete
     return E_NO_ERROR;
 }
 
+int MXC_ADC_RevB_StartConversionAsyncStream(mxc_adc_revb_regs_t *adc,
+                                            mxc_adc_complete_cb_t callback)
+{
+    if (callback == NULL) {
+        return E_BAD_PARAM;
+    }
+
+    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; //Flush data FIFO
+
+    MXC_ADC_RevB_ClearFlags(adc, ADC_IF_MASK);
+
+    while (MXC_GetLock((uint32_t *)&async_callback, (uint32_t)callback) != E_NO_ERROR) {}
+
+    MXC_ADC_RevB_EnableInt(adc, MXC_F_ADC_REVB_INTEN_FIFO_LVL);
+
+    adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_START | MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+
+    return E_NO_ERROR;
+}
+
 int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req,
                                     int *data, void (*callback)(int, int))
 {
@@ -234,7 +254,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_DMA_EN; //Enable ADC DMA
 
-    num_bytes = (req->num_slots + 1) * 4; //Support 8 slots (32 bytes) only. (TODO)
+    num_bytes = (req->num_slots) * 4; //Support 8 slots (32 bytes) only.
 
     channel = req->dma_channel;
 
@@ -302,6 +322,17 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t *adc)
     }
 
     return E_NO_ERROR;
+}
+
+void MXC_ADC_RevB_Free(mxc_adc_revb_regs_t *adc)
+{
+    if ((adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
+        MXC_ADC_RevB_DisableInt(adc,
+                                (MXC_F_ADC_REVB_INTFL_SEQ_DONE | MXC_F_ADC_REVB_INTFL_CONV_DONE |
+                                 MXC_F_ADC_REVB_INTEN_FIFO_LVL));
+
+        MXC_FreeLock((uint32_t *)&async_callback);
+    }
 }
 
 int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t *adc, int *outdata)
@@ -412,12 +443,12 @@ int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
 
 int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
-    if (req->num_slots >= MAX_ADC_SLOT_NUM) {
+    if (req->num_slots > MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
     }
 
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_NUM_SLOTS;
-    adc->ctrl1 |= (uint32_t)(req->num_slots) << MXC_F_ADC_REVB_CTRL1_NUM_SLOTS_POS;
+    adc->ctrl1 |= (uint32_t)(req->num_slots - 1) << MXC_F_ADC_REVB_CTRL1_NUM_SLOTS_POS;
 
     return E_NO_ERROR;
 }
@@ -429,10 +460,11 @@ int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, ui
     uint32_t offset;
     uint32_t bitposition;
 
-    if (slot_num >= MAX_ADC_SLOT_NUM) {
+    if (slot_num > MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
     }
 
+    // 4 slot IDs per ADC_CHSELn register
     offset = slot_num >> 2;
 
     bitposition = ch << ((slot_num & 0x03) << 3);

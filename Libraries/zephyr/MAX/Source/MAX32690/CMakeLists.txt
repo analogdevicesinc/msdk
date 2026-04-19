@@ -107,7 +107,7 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_GPIO_MAX32)
+if (CONFIG_GPIO_MAX32 OR CONFIG_PINCTRL_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/GPIO/gpio_common.c
     ${MSDK_PERIPH_SRC_DIR}/GPIO/gpio_me18.c
@@ -144,7 +144,7 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_SOC_FLASH_MAX32)
+if (CONFIG_SOC_FLASH_MAX32 OR CONFIG_HWINFO_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_common.c
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_me18.c
@@ -166,7 +166,7 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_PWM_MAX32 OR CONFIG_TIMER_MAX32 OR CONFIG_COUNTER_TIMER_MAX32) 
+if (CONFIG_PWM_MAX32 OR CONFIG_TIMER_MAX32 OR CONFIG_COUNTER_TIMER_MAX32 OR CONFIG_MAX32_RV32_SYS_TIMER)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/TMR/tmr_common.c
     ${MSDK_PERIPH_SRC_DIR}/TMR/tmr_me18.c
@@ -188,7 +188,7 @@ zephyr_library_sources(
 )
 endif()
 
-if (CONFIG_CRYPTO_MAX32)
+if (CONFIG_CRYPTO_MAX32 OR CONFIG_HWINFO_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/CTB/ctb_me18.c
     ${MSDK_PERIPH_SRC_DIR}/CTB/ctb_reva.c

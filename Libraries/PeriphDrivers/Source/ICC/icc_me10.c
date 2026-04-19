@@ -49,7 +49,7 @@ void MXC_ICC_Enable(void)
 void MXC_ICC_Disable(void)
 {
     MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC0);
-    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC1);
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC1);
 }
 
 /* **************************************************************************** */

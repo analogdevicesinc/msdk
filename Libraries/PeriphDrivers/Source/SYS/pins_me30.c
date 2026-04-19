@@ -24,6 +24,9 @@
 /***** Global Variables *****/
 
 // clang-format off
+const mxc_gpio_cfg_t gpio_cfg_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_7), MXC_GPIO_FUNC_IN,
+                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+
 // P0.0 - I3C SCL
 // P0.1 - I3C SDA
 const mxc_gpio_cfg_t gpio_cfg_i3c = { MXC_GPIO0, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1), MXC_GPIO_FUNC_ALT1,
@@ -79,3 +82,8 @@ const mxc_gpio_cfg_t gpio_cfg_spi_ts1 = { MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FU
                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_spi_ts2 = { MXC_GPIO0, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_ALT1,
                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+
+// RTC square wave output
+const mxc_gpio_cfg_t gpio_cfg_rtcsqw = { MXC_GPIO0, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_ALT1,
+                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0};
+

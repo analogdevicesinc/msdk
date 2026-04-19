@@ -1,7 +1,6 @@
 ## Description
 
-This application demonstrates both encryption and decryption using AES.  A block of data is encrypted.  The resulting encrypted data is then decrypted.  The new plain text is then compared with the original plain text to confirm they match.  This is repeated three times using a different key size each time.
-
+This application demonstrates both encryption and decryption using AES. A block of data is encrypted. The resulting encrypted data is then decrypted. The new plain text is then compared with the original plain text to confirm they match. This is repeated three times using a different key size each time.
 
 ## Software
 
@@ -16,8 +15,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select RX0 and TX0 on Headers JP1 and JP3 (UART 0).
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Select RX0 and TX0 on Headers JP3 and JP4 (UART 0)..
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
 
@@ -37,5 +36,3 @@ Data Verified
 
 Example Succeeded
 ```
-
-

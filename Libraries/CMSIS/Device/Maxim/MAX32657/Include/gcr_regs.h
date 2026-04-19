@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -308,7 +312,7 @@ typedef struct {
 #define MXC_F_GCR_PM_RTC_WE_POS                        5 /**< PM_RTC_WE Position */
 #define MXC_F_GCR_PM_RTC_WE                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_RTC_WE_POS)) /**< PM_RTC_WE Mask */
 
-#define MXC_F_GCR_PM_WUT_WE_POS                        7 /**< PM_WUT_WE Position */
+#define MXC_F_GCR_PM_WUT_WE_POS                        6 /**< PM_WUT_WE Position */
 #define MXC_F_GCR_PM_WUT_WE                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_WUT_WE_POS)) /**< PM_WUT_WE Mask */
 
 #define MXC_F_GCR_PM_ERFO_BP_POS                       20 /**< PM_ERFO_BP Position */
@@ -571,6 +575,14 @@ typedef struct {
 
 #define MXC_F_GCR_BTLELDOCTRL_BB_VSEL_POS              2 /**< BTLELDOCTRL_BB_VSEL Position */
 #define MXC_F_GCR_BTLELDOCTRL_BB_VSEL                  ((uint32_t)(0x3UL << MXC_F_GCR_BTLELDOCTRL_BB_VSEL_POS)) /**< BTLELDOCTRL_BB_VSEL Mask */
+#define MXC_V_GCR_BTLELDOCTRL_BB_VSEL_0_9              ((uint32_t)0x0UL) /**< BTLELDOCTRL_BB_VSEL_0_9 Value */
+#define MXC_S_GCR_BTLELDOCTRL_BB_VSEL_0_9              (MXC_V_GCR_BTLELDOCTRL_BB_VSEL_0_9 << MXC_F_GCR_BTLELDOCTRL_BB_VSEL_POS) /**< BTLELDOCTRL_BB_VSEL_0_9 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_BB_VSEL_1_0              ((uint32_t)0x1UL) /**< BTLELDOCTRL_BB_VSEL_1_0 Value */
+#define MXC_S_GCR_BTLELDOCTRL_BB_VSEL_1_0              (MXC_V_GCR_BTLELDOCTRL_BB_VSEL_1_0 << MXC_F_GCR_BTLELDOCTRL_BB_VSEL_POS) /**< BTLELDOCTRL_BB_VSEL_1_0 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_BB_VSEL_1_1              ((uint32_t)0x2UL) /**< BTLELDOCTRL_BB_VSEL_1_1 Value */
+#define MXC_S_GCR_BTLELDOCTRL_BB_VSEL_1_1              (MXC_V_GCR_BTLELDOCTRL_BB_VSEL_1_1 << MXC_F_GCR_BTLELDOCTRL_BB_VSEL_POS) /**< BTLELDOCTRL_BB_VSEL_1_1 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_BB_VSEL_1_2              ((uint32_t)0x3UL) /**< BTLELDOCTRL_BB_VSEL_1_2 Value */
+#define MXC_S_GCR_BTLELDOCTRL_BB_VSEL_1_2              (MXC_V_GCR_BTLELDOCTRL_BB_VSEL_1_2 << MXC_F_GCR_BTLELDOCTRL_BB_VSEL_POS) /**< BTLELDOCTRL_BB_VSEL_1_2 Setting */
 
 #define MXC_F_GCR_BTLELDOCTRL_RF_EN_POS                4 /**< BTLELDOCTRL_RF_EN Position */
 #define MXC_F_GCR_BTLELDOCTRL_RF_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_RF_EN_POS)) /**< BTLELDOCTRL_RF_EN Mask */
@@ -580,6 +592,14 @@ typedef struct {
 
 #define MXC_F_GCR_BTLELDOCTRL_RF_VSEL_POS              6 /**< BTLELDOCTRL_RF_VSEL Position */
 #define MXC_F_GCR_BTLELDOCTRL_RF_VSEL                  ((uint32_t)(0x3UL << MXC_F_GCR_BTLELDOCTRL_RF_VSEL_POS)) /**< BTLELDOCTRL_RF_VSEL Mask */
+#define MXC_V_GCR_BTLELDOCTRL_RF_VSEL_0_9              ((uint32_t)0x0UL) /**< BTLELDOCTRL_RF_VSEL_0_9 Value */
+#define MXC_S_GCR_BTLELDOCTRL_RF_VSEL_0_9              (MXC_V_GCR_BTLELDOCTRL_RF_VSEL_0_9 << MXC_F_GCR_BTLELDOCTRL_RF_VSEL_POS) /**< BTLELDOCTRL_RF_VSEL_0_9 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_RF_VSEL_1_0              ((uint32_t)0x1UL) /**< BTLELDOCTRL_RF_VSEL_1_0 Value */
+#define MXC_S_GCR_BTLELDOCTRL_RF_VSEL_1_0              (MXC_V_GCR_BTLELDOCTRL_RF_VSEL_1_0 << MXC_F_GCR_BTLELDOCTRL_RF_VSEL_POS) /**< BTLELDOCTRL_RF_VSEL_1_0 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_RF_VSEL_1_1              ((uint32_t)0x2UL) /**< BTLELDOCTRL_RF_VSEL_1_1 Value */
+#define MXC_S_GCR_BTLELDOCTRL_RF_VSEL_1_1              (MXC_V_GCR_BTLELDOCTRL_RF_VSEL_1_1 << MXC_F_GCR_BTLELDOCTRL_RF_VSEL_POS) /**< BTLELDOCTRL_RF_VSEL_1_1 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_RF_VSEL_1_2              ((uint32_t)0x3UL) /**< BTLELDOCTRL_RF_VSEL_1_2 Value */
+#define MXC_S_GCR_BTLELDOCTRL_RF_VSEL_1_2              (MXC_V_GCR_BTLELDOCTRL_RF_VSEL_1_2 << MXC_F_GCR_BTLELDOCTRL_RF_VSEL_POS) /**< BTLELDOCTRL_RF_VSEL_1_2 Setting */
 
 #define MXC_F_GCR_BTLELDOCTRL_RF_BP_EN_POS             8 /**< BTLELDOCTRL_RF_BP_EN Position */
 #define MXC_F_GCR_BTLELDOCTRL_RF_BP_EN                 ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_RF_BP_EN_POS)) /**< BTLELDOCTRL_RF_BP_EN Mask */

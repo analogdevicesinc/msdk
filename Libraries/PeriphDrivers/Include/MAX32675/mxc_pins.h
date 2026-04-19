@@ -44,6 +44,9 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
+
+extern const mxc_gpio_cfg_t gpio_cfg_hart;
+
 extern const mxc_gpio_cfg_t gpio_cfg_uart2;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;

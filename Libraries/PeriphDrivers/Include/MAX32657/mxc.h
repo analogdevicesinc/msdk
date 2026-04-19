@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_
 
+/**
+ *  System Includes
+ */
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "mxc_assert.h"
@@ -31,20 +34,32 @@
 #include "board.h"
 #endif
 
-/*
+/**
  *  Peripheral Driver Includes
  */
+#include "aes.h"
+#include "crc.h"
 #include "dma.h"
-#include "flc.h"
 #include "gpio.h"
-#include "i2c.h"
-#include "icc.h"
+#include "i3c.h"
 #include "lp.h"
 #include "rtc.h"
+#include "nspc.h"
 #include "spi.h"
 #include "tmr.h"
+#include "trng.h"
 #include "uart.h"
 #include "wdt.h"
 #include "wut.h"
+
+/**
+ *  Peripheral Drivers only accessible in Secure world
+ */
+#if (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
+#include "flc.h"
+#include "icc.h"
+#include "mpc.h"
+#include "spc.h"
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32657_MXC_H_

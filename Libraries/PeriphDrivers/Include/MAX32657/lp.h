@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,6 +76,11 @@ void MXC_LP_EnterStandbyMode(void);
 void MXC_LP_EnterBackupMode(void);
 
 /**
+ * @brief      Routine for when exiting Backup mode via warmboot.
+ */
+void MXC_LP_ExitBackupMode(void);
+
+/**
  * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so this function never returns.
  *             Instead, the device will restart once an RTC, USB wakeup, or external interrupt occur.
  */
@@ -87,6 +92,39 @@ void MXC_LP_EnterPowerDownMode(void);
  * @param[in]  ovr   The ovr options are only 0.9V, 1.0V, and 1.1V use enum mxc_lp_ovr_t
  */
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
+
+/**
+ * @brief      Enable retention regulator
+ */
+void MXC_LP_EnableRetentionReg(void);
+
+/**
+ * @brief      Disable retention regulator
+ */
+void MXC_LP_DisableRetentionReg(void);
+
+/**
+ * @brief      Is the retention regulator enabled
+ *
+ * @return     1 = enabled 0 =  disabled
+ */
+int MXC_LP_RetentionRegIsEnabled(void);
+
+/**
+ * @brief      Enables data retention to RAM blocks 0-4 in BACKUP mode.
+ * 
+ * @param[in]  mask  The mask of the RAM blocks to enable data retention. Bit 0 enables 
+ *                   block 0, bit 1 enables block 1, etc.
+ */
+void MXC_LP_EnableSramRetention(uint32_t mask);
+
+/**
+ * @brief      Disables data retention to RAM blocks 0-4 in BACKUP mode.
+ * 
+ * @param[in]  mask  The mask of the RAM blocks to disable data retention. Bit 0 disables 
+ *                   block 0, bit 1 disables block 1, etc.
+ */
+void MXC_LP_DisableSramRetention(uint32_t mask);
 
 /**
  * @brief      Turn bandgap on
@@ -153,16 +191,6 @@ void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t *tmr);
 void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t *tmr);
 
 /**
- * @brief      Enables the USB to wake up the device from any low power mode.
- */
-void MXC_LP_EnableUSBWakeup(void);
-
-/**
- * @brief      Disables the USB from waking up the device.
- */
-void MXC_LP_DisableUSBWakeup(void);
-
-/**
  * @brief      Enables the WUT alarm to wake up the device from any low power mode.
  */
 void MXC_LP_EnableWUTAlarmWakeup(void);
@@ -173,52 +201,17 @@ void MXC_LP_EnableWUTAlarmWakeup(void);
 void MXC_LP_DisableWUTAlarmWakeup(void);
 
 /**
- * @brief      Enables the HA0 to wake up the device from any low power mode.
- */
-void MXC_LP_EnableHA0Wakeup(void);
-
-/**
- * @brief      Disables the HA)0 from waking up the device.
- */
-void MXC_LP_DisableHA0Wakeup(void);
-/**
- * @brief      Enables the HA1 to wake up the device from any low power mode.
- */
-void MXC_LP_EnableHA1Wakeup(void);
-
-/**
- * @brief      Disables the HA1 from waking up the device.
- */
-void MXC_LP_DisableHA1Wakeup(void);
-
-/**
  * @brief      Configure which clocks are powered down at deep sleep and which are not affected.
  *
- * @note       Need to configure all clocks at once any clock not passed in the mask will be unaffected by Deepsleep.  This will
- *             always overwrite the previous settings of ALL clocks.
+ * @note       Need to configure all clocks at once any clock not passed in the mask will be 
+ *             unaffected by Deepsleep.
  *
- * @param[in]  mask  The mask of the clocks to power down when part goes into deepsleep
+ * @param[in]  mask         The mask of the clocks to power down when part goes into deepsleep.
+ *                          Only ERTCO can be switched off.
  *
  * @return     #E_NO_ERROR or error based on /ref MXC_Error_Codes
  */
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask);
-
-/**
- * @brief      Enable NFC Oscilator Bypass
- */
-void MXC_LP_NFCOscBypassEnable(void);
-
-/**
- * @brief      Disable NFC Oscilator Bypass
- */
-void MXC_LP_NFCOscBypassDisable(void);
-
-/**
- * @brief      Is NFC Oscilator Bypass Enabled
- *
- * @return     1 = enabled, 0 = disabled
- */
-int MXC_LP_NFCOscBypassIsEnabled(void);
 
 /**@} end of group pwrseq */
 

@@ -37,7 +37,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Reserved LED IDs. */
-enum PalLedReserved_id
+typedef enum
 {
   /* System signals. */
   PAL_LED_ID_CPU_ACTIVE     = 0x30,  /*!< CPU active LED ID. */
@@ -49,7 +49,11 @@ enum PalLedReserved_id
   PAL_LED_ID_BB_RX_OK       = 0x4,   /*!< Baseband RX success impulse. */
   PAL_LED_ID_BB_RX_TO       = 0x5,   /*!< Baseband RX timeout impulse. */
   PAL_LED_ID_BB_RX_CRC      = 0x6,   /*!< Baseband RX CRC error impulse. */
-};
+  PAL_LED_ID_BB_ISR         = 0x7,  /*!< Baseband ISR impulse. */
+  PAL_LED_ID_BB_GP          = 0x8,  /*!< Baseband General Purpose timer interrupt. */
+
+} PalLedId_t;
+
 
 /**************************************************************************************************
   Function Declarations

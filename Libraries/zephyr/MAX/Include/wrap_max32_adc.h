@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,10 +51,10 @@ typedef enum {
 #define ADI_MAX32_ADC_REF_VDD_1_2 2
 
 /*
- *  MAX32655, MAX32665, MAX32666 related mapping
+ *  MAX32655, MAX32665, MAX32666, MAX32680, MAX78000 related mapping
  */
-#if defined(CONFIG_SOC_MAX32655) || (CONFIG_SOC_MAX32665) || (CONFIG_SOC_MAX32666) || \
-    (CONFIG_SOC_MAX32680)
+#if defined(CONFIG_SOC_MAX32655) || defined(CONFIG_SOC_MAX32665) || \
+    defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX78000)
 
 #define WRAP_MXC_F_ADC_CONV_DONE_IE MXC_F_ADC_INTR_DONE_IE
 #define WRAP_MXC_F_ADC_CONV_DONE_IF MXC_F_ADC_INTR_DONE_IF
@@ -144,6 +144,12 @@ static inline int Wrap_MXC_ADC_StartConversionAsync(uint32_t *sample_channels,
     return MXC_ADC_StartConversionAsync((mxc_adc_chsel_t)channel_id, callback);
 }
 
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    return E_NOT_SUPPORTED;
+}
+
 static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 {
     MXC_ADC_GetData(*outdata);
@@ -153,8 +159,8 @@ static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 /*
  *  MAX32690,  related mapping
  */
-#elif defined(CONFIG_SOC_MAX32690) || (CONFIG_SOC_MAX32672) || (CONFIG_SOC_MAX32662) || \
-    (CONFIG_SOC_MAX78002)
+#elif defined(CONFIG_SOC_MAX32690) || defined(CONFIG_SOC_MAX32672) || \
+    defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX78002)
 
 #define WRAP_MXC_F_ADC_CONV_DONE_IE MXC_F_ADC_INTEN_SEQ_DONE
 #define WRAP_MXC_F_ADC_CONV_DONE_IF MXC_F_ADC_INTFL_SEQ_DONE
@@ -227,7 +233,7 @@ static inline void Wrap_MXC_ADC_ChannelSelect(uint32_t *sample_channels)
     uint8_t slot_index = 0;
     int channel_id;
 
-    req.num_slots = num_of_channels - 1;
+    req.num_slots = num_of_channels;
 
     for (slot_index = 0; slot_index < num_of_channels; slot_index++) {
         channel_id = wrap_utils_find_lsb_set(*sample_channels);
@@ -242,7 +248,7 @@ static inline void Wrap_MXC_ADC_ChannelSelect(uint32_t *sample_channels)
 
     MXC_ADC_Clear_ChannelSelect();
     MXC_ADC_SlotsConfig(&req);
-    MXC_ADC_SlotConfiguration(slots, num_of_channels - 1);
+    MXC_ADC_SlotConfiguration(slots, num_of_channels);
 }
 
 static inline int Wrap_MXC_ADC_ReferenceSelect(uint8_t ref)
@@ -283,6 +289,26 @@ static inline int Wrap_MXC_ADC_StartConversionAsync(uint32_t *sample_channels,
     Wrap_MXC_ADC_ChannelSelect(sample_channels);
     return MXC_ADC_StartConversionAsync(callback);
 }
+
+#if defined(CONFIG_SOC_MAX32690)
+
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    MXC_ADC_FIFO_Threshold_Config(MAX_ADC_FIFO_LEN >> 1);
+    Wrap_MXC_ADC_ChannelSelect(sample_channels);
+    return MXC_ADC_StartConversionAsyncStream(callback);
+}
+
+#else
+
+static inline int Wrap_MXC_ADC_StartConversionAsyncStream(uint32_t *sample_channels,
+                                                          mxc_adc_complete_cb_t callback)
+{
+    return E_NOT_SUPPORTED;
+}
+
+#endif
 
 static inline void Wrap_MXC_ADC_GetData(uint16_t **outdata)
 {

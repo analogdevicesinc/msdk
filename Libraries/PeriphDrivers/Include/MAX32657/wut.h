@@ -157,14 +157,29 @@ uint32_t MXC_WUT_GetCount(mxc_wut_regs_t *wut);
  * @brief   Clear the timer interrupt.
  * @param   wut  Pointer to Wakeup Timer instance to clear interrupts for.
  */
-void MXC_WUT_IntClear(mxc_wut_regs_t *wut);
+__attribute__((deprecated("Use MXC_WUT_ClearFlags instead.  See wut.h for more details."))) void
+MXC_WUT_IntClear(mxc_wut_regs_t *wut);
+
+/**
+ * @brief   Clear the timer interrupt.
+ * @param   wut  Pointer to Wakeup Timer instance to clear interrupt flags for.
+ */
+void MXC_WUT_ClearFlags(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Get the timer interrupt status.
  * @param   wut  Pointer to Wakeup Timer instance to get interrupt staus from.
  * @return  Returns the interrupt status. 1 if interrupt has occurred.
  */
-uint32_t MXC_WUT_IntStatus(mxc_wut_regs_t *wut);
+__attribute__((deprecated("Use MXC_WUT_GetFlags instead.  See wut.h for more details."))) uint32_t
+MXC_WUT_IntStatus(mxc_wut_regs_t *wut);
+
+/**
+ * @brief   Get the timer interrupt status.
+ * @param   wut  Pointer to Wakeup Timer instance to get interrupt status from.
+ * @return  Returns the interrupt status. 1 if interrupt has occurred.
+ */
+uint32_t MXC_WUT_GetFlags(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Set the timer compare count.
@@ -208,13 +223,27 @@ int MXC_WUT_GetTime(mxc_wut_regs_t *wut, uint32_t ticks, uint32_t *time, mxc_wut
  * @brief   Wait for an edge of the WUT count register.
  * @param   wut  Pointer to Wakeup Timer instance to wait on.
  */
-void MXC_WUT_Edge(mxc_wut_regs_t *wut);
+__attribute__((deprecated("Use MXC_WUT_WaitForEdge instead.  See wut.h for more details."))) void
+MXC_WUT_Edge(mxc_wut_regs_t *wut);
+
+/**
+ * @brief   Wait for an edge of the WUT count register.
+ * @param   wut  Pointer to Wakeup Timer instance to wait on.
+ */
+void MXC_WUT_WaitForEdge(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Store the count and snapshot values.
  * @param   wut  Pointer to Wakeup Timer instance to store count and snapshot values for.
  */
-void MXC_WUT_Store(mxc_wut_regs_t *wut);
+__attribute__((deprecated("Use MXC_WUT_StoreCount instead.  See wut.h for more details."))) void
+MXC_WUT_Store(mxc_wut_regs_t *wut);
+
+/**
+ * @brief   Store the count and snapshot values.
+ * @param   wut  Pointer to Wakeup Timer instance to store count and snapshot values for.
+ */
+void MXC_WUT_StoreCount(mxc_wut_regs_t *wut);
 
 /**
  * @brief   Restore the DBB clock with the stored count and snapshot values.

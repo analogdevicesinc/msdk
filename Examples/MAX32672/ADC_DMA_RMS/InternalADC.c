@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,10 +103,10 @@ void InternalADC_StartSampling(ADC_Callback callback)
     adcConv.avg_number = MXC_ADC_AVG_1; //No averaging
     adcConv.fifo_format = MXC_ADC_DATA; //Data only.
     adcConv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_DISABLE;
-    adcConv.num_slots = 0; //1 slot/single channel
-    adcConv.fifo_threshold = 0;
+    adcConv.num_slots = 1; //1 slot/single channel
+    adcConv.fifo_threshold = 0; //Threshold for DMA set to num_slots - 1 to trigger DMA request
     MXC_ADC_Configuration(&adcConv);
-    MXC_ADC_SlotConfiguration(&adcSingleSlot, 0);
+    MXC_ADC_SlotConfiguration(&adcSingleSlot, 1);
 
     //Default the buffer indexes
     activeIndex = 0;

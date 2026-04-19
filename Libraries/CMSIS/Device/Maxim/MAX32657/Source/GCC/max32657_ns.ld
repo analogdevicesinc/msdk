@@ -134,6 +134,16 @@ SECTIONS {
     } > SRAM
 
     /**
+     *  Heap is placed at end of program and grows down in memory (increasing address).
+     */
+    .heap (COPY):
+    {
+        . = ALIGN(4);
+        KEEP(*(.heap*))
+        __HeapLimit = .;
+    } > SRAM
+
+    /**
      *   Set stack top to end of RAM, and stack limit move down by
      *      size of stack_dummy section.
      */
@@ -150,15 +160,8 @@ SECTIONS {
         KEEP(*(.stack*))
     } > SRAM
 
-    .heap (COPY):
-    {
-        . = ALIGN(4);
-        *(.heap*)
-        __HeapLimit = ABSOLUTE(__StackLimit);
-    } > SRAM
-
     PROVIDE(__stack = __StackTop);
 
     /* Check if data + heap + stack exceeds RAM limit */
-    ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
+    ASSERT(__StackLimit  >= __HeapLimit, "region RAM overflowed with stack")
 }

@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -506,11 +510,11 @@ typedef struct {
 #define MXC_V_UART_DMA_RXDMA_EN_EN                     ((uint32_t)0x1UL) /**< DMA_RXDMA_EN_EN Value */
 #define MXC_S_UART_DMA_RXDMA_EN_EN                     (MXC_V_UART_DMA_RXDMA_EN_EN << MXC_F_UART_DMA_RXDMA_EN_POS) /**< DMA_RXDMA_EN_EN Setting */
 
-#define MXC_F_UART_DMA_TXDMA_LVL_POS                   8 /**< DMA_TXDMA_LVL Position */
-#define MXC_F_UART_DMA_TXDMA_LVL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_TXDMA_LVL_POS)) /**< DMA_TXDMA_LVL Mask */
+#define MXC_F_UART_DMA_TXDMA_LEVEL_POS                   8 /**< DMA_TXDMA_LVL Position */
+#define MXC_F_UART_DMA_TXDMA_LEVEL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_TXDMA_LEVEL_POS)) /**< DMA_TXDMA_LVL Mask */
 
-#define MXC_F_UART_DMA_RXDMA_LVL_POS                   16 /**< DMA_RXDMA_LVL Position */
-#define MXC_F_UART_DMA_RXDMA_LVL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_RXDMA_LVL_POS)) /**< DMA_RXDMA_LVL Mask */
+#define MXC_F_UART_DMA_RXDMA_LEVEL_POS                   16 /**< DMA_RXDMA_LVL Position */
+#define MXC_F_UART_DMA_RXDMA_LEVEL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_RXDMA_LEVEL_POS)) /**< DMA_RXDMA_LVL Mask */
 
 /**@} end of group UART_DMA_Register */
 

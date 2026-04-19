@@ -25,8 +25,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_RTC_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_RTC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_RTC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_RTC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -169,11 +173,11 @@ typedef struct {
 #define MXC_F_RTC_CTRL_RDY_IE_POS                      5 /**< CTRL_RDY_IE Position */
 #define MXC_F_RTC_CTRL_RDY_IE                          ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_RDY_IE_POS)) /**< CTRL_RDY_IE Mask */
 
-#define MXC_F_RTC_CTRL_TOD_ALARM_IF_POS                6 /**< CTRL_TOD_ALARM_IF Position */
-#define MXC_F_RTC_CTRL_TOD_ALARM_IF                    ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_TOD_ALARM_IF_POS)) /**< CTRL_TOD_ALARM_IF Mask */
+#define MXC_F_RTC_CTRL_TOD_ALARM_POS                   6 /**< CTRL_TOD_ALARM Position */
+#define MXC_F_RTC_CTRL_TOD_ALARM                       ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_TOD_ALARM_POS)) /**< CTRL_TOD_ALARM Mask */
 
-#define MXC_F_RTC_CTRL_SSEC_ALARM_IF_POS               7 /**< CTRL_SSEC_ALARM_IF Position */
-#define MXC_F_RTC_CTRL_SSEC_ALARM_IF                   ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SSEC_ALARM_IF_POS)) /**< CTRL_SSEC_ALARM_IF Mask */
+#define MXC_F_RTC_CTRL_SSEC_ALARM_POS                  7 /**< CTRL_SSEC_ALARM Position */
+#define MXC_F_RTC_CTRL_SSEC_ALARM                      ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SSEC_ALARM_POS)) /**< CTRL_SSEC_ALARM Mask */
 
 #define MXC_F_RTC_CTRL_SQW_EN_POS                      8 /**< CTRL_SQW_EN Position */
 #define MXC_F_RTC_CTRL_SQW_EN                          ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SQW_EN_POS)) /**< CTRL_SQW_EN Mask */
@@ -206,8 +210,8 @@ typedef struct {
 #define MXC_F_RTC_TRIM_TRIM_POS                        0 /**< TRIM_TRIM Position */
 #define MXC_F_RTC_TRIM_TRIM                            ((uint32_t)(0xFFUL << MXC_F_RTC_TRIM_TRIM_POS)) /**< TRIM_TRIM Mask */
 
-#define MXC_F_RTC_TRIM_VBAT_TMR_POS                    8 /**< TRIM_VBAT_TMR Position */
-#define MXC_F_RTC_TRIM_VBAT_TMR                        ((uint32_t)(0xFFFFFFUL << MXC_F_RTC_TRIM_VBAT_TMR_POS)) /**< TRIM_VBAT_TMR Mask */
+#define MXC_F_RTC_TRIM_VRTC_TMR_POS                    8 /**< TRIM_VRTC_TMR Position */
+#define MXC_F_RTC_TRIM_VRTC_TMR                        ((uint32_t)(0xFFFFFFUL << MXC_F_RTC_TRIM_VRTC_TMR_POS)) /**< TRIM_VRTC_TMR Mask */
 
 /**@} end of group RTC_TRIM_Register */
 
@@ -241,4 +245,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_RTC_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_RTC_REGS_H_

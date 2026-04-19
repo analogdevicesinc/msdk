@@ -57,7 +57,7 @@ extern "C" {
   *
   */
 typedef enum {
-    MXC_ADC_CH_0, ///< Select Channel 0
+    MXC_ADC_CH_0 = 0, ///< Select Channel 0
     MXC_ADC_CH_1, ///< Select Channel 1
     MXC_ADC_CH_2, ///< Select Channel 2
     MXC_ADC_CH_3, ///< Select Channel 3
@@ -69,10 +69,15 @@ typedef enum {
     MXC_ADC_CH_9, ///< Select Channel 9
     MXC_ADC_CH_10, ///< Select Channel 10
     MXC_ADC_CH_11, ///< Select Channel 11
-    MXC_ADC_CH_12, ///< Select Channel 12
-    MXC_ADC_CH_13, ///< Select Channel 13
-    MXC_ADC_CH_14, ///< Select Channel 14
-    MXC_ADC_CH_15 ///< Select Channel 15
+    MXC_ADC_CH_VDDA = 12, ///< Select Channel 12
+    MXC_ADC_CH_TEMP_SENS, ///< Select Channel 13
+    MXC_ADC_CH_VCORE, ///< Select Channel 14
+    MXC_ADC_CH_VSS, ///< Select Channel 15
+
+    MXC_ADC_CH_12 = MXC_ADC_CH_VDDA, ///< Legacy Name: Select Channel 12
+    MXC_ADC_CH_13 = MXC_ADC_CH_TEMP_SENS, ///< Legacy Name: Select Channel 13
+    MXC_ADC_CH_14 = MXC_ADC_CH_VCORE, ///< Legacy Name: Select Channel 14
+    MXC_ADC_CH_15 = MXC_ADC_CH_VSS ///< Legacy Name: Select Channel 15
 } mxc_adc_chsel_t;
 
 /**

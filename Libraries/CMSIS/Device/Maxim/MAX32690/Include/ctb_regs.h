@@ -50,7 +50,11 @@ extern "C" {
 #define __IO volatile
 #endif
 #ifndef __I
-#define __I  volatile const
+#ifdef __cplusplus
+#define __I volatile
+#else
+#define __I volatile const
+#endif
 #endif
 #ifndef __O
 #define __O  volatile
@@ -297,6 +301,13 @@ typedef struct {
 #define MXC_S_CTB_CIPHER_CTRL_CCML_7                   (MXC_V_CTB_CIPHER_CTRL_CCML_7 << MXC_F_CTB_CIPHER_CTRL_CCML_POS) /**< CIPHER_CTRL_CCML_7 Setting */
 #define MXC_V_CTB_CIPHER_CTRL_CCML_8                   ((uint32_t)0x7UL) /**< CIPHER_CTRL_CCML_8 Value */
 #define MXC_S_CTB_CIPHER_CTRL_CCML_8                   (MXC_V_CTB_CIPHER_CTRL_CCML_8 << MXC_F_CTB_CIPHER_CTRL_CCML_POS) /**< CIPHER_CTRL_CCML_8 Setting */
+
+#define MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL_POS            19 /**< CIPHER_CTRL_PUFKEYSEL Position */
+#define MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL                ((uint32_t)(0x1UL << MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL_POS)) /**< CIPHER_CTRL_PUFKEYSEL Mask */
+#define MXC_V_CTB_CIPHER_CTRL_PUFKEYSEL_KEY0           ((uint32_t)0x0UL) /**< CIPHER_CTRL_PUFKEYSEL_KEY0 Value */
+#define MXC_S_CTB_CIPHER_CTRL_PUFKEYSEL_KEY0           (MXC_V_CTB_CIPHER_CTRL_PUFKEYSEL_KEY0 << MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL_POS) /**< CIPHER_CTRL_PUFKEYSEL_KEY0 Setting */
+#define MXC_V_CTB_CIPHER_CTRL_PUFKEYSEL_KEY1           ((uint32_t)0x1UL) /**< CIPHER_CTRL_PUFKEYSEL_KEY1 Value */
+#define MXC_S_CTB_CIPHER_CTRL_PUFKEYSEL_KEY1           (MXC_V_CTB_CIPHER_CTRL_PUFKEYSEL_KEY1 << MXC_F_CTB_CIPHER_CTRL_PUFKEYSEL_POS) /**< CIPHER_CTRL_PUFKEYSEL_KEY0 Setting */
 
 /**@} end of group CTB_CIPHER_CTRL_Register */
 

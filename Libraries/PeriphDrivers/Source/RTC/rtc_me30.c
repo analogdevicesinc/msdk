@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,14 +77,12 @@ int MXC_RTC_Stop(void)
 
 int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
-    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
-
     return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
 int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 {
-    // TODO(RTC): Use MCR registers for GPIO Port 1 configuration.
+    MXC_GPIO_Config(&gpio_cfg_rtcsqw);
 
     MXC_MCR->outen |= MXC_F_MCR_OUTEN_SQWOUT_EN;
 

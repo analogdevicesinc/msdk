@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -278,15 +278,29 @@ int MXC_I3C_RevA_Shutdown(mxc_i3c_reva_regs_t *i3c)
 int MXC_I3C_RevA_SetPPFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency)
 {
     uint32_t ticks, highPeriod, lowPeriod;
+    uint8_t ticks_min, ticks_max;
 
-    ticks = PeripheralClock / frequency;
-    /* Frequency must be less than or equal to half of peripheral clock */
-    if (ticks < 2 || ticks > 32) {
+    /* Minimum tick count for SCL high and low is (PP_BAUD_MIN + 1) */
+    ticks_min = (MXC_V_I3C_REVA_CONT_CTRL0_PP_BAUD_1_FCLK + 1) << 1;
+    /* Maximum tick count for SCL high is (PP_BAUD_MAX + 1), and for
+     * SCL low is (PP_BAUD_MAX + 1) + (PP_ADD_LBAUD_MAX) */
+    ticks_max = ((MXC_V_I3C_REVA_CONT_CTRL0_PP_BAUD_16_FCLK + 1) << 1) +
+                MXC_V_I3C_REVA_CONT_CTRL0_PP_ADD_LBAUD_15_FCLK;
+
+    /* Divide and round closest */
+    ticks = (PeripheralClock + (frequency >> 1)) / frequency;
+    if (ticks < ticks_min || ticks > ticks_max) {
         return E_BAD_PARAM;
     }
 
     highPeriod = ticks / 2;
     lowPeriod = ticks / 2;
+
+    while (highPeriod > (MXC_V_I3C_REVA_CONT_CTRL0_PP_BAUD_16_FCLK + 1)) {
+        highPeriod--;
+        lowPeriod++;
+    }
+
     if (ticks % 2) {
         lowPeriod++;
     }
@@ -313,26 +327,35 @@ unsigned int MXC_I3C_RevA_GetPPFrequency(mxc_i3c_reva_regs_t *i3c)
 
 int MXC_I3C_RevA_SetODFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency, bool highPP)
 {
-    uint32_t lowPeriod;
+    uint32_t ticks, lowPeriod, odInClk, ticks_min;
     uint8_t ppBaud;
-
-    /*
-     * Minimum low period = 200ns
-     * Minimum high period = 200ns for first broadcast address
-     * Maximum high period = 41ns
-     */
-    if ((!highPP && frequency > 2500000U) || frequency > 5000000U) {
-        return E_BAD_PARAM;
-    }
 
     ppBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD) >>
              MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD_POS;
-    lowPeriod = PeripheralClock / frequency;
-    if (highPP) {
-        lowPeriod = (lowPeriod / (ppBaud + 1)) - 2;
-    } else {
-        lowPeriod = (lowPeriod / (2 * (ppBaud + 1))) - 1;
+    ppBaud = ppBaud + 1;
+    odInClk = PeripheralClock / ppBaud;
+
+    /* Minimum low period is 200ns
+     * ticks_min = (200 * odInClk) / 1000000000;
+     * Eliminate two 0s in above equation to avoid exceeding UINT32_MAX.
+     */
+    ticks_min = (2 * odInClk) / 10000000;
+    ticks = (odInClk + (frequency >> 1)) / frequency;
+    if (ticks < 2) {
+        return E_BAD_PARAM;
     }
+
+    if (highPP) {
+        lowPeriod = ticks - 1;
+    } else {
+        lowPeriod = ticks / 2;
+    }
+
+    if (lowPeriod < ticks_min) {
+        lowPeriod = ticks_min;
+    }
+
+    lowPeriod -= 1;
 
     i3c->cont_ctrl0 &= ~(MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD | MXC_F_I3C_REVA_CONT_CTRL0_OD_HP);
     i3c->cont_ctrl0 |= lowPeriod << MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD_POS;
@@ -361,24 +384,29 @@ unsigned int MXC_I3C_RevA_GetODFrequency(mxc_i3c_reva_regs_t *i3c)
 
 int MXC_I3C_RevA_SetI2CFrequency(mxc_i3c_reva_regs_t *i3c, unsigned int frequency)
 {
+    uint32_t highPeriod, i2cInClk, ticks;
     uint8_t odBaud, ppBaud;
-    uint32_t lowPeriod;
 
     ppBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD) >>
              MXC_F_I3C_REVA_CONT_CTRL0_PP_BAUD_POS;
     odBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD) >>
              MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD_POS;
 
-    lowPeriod = PeripheralClock / frequency;
-    lowPeriod /= (odBaud + 1) * (ppBaud + 1);
-    lowPeriod = (lowPeriod >> 1) - 1;
-    lowPeriod = lowPeriod << 1;
+    i2cInClk = PeripheralClock / ((odBaud + 1) * (ppBaud + 1));
+    ticks = (i2cInClk + (frequency >> 1)) / frequency;
+    highPeriod = ticks / 2;
 
-    if (lowPeriod > 0xF) {
-        lowPeriod = 0xF;
+    highPeriod = (highPeriod - 1) << 1;
+    if (ticks % 2) {
+        highPeriod++;
     }
+
+    if (highPeriod > 0xE) {
+        highPeriod = 0xE;
+    }
+
     i3c->cont_ctrl0 &= ~MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD;
-    i3c->cont_ctrl0 |= lowPeriod << MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD_POS;
+    i3c->cont_ctrl0 |= highPeriod << MXC_F_I3C_REVA_CONT_CTRL0_I2C_BAUD_POS;
 
     return (int)MXC_I3C_RevA_GetI2CFrequency(i3c);
 }
@@ -395,13 +423,13 @@ unsigned int MXC_I3C_RevA_GetI2CFrequency(mxc_i3c_reva_regs_t *i3c)
     odBaud = (i3c->cont_ctrl0 & MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD) >>
              MXC_F_I3C_REVA_CONT_CTRL0_OD_LBAUD_POS;
 
-    lowPeriod = (odBaud + 1) * (ppBaud + 1) * ((i2cBaud >> 1) + 1);
-    highPeriod = lowPeriod;
+    highPeriod = (i2cBaud >> 1) + 1;
+    lowPeriod = highPeriod;
     if ((i2cBaud % 2) != 0) {
-        highPeriod++;
+        lowPeriod++;
     }
 
-    return PeripheralClock / (lowPeriod + highPeriod);
+    return PeripheralClock / ((lowPeriod + highPeriod) * ((odBaud + 1) * (ppBaud + 1)));
 }
 
 uint8_t MXC_I3C_RevA_GetDynamicAddress(mxc_i3c_reva_regs_t *i3c)
@@ -582,6 +610,8 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
     int ret;
     uint8_t readCount;
     uint16_t remaining;
+    uint32_t timeout;
+    uint32_t freq;
 
     if (MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_IDLE &&
         MXC_I3C_RevA_Controller_GetState(i3c) != MXC_V_I3C_REVA_CONT_STATUS_STATE_SDR_NORM) {
@@ -598,10 +628,12 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
     if (!req->is_i2c) {
         ret = MXC_I3C_RevA_EmitStart(i3c, req->is_i2c, MXC_I3C_TRANSFER_TYPE_WRITE,
                                      MXC_I3C_BROADCAST_ADDR, 0);
-
         if (ret < 0) {
             goto err;
         }
+        freq = MXC_I3C_RevA_GetPPFrequency(i3c);
+    } else {
+        freq = MXC_I3C_RevA_GetI2CFrequency(i3c);
     }
 
     /* Restart with write */
@@ -612,7 +644,13 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
             goto err;
         }
 
-        ret = MXC_I3C_RevA_WriteTXFIFO(i3c, req->tx_buf, req->tx_len, true, 100);
+        /* A simple linear estimation to find a reasonable write timeout value,
+           proportional to clock period and buffer size. Coefficient value has
+           been found by trial-and-error.
+        */
+        timeout = (uint32_t)(40 * 1000000 / freq) * req->tx_len;
+
+        ret = MXC_I3C_RevA_WriteTXFIFO(i3c, req->tx_buf, req->tx_len, true, timeout);
         if (ret < 0) {
             goto err;
         }
@@ -633,8 +671,14 @@ int MXC_I3C_RevA_Controller_Transaction(mxc_i3c_reva_regs_t *i3c, const mxc_i3c_
                 goto err;
             }
 
+            /* A simple linear estimation to find a reasonable read timeout value,
+               proportional to clock period and buffer size. Coefficient value has
+               been found by trial-and-error.
+            */
+            timeout = (uint32_t)(80 * 1000000 / freq) * readCount;
+
             ret = MXC_I3C_RevA_ReadRXFIFO(i3c, req->rx_buf + (req->rx_len - remaining), readCount,
-                                          1000);
+                                          timeout);
             if (ret == readCount) {
                 remaining -= readCount;
             } else {

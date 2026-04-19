@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2025 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,13 +51,10 @@
 
 /* **** Globals **** */
 
-/* Symbol defined when loading RISCV image */
-extern uint32_t _binary_riscv_bin_start;
-
 /* **** Functions **** */
 
 /* ************************************************************************** */
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     int err = E_NO_ERROR;
@@ -70,7 +67,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    memset(usn, 0, MXC_SYS_USN_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -198,19 +195,17 @@ int MXC_SYS_RTCClockDisable(void)
     }
 }
 
-#if TARGET_NUM == 32655
-/******************************************************************************/
-void MXC_SYS_RTCClockPowerDownEn(void)
+int MXC_SYS_Select32KClockSource(mxc_sys_32k_clock_t clock)
 {
-    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_32KOSC_EN;
-}
+    if (clock > MXC_SYS_32K_CLOCK_RTC_IN) {
+        return E_BAD_PARAM;
+    }
 
-/******************************************************************************/
-void MXC_SYS_RTCClockPowerDownDis(void)
-{
-    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_32KOSC_EN;
+    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_CLKSEL;
+    MXC_MCR->ctrl |= (clock << MXC_F_MCR_CTRL_CLKSEL_POS);
+
+    return E_NO_ERROR;
 }
-#endif //TARGET_NUM == 32655
 
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
@@ -226,14 +221,13 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
         break;
 
-        // TODO(ME30): EXTCLK is missing from register definitions
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     // No "RDY" bit to monitor, so just configure the GPIO
-        //     return MXC_GPIO_Config(&gpio_cfg_extclk);
-        //     break;
+    case MXC_SYS_CLOCK_EXTCLK:
+        // No "RDY" bit to monitor, so just configure the GPIO
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
+        break;
 
     case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
+        // The 131k clock is always enabled
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_INRO_RDY);
         break;
 
@@ -291,19 +285,18 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IBRO_EN;
         break;
 
-        // TODO(ME30): Missing EXTCLK register definition
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     /*
-        //     There's not a great way to disable the external clock.
-        //     Deinitializing the GPIO here may have unintended consequences
-        //     for application code.
-        //     Selecting a different system clock source is sufficient
-        //     to "disable" the EXT_CLK source.
-        //     */
-        //     break;
+    case MXC_SYS_CLOCK_EXTCLK:
+        /*
+        There's not a great way to disable the external clock.
+        Deinitializing the GPIO here may have unintended consequences
+        for application code.
+        Selecting a different system clock source is sufficient
+        to "disable" the EXT_CLK source.
+        */
+        break;
 
     case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
+        // The 131k clock is always enabled
         break;
 
     case MXC_SYS_CLOCK_ERFO:
@@ -324,12 +317,6 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 int MXC_SYS_Clock_Timeout(uint32_t ready)
 {
-#ifdef __riscv
-    // The current RISC-V implementation is to block until the clock is ready.
-    // We do not have access to a system tick in the RV core.
-    while (!(MXC_GCR->clkctrl & ready)) {}
-    return E_NO_ERROR;
-#else
 #ifndef BOARD_ME17_TESTER
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
@@ -346,13 +333,12 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 
     return E_NO_ERROR;
 #endif
-
-#endif // __riscv
 }
 /* ************************************************************************** */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
+    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
@@ -394,21 +380,20 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         break;
 
-        // TODO(ME30): Missing EXTCLK register definition
-        // case MXC_SYS_CLOCK_EXTCLK:
-        //     /*
-        //     There's not "EXT_CLK RDY" bit for the ME17, so we'll
-        //     blindly enable (configure GPIO) the external clock every time.
-        //     */
-        //     err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-        //     if (err)
-        //         return err;
+    case MXC_SYS_CLOCK_EXTCLK:
+        /*
+        There's not "EXT_CLK RDY" bit for the ME17, so we'll
+        blindly enable (configure GPIO) the external clock every time.
+        */
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err)
+            return err;
 
-        //     // Set EXT clock as System Clock
-        //     MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-        //                  MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        // Set EXT clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
-        //     break;
+        break;
 
     case MXC_SYS_CLOCK_ERFO:
 
@@ -504,7 +489,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     }
 }
 
-#if CONFIG_TRUSTED_EXECUTION_SECURE
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE != 0)
 /* ************************************************************************** */
 int MXC_SYS_LockDAP_Permanent(void)
 {
@@ -544,5 +529,97 @@ int MXC_SYS_LockDAP_Permanent(void)
 #endif
 }
 #endif
+
+/* ************************************************************************** */
+void MXC_SYS_StartClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks)
+{
+    /* Assuming that both clocks are already enabled */
+
+    /* Setup the comparison clock */
+    MXC_FCR->frqcntctrl = (MXC_FCR->frqcntctrl & ~(MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL)) | clock;
+
+    /* Set ticks of the comparison clock */
+    MXC_FCR->frqcntcmp = compareClockTicks;
+
+    /*
+     * Enable interrupt, note that we don't see the flag if we leave
+     * this disabled.
+     */
+    MXC_FCR->inten |= MXC_F_FCR_INTFL_FRQCNT;
+
+    /* Clear the interrupt flag */
+    MXC_FCR->intfl = MXC_F_FCR_INTFL_FRQCNT;
+
+    /* Start the procedure */
+    MXC_FCR->frqcntctrl |= MXC_F_FCR_FRQCNTCTRL_START;
+}
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_GetClockMeasure(void)
+{
+    /* Return 0 if the procedure is incomplete */
+    if (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {
+        return 0;
+    }
+
+    /* Calculate the frequency */
+    uint64_t freq = (uint64_t)ERFO_FREQ * (uint64_t)MXC_FCR->cmpclk / (uint64_t)MXC_FCR->refclk;
+
+    return (uint32_t)freq;
+}
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_ClockMeasure(mxc_sys_compare_clock_t clock, uint32_t compareClockTicks)
+{
+    /* Assuming that both clocks are already enabled */
+    MXC_SYS_StartClockMeasure(clock, compareClockTicks);
+
+    /* Wait for the procedure to finish */
+    while (!(MXC_FCR->intfl & MXC_F_FCR_INTFL_FRQCNT)) {}
+
+    return MXC_SYS_GetClockMeasure();
+}
+
+/* ************************************************************************** */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
+{
+    static const int CAL_MS = 10;
+    /* IPO_FREQ / ERTCOCC_FREQ, integer divide, rounded */
+    static const int AUTOCAL2_DIV = (IPO_FREQ + (ERTCO_FREQ - 1)) / ERTCO_FREQ;
+    int err;
+
+    /* Only the IPO supports calibration */
+    if (clock != MXC_SYS_CLOCK_IPO) {
+        return E_BAD_PARAM;
+    }
+
+    /* Make sure the ERTCO is enabled */
+    if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO))) {
+        return err;
+    }
+
+    /* The following section implements section 4.1.2.1 of the MAX32657 UG */
+    MXC_FCR->autocal0 &= ~(MXC_F_FCR_AUTOCAL0_EN);
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_DIV,
+                 AUTOCAL2_DIV << MXC_F_FCR_AUTOCAL2_DIV_POS);
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_RUNTIME,
+                 CAL_MS << MXC_F_FCR_AUTOCAL2_RUNTIME_POS);
+    MXC_SETFIELD(MXC_FCR->autocal1, MXC_F_FCR_AUTOCAL1_INIT_TRIM,
+                 0x64 << MXC_F_FCR_AUTOCAL1_INIT_TRIM_POS);
+    MXC_SETFIELD(MXC_FCR->autocal0, MXC_F_FCR_AUTOCAL0_MU, 4 << MXC_F_FCR_AUTOCAL0_MU_POS);
+    MXC_FCR->autocal0 |= MXC_F_FCR_AUTOCAL0_LOAD_TRIM | MXC_F_FCR_AUTOCAL0_EN |
+                         MXC_F_FCR_AUTOCAL0_RUN;
+
+    MXC_Delay(MXC_DELAY_MSEC(CAL_MS));
+
+    /* Disable the calibration hardware.
+     * Optionally leave the calibration hardware running by leaving the AUTOCAL0_RUN bit set.
+     * This will result in a more accurate frequency on average. Trim settings will oscillate
+     * around the ideal frequency.
+     */
+    MXC_FCR->autocal0 &= ~(MXC_F_FCR_AUTOCAL0_RUN);
+
+    return E_NO_ERROR;
+}
 
 /**@} end of mxc_sys */

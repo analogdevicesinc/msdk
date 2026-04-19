@@ -153,6 +153,9 @@ SECURE_BUILD_DIR := $(CURDIR)/build/build_s
 NONSECURE_CODE_BIN = $(NONSECURE_BUILD_DIR)/nonsecure.bin
 NONSECURE_CODE_OBJ = $(NONSECURE_BUILD_DIR)/nonsecure.o
 
+# Generate disassembly for non-secure side.
+NONSECURE_CODE_DASM = $(NONSECURE_BUILD_DIR)/nonsecure.dasm 
+
 # CMSE object file needed for non-secure builds - contains the Non-Secure Callable
 #	symbols with empty definitions at right locations
 SECURE_IMPLIB_OBJ := $(SECURE_BUILD_DIR)/secure_implib.o
@@ -181,7 +184,7 @@ $(NONSECURE_CODE_BIN): secure_implib_obj
 	@echo "* Building Non-Secure Code with generated CMSE importlib object file."
 	@echo "****************************************************************************"
 	$(MAKE) -C ${NONSECURE_CODE_DIR} BUILD_DIR=$(NONSECURE_BUILD_DIR) PROJECT=nonsecure NS_FLASH_START=$(NS_FLASH_START) NS_FLASH_SIZE=$(NS_FLASH_SIZE) NS_SRAM_START=$(NS_SRAM_START) NS_SRAM_SIZE=$(NS_SRAM_SIZE)
-	$(MAKE) -C ${NONSECURE_CODE_DIR} BUILD_DIR=$(NONSECURE_BUILD_DIR) $(NONSECURE_CODE_BIN)
+	$(MAKE) -C ${NONSECURE_CODE_DIR} BUILD_DIR=$(NONSECURE_BUILD_DIR) $(NONSECURE_CODE_BIN) $(NONSECURE_CODE_DASM)
 	@echo ""
 	@echo "****************************************************************************"
 	@echo "* Linking Secure and Non-Secure images together."
@@ -226,6 +229,8 @@ MCPU := cortex-m33
 # Armv8-M Floating-Point extension with FPv5 architecture
 # Single-precision with 16 double-word registers
 MFPU := fpv5-sp-d16
+
+PROJ_CFLAGS += -mno-unaligned-access
 
 # Include the rules and goals for building
 include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk

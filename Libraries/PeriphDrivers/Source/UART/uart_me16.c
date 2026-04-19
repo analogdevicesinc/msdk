@@ -236,7 +236,7 @@ int MXC_UART_SetClockSource(mxc_uart_regs_t *uart, mxc_uart_clock_t clock)
 {
     uint8_t retval = E_NO_ERROR;
 
-    if (MXC_UART_GET_IDX(uart) != 0 || MXC_UART_GET_IDX(uart) != 2) {
+    if (MXC_UART_GET_IDX(uart) != 0 && MXC_UART_GET_IDX(uart) != 2) {
         return E_BAD_PARAM;
     }
 
