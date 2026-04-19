@@ -1,6 +1,5 @@
 # Getting Started
-
-The MSDK is designed for both evaluation and end-application development. The typical **evaluation** cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an _evaluation platform_. The typical **development** cycle typically involves building a prototype application on an _evaluation platform_ first, then porting the application to a custom board. This section describes how to get started with the MSDK focusing on the _evaluation_ cycle.
+The MSDK is designed for both evaluation and end-application development. The typical **evaluation** cycle involves setting up the development environment, running demos, and exercising the peripheral driver API on an _evaluation platform_. The **development** cycle typically involves building a prototype application on an _evaluation platform_ first, then porting the application to a custom board. This section describes how to get started with the MSDK focusing on the _evaluation_ cycle.
 
 **First**, review the [**Key Concepts**](#key-concepts) below.  Then proceed to the section for your preferred IDE. Each subsection is a self-contained quick-start that includes links to additional documentation on important topics.
 

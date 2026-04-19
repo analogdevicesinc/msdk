@@ -8,7 +8,7 @@ This document describes the MSDK's installation, setup, and usage.
 
 ## Supported Operating Systems
 
-* Windows (Windows 10 only)
+* Windows (Windows 10 and later)
 
 * Linux (Ubuntu only)
 
@@ -58,6 +58,12 @@ The MSDK officially supports the following microcontrollers and evaluation platf
     * [MAX32655EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html)
 
     * [MAX32655FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html)
+
+---
+
+* [**MAX32657**](https://www.analog.com/en/products/max32657.html): Nano-Power Arm Cortex-M33 MCU with Bluetooth LE for CGM and Wearable Applications
+
+    * MAX32657EVKIT (Product Page Not Yet Available)
 
 ---
 
