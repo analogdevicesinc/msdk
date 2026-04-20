@@ -692,7 +692,7 @@ static void event_out_data(uint32_t irqs)
         req->actlen += reqsize;
 
         if (!ep) {
-            if (req->actlen == req->reqlen) {
+            if ((req->actlen == req->reqlen) || reqsize < ep_size[0]) {
                 /* No more data */
                 MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_SERV_OUTPKTRDY | MXC_F_USBHS_CSR0_DATA_END;
                 /* Done */
@@ -1179,7 +1179,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
 
             /* Signal to H/W that FIFO has been read */
             MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_SERV_OUTPKTRDY;
-            if (req->actlen == req->reqlen) {
+            if ((req->actlen == req->reqlen) || reqsize < ep_size[0]) {
                 /* Signal end of transaction to hardware */
                 MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_DATA_END;
 
