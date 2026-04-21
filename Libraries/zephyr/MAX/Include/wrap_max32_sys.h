@@ -49,7 +49,12 @@ void max32xx_system_init(void);
 #define ADI_MAX32_CLK_INRO MXC_SYS_CLOCK_NANORING
 #define ADI_MAX32_CLK_ERTCO MXC_SYS_CLOCK_X32K
 
+#endif
+
+#if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || defined(CONFIG_SOC_MAX32650)
+
 #define MXC_SYS_RESET0_USB MXC_SYS_RESET_USB
+
 #endif
 
 #define z_sysclk_prescaler(v) MXC_SYS_SYSTEM_DIV_##v
