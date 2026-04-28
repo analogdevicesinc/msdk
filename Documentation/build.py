@@ -30,7 +30,7 @@ def parse_example_info(source_file: Path) -> ExampleInfo:
     example_details = "No details"
     example_description = "No description"
     expr = re.compile(r"(@brief|@details)\s+([\s\S]*?)(?=\n\s*\*\s*@|\n\s*\*)")
-    for match in expr.finditer(source_file.read_text()):
+    for match in expr.finditer(source_file.read_text(encoding="utf-8")):
         tag, value = match.groups()
         match tag:
             case "@brief":
