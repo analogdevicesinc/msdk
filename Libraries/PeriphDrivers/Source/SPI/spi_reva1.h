@@ -100,6 +100,7 @@ int MXC_SPI_RevA1_SetTXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes
 unsigned int MXC_SPI_RevA1_GetTXThreshold(mxc_spi_reva_regs_t *spi);
 unsigned int MXC_SPI_RevA1_GetFlags(mxc_spi_reva_regs_t *spi);
 void MXC_SPI_RevA1_ClearFlags(mxc_spi_reva_regs_t *spi);
+unsigned int MXC_SPI_RevA1_GetAndClearFlags(mxc_spi_reva_regs_t *spi);
 void MXC_SPI_RevA1_EnableInt(mxc_spi_reva_regs_t *spi, unsigned int mask);
 void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, unsigned int mask);
 int MXC_SPI_RevA1_MasterTransaction(mxc_spi_reva_req_t *req);

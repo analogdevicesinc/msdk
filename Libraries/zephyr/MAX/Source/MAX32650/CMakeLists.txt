@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (C) 2025 Analog Devices, Inc.
+# Copyright (C) 2025-2026 Analog Devices, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,8 +26,10 @@ zephyr_include_directories(
     ${MSDK_PERIPH_SRC_DIR}/SYS
     ${MSDK_PERIPH_SRC_DIR}/ADC
     ${MSDK_PERIPH_SRC_DIR}/DMA
+    ${MSDK_PERIPH_SRC_DIR}/EMCC
     ${MSDK_PERIPH_SRC_DIR}/FLC
     ${MSDK_PERIPH_SRC_DIR}/GPIO
+    ${MSDK_PERIPH_SRC_DIR}/HPB
     ${MSDK_PERIPH_SRC_DIR}/I2C
     ${MSDK_PERIPH_SRC_DIR}/SPIMSS
     ${MSDK_PERIPH_SRC_DIR}/ICC
@@ -37,6 +39,7 @@ zephyr_include_directories(
     ${MSDK_PERIPH_SRC_DIR}/RTC
     ${MSDK_PERIPH_SRC_DIR}/SEMA
     ${MSDK_PERIPH_SRC_DIR}/SPI
+    ${MSDK_PERIPH_SRC_DIR}/SRCC
     ${MSDK_PERIPH_SRC_DIR}/TRNG
     ${MSDK_PERIPH_SRC_DIR}/TMR
     ${MSDK_PERIPH_SRC_DIR}/UART
@@ -72,6 +75,12 @@ zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_common.c
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_me10.c
     ${MSDK_PERIPH_SRC_DIR}/FLC/flc_reva.c
+
+    ${MSDK_PERIPH_SRC_DIR}/HPB/hpb_me10.c
+    ${MSDK_PERIPH_SRC_DIR}/HPB/hpb_reva.c
+
+    ${MSDK_PERIPH_SRC_DIR}/EMCC/emcc_me10.c
+    ${MSDK_PERIPH_SRC_DIR}/SRCC/srcc_reva.c
 )
 
 if (CONFIG_MAX32_SECURE_SOC_SIGNING)
