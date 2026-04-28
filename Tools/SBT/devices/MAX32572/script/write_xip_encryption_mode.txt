@@ -1,0 +1,28 @@
+write-xip-encryption-mode %PARAM_0%
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-maximum-xip-frequency Mode
+#       Mode: Encryption mode
+#   Selects the encryption mode to be used with the XIP flash.
+#   Caution: This command can only be executed once. The value written is permanent and cannot be changed by any method.
+#   After writing encryption-mode other than plaintext, user must write AES key using either write/generate AES key commands.
+#   For AES key generation use write_trng_generated_xip_aes_key.txt command.
+#   To write user AES key use write_user_defined_xip_aes_key.txt command.
+#
+# ----------------------------------------------------------|
+#           Encryption Mode, PARAM_0 (HEX)                  |
+# ----------------------------------------------------------|
+#               00 -> Plaintext (Default)                   |
+#               01 -> Encrypted                             |
+#               02 -> Encrypted and Authenticated           |
+#                                                           |
+# ----------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will set encryption mode to Plaintext:    
+#               write-xip-encryption-mode 00
+#
+#           Below command will set encryption mode to Encrypted and Authenticated:
+#               write-xip-encryption-mode 02
+#

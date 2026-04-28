@@ -524,6 +524,18 @@ unsigned int MXC_SPI_GetFlags(mxc_spi_regs_t *spi);
 void MXC_SPI_ClearFlags(mxc_spi_regs_t *spi);
 
 /**
+ * @brief   Gets and clears the interrupt flags that are currently set
+ *
+ * These functions should not be used while using non-blocking Transaction Level
+ * functions (Async or DMA)
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ * @return The interrupt flags
+ */
+unsigned int MXC_SPI_GetAndClearFlags(mxc_spi_regs_t *spi);
+
+/**
  * @brief   Enables specific interrupts
  *
  * These functions should not be used while using non-blocking Transaction Level

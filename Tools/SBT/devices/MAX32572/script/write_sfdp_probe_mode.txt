@@ -1,0 +1,37 @@
+write-sfdp-probe-mode %PARAM_0%
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-sfdp-probe-mode
+#       Mode: Disable/Enable SFDP probe mode
+#
+#   This command determines whether the bootloader will automatically probe the SFDP parameters of the XIP flash device.
+#   If the bootloader is activated and SFDP probe enabled, the SCPBL will probe the SFDP parameters once per session 
+#   before the first operation that reads or writes to the XIP flash. The SCPBL will then configure itself to match the
+#   parameters of the flash device.
+#
+#   By default the SFDP probe is automatically enabled. 
+#   If enabled the SCPBL will readonce before the first operation that reads or writes to the XIP flash
+#   Parameters explicitly set using the following commands will override values read by the SFDP probe operation. 
+#   The SFDP probe must not be disabled before these commands are run.:
+#       • WRITE_MAXIMUM_XIP_FREQUENCY
+#       • WRITE_XIP_PROGRAMMING_INFO
+#       • WRITE_XIP_ERASE_INFO
+#       • WRITE_XIP_DREAD_INFO
+#       • WRITE_XIP_QREAD_INFO
+#       • WRITE_XIP_QER
+#       • WRITE_XIP_FLASH_VOLTAGE
+#   Caution: This command can only be executed once. 
+#   The value written is permanent and cannot be changed by any method.
+#
+# ----------------------------------------------------------|
+#           SFDP probe mode, PARAM_0 (HEX)                  |
+# ----------------------------------------------------------|
+#               00 -> Permanently disable SFDP probe        |
+#               01 -> Automatic SFDP probe enabled.(default)|
+# ----------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will disable SFDP probe permanently
+#               write-sfdp-probe-mode 00
+#

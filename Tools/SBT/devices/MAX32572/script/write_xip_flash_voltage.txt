@@ -1,0 +1,26 @@
+write-xip-flash-voltage %PARAM_0%
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-xip-flash-voltage Voltage
+#       Mode: Flash voltage
+#
+#   Sets the voltage on the XIP flash interface pins.
+#   Caution: This command can only be executed once. 
+#   The value written is permanent and cannot be changed by any method.
+#
+# ----------------------------------------------------------|
+#           Flash Voltage, PARAM_0 (HEX)                    |
+# ----------------------------------------------------------|
+#               00 -> 1.8V (Default)                        |
+#               01 -> 3.3V                                  |
+#                                                           |
+# ----------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will set XIP flash interface voltage level to 1.8V:    
+#               write-xip-flash-voltage 00
+#
+#           Below command will set XIP flash interface voltage level to 3.3V
+#               write-xip-flash-voltage 01
+#

@@ -1,0 +1,24 @@
+write-maximum-xip-frequency %PARAM_0%
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-maximum-xip-frequency MaxClockRate
+#   MaxClockRate: Frequency in Hz. The value is in MSB.
+#   This is the frequency the XIP flash interface will default to on while the SCPBL is running.
+#   Caution: This command can only be executed once. The value written is permanent and cannot be changed by any method.
+#
+# ----------------------------------------------------------|
+#     Maximum SPI Clock Rate, PARAM_0 (HEX and big-endian)  |
+# ----------------------------------------------------------|
+#               01312D00 -> 20 MHz                          |
+#               02625A00 -> 40 MHz (Default)                |
+#                                                           |
+# ----------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will set Maximum SPI Clock Rate to 20 MHz:    
+#               write-maximum-xip-frequency 01312D00
+#
+#           Below command will set Maximum SPI Clock Rate to 40 MHz:    
+#               write-maximum-xip-frequency 02625A00
+#

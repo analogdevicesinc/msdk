@@ -4,7 +4,7 @@
 #   write-stim      0                    XXXXXX
 #   Command         SetAlways to 0       Params
 #
-#	PARAMS is a byte array and expected to be 15 bytes
+#   PARAMS is a byte array and expected to be 15 bytes
 #   
 #           Byte 0   : Indicates stimulus number (Can be 1,2 or 3)
 #           Byte 1   : Indicates Port and Pin definition, format explained below
@@ -17,7 +17,7 @@
 #                          ----   --------       ---------
 #           Bit posiiton: 7-6     5              4-3-2-1-0
 #           
-#      Examples (47)      0-1     0              0-0-1-1-1 	
+#      Examples (47)      0-1     0              0-0-1-1-1  
 #                         Port1   State:Low      Pin7
 #
 #   So that 014702000000000000000000000000  means set situmulus 1, USB P1.7, Pin state low.

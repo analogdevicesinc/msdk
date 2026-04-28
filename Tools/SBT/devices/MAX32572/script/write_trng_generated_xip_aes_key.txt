@@ -1,0 +1,28 @@
+generate-xip-aes-key 00000020 %PARAM_0% %PARAM_1%
+#---------------------------------     Explanation          ----------------------------
+#       
+#   generate-xip-aes-key ID KeyStorage KeyStrength
+#       ID: 00000020(fixed)
+#       KeyStorage: Sets where will be the key stored
+#       KeyStrength: Selects key generator source
+#
+#   Generate an AES key used to encrypt and decrypt the XIP flash. 
+#   The key is stored in the access register and can optionally be written to OTP.
+#   Caution: Only one key can be stored in OTP using this command. 
+#   The value written is permanent and cannot be changed by any method.
+#
+# ------------------------------|-------------------------------------------------------|
+#   KeyStorage  --> PARAM_0     |        KeyStrength --> PARAM_1                        |
+# ------------------------------|-------------------------------------------------------|
+#   00 --> Register Only        |        00 --> Unconditioned hardware TRNG output      |
+#   01 --> Register + OTP       |        01 --> NIST SP800-90A compliant                |
+#                               |                                                       |
+# ------------------------------|-------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will set KeyStrength to HW TRNG and KeyStorage to Register Only
+#               generate-xip-aes-key 00000020 00 00
+#
+#           Below command will set KeyStrength to NIST SP800-90A compliant and KeyStorage to Register + OTP
+#               generate-xip-aes-key 00000020 01 01
+#

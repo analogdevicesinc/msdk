@@ -1,0 +1,22 @@
+write-binary-start-address %PARAM_0% 01
+
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-binary-start-address
+#       Address: Binary start address (MSB first)
+#
+#   This command writes a value to OTP that overrides the default Application Image Start Address.
+#   Caution: This command can only be executed once. 
+#   The value written is permanent and cannot be changed by any method.
+#
+# ----------------------------------------------------------|
+#           Binary start address, PARAM_0 (HEX)             |
+# ----------------------------------------------------------|
+#               08000000 -> 0x08000000 (Default)            |
+#                                                           |
+# ----------------------------------------------------------|
+#
+#  Examples: 
+#           Below command will set Application Image Start Address to 0x08000000:    
+#               write-binary-start-address 08000000 01
+#

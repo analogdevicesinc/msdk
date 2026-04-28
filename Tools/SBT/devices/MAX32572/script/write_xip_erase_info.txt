@@ -1,0 +1,23 @@
+write-xip-erase-info %PARAM_0% %PARAM_1% %PARAM_2%
+#---------------------------------     Explanation          ----------------------------
+#       
+#   write-xip-erase-info EraseCommand PageSize Timeout
+#       EraseCommand:   XIP flash erase command
+#       PageSize:       XIP flash page size in KB (MSB first)
+#       Timeout:        Timeout in microseconds (MSB first)
+#
+#   This command stores the device-specific parameters used for the XIP flash erase command in OTP.
+#   Caution: Only one key can be stored in OTP using this command. 
+#   The value written is permanent and cannot be changed by any method.
+#
+# ------------------------------|-------------------------------|-------------------------------|
+#   Erase Command  --> PARAM_0  |   Page Size --> PARAM_1       |   Timeout --> PARAM_2         |
+# ------------------------------|-------------------------------|-------------------------------|
+#   D8 --> (default)            |00000040 --> 64KBytes (default)|00000BB8 --> 3000ms (default)  |
+#                               |                               |                               |
+# ------------------------------|-------------------------------|-------------------------------|
+#
+#  Examples: 
+#           Below command will set XIP erase info using default values
+#               write-xip-erase-info D8 00000040 00000BB8
+#
