@@ -190,6 +190,10 @@ int MXC_SPI_RevA1_SetFrequency(mxc_spi_reva_regs_t *spi, unsigned int hz)
     int hi_clk, lo_clk, scale;
     uint32_t freq_div;
 
+    if (!hz) {
+        return E_BAD_PARAM;
+    }
+
     // Check if frequency is too high
     if (hz > PeripheralClock) {
         return E_BAD_PARAM;
