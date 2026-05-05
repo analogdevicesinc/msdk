@@ -61,6 +61,7 @@ typedef struct {
     mxc_spi_tscontrol_t ts_control;
 
     // DMA Settings.
+    bool                dma_in_use;
     mxc_dma_reva_regs_t *dma;
     int                 tx_dma_ch;
     int                 rx_dma_ch;
@@ -294,6 +295,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
 
             // Target is done after callback (if valid) is handled.
             STATES[spi_num].transaction_done = true;
+            STATES[spi_num].dma_in_use = false;
 
             // Reset the SPI to complete the on-going transaction.
             //  SPIn may remain busy (SPI_STAT) even after the target select input
@@ -330,6 +332,7 @@ static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
     STATES[spi_num].ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Default (0) state.
 
     // DMA
+    STATES[spi_num].dma_in_use = false;
     STATES[spi_num].dma = NULL;
     STATES[spi_num].tx_dma_ch = -1;
     STATES[spi_num].rx_dma_ch = -1;
@@ -1090,6 +1093,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
     // Initialize SPIn state to handle data.
     STATES[spi_num].transaction_done = false;
+    STATES[spi_num].dma_in_use = use_dma;
 
     STATES[spi_num].tx_buffer = tx_buffer;
     STATES[spi_num].tx_count_bytes = 0;
@@ -1240,6 +1244,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             //  does not trigger a CTZ interrupt.
             if (rx_length_frames > 0 && rx_buffer != NULL) {
                 STATES[spi_num].transaction_done = true;
+                STATES[spi_num].dma_in_use = false;
             }
 
             STATES[spi_num].tx_done = true;
@@ -1378,11 +1383,6 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
-    // Make sure DMA is not initialized.
-    if (STATES[spi_num].dma_initialized == true) {
-        return E_BAD_STATE;
-    }
-
     // Make sure SPI Instance is in Controller mode (L. Master).
     if (STATES[spi_num].controller_target != MXC_SPI_TYPE_CONTROLLER) {
         return E_BAD_STATE;
@@ -1406,6 +1406,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         if (STATES[spi_num].tx_done == true && STATES[spi_num].rx_done == true) {
             if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
                 STATES[spi_num].transaction_done = true;
+                STATES[spi_num].dma_in_use = false;
             }
         }
 
@@ -1423,11 +1424,6 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
     int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-
-    // Make sure DMA is not initialized.
-    if (STATES[spi_num].dma_initialized == true) {
-        return E_BAD_STATE;
-    }
 
     // Make sure SPI Instance is in Controller mode (L. Master).
     if (STATES[spi_num].controller_target != MXC_SPI_TYPE_CONTROLLER) {
@@ -1501,11 +1497,6 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
-    // Make sure DMA is not initialized.
-    if (STATES[spi_num].dma_initialized == true) {
-        return E_BAD_STATE;
-    }
-
     // Make sure SPI Instance is in Target mode (L. Slave).
     if (STATES[spi_num].controller_target != MXC_SPI_TYPE_TARGET) {
         return E_BAD_STATE;
@@ -1523,6 +1514,7 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
         if (STATES[spi_num].tx_count_bytes == STATES[spi_num].tx_length_bytes &&
             STATES[spi_num].rx_count_bytes == STATES[spi_num].rx_length_bytes) {
             STATES[spi_num].transaction_done = true;
+            STATES[spi_num].dma_in_use = false;
         }
 
         MXC_SPI_RevA2_process(spi);
@@ -1542,11 +1534,6 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
 
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-
-    // Make sure DMA is not initialized.
-    if (STATES[spi_num].dma_initialized == true) {
-        return E_BAD_STATE;
-    }
 
     // Make sure SPI Instance is in Target mode (L. Slave).
     if (STATES[spi_num].controller_target != MXC_SPI_TYPE_TARGET) {
@@ -1612,6 +1599,7 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 
         // Controller is done after callback (if valid) is handled.
         STATES[spi_num].transaction_done = true;
+        STATES[spi_num].dma_in_use = false;
     }
 
     // Handle RX Threshold
@@ -1662,6 +1650,7 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
         // TX Transaction is done if there's no RX transaction.
         if (STATES[spi_num].rx_length_bytes == 0 || STATES[spi_num].tx_buffer == NULL) {
             STATES[spi_num].transaction_done = true;
+            STATES[spi_num].dma_in_use = false;
         }
     }
 
@@ -1707,6 +1696,7 @@ void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
         // RX transaction determines the controller is done if TX transaction is also present.
         if (STATES[spi_num].tx_length_bytes > 0 && STATES[spi_num].tx_buffer != NULL) {
             STATES[spi_num].transaction_done = true;
+            STATES[spi_num].dma_in_use = false;
         }
     }
 
