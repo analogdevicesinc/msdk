@@ -201,8 +201,12 @@ int MXC_SYS_Select32KClockSource(mxc_sys_32k_clock_t clock)
         return E_BAD_PARAM;
     }
 
-    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_CLKSEL;
-    MXC_MCR->ctrl |= (clock << MXC_F_MCR_CTRL_CLKSEL_POS);
+    if (clock == MXC_SYS_32K_CLOCK_ERTCO) {
+        MXC_SETFIELD(MXC_MCR->ctrl, MXC_F_MCR_CTRL_ERTCO32K_EN,
+                     1 << MXC_F_MCR_CTRL_ERTCO32K_EN_POS);
+    }
+
+    MXC_SETFIELD(MXC_MCR->ctrl, MXC_F_MCR_CTRL_CLKSEL, clock << MXC_F_MCR_CTRL_CLKSEL_POS);
 
     return E_NO_ERROR;
 }
@@ -432,7 +436,10 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
             }
         }
 
-        // Set ERTCO clock as System Clock
+        // Select ERTCO as CLK_32KHZ
+        MXC_SYS_Select32KClockSource(MXC_SYS_32K_CLOCK_ERTCO);
+
+        // Set CLK_32KHZ clock as System Clock
         MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
                      MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO);
 

@@ -43,7 +43,15 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     case MXC_TMR_ERTCO_CLK:
         clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+        MXC_SYS_Select32KClockSource(MXC_SYS_32K_CLOCK_ERTCO);
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
+        break;
+
+    case MXC_TMR_INRO_CLK:
+        clockSource = MXC_TMR_CLK2;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+        MXC_SYS_Select32KClockSource(MXC_SYS_32K_CLOCK_INRO);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ / 4);
         break;
 
     default:
@@ -203,6 +211,10 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
 
     case MXC_TMR_ERTCO_CLK:
         clockFrequency = ERTCO_FREQ;
+        break;
+
+    case MXC_TMR_INRO_CLK:
+        clockFrequency = INRO_FREQ / 4;
         break;
 
     default:
