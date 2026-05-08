@@ -158,7 +158,12 @@ static void wsfTimerInsert(wsfTimer_t *pTimer, wsfTimerTicks_t ticks)
   }
 
   pTimer->isStarted = TRUE;
-  pTimer->ticks = ticks;
+  /* offset requested ticks by any elapsed but unclaimed WSF ticks so the
+   * timer fires at the correct absolute time regardless of how long since the
+   * last WsfTimerSleepUpdate() call. */
+  uint32_t rtcNow = PalRtcCounterGet();
+  uint32_t elapsed = WSF_TIMER_RTC_ELAPSED_TICKS(rtcNow);
+  pTimer->ticks = ticks + WSF_RTC_TICKS_TO_WSF(elapsed);
 
   pElem = (wsfTimer_t *) wsfTimerTimerQueue.pHead;
 
@@ -400,7 +405,10 @@ void WsfTimerSleep(void)
     uint32_t elapsed = WSF_TIMER_RTC_ELAPSED_TICKS(rtcCurrentTicks);
 
     /* if we have time to sleep before timer expiration */
-    if ((awake - elapsed) > WSF_TIMER_MIN_RTC_TICKS_FOR_SLEEP)
+    /* protect against unsigned underflow to avoid hang: if elapsed RTC ticks exceed awake, e.g.
+     * if timer is about to expire and WsfTimerSleepUpdate() hasn't run in a while because 
+     * of long handler execution, treat the timer as already expired and skip sleep. */
+    if ((elapsed < awake) && ((awake - elapsed) > WSF_TIMER_MIN_RTC_TICKS_FOR_SLEEP))
     {
       uint32_t compareVal = (rtcCurrentTicks + awake - elapsed) & PAL_MAX_RTC_COUNTER_VAL;
 

@@ -103,6 +103,8 @@ void WsfTimerStartMs(wsfTimer_t *pTimer, wsfTimerTicks_t ms)
         if (ticks != pTimer->ticks) {
             /* Update timer interval */
             xTimerChangePeriod(existingTimer->tmr, ticks, 0);
+            /* save it too to catch future updates at initial setting */
+            pTimer->ticks = ticks;
         }
         /* Restart the existing timer */
         pTimer->isStarted = xTimerReset(existingTimer->tmr, 0);
