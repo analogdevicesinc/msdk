@@ -77,3 +77,13 @@ void MXC_ICC_RevA_Disable(mxc_icc_reva_regs_t *icc)
     // Disable Cache
     icc->ctrl &= ~MXC_F_ICC_REVA_CTRL_EN;
 }
+
+void MXC_ICC_RevA_Invalidate(mxc_icc_reva_regs_t *icc)
+{
+    icc->invalidate = 1;
+}
+
+void MXC_ICC_RevA_WaitForReady(mxc_icc_reva_regs_t *icc)
+{
+    while (!(MXC_ICC_Ready(icc))) {}
+}

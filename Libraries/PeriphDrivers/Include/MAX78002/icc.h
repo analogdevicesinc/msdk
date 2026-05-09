@@ -72,6 +72,17 @@ void MXC_ICC_Disable(mxc_icc_regs_t *icc);
  */
 void MXC_ICC_Flush(mxc_icc_regs_t *icc);
 
+/**
+ * @brief   Invalidate the instruction cache controller.
+ */
+void MXC_ICC_Invalidate(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Wait until the instruction cache controller is ready.
+ * @param   icc  Pointer to the Instruction Cache Controller registers.
+ */
+void MXC_ICC_WaitForReady(mxc_icc_regs_t *icc);
+
 /**@} end of group icc */
 
 #ifdef __cplusplus

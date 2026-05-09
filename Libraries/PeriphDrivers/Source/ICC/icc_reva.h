@@ -38,5 +38,7 @@
 int MXC_ICC_RevA_ID(mxc_icc_reva_regs_t *icc, mxc_icc_info_t cid);
 void MXC_ICC_RevA_Enable(mxc_icc_reva_regs_t *icc);
 void MXC_ICC_RevA_Disable(mxc_icc_reva_regs_t *icc);
+void MXC_ICC_RevA_Invalidate(mxc_icc_reva_regs_t *icc);
+void MXC_ICC_RevA_WaitForReady(mxc_icc_reva_regs_t *icc);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_ICC_ICC_REVA_H_

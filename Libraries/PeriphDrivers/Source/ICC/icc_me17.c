@@ -57,3 +57,13 @@ void MXC_ICC_Flush(mxc_icc_regs_t *icc)
     MXC_ICC_Disable(icc);
     MXC_ICC_Enable(icc);
 }
+
+void MXC_ICC_Invalidate(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_RevA_Invalidate((mxc_icc_reva_regs_t *)icc);
+}
+
+void MXC_ICC_WaitForReady(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_RevA_WaitForReady((mxc_icc_reva_regs_t *)icc);
+}

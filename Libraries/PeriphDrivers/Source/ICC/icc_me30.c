@@ -65,3 +65,18 @@ void MXC_ICC_Flush(void)
     MXC_ICC_Com_Flush();
 #endif
 }
+
+void MXC_ICC_Invalidate(void)
+{
+#if CONFIG_TRUSTED_EXECUTION_SECURE
+    MXC_ICC_RevA_Invalidate((mxc_icc_reva_regs_t *)MXC_ICC);
+#endif
+}
+
+void MXC_ICC_WaitForReady(void)
+{
+    /* Cache controller only accessible in secure world. */
+#if CONFIG_TRUSTED_EXECUTION_SECURE
+    MXC_ICC_RevA_WaitForReady((mxc_icc_reva_regs_t *)MXC_ICC);
+#endif
+}

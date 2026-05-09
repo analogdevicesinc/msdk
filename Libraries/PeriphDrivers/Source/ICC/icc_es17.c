@@ -48,3 +48,8 @@ void MXC_ICC_Flush(void)
 {
     MXC_ICC_Com_Flush();
 }
+
+void MXC_ICC_Invalidate(void)
+{
+    MXC_ICC_RevA_Invalidate((mxc_icc_reva_regs_t *)MXC_ICC);
+}
