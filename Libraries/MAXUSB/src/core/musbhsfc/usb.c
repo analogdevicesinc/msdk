@@ -1033,7 +1033,14 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
     MXC_USBHS->index = ep;
 
     /* if pending request; error */
-    if (MXC_USB_Request[ep] || (MXC_USBHS->incsrl & MXC_F_USBHS_INCSRL_INPKTRDY)) {
+    if (MXC_USB_Request[ep]) {
+        MXC_SYS_Crit_Exit();
+        return -1;
+    }
+
+    /* if pending data; error */
+    if (ep ? (MXC_USBHS->incsrl & MXC_F_USBHS_INCSRL_INPKTRDY)
+           : (MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_INPKTRDY)) {
         MXC_SYS_Crit_Exit();
         return -1;
     }
