@@ -43,6 +43,11 @@ static inline void Wrap_MXC_ICC_Disable(mxc_icc_regs_t *icc)
     MXC_ICC_Disable(icc);
 }
 
+static inline int Wrap_MXC_ICC_IsEnabled(mxc_icc_regs_t *icc)
+{
+    return MXC_ICC_IsEnabled(icc);
+}
+
 static inline void Wrap_MXC_ICC_Flush(mxc_icc_regs_t *icc)
 {
     MXC_ICC_Flush(icc);
@@ -72,6 +77,11 @@ static inline void Wrap_MXC_ICC_Enable(mxc_icc_regs_t *icc)
 static inline void Wrap_MXC_ICC_Disable(mxc_icc_regs_t *icc)
 {
     MXC_ICC_DisableInst(icc);
+}
+
+static inline int Wrap_MXC_ICC_IsEnabled(mxc_icc_regs_t *icc)
+{
+    return MXC_ICC_IsEnabledInst(icc);
 }
 
 static inline void Wrap_MXC_ICC_Flush(mxc_icc_regs_t *icc)
@@ -106,6 +116,12 @@ static inline void Wrap_MXC_ICC_Disable(mxc_icc_regs_t *icc)
 {
     (void)icc;
     MXC_ICC_Disable();
+}
+
+static inline int Wrap_MXC_ICC_IsEnabled(mxc_icc_regs_t *icc)
+{
+    (void)icc;
+    return MXC_ICC_IsEnabled();
 }
 
 static inline void Wrap_MXC_ICC_Flush(mxc_icc_regs_t *icc)

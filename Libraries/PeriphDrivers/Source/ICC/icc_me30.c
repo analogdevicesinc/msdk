@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,15 @@ void MXC_ICC_Disable(void)
 {
 #if CONFIG_TRUSTED_EXECUTION_SECURE
     MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC);
+#endif
+}
+
+int MXC_ICC_IsEnabled(void)
+{
+#if CONFIG_TRUSTED_EXECUTION_SECURE
+    return MXC_ICC_RevA_IsEnabled((mxc_icc_reva_regs_t *)MXC_ICC);
+#else
+    return 0;
 #endif
 }
 
