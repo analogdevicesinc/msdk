@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,9 +68,26 @@ void MXC_ICC_Enable(mxc_icc_regs_t *icc);
 void MXC_ICC_Disable(mxc_icc_regs_t *icc);
 
 /**
+ * @brief   Checks if the instruction cache controller is enabled.
+ * @param   icc Pointer to the Instruction Cache Controller registers.
+ * @retval  Returns 1 if the ICC instance is enabled, 0 otherwise.
+ */
+int MXC_ICC_IsEnabled(mxc_icc_regs_t *icc);
+
+/**
  * @brief   Flush the instruction cache controller.
  */
 void MXC_ICC_Flush(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Invalidate the instruction cache controller.
+ */
+void MXC_ICC_Invalidate(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Wait until the instruction cache controller is ready.
+ */
+void MXC_ICC_WaitForReady(mxc_icc_regs_t *icc);
 
 /**@} end of group icc */
 

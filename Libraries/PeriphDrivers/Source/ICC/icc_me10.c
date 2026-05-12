@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,13 @@ void MXC_ICC_Flush(void)
 }
 
 /* **************************************************************************** */
+void MXC_ICC_WaitForReady(void)
+{
+    MXC_ICC_RevA_WaitForReady((mxc_icc_reva_regs_t *)MXC_ICC0);
+    MXC_ICC_RevA_WaitForReady((mxc_icc_reva_regs_t *)MXC_ICC1);
+}
+
+/* **************************************************************************** */
 int MXC_ICC_IDInst(mxc_icc_regs_t *icc, mxc_icc_info_t cid)
 {
     return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)icc, cid);
@@ -77,8 +84,25 @@ void MXC_ICC_DisableInst(mxc_icc_regs_t *icc)
 }
 
 /* **************************************************************************** */
+int MXC_ICC_IsEnabledInst(mxc_icc_regs_t *icc)
+{
+    return MXC_ICC_RevA_IsEnabled((mxc_icc_reva_regs_t *)icc);
+}
+
+/* **************************************************************************** */
 void MXC_ICC_FlushInst(mxc_icc_regs_t *icc)
 {
     MXC_ICC_DisableInst(icc);
     MXC_ICC_EnableInst(icc);
+}
+
+void MXC_ICC_InvalidateInst(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_RevA_Invalidate((mxc_icc_reva_regs_t *)icc);
+}
+
+/* **************************************************************************** */
+void MXC_ICC_WaitForReadyInst(mxc_icc_regs_t *icc)
+{
+    MXC_ICC_RevA_WaitForReady((mxc_icc_reva_regs_t *)icc);
 }

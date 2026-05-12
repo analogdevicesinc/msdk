@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,4 +76,19 @@ void MXC_ICC_RevA_Disable(mxc_icc_reva_regs_t *icc)
 {
     // Disable Cache
     icc->ctrl &= ~MXC_F_ICC_REVA_CTRL_EN;
+}
+
+int MXC_ICC_RevA_IsEnabled(mxc_icc_reva_regs_t *icc)
+{
+    return !!(icc->ctrl & MXC_F_ICC_REVA_CTRL_EN);
+}
+
+void MXC_ICC_RevA_Invalidate(mxc_icc_reva_regs_t *icc)
+{
+    icc->invalidate = 1;
+}
+
+void MXC_ICC_RevA_WaitForReady(mxc_icc_reva_regs_t *icc)
+{
+    while (!(MXC_ICC_Ready(icc))) {}
 }

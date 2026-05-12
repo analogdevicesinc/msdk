@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,10 +93,34 @@ void MXC_ICC_EnableInst(mxc_icc_regs_t *icc);
 void MXC_ICC_DisableInst(mxc_icc_regs_t *icc);
 
 /**
+ * @brief   Checks if one of the ICC's is enabled.
+ * @param   icc     Pointer to ICC instance to check.
+ * @retval  Returns 1 if the ICC instance is enabled, 0 otherwise.
+ */
+int MXC_ICC_IsEnabledInst(mxc_icc_regs_t *icc);
+
+/**
  * @brief   Flushes data from one of the ICC's.
  * @param   icc     Pointer to ICC instance to flush.
  */
 void MXC_ICC_FlushInst(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Invalidates one of the ICC's.
+ * @param   icc     Pointer to ICC instance to invalidate.
+ */
+void MXC_ICC_InvalidateInst(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Wait until both the instruction cache controller and/or instance are ready.
+ */
+void MXC_ICC_WaitForReady(void);
+
+/**
+ * @brief   Wait until the instruction cache controller instance is ready.
+ * @param   icc     Pointer to ICC instance to wait on.
+ */
+void MXC_ICC_WaitForReadyInst(mxc_icc_regs_t *icc);
 
 /**@} end of group icc */
 

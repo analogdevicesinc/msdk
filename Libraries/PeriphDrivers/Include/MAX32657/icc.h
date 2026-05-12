@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,9 +66,25 @@ void MXC_ICC_Enable(void);
 void MXC_ICC_Disable(void);
 
 /**
+ * @brief   Checks if the instruction cache controller is enabled.
+ * @retval  Returns 1 if the ICC instance is enabled, 0 otherwise.
+ */
+int MXC_ICC_IsEnabled(void);
+
+/**
  * @brief   Flush the instruction cache controller.
  */
 void MXC_ICC_Flush(void);
+
+/**
+ * @brief   Invalidate the instruction cache controller.
+ */
+void MXC_ICC_Invalidate(void);
+
+/**
+ * @brief   Wait until the instruction cache controller is ready.
+ */
+void MXC_ICC_WaitForReady(void);
 
 /**@} end of group icc */
 
