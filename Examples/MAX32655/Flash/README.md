@@ -44,7 +44,7 @@ After flashing and launching the example, an LED on the board will blink once ev
 
 ```
 ***** Flash Control Example *****
-Press Push Button 1 (PB1/SW1) to continue...
+Press Push Button 1 (PB1/SW3) to continue...
 
 ---(Critical)---
 Successfully erased page 64 of flash (addr 0x1007e000)
@@ -64,7 +64,7 @@ At this point, the "magic" and test pattern values have been written to flash.  
 
 ```
 ***** Flash Control Example *****
-Press Push Button 1 (PB1/SW1) to continue...
+Press Push Button 1 (PB1/SW3) to continue...
 
 ** Magic value 0xfeedbeef found at address 0x1007e000! **
 
