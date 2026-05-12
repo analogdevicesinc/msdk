@@ -73,11 +73,6 @@ void MXC_ICC_Disable(void);
 void MXC_ICC_Flush(void);
 
 /**
- * @brief   Invalidate the instruction cache controller.
- */
-void MXC_ICC_Invalidate(void);
-
-/**
  * @brief   Reads ID information from one of the ICC's Cache ID Register.
  * @param   icc     Pointer ICC instance to get ID information from.
  * @param   cid     Selects what information to get from the Cache ID Register

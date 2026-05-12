@@ -74,9 +74,9 @@ void MXC_ICC_Disable(void);
 void MXC_ICC_Flush(void);
 
 /**
- * @brief   Invalidate both of the instruction cache controllers.
+ * @brief   Wait until both of the instruction cache controllers are ready.
  */
-void MXC_ICC_Invalidate(void);
+void MXC_ICC_WaitForReady(void);
 
 /**
  * @brief   Reads ID information from one of the ICC's Cache ID Register.
@@ -116,11 +116,6 @@ void MXC_ICC_FlushInst(mxc_icc_regs_t *icc);
  * @param   icc     Pointer to ICC instance to invalidate.
  */
 void MXC_ICC_InvalidateInst(mxc_icc_regs_t *icc);
-
-/**
- * @brief   Wait until both of the instruction cache controllers are ready.
- */
-void MXC_ICC_WaitForReady(void);
 
 /**
  * @brief   Wait until one of the instruction cache controller instances is ready.

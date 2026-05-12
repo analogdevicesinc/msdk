@@ -67,7 +67,8 @@ static inline void Wrap_MXC_ICC_WaitForReady(mxc_icc_regs_t *icc)
  * SoCs that expose both global and instance APIs (use instance API when
  * available). These SoCs provide MXC_ICC_*Inst() functions.
  */
-#elif defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
+#elif defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || \
+    defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666)
 
 static inline void Wrap_MXC_ICC_Enable(mxc_icc_regs_t *icc)
 {
