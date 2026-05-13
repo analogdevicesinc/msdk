@@ -32,7 +32,7 @@ zephyr_compile_definitions(
     -DMSDK_NO_LOCKING=1
 )
 
-if (CONFIG_MAX32_SECURE_SOC_SIGNING)
+if (CONFIG_SOC_FAMILY_MAX32_SECURE_SOC_SIGNING)
 zephyr_compile_definitions(
     -D__SLA_FWK__
     -DUSE_ZEPHYR_SECTIONS=1
