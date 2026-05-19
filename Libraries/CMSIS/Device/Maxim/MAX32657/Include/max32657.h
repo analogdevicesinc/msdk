@@ -718,7 +718,7 @@ We may want to handle GET_IRQ better...
                                                     0))
 #endif // CONFIG_TRUSTED_EXECUTION_SECURE
 
-#define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0_NS ? 0 : (p) == MXC_BASE_DMA1_S ? 1 : -1)
+#define MXC_DMA_GET_BASE(i) ((i) == MXC_BASE_DMA0_NS ? 0 : (i) == MXC_BASE_DMA1_S ? 1 : -1)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0_NS ? 0 : (p) == MXC_DMA1_S ? 1 : -1)
 
