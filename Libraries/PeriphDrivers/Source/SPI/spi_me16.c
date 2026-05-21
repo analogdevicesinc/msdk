@@ -70,6 +70,11 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     return MXC_SPI_RevA1_Init(spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
 }
 
+int MXC_SPI_InitState(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA1_InitState((mxc_spi_reva_regs_t *)spi);
+}
+
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 {
     int spi_num;
