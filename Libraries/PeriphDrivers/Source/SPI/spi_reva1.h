@@ -69,6 +69,7 @@ struct _mxc_spi_reva_req_t {
 
 int MXC_SPI_RevA1_Init(mxc_spi_reva_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                        unsigned ssPolarity, unsigned int hz);
+int MXC_SPI_RevA1_InitState(mxc_spi_reva_regs_t *spi);
 int MXC_SPI_RevA1_Shutdown(mxc_spi_reva_regs_t *spi);
 int MXC_SPI_RevA1_ReadyForSleep(mxc_spi_reva_regs_t *spi);
 int MXC_SPI_RevA1_SetFrequency(mxc_spi_reva_regs_t *spi, unsigned int hz);

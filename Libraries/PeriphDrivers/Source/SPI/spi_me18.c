@@ -162,6 +162,11 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
                               ssPolarity, hz);
 }
 
+int MXC_SPI_InitState(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA1_InitState((mxc_spi_reva_regs_t *)spi);
+}
+
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 {
     int spi_num;

@@ -186,6 +186,15 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins);
 
 /**
+ * @brief   Initialize in-memory SPI peripheral state.
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_InitState(mxc_spi_regs_t *spi);
+
+/**
  * @brief   Disable and shutdown SPI peripheral.
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)

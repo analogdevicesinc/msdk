@@ -59,24 +59,12 @@ static int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req);
 int MXC_SPI_RevA1_Init(mxc_spi_reva_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                        unsigned ssPolarity, unsigned int hz)
 {
+    int retval;
     int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    /*  Validate that the specified SPI instance exists.
-        Note:  The Init function is the only one that performs this check.
-        It catches the rare edge case where a user has casted
-        a custom SPI regs struct with an incorrect base address.
-     */
-    if (spi_num < 0)
-        return E_BAD_PARAM;
 
-    states[spi_num].req = NULL;
-    states[spi_num].last_size = 0;
-    states[spi_num].ssDeassert = 1;
-    states[spi_num].defaultTXData = 0;
-    states[spi_num].mtMode = 0;
-    states[spi_num].mtFirstTrans = 0;
-    states[spi_num].channelTx = E_NO_DEVICE;
-    states[spi_num].channelRx = E_NO_DEVICE;
-    states[spi_num].hw_ss_control = true;
+    retval = MXC_SPI_RevA1_InitState(spi);
+    if (retval)
+        return retval;
 
     spi->ctrl0 = (MXC_F_SPI_REVA_CTRL0_EN);
     spi->sstime =
@@ -126,6 +114,30 @@ int MXC_SPI_RevA1_Init(mxc_spi_reva_regs_t *spi, int masterMode, int quadModeUse
     if (quadModeUsed) {
         spi->ctrl2 |= MXC_S_SPI_REVA_CTRL2_DATA_WIDTH_QUAD;
     }
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA1_InitState(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    /*  Validate that the specified SPI instance exists.
+        Note:  The Init function is the only one that performs this check.
+        It catches the rare edge case where a user has casted
+        a custom SPI regs struct with an incorrect base address.
+     */
+    if (spi_num < 0)
+        return E_BAD_PARAM;
+
+    states[spi_num].req = NULL;
+    states[spi_num].last_size = 0;
+    states[spi_num].ssDeassert = 1;
+    states[spi_num].defaultTXData = 0;
+    states[spi_num].mtMode = 0;
+    states[spi_num].mtFirstTrans = 0;
+    states[spi_num].channelTx = E_NO_DEVICE;
+    states[spi_num].channelRx = E_NO_DEVICE;
+    states[spi_num].hw_ss_control = true;
 
     return E_NO_ERROR;
 }
