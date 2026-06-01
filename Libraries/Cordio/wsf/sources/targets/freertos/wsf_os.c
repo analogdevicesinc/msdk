@@ -57,17 +57,14 @@ WSF_CT_ASSERT(sizeof(uint32_t) == 4);
 /* maximum number of event handlers per task */
 #define WSF_MAX_HANDLERS      												16
 
-#define WSF_DISPATCHER_MSG_STACK_SIZE									4096
-#define WSF_DISPATCHER_HND_STACK_SIZE									4096
-#define WSF_DISPATCHER_MSG_TASK_PRIORITY							configMAX_PRIORITIES - 2
-#define WSF_DISPATCHER_HND_TASK_PRIORITY							configMAX_PRIORITIES - 3
+#define WSF_DISPATCHER_STACK_SIZE                     4096
+#define WSF_DISPATCHER_TASK_PRIORITY                  configMAX_PRIORITIES - 3
 
 /*! \brief OS serivice function number */
 #define WSF_OS_MAX_SERVICE_FUNCTIONS                  3
 
 /* Forward declaration */
-static void prvWSFMsgTask(void *pvParameters);
-static void prvWSFHndTask(void *pvParameters);
+static void prvWSFDispatchTask(void *pvParameters);
 
 /**************************************************************************************************
   Data Types
@@ -78,8 +75,7 @@ typedef struct {
   wsfEventHandler_t handler[WSF_MAX_HANDLERS];
   wsfEventMask_t handlerEventMask[WSF_MAX_HANDLERS];
   wsfQueue_t msgQueue;
-  xTaskHandle msgTaskHandle;
-  xTaskHandle hndTaskHandle;
+  xTaskHandle taskHandle;
   uint8_t numHandler;
 } wsfOsTask_t;
 
@@ -137,9 +133,9 @@ void WsfSetEvent(wsfHandlerId_t handlerId, wsfEventMask_t event)
 
   /* Notify the dispatcher task */
   if (xPortIsInsideInterrupt()) {
-    xTaskNotifyFromISR(wsfOs.task.hndTaskHandle, WSF_HANDLER_EVENT, eSetBits, NULL);
+    xTaskNotifyFromISR(wsfOs.task.taskHandle, WSF_HANDLER_EVENT, eSetBits, NULL);
   } else {
-    xTaskNotify(wsfOs.task.hndTaskHandle, WSF_HANDLER_EVENT, eSetBits);
+    xTaskNotify(wsfOs.task.taskHandle, WSF_HANDLER_EVENT, eSetBits);
   }
 }
 
@@ -158,9 +154,9 @@ void WsfTaskSetReady(wsfHandlerId_t handlerId, wsfTaskEvent_t event)
 
   /* Notify the dispatcher task */
   if (xPortIsInsideInterrupt()) {
-    xTaskNotifyFromISR(wsfOs.task.msgTaskHandle, event, eSetBits, NULL);
+    xTaskNotifyFromISR(wsfOs.task.taskHandle, event, eSetBits, NULL);
   } else {
-    xTaskNotify(wsfOs.task.msgTaskHandle, event, eSetBits);
+    xTaskNotify(wsfOs.task.taskHandle, event, eSetBits);
   }
 }
 
@@ -212,25 +208,20 @@ wsfHandlerId_t WsfOsSetNextHandler(wsfEventHandler_t handler)
 void WsfOsInit(void)
 {
   memset(&wsfOs, 0, sizeof(wsfOs));
-  xTaskCreate(prvWSFMsgTask, /* The function that implements the task. */
-              "CordioM", /* Text name for the task, just to help debugging. */
-              WSF_DISPATCHER_MSG_STACK_SIZE, /* The size (in words) of the stack that should be created for the task. */
+  xTaskCreate(prvWSFDispatchTask, /* The function that implements the task. */
+              "Cordio", /* Text name for the task, just to help debugging. */
+              WSF_DISPATCHER_STACK_SIZE, /* The size (in words) of the stack that should be created for the task. */
               NULL, /* A parameter that can be passed into the task.  Not used. */
-              WSF_DISPATCHER_MSG_TASK_PRIORITY, /* The priority to assign to the task.  tskIDLE_PRIORITY (which is 0) is the lowest priority.  configMAX_PRIORITIES - 1 is the highest priority. */
-              &wsfOs.task.msgTaskHandle); /* Used to obtain a handle to the created task.  Not used, so set to NULL. */
-  WSF_ASSERT(wsfOs.task.msgTaskHandle);
-  xTaskCreate(prvWSFHndTask, /* The function that implements the task. */
-              "CordioH", /* Text name for the task, just to help debugging. */
-              WSF_DISPATCHER_HND_STACK_SIZE, /* The size (in words) of the stack that should be created for the task. */
-              NULL, /* A parameter that can be passed into the task.  Not used. */
-              WSF_DISPATCHER_HND_TASK_PRIORITY, /* The priority to assign to the task.  tskIDLE_PRIORITY (which is 0) is the lowest priority.  configMAX_PRIORITIES - 1 is the highest priority. */
-              &wsfOs.task.hndTaskHandle); /* Used to obtain a handle to the created task.  Not used, so set to NULL. */
-  WSF_ASSERT(wsfOs.task.hndTaskHandle);
+              WSF_DISPATCHER_TASK_PRIORITY, /* The priority to assign to the task.  tskIDLE_PRIORITY (which is 0) is the lowest priority.  configMAX_PRIORITIES - 1 is the highest priority. */
+              &wsfOs.task.taskHandle); /* Used to obtain a handle to the created task. */
+  WSF_ASSERT(wsfOs.task.taskHandle);
 }
 
 /*************************************************************************************************/
 /*!
- *  \brief  The message and timer handler task loop
+ *  \brief  The dispatcher task loop.  Processes messages, timers, and events in the same order
+ *          as the baremetal dispatcher (MSG -> TIMER -> HANDLER), ensuring all protocol state
+ *          machine processing is single-threaded and free from inter-task race conditions.
  *
  *  \param  pvParameters   The task parameters (optional)
  * 	\note   Must never return
@@ -238,13 +229,13 @@ void WsfOsInit(void)
  *  \return None.
  */
 /*************************************************************************************************/
-static void prvWSFMsgTask(void *pvParameters)
+static void prvWSFDispatchTask(void *pvParameters)
 {
-
   wsfOsTask_t *pTask;
   void *pMsg;
   wsfTimer_t *pTimer;
   wsfHandlerId_t handlerId;
+  uint8_t i;
 
   pTask = &wsfOs.task;
 
@@ -270,36 +261,9 @@ static void prvWSFMsgTask(void *pvParameters)
         (*pTask->handler[pTimer->handlerId])(0, &pTimer->msg);
       }
     }
-  }
-}
-
-/*************************************************************************************************/
-/*!
- *  \brief  The dispatcher task loop
- *
- *  \param  pvParameters   The task parameters (optional)
- * 	\note   Must never return
- *
- *  \return None.
- */
-/*************************************************************************************************/
-static void prvWSFHndTask(void *pvParameters)
-{
-
-  wsfOsTask_t *pTask;
-  uint8_t i;
-
-  pTask = &wsfOs.task;
-
-  while (1) {
-    uint32_t taskEventMask = 0;
-
-    /* Wait for a FreeRTOS task notification */
-    if (!xTaskNotifyWait(0, 0xFFFFFFFF, &taskEventMask, portMAX_DELAY))
-      continue; /* No notifications, restart waiting */
 
     if (taskEventMask & WSF_HANDLER_EVENT) {
-      /* service handlers */
+      /* service event handlers */
       for (i = 0; i < WSF_MAX_HANDLERS; i++) {
         if ((pTask->handlerEventMask[i] != 0)
             && (pTask->handler[i] != NULL)) {
