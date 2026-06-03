@@ -6,8 +6,14 @@ Examples/*/*/*/buildrv
 .vscode/settings.json
 Libraries/PeriphDrivers/Documentation/MAX*
 Libraries/PeriphDrivers/bin
+docs/
 Documentation/Libraries
 Documentation/res
+Documentation/LICENSE.md
+Documentation/README.md
+Documentation/CONTRIBUTING.md
+Documentation/Tools/Bluetooth/README.md
+Documentation/user-guide/examples.md
 Examples/MAX78000/PowerTest
 Examples/MAX32570
 Examples/MAX32572
@@ -22,6 +28,7 @@ Tools/MSYS2
 *.d
 /**/make.log
 /**/.idea/
+/**/.venv/
 /**/venv/
 session.txt.log
 flash.log

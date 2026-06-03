@@ -1,19 +1,30 @@
 site_name: Analog Devices MSDK Documentation
-site_author: Analog Devices
-copyright: 'Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved. (now owned by Analog Devices, Inc.), Copyright (C) 2023 Analog Devices, Inc. All Rights Reserved. This software is proprietary to Analog Devices, Inc. and its licensors.'
+site_author: Analog Devices, Inc.
+copyright: 'Copyright (C) 2022-2023 Maxim Integrated Products, Inc. All Rights Reserved. (now owned by Analog Devices, Inc.), Copyright (C) 2023-2026 Analog Devices, Inc. All Rights Reserved.'
 repo_url: https://github.com/analogdevicesinc/msdk
-edit_uri: null
 docs_dir: 'Documentation'
 site_dir: 'docs'
-extra_css: [css/extra.css]
 nav:
   - Home: 'index.md'
-  - MSDK User Guide: 'USERGUIDE.md'
+  - MSDK User Guide: 
+    - Overview: 'user-guide/index.md'
+    - Installation: 'user-guide/installation.md'
+    - Getting Started: 'user-guide/getting-started.md'
+    - Visual Studio Code: 'user-guide/visual-studio-code.md'
+    - Eclipse: 'user-guide/eclipse.md'
+    - Keil MDK: 'user-guide/keil-mdk.md'
+    - IAR Embedded Workbench: 'user-guide/iar-embed-wkbench.md'
+    - Command-Line Development: 'user-guide/command-line-dev.md'
+    - Build System: 'user-guide/build-system.md'
+    - Board Support Packages: 'user-guide/board-support-pkgs.md'
+    - Libraries: 'user-guide/libraries.md'
+    - Examples: 'user-guide/examples.md'
+    - Debuggers: 'user-guide/debuggers.md'
+    - Developer Notes: 'user-guide/developer-notes.md'
   - Cordio BLE User Guide: 'Libraries/Cordio/docs/CORDIO_USERGUIDE.md'
   - Contributing: 'CONTRIBUTING.md'
-  - License: 'LICENSE.md'
 theme:
-  name: readthedocs
+  name: harmonic
   analytics:
     gtag: G-79C65FSVL6
 markdown_extensions:
