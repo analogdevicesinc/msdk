@@ -31,6 +31,13 @@ If using the MAX32690EVKIT:
 -   Close jumper JP5 (LED0 EN).
 -   Close jumper JP6 (LED1 EN).
 
+If using the MAX32690_144P_CTBGA_EVKIT:
+-   Connect a USB cable between the PC and the J17 (PWR/UART1/UART2) connector.
+-   Install JP8(RX_EN) and JP9(TX_EN) headers.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Close jumper JP17 (LED0 EN).
+-   Close jumper JP18 (LED1 EN).
+
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

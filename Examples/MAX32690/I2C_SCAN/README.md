@@ -23,6 +23,16 @@ If using the MAX32690EVKIT:
 -   Enable I2C0 pullup resistors by installing jumpers JP3 and JP4.
 -   Connect I2C0 (SDA - P2.7, SCL - P2.8) to I2C bus.
 
+If using the MAX32690_144P_CTBGA_EVKIT:
+-   Connect a USB cable between the PC and the J17 (PWR/UART1/UART2) connector.
+-   Install JP8(RX_EN) and JP9(TX_EN) headers.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Close jumper JP17 (LED0 EN).
+-   Close jumper JP18 (LED1 EN).
+-   Select the proper pullup voltage for I2C0 using jumper JP16.
+-   Enable I2C0 pullup resistors by installing jumpers JP14 and JP15.
+-   Connect I2C0 (SDA - P2.7, SCL - P2.8) to I2C bus.
+
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

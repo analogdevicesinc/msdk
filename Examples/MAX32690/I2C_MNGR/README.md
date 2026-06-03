@@ -24,13 +24,28 @@ If using the MAX32690EVKIT:
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP5 (LED0 EN).
 -   Close jumper JP6 (LED1 EN).
+-   Select the proper pullup voltage for I2C0 using jumper JP2.
+-   Enable I2C0 pullup resistors by installing jumpers JP3 and JP4.
 -   Connect P2.8 on header JH4 to the SCL line of the I2C Bus.
 -   Connect P2.7 on header JH4 to the SDA line of the I2C Bus.
+-   Connect two EEPROM IC's to the I2C Bus.
+
+If using the MAX32690_144P_CTBGA_EVKIT:
+-   Connect a USB cable between the PC and the J17 (PWR/UART1/UART2) connector.
+-   Install JP8(RX_EN) and JP9(TX_EN) headers.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Close jumper JP17 (LED0 EN).
+-   Close jumper JP18 (LED1 EN).
+-   Select the proper pullup voltage for I2C0 using jumper JP16.
+-   Enable I2C0 pullup resistors by installing jumpers JP14 and JP15.
+-   Connect P2.8 on header J6 to the SCL line of the I2C Bus.
+-   Connect P2.7 on header J6 to the SDA line of the I2C Bus.
 -   Connect two EEPROM IC's to the I2C Bus.
 
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Select the proper pullup voltage for I2C0 using jumper J6.
 -   Connect P2.8 on header J1 to the SCL line of the I2C Bus.
 -   Connect P2.7 on header J1 to the SDA line of the I2C Bus.
 -   Connect two EEPROM IC's to the I2C Bus.
