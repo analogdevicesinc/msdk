@@ -24,7 +24,7 @@ Set `MXC_SPI_VERSION=v2` to build the SPI v2 libraries.
 
 If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Install JP7 (RX_EN) and JP8 (TX_EN) headers.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP5 (LED0_EN).
 -   Close jumper JP6 (LED1_EN).
@@ -32,7 +32,7 @@ If using the MAX32690EVKIT:
 
 If using the MAX32690_144P_CTBGA_EVKIT:
 -   Connect a USB cable between the PC and the J17 (PWR/UART1/UART2) connector.
--   Install JP8(RX_EN) and JP9(TX_EN) headers.
+-   Install JP8 (RX_EN) and JP9 (TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP17 (LED0 EN).
 -   Close jumper JP18 (LED1 EN).

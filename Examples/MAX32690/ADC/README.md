@@ -20,13 +20,13 @@ Universal instructions on building, flashing, and debugging this project on supp
 
 If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Install headers JP7(RX_EN) and JP8(TX_EN).
+-   Install headers JP7 (RX_EN) and JP8 (TX_EN).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Apply an input voltage between 0 and 1.25V to pin labeled 0 of the JH6 (Analog) header.
 
 If using the MAX32690_144P_CTBGA_EVKIT:
 -   Connect a USB cable between the PC and the J17 (PWR/UART1/UART2) connector.
--   Install JP8(RX_EN) and JP9(TX_EN) headers.
+-   Install JP8 (RX_EN) and JP9 (TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Apply an input voltage between 0 and 1.25V to pin labeled AIN0 of the J14 (PORT3) header.
 

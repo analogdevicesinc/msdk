@@ -18,7 +18,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Install JP7 (RX_EN) and JP8 (TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP5 (LED0 EN).
 -   Close jumper JP6 (LED1 EN).
@@ -26,7 +26,7 @@ If using the MAX32690EVKIT:
 
 If using the MAX32690_144P_CTBGA_EVKIT:
 -   Connect a USB cable between the PC and the J17 (PWR/UART1/UART2) connector.
--   Install JP8(RX_EN) and JP9(TX_EN) headers.
+-   Install JP8 (RX_EN) and JP9 (TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP17 (LED0 EN).
 -   Close jumper JP18 (LED1 EN).
@@ -69,14 +69,14 @@ If using the AD-APARD32690-SL:
 
 ### Opening MAX31889 Sensor Driver
 ```c
-	mxc_i2c_sensor_driver_t MAX31889 = MAX31889_Open();
+	mxc_i2c_sensor_driver_t MAX31889 = MAX31889_Open ();
 ```
 
 
 
 ### Initializing the MAX31889
 ```c
-	MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0);
+	MAX31889.init (I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0);
 ```
 NOTE: This functions inializes the I2C peripheral used to communicate with the MAX31889, the I2C pins, and the MAX31889 itself.
 
@@ -84,7 +84,7 @@ NOTE: This functions inializes the I2C peripheral used to communicate with the M
 
 ### Taking a Temperature Reading
 ```c
-	error = MAX31889.read(&temperature);
+	error = MAX31889.read (&temperature);
 ```
 
 
