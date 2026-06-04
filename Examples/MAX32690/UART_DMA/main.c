@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@
  *          connected between P2.11 (UART 0 RX) -> P2.12 (UART 0 TX).
  *          The example uses either automatic or manual DMA handler configuration
  *          depending on the AUTOHANDLERS macro definition.
+ * 
+ *          03/06/2026 - Updated main.c
  */
 
 /***** Includes *****/
@@ -71,7 +73,7 @@ void readCallback(mxc_uart_req_t *req, int error)
     READ_FLAG = error;
 }
 
-void buttonHandler(void)
+void buttonHandler(void *unused)
 {
     buttonPressed = 1;
 }
