@@ -17,8 +17,12 @@
  ******************************************************************************/
 
 #include "max78002.h"
+#include "icc.h"
 
 /* 
  * This function is called during boot up.
  */
-void max32xx_system_init(void) {}
+void max32xx_system_init(void)
+{
+    MXC_ICC_Enable(MXC_ICC0);
+}

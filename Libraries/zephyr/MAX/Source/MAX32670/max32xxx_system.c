@@ -20,6 +20,7 @@
 #include "pwrseq_regs.h"
 #include "mxc_sys.h"
 #include "ecc_regs.h"
+#include "icc.h"
 
 /* 
  * This function is called during boot up.
@@ -31,4 +32,7 @@ void max32xx_system_init(void)
 
     /* Make sure INRO is enabled. INRO should already be enabled during power up. */
     MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_INRO_EN;
+
+    /* Enable instruction caching */
+    MXC_ICC_Enable();
 }
