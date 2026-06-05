@@ -18,6 +18,7 @@
 
 #include "max32672.h"
 #include "trimsir_regs.h"
+#include "icc.h"
 
 /* 
  * This function is called during boot up.
@@ -27,4 +28,7 @@ void max32xx_system_init(void)
     /* Disable SRAM ECC until it is handled on zephyr side */
     MXC_TRIMSIR->bb_sir2 &= ~(MXC_F_TRIMSIR_BB_SIR2_RAM0_1ECCEN | MXC_F_TRIMSIR_BB_SIR2_RAM2ECCEN |
                               MXC_F_TRIMSIR_BB_SIR2_RAM3ECCEN);
+
+    /* Enable instruction caching */
+    MXC_ICC_Enable();
 }

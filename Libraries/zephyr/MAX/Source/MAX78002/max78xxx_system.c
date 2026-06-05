@@ -17,8 +17,17 @@
  ******************************************************************************/
 
 #include "max78002.h"
+#include "icc.h"
 
 /* 
  * This function is called during boot up.
  */
-void max32xx_system_init(void) {}
+void max32xx_system_init(void)
+{
+#ifndef CONFIG_SOC_MAX78002_RV32
+
+    /* Enable instruction caching */
+    MXC_ICC_Enable(MXC_ICC0);
+
+#endif
+}
