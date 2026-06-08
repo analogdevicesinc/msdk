@@ -123,7 +123,9 @@ int MXC_SPI_ReadyForSleep(mxc_spi_regs_t *spi)
 /* ************************************************************************ */
 int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 {
-    if (MXC_SPI_GET_IDX(spi) != -1) {
+    if (MXC_SPI_GET_IDX(spi) == 3) {
+        return PeripheralClock * 2;
+    } else if (MXC_SPI_GET_IDX(spi) != -1) {
         return PeripheralClock;
     } else {
         return E_BAD_PARAM;
