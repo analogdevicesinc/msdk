@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,15 +149,18 @@ int configureRTC(void)
 // *****************************************************************************
 int main(void)
 {
-    if (MXC_PWRSEQ->lppwst !=
-        MXC_F_PWRSEQ_LPPWST_BACKUP) { // Check whether the wakeup source is RTC
-        if (configureRTC() != E_NO_ERROR) { // System start/restart
+    // Check whether the wakeup source is RTC
+    if ((MXC_PWRSEQ->lppwst & MXC_F_PWRSEQ_LPPWST_RESET) != 0) { // System start/restart
+        if (configureRTC() != E_NO_ERROR) {
             printf("Example Failed\n");
             while (1) {}
         }
-    } else {
+    } else if ((MXC_PWRSEQ->lppwst & MXC_F_PWRSEQ_LPPWST_BACKUP) != 0) { // Wakes up from BACKUP
         LED_On(LED_TODA); // RTC alarm fired off. Perform periodic task here
         printTime();
+    } else {
+        printf("Example Failed\n");
+        while (1) {}
     }
 
     rescheduleAlarm(); // Re-arm RTC TOD alarm
