@@ -6,9 +6,9 @@ MOSI (P2.28) pins.  Connect these two pins together.
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
 By default, the example performs blocking (synchronous) SPI transactions using the MASTERSYNC method. To switch transaction modes, update the `METHOD` variable in the `project.mk` file. Available options are:
-- `METHOD ?= MASTERSYNC` – Blocking synchronous transactions (default)
-- `METHOD ?= MASTERASYNC` – Non-blocking asynchronous transactions
-- `METHOD ?= MASTERDMA` – DMA-based transactions
+- `METHOD = MASTERSYNC` – Blocking synchronous transactions (default)
+- `METHOD = MASTERASYNC` – Non-blocking asynchronous transactions
+- `METHOD = MASTERDMA` – DMA-based transactions
 
 ## Software
 
