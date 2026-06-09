@@ -22,11 +22,11 @@
  * @file    main.c
  * @brief   Demonstrates a watchdog timer in run mode
  *
- * @details SW2: Push SW2 to trigger a "too-late" watchdog reset. This will stop resetting the
+ * @details SW4: Push SW4 to trigger a "too-late" watchdog reset. This will stop resetting the
  *               watchdog timer until it generates the "too-late" interrupt.  After that it will
  *               reset the watchdog timer only once, allowing it to pass the reset timeout period.
  *
- *          SW3: Push SW3 to reset the watchdog timer in the "too-early" period.
+ *          SW5: Push SW5 to reset the watchdog timer in the "too-early" period.
  */
 
 /***** Includes *****/
@@ -144,11 +144,11 @@ int main(void)
     }
 
     printf("\n************** Watchdog Timer Demo ****************\n");
-    printf("SW2: Push SW2 to trigger a \"too-late\" watchdog reset. This will stop resetting\n");
+    printf("SW4: Push SW4 to trigger a \"too-late\" watchdog reset. This will stop resetting\n");
     printf("     the watchdog timer until it generates the \"too-late\" interrupt.  After that\n");
     printf("     it will reset the watchdog timer only once, allowing it to pass the reset\n");
     printf("     timeout period.\n\n");
-    printf("SW3: Push SW3 to reset the watchdog timer in the \"too-early\" period.\n");
+    printf("SW5: Push SW5 to reset the watchdog timer in the \"too-early\" period.\n");
 
     //Blink LED0 three times at startup
     blinkled(0, 3, 100);
