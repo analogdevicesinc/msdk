@@ -5,7 +5,10 @@ MOSI (P2.28) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
+By default, the example performs blocking (synchronous) SPI transactions using the MASTERSYNC method. To switch transaction modes, update the `METHOD` variable in the `project.mk` file. Available options are:
+- `METHOD = MASTERSYNC` – Blocking synchronous transactions (default)
+- `METHOD = MASTERASYNC` – Non-blocking asynchronous transactions
+- `METHOD = MASTERDMA` – DMA-based transactions
 
 ## Software
 
@@ -40,26 +43,38 @@ The Console UART of the device will output these messages:
 ```
 **************************** SPI MASTER TEST *************************
 This example configures the SPI to send data between the MISO (P2.27) and
-MOSI (P2.28) pins. Connect these two pins together.
+MOSI (P2.28) pins.  Connect these two pins together.  This demo shows SPI
+sending different bit sizes each run through. 
 
-Multiple word sizes (2 through 16 bits) are demonstrated.
+This demo shows Asynchronous, Synchronous and DMA transaction for SPI0.
 
-Performing blocking (synchronous) transactions...
 --> 2 Bits Transaction Successful
---> 3 Bits Transaction Successful
---> 4 Bits Transaction Successful
---> 5 Bits Transaction Successful
---> 6 Bits Transaction Successful
---> 7 Bits Transaction Successful
---> 8 Bits Transaction Successful
---> 9 Bits Transaction Successful
--->10 Bits Transaction Successful
--->11 Bits Transaction Successful
--->12 Bits Transaction Successful
--->13 Bits Transaction Successful
--->14 Bits Transaction Successful
--->15 Bits Transaction Successful
--->16 Bits Transaction Successful
 
-Example Complete.
+--> 3 Bits Transaction Successful
+
+--> 4 Bits Transaction Successful
+
+--> 5 Bits Transaction Successful
+
+--> 6 Bits Transaction Successful
+
+--> 7 Bits Transaction Successful
+
+--> 8 Bits Transaction Successful
+
+--> 9 Bits Transaction Successful
+
+-->10 Bits Transaction Successful
+
+-->11 Bits Transaction Successful
+
+-->12 Bits Transaction Successful
+
+-->13 Bits Transaction Successful
+
+-->14 Bits Transaction Successful
+
+-->15 Bits Transaction Successful
+
+-->16 Bits Transaction Successful
 ```
