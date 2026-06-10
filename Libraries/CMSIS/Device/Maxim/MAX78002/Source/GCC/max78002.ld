@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,15 @@
  *
  ******************************************************************************/
 
+/* The address and length of the SHARED section defined below. */
+__shared_origin = 0x2005FFF8;
+__shared_length = 8;
+
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64 kB ROM */
     FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00280000 /* 2.5 MB Flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00060000 /* 384 kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0005FFF8 /* ~384kB SRAM */
+    SHARED (rw)  : ORIGIN = 0x2005FFF8, LENGTH = 0x00000008 /* 8B Shared */
     /*CSI2 (rwx) : ORIGIN = 0x2001F000, LENGTH = 0x00001000 4096 B CSI2 Buffer */
 }
 
@@ -152,7 +157,15 @@ SECTIONS {
         _ebss = ALIGN(., 4);
     } > SRAM
 
-    .shared :
+    /* We map the .shared section to a symbol rather than >SHARED to allow for backwards compatibility in CFS
+     * with older projects that did not provide SHARED (note that CFS replaces the MEMORY command at the top of
+     * this file). In that case, we just map to the end of memory.
+     * We add an assert to ensure that the section fits in the available space.
+     */
+    PROVIDE(__shared_origin = 0x2005FFF8);
+    PROVIDE(__shared_length = 8);
+
+    .shared __shared_origin (NOLOAD) :
     {
         . = ALIGN(4);
         _shared = .;
@@ -160,8 +173,10 @@ SECTIONS {
         . = ALIGN(4);
         *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
         _eshared = ALIGN(., 4);
-    } > SRAM
+    }
     __shared_data = LOADADDR(.shared);
+
+    ASSERT(SIZEOF(.shared) <= __shared_length, ".shared section overflow: exceeds inter-core shared memory region")
 
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */

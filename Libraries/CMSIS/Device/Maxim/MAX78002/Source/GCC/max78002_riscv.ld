@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,15 @@ SECTIONS {
         _etext = .;
     } > FLASH
 
-    .shared (NOLOAD) : /* CM4 loads this section from flash in startup code */
+    /* We map the .shared section to a symbol rather than >SHARED to allow for backwards compatibility in CFS
+     * with older projects that did not provide SHARED (note that CFS replaces the MEMORY command at the top of
+     * this file). In that case, we just map to the end of memory.
+     * We add an assert to ensure that the section fits in the available space.
+     */
+    PROVIDE(__shared_origin = 0x2005FFF8);
+    PROVIDE(__shared_length = 8);
+
+    .shared __shared_origin (NOLOAD) :
     {
         . = ALIGN(4);
         _shared = .;
@@ -48,7 +56,8 @@ SECTIONS {
         . = ALIGN(4);
         *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
         _eshared = ALIGN(., 4);
-    } > SRAM5
+    }
+    ASSERT(SIZEOF(.shared) <= __shared_length, ".shared section overflow: exceeds inter-core shared memory region")
 
     /* short/global data section */
     .sdata :
