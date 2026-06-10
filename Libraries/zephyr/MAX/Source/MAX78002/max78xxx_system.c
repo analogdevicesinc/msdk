@@ -17,8 +17,26 @@
  ******************************************************************************/
 
 #include "max78002.h"
+#include "icc.h"
 
 /* 
  * This function is called during boot up.
  */
-void max32xx_system_init(void) {}
+void max32xx_system_init(void)
+{
+#ifndef CONFIG_SOC_MAX78002_RV32
+
+    // Enable then disable ICC to clear the cache
+    MXC_ICC_Enable(MXC_ICC0);
+    MXC_ICC_Disable(MXC_ICC0);
+    MXC_ICC_Enable(MXC_ICC0);
+
+#else
+
+    // Enable then disable ICC to clear the cache
+    MXC_ICC_Enable(MXC_ICC1);
+    MXC_ICC_Disable(MXC_ICC1);
+    MXC_ICC_Enable(MXC_ICC1);
+
+#endif
+}
