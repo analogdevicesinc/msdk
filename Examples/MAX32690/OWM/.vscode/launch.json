@@ -1,126 +1,133 @@
 {
     "configurations": [
         {
-            "name": "CFS: Debug with GDB and OpenOCD (ARM Embedded)",
-            "executable": "${command:cfs.selectProgramFile}",
-            "cwd": "${command:cfs.setDebugPath}",
+            "name": "Debug Arm (Cortex-debug)",
+            "cwd":"${workspaceRoot}",
+            "executable": "${workspaceFolder}/build/${config:program_file}",
+            "loadFiles": ["${workspaceFolder}/build/${config:program_file}"],
+            "symbolFiles": [{
+                "file": "${workspaceFolder}/build/${config:symbol_file}"
+            }],
             "request": "launch",
             "type": "cortex-debug",
-            "runToEntryPoint": "main",
             "servertype": "openocd",
-            "serverpath": "${config:cfs.openocd.path}/bin/openocd",
             "linux": {
-                "gdbPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gdb"
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "serverpath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "gdbPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gdb.exe"
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "serverpath": "${config:OCD_path}/openocd.exe",
             },
             "osx": {
-                "gdbPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gdb"
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "serverpath": "${config:OCD_path}/openocd",
             },
-            "svdPath": "${command:cfs.cmsis.selectSvdFile}",
-            "searchDir": [
-                "${config:cfs.openocd.path}/share/openocd/scripts"
-            ],
-            "configFiles": [
-                "${command:cfs.openocd.selectInterface}",
-                "${command:cfs.openocd.selectTarget}"
-            ],
-            "gdbTarget": "localhost:3333",
-            "preLaunchCommands": [
-                "set logging overwrite on",
-                "set logging file debug-arm.log",
-                "set logging on",
-                "tbreak abort",
-                "tbreak _exit",
-                "set remotetimeout 60"
-            ],
-            "preLaunchTask": "CFS: build"
+            "searchDir": ["${config:OCD_path}/scripts"],
+            "configFiles": ["interface/${config:M4_OCD_interface_file}", "target/${config:M4_OCD_target_file}"],
+            "interface": "swd",
+            "runToEntryPoint": "main",
+            "svdFile": "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include/${config:target}.svd"
         },
         {
-            "name": "CFS: Debug with JlinkGDBServer and JLink (ARM Embedded)",
-            "executable": "${command:cfs.selectProgramFile}",
-            "cwd": "${command:cfs.setDebugPath}",
+            "name": "GDB (Arm M4)",
+            "type": "cppdbg",
             "request": "launch",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "servertype": "jlink",
+            "program": "${workspaceFolder}/build/${config:program_file}",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
             "linux": {
-                "serverpath": "${command:cfs.jlink.setJlinkPath}/JLinkGDBServerCLExe",
-                "gdbPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "serverpath": "${command:cfs.jlink.setJlinkPath}/JLinkGDBServerCL.exe",
-                "gdbPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gdb.exe"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe",
             },
             "osx": {
-                "serverpath": "${command:cfs.jlink.setJlinkPath}/JLinkGDBServerCLExe",
-                "gdbPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gdb"
+                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
-            "device": "${command:cfs.jlink.setDevice}",
-            "interface": "swd",
-            "svdPath": "${command:cfs.cmsis.selectSvdFile}",
-            "gdbTarget": "localhost:2331",
-            "preLaunchCommands": [
-                "set logging overwrite on",
-                "set logging file debug-arm.log",
-                "set logging on",
-                "tbreak abort",
-                "tbreak _exit",
-                "set remotetimeout 60"
+            "logging": {
+                "exceptions": true,
+                "trace": false,
+                "traceResponse": false,
+                "engineLogging": false
+            },
+            "miDebuggerServerAddress": "localhost:3333",
+            "debugServerArgs": "-s ${config:OCD_path}/scripts -f interface/${config:M4_OCD_interface_file} -f target/${config:M4_OCD_target_file} -c \"init; reset halt\"",
+            "serverStarted": "Info : Listening on port 3333 for gdb connections",
+            "filterStderr": true,
+            "targetArchitecture": "arm",
+            "customLaunchSetupCommands": [
+                {"text":"-list-features"}
             ],
-            "preLaunchTask": "CFS: build",
-            "overrideLaunchCommands": [
-                "monitor halt",
-                "monitor reset",
-                "-target-download"
-            ],
-            "overrideResetCommands": [
-                "monitor reset"
-            ],
-            "overrideRestartCommands": [
-                "monitor reset"
+            "setupCommands": [
+                { "text":"set logging overwrite on"},
+                { "text":"set logging file debug-arm.log"},
+                { "text":"set logging on"},
+                { "text":"cd ${workspaceFolder}" },
+                { "text":"exec-file build/${config:program_file}" },
+                { "text":"symbol-file build/${config:symbol_file}" },
+                { "text":"target remote localhost:3333" },
+                { "text":"monitor reset halt" },
+                { "text":"set $pc=Reset_Handler"},
+                { "text":"b main" }
             ]
         },
         {
-            "name": "CFS: Debug with GDB and OpenOCD (RISC-V)",
-            "executable": "${command:cfs.selectRiscvProgramFile}",
-            "cwd": "${command:cfs.setRiscvDebugPath}",
-            "request": "attach",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "servertype": "openocd",
-            "serverpath": "${config:cfs.openocd.path}/bin/openocd",
+            "name": "GDB (RISC-V)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/buildrv/${config:program_file}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
             "linux": {
-                "gdbPath": "${config:cfs.toolchain.riscVGCC.path}/bin/riscv-none-elf-gdb"
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb",
+                "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "gdbPath": "${config:cfs.toolchain.riscVGCC.path}/bin/riscv-none-elf-gdb.exe"
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb.exe",
+                "debugServerPath": "${config:OCD_path}/openocd.exe",
             },
             "osx": {
-                "gdbPath": "${config:cfs.toolchain.riscVGCC.path}/bin/riscv-none-elf-gdb"
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb",
+                "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
-            "svdPath": "${command:cfs.cmsis.selectSvdFile}",
-            "searchDir": [
-                "${config:cfs.openocd.path}/share/openocd/scripts"
+            "logging": {
+                "exceptions": true,
+                "trace": false,
+                "traceResponse": false,
+                "engineLogging": false
+            },
+            "miDebuggerServerAddress": "localhost:3334",
+            "debugServerArgs": "-c \"gdb_port 3334\" -s ${config:OCD_path}/scripts -f interface/${config:RV_OCD_interface_file} -f target/${config:RV_OCD_target_file}",
+            "serverStarted": "Info : Listening on port 3334 for gdb connections",
+            "filterStderr": true,
+            "customLaunchSetupCommands": [
+                {"text":"-list-features"}
             ],
-            "configFiles": [
-                "${command:cfs.openocd.selectRiscvInterface}",
-                "${command:cfs.openocd.selectRiscvTarget}"
-            ],
-            "gdbTarget": "localhost:3334",
-            "preAttachCommands": [
-                "set logging overwrite on",
-                "set logging file debug-riscv.log",
-                "set logging on",
-                "set remotetimeout 60",
-                "tbreak main",
-                "set $pc=Reset_Handler"
-            ],
-            "postAttachCommands": [
-                "continue"
+            "targetArchitecture": "arm",
+            "setupCommands": [
+                { "text":"set logging overwrite on"},
+                { "text":"set logging file debug-riscv.log"},
+                { "text":"set logging on"},
+                { "text":"cd ${workspaceFolder}" },
+                { "text": "set architecture riscv:rv32", "ignoreFailures": false },          
+                { "text":"exec-file build/${config:program_file}", "ignoreFailures": false },
+                { "text":"symbol-file buildrv/${config:symbol_file}", "ignoreFailures": false },
+                { "text":"target remote localhost:3334" },
+                { "text":"b main" },
+                { "text": "set $pc=Reset_Handler","ignoreFailures": false }
             ]
         }
     ]
 }
-

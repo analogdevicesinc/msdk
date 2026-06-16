@@ -3,22 +3,16 @@
         {
             "name": "Win32",
             "includePath": [
-                "${default}",
-                "${workspaceFolder}",
-                "${workspaceFolder}/**"
+                "${default}"
             ],
             "defines": [
-                "${config:cfs.project.board}",
-                "TARGET=${config:cfs.project.target}",
-                "__GNUC__"
+                "${default}"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gcc.exe",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc.exe",
             "browse": {
                 "path": [
-                    "${default}",
-                    "${workspaceFolder}",
-                    "${workspaceFolder}/**"
+                    "${default}"
                 ]
             }
         },
@@ -28,17 +22,13 @@
                 "${default}"
             ],
             "defines": [
-                "${config:cfs.project.board}",
-                "TARGET=${config:cfs.project.target}",
-                "__GNUC__"
+                "${default}"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gcc",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
             "browse": {
                 "path": [
-                    "${default}",
-                    "${workspaceFolder}",
-                    "${workspaceFolder}/**"
+                    "${default}"
                 ]
             }
         },
@@ -48,17 +38,13 @@
                 "${default}"
             ],
             "defines": [
-                "${config:cfs.project.board}",
-                "TARGET=${config:cfs.project.target}",
-                "__GNUC__"
+                "${default}"
             ],
             "intelliSenseMode": "gcc-arm",
-            "compilerPath": "${config:cfs.toolchain.armAArch32GCC.path}/bin/arm-none-eabi-gcc",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
             "browse": {
                 "path": [
-                    "${default}",
-                    "${workspaceFolder}",
-                    "${workspaceFolder}/**"
+                    "${default}"
                 ]
             }
         }
