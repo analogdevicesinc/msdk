@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,6 @@ static uint8_t dscrc_table[] = {
 void setcrc8(uint8_t reset)
 {
     utilcrc8 = reset;
-    return;
 }
 
 /**
@@ -76,6 +75,7 @@ void setcrc8(uint8_t reset)
 uint8_t docrc8(uint8_t x)
 {
     utilcrc8 = dscrc_table[utilcrc8 ^ x];
+
     return utilcrc8;
 }
 
@@ -99,8 +99,9 @@ int32_t ow_romid_test(uint8_t od)
 
     /* Error if presence pulse not detected. */
     if (MXC_OWM_Reset() == 1) {
-        //printf("OK: 1-wire devices reponded during the presence pulse\n");
+        printf("OK: 1-wire devices reponded during the presence pulse\n");
     } else {
+        printf("FAIL: 1-wire devices did not repond during the presence pulse\n");
         return -2;
     }
 
@@ -111,9 +112,8 @@ int32_t ow_romid_test(uint8_t od)
         MXC_OWM_SetOverdrive(1);
 
         /* Error if presence pulse not detected. */
-        if (MXC_OWM_Reset() == 1) {
-            //printf("OK: 1-wire devices reponded during the presence pulse after Overdrive\n");
-        } else {
+        if (MXC_OWM_Reset() != 1) {
+            printf("FAIL: 1-wire devices did not repond during the presence pulse\n");
             return -4;
         }
     }
@@ -124,6 +124,7 @@ int32_t ow_romid_test(uint8_t od)
     /* Read the ROM ID */
     memset(buffer, 0, sizeof(buffer));
     if (MXC_OWM_Read(buffer, 8) < 0) {
+        printf("FAIL: Could not Read the ROM ID\n");
         return -5;
     }
 
@@ -134,6 +135,7 @@ int32_t ow_romid_test(uint8_t od)
     printf("\n");
     /* Check for zero family code in ROM ID */
     if (buffer[0] == 0) {
+        printf("No Zero Family Code in ROM ID\n");
         return -6;
     }
 
@@ -144,6 +146,7 @@ int32_t ow_romid_test(uint8_t od)
     }
 
     if (crc8 != 0x00) {
+        printf("FAIL: received wrong ROM ID\n");
         return -7;
     }
 
@@ -170,7 +173,6 @@ int main(void)
 
     /* Test overdrive */
     retval = ow_romid_test(1);
-    //retval = ow_romid_test(0);
     if (retval != 0) {
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
         printf("Example Failed\n");

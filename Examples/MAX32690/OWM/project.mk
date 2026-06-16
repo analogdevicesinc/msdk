@@ -1,6 +1,6 @@
 ###############################################################################
  #
- # Copyright (C) 2024-2025 Analog Devices, Inc.
+ # Copyright (C) 2024-2026 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -30,11 +30,3 @@
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
-
-
-
-
-
-
-
-
