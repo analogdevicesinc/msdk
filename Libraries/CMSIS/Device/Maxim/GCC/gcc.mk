@@ -226,7 +226,7 @@ endif
 
 # Set absolute path to tools if TOOL_DIR is specified
 ifneq "$(TOOL_DIR)" ""
-PREFIX=$(TOOL_DIR)/$(PREFIX)
+PREFIX := $(TOOL_DIR)/$(PREFIX)
 endif
 
 # The command for calling the compiler.
