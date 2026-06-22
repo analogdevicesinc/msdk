@@ -24,5 +24,10 @@
  */
 void max32xx_system_init(void)
 {
+#ifndef CONFIG_SOC_MAX78000_RV32
+
+    /* Enable instruction caching */
     MXC_ICC_Enable(MXC_ICC0);
+
+#endif
 }

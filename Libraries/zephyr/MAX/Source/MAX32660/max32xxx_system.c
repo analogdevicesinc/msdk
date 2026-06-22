@@ -19,6 +19,7 @@
 #include "max32660.h"
 #include "mxc_sys.h"
 #include "wdt_regs.h"
+#include "icc.h"
 
 /* 
  * This function is called during boot up.
@@ -39,4 +40,7 @@ void max32xx_system_init(void)
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C1);
+
+    /* Enable instruction caching */
+    MXC_ICC_Enable();
 }
