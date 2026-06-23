@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -250,6 +250,15 @@ struct _mxc_spi_req_t {
  */
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
                  int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins);
+
+/**
+ * @brief   Initialize in-memory SPI peripheral state.
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_InitState(mxc_spi_regs_t *spi);
 
 /**
  * @brief   Configure the SPI peripheral.
