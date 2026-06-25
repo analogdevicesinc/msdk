@@ -21,8 +21,8 @@
 MEMORY {
     ROM        (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB ROM */
     FLASH      (rx) : ORIGIN = 0x10000000, LENGTH = 0x00080000 /* 512KB Flash */
-    SRAM      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0001FFF8 /* ~128KB SRAM */
-    SHARED     (rw) : ORIGIN = 0x2001FFF8, LENGTH = 0x00000008 /* 8B Shared */
+    SRAM      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0001FF80 /* ~128KB SRAM */
+    SHARED     (rw) : ORIGIN = 0x2001FF80, LENGTH = 0x00000080 /* 128B Shared */
 }
 
 /* The address and length of the SHARED section defined above. */
