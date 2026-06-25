@@ -37,39 +37,39 @@
 /***** Definitions *****/
 
 #if defined(EvKit_V1)
-    #define MXC_GPIO_PORT_IN                2
-    #define MXC_GPIO_PIN_IN                 11
-    #define MXC_GPIO_PORT_OUT               0
-    #define MXC_GPIO_PIN_OUT                14
-    #define MXC_GPIO_PORT_INTERRUPT_STATUS  2
-    #define MXC_GPIO_PIN_INTERRUPT_STATUS   12
-    #define INTERRUPT_SWITCH_NAME           "SW2"
+#define MXC_GPIO_PORT_IN 2
+#define MXC_GPIO_PIN_IN 11
+#define MXC_GPIO_PORT_OUT 0
+#define MXC_GPIO_PIN_OUT 14
+#define MXC_GPIO_PORT_INTERRUPT_STATUS 2
+#define MXC_GPIO_PIN_INTERRUPT_STATUS 12
+#define INTERRUPT_SWITCH_NAME "SW2"
 #elif defined(BOARD_APARD)
-    #define MXC_GPIO_PORT_IN                1
-    #define MXC_GPIO_PIN_IN                 27
-    #define MXC_GPIO_PORT_OUT               2
-    #define MXC_GPIO_PIN_OUT                1
-    #define MXC_GPIO_PORT_INTERRUPT_STATUS  0
-    #define MXC_GPIO_PIN_INTERRUPT_STATUS   11
-    #define INTERRUPT_SWITCH_NAME           "S2"
+#define MXC_GPIO_PORT_IN 1
+#define MXC_GPIO_PIN_IN 27
+#define MXC_GPIO_PORT_OUT 2
+#define MXC_GPIO_PIN_OUT 1
+#define MXC_GPIO_PORT_INTERRUPT_STATUS 0
+#define MXC_GPIO_PIN_INTERRUPT_STATUS 11
+#define INTERRUPT_SWITCH_NAME "S2"
 #elif defined(CTBGA_EvKit_V1)
-    #define MXC_GPIO_PORT_IN                2
-    #define MXC_GPIO_PIN_IN                 31
-    #define MXC_GPIO_PORT_OUT               0
-    #define MXC_GPIO_PIN_OUT                14
-    #define MXC_GPIO_PORT_INTERRUPT_STATUS  0
-    #define MXC_GPIO_PIN_INTERRUPT_STATUS   15
-    #define INTERRUPT_SWITCH_NAME           "SW2"
+#define MXC_GPIO_PORT_IN 2
+#define MXC_GPIO_PIN_IN 31
+#define MXC_GPIO_PORT_OUT 0
+#define MXC_GPIO_PIN_OUT 14
+#define MXC_GPIO_PORT_INTERRUPT_STATUS 0
+#define MXC_GPIO_PIN_INTERRUPT_STATUS 15
+#define INTERRUPT_SWITCH_NAME "SW2"
 #elif defined(FTHR_RevA)
-    #define MXC_GPIO_PORT_IN                1
-    #define MXC_GPIO_PIN_IN                 14
-    #define MXC_GPIO_PORT_OUT               0
-    #define MXC_GPIO_PIN_OUT                14
-    #define MXC_GPIO_PORT_INTERRUPT_STATUS  2
-    #define MXC_GPIO_PIN_INTERRUPT_STATUS   24
-    #define INTERRUPT_SWITCH_NAME           "SW3"
+#define MXC_GPIO_PORT_IN 1
+#define MXC_GPIO_PIN_IN 14
+#define MXC_GPIO_PORT_OUT 0
+#define MXC_GPIO_PIN_OUT 14
+#define MXC_GPIO_PORT_INTERRUPT_STATUS 2
+#define MXC_GPIO_PIN_INTERRUPT_STATUS 24
+#define INTERRUPT_SWITCH_NAME "SW3"
 #else
-    #error "EvKit, BOARD_APARD, CTBGA_EvKit_V1, or FTHR_RevA must be defined to run this example."
+#error "EvKit, BOARD_APARD, CTBGA_EvKit_V1, or FTHR_RevA must be defined to run this example."
 #endif
 
 /***** Globals *****/
@@ -98,16 +98,15 @@ int main(void)
     printf("1. This example reads P%d.%d and outputs the same state onto P%d.%d.\n",
            MXC_GPIO_PORT_IN, MXC_GPIO_PIN_IN, MXC_GPIO_PORT_OUT, MXC_GPIO_PIN_OUT);
     printf("2. A falling edge interrupt is set up on P%d.%d. P%d.%d toggles when\n",
-           MXC_GPIO_PORT_IN, MXC_GPIO_PIN_IN, MXC_GPIO_PORT_INTERRUPT_STATUS, 
+           MXC_GPIO_PORT_IN, MXC_GPIO_PIN_IN, MXC_GPIO_PORT_INTERRUPT_STATUS,
            MXC_GPIO_PIN_INTERRUPT_STATUS);
     printf("   that interrupt occurs.\n\n");
 #if defined(EvKit_V1)
-    printf("Connect P4.0->P%d.%d to use %s to trigger a falling edge interrupt\n",
-           MXC_GPIO_PORT_IN, MXC_GPIO_PIN_IN, INTERRUPT_SWITCH_NAME);
+    printf("Connect P4.0->P%d.%d to use %s to trigger a falling edge interrupt\n", MXC_GPIO_PORT_IN,
+           MXC_GPIO_PIN_IN, INTERRUPT_SWITCH_NAME);
     printf("on each press.\n");
 #else
-    printf("Use %s to trigger a falling edge interrupt on each press.\n",
-           INTERRUPT_SWITCH_NAME);
+    printf("Use %s to trigger a falling edge interrupt on each press.\n", INTERRUPT_SWITCH_NAME);
 #endif
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */

@@ -58,19 +58,18 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // clang-format on
 
 #define TFT_SPI_INST MXC_SPI1
-static uint8_t tft_spi_buff[(1 + LINEBUF_SIZE) * 2];                             
-static mxc_spi_req_t tft_spi_req = {TFT_SPI_INST, 	// instance
-	                                1,				// ssIdx
-	                                1,				// ssDeassert
-	                                tft_spi_buff,	// txData
-	                                NULL,			// rxData
-	                                0,				// txLen
-	                                0,				// rxLen
-	                                0,				// txCnt
-	                                0,				// rxCnt
-	                                NULL,			// callback
-	                                0xFF};			// dummy value
-
+static uint8_t tft_spi_buff[(1 + LINEBUF_SIZE) * 2];
+static mxc_spi_req_t tft_spi_req = { TFT_SPI_INST, // instance
+                                     1, // ssIdx
+                                     1, // ssDeassert
+                                     tft_spi_buff, // txData
+                                     NULL, // rxData
+                                     0, // txLen
+                                     0, // rxLen
+                                     0, // txCnt
+                                     0, // rxCnt
+                                     NULL, // callback
+                                     0xFF }; // dummy value
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)
@@ -162,7 +161,7 @@ int Console_PrepForSleep(void)
 /******************************************************************************/
 void TFT_SPI_Init(void)
 {
-	int error;
+    int error;
 
     mxc_spi_pins_t tft_pins;
 
@@ -172,7 +171,8 @@ void TFT_SPI_Init(void)
     tft_pins.clock = true;
     tft_pins.mosi = true;
 
-    error = MXC_SPI_Init(TFT_SPI_INST, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 1, 0, 1000000, tft_pins);
+    error = MXC_SPI_Init(TFT_SPI_INST, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 1, 0,
+                         1000000, tft_pins);
     MXC_ASSERT(error == E_NO_ERROR);
 
     error = MXC_SPI_SetFrameSize(TFT_SPI_INST, 9);
@@ -182,7 +182,7 @@ void TFT_SPI_Init(void)
 /******************************************************************************/
 void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
 {
- 	uint8_t *bptr;
+    uint8_t *bptr;
     unsigned int txlen;
     int error;
 
@@ -196,9 +196,9 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
        the data/cmd bit.  */
     while (count--) {
         *bptr++ = *datain++;
-                if (data) {
+        if (data) {
             *bptr++ = 1; /* DATA */
-                } else {
+        } else {
             *bptr++ = 0; /* CMD */
         }
         txlen++;
