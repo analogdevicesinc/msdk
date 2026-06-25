@@ -60,7 +60,7 @@
 #define MXC_GPIO_PORT_INTERRUPT_STATUS 0
 #define MXC_GPIO_PIN_INTERRUPT_STATUS 15
 #define INTERRUPT_SWITCH_NAME "SW2"
-#elif defined(FTHR_RevA)
+#elif defined(BOARD_FTHR)
 #define MXC_GPIO_PORT_IN 1
 #define MXC_GPIO_PIN_IN 14
 #define MXC_GPIO_PORT_OUT 0
@@ -69,7 +69,7 @@
 #define MXC_GPIO_PIN_INTERRUPT_STATUS 24
 #define INTERRUPT_SWITCH_NAME "SW3"
 #else
-#error "EvKit, BOARD_APARD, CTBGA_EvKit_V1, or FTHR_RevA must be defined to run this example."
+#error "EvKit, BOARD_APARD, CTBGA_EvKit_V1, or FTHR must be defined to run this example."
 #endif
 
 /***** Globals *****/

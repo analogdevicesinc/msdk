@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-#define BOARD_EVKIT_V1
+#define BOARD_CTBGA_EVKIT_V1
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 1 /// UART instance to use for console
@@ -81,6 +81,9 @@ extern "C" {
 #define LED2 2
 #define LED3 3
 #define LED4 4
+
+#define LED_RED LED0
+#define LED_GREEN LED1
 
 /**
  * \brief   Initialize the BSP and board interfaces.
