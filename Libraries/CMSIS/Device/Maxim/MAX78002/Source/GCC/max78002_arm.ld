@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ SECTIONS {
      * aligned to mod 256 address... REQUIRED                  */
     __FlashStart_ =  (((LOADADDR(.data) + SIZEOF(.data)) & 0x1FFFFF00) + 0x100);
 
-    .shared :
+    .shared (NOLOAD) :
     {
         . = ALIGN(4);
         _shared = .;
@@ -60,7 +60,7 @@ SECTIONS {
         . = ALIGN(4);
         *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
         _eshared = ALIGN(., 4);
-    } > SRAM5 AT>FLASH
+    } > SHARED
     __shared_data = LOADADDR(.shared);
 
     .data :
