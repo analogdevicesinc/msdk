@@ -229,7 +229,7 @@ int main(void)
     int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
-    printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
+    printf("Press Push Button 1 (PB1/SW3) to continue...\n\n");
 
     PB_RegisterCallback(0, (pb_callback)button_handler);
 
