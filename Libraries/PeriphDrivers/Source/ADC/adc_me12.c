@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,6 +77,9 @@ static void initGPIOForTrigSrc(mxc_adc_trig_sel_t hwTrig)
         break;
     case MXC_ADC_TRIG_SEL_P0_0:
         MXC_GPIO_Config(&gpio_cfg_adc_trig_p0_0);
+        break;
+    case MXC_ADC_TRIG_SEL_P0_17:
+        MXC_GPIO_Config(&gpio_cfg_adc_trig_p0_17);
         break;
     }
 }

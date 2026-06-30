@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,6 +128,7 @@ typedef enum {
     MXC_ADC_TRIG_SEL_TMR3, ///< Timer 3 Out Rising Edge
     MXC_ADC_TRIG_SEL_P0_9, ///< GPIO P0.9, AF4
     MXC_ADC_TRIG_SEL_P0_0, ///< GPIO P0.0, AF5
+    MXC_ADC_TRIG_SEL_P0_17, ///< GPIO P0.17, AF3
 } mxc_adc_trig_sel_t;
 
 /**
