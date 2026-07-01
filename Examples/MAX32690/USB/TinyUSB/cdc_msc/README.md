@@ -21,7 +21,7 @@ indicating more verbose logging.
 
 If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR/UART) connector.
--   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Install JP7 (RX_EN) and JP8 (TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 
@@ -41,10 +41,10 @@ to '2', the Console UART of the device will output these messages:
 
 ```
 USBD init on controller 0, Highspeed = 1024
-sizeof(usbd_device_t) = 69
-sizeof(dcd_event_t) = 12
-sizeof(tu_fifo_t) = 20
-sizeof(tu_edpt_stream_t) = 112
+sizeof (usbd_device_t) = 69
+sizeof (dcd_event_t) = 12
+sizeof (tu_fifo_t) = 20
+sizeof (tu_edpt_stream_t) = 112
 CDC init
 MSC init
 USBD Bus Reset : High Speed

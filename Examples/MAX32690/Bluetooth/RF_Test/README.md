@@ -21,7 +21,7 @@ Before building firmware you must select the correct value for BOARD in project.
 
 If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Install JP7 (RX_EN) and JP8 (TX_EN) headers.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 If using the MAX32690FTHR:

@@ -17,8 +17,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Connect INT2 of the ADXL343 to GPIO P2.11 of the MAX32690 EV Kit (header J4.7).
 -   Connect SCL of the ADXL343 to GPIO P2.8/I2C0_SCL of the MAX32690 EV Kit (header J4.8).
 -   Connect SDA of the ADXL343 to GPIO P2.7/I2C0_SDA of the MAX32690 EV Kit (header J4.9).
--   Connect GND of the ADXL343 to GND of the MAX32690 EV Kit(header J4.1).
--   Connect VIN of the ADXL343 to V_AUX of the MAX32690 EV Kit(header J4.10).
+-   Connect GND of the ADXL343 to GND of the MAX32690 EV Kit (header J4.1).
+-   Connect VIN of the ADXL343 to V_AUX of the MAX32690 EV Kit (header J4.10).
 
 ### Required Connections:
 
