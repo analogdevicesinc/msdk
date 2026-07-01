@@ -79,7 +79,7 @@ int main(void)
     printf("Otherwise if the temperature is within the defined limits, the green LED\n");
     printf("will continue to toggle each time a new measurement is taken.\n\n");
 
-#if defined(EvKit_V1)
+#if defined(EvKit_V1) || defined(CTBGA_EvKit_V1)
     printf("Press SW2 to print the last 12 temperature readings taken.\n\n");
 #else
     printf("Press SW3 to print the last 12 temperature readings taken.\n\n");
