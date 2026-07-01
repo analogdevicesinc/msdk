@@ -2,7 +2,7 @@
 
 ## Description
 
-#### What is a Command Line Interface(CLI)?
+### What is a Command Line Interface(CLI)?
 
 A command-line interface or command language interpreter (CLI), also known as command-line user interface, console user interface, and character user interface (CUI), is a means of interacting with an embedded system where the user (or client) issues commands to the program in the form of successive lines of text (command lines).
 
@@ -25,7 +25,7 @@ The current CLI Library includes the following features:
 
 To use the CLI library, users are expected to implement the following steps in their application:
 
-1. Add the following line to your [project.mk](../../USERGUIDE.md#build-configuration-variables) file to enable the CLI library for your project:
+1. Add the following line to your [project.mk](../../user-guide/build-system.md#build-configuration-variables) file to enable the CLI library for your project:
 
         :::Makefile
         LIB_CLI = 1
@@ -76,6 +76,6 @@ To use the CLI library, users are expected to implement the following steps in t
 
     Pass in the UART instance for the CLI to use, a pointer to the command table, and the number of commands in the command table.
 
-6. (OPTIONAL) The CLI library will enable and handle UART interrupts automatically.  Users who would like more control over the interrupt handling have the option to disable the default handler and define their own.
+6. (OPTIONAL) The CLI library will enable and handle UART interrupts automatically. Users who would like more control over the interrupt handling have the option to disable the default handler and define their own.
 
-    To do so, set the `LIB_CLI_USE_DEFAULT_HANDLER` [build configuration variable](../../USERGUIDE.md#build-configuration-variables) to `0`.  Users may now enable and handle the interrupt with a custom function.  However, users must call `MXC_CLI_Handler()` from the custom function for the CLI to work.
+    To do so, set the `LIB_CLI_USE_DEFAULT_HANDLER` [build configuration variable](../../user-guide/build-system.md#build-configuration-variables) to `0`. Users may now enable and handle the interrupt with a custom function.  However, users must call `MXC_CLI_Handler()` from the custom function for the CLI to work.

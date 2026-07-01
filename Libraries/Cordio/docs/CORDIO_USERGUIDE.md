@@ -24,7 +24,7 @@ This library implements the Bluetooth Low Energy stack, forked from [Packetcraft
 
 The best application to get started with is the [BLE_periph](../docs/Applications/BLE_periph.md) application. It is a simple peripheral application that will allow you to advertise and connect with a central device such as a smartphone.
 
-Follow the MSDK [User Guide](../../../USERGUIDE.md) instructions to install the necessary tools and create a new project. Build and run the `BLE_periph` application for the appropriate target.
+Follow the MSDK [User Guide](../../../user-guide/index.md) instructions to install the necessary tools and create a new project. Build and run the `BLE_periph` application for the appropriate target.
 
 ## Building
 Most of the source code will be built in a library that can be shared between applications. Different variants will be built based on settings in **project.mk**.
