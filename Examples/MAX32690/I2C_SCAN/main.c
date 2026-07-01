@@ -50,7 +50,7 @@ int main(void)
 #if defined(EvKit_V1)
     printf("\nSelect the proper voltage for the I2C0 pullup resistors using jumper JP2 ");
     printf("\nand enable them by installing jumpers JP3 and JP4.");
-#elif defined (CTBGA_EvKit_V1)    
+#elif defined(CTBGA_EvKit_V1)
     printf("\nSelect the proper voltage for the I2C0 pullup resistors using jumper JP16 ");
     printf("\nand enable them by installing jumpers JP14 and JP15.");
 #endif

@@ -200,7 +200,7 @@ int main(void)
     printf("P1.7->P2.7 (SDA).\n");
 #ifdef BOARD_EVKIT_V1
     printf("\nAdditionally, ensure JP9 and JP10 are set to SDA and SCL.\n");
-#elif defined (CTBGA_EvKit_V1)
+#elif defined(CTBGA_EvKit_V1)
     printf("\nAdditionally, ensure JP12 and JP13 are set to SDA and SCL.\n");
 #endif
 

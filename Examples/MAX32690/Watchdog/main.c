@@ -128,7 +128,7 @@ int main(void)
     printf("\nPress a button to create watchdog interrupt and reset:\n");
 #if defined(EvKit_V1)
     printf("SW2 (P4.0) = timeout and reset program\n\n");
-#elif defined(CTBGA_EvKit_V1)    
+#elif defined(CTBGA_EvKit_V1)
     printf("SW2 (P2.31) = timeout and reset program\n\n");
 #else
     printf("SW3 (P1.14) = timeout and reset program\n\n");
