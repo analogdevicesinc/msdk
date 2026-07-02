@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -436,6 +436,36 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     // Update the system core clock
     SystemCoreClockUpdate();
 
+    return E_NO_ERROR;
+}
+
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock)
+{
+    if (clock != MXC_SYS_CLOCK_IPO) {
+        return E_BAD_PARAM; // Only the IPO supports calibration
+    }
+
+    int err = E_NO_ERROR;
+    // The following section implements section 4.2.2.1 of the MAX32670 UG Rev 4
+    if ((err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO)))
+        return err;
+
+    //MXC_Delay(MXC_DELAY_MSEC(10));
+
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_DIV, 3051 << MXC_F_FCR_AUTOCAL2_DIV_POS);
+    MXC_SETFIELD(MXC_FCR->autocal2, MXC_F_FCR_AUTOCAL2_RUNTIME,
+                 10 << MXC_F_FCR_AUTOCAL2_RUNTIME_POS);
+    MXC_SETFIELD(MXC_FCR->autocal1, MXC_F_FCR_AUTOCAL1_INITIAL,
+                 0x100 << MXC_F_FCR_AUTOCAL1_INITIAL_POS);
+    MXC_SETFIELD(MXC_FCR->autocal0, MXC_F_FCR_AUTOCAL0_GAIN, 4 << MXC_F_FCR_AUTOCAL0_GAIN_POS);
+    MXC_FCR->autocal0 |= 0x7;
+
+    MXC_Delay(MXC_DELAY_MSEC(10)); // Wait 10ms for calibration to complete
+    // Calculated trim is loaded to MXC_FCR->trim and is used by the hardware as long as
+    // MXC_FCR->autocal0.sel is set to 1
+
+    MXC_FCR->autocal0 &= ~MXC_F_FCR_AUTOCAL0_EN; // Stop the calibration
+    MXC_FCR->autocal0 |= MXC_F_FCR_AUTOCAL0_SEL; // Enable use of calibration value
     return E_NO_ERROR;
 }
 
