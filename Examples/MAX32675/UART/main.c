@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,17 +49,9 @@
 
 /***** Globals *****/
 volatile int READ_FLAG;
-volatile int WRITE_FLAG;
-volatile int DMA_FLAG;
 
 /***** Functions *****/
-#ifdef DMA
-void DMA_Handler(void)
-{
-    MXC_DMA_Handler();
-    DMA_FLAG = 0;
-}
-#else
+#ifndef DMA
 void UART0_Handler(void)
 {
     MXC_UART_AsyncHandler(READING_UART);
@@ -69,11 +61,6 @@ void UART0_Handler(void)
 void readCallback(mxc_uart_req_t *req, int error)
 {
     READ_FLAG = error;
-}
-
-void writeCallback(mxc_uart_req_t *req, int error)
-{
-    WRITE_FLAG = error;
 }
 
 /******************************************************************************/
@@ -89,7 +76,7 @@ int main(void)
     printf("The red LED0 will illuminate if transaction failed.\n");
     printf("\nUnplug the Jumper at (JP5 - RX0_EN) above the Port 0 headers.\n");
     printf("\n\nConnect UART0 to UART2 for this example.\n");
-    printf("P0.8 -> P0.15 and P0.9 -> P0.14\n\n");
+    printf("P0.8(UART0_RX) -> P1.9(UART2_TX)\n\n");
 
     printf("\n-->UART Baud \t: %d Hz\n", UART_BAUD);
     printf("\n-->Test Length \t: %d bytes\n", BUFF_SIZE);
@@ -104,8 +91,6 @@ int main(void)
 
 #ifdef DMA
     MXC_DMA_ReleaseChannel(0);
-    MXC_NVIC_SetVector(DMA0_IRQn, DMA_Handler);
-    NVIC_EnableIRQ(DMA0_IRQn);
 #else
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(READING_UART_IDX));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ(READING_UART_IDX));
@@ -128,7 +113,7 @@ int main(void)
 
     // Max baud rate for most serial ports is 115200
     if (UART_BAUD <= CONSOLE_BAUD) {
-        printf("-->UARTs Initialized\n\n");
+        printf("\n-->UARTs Initialized\n\n");
     }
 
     mxc_uart_req_t read_req;
@@ -146,9 +131,10 @@ int main(void)
     write_req.callback = NULL;
 
     READ_FLAG = 1;
-    DMA_FLAG = 1;
+    MXC_UART_ClearRXFIFO(READING_UART); // Clear any previously pending data
 
 #ifdef DMA
+    MXC_UART_SetAutoDMAHandlers(READING_UART, true);
     error = MXC_UART_TransactionDMA(&read_req);
 #else
     error = MXC_UART_TransactionAsync(&read_req);
@@ -168,20 +154,12 @@ int main(void)
         return error;
     }
 
-#ifdef DMA
-
-    while (DMA_FLAG) {}
-
-#else
-
     while (READ_FLAG) {}
 
     if (READ_FLAG != E_NO_ERROR) {
-        printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
+        printf("-->Error with UART Read callback; %d\n", READ_FLAG);
         fail++;
     }
-
-#endif
 
     if ((error = memcmp(RxData, TxData, BUFF_SIZE)) != 0) {
         printf("-->Error verifying Data: %d\n", error);
