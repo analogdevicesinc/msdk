@@ -18,7 +18,7 @@
 
 /**
  * @file    main.c
- * @brief   Timer example
+ * @brief   IPO Calibration example
  * @details PWM Timers - Outputs a PWM signal (2Hz) on LED0 - ERTCO Clock and P0.1 - IPO_APB Clock
  */
 
