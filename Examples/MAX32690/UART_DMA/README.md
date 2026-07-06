@@ -27,7 +27,7 @@ The Console UART of the device will output these messages:
 **************** UART Example ******************
 This example sends data from one UART to another
 
-Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+Connect RX (Px.xx) of UARTx and TX (Px.xx) of UARTx.
 
 To indicate a successful UART transfer, LED1 will illuminate.
 
@@ -50,7 +50,7 @@ or
 **************** UART Example ******************
 This example sends data from one UART to another
 
-Connect RX(Px.xx) of UARTx and TX(Px.xx) of UARTx.
+Connect RX (Px.xx) of UARTx and TX (Px.xx) of UARTx.
 
 To indicate a successful UART transfer, LED1 will illuminate.
 

@@ -31,9 +31,9 @@ to '2', the Console UART of the device will output these messages:
 
 ```
 USBD init on controller 0, Highspeed = 1024
-sizeof(usbd_device_t) = 69
-sizeof(dcd_event_t) = 12
-sizeof(tu_fifo_t) = 12
-sizeof(tu_edpt_stream_t) = 24
+sizeof (usbd_device_t) = 69
+sizeof (dcd_event_t) = 12
+sizeof (tu_fifo_t) = 12
+sizeof (tu_edpt_stream_t) = 24
 MSC init
 ```

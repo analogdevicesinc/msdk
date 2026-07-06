@@ -241,7 +241,7 @@ int main(void)
     printf("   mode which is used to create an interrupt at a freq of %d Hz.\n", CONT_FREQ);
     printf("   LED 0 (Port 0.14) will toggle each time the oneshot timer is\n   finished "
            "running.\n\n");
-#if defined(EvKit_V1)
+#if defined(EvKit_V1) || defined(CTBGA_EvKit_V1)
     printf("Push SW2 to start the PWM and continuous timers initially. Then\nuse SW2 to run the "
            "lptimer in oneshot mode thereafter.\n\n");
 #else

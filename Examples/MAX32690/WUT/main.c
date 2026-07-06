@@ -67,7 +67,7 @@ int main(void)
 
     printf("\n\n/*********** Wakeup timer example *************/\n");
     printf("This example demonstrates how to use the Wakeup Timer.\n\n");
-#if defined(EvKit_V1)
+#if defined(EvKit_V1) || defined(CTBGA_EvKit_V1)
     printf("Pressing SW2 to will put the chip to sleep and enable the\n");
 #else
     printf("Pressing SW3 to will put the chip to sleep and enable the\n");

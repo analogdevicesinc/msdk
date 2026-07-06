@@ -47,3 +47,6 @@ endif
 ifeq ($(BOARD),APARD)
 $(error ERR_NOTSUPPORTED: This project is not supported for the AD-APARD32690 board)
 endif
+
+# Build SPI v2 library for example.
+MXC_SPI_VERSION = v2
