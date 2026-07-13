@@ -1,3 +1,0 @@
-[submodule "test/unit-test/CMock"]
-	path = test/unit-test/CMock
-	url = https://github.com/ThrowTheSwitch/CMock
