@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -177,7 +177,6 @@ typedef enum {
     RSV122_IRQn, /* 0x7A  0x01E8 122: Reserved */
     RSV123_IRQn, /* 0x7B  0x01EC 123: Reserved */
     RSV124_IRQn, /* 0x7C  0x01F0 124: Reserved */
-    WUT1_IRQn, /* 0x7D  0x01F4 125: ERFO Ready/WUT 1 */
 #else // __riscv
     PF_IRQn = 4, /* 0x04,4 PFW | SYSFAULT | CM4 */
     WDT0_IRQn, /* 0x05,5 Watchdog 0 */
@@ -227,7 +226,7 @@ typedef enum {
     WDT1_IRQn, /* 0x30,48 Watchdog 1 (LP) */
     DVS_IRQn, /* 0x31,49 DVS Controller */
     SIMO_IRQn, /* 0x32,50 SIMO Controller */
-    WUT1_IRQn, /* 0x33,51 ERFO Ready/WUT1  */
+    RSV51_IRQn, /* 0x33,51 Reserved */
     PT_IRQn, /* 0x34,52 Pulse train */
     ADC_IRQn, /* 0x35,53 ADC */
     OWM_IRQn, /* 0x36,54 One Wire Master */
@@ -334,13 +333,11 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                        Wake-Up Timer (WUT) */
-#define MXC_CFG_WUT_INSTANCES (2)
+#define MXC_CFG_WUT_INSTANCES (1)
 
 #define MXC_BASE_WUT0 ((uint32_t)0x40006400UL)
 #define MXC_WUT0 ((mxc_wut_regs_t *)MXC_BASE_WUT0)
 #define MXC_WUT MXC_WUT0
-#define MXC_BASE_WUT1 ((uint32_t)0x40006600UL)
-#define MXC_WUT1 ((mxc_wut_regs_t *)MXC_BASE_WUT1)
 
 // Included for legacy compatability after changing WUT_IRQn -> WUT0_IRQn
 // in system startup files.

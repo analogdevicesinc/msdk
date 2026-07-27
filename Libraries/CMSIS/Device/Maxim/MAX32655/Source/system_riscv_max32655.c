@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ void __attribute__((weak)) TRNG_IRQHandler(void) {}
 void __attribute__((weak)) WDT1_IRQHandler(void) {}
 void __attribute__((weak)) DVS_IRQHandler(void) {}
 void __attribute__((weak)) SIMO_IRQHandler(void) {}
-void __attribute__((weak)) WUT1_IRQHandler(void) {}
+void __attribute__((weak)) RSV51_IRQHandler(void) {}
 void __attribute__((weak)) PT_IRQHandler(void) {}
 void __attribute__((weak)) ADC_IRQHandler(void) {}
 void __attribute__((weak)) OWM_IRQHandler(void) {}
@@ -577,14 +577,14 @@ void __attribute__((interrupt("machine"))) SIMO_IRQHandlerWrap(void)
     NVIC_EnableIRQ(SIMO_IRQn);
     intContext = 0;
 }
-void __attribute__((interrupt("machine"))) WUT1_IRQHandlerWrap(void)
+void __attribute__((interrupt("machine"))) RSV51_IRQHandlerWrap(void)
 {
     intContext = 1;
 
-    NVIC_DisableIRQ(WUT1_IRQn);
-    NVIC_ClearPendingIRQ(WUT1_IRQn);
-    WUT1_IRQHandler();
-    NVIC_EnableIRQ(WUT1_IRQn);
+    NVIC_DisableIRQ(RSV51_IRQn);
+    NVIC_ClearPendingIRQ(RSV51_IRQn);
+    RSV51_IRQHandler();
+    NVIC_EnableIRQ(RSV51_IRQn);
     intContext = 0;
 }
 void __attribute__((interrupt("machine"))) PT_IRQHandlerWrap(void)

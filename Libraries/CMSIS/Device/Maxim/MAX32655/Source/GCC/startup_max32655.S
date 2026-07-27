@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,8 +237,7 @@ __isr_vector:
     .long RSV121_IRQHandler            /* 0x79  0x01E4  121: Reserved */
     .long RSV122_IRQHandler            /* 0x7A  0x01E8  122: Reserved */
     .long RSV123_IRQHandler            /* 0x7B  0x01EC  123: Reserved */
-    .long RSV124_IRQHandler            /* 0x7C  0x01F0  124: Reserved */
-    .long WUT1_IRQHandler              /* 0x7D  0x01F4  125: Wakeup Timer 1 */    
+    .long RSV124_IRQHandler            /* 0x7C  0x01F0  124: Reserved */    
     .text   
     .thumb
     .thumb_func
@@ -457,6 +456,5 @@ Reset_Handler:
     def_irq_handler RSV121_IRQHandler            /* 0x79  0x01E4  121: Reserved */
     def_irq_handler RSV122_IRQHandler            /* 0x7A  0x01E8  122: Reserved */
     def_irq_handler RSV123_IRQHandler            /* 0x7B  0x01EC  123: Reserved */
-    def_irq_handler RSV124_IRQHandler            /* 0x7C  0x01F0  124: Reserved */
-    def_irq_handler WUT1_IRQHandler              /* 0x7D  0x01F4  125: Wakeup Timer 1 */  
+    def_irq_handler RSV124_IRQHandler            /* 0x7C  0x01F0  124: Reserved */  
     .end

@@ -147,7 +147,7 @@ __isr_vector:
   jal x0, WDT1_IRQHandlerWrap
   jal x0, DVS_IRQHandlerWrap
   jal x0, SIMO_IRQHandlerWrap
-  jal x0, WUT1_IRQHandlerWrap
+  jal x0, RSV51_IRQHandlerWrap
   jal x0, PT_IRQHandlerWrap
   jal x0, ADC_IRQHandlerWrap
   jal x0, OWM_IRQHandlerWrap
@@ -326,7 +326,7 @@ main_entry:
   def_irq_handler WDT1_IRQHandlerWrap
   def_irq_handler DVS_IRQHandlerWrap
   def_irq_handler SIMO_IRQHandlerWrap
-  def_irq_handler WUT1_IRQHandlerWrap
+  def_irq_handler RSV51_IRQHandlerWrap
   def_irq_handler PT_IRQHandlerWrap
   def_irq_handler ADC_IRQHandlerWrap
   def_irq_handler OWM_IRQHandlerWrap
