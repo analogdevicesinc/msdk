@@ -17,15 +17,19 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Connect P0.8 to P0.15.
--   Connect P0.9 to P0.14.
+-   Connect P0.8(UART0_RX) to P1.9(UART2_TX).
 
 If using MAX32675 RevA:
 -   Select TX0 on Headers JP6.
 -	DE-select RX0 on Header JP5.
-If using MAX32675 RevB
+
+If using MAX32675 RevB:
 -   Select TX0 on Headers JP3.
 -	DE-select RX0 on Header JP4.
+
+If using MAX32675 RevD:
+-   Select TX0 on Headers JP6.
+-	DE-select RX0 on Header JP5.
 
 ## Expected Output
 
@@ -42,12 +46,12 @@ Unplug the Jumper at (JP5 - RX0_EN) above the Port 0 headers.
 
 
 Connect UART0 to UART2 for this example.
-P0.8 -> P0.15 and P0.9 -> P0.14
+P0.8(UART0_RX) -> P1.9(UART2_TX)
 
 
 -->UART Baud    : 115200 Hz
 
--->Test Length  : 1024 bytes
+-->Test Length  : 256 bytes
 
 -->UART Initialized
 
