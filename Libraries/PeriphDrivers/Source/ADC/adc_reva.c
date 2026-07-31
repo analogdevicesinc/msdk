@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@
 #define MXC_CONVERSION_REQ_INTERRUPT 0X2
 #define MXC_MONITOR_INTERRUPT 0X4
 #define MXC_CONVERSION_SPEED_6MHZ 5847
+#define MXC_ADC_SRC_THRESHOLD_FREQ 24000000
 // Mask for all Interrupt Enable Fields
 #define ADC_IE_MASK                                                      \
     (MXC_F_ADC_REVA_INTR_DONE_IE | MXC_F_ADC_REVA_INTR_REF_READY_IE |    \
@@ -52,9 +53,14 @@ volatile uint8_t flag; //indicates  to irqhandler where to store data
 
 int MXC_ADC_RevA_Init(mxc_adc_reva_regs_t *adc)
 {
-    //set adc frequency to work at approximately 6 MHZ
     //NOTE: cannot use RevA version because MCR registers must be set
-    MXC_ADC_SetConversionSpeed(MXC_CONVERSION_SPEED_6MHZ);
+    if (SystemCoreClock < MXC_ADC_SRC_THRESHOLD_FREQ) {
+        //set adc frequency to work at maximum speed if SYS_CLK < 24MHZ
+        MXC_ADC_SetConversionSpeed(PeripheralClock / (1024U * 2U));
+    } else {
+        //set adc frequency to work at approximately 6 MHZ if SYS_CLK >= 24MHZ
+        MXC_ADC_SetConversionSpeed(MXC_CONVERSION_SPEED_6MHZ);
+    }
     //clear adc reference ready interrupt flag
     MXC_ADC_RevA_ClearFlags(adc, MXC_F_ADC_REVA_INTR_REF_READY_IF);
 
