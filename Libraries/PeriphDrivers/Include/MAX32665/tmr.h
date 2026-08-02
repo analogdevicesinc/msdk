@@ -148,6 +148,15 @@ typedef void (*mxc_tmr_complete_t)(int error);
 void MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg);
 
 /**
+ * @brief      Set the timer input clock frequency.
+ * @param      tmr  Pointer to timer instance.
+ * @param      clksrc_freq Timer input clock frequency in Hz.
+ * @note       Call this after selecting MXC_TMR_EXT_CLK on RevB timers. This API has no
+ *             effect on timer revisions without selectable clock sources.
+ */
+void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq);
+
+/**
  * @brief      Shutdown timer module clock.
  * @param      tmr  Pointer to timer module to initialize.
  */

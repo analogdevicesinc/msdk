@@ -134,6 +134,11 @@ void MXC_TMR_LockClockSource(mxc_tmr_regs_t *tmr, bool lock)
     MXC_TMR_RevB_LockClockSource((mxc_tmr_revb_regs_t *)tmr, lock);
 }
 
+void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq)
+{
+    MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, clksrc_freq);
+}
+
 uint8_t MXC_TMR_SetClockSource(mxc_tmr_regs_t *tmr, mxc_tmr_bit_mode_t bit_mode,
                                mxc_tmr_clock_t clk_src)
 {
