@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -240,7 +240,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_ADC_SAMPCLKCTRL_TRACK_CNT_POS            0 /**< SAMPCLKCTRL_TRACK_CNT Position */
-#define MXC_F_ADC_SAMPCLKCTRL_TRACK_CNT                ((uint32_t)(0xFFUL << MXC_F_ADC_SAMPCLKCTRL_TRACK_CNT_POS)) /**< SAMPCLKCTRL_TRACK_CNT Mask */
+#define MXC_F_ADC_SAMPCLKCTRL_TRACK_CNT                ((uint32_t)(0xFFFFUL << MXC_F_ADC_SAMPCLKCTRL_TRACK_CNT_POS)) /**< SAMPCLKCTRL_TRACK_CNT Mask */
 
 #define MXC_F_ADC_SAMPCLKCTRL_IDLE_CNT_POS             16 /**< SAMPCLKCTRL_IDLE_CNT Position */
 #define MXC_F_ADC_SAMPCLKCTRL_IDLE_CNT                 ((uint32_t)(0xFFFFUL << MXC_F_ADC_SAMPCLKCTRL_IDLE_CNT_POS)) /**< SAMPCLKCTRL_IDLE_CNT Mask */
