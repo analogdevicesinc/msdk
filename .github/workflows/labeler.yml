@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
 # Analog Devices, Inc.),
-# Copyright (C) 2023-2024 Analog Devices, Inc.
+# Copyright (C) 2023-2026 Analog Devices, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,15 +40,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          submodules: false
-          fetch-depth: 0
-          
       - name: Labeling
-        uses: actions/labeler@v4
+        uses: actions/labeler@v7
         with:
           sync-labels: true
