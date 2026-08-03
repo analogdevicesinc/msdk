@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,8 @@ typedef enum {
     MXC_ADC_CH_VCOREA = 14, ///< Select Channel 14
     MXC_ADC_CH_VSS = 15, ///< Select Channel 15
     MXC_ADC_CH_VDBB3A_DIV4 = 18, ///< Select Channel 18
-    MXC_ADC_CH_VDBB_DIV4 = 19, ///< Select Channel 19
+    MXC_ADC_CH_VDDB_DIV4 = 19, ///< Select Channel 19
+    MXC_ADC_CH_VDBB_DIV4 = MXC_ADC_CH_VDDB_DIV4, ///< Typo in previous version
     MXC_ADC_CH_VSSA = 20, ///< Select Channel 20
 } mxc_adc_chsel_t;
 
