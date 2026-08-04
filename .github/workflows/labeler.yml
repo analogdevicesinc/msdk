@@ -41,6 +41,6 @@ jobs:
 
     steps:
       - name: Labeling
-        uses: actions/labeler@v7
+        uses: actions/labeler@v4
         with:
           sync-labels: true
