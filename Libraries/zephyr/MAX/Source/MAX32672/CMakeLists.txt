@@ -67,6 +67,10 @@ zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/QDEC/qdec_reva.c
 )
 
+if (CONFIG_SOC_FAMILY_MAX32_SECURE_SOC_SIGNING)
+zephyr_library_sources(${MSDK_CMSIS_DIR}/Source/sla_header_MAX32672.c)
+endif()
+
 if (CONFIG_ADC_MAX32)
 zephyr_library_sources(
     ${MSDK_PERIPH_SRC_DIR}/ADC/adc_me21.c
