@@ -79,6 +79,12 @@ void MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 }
 
 /* ************************************************************************** */
+void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq)
+{
+    (void)tmr;
+    (void)clksrc_freq;
+}
+
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);

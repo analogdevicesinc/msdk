@@ -551,11 +551,15 @@ int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t *tmr, uint32_t time, mxc_tmr_unit_
                           uint32_t *ticks)
 {
     uint32_t unit_div0, unit_div1;
-    uint32_t timerClock;
+    int timerClock;
     uint32_t prescale;
     uint64_t temp_ticks;
 
-    timerClock = PeripheralClock;
+    timerClock = MXC_TMR_RevB_GetClockSourceFreq(tmr);
+
+    if (timerClock < 0) {
+        return timerClock;
+    }
 
     prescale = ((tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKDIV_A) >> MXC_F_TMR_CTRL0_CLKDIV_A_POS);
 
