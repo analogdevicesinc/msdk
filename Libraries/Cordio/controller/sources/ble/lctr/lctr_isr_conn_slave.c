@@ -717,7 +717,6 @@ void lctrSlvConnRxCompletion(BbOpDesc_t *pOp, uint8_t *pRxBuf, uint8_t status)
   }
 
   /*** Receive packet pre-processing ***/
-  static bool_t decremented = FALSE;
 
   if (status == BB_STATUS_SUCCESS)
   {
@@ -725,13 +724,6 @@ void lctrSlvConnRxCompletion(BbOpDesc_t *pOp, uint8_t *pRxBuf, uint8_t status)
 
     /* Reset consecutive CRC failure counter. */
     pCtx->data.slv.consCrcFailed = 0;
-
-    if(decremented) {
-      /* Reset the packet counter */
-      lctrIncPacketCounterRx(pCtx);
-      decremented = FALSE;
-    }
-
   }
   else if ((status == BB_STATUS_CRC_FAILED) || (status == BB_STATUS_FRAME_FAILED))
   {
@@ -739,24 +731,11 @@ void lctrSlvConnRxCompletion(BbOpDesc_t *pOp, uint8_t *pRxBuf, uint8_t status)
       LL_TRACE_WARN3("lctrSlvConnRxCompletion: BB failed with status=CRC_FAILED, handle=%u, bleChan=%u, eventCounter=%u", LCTR_GET_CONN_HANDLE(pCtx), pBle->chan.chanIdx, pCtx->eventCounter);
       pCtx->data.slv.consCrcFailed++;
     } else {
-      /* Decryption failure */
       LL_TRACE_WARN3("lctrSlvConnRxCompletion: BB failed with status=BB_STATUS_FRAME_FAILED, handle=%u, rxPktCounter=%u, eventCounter=%u", LCTR_GET_CONN_HANDLE(pCtx), pCtx->rxPktCounter, pCtx->eventCounter);
-      if(!decremented) {
-        /* Decremente the packet counter, master will re-transmit the unacknowledged packet */
-        lctrDecPacketCounterRx(pCtx);
-        decremented = TRUE;
-      }
     }
 
-    if ((pCtx->data.slv.consCrcFailed >= LCTR_MAX_CONS_CRC) || (status == BB_STATUS_FRAME_FAILED))
-    {
-      /* Close connection event. */
-      BbSetBodTerminateFlag();
-      lctrRxPduFree(pRxBuf);
-      goto Done;
-    }
-
-    if(lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_SLV_CRC_CLOSE))
+    if ((pCtx->data.slv.consCrcFailed >= LCTR_MAX_CONS_CRC) || (status == BB_STATUS_FRAME_FAILED) || 
+		lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_SLV_CRC_CLOSE))
     {
       /* Close connection event. */
       BbSetBodTerminateFlag();
