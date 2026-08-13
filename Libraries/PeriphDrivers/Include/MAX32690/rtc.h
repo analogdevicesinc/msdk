@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,6 +114,8 @@ int MXC_RTC_Init(uint32_t sec, uint16_t ssec);
 
 /**
  * @brief     Allow generation of Square Wave on the SQW pin (Blocking function)
+ * @note      If you wish to manage GPIO configuration externally, define the flag
+ *            MSDK_NO_GPIO_CLK_INIT.
  * @param     fq     Frequency output selection
  * @retval    returns Success or Fail, see \ref MXC_Error_Codes
  */

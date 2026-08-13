@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2026 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,7 +71,9 @@ int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 
 int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
+#endif /* MSDK_NO_GPIO_CLK_INIT */
 
     return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t *)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
                                    ft);
