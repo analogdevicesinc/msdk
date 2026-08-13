@@ -102,4 +102,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1a_ts0;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1b_ts0;
 
+// RTC Square Wave Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_32kcal;
+
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_PINS_H_
