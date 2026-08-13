@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,9 @@ int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 
 int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
+#endif /* MSDK_NO_GPIO_CLK_INIT */
 
     MXC_MCR->outen |= MXC_F_MCR_OUTEN_SQWOUT_EN;
 
