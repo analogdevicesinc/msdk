@@ -1,7 +1,10 @@
 ## Description
 
-TBD<!--TBD-->
+This example demonstrates the various low-power modes on the MAX32662.  
 
+The device is capable of entering the Sleep, Deep Sleep, and Backup low-power modes. The user may select which low-power modes to enter in this example by setting the DO_SLEEP, DO_DEEPSLEEP, and DO_BACKUP that can be set to 1 or 0. 
+
+To move to the next power state, press the push button (SW2).
 
 ## Software
 
