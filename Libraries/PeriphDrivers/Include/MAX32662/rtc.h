@@ -105,6 +105,8 @@ int MXC_RTC_Stop(void);
 
 /**
  * @brief     Initialize the sec and ssec registers and enable RTC
+ * @note      If you wish to manage clock configuration externally, define the flag
+ *            MSDK_NO_GPIO_CLK_INIT.
  * @param     sec    set the RTC Sec counter (32-bit)
  * @param     ssec   set the RTC Sub-second counter (12-bit)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES

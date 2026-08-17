@@ -79,7 +79,9 @@ int MXC_RTC_Stop(void)
 
 int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+#endif /* MSDK_NO_GPIO_CLK_INIT */
 
     return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t *)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
