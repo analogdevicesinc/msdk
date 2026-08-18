@@ -4,7 +4,7 @@ This example configures the SPI to send data between the MISO (P2.27) and MOSI (
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the `CONTROLLER_SYNC` macro to 0 and set the `CONTROLLER_ASYNC` macro to 1.  To use DMA transactions, set the `CONTROLLER_DMA` macro to 1 instead.
+By default, the example performs blocking SPI transactions - `CONTROLLER_SYNC`. The SPI transfer method is selected using the METHOD variable in **project.mk**. Valid options are `CONTROLLER_SYNC`, `CONTROLLER_ASYNC`, and `CONTROLLER_DMA`. If not specified, CONTROLLER_SYNC is used by default.
 
 This example uses the Hardware Target Select control scheme (application does not assert the TS pins).
 
