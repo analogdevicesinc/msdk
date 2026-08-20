@@ -1,8 +1,8 @@
 ## Description
 
-This example will send some test byte from master (SPI0) to slave (SPI1) then from slave to master
-To change number of bytes please change TEST_BUFF_SIZE in spi_config.h file
-Please connect SPI0 pins to SPI1 on EvKit
+This example will send some test bytes from master (SPI0) to slave (SPI1), then from slave to master.
+To change the number of bytes, please change 'TEST_BUFF_SIZE' in **spi_config.h** file. Note that 'TEST_BUFF_SIZE' should be limited to be less than or equal to 'g_rxBuff'.
+Please connect SPI0 pins to SPI1 on EvKit.
     
 
 ## Software
@@ -23,7 +23,7 @@ Universal instructions on building, flashing, and debugging this project can be 
         MOSI: P0.3 <--> P0.15
         CLK : P0.4 <--> P0.16
         SS  : P0.5 <--> P0.17
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
 
@@ -40,7 +40,7 @@ Please use jumper to connect these two spi ports:
         SS  : P0.5 <--> P0.17
 
 This example will send some test byte from master to slave then from slave to master
-To change number of bytes please change TEST_BUFF_SIZE
+To change the number of bytes, please change TEST_BUFF_SIZE
 -----------------------------------------------------------------------------------------------
 
 Master Send Packet
