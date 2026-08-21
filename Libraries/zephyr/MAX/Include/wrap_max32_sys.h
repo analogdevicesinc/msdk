@@ -120,6 +120,9 @@ static inline mxc_sys_32k_clock_t wrap_get_32k_clock_source_instance(uint8_t clo
     mxc_sys_32k_clock_t clk_src;
 
     switch (clock_source) {
+    case 1: // ADI_MAX32_PRPH_CLK_SRC_EXTCLK
+        clk_src = MXC_SYS_32K_CLOCK_RTC_IN;
+        break;
     case 4: // ADI_MAX32_PRPH_CLK_SRC_ERTCO
         clk_src = MXC_SYS_32K_CLOCK_ERTCO;
         break;
