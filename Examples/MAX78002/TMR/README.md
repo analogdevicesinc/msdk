@@ -1,12 +1,12 @@
 ## Description
 
-Three timers are used to demonstrate three different modes of the general purpose timers.
+Three timers are used to demonstrate three different modes of the general-purpose timers.
 
-1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an interrupt at a freq of 1 Hz. LED0 (P2.5) will toggle when the interrupt occurs.
+1. A One-Shot Mode Timer, Timer 4 (low-power timer), is used to create an interrupt at a freq of 1 Hz. LED1 (P2.5) will toggle when the interrupt occurs.
 2. Timer 0 is used to output a PWM signal on Port 0.2. The PWM frequency is 1000 Hz and the duty cycle is 50%.
-3. Timer 1 is configured as 16-bit timer used in continuous mode which is used to create an interrupt at freq of 2 Hz. LED0 (P2.4) will toggle when the interrupt occurs. 
+3. Timer 1 is configured as a 16-bit timer used in continuous mode, which is used to create an interrupt at a freq of 2 Hz. LED0 (P2.4) will toggle when the interrupt occurs. 
 
-Push PB1 to start the PWM and continuous timer and PB2 to start the oneshot timer.
+Push PB1 to start the PWM and continuous timer, and PB2 to start the one-shot timer.
 
 ## Software
 
@@ -45,8 +45,8 @@ The Console UART of the device will output these messages:
    which is used to create an interrupt at freq of 2 Hz.
    LED1 (P0.2) will toggle when the interrupt occurs.
 
-Push PB1 to start the PWM and continuous timer and PB2 to start the
-   oneshot timer.
+Push PB1 to start the PWM and continuous timer, and PB2 to start the
+   one-shot timer.
 
 PWM started.
 
