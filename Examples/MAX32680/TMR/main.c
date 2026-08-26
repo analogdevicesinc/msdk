@@ -165,7 +165,7 @@ void ContinuousTimer(void)
     }
 
     MXC_TMR_EnableInt(CONT_TIMER);
-	MXC_TMR_Start(CONT_TIMER);
+    MXC_TMR_Start(CONT_TIMER);
 
     printf("Continuous timer started.\n\n");
 }

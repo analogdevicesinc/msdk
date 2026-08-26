@@ -179,7 +179,7 @@ void OneshotTimer(void)
 
     MXC_TMR_Init(OST_TIMER, &tmr, true);
     MXC_TMR_EnableInt(OST_TIMER);
-	MXC_TMR_Start(OST_TIMER);
+    MXC_TMR_Start(OST_TIMER);
 
     printf("Oneshot timer started.\n\n");
 }
