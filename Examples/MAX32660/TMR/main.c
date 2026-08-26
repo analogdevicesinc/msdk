@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
  * @brief   Timer example
  * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on 3.7
  *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
+ *          Oneshot Timer    - Outputs: Delay console log "started" to "finished" after 1s
  */
 
 /***** Includes *****/

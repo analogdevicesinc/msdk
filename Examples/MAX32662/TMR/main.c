@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
  * @brief   Timer example
  * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on 3.7
  *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
+ *          Oneshot Timer    - Outputs: Toggle P0_7 after 1s
  */
 
 /***** Includes *****/
@@ -44,7 +45,7 @@
 #define PWM_CLOCK_SOURCE MXC_TMR_IBRO_CLK // \ref mxc_tmr_clock_t
 #define CONT_CLOCK_SOURCE MXC_TMR_APB_CLK // \ref mxc_tmr_clock_t
 
-// Parameters for Continuous timer
+// Parameters for Oneshot timer
 #define OST_FREQ 1 // (Hz)
 #define OST_TIMER MXC_TMR2 // Can be MXC_TMR0 through MXC_TMR3
 mxc_gpio_cfg_t ost_pin;
