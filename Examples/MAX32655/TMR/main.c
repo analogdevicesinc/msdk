@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
  * @brief   Timer example
  * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on TMR2
  *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
+ *          Oneshot Timer    - Outputs: Toggle LED1 after 1s
  */
 
 /***** Includes *****/
@@ -161,6 +162,9 @@ void ContinuousTimer(void)
         printf("Failed Continuous timer Initialization.\n");
         return;
     }
+
+    MXC_TMR_EnableInt(CONT_TIMER);
+    MXC_TMR_Start(CONT_TIMER);
 
     printf("Continuous timer started.\n\n");
 }
