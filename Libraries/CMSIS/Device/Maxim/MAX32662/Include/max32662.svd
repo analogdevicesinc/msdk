@@ -5,7 +5,7 @@
  <name>max32662</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX32662 32-bit ARM Cortex-M4 microcontroller.</description>
+ <description>MAX32662 32-bit ARM Cortex-M4F microcontroller, 256KB of flash, 80KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>

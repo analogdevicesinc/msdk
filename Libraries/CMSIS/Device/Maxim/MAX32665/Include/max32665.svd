@@ -5,7 +5,7 @@
  <name>max32665</name>
  <series>ARMCM3</series>
  <version>1.0</version>
- <description>MAX32665 32-bit ARM Cortex-M4 microcontroller, 128KB of system RAM, 4KB of One-Time-Programmable (OTP) memory, 64KB of Boot ROM, 8KB of battery-backed and AES self-encrypted SRAM.</description>
+ <description>MAX32665 32-bit ARM Cortex-M4F microcontroller, 1MB of flash, 560KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>

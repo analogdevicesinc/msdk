@@ -5,7 +5,7 @@
  <name>max32672</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX32672 High-Reliability, Tiny, Ultra-Low-Power AEM Cortex-M4F Microcontroller with 12-bit 1MSPS ADC.</description>
+ <description>MAX32672 32-bit ARM Cortex-M4F microcontroller, 1MB of flash, 200KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>

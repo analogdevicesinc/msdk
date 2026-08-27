@@ -5,7 +5,7 @@
  <name>max78002</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX78002 Machine Learning System-on-Chip.</description>
+ <description>MAX78002 Machine Learning System-on-Chip, 2.5MB of flash, 384KB of SRAM, 64KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>

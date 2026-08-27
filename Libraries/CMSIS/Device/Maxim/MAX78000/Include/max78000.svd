@@ -5,7 +5,7 @@
  <name>max78000</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX78000 Machine Learning System-on-Chip.</description>
+ <description>MAX78000 Machine Learning System-on-Chip, 512KB of flash, 128KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
