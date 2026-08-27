@@ -165,7 +165,7 @@ typedef struct {
 /**
  * @ingroup  cameraif_registers
  * @defgroup CAMERAIF_INT_EN CAMERAIF_INT_EN
- * @brief    Interupt Enable Register.
+ * @brief    Interrupt Enable Register.
  * @{
  */
 #define MXC_F_CAMERAIF_INT_EN_IMG_DONE_POS             0 /**< INT_EN_IMG_DONE Position */
@@ -185,7 +185,7 @@ typedef struct {
 /**
  * @ingroup  cameraif_registers
  * @defgroup CAMERAIF_INT_FL CAMERAIF_INT_FL
- * @brief    Interupt Flag Register.
+ * @brief    Interrupt Flag Register.
  * @{
  */
 #define MXC_F_CAMERAIF_INT_FL_IMG_DONE_POS             0 /**< INT_FL_IMG_DONE Position */
