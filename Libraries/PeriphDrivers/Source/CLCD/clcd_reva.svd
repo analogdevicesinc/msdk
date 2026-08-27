@@ -413,25 +413,25 @@
         <fields>
           <field>
             <name>UFLO</name>
-            <description>Under FLow Interupt Enable</description>
+            <description>Under FLow Interrupt Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>ADRRDY</name>
-            <description>Address Ready Interupt Enable</description>
+            <description>Address Ready Interrupt Enable</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>VCI</name>
-            <description>VCI Interupt Enable</description>
+            <description>VCI Interrupt Enable</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>BERR</name>
-            <description>BERR Interupt Enable</description>
+            <description>BERR Interrupt Enable</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -445,7 +445,7 @@
         <fields>
           <field>
             <name>UFLO</name>
-            <description>Under FLow Interupt Status</description>
+            <description>Under FLow Interrupt Status</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -472,7 +472,7 @@
           </field>
           <field>
             <name>ADRRDY</name>
-            <description>Address Ready Interupt Status</description>
+            <description>Address Ready Interrupt Status</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -499,7 +499,7 @@
           </field>
           <field>
             <name>VCI</name>
-            <description>VCI Interupt Status</description>
+            <description>VCI Interrupt Status</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -526,7 +526,7 @@
           </field>
           <field>
             <name>BERR</name>
-            <description>BERR Interupt Status</description>
+            <description>BERR Interrupt Status</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>

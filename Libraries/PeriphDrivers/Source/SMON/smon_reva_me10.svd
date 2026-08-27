@@ -1179,7 +1179,7 @@
         <fields>
           <field>
             <name>DLRTC</name>
-            <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occured.</description>
+            <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occurred.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>

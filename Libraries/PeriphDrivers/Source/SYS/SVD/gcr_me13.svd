@@ -1304,7 +1304,7 @@
           </field>
           <field>
             <name>CODEINTERR</name>
-            <description>Code Integrity Error Flag. This bit indicates a code integrity error has occured in XiP interface. </description>
+            <description>Code Integrity Error Flag. This bit indicates a code integrity error has occurred in XiP interface. </description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -1322,7 +1322,7 @@
           </field>
           <field>
             <name>SCMEMF</name>
-            <description>System Cache Memory Fault Flag. This bit indicates a memory fault has occured in the System Cache while receiving data from the Hyperbus Interface.</description>
+            <description>System Cache Memory Fault Flag. This bit indicates a memory fault has occurred in the System Cache while receiving data from the Hyperbus Interface.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>

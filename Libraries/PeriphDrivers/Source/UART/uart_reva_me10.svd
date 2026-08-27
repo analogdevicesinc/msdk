@@ -640,7 +640,7 @@
               </enumeratedValue>
               <enumeratedValue>
                 <name>en</name>
-                <description>Break character recevied interrupt enabled.</description>
+                <description>Break character received interrupt enabled.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>

@@ -23,7 +23,7 @@
           </field>
           <field>
             <name>STN_AC_BIAS</name>
-            <description>AC Bias Frequency Control. THis fiels sets the AC Bias Frequency output on the CLCD_VDEN pin for Color StN display mode.</description>
+            <description>AC Bias Frequency Control. This field sets the AC Bias Frequency output on the CLCD_VDEN pin for Color StN display mode.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
@@ -440,7 +440,7 @@
         <fields>
           <field>
             <name>UNDERFLOW_IE</name>
-            <description>Under FLow Interupt Enable</description>
+            <description>Under FLow Interrupt Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -458,7 +458,7 @@
           </field>
           <field>
             <name>ADDR_RDY_IE</name>
-            <description>Address Ready Interupt Enable</description>
+            <description>Address Ready Interrupt Enable</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -476,7 +476,7 @@
           </field>
           <field>
             <name>VCI_IE</name>
-            <description>VCI Interupt Enable</description>
+            <description>VCI Interrupt Enable</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -494,7 +494,7 @@
           </field>
           <field>
             <name>BUS_ERROR_IE</name>
-            <description>BERR Interupt Enable</description>
+            <description>BERR Interrupt Enable</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -520,7 +520,7 @@
         <fields>
           <field>
             <name>UNDERFLOW</name>
-            <description>Under FLow Interupt Status</description>
+            <description>Under FLow Interrupt Status</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -547,7 +547,7 @@
           </field>
           <field>
             <name>ADDR_RDY</name>
-            <description>Address Ready Interupt Status</description>
+            <description>Address Ready Interrupt Status</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -574,7 +574,7 @@
           </field>
           <field>
             <name>VCI</name>
-            <description>VCI Interupt Status</description>
+            <description>VCI Interrupt Status</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -601,7 +601,7 @@
           </field>
           <field>
             <name>BUS_ERROR</name>
-            <description>BERR Interupt Status</description>
+            <description>BERR Interrupt Status</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
