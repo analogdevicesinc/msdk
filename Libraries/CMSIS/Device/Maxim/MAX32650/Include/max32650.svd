@@ -1096,7 +1096,7 @@
      <fields>
       <field>
        <name>UNDERFLOW_IE</name>
-       <description>Under FLow Interrupt Enable</description>
+       <description>Underflow Interrupt Enable</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1176,7 +1176,7 @@
      <fields>
       <field>
        <name>UNDERFLOW</name>
-       <description>Under FLow Interrupt Status</description>
+       <description>Underflow Interrupt Status</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>

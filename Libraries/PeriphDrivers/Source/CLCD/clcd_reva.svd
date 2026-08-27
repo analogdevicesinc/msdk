@@ -413,7 +413,7 @@
         <fields>
           <field>
             <name>UFLO</name>
-            <description>Under FLow Interrupt Enable</description>
+            <description>Underflow Interrupt Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -445,7 +445,7 @@
         <fields>
           <field>
             <name>UFLO</name>
-            <description>Under FLow Interrupt Status</description>
+            <description>Underflow Interrupt Status</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
