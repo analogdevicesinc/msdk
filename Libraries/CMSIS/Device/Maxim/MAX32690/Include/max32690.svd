@@ -5,7 +5,7 @@
  <name>max32690</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX32655 32-bit ARM Cortex-M4 microcontroller, 1024KB of flash, 760KB of system RAM, 128KB of Boot ROM.</description>
+ <description>MAX32690 32-bit ARM Cortex-M4 microcontroller, 1024KB of flash, 760KB of system RAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
@@ -8502,7 +8502,7 @@ memory.
       </field>
       <field>
        <name>SDA</name>
-       <description>SDA status. THis bit reflects the logic gate of SDA signal.</description>
+       <description>SDA status. This bit reflects the logic gate of SDA signal.</description>
        <bitRange>[9:9]</bitRange>
        <access>read-only</access>
       </field>
@@ -15165,7 +15165,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <fields>
       <field>
        <name>DLRTC</name>
-       <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occured.</description>
+       <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occurred.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
       </field>
@@ -19722,7 +19722,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
       </field>
       <field>
        <name>CASCADE</name>
-       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 adn C_DUALTMR16=1.</description>
+       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 and C_DUALTMR16=1.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -21210,7 +21210,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
       </field>
       <field>
        <name>SETUP_END</name>
-       <description>Read Setup End Status. Automatically set when a contorl transaction ends before the dataend bit has been set by fimrware. An interrupt is generated when this bit is set. Write 1 to servicedsetupend to clear.</description>
+       <description>Read Setup End Status. Automatically set when a control transaction ends before the dataend bit has been set by firmware. An interrupt is generated when this bit is set. Write 1 to servicedsetupend to clear.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-only</access>
