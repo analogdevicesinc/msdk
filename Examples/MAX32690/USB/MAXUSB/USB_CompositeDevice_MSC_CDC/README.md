@@ -1,6 +1,6 @@
 ## Description
 
-This example demonstrates using a USB composite device with the Mass Storage driver class and the CDC-SCM driver class. After making the required connections below, run the program, and a portable device and COM port appear in the Device Manager. The portable device can be read and written to. Open a terminal application on the PC at 115200 baud rate, and echo the characters on the terminal.
+This example demonstrates using a USB composite device with the Mass Storage driver class and the CDC-ACM driver class. After making the required connections below, run the program, and a portable device and COM port appear in the Device Manager. The portable device can be read and written to. Open a terminal application on the PC at 115200 baud rate, and echo the characters on the terminal.
 
 ## Software
 
