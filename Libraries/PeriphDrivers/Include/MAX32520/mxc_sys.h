@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,6 +120,14 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_64 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64,
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
+
+/** @brief Enumeration for Always-On Domain Clock (AON clock) divider settings */
+typedef enum {
+    MXC_SYS_AON_CLK_DIV_4 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_4, ///< Divide by 4
+    MXC_SYS_AON_CLK_DIV_8 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_8, ///< Divide by 8
+    MXC_SYS_AON_CLK_DIV_16 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_16, ///< Divide by 16
+    MXC_SYS_AON_CLK_DIV_32 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_32 ///< Divide by 32
+} mxc_sys_aon_clk_div_t;
 
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
@@ -297,6 +305,18 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
  * @returns         System clock divider.
  */
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
+
+/**
+ * @brief Set the Always-On Domain (AON) clock divider.
+ * @param div The AON clock divider setting.
+ */
+void MXC_SYS_SetAonClockDiv(mxc_sys_aon_clk_div_t div);
+
+/**
+ * @brief Get the current Always-On Domain (AON) clock divider setting.
+ * @return The current AON clock divider.
+ */
+mxc_sys_aon_clk_div_t MXC_SYS_GetAonClockDiv(void);
 
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
