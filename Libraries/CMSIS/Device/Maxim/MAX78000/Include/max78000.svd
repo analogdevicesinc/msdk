@@ -5,7 +5,7 @@
  <name>max78000</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX78000 Machine Learning System-on-Chip.</description>
+ <description>MAX78000 Machine Learning System-on-Chip, 512KB of flash, 128KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
@@ -818,7 +818,7 @@
     </register>
     <register>
      <name>INT_EN</name>
-     <description>Interupt Enable Register.</description>
+     <description>Interrupt Enable Register.</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
      <fields>
@@ -854,7 +854,7 @@
     </register>
     <register>
      <name>INT_FL</name>
-     <description>Interupt Flag Register.</description>
+     <description>Interrupt Flag Register.</description>
      <addressOffset>0x0010</addressOffset>
      <access>read-write</access>
      <fields>
@@ -5002,7 +5002,7 @@
       </field>
       <field>
        <name>SDA</name>
-       <description>SDA status. THis bit reflects the logic gate of SDA signal.</description>
+       <description>SDA status. This bit reflects the logic gate of SDA signal.</description>
        <bitRange>[9:9]</bitRange>
        <access>read-only</access>
       </field>
@@ -11163,7 +11163,7 @@
       </field>
       <field>
        <name>CASCADE</name>
-       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 adn C_DUALTMR16=1.</description>
+       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 and C_DUALTMR16=1.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

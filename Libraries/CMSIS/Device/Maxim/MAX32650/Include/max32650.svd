@@ -5,7 +5,7 @@
  <name>max32650</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX32650.</description>
+ <description>MAX32650 32-bit ARM Cortex-M4F microcontroller, 3MB of flash, 1MB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
@@ -1096,7 +1096,7 @@
      <fields>
       <field>
        <name>UNDERFLOW_IE</name>
-       <description>Under FLow Interupt Enable</description>
+       <description>Underflow Interrupt Enable</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1114,7 +1114,7 @@
       </field>
       <field>
        <name>ADDR_RDY_IE</name>
-       <description>Address Ready Interupt Enable</description>
+       <description>Address Ready Interrupt Enable</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1132,7 +1132,7 @@
       </field>
       <field>
        <name>VCI_IE</name>
-       <description>VCI Interupt Enable</description>
+       <description>VCI Interrupt Enable</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1150,7 +1150,7 @@
       </field>
       <field>
        <name>BUS_ERROR_IE</name>
-       <description>BERR Interupt Enable</description>
+       <description>BERR Interrupt Enable</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1176,7 +1176,7 @@
      <fields>
       <field>
        <name>UNDERFLOW</name>
-       <description>Under FLow Interupt Status</description>
+       <description>Underflow Interrupt Status</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1203,7 +1203,7 @@
       </field>
       <field>
        <name>ADDR_RDY</name>
-       <description>Address Ready Interupt Status</description>
+       <description>Address Ready Interrupt Status</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1230,7 +1230,7 @@
       </field>
       <field>
        <name>VCI</name>
-       <description>VCI Interupt Status</description>
+       <description>VCI Interrupt Status</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1257,7 +1257,7 @@
       </field>
       <field>
        <name>BUS_ERROR</name>
-       <description>BERR Interupt Status</description>
+       <description>BERR Interrupt Status</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -4628,7 +4628,7 @@
       </field>
       <field>
        <name>SDA</name>
-       <description>SDA status. THis bit reflects the logic gate of SDA signal.</description>
+       <description>SDA status. This bit reflects the logic gate of SDA signal.</description>
        <bitRange>[9:9]</bitRange>
        <access>read-only</access>
        <enumeratedValues>
@@ -11741,7 +11741,7 @@
      <fields>
       <field>
        <name>DLRTC</name>
-       <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occured.</description>
+       <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occurred.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
       </field>
@@ -21843,7 +21843,7 @@
         </enumeratedValue>
         <enumeratedValue>
          <name>en</name>
-         <description>Break character recevied interrupt enabled.</description>
+         <description>Break character received interrupt enabled.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -22967,7 +22967,7 @@
       </field>
       <field>
        <name>SETUP_END</name>
-       <description>Read Setup End Status. Automatically set when a contorl transaction ends before the dataend bit has been set by fimrware. An interrupt is generated when this bit is set. Write 1 to servicedsetupend to clear.</description>
+       <description>Read Setup End Status. Automatically set when a control transaction ends before the dataend bit has been set by firmware. An interrupt is generated when this bit is set. Write 1 to servicedsetupend to clear.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-only</access>

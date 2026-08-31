@@ -5,7 +5,7 @@
  <name>max32672</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX32672 High-Reliability, Tiny, Ultra-Low-Power AEM Cortex-M4F Microcontroller with 12-bit 1MSPS ADC.</description>
+ <description>MAX32672 32-bit ARM Cortex-M4F microcontroller, 1MB of flash, 200KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
@@ -6187,7 +6187,7 @@
       </field>
       <field>
        <name>SDA</name>
-       <description>SDA status. THis bit reflects the logic gate of SDA signal.</description>
+       <description>SDA status. This bit reflects the logic gate of SDA signal.</description>
        <bitRange>[9:9]</bitRange>
        <access>read-only</access>
       </field>
@@ -11728,7 +11728,7 @@
       </field>
       <field>
        <name>CASCADE</name>
-       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 adn C_DUALTMR16=1.</description>
+       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 and C_DUALTMR16=1.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

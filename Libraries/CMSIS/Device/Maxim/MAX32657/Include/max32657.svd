@@ -5,7 +5,7 @@
  <name>max32657</name>
  <series>ARMCM33</series>
  <version>1.0</version>
- <description>TBD</description>
+ <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
@@ -9743,7 +9743,7 @@
         </enumeratedValue>
         <enumeratedValue>
          <name>DIV_BY_4096</name>
-         <description>TBD</description>
+         <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
          <value>12</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -9922,7 +9922,7 @@
         </enumeratedValue>
         <enumeratedValue>
          <name>DIV_BY_4096</name>
-         <description>TBD</description>
+         <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
          <value>12</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -10143,7 +10143,7 @@
       </field>
       <field>
        <name>CASCADE</name>
-       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 adn C_DUALTMR16=1.</description>
+       <description>Cascade two 16-bit timers into one 32-bit timer. Only available when C_TMR16=0 and C_DUALTMR16=1.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

@@ -190,7 +190,7 @@
 <!-- INT_EN: INT_EN Register -->
    <register>
     <name>INT_EN</name>
-    <description>Interupt Enable Register.</description>
+    <description>Interrupt Enable Register.</description>
     <addressOffset>0x000C</addressOffset>
     <access>read-write</access>
     <fields>
@@ -227,7 +227,7 @@
 <!-- INT_FL: INT_FL Register -->
    <register>
     <name>INT_FL</name>
-    <description>Interupt Flag Register.</description>
+    <description>Interrupt Flag Register.</description>
     <addressOffset>0x0010</addressOffset>
     <access>read-write</access>
     <fields>
