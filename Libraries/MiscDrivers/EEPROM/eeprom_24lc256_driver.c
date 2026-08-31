@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2023 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,34 @@
 
 /***** Includes *****/
 #include "eeprom_24lc256_driver.h"
+#include "mxc_delay.h"
+
+/***** Definitions *****/
+#define I2C_MAX_BUSY_RETRY_TIMES 2 // RETRY max 2 times (Each time 10us)
 
 /******************************* Functions *******************************/
 static int i2c_transfer(mxc_i2c_req_t *req, uint8_t *txData, int txSize, uint8_t *rxData,
                         int rxSize)
 {
+    int return_val = 0;
+    int retry_counter = 0;
+
     req->tx_buf = txData; // Write data buffer
     req->tx_len = txSize; // Number of bytes to write
     req->rx_buf = rxData; // Read data buffer
     req->rx_len = rxSize; // Number of bytes to read
-    return MXC_I2C_MasterTransaction(req);
+
+    return_val = MXC_I2C_MasterTransaction(req);
+
+    // if BUS busy, retry I2C_MAX_BUSY_RETRY_TIMES times before return BUSY to APP
+    while ((return_val != E_NO_ERROR) && (return_val == E_BUSY) &&
+           (retry_counter < I2C_MAX_BUSY_RETRY_TIMES)) {
+        MXC_Delay(10);
+        return_val = MXC_I2C_MasterTransaction(req);
+        retry_counter++;
+    }
+
+    return return_val; //MXC_I2C_MasterTransaction(req);
 }
 
 static int i2c_write(mxc_i2c_req_t *req, uint8_t *txData, int txSize)
