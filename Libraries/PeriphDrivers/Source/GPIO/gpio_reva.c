@@ -218,6 +218,28 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
     return E_NO_ERROR;
 }
 
+int MXC_GPIO_RevA_Disable(mxc_gpio_reva_regs_t *port, uint32_t mask)
+{
+    if (MXC_GPIO_GetConfigLock() == MXC_GPIO_CONFIG_LOCKED) {
+        // Configuration is locked.  Ignore any attempts to change it.
+        return E_NO_ERROR;
+    }
+
+    // Disable the input and output.
+    port->inen &= ~mask;
+    port->outen_clr = mask;
+
+    // Disable the interrupt and wake sources tied to this pin.
+    port->inten_clr = mask;
+    port->wken_clr = mask;
+
+    // Remove any pull resistor so the pin is left floating.
+    port->padctrl0 &= ~mask;
+    port->padctrl1 &= ~mask;
+
+    return E_NO_ERROR;
+}
+
 void MXC_GPIO_RevA_SetWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask)
 {
     port->wken_set = mask;

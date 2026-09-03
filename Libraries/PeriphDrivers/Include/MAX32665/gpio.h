@@ -228,6 +228,15 @@ int MXC_GPIO_Reset(uint32_t portMask);
 int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg);
 
 /**
+ * @brief      Fully disable pin(s), clearing the input buffer, output driver,
+ *             interrupt, wake, and pull configuration set by MXC_GPIO_Config().
+ * @param      port  Pointer to GPIO port.
+ * @param      mask  Mask of the pin to disable
+ * @return     #E_NO_ERROR if everything is successful.
+ */
+int MXC_GPIO_Disable(mxc_gpio_regs_t *port, uint32_t mask);
+
+/**
  * @brief      Gets the pin(s) input state.
  * @param      port  Pointer to GPIO port.
  * @param      mask  Mask of the pin to read
