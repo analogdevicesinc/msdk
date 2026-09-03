@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -446,6 +446,9 @@ typedef struct {
  * @brief    Peripheral Clock Disable.
  * @{
  */
+#define MXC_F_GCR_PCLKDIS1_BTLE_POS                    0 /**< PCLKDIS1_BTLE Position */
+#define MXC_F_GCR_PCLKDIS1_BTLE                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_BTLE_POS)) /**< PCLKDIS1_BTLE Mask */
+
 #define MXC_F_GCR_PCLKDIS1_TRNG_POS                    2 /**< PCLKDIS1_TRNG Position */
 #define MXC_F_GCR_PCLKDIS1_TRNG                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_TRNG_POS)) /**< PCLKDIS1_TRNG Mask */
 
