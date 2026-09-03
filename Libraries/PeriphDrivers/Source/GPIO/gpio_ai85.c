@@ -306,6 +306,20 @@ void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
 }
 
 /* ************************************************************************** */
+int MXC_GPIO_Disable(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    if (port == MXC_GPIO3) {
+        MXC_MCR->gpio3_ctrl &= ~(P30_OUT_EN(mask) | P31_OUT_EN(mask));
+        MXC_MCR->gpio3_ctrl |= P30_PULL_DIS(mask) | P31_PULL_DIS(mask);
+        MXC_MCR->outen &= ~(SQWAVE_OUT_EN(mask) | PDOWN_OUT_EN(mask));
+        MXC_PWRSEQ->lpwken3 &= ~mask;
+        return E_NO_ERROR;
+    }
+
+    return MXC_GPIO_RevA_Disable((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+/* ************************************************************************** */
 int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 {
     if (cfg->port == MXC_GPIO3) {
