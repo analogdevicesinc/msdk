@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ void MXC_GPIO_RevA_ClearFlags(mxc_gpio_reva_regs_t *port, uint32_t flags);
 uint32_t MXC_GPIO_RevA_GetFlags(mxc_gpio_reva_regs_t *port);
 int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask);
 int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32_t mask);
+int MXC_GPIO_RevA_Disable(mxc_gpio_reva_regs_t *port, uint32_t mask);
 void MXC_GPIO_RevA_SetWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask);
 void MXC_GPIO_RevA_ClearWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask);
 uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port);
