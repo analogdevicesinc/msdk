@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,6 +119,8 @@ typedef enum {
         MXC_F_GCR_PCLKDIS0_I2C1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_I2C1 clock */
     MXC_SYS_PERIPH_CLOCK_PT = MXC_F_GCR_PCLKDIS0_PT_POS, /**< Disable MXC_F_GCR_PCLKDIS0_PT clock */
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
+    MXC_SYS_PERIPH_CLOCK_BTLE =
+        (MXC_F_GCR_PCLKDIS1_BTLE_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_BTLE clock */
     MXC_SYS_PERIPH_CLOCK_UART2 =
         (MXC_F_GCR_PCLKDIS1_UART2_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_UART2 clock */
     MXC_SYS_PERIPH_CLOCK_TRNG =

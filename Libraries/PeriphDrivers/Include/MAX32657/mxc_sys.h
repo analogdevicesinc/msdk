@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,6 +80,7 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_TMR4 = MXC_F_GCR_PCLKDIS0_TMR4_POS, /**< Disable TMR4 clock */
     MXC_SYS_PERIPH_CLOCK_TMR5 = MXC_F_GCR_PCLKDIS0_TMR5_POS, /**< Disable TMR4 clock */
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
+    MXC_SYS_PERIPH_CLOCK_BTLE = (MXC_F_GCR_PCLKDIS1_BTLE_POS + 32), /**< Disable BTLE clock */
     MXC_SYS_PERIPH_CLOCK_TRNG = (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable TRNG clock */
     MXC_SYS_PERIPH_CLOCK_CRC = (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable CRC clock */
     MXC_SYS_PERIPH_CLOCK_AES = (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable AES clock */

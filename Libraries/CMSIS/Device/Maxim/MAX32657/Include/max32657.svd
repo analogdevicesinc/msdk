@@ -2585,9 +2585,9 @@
      <addressOffset>0x48</addressOffset>
      <fields>
       <field>
-       <name>TRNG</name>
-       <description>TRNG Clock Disable.</description>
-       <bitOffset>2</bitOffset>
+       <name>BTLE</name>
+       <description>BTLE Clock Disable.</description>
+       <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -2602,25 +2602,31 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field derivedFrom="TRNG">
+      <field derivedFrom="BTLE">
+       <name>TRNG</name>
+       <description>TRNG Clock Disable.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="BTLE">
        <name>CRC</name>
        <description>CRC Disable.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="TRNG">
+      <field derivedFrom="BTLE">
        <name>AES</name>
        <description>AES Clock Disable</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="TRNG">
+      <field derivedFrom="BTLE">
        <name>DMA1</name>
        <description>DMA1 Clock Disable</description>
        <bitOffset>21</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="TRNG">
+      <field derivedFrom="BTLE">
        <name>WDT</name>
        <description>WDT Clock Disable</description>
        <bitOffset>27</bitOffset>
