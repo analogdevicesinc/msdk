@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -143,6 +143,11 @@ void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
 void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
 {
     MXC_GPIO_RevA_OutToggle((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+int MXC_GPIO_Disable(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    return MXC_GPIO_RevA_Disable((mxc_gpio_reva_regs_t *)port, mask);
 }
 
 int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)

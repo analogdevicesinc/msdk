@@ -5,7 +5,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -225,6 +225,15 @@ int MXC_GPIO_Reset(uint32_t portMask);
  * @return     #E_NO_ERROR if everything is successful.
  */
 int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg);
+
+/**
+ * @brief      Fully disable pin(s), clearing the input buffer, output driver,
+ *             and pull configuration set by MXC_GPIO_Config().
+ * @param      port  Pointer to the GPIO port registers
+ * @param      mask  Mask of the pin(s) to disable
+ * @return     #E_NO_ERROR if everything is successful.
+ */
+int MXC_GPIO_Disable(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Gets the pin(s) input state.
