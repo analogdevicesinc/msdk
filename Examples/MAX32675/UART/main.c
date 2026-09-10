@@ -38,7 +38,7 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-// #define DMA
+#define DMA
 
 #define UART_BAUD CONSOLE_BAUD
 #define BUFF_SIZE 256
@@ -113,7 +113,7 @@ int main(void)
 
     // Max baud rate for most serial ports is 115200
     if (UART_BAUD <= CONSOLE_BAUD) {
-        printf("\n-->UARTs Initialized\n\n");
+        printf("-->UARTs Initialized\n\n");
     }
 
     mxc_uart_req_t read_req;
@@ -136,15 +136,25 @@ int main(void)
 #ifdef DMA
     MXC_UART_SetAutoDMAHandlers(READING_UART, true);
     error = MXC_UART_TransactionDMA(&read_req);
+
+    if (error != E_NO_ERROR) {
+        printf("-->Error starting DMA read: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
+
+    printf("Start TransactionDMA read\n\n");
 #else
     error = MXC_UART_TransactionAsync(&read_req);
-#endif
 
     if (error != E_NO_ERROR) {
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
+
+    printf("Start TransactionAsync read\n\n");
+#endif
 
     error = MXC_UART_Transaction(&write_req);
 
