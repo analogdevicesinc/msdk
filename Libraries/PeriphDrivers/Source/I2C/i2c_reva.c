@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1383,10 +1383,18 @@ void MXC_I2C_RevA_AbortAsync(mxc_i2c_reva_regs_t *i2c)
 
 void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
 {
+    if ((unsigned)i2cNum >= MXC_I2C_INSTANCES) {
+        return;
+    }
+
     unsigned int written = AsyncWritten[i2cNum];
     unsigned int read = AsyncRead[i2cNum];
     mxc_i2c_reva_regs_t *i2c = (mxc_i2c_reva_regs_t *)MXC_I2C_GET_BASE(i2cNum);
     mxc_i2c_reva_req_t *req = (mxc_i2c_reva_req_t *)AsyncRequests[i2cNum];
+
+    if (req == NULL) {
+        return;
+    }
 
     /* Check for errors */
     if (i2c->intfl0 & MXC_I2C_REVA_ERROR) {
