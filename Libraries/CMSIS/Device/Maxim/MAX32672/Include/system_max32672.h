@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include "board.h"
 
 /*----------------------------------------------------------------------------
   Define clocks
@@ -72,7 +73,13 @@ extern "C" {
 
 /* NOTE: ERFO_FREQ (16MHz-32MHz) needs to be defined by user based on the clock they supply */
 #ifndef ERFO_FREQ
+#if defined(BOARD_EVKIT_V1)
 #define ERFO_FREQ 25000000
+#elif defined(BOARD_FTHR)
+#define ERFO_FREQ 24576000
+#else
+#error "Unknown BOARD"
+#endif
 #endif
 
 #ifndef ERTCO_FREQ
