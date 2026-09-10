@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -248,6 +248,25 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div)
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void)
 {
     return (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV);
+}
+
+/* ************************************************************************** */
+void MXC_SYS_SetAonClockDiv(mxc_sys_aon_clk_div_t div)
+{
+    /* Return if this setting is already current */
+    if (div == MXC_SYS_GetAonClockDiv()) {
+        return;
+    }
+
+    MXC_SETFIELD(MXC_GCR->pclkdiv, MXC_F_GCR_PCLKDIV_AON_CLKDIV, div);
+
+    SystemCoreClockUpdate();
+}
+
+/* ************************************************************************** */
+mxc_sys_aon_clk_div_t MXC_SYS_GetAonClockDiv(void)
+{
+    return (mxc_sys_aon_clk_div_t)(MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV);
 }
 
 /* ************************************************************************** */
