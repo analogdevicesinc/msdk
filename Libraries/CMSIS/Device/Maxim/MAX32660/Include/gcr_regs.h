@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -269,6 +269,25 @@ typedef struct {
 #define MXC_F_GCR_PM_HFIOPD                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_HFIOPD_POS)) /**< PM_HFIOPD Mask */
 
 /**@} end of group GCR_PM_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_PCLKDIV GCR_PCLKDIV
+ * @brief    Peripheral Clock Divider.
+ * @{
+ */
+#define MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS                0 /**< PCLKDIV_AON_CLKDIV Position */
+#define MXC_F_GCR_PCLKDIV_AON_CLKDIV                    ((uint32_t)(0x3UL << MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS)) /**< PCLKDIV_AON_CLKDIV Mask */
+#define MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_4              ((uint32_t)0x0UL) /**< PCLKDIV_AON_CLKDIV_DIV_4 Value */
+#define MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_4              (MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_4 << MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS) /**< PCLKDIV_AON_CLKDIV_DIV_4 Setting */
+#define MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_8              ((uint32_t)0x1UL) /**< PCLKDIV_AON_CLKDIV_DIV_8 Value */
+#define MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_8              (MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_8 << MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS) /**< PCLKDIV_AON_CLKDIV_DIV_8 Setting */
+#define MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_16             ((uint32_t)0x2UL) /**< PCLKDIV_AON_CLKDIV_DIV_16 Value */
+#define MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_16             (MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_16 << MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS) /**< PCLKDIV_AON_CLKDIV_DIV_16 Setting */
+#define MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_32             ((uint32_t)0x3UL) /**< PCLKDIV_AON_CLKDIV_DIV_32 Value */
+#define MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV_32             (MXC_V_GCR_PCLKDIV_AON_CLKDIV_DIV_32 << MXC_F_GCR_PCLKDIV_AON_CLKDIV_POS) /**< PCLKDIV_AON_CLKDIV_DIV_32 Setting */
+
+/**@} end of group GCR_PCLKDIV_Register */
 
 /**
  * @ingroup  gcr_registers
