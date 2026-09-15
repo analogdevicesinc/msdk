@@ -48,7 +48,12 @@ typedef struct {
     bool hw_ss_control;
 } spi_req_reva_state_t;
 
-static spi_req_reva_state_t states[MXC_SPI_INSTANCES];
+static spi_req_reva_state_t states[MXC_SPI_INSTANCES] = {
+    [0 ... MXC_SPI_INSTANCES - 1] = {
+        .channelTx = E_NO_DEVICE,
+        .channelRx = E_NO_DEVICE,
+    },
+};
 
 static uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t *req);
 static uint32_t MXC_SPI_RevA1_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t *req);
