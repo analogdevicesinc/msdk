@@ -1,6 +1,6 @@
 ###############################################################################
  #
- # Copyright (C) 2024 Analog Devices, Inc.
+ # Copyright (C) 2024-2026 Analog Devices, Inc.
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 # This script 1) allows the user to select their memory settings for their
 #   Secure & Non-Secure projects (TrustZone) in their project.mk file,
-#   and 2) it will generate the appropriate linker scripts and 
+#   and 2) it will generate the appropriate linker scripts and
 #   partion_{device}.h file into their project directory.
 #
 # This script is not run by the users, but a part of the MSDK build system.
@@ -50,7 +50,7 @@ import os
 #
 # Setup device's default physical memory definitons.
 #
-# Note for the MAX32657 (ME30), bit 28 of an address indicates the security 
+# Note for the MAX32657 (ME30), bit 28 of an address indicates the security
 #   status. Clear this bit to get the physical address. Use the virtual
 #   address during development.
 #       address[28] = 1 -Secure
@@ -197,7 +197,7 @@ def subtract_kib_string_units(big_int, small_int):
 
     if big_units != small_units:
         return "Subtraction Error"
-    
+
     result = big - small
 
     result = str(result) + big_units
@@ -377,7 +377,7 @@ class MemorySettings:
             self.nsc_start = nonsecurecall_start
             self.nsc_size = nonsecurecall_size
             self.total_s_size = secure_size + nonsecurecall_size
-        
+
         self.__check_region_alignment_to_mpc()
 
 
@@ -387,7 +387,7 @@ class MemorySettings:
 #
 
 program_description = '''Generates the linker scripts and partiton_{device}.h with
-project-defined memory settings. 
+project-defined memory settings.
 
 NOTE: This script uses binary prefix notation for units when not used by build system
 For example: Kilobytes (KB) will be treated as Kibibytes (KiB).
@@ -592,11 +592,11 @@ def copy_template(source, destination):
 def replace_string_in_file(path_to_file, dictionary_strings):
     with open(path_to_file, 'r') as file:
         contents = file.read()
-    
+
     for template_string, mem_setting in dictionary_strings.items():
         regex = re.compile(re.escape(template_string))
         contents = re.sub(regex, mem_setting, contents)
-    
+
     with open(path_to_file, 'w') as file:
         file.write(contents)
 
@@ -610,7 +610,7 @@ try:
     SECURE_PARTITION_ALREADY_EXISTED = False
     if os.path.exists(SECURE_PARTITION_PATH):
         SECURE_PARTITION_ALREADY_EXISTED = True
-    
+
     SECURE_LINKER_ALREADY_EXISTED = False
     if os.path.exists(SECURE_LINKER_PATH):
         SECURE_LINKER_ALREADY_EXISTED = True
@@ -653,12 +653,12 @@ try:
     # Mainly for linker script
     if FLASH.is_nonsecurecall_present:
         regex_replace[r'$MEM_ORIGIN_NSC$'] = f"0x{FLASH.nsc_start:08x}"
-        regex_replace[r'$MEM_SIZE_NSC$'] = f"0x{FLASH.nsc_start:08x}"
+        regex_replace[r'$MEM_SIZE_NSC$'] = f"0x{FLASH.nsc_size:08x}"
         regex_replace[r'$perm$'] = f" (rx)"
         regex_replace[r'$FLASH_END_S$'] = f"0x{(FLASH.s_start + FLASH.s_size + FLASH.nsc_size - 1):08x}"
     elif SRAM.is_nonsecurecall_present:
         regex_replace[r'$MEM_ORIGIN_NSC$'] = f"0x{SRAM.nsc_start:08x}"
-        regex_replace[r'$MEM_SIZE_NSC$'] = f"0x{SRAM.nsc_start:08x}"
+        regex_replace[r'$MEM_SIZE_NSC$'] = f"0x{SRAM.nsc_size:08x}"
         regex_replace[r'$perm$'] = f"(rwx)"
         regex_replace[r'$SRAM_END_S$'] = f"0x{SRAM.s_start + SRAM.s_size + SRAM.nsc_size - 1:08x}"
     else:
@@ -667,11 +667,11 @@ try:
     # Mainly for linker script
     if FLASH.execute_code_here:
         regex_replace[r'$CODE_MEM_TYPE$'] = f"FLASH"
-        # NSC region at the end of FLASH for this string in the linkers 
+        # NSC region at the end of FLASH for this string in the linkers
         regex_replace[r'$MPC_BLOCK_SIZE$'] = f"0x{FLASH.mpc_inst_blk_sizes[-1]:x}"
     elif SRAM.execute_code_here:
-        regex_replace[r'$MPC_BLOCK_SIZE$'] = f"FLASH"
-        # NSC region at the end of FLASH for this string in the linkers 
+        regex_replace[r'$CODE_MEM_TYPE$'] = f"SRAM"
+        # NSC region at the end of SRAM for this string in the linkers
         regex_replace[r'$MPC_BLOCK_SIZE$'] = f"0x{SRAM.mpc_inst_blk_sizes[-1]:x}"
     else:
         raise ValueError("Unexpected problem with updating sections in linker scripts.")
@@ -698,7 +698,7 @@ except Exception:
         os.remove(SECURE_LINKER_PATH)
     if NONSECURE_LINKER_ALREADY_EXISTED == False:
         os.remove(NONSECURE_LINKER_PATH)
-    
+
     sys.exit(1)
 
 ###############################################################################
