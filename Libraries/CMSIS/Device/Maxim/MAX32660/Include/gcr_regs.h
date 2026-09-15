@@ -82,7 +82,9 @@ typedef struct {
     __IO uint32_t rst0;                 /**< <tt>\b 0x04:</tt> GCR RST0 Register */
     __IO uint32_t clk_ctrl;             /**< <tt>\b 0x08:</tt> GCR CLK_CTRL Register */
     __IO uint32_t pm;                   /**< <tt>\b 0x0C:</tt> GCR PM Register */
-    __R  uint32_t rsv_0x10_0x23[5];
+    __R  uint32_t rsv_0x10_0x17[2];
+    __IO uint32_t pclkdiv;              /**< <tt>\b 0x18:</tt> GCR PCLKDIV Register */
+    __R  uint32_t rsv_0x1c_0x23[2];
     __IO uint32_t pclk_dis0;            /**< <tt>\b 0x24:</tt> GCR PCLK_DIS0 Register */
     __IO uint32_t mem_ctrl;             /**< <tt>\b 0x28:</tt> GCR MEM_CTRL Register */
     __IO uint32_t mem_zctrl;            /**< <tt>\b 0x2C:</tt> GCR MEM_ZCTRL Register */
