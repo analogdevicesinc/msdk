@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,10 +156,15 @@ SECTIONS {
     } > SRAM
 
     /**
-     *  Stack Seal section is required for secure builds. Stack sealing protects
-     *  secure stack from illegal access by non-secure code.
+     *  Stack Seal section is required for secure builds to protect secure stack
+     *  from illegal access by non-secure code. Double word aligned stack seal must
+     *  be placed above secure stack space.
+     *
+     *  Cases:
+     *      1. Exception exit from Non-Secure ISR back into Secure world
+     *      2. Secure world calls a Non-Secure defined function and returns back to secure world.
      */
-    .stackseal (COPY):
+    .stackseal __StackLimit (COPY) :
     {
         . = ALIGN(8);
         __StackSeal = .;
@@ -173,6 +178,8 @@ SECTIONS {
      */
     __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
     __StackLimit = __StackTop - SIZEOF(.stack_dummy);
+    __StackTotalSize = SIZEOF(.stack_dummy);
+    __StackUsableSize = SIZEOF(.stack_dummy) - SIZEOF(.stackseal);
 
     /**
      *  .stack_dummy section doesn't contains any symbols. It is only
@@ -181,8 +188,9 @@ SECTIONS {
      */
     .stack_dummy (COPY):
     {
+        /* Account for extra space with stack seal for __StackLimit. */
+        . = . + SIZEOF(.stackseal);
         KEEP(*(.stack*))
-        KEEP(*(.stackseal*))
     } > SRAM
 
     .heap (COPY):
@@ -191,6 +199,20 @@ SECTIONS {
         *(.heap*)
         __HeapLimit = ABSOLUTE(__StackLimit);
     } > SRAM
+
+    /**
+     *  Define memory region symbols to help set up MPCs.
+     */
+    PROVIDE(_flash_s_start = ORIGIN(FLASH));
+    PROVIDE(_flash_s_end = ORIGIN(FLASH) + LENGTH(FLASH) - 1); /* -1 for inclusive range */
+    PROVIDE(_flash_nsc_start = ORIGIN(NSC_REGION));
+    PROVIDE(_flash_nsc_end = ORIGIN(NSC_REGION) + LENGTH(NSC_REGION) - 1);
+    PROVIDE(_flash_ns_start = ORIGIN(FLASH_NS));
+    PROVIDE(_flash_ns_end = ORIGIN(FLASH_NS) + LENGTH(FLASH_NS) - 1);
+    PROVIDE(_sram_s_start = ORIGIN(SRAM));
+    PROVIDE(_sram_s_end = ORIGIN(SRAM) + LENGTH(SRAM) - 1);
+    PROVIDE(_sram_ns_start = ORIGIN(SRAM_NS));
+    PROVIDE(_sram_ns_end = ORIGIN(SRAM_NS) + LENGTH(SRAM_NS) - 1);
 
     PROVIDE(__stack = __StackTop);
 
