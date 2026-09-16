@@ -159,7 +159,7 @@ SECTIONS {
      *  Stack Seal section is required for secure builds to protect secure stack
      *  from illegal access by non-secure code. Double word aligned stack seal must
      *  be placed above secure stack space.
-     *
+     *  
      *  Cases:
      *      1. Exception exit from Non-Secure ISR back into Secure world
      *      2. Secure world calls a Non-Secure defined function and returns back to secure world.
