@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -353,6 +353,14 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
  * @returns         System clock divider.
  */
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
+
+/**
+ * @brief Calibrate the specified system clock.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.
+ *          Check the microcontroller's UG for more details.
+ * @returns         E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Wait for a clock to enable with timeout
