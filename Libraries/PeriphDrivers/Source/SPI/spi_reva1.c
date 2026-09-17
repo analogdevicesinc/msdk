@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2025 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -803,6 +803,10 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
     uint32_t retval;
     int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
+    if ((spi_num < 0) || (spi_num >= MXC_SPI_INSTANCES)) {
+        return E_BAD_PARAM;
+    }
+
     // Leave slave select asserted at the end of the transaction
     if (states[spi_num].hw_ss_control && !req->ssDeassert) {
         spi->ctrl0 = (spi->ctrl0 & ~MXC_F_SPI_REVA_CTRL0_START) | MXC_F_SPI_REVA_CTRL0_SS_CTRL;
@@ -956,7 +960,11 @@ int MXC_SPI_RevA1_MasterTransactionAsync(mxc_spi_reva_req_t *req)
         return error;
     }
 
-    states[MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi)].async = 1;
+    int idx = MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi);
+    if (idx < 0) {
+        return E_BAD_PARAM;
+    }
+    states[idx].async = 1;
 
     MXC_SPI_EnableInt((mxc_spi_regs_t *)req->spi, MXC_SPI_RevA1_MasterTransHandler(req->spi, req));
 
@@ -1176,7 +1184,11 @@ int MXC_SPI_RevA1_SlaveTransactionAsync(mxc_spi_reva_req_t *req)
         return error;
     }
 
-    states[MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi)].async = 1;
+    int idx = MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi);
+    if (idx < 0) {
+        return E_BAD_PARAM;
+    }
+    states[idx].async = 1;
 
     MXC_SPI_EnableInt((mxc_spi_regs_t *)req->spi, MXC_SPI_RevA1_SlaveTransHandler(req));
 
