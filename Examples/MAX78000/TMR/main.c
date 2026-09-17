@@ -23,7 +23,7 @@
  * @brief   Timer example
  * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on 3.7
  *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
- *          Oneshot Timer    - Outputs: Toggle LED1 after 1s
+ *          Oneshot Timer  - Outputs: Toggle LED1 after  1s
  */
 
 /***** Includes *****/
@@ -46,7 +46,6 @@
 #endif
 
 #define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
-//#define DEEPSLEEP_MODE
 
 #define PB2 1
 
@@ -263,7 +262,9 @@ int main(void)
             MXC_LP_EnterSleepMode();
 
 #else
-            MXC_LP_EnterDeepSleepMode();
+            MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN; // Enabled for deep sleep mode
+            MXC_LP_ClearWakeStatus();
+            MXC_GCR->pm |= MXC_S_GCR_PM_MODE_UPM; // upm mode
 #endif
         }
     }

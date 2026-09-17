@@ -23,7 +23,7 @@
  * @brief   Timer example
  * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on 3.7
  *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
- *          Oneshot Timer    - Outputs: Toggle LED1 after 1s
+ *          Oneshot Timer    - Outputs: Toggle LED1 after  1s
  */
 
 /***** Includes *****/
@@ -40,7 +40,7 @@
 #include "lp.h"
 
 /***** Definitions *****/
-#define DEEPSLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
+#define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
 
 #define PB2 1
 
