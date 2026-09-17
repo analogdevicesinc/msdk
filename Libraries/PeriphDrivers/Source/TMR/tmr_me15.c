@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     uint8_t clockSource = MXC_TMR_CLK0;
+    uint8_t aon_clk_div;
 
     if (cfg == NULL) {
         return E_NULL_PTR;
@@ -85,7 +86,20 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERFO_FREQ);
         break;
 
+    case MXC_TMR_AOD_CLK:
+        if (tmr_id < 4) {
+            return E_NOT_SUPPORTED;
+        }
+        aon_clk_div = MXC_SYS_GetAonClockDiv();
+        clockSource = MXC_TMR_CLK0;
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr,
+                                        PeripheralClock / (4 * (1 << aon_clk_div)));
+        break;
+
     default:
+        if (tmr_id >= 4) {
+            return E_NOT_SUPPORTED;
+        }
         MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, PeripheralClock);
         break;
     }
@@ -182,11 +196,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }
 
-void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq)
-{
-    MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, clksrc_freq);
-}
-
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
@@ -260,13 +269,15 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
 {
     uint32_t clockFrequency = PeripheralClock;
     int tmr_id = MXC_TMR_GET_IDX(tmr);
+    uint8_t aon_clk_div;
 
     MXC_ASSERT(tmr_id >= 0);
 
     if (tmr_id > 3) {
         switch (clock) {
-        case MXC_TMR_APB_CLK:
-            clockFrequency = (PeripheralClock / 4);
+        case MXC_TMR_AOD_CLK:
+            aon_clk_div = MXC_SYS_GetAonClockDiv();
+            clockFrequency = PeripheralClock / (4 * (1 << aon_clk_div));
             break;
 
         case MXC_TMR_ERTCO_CLK:
