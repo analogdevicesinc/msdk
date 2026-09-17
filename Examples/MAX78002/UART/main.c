@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-// #define DMA
+#define DMA
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024
@@ -103,8 +103,8 @@ int main(void)
 
 #ifdef DMA
     // Automatically set up DMA handlers/ISRs
-    MXC_UART_SetAutoDMAHandlers(READING_UART, true);
-    MXC_UART_SetAutoDMAHandlers(WRITING_UART, true);
+    MXC_UART_SetAutoDMAHandlers(MXC_UART1, true);
+    MXC_UART_SetAutoDMAHandlers(MXC_UART2, true);
 #endif
 
     mxc_uart_req_t read_req;
