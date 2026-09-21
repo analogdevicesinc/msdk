@@ -522,10 +522,10 @@ else:
 # NSC Size. Check to see if project owner set the NSC size.
 if string_to_integer_bytes(args.nonsecurecall_region_size) != 0:
     NONSECURECALL_REGION_SIZE = string_to_integer_bytes(args.nonsecurecall_region_size)
-else: # if not set by user, then set NSC region size to 8KiB.
-    NONSECURECALL_REGION_SIZE = string_to_integer_bytes("8KiB")
+else: # if not set by user, then set NSC region size to 32KiB.
+    NONSECURECALL_REGION_SIZE = string_to_integer_bytes("32KiB")
     print(f"> - Size for Non-Secure Callable (NSC) Region was not set in project.mk: NSC_SIZE")
-    print(f"> - Defaulting size to 8KiB.")
+    print(f"> - Defaulting size to 32KiB.")
 
 # NSC Region Information that users should be aware of.
 NONSECURECALL_FLASH_START = 0
