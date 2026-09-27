@@ -20,7 +20,7 @@
 
 /**
   * @file main.c
-  * @brief USB composite device with Mass Storage driver class and CDC-SCM driver class.
+  * @brief USB composite device with Mass Storage driver class and CDC-ACM driver class.
 */
 
 #include <stdio.h>
