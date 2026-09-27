@@ -46,7 +46,6 @@
 #endif
 
 #define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
-//#define DEEPSLEEP_MODE
 
 #define PB2 1
 
@@ -263,7 +262,7 @@ int main(void)
             MXC_LP_EnterSleepMode();
 
 #else
-            MXC_LP_EnterDeepSleepMode();
+            MXC_LP_EnterMicroPowerMode();
 #endif
         }
     }

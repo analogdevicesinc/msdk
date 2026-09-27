@@ -40,7 +40,7 @@
 #include "lp.h"
 
 /***** Definitions *****/
-#define DEEPSLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
+#define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
 
 #define PB2 1
 
@@ -250,9 +250,7 @@ int main(void)
             MXC_LP_EnterSleepMode();
 
 #else
-            MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN; // Enabled for deep sleep mode
-            MXC_LP_ClearWakeStatus();
-            MXC_GCR->pm |= MXC_S_GCR_PM_MODE_UPM; // upm mode
+            MXC_LP_EnterMicroPowerMode();
 #endif
         }
     }
