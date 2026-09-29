@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32690</name>
  <series>ARMCM4</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32690 32-bit ARM Cortex-M4F microcontroller, 3.25MB of flash, 1MB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -2012,12 +2012,6 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
    <baseAddress>0x40065000</baseAddress>
   </peripheral>
 <!--CAN1 Controller Area Network Registers 1-->
-  <peripheral derivedFrom="CAN0">
-   <name>CAN2</name>
-   <description>Controller Area Network Registers 2</description>
-   <baseAddress />
-  </peripheral>
-<!--CAN2 Controller Area Network Registers 2-->
   <peripheral>
    <name>CTB</name>
    <description>The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.</description>
