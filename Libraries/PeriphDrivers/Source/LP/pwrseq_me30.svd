@@ -17,7 +17,7 @@
         <fields>
           <field>
             <name>SRAMRET_EN</name>
-            <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+            <description>System RAM retention in BACKUP mode. These bits select which SRAM blocks are retained in BACKUP mode.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
@@ -77,9 +77,11 @@
           </field>
           <field>
             <name>LPWKFL_CLR</name>
-            <description>LP wakeup flag register clear.</description>
+            <description>LP wakeup flag register clear. Write 1 to clear all wakeup flags in LPWKFL0.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>write-only</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
         </fields>
       </register>
@@ -90,9 +92,9 @@
         <fields>
           <field>
             <name>PINS</name>
-            <description>Wakeup Flags.</description>
+            <description>Wakeup Flags for GPIO0 pins [13:0]. Each bit corresponds to one GPIO0 pin.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>12</bitWidth>
+            <bitWidth>14</bitWidth>
           </field>
         </fields>
       </register>
@@ -103,9 +105,9 @@
         <fields>
           <field>
             <name>PINS</name>
-            <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
+            <description>Enable wakeup for GPIO0 pins [13:0]. Each bit allows wakeup from the corresponding GPIO0 pin on a low-to-high or high-to-low transition when PM.GPIOWKEN is set. Wakeup status is indicated in LPWKFL0.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>12</bitWidth>
+            <bitWidth>14</bitWidth>
           </field>
         </fields>
       </register>

@@ -102,6 +102,12 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
+          <field>
+            <name>CRB_FLUSH_EN</name>
+            <description>Coherent Read Buffer flush enable. Write 1 to flush the coherent read buffer.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
@@ -181,7 +187,7 @@
         </register>
         <register>
           <name>HBOUND</name>
-          <description>DMA Channel Status Register.</description>
+          <description>Regional High Bound Register.</description>
           <addressOffset>0x004</addressOffset>
           <clusterName>reg</clusterName>
           <size>32</size>

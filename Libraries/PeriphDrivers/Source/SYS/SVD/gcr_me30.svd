@@ -18,7 +18,7 @@
         <fields>
           <field>
             <name>ICC_FLUSH</name>
-            <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M4. </description>
+            <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M33.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
