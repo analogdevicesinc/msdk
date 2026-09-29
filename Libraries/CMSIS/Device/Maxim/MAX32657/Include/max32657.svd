@@ -6172,6 +6172,13 @@
        </enumeratedValues>
       </field>
       <field>
+       <name>BUSY</name>
+       <description>Cache Busy. Read-only status bit set by hardware while a cache operation (invalidate or flush) is in progress.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
+      </field>
+      <field>
        <name>RDY</name>
        <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
        <bitOffset>16</bitOffset>
