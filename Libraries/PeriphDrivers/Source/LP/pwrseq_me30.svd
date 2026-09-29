@@ -92,9 +92,10 @@
         <fields>
           <field>
             <name>PINS</name>
-            <description>Wakeup Flags for GPIO0 pins [13:0]. Each bit corresponds to one GPIO0 pin.</description>
+            <description>Wakeup Flags for GPIO0 pins [13:0]. Each bit corresponds to one GPIO0 pin. Write 1 to clear.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>14</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
         </fields>
       </register>
@@ -118,15 +119,17 @@
         <fields>
           <field>
             <name>BACKUP</name>
-            <description>BACKUP Wakeful Flag.</description>
+            <description>BACKUP Wakeful Flag. Write 1 to clear.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>RESET</name>
-            <description>Reset Detected Wakeup Flag.</description>
+            <description>Reset Detected Wakeup Flag. Write 1 to clear.</description>
             <bitOffset>17</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
         </fields>
       </register>

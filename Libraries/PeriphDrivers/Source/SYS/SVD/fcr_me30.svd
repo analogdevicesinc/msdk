@@ -238,12 +238,6 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field>
-            <name>BLE_KS_CTL_HI</name>
-            <description>BLE Kick Start Control bits [15:14]. R/W bits as part of the 16-bit BLE_KS_CTL word; not described in user guide.</description>
-            <bitOffset>14</bitOffset>
-            <bitWidth>2</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
