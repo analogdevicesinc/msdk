@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32690</name>
  <series>ARMCM4</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32690 32-bit ARM Cortex-M4F microcontroller, 3.25MB of flash, 1MB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
