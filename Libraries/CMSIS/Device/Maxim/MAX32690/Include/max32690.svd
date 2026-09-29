@@ -2012,12 +2012,6 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
    <baseAddress>0x40065000</baseAddress>
   </peripheral>
 <!--CAN1 Controller Area Network Registers 1-->
-  <peripheral derivedFrom="CAN0">
-   <name>CAN2</name>
-   <description>Controller Area Network Registers 2</description>
-   <baseAddress />
-  </peripheral>
-<!--CAN2 Controller Area Network Registers 2-->
   <peripheral>
    <name>CTB</name>
    <description>The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.</description>
