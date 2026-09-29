@@ -2119,7 +2119,7 @@
      <fields>
       <field>
        <name>SYSCLK_DIV</name>
-       <description>Prescaler Select. This 3 bit field sets the system operating frequency by controlling the prescaler that divides the output of the PLL0.</description>
+       <description>Prescaler Select. This 3-bit field sets the system operating frequency by controlling the prescaler that divides the output of the system clock source.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>3</bitWidth>
        <enumeratedValues>
@@ -2316,7 +2316,7 @@
      <fields>
       <field>
        <name>MODE</name>
-       <description>Operating Mode. This two bit field selects the current operating mode for the device. Note that code execution only occurs during ACTIVE mode.</description>
+       <description>Operating Mode. This 4-bit field selects the current operating mode for the device. Note that code execution only occurs during ACTIVE mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>4</bitWidth>
        <enumeratedValues>
@@ -2726,6 +2726,7 @@
        <description>ECC Flash Error Flag. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -2739,6 +2740,7 @@
        <description>ECC Correctable Error Detect Flag for Flash. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
