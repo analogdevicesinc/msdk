@@ -17,6 +17,18 @@
         <resetMask>0xFFFFFFFE</resetMask>
         <fields>
           <field>
+            <name>BSTAPEN</name>
+            <description>Boundary Scan TAP Enable. When enabled, the JTAG port is connected to the Boundary Scan TAP instead of the ARM ICE.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RR</name>
+            <description>ROM Redundancy Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>ICC_FLUSH</name>
             <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M33.</description>
             <bitOffset>6</bitOffset>
@@ -54,9 +66,10 @@
           </field>
           <field>
             <name>CHKRES</name>
-            <description>ROM Checksum Result. This bit is only valid when the checksum is done and CCHK0 bit is cleared..</description>
+            <description>ROM Checksum Result. This bit is only valid when the checksum is done and CCHK0 bit is cleared.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
             <enumeratedValues>
               <enumeratedValue>
                 <name>pass</name>
@@ -633,6 +646,7 @@
             <description>ARM ICE Lock Status.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
             <enumeratedValues>
               <enumeratedValue>
                 <name>unlocked</name>
@@ -709,6 +723,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="BTLE">
+            <name>ICC</name>
+            <description>ICC Clock Disable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="BTLE">
             <name>CRC</name>
             <description>CRC Disable.</description>
             <bitOffset>14</bitOffset>
@@ -751,12 +771,7 @@
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field>
-            <name>TX</name>
-            <description>Enable TXEV pin event. When this bit is set, TXEV event from the CPU is output to GPIO[25].</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
+
         </fields>
       </register>
       <register>
@@ -843,42 +858,13 @@
         <name>ECCADDR</name>
         <description>ECC Error Address Register</description>
         <addressOffset>0x70</addressOffset>
+        <access>read-only</access>
         <fields>
           <field>
-            <name>DADDR</name>
-            <description>Address of Error in Data RAM.</description>
+            <name>ECCADDR</name>
+            <description>Flash byte address of the most recent ECC event. Bits [1:0] are always zero (word-aligned).</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>14</bitWidth>
-          </field>
-          <field>
-            <name>DB</name>
-            <description>Data Bank,</description>
-            <bitOffset>14</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>DE</name>
-            <description>Data Error Flag.</description>
-            <bitOffset>15</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TADDR</name>
-            <description>Address of Error in Tag RAM.</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>14</bitWidth>
-          </field>
-          <field>
-            <name>TB</name>
-            <description>Tag Bank.</description>
-            <bitOffset>30</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>TE</name>
-            <description>Tag Error Flag.</description>
-            <bitOffset>31</bitOffset>
-            <bitWidth>1</bitWidth>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>
@@ -993,27 +979,31 @@
           </field>
           <field>
             <name>BB_EN_DLY</name>
-            <description>LDO BB Enable Delay.</description>
+            <description>LDO BB Enable Delay Status.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
           <field>
             <name>RF_EN_DLY</name>
-            <description>LDO RF Enable Delay.</description>
+            <description>LDO RF Enable Delay Status.</description>
             <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
           <field>
             <name>RF_BP_EN_DLY</name>
-            <description>LDO RF Bypass Enable Delay.</description>
+            <description>LDO RF Bypass Enable Delay Status.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
           <field>
             <name>BB_BP_EN_DLY</name>
-            <description>LDO BB Bypass Enable Delay.</description>
+            <description>LDO BB Bypass Enable Delay Status.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
+            <access>read-only</access>
           </field>
         </fields>
       </register>
@@ -1029,14 +1019,14 @@
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>BB_CNT</name>
-            <description>BB delay count.</description>
+            <name>RF_CNT</name>
+            <description>RF LDO delay count.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>9</bitWidth>
           </field>
           <field>
-            <name>RF_CNT</name>
-            <description>RF delay count.</description>
+            <name>BB_CNT</name>
+            <description>BB LDO delay count.</description>
             <bitOffset>20</bitOffset>
             <bitWidth>9</bitWidth>
           </field>
