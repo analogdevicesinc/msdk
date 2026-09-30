@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc. All Rights Reserved. This software
+ * Copyright (C) 2023-2026 Analog Devices, Inc. All Rights Reserved. This software
  * is proprietary to Analog Devices, Inc. and its licensors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -440,8 +440,8 @@ int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr)
         }
     }
 
-    ppm /= MXC_RTC_REVA_TRIM_PERIODS;
     ppm = PPM(ppm); // Convert total error to PPM and set trim
+    ppm /= MXC_RTC_REVA_TRIM_PERIODS;
     if (ppm < -128 || ppm > 127) {
         return E_OVERFLOW;
     }
