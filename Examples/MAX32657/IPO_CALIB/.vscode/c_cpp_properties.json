@@ -1,0 +1,53 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${default}"
+            ],
+            "defines": [
+                "${default}"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc.exe",
+            "browse": {
+                "path": [
+                    "${default}"
+                ]
+            }
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${default}"
+            ],
+            "defines": [
+                "${default}"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
+            "browse": {
+                "path": [
+                    "${default}"
+                ]
+            }
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "${default}"
+            ],
+            "defines": [
+                "${default}"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gcc",
+            "browse": {
+                "path": [
+                    "${default}"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
