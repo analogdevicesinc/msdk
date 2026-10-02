@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-#define DMA
+//#define DMA
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024
@@ -90,10 +90,10 @@ int main(void)
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifndef DMA
-    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(READING_UART_IDX));
-    NVIC_DisableIRQ(MXC_UART_GET_IRQ(READING_UART_IDX));
-    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(READING_UART_IDX), Reading_UART_Handler);
-    NVIC_EnableIRQ(MXC_UART_GET_IRQ(READING_UART_IDX));
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(READING_UART)));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(READING_UART)));
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(READING_UART)), Reading_UART_Handler);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(READING_UART)));
 #endif
 
     // Initialize the UART
