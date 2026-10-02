@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32657</name>
  <series>ARMCM33</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -1263,40 +1263,41 @@
      <name>CTRL</name>
      <description>Function Control 0 Register.</description>
      <addressOffset>0x00</addressOffset>
+     <resetValue>0x00000000</resetValue>
      <access>read-write</access>
      <fields>
       <field>
        <name>I3CDGEN0</name>
-       <description>I3C SDA Glitch Filter Enable.</description>
+       <description>I3C SDA Deglitch Bypass. When set, the SDA deglitch filter is bypassed.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>dis</name>
-         <description>Filter disabled.</description>
+         <name>active</name>
+         <description>Deglitch filter active (not bypassed).</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>en</name>
-         <description>Filter enabled.</description>
+         <name>bypass</name>
+         <description>Deglitch filter bypassed.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
        <name>I3CDGEN1</name>
-       <description>I3C SCL Glitch Filter Enable.</description>
+       <description>I3C SCL Deglitch Bypass. When set, the SCL deglitch filter is bypassed.</description>
        <bitOffset>21</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>dis</name>
-         <description>Filter disabled.</description>
+         <name>active</name>
+         <description>Deglitch filter active (not bypassed).</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>en</name>
-         <description>Filter enabled.</description>
+         <name>bypass</name>
+         <description>Deglitch filter bypassed.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -1307,6 +1308,7 @@
      <name>AUTOCAL0</name>
      <description>Automatic Calibration 0 Register.</description>
      <addressOffset>0x04</addressOffset>
+     <resetValue>0x00000000</resetValue>
      <access>read-write</access>
      <fields>
       <field>
@@ -1353,36 +1355,37 @@
       </field>
       <field>
        <name>GAIN_INV</name>
-       <description>Invert Gain.</description>
+       <description>Invert Gain. When set, the calibration gain is inverted.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>not</name>
-         <description>Not Running.</description>
+         <name>normal</name>
+         <description>Normal gain (not inverted).</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>run</name>
-         <description>Running.</description>
+         <name>inverted</name>
+         <description>Inverted gain.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
        <name>ATOMIC</name>
-       <description>Atomic mode.</description>
+       <description>Atomic calibration trigger. Write 1 to start a single-shot calibration; self-clearing.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
        <enumeratedValues>
         <enumeratedValue>
-         <name>not</name>
-         <description>Not Running.</description>
+         <name>normal</name>
+         <description>Normal (non-atomic) mode.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>run</name>
-         <description>Running.</description>
+         <name>atomic</name>
+         <description>Atomic calibration in progress (self-clears on completion).</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -1395,9 +1398,10 @@
       </field>
       <field>
        <name>TRIM_OUT</name>
-       <description>IPO Auto Calibration Trim</description>
+       <description>IPO Auto Calibration Trim output value (read-only result).</description>
        <bitOffset>23</bitOffset>
        <bitWidth>9</bitWidth>
+       <access>read-only</access>
       </field>
      </fields>
     </register>
@@ -1493,15 +1497,17 @@
      <fields>
       <field>
        <name>ERFO_RDY</name>
-       <description>ERFO Ready.</description>
+       <description>ERFO Ready. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>FRQCNT</name>
-       <description>Frequency Counter Interrupt Flag.</description>
+       <description>Frequency Counter Interrupt Flag. Write 1 to clear.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -1559,9 +1565,10 @@
      <fields>
       <field>
        <name>START</name>
-       <description>Start Compare.</description>
+       <description>Start Compare. Write 1 to start frequency count; self-clearing when measurement completes.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>CMP_CLKSEL</name>
@@ -1571,8 +1578,13 @@
        <enumeratedValues>
         <enumeratedValue>
          <name>RTC</name>
-         <description>RTC.</description>
+         <description>32kHz RTC (ERTCO).</description>
          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RTC_ALT</name>
+         <description>32kHz RTC (alternate path, same 32kHz source as value 0).</description>
+         <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>EXT_GPIO</name>
@@ -1917,8 +1929,20 @@
      <resetMask>0xFFFFFFFE</resetMask>
      <fields>
       <field>
+       <name>BSTAPEN</name>
+       <description>Boundary Scan TAP Enable. When enabled, the JTAG port is connected to the Boundary Scan TAP instead of the ARM ICE.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RR</name>
+       <description>ROM Redundancy Enable.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>ICC_FLUSH</name>
-       <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M4. </description>
+       <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M33.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -1954,9 +1978,10 @@
       </field>
       <field>
        <name>CHKRES</name>
-       <description>ROM Checksum Result. This bit is only valid when the checksum is done and CCHK0 bit is cleared..</description>
+       <description>ROM Checksum Result. This bit is only valid when the checksum is done and CCHK0 bit is cleared.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>read-only</access>
        <enumeratedValues>
         <enumeratedValue>
          <name>pass</name>
@@ -2101,7 +2126,7 @@
      <fields>
       <field>
        <name>SYSCLK_DIV</name>
-       <description>Prescaler Select. This 3 bit field sets the system operating frequency by controlling the prescaler that divides the output of the PLL0.</description>
+       <description>Prescaler Select. This 3-bit field sets the system operating frequency by controlling the prescaler that divides the output of the system clock source.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>3</bitWidth>
        <enumeratedValues>
@@ -2298,7 +2323,7 @@
      <fields>
       <field>
        <name>MODE</name>
-       <description>Operating Mode. This two bit field selects the current operating mode for the device. Note that code execution only occurs during ACTIVE mode.</description>
+       <description>Operating Mode. This 4-bit field selects the current operating mode for the device. Note that code execution only occurs during ACTIVE mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>4</bitWidth>
        <enumeratedValues>
@@ -2533,6 +2558,7 @@
        <description>ARM ICE Lock Status.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>read-only</access>
        <enumeratedValues>
         <enumeratedValue>
          <name>unlocked</name>
@@ -2609,6 +2635,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="BTLE">
+       <name>ICC</name>
+       <description>ICC Clock Disable.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="BTLE">
        <name>CRC</name>
        <description>CRC Disable.</description>
        <bitOffset>14</bitOffset>
@@ -2649,12 +2681,6 @@
        <name>DMA1</name>
        <description>Enable DMA1 event. When this bit is set, a DMA1 event will cause an RXEV event to wake the CPU from WFE sleep mode.</description>
        <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>TX</name>
-       <description>Enable TXEV pin event. When this bit is set, TXEV event from the CPU is output to GPIO[25].</description>
-       <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -2708,6 +2734,7 @@
        <description>ECC Flash Error Flag. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -2721,6 +2748,7 @@
        <description>ECC Correctable Error Detect Flag for Flash. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -2741,42 +2769,13 @@
      <name>ECCADDR</name>
      <description>ECC Error Address Register</description>
      <addressOffset>0x70</addressOffset>
+     <access>read-only</access>
      <fields>
       <field>
-       <name>DADDR</name>
-       <description>Address of Error in Data RAM.</description>
+       <name>ECCADDR</name>
+       <description>Flash byte address of the most recent ECC event. Bits [1:0] are always zero (word-aligned).</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>14</bitWidth>
-      </field>
-      <field>
-       <name>DB</name>
-       <description>Data Bank,</description>
-       <bitOffset>14</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DE</name>
-       <description>Data Error Flag.</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>TADDR</name>
-       <description>Address of Error in Tag RAM.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>14</bitWidth>
-      </field>
-      <field>
-       <name>TB</name>
-       <description>Tag Bank.</description>
-       <bitOffset>30</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>TE</name>
-       <description>Tag Error Flag.</description>
-       <bitOffset>31</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>32</bitWidth>
       </field>
      </fields>
     </register>
@@ -2891,27 +2890,31 @@
       </field>
       <field>
        <name>BB_EN_DLY</name>
-       <description>LDO BB Enable Delay.</description>
+       <description>LDO BB Enable Delay Status.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>read-only</access>
       </field>
       <field>
        <name>RF_EN_DLY</name>
-       <description>LDO RF Enable Delay.</description>
+       <description>LDO RF Enable Delay Status.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>read-only</access>
       </field>
       <field>
        <name>RF_BP_EN_DLY</name>
-       <description>LDO RF Bypass Enable Delay.</description>
+       <description>LDO RF Bypass Enable Delay Status.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>read-only</access>
       </field>
       <field>
        <name>BB_BP_EN_DLY</name>
-       <description>LDO BB Bypass Enable Delay.</description>
+       <description>LDO BB Bypass Enable Delay Status.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>read-only</access>
       </field>
      </fields>
     </register>
@@ -2927,14 +2930,14 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>BB_CNT</name>
-       <description>BB delay count.</description>
+       <name>RF_CNT</name>
+       <description>RF LDO delay count.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>9</bitWidth>
       </field>
       <field>
-       <name>RF_CNT</name>
-       <description>RF delay count.</description>
+       <name>BB_CNT</name>
+       <description>BB LDO delay count.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>9</bitWidth>
       </field>
@@ -6163,6 +6166,13 @@
        </enumeratedValues>
       </field>
       <field>
+       <name>BUSY</name>
+       <description>Cache Busy. Read-only status bit set by hardware while a cache operation (invalidate or flush) is in progress.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
+      </field>
+      <field>
        <name>RDY</name>
        <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
        <bitOffset>16</bitOffset>
@@ -6180,6 +6190,12 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+      <field>
+       <name>CRB_FLUSH_EN</name>
+       <description>Coherent Read Buffer flush enable. Write 1 to flush the coherent read buffer.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>
@@ -6229,7 +6245,7 @@
       <field>
        <name>EXC</name>
        <description>Cache the data only if the TAG content is excluded in the high and low bound.</description>
-       <bitOffset>8</bitOffset>
+       <bitOffset>16</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
      </fields>
@@ -6259,7 +6275,7 @@
      </register>
      <register>
       <name>HBOUND</name>
-      <description>DMA Channel Status Register.</description>
+      <description>Regional High Bound Register.</description>
       <addressOffset>0x004</addressOffset>
       <size>32</size>
       <fields>
@@ -6332,10 +6348,11 @@
      <name>RST</name>
      <description>Reset Register.</description>
      <addressOffset>0x04</addressOffset>
+     <access>write-only</access>
      <fields>
       <field>
        <name>BOOST</name>
-       <description>Reset BOOST Controller.</description>
+       <description>Reset BOOST Controller. Write 1 to reset; self-clearing. Register has no read path.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -6352,6 +6369,12 @@
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field>
+       <name>PDOWNEN</name>
+       <description>Power Down Enable (vestigial, not connected to functional logic).</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
@@ -6361,7 +6384,7 @@
      <fields>
       <field>
        <name>CLKSEL</name>
-       <description>Clcok Select for the RTC, System, WUT, and Timer.</description>
+       <description>Clock Select for the RTC, System, WUT, and Timer.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>2</bitWidth>
        <enumeratedValues>
@@ -6376,8 +6399,8 @@
          <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>RTC_IN_DIV8</name>
-         <description>P0.12 div 8 as clock source.</description>
+         <name>GPIO_P0_12</name>
+         <description>P0.12 (undivided) as 32kHz clock source.</description>
          <value>2</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -6403,7 +6426,7 @@
     </register>
     <register>
      <name>BYPASS1</name>
-     <description>This register is used by firmware to bypass chain of trust on a Warm Boot.</description>
+     <description>This register is used by firmware as a secondary bypass word for chain of trust on a Warm Boot.</description>
      <addressOffset>0x34</addressOffset>
     </register>
     <register>
@@ -6436,7 +6459,7 @@
      <fields>
       <field>
        <name>SRAMRET_EN</name>
-       <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+       <description>System RAM retention in BACKUP mode. These bits select which SRAM blocks are retained in BACKUP mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
@@ -6496,9 +6519,11 @@
       </field>
       <field>
        <name>LPWKFL_CLR</name>
-       <description>LP wakeup flag register clear.</description>
+       <description>LP wakeup flag register clear. Write 1 to clear all wakeup flags in LPWKFL0.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
+       <access>write-only</access>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -6509,9 +6534,10 @@
      <fields>
       <field>
        <name>PINS</name>
-       <description>Wakeup Flags.</description>
+       <description>Wakeup Flags for GPIO0 pins [13:0]. Each bit corresponds to one GPIO0 pin. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>12</bitWidth>
+       <bitWidth>14</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -6522,9 +6548,9 @@
      <fields>
       <field>
        <name>PINS</name>
-       <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
+       <description>Enable wakeup for GPIO0 pins [13:0]. Each bit allows wakeup from the corresponding GPIO0 pin on a low-to-high or high-to-low transition when PM.GPIOWKEN is set. Wakeup status is indicated in LPWKFL0.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>12</bitWidth>
+       <bitWidth>14</bitWidth>
       </field>
      </fields>
     </register>
@@ -6535,15 +6561,17 @@
      <fields>
       <field>
        <name>BACKUP</name>
-       <description>BACKUP Wakeful Flag.</description>
+       <description>BACKUP Wakeful Flag. Write 1 to clear.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>RESET</name>
-       <description>Reset Detected Wakeup Flag.</description>
+       <description>Reset Detected Wakeup Flag. Write 1 to clear.</description>
        <bitOffset>17</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
@@ -7674,6 +7702,7 @@
      <name>BTLELDO_BB</name>
      <description>BTLE LDO TRIM BB Register.</description>
      <addressOffset>0x01C</addressOffset>
+     <access>read-write</access>
      <fields>
       <field>
        <name>TRIM</name>
@@ -7687,6 +7716,7 @@
      <name>BTLELDO_RF</name>
      <description>BTLE LDO TRIM RF Register.</description>
      <addressOffset>0x002C</addressOffset>
+     <access>read-write</access>
      <fields>
       <field>
        <name>TRIM</name>

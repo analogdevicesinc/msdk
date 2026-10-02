@@ -76,6 +76,7 @@
         <name>BTLELDO_BB</name>
         <description>BTLE LDO TRIM BB Register.</description>
         <addressOffset>0x01C</addressOffset>
+        <access>read-write</access>
         <fields>
           <field>
             <name>TRIM</name>
@@ -89,6 +90,7 @@
         <name>BTLELDO_RF</name>
         <description>BTLE LDO TRIM RF Register.</description>
         <addressOffset>0x002C</addressOffset>
+        <access>read-write</access>
         <fields>
           <field>
             <name>TRIM</name>

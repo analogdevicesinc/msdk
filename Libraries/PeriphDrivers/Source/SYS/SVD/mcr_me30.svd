@@ -14,10 +14,11 @@
         <name>RST</name>
         <description>Reset Register.</description>
         <addressOffset>0x04</addressOffset>
+        <access>write-only</access>
         <fields>
           <field>
             <name>BOOST</name>
-            <description>Reset BOOST Controller.</description>
+            <description>Reset BOOST Controller. Write 1 to reset; self-clearing. Register has no read path.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -34,6 +35,12 @@
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field>
+            <name>PDOWNEN</name>
+            <description>Power Down Enable (vestigial, not connected to functional logic).</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
@@ -43,7 +50,7 @@
         <fields>
           <field>
             <name>CLKSEL</name>
-            <description>Clcok Select for the RTC, System, WUT, and Timer.</description>
+            <description>Clock Select for the RTC, System, WUT, and Timer.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
@@ -58,8 +65,8 @@
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>RTC_IN_DIV8</name>
-                <description>P0.12 div 8 as clock source.</description>
+                <name>GPIO_P0_12</name>
+                <description>P0.12 (undivided) as 32kHz clock source.</description>
                 <value>2</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -85,7 +92,7 @@
       </register>
       <register>
         <name>BYPASS1</name>
-        <description>This register is used by firmware to bypass chain of trust on a Warm Boot.</description>
+        <description>This register is used by firmware as a secondary bypass word for chain of trust on a Warm Boot.</description>
         <addressOffset>0x34</addressOffset>
       </register>
       <register>

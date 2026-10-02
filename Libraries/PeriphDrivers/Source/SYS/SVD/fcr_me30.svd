@@ -14,40 +14,41 @@
         <name>CTRL</name>
         <description>Function Control 0 Register.</description>
         <addressOffset>0x00</addressOffset>
+        <resetValue>0x00000000</resetValue>
         <access>read-write</access>
         <fields>
           <field>
             <name>I3CDGEN0</name>
-            <description>I3C SDA Glitch Filter Enable.</description>
+            <description>I3C SDA Deglitch Bypass. When set, the SDA deglitch filter is bypassed.</description>
             <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
+                <name>active</name>
+                <description>Deglitch filter active (not bypassed).</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
+                <name>bypass</name>
+                <description>Deglitch filter bypassed.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
             <name>I3CDGEN1</name>
-            <description>I3C SCL Glitch Filter Enable.</description>
+            <description>I3C SCL Deglitch Bypass. When set, the SCL deglitch filter is bypassed.</description>
             <bitOffset>21</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>dis</name>
-                <description>Filter disabled.</description>
+                <name>active</name>
+                <description>Deglitch filter active (not bypassed).</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>en</name>
-                <description>Filter enabled.</description>
+                <name>bypass</name>
+                <description>Deglitch filter bypassed.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -58,6 +59,7 @@
         <name>AUTOCAL0</name>
         <description>Automatic Calibration 0 Register.</description>
         <addressOffset>0x04</addressOffset>
+        <resetValue>0x00000000</resetValue>
         <access>read-write</access>
         <fields>
           <field>
@@ -104,36 +106,37 @@
           </field>
           <field>
             <name>GAIN_INV</name>
-            <description>Invert Gain.</description>
+            <description>Invert Gain. When set, the calibration gain is inverted.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
+                <name>normal</name>
+                <description>Normal gain (not inverted).</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
+                <name>inverted</name>
+                <description>Inverted gain.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
             <name>ATOMIC</name>
-            <description>Atomic mode.</description>
+            <description>Atomic calibration trigger. Write 1 to start a single-shot calibration; self-clearing.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
             <enumeratedValues>
               <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
+                <name>normal</name>
+                <description>Normal (non-atomic) mode.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
+                <name>atomic</name>
+                <description>Atomic calibration in progress (self-clears on completion).</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -146,9 +149,10 @@
           </field>
           <field>
             <name>TRIM_OUT</name>
-            <description>IPO Auto Calibration Trim</description>
+            <description>IPO Auto Calibration Trim output value (read-only result).</description>
             <bitOffset>23</bitOffset>
             <bitWidth>9</bitWidth>
+            <access>read-only</access>
           </field>
         </fields>
       </register>
@@ -244,15 +248,17 @@
         <fields>
           <field>
             <name>ERFO_RDY</name>
-            <description>ERFO Ready.</description>
+            <description>ERFO Ready. Write 1 to clear.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>FRQCNT</name>
-            <description>Frequency Counter Interrupt Flag.</description>
+            <description>Frequency Counter Interrupt Flag. Write 1 to clear.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
         </fields>
       </register>
@@ -310,9 +316,10 @@
         <fields>
           <field>
             <name>START</name>
-            <description>Start Compare.</description>
+            <description>Start Compare. Write 1 to start frequency count; self-clearing when measurement completes.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>CMP_CLKSEL</name>
@@ -322,8 +329,13 @@
             <enumeratedValues>
               <enumeratedValue>
                 <name>RTC</name>
-                <description>RTC.</description>
+                <description>32kHz RTC (ERTCO).</description>
                 <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RTC_ALT</name>
+                <description>32kHz RTC (alternate path, same 32kHz source as value 0).</description>
+                <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>EXT_GPIO</name>
