@@ -40,12 +40,13 @@ typedef struct {
  *  MAX32665, MAX32666 related mapping
  */
 #if defined(CONFIG_SOC_MAX32665) || defined(CONFIG_SOC_MAX32666) || \
-    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || \
+    defined(CONFIG_SOC_MAX32660)
 
 /* All timers are 32bits */
 #define WRAP_MXC_IS_32B_TIMER(idx) (1)
 
-/* Prescaler lookup table range for MAX32650/665/666
+/* Prescaler lookup table range for MAX32650/660/665/666
  * These devices require special register mapping for prescaler values > 128
  */
 #define TMR_PRES_MIN_LOG2 8 /* LOG2(256) - minimum extended prescaler */
