@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-//#define DMA
+#define DMA
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024
@@ -49,17 +49,9 @@
 
 /***** Globals *****/
 volatile int READ_FLAG;
-volatile int DMA_FLAG;
-int first_rx = 1;
 
 /***** Functions *****/
-#ifdef DMA
-void DMA_Handler(void)
-{
-    MXC_DMA_Handler();
-    DMA_FLAG = 0;
-}
-#else
+#ifndef DMA
 void UART_Handler(void)
 {
     MXC_UART_AsyncHandler(READING_UART);
@@ -81,7 +73,7 @@ void Shutdown_UARTS(void)
 /******************************************************************************/
 int main(void)
 {
-    int error, i, fail = 0;
+    int error, i, c, fail = 0;
     uint8_t TxData[BUFF_SIZE];
     uint8_t RxData[BUFF_SIZE];
     mxc_uart_regs_t *ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
@@ -95,21 +87,28 @@ int main(void)
     printf("\n-->UART Baud \t: %d Hz\n", UART_BAUD);
     printf("\n-->Test Length \t: %d bytes\n\n", BUFF_SIZE);
 
-    printf("-->Initializing UARTS\n\n");
+#ifdef DMA
+    printf("\n-->Initializing UARTS DMA\n\n");
+#else
+    printf("\n-->Initializing UARTS Non-DMA\n\n");
+#endif
 
     // Print everything out
     while (!(ConsoleUART->status & MXC_F_UART_STATUS_TX_EM)) {}
 
     // Initialize the data buffers
+    c = 'A'; // Same console RX line so use only 'A' to 'Z' TxData
     for (i = 0; i < BUFF_SIZE; i++) {
-        TxData[i] = i;
+        TxData[i] = c;
+        c++;
+        if (c > 'Z') {
+            c = 'A';
+        }
     }
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifdef DMA
     MXC_DMA_ReleaseChannel(0);
-    MXC_NVIC_SetVector(DMA0_IRQn, DMA_Handler);
-    NVIC_EnableIRQ(DMA0_IRQn);
 #else
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(READ_IDX));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ(READ_IDX));
@@ -124,16 +123,16 @@ int main(void)
     if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK, MAP_B)) != E_NO_ERROR) {
         Shutdown_UARTS();
         Console_Init();
-        printf("-->Error initializing UART: %d\n", error);
-        printf("-->Example Failed\n");
+        printf("\n-->Error initializing UART: %d\n", error);
+        printf("\n-->Example Failed\n");
         return error;
     }
 
     if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK, MAP_A)) != E_NO_ERROR) {
         Shutdown_UARTS();
         Console_Init();
-        printf("-->Error initializing UART: %d\n", error);
-        printf("-->Example Failed\n");
+        printf("\n-->Error initializing UART: %d\n", error);
+        printf("\n-->Example Failed\n");
         return error;
     }
 
@@ -152,53 +151,67 @@ int main(void)
     write_req.callback = NULL;
 
     READ_FLAG = 1;
-    DMA_FLAG = 1;
+    MXC_UART_ClearRXFIFO(READING_UART); // Clear any previously pending data
 
 #ifdef DMA
+    MXC_UART_SetAutoDMAHandlers(READING_UART, true);
     error = MXC_UART_TransactionDMA(&read_req);
+
+    if (error != E_NO_ERROR) {
+        Shutdown_UARTS();
+        Console_Init();
+        printf("\n-->Error starting DMA read: %d\n", error);
+        printf("\n-->Example Failed\n");
+        return error;
+    }
 #else
     error = MXC_UART_TransactionAsync(&read_req);
-#endif
+
     if (error != E_NO_ERROR) {
         Shutdown_UARTS();
         Console_Init();
-        printf("-->Error starting async read: %d\n", error);
-        printf("-->Example Failed\n");
-        LED_On(0);
+        printf("\n-->Error starting async read: %d\n", error);
+        printf("\n-->Example Failed\n");
         return error;
     }
+#endif
 
 #ifdef DMA
+    MXC_UART_SetAutoDMAHandlers(WRITING_UART, true);
     error = MXC_UART_TransactionDMA(&write_req);
+
+    if (error != E_NO_ERROR) {
+        Shutdown_UARTS();
+        Console_Init();
+        printf("\n-->Error starting DMA write: %d\n", error);
+        printf("\n-->Example Failed\n");
+        return error;
+    }
 #else
     error = MXC_UART_Transaction(&write_req);
-#endif
+
     if (error != E_NO_ERROR) {
         Shutdown_UARTS();
         Console_Init();
-        printf("-->Error starting sync write: %d\n", error);
-        printf("-->Example Failed\n");
-        LED_On(0);
+        printf("\n-->Error starting Sync write: %d\n", error);
+        printf("\n-->Example Failed\n");
         return error;
     }
+#endif
 
-#ifdef DMA
-    while (DMA_FLAG) {}
-#else
     while (READ_FLAG) {}
     if (READ_FLAG != E_NO_ERROR) {
         fail++;
     }
-#endif
 
     Shutdown_UARTS();
     Console_Init();
 
     if ((error = memcmp(RxData, TxData, BUFF_SIZE)) != 0) {
-        printf("-->Error verifying Data: %d\n", error);
+        printf("\n-->Error verifying Data: %d\n", error);
         fail++;
     } else {
-        printf("-->Data verified\n");
+        printf("\n-->Data verified\n");
     }
 
     if (fail != 0) {

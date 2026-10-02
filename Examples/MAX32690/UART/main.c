@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,24 +37,15 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-// to enable DMA, define in project.mk
-// INTERRUPT is default in project.mk
+#define DMA
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024
 
 /***** Globals *****/
 volatile int READ_FLAG;
-volatile int DMA_FLAG;
 
-/***** Functions *****/
-#ifdef DMA
-void DMA_Handler(void)
-{
-    MXC_DMA_Handler();
-    DMA_FLAG = 0;
-}
-#else
+#ifndef DMA
 void UART2_Handler(void)
 {
     MXC_UART_AsyncHandler(MXC_UART2);
@@ -65,6 +56,7 @@ void readCallback(mxc_uart_req_t *req, int error)
 {
     READ_FLAG = error;
 }
+
 /******************************************************************************/
 int main(void)
 {
@@ -91,8 +83,6 @@ int main(void)
 
 #ifdef DMA
     MXC_DMA_ReleaseChannel(0);
-    MXC_NVIC_SetVector(DMA0_IRQn, DMA_Handler);
-    NVIC_EnableIRQ(DMA0_IRQn);
 #else
     NVIC_ClearPendingIRQ(UART2_IRQn);
     NVIC_DisableIRQ(UART2_IRQn);
@@ -115,6 +105,8 @@ int main(void)
 
     printf("-->UART Initialized\n\n");
 
+    MXC_UART_ClearRXFIFO(MXC_UART2);
+
     mxc_uart_req_t read_req;
     read_req.uart = MXC_UART2;
     read_req.rxData = RxData;
@@ -130,19 +122,30 @@ int main(void)
     write_req.callback = NULL;
 
     READ_FLAG = 1;
-    DMA_FLAG = 1;
 
 #ifdef DMA
+    MXC_UART_SetAutoDMAHandlers(MXC_UART2, true);
+
     error = MXC_UART_TransactionDMA(&read_req);
+
+    if (error != E_NO_ERROR) {
+        printf("-->Error starting DMA read: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
+
+    printf("Start TransactionDMA read\n\n");
 #else
     error = MXC_UART_TransactionAsync(&read_req);
-#endif
 
     if (error != E_NO_ERROR) {
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
         return error;
     }
+
+    printf("Start TransactionAsync read\n\n");
+#endif
 
     error = MXC_UART_Transaction(&write_req);
 
@@ -152,20 +155,12 @@ int main(void)
         return error;
     }
 
-#ifdef DMA
-
-    while (DMA_FLAG) {}
-
-#else
-
     while (READ_FLAG) {}
 
     if (READ_FLAG != E_NO_ERROR) {
-        printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
+        printf("-->Error with UART Read callback; %d\n", READ_FLAG);
         fail++;
     }
-
-#endif
 
     if ((error = memcmp(RxData, TxData, BUFF_SIZE)) != 0) {
         printf("-->Error verifying Data: %d\n", error);
