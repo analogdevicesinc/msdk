@@ -5,19 +5,7 @@
  */
 /*
  *  Copyright The Mbed TLS Contributors
- *  SPDX-License-Identifier: Apache-2.0
- *
- *  Licensed under the Apache License, Version 2.0 (the "License"); you may
- *  not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ *  SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
  */
 /*
  * Minimal configuration for DTLS 1.2 with PSK and AES-CCM ciphersuites
@@ -47,10 +35,6 @@
 #define MBEDTLS_ENTROPY_C
 #define MBEDTLS_MD_C
 #define MBEDTLS_NET_C
-/* The library does not currently support enabling SHA-224 without SHA-256.
- * A future version of the library will have this option disabled
- * by default. */
-#define MBEDTLS_SHA224_C
 #define MBEDTLS_SHA256_C
 #define MBEDTLS_SSL_CLI_C
 #define MBEDTLS_SSL_COOKIE_C
@@ -73,8 +57,8 @@
  * save ROM and a few bytes of RAM by specifying our own ciphersuite list
  */
 #define MBEDTLS_SSL_CIPHERSUITES                        \
-        MBEDTLS_TLS_PSK_WITH_AES_256_CCM_8,             \
-        MBEDTLS_TLS_PSK_WITH_AES_128_CCM_8
+    MBEDTLS_TLS_PSK_WITH_AES_256_CCM_8,             \
+    MBEDTLS_TLS_PSK_WITH_AES_128_CCM_8
 
 /*
  * Save RAM at the expense of interoperability: do this only if you control

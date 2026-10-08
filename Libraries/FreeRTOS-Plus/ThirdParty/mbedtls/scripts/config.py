@@ -2,25 +2,19 @@
 
 """Mbed TLS configuration file manipulation library and tool
 
-Basic usage, to read the Mbed TLS or Mbed Crypto configuration:
+Basic usage, to read the Mbed TLS configuration:
     config = ConfigFile()
     if 'MBEDTLS_RSA_C' in config: print('RSA is enabled')
 """
 
+# Note that as long as Mbed TLS 2.28 LTS is maintained, the version of
+# this script in the mbedtls-2.28 branch must remain compatible with
+# Python 3.4. The version in development may only use more recent features
+# in parts that are not backported to 2.28.
+
 ## Copyright The Mbed TLS Contributors
-## SPDX-License-Identifier: Apache-2.0
+## SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
 ##
-## Licensed under the Apache License, Version 2.0 (the "License"); you may
-## not use this file except in compliance with the License.
-## You may obtain a copy of the License at
-##
-## http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-## WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-## See the License for the specific language governing permissions and
-## limitations under the License.
 
 import os
 import re
@@ -184,12 +178,14 @@ def realfull_adapter(_name, active, section):
 # * Options that remove features.
 EXCLUDE_FROM_FULL = frozenset([
     #pylint: disable=line-too-long
+    'MBEDTLS_AES_ONLY_128_BIT_KEY_LENGTH', # interacts with CTR_DRBG_128_BIT_KEY
+    'MBEDTLS_AES_USE_HARDWARE_ONLY', # hardware dependency
     'MBEDTLS_CTR_DRBG_USE_128_BIT_KEY', # interacts with ENTROPY_FORCE_SHA256
     'MBEDTLS_DEPRECATED_REMOVED', # conflicts with deprecated options
     'MBEDTLS_DEPRECATED_WARNING', # conflicts with deprecated options
     'MBEDTLS_ECDH_VARIANT_EVEREST_ENABLED', # influences the use of ECDH in TLS
     'MBEDTLS_ECP_NO_FALLBACK', # removes internal ECP implementation
-    'MBEDTLS_ECP_RESTARTABLE', # incompatible with USE_PSA_CRYPTO
+    'MBEDTLS_ECP_WITH_MPI_UINT', # disables the default ECP and is experimental
     'MBEDTLS_ENTROPY_FORCE_SHA256', # interacts with CTR_DRBG_128_BIT_KEY
     'MBEDTLS_HAVE_SSE2', # hardware dependency
     'MBEDTLS_MEMORY_BACKTRACE', # depends on MEMORY_BUFFER_ALLOC_C
@@ -199,15 +195,16 @@ EXCLUDE_FROM_FULL = frozenset([
     'MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES', # removes a feature
     'MBEDTLS_NO_PLATFORM_ENTROPY', # removes a feature
     'MBEDTLS_NO_UDBL_DIVISION', # influences anything that uses bignum
+    'MBEDTLS_PSA_P256M_DRIVER_ENABLED', # influences SECP256R1 KeyGen/ECDH/ECDSA
     'MBEDTLS_PLATFORM_NO_STD_FUNCTIONS', # removes a feature
-    'MBEDTLS_PSA_CRYPTO_CONFIG', # toggles old/new style PSA config
     'MBEDTLS_PSA_CRYPTO_EXTERNAL_RNG', # behavior change + build dependency
     'MBEDTLS_PSA_CRYPTO_KEY_ID_ENCODES_OWNER', # incompatible with USE_PSA_CRYPTO
     'MBEDTLS_PSA_CRYPTO_SPM', # platform dependency (PSA SPM)
-    'MBEDTLS_PSA_INJECT_ENTROPY', # build dependency (hook functions)
+    'MBEDTLS_PSA_INJECT_ENTROPY', # conflicts with platform entropy sources
     'MBEDTLS_RSA_NO_CRT', # influences the use of RSA in X.509 and TLS
     'MBEDTLS_SHA256_USE_A64_CRYPTO_ONLY', # interacts with *_USE_A64_CRYPTO_IF_PRESENT
     'MBEDTLS_SHA512_USE_A64_CRYPTO_ONLY', # interacts with *_USE_A64_CRYPTO_IF_PRESENT
+    'MBEDTLS_SSL_RECORD_SIZE_LIMIT', # in development, currently breaks other tests
     'MBEDTLS_TEST_CONSTANT_FLOW_MEMSAN', # build dependency (clang+memsan)
     'MBEDTLS_TEST_CONSTANT_FLOW_VALGRIND', # build dependency (valgrind headers)
     'MBEDTLS_X509_REMOVE_INFO', # removes a feature
@@ -225,7 +222,12 @@ def is_seamless_alt(name):
     Exclude alternative implementations of library functions since they require
     an implementation of the relevant functions and an xxx_alt.h header.
     """
-    if name == 'MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT':
+    if name in (
+            'MBEDTLS_PLATFORM_GMTIME_R_ALT',
+            'MBEDTLS_PLATFORM_SETUP_TEARDOWN_ALT',
+            'MBEDTLS_PLATFORM_MS_TIME_ALT',
+            'MBEDTLS_PLATFORM_ZEROIZE_ALT',
+    ):
         # Similar to non-platform xxx_ALT, requires platform_alt.h
         return False
     return name.startswith('MBEDTLS_PLATFORM_')
@@ -306,6 +308,7 @@ def include_in_crypto(name):
     if name in [
             'MBEDTLS_DEBUG_C', # part of libmbedtls
             'MBEDTLS_NET_C', # part of libmbedtls
+            'MBEDTLS_PKCS7_C', # part of libmbedx509
     ]:
         return False
     return True
@@ -460,7 +463,7 @@ if __name__ == '__main__':
     def main():
         """Command line mbedtls_config.h manipulation tool."""
         parser = argparse.ArgumentParser(description="""
-        Mbed TLS and Mbed Crypto configuration file manipulation tool.
+        Mbed TLS configuration file manipulation tool.
         """)
         parser.add_argument('--file', '-f',
                             help="""File to read (and modify if requested).
