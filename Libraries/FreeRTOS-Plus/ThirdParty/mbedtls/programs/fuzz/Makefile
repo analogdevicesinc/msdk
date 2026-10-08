@@ -1,7 +1,9 @@
 MBEDTLS_TEST_PATH:=../../tests/src
 MBEDTLS_TEST_OBJS:=$(patsubst %.c,%.o,$(wildcard ${MBEDTLS_TEST_PATH}/*.c ${MBEDTLS_TEST_PATH}/drivers/*.c))
 
-LOCAL_CFLAGS = -I../../tests/include -I../../include -D_FILE_OFFSET_BITS=64
+CFLAGS ?= -O2
+WARNING_CFLAGS ?= -Wall -Wextra
+LOCAL_CFLAGS = $(WARNING_CFLAGS) -I../../tests/include -I../../include -D_FILE_OFFSET_BITS=64
 LOCAL_LDFLAGS = ${MBEDTLS_TEST_OBJS}		\
 		-L../../library			\
 		-lmbedtls$(SHARED_SUFFIX)	\
@@ -23,6 +25,10 @@ SHARED_SUFFIX=
 
 ifdef FUZZINGENGINE
 LOCAL_LDFLAGS += -lFuzzingEngine
+endif
+
+ifdef WINDOWS_BUILD
+LOCAL_LDFLAGS += -lbcrypt
 endif
 
 # A test application is built for each suites/test_suite_*.data file.
