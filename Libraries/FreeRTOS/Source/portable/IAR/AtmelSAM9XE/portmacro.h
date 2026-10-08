@@ -1,6 +1,8 @@
 /*
- * FreeRTOS Kernel V10.2.0
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V11.3.1
+ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -19,10 +21,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  *
- * 1 tab == 4 spaces!
  */
 
 
@@ -31,9 +32,11 @@
 
 #include <intrinsics.h>
 
+/* *INDENT-OFF* */
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
+/* *INDENT-ON* */
 
 /*-----------------------------------------------------------
  * Port specific definitions.
@@ -46,34 +49,36 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR		char
-#define portFLOAT		float
-#define portDOUBLE		double
-#define portLONG		long
-#define portSHORT		short
-#define portSTACK_TYPE	uint32_t
-#define portBASE_TYPE	long
+#define portCHAR          char
+#define portFLOAT         float
+#define portDOUBLE        double
+#define portLONG          long
+#define portSHORT         short
+#define portSTACK_TYPE    uint32_t
+#define portBASE_TYPE     long
 
-typedef portSTACK_TYPE StackType_t;
-typedef long BaseType_t;
-typedef unsigned long UBaseType_t;
+typedef portSTACK_TYPE   StackType_t;
+typedef long             BaseType_t;
+typedef unsigned long    UBaseType_t;
 
 
-#if( configUSE_16_BIT_TICKS == 1 )
-	typedef uint16_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffff
+#if ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_16_BITS )
+    typedef uint16_t     TickType_t;
+    #define portMAX_DELAY    ( TickType_t ) 0xffff
+#elif ( configTICK_TYPE_WIDTH_IN_BITS == TICK_TYPE_WIDTH_32_BITS )
+    typedef uint32_t     TickType_t;
+    #define portMAX_DELAY    ( TickType_t ) ( 0xFFFFFFFFUL )
 #else
-	typedef uint32_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffffffffUL
+    #error configTICK_TYPE_WIDTH_IN_BITS set to unsupported tick type width.
 #endif
 /*-----------------------------------------------------------*/
 
 /* Hardware specifics. */
-#define portSTACK_GROWTH			( -1 )
-#define portTICK_PERIOD_MS			( ( TickType_t ) 1000 / configTICK_RATE_HZ )
-#define portBYTE_ALIGNMENT			8
-#define portYIELD()					asm ( "SWI 0" )
-#define portNOP()					asm ( "NOP" )
+#define portSTACK_GROWTH      ( -1 )
+#define portTICK_PERIOD_MS    ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+#define portBYTE_ALIGNMENT    8
+#define portYIELD()    asm ( "SWI 0" )
+#define portNOP()      asm ( "NOP" )
 /*-----------------------------------------------------------*/
 
 /* Critical section handling. */
@@ -82,33 +87,38 @@ __arm __interwork void vPortEnableInterruptsFromThumb( void );
 __arm __interwork void vPortEnterCritical( void );
 __arm __interwork void vPortExitCritical( void );
 
-#define portDISABLE_INTERRUPTS()	__disable_irq()
-#define portENABLE_INTERRUPTS()		__enable_irq()
-#define portENTER_CRITICAL()		vPortEnterCritical()
-#define portEXIT_CRITICAL()			vPortExitCritical()
+#define portDISABLE_INTERRUPTS()    __disable_irq()
+#define portENABLE_INTERRUPTS()     __enable_irq()
+#define portENTER_CRITICAL()        vPortEnterCritical()
+#define portEXIT_CRITICAL()         vPortExitCritical()
 /*-----------------------------------------------------------*/
 
 /* Task utilities. */
-#define portEND_SWITCHING_ISR( xSwitchRequired ) 	\
-{													\
-extern void vTaskSwitchContext( void );				\
-													\
-	if( xSwitchRequired ) 							\
-	{												\
-		vTaskSwitchContext();						\
-	}												\
-}
+#define portEND_SWITCHING_ISR( xSwitchRequired ) \
+    {                                            \
+        extern void vTaskSwitchContext( void );  \
+                                                 \
+        if( xSwitchRequired )                    \
+        {                                        \
+            traceISR_EXIT_TO_SCHEDULER();        \
+            vTaskSwitchContext();                \
+        }                                        \
+        else                                     \
+        {                                        \
+            traceISR_EXIT();                     \
+        }                                        \
+    }
 /*-----------------------------------------------------------*/
 
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void * pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void * pvParameters )
+#define portTASK_FUNCTION_PROTO( vFunction, pvParameters )    void vFunction( void * pvParameters )
+#define portTASK_FUNCTION( vFunction, pvParameters )          void vFunction( void * pvParameters )
 
+/* *INDENT-OFF* */
 #ifdef __cplusplus
-}
+    }
 #endif
+/* *INDENT-ON* */
 
 #endif /* PORTMACRO_H */
-
-
