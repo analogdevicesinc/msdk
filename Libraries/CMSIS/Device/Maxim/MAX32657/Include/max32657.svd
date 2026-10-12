@@ -9777,7 +9777,7 @@
         </enumeratedValue>
         <enumeratedValue>
          <name>DIV_BY_4096</name>
-         <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
+         <description>Prescaler Divide-By-4096</description>
          <value>12</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -9956,7 +9956,7 @@
         </enumeratedValue>
         <enumeratedValue>
          <name>DIV_BY_4096</name>
-         <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
+         <description>Prescaler Divide-By-4096</description>
          <value>12</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -10242,7 +10242,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR4</name>
    <description>Low-Power Configurable Timer 4</description>
-   <baseAddress>0x50080C00</baseAddress>
+   <baseAddress>0x50014000</baseAddress>
    <interrupt>
     <name>TMR4</name>
     <description>TMR4 IRQ</description>
@@ -10253,7 +10253,7 @@
   <peripheral derivedFrom="TMR">
    <name>TMR5</name>
    <description>Low-Power Configurable Timer 5</description>
-   <baseAddress>0x50081000</baseAddress>
+   <baseAddress>0x50015000</baseAddress>
    <interrupt>
     <name>TMR5</name>
     <description>TMR5 IRQ</description>
