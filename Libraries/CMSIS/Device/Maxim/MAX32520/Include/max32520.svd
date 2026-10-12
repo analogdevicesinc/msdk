@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32520</name>
  <series>ARMCM4</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32520 32-bit ARM Cortex-M4F microcontroller, 2MB of flash, 136KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -8917,7 +8917,7 @@
   <peripheral>
    <name>UART0</name>
    <description>UART</description>
-   <baseAddress>0x40042000</baseAddress>
+   <baseAddress>0x40020000</baseAddress>
    <addressBlock>
     <offset>0</offset>
     <size>0x1000</size>

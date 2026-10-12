@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32665</name>
  <series>ARMCM3</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32665 32-bit ARM Cortex-M4F microcontroller, 1MB of flash, 560KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -6825,7 +6825,7 @@
    <baseAddress>0x4002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x1000</size>
+    <size>0x800</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -6940,7 +6940,7 @@
   <peripheral derivedFrom="ICC0">
    <name>ICC1</name>
    <description>Instruction Cache Controller Registers 1</description>
-   <baseAddress>0x4002AC000</baseAddress>
+   <baseAddress>0x4002A800</baseAddress>
   </peripheral>
 <!--ICC1 Instruction Cache Controller Registers 1-->
   <peripheral>

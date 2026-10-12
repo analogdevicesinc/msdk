@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32662</name>
  <series>ARMCM4</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32662 32-bit ARM Cortex-M4F microcontroller, 256KB of flash, 80KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -11201,7 +11201,7 @@ domain.</description>
   <peripheral derivedFrom="TMR">
    <name>TMR3</name>
    <description>Low-Power Configurable Timer 3</description>
-   <baseAddress>0x40013000</baseAddress>
+   <baseAddress>0x40113000</baseAddress>
    <interrupt>
     <name>TMR3</name>
     <description>TMR3 IRQ</description>

@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32670</name>
  <series>ARMCM4</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32670 32-bit ARM Cortex-M4F microcontroller, 384KB of flash, 160KB of SRAM, 128KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -25,7 +25,7 @@
   <peripheral>
    <name>AESKEYS</name>
    <description>AES Key Registers.</description>
-   <baseAddress>0x40007800</baseAddress>
+   <baseAddress>0x40005000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
