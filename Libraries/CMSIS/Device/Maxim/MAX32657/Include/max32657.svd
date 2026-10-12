@@ -1496,15 +1496,17 @@
      <fields>
       <field>
        <name>ERFO_RDY</name>
-       <description>ERFO Ready.</description>
+       <description>ERFO Ready. Write 1 to clear.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>FRQCNT</name>
-       <description>Frequency Counter Interrupt Flag.</description>
+       <description>Frequency Counter Interrupt Flag. Write 1 to clear.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>
