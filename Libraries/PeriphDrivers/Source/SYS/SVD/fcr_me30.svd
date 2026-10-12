@@ -59,6 +59,7 @@
         <name>AUTOCAL0</name>
         <description>Automatic Calibration 0 Register.</description>
         <addressOffset>0x04</addressOffset>
+        <resetValue>0x80000400</resetValue>
         <access>read-write</access>
         <fields>
           <field>
@@ -105,36 +106,36 @@
           </field>
           <field>
             <name>GAIN_INV</name>
-            <description>Invert Gain.</description>
+            <description>Invert Gain. When set, the calibration gain is inverted.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
+                <name>not_inverted</name>
+                <description>Not Inverted.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
+                <name>inverted</name>
+                <description>Inverted.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
             <name>ATOMIC</name>
-            <description>Atomic mode.</description>
+            <description>Atomic calibration trigger. Write 1 to start a single-shot calibration; self-clearing.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>not</name>
-                <description>Not Running.</description>
+                <name>idle</name>
+                <description>Idle.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>run</name>
-                <description>Running.</description>
+                <name>start</name>
+                <description>Start atomic cal (self-clears).</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -147,9 +148,10 @@
           </field>
           <field>
             <name>TRIM_OUT</name>
-            <description>IPO Auto Calibration Trim</description>
+            <description>IPO Auto Calibration Trim output value (read-only result).</description>
             <bitOffset>23</bitOffset>
             <bitWidth>9</bitWidth>
+            <access>read-only</access>
           </field>
         </fields>
       </register>
