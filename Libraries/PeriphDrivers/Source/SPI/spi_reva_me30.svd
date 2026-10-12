@@ -3,7 +3,7 @@
   <peripheral>
     <name>SPI</name>
     <description>SPI peripheral.</description>
-    <baseAddress>0x400BE000</baseAddress>
+    <baseAddress>0x40046000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x1000</size>

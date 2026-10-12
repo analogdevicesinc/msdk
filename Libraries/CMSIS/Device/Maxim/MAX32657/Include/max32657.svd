@@ -8322,7 +8322,7 @@
   <peripheral>
    <name>SPI</name>
    <description>SPI peripheral.</description>
-   <baseAddress>0x500BE000</baseAddress>
+   <baseAddress>0x50046000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x1000</size>
