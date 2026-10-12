@@ -4,7 +4,7 @@
  <vendorID>Maxim</vendorID>
  <name>max32657</name>
  <series>ARMCM33</series>
- <version>1.0</version>
+ <version>1.1</version>
  <description>MAX32657 32-bit ARM Cortex-M33 microcontroller with TrustZone, 1MB of flash, 256KB of SRAM, 64KB of Boot ROM.</description>
  <cpu>
   <name>CM4</name>
@@ -6229,7 +6229,7 @@
       <field>
        <name>EXC</name>
        <description>Cache the data only if the TAG content is excluded in the high and low bound.</description>
-       <bitOffset>8</bitOffset>
+       <bitOffset>16</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
      </fields>
@@ -6259,7 +6259,7 @@
      </register>
      <register>
       <name>HBOUND</name>
-      <description>DMA Channel Status Register.</description>
+      <description>Regional High Bound Register.</description>
       <addressOffset>0x004</addressOffset>
       <size>32</size>
       <fields>

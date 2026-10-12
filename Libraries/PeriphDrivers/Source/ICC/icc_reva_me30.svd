@@ -150,7 +150,7 @@
           <field>
             <name>EXC</name>
             <description>Cache the data only if the TAG content is excluded in the high and low bound.</description>
-            <bitOffset>8</bitOffset>
+            <bitOffset>16</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
         </fields>
@@ -181,7 +181,7 @@
         </register>
         <register>
           <name>HBOUND</name>
-          <description>DMA Channel Status Register.</description>
+          <description>Regional High Bound Register.</description>
           <addressOffset>0x004</addressOffset>
           <clusterName>reg</clusterName>
           <size>32</size>

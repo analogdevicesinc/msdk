@@ -187,7 +187,7 @@ typedef struct {
 #define MXC_F_ICC_REGCTRL_EN_POS                       0 /**< REGCTRL_EN Position */
 #define MXC_F_ICC_REGCTRL_EN                           ((uint32_t)(0xFFUL << MXC_F_ICC_REGCTRL_EN_POS)) /**< REGCTRL_EN Mask */
 
-#define MXC_F_ICC_REGCTRL_EXC_POS                      8 /**< REGCTRL_EXC Position */
+#define MXC_F_ICC_REGCTRL_EXC_POS                      16 /**< REGCTRL_EXC Position */
 #define MXC_F_ICC_REGCTRL_EXC                          ((uint32_t)(0xFFUL << MXC_F_ICC_REGCTRL_EXC_POS)) /**< REGCTRL_EXC Mask */
 
 /**@} end of group ICC_REGCTRL_Register */
