@@ -1564,7 +1564,7 @@
      <fields>
       <field>
        <name>START</name>
-       <description>Start Compare.</description>
+       <description>Start Compare. Write 1 to start frequency count; self-clearing when measurement completes.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -1576,8 +1576,13 @@
        <enumeratedValues>
         <enumeratedValue>
          <name>RTC</name>
-         <description>RTC.</description>
+         <description>32kHz RTC (ERTCO).</description>
          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RTC_ALT</name>
+         <description>32kHz RTC (alternate path, same 32kHz source as value 0).</description>
+         <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>EXT_GPIO</name>
