@@ -5289,6 +5289,26 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
    <name>FLC1</name>
    <description>Flash Memory Control 1.</description>
    <baseAddress>0x40029400</baseAddress>
+   <registers>
+    <register derivedFrom="FLC.ADDR">
+    </register>
+    <register derivedFrom="FLC.CLKDIV">
+    </register>
+    <register derivedFrom="FLC.CTRL">
+    </register>
+    <register derivedFrom="FLC.INTR">
+    </register>
+    <register derivedFrom="FLC.ACTRL">
+    </register>
+    <register derivedFrom="FLC.WELR0">
+    </register>
+    <register derivedFrom="FLC.RLR0">
+    </register>
+    <register derivedFrom="FLC.WELR1">
+    </register>
+    <register derivedFrom="FLC.RLR1">
+    </register>
+   </registers>
   </peripheral>
 <!--FLC Flash Memory Control.-->
   <peripheral>
