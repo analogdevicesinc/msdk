@@ -7514,25 +7514,22 @@
     </register>
    </registers>
   </peripheral>
-<!--PT Pulse Train-->
+<!--PT Pulse Train 1, 2 and 3-->
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003c040</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
-<!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003c060</baseAddress>
+   <baseAddress>0x4003C060</baseAddress>
   </peripheral>
-<!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003c080</baseAddress>
+   <baseAddress>0x4003C080</baseAddress>
   </peripheral>
-<!--PT3 Pulse Train 3-->
   <peripheral>
    <name>PTG</name>
    <description>Pulse Train Generation</description>
