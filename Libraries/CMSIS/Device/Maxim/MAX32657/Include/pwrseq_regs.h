@@ -132,7 +132,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_PWRSEQ_LPWKFL0_PINS_POS                  0 /**< LPWKFL0_PINS Position */
-#define MXC_F_PWRSEQ_LPWKFL0_PINS                      ((uint32_t)(0xFFFUL << MXC_F_PWRSEQ_LPWKFL0_PINS_POS)) /**< LPWKFL0_PINS Mask */
+#define MXC_F_PWRSEQ_LPWKFL0_PINS                      ((uint32_t)(0x3FFFUL << MXC_F_PWRSEQ_LPWKFL0_PINS_POS)) /**< LPWKFL0_PINS Mask */
 
 /**@} end of group PWRSEQ_LPWKFL0_Register */
 
@@ -144,7 +144,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_PWRSEQ_LPWKEN0_PINS_POS                  0 /**< LPWKEN0_PINS Position */
-#define MXC_F_PWRSEQ_LPWKEN0_PINS                      ((uint32_t)(0xFFFUL << MXC_F_PWRSEQ_LPWKEN0_PINS_POS)) /**< LPWKEN0_PINS Mask */
+#define MXC_F_PWRSEQ_LPWKEN0_PINS                      ((uint32_t)(0x3FFFUL << MXC_F_PWRSEQ_LPWKEN0_PINS_POS)) /**< LPWKEN0_PINS Mask */
 
 /**@} end of group PWRSEQ_LPWKEN0_Register */
 
