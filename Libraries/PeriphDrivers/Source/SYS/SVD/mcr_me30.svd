@@ -65,8 +65,8 @@
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>RTC_IN_DIV8</name>
-                <description>P0.12 div 8 as clock source.</description>
+                <name>RTC_IN</name>
+                <description>P0.12 CLK_EXT (undivided) as 32kHz clock source.</description>
                 <value>2</value>
               </enumeratedValue>
             </enumeratedValues>
