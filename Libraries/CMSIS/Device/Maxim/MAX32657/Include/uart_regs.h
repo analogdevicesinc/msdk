@@ -151,6 +151,10 @@ typedef struct {
 
 #define MXC_F_UART_CTRL_STOPBITS_POS                   12 /**< CTRL_STOPBITS Position */
 #define MXC_F_UART_CTRL_STOPBITS                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL_STOPBITS_POS)) /**< CTRL_STOPBITS Mask */
+#define MXC_V_UART_CTRL_STOPBITS_1                     ((uint32_t)0x0UL) /**< CTRL_STOPBITS_1 Value */
+#define MXC_S_UART_CTRL_STOPBITS_1                     (MXC_V_UART_CTRL_STOPBITS_1 << MXC_F_UART_CTRL_STOPBITS_POS) /**< CTRL_STOPBITS_1 Setting */
+#define MXC_V_UART_CTRL_STOPBITS_1_5_2                 ((uint32_t)0x1UL) /**< CTRL_STOPBITS_1_5_2 Value (1.5 for 5-bit chars, 2 for 6/7/8-bit) */
+#define MXC_S_UART_CTRL_STOPBITS_1_5_2                 (MXC_V_UART_CTRL_STOPBITS_1_5_2 << MXC_F_UART_CTRL_STOPBITS_POS) /**< CTRL_STOPBITS_1_5_2 Setting */
 
 #define MXC_F_UART_CTRL_HFC_EN_POS                     13 /**< CTRL_HFC_EN Position */
 #define MXC_F_UART_CTRL_HFC_EN                         ((uint32_t)(0x1UL << MXC_F_UART_CTRL_HFC_EN_POS)) /**< CTRL_HFC_EN Mask */

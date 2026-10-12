@@ -10703,9 +10703,21 @@
       </field>
       <field>
        <name>STOPBITS</name>
-       <description>Selects the number of stop bits that will be generated</description>
+       <description>Selects the number of stop bits. When 0: 1 stop bit. When 1: 1.5 stop bits for 5-bit characters (CHAR_SIZE=0); 2 stop bits for 6, 7, or 8-bit characters.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>1</name>
+         <description>1 stop bit.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_5_OR_2</name>
+         <description>1.5 stop bits for 5-bit characters (CHAR_SIZE=0); 2 stop bits for 6, 7, or 8-bit characters.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>HFC_EN</name>
