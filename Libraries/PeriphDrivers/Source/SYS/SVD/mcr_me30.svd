@@ -14,10 +14,11 @@
         <name>RST</name>
         <description>Reset Register.</description>
         <addressOffset>0x04</addressOffset>
+        <access>write-only</access>
         <fields>
           <field>
             <name>BOOST</name>
-            <description>Reset BOOST Controller.</description>
+            <description>Reset BOOST Controller. Write 1 to reset; self-clearing. Register has no read path.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
