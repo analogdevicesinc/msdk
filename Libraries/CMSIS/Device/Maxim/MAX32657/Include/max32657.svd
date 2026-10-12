@@ -6449,7 +6449,7 @@
      <fields>
       <field>
        <name>SRAMRET_EN</name>
-       <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+       <description>System RAM retention in BACKUP mode. These bits select which SRAM blocks are retained in BACKUP mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
