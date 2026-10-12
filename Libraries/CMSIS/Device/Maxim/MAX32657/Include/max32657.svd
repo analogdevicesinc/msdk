@@ -10844,7 +10844,7 @@
       </field>
       <field>
        <name>CTS_EV</name>
-       <description>Enable Interrupt For CTS signal change Error</description>
+       <description>Enable Interrupt For CTS signal change Event</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -10890,48 +10890,56 @@
        <description>Flag for RX Frame Error Interrupt.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>RX_PAR</name>
        <description>Flag for RX Parity Error interrupt</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>CTS_EV</name>
        <description>Flag for CTS signal change interrupt (hardware flow control disabled) </description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>RX_OV</name>
        <description>Flag for RX FIFO Overrun interrupt</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>RX_THD</name>
        <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>TX_OB</name>
        <description>Flag for interrupt when TX FIFO has only one byte is remaining.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>TX_THD</name>
        <description>Flag for interrupt when TX FIFO meets or passes the threshold level.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
       <field>
        <name>RX_FULL</name>
        <description>Flag for full RX FIFO.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
+       <modifiedWriteValues>oneToClear</modifiedWriteValues>
       </field>
      </fields>
     </register>

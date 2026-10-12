@@ -163,7 +163,7 @@ typedef struct {
 #define MXC_F_ICC_CTRL_RDY                             ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
 #define MXC_F_ICC_CTRL_CRB_FLUSH_EN_POS                24 /**< CTRL_CRB_FLUSH_EN Position */
-#define MXC_F_ICC_CTRL_CRB_FLUSH_EN                   ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_CRB_FLUSH_EN_POS)) /**< CTRL_CRB_FLUSH_EN Mask */
+#define MXC_F_ICC_CTRL_CRB_FLUSH_EN                    ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_CRB_FLUSH_EN_POS)) /**< CTRL_CRB_FLUSH_EN Mask */
 
 /**@} end of group ICC_CTRL_Register */
 
