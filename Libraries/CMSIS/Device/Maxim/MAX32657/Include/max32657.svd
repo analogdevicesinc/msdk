@@ -1263,40 +1263,41 @@
      <name>CTRL</name>
      <description>Function Control 0 Register.</description>
      <addressOffset>0x00</addressOffset>
+     <resetValue>0x00300000</resetValue>
      <access>read-write</access>
      <fields>
       <field>
        <name>I3CDGEN0</name>
-       <description>I3C SDA Glitch Filter Enable.</description>
+       <description>I3C SDA Deglitch Bypass. When set, the SDA deglitch filter is bypassed.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>dis</name>
-         <description>Filter disabled.</description>
+         <name>active</name>
+         <description>Deglitch filter active (not bypassed).</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>en</name>
-         <description>Filter enabled.</description>
+         <name>bypass</name>
+         <description>Deglitch filter bypassed.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
        <name>I3CDGEN1</name>
-       <description>I3C SCL Glitch Filter Enable.</description>
+       <description>I3C SCL Deglitch Bypass. When set, the SCL deglitch filter is bypassed.</description>
        <bitOffset>21</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>dis</name>
-         <description>Filter disabled.</description>
+         <name>active</name>
+         <description>Deglitch filter active (not bypassed).</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>en</name>
-         <description>Filter enabled.</description>
+         <name>bypass</name>
+         <description>Deglitch filter bypassed.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
