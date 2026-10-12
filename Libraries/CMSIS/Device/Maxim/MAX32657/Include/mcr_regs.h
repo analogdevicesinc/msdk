@@ -125,6 +125,9 @@ typedef struct {
 #define MXC_F_MCR_OUTEN_SQWOUT_EN_POS                  0 /**< OUTEN_SQWOUT_EN Position */
 #define MXC_F_MCR_OUTEN_SQWOUT_EN                      ((uint32_t)(0x1UL << MXC_F_MCR_OUTEN_SQWOUT_EN_POS)) /**< OUTEN_SQWOUT_EN Mask */
 
+#define MXC_F_MCR_OUTEN_PDOWNEN_POS                    1 /**< OUTEN_PDOWNEN Position */
+#define MXC_F_MCR_OUTEN_PDOWNEN                        ((uint32_t)(0x1UL << MXC_F_MCR_OUTEN_PDOWNEN_POS)) /**< OUTEN_PDOWNEN Mask */
+
 /**@} end of group MCR_OUTEN_Register */
 
 /**
