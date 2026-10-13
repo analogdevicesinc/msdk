@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -228,8 +228,11 @@ void vCmdLineTask(void *pvParameters)
     char output[OUTPUT_BUF_SIZE]; /* Buffer for output */
     BaseType_t xMore;
     mxc_uart_req_t async_read_req;
+
+#if configUSE_TICKLESS_IDLE
     mxc_gpio_cfg_t uart_rx_pin = { MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN,
                                    MXC_GPIO_PAD_NONE };
+#endif /* configUSE_TICKLESS_IDLE */
 
     memset(buffer, 0, CMD_LINE_BUF_SIZE);
     index = 0;
