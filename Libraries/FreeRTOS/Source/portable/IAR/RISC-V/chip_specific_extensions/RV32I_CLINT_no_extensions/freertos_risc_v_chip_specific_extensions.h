@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.5.1
- * Copyright (C) 2021 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V11.3.1
+ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -27,7 +27,7 @@
  */
 
 /*
- * The FreeRTOS kernel's RISC-V port is split between the the code that is
+ * The FreeRTOS kernel's RISC-V port is split between the code that is
  * common across all currently supported RISC-V chips (implementations of the
  * RISC-V ISA), and code that tailors the port to a specific RISC-V chip:
  *
@@ -54,16 +54,16 @@
 #ifndef __FREERTOS_RISC_V_EXTENSIONS_H__
 #define __FREERTOS_RISC_V_EXTENSIONS_H__
 
-#define portasmHAS_SIFIVE_CLINT 1
-#define portasmHAS_MTIME 1
-#define portasmADDITIONAL_CONTEXT_SIZE 0 /* Must be even number on 32-bit cores. */
+#define portasmHAS_SIFIVE_CLINT           1
+#define portasmHAS_MTIME                  1
+#define portasmADDITIONAL_CONTEXT_SIZE    0 /* Must be even number on 32-bit cores. */
 
 portasmSAVE_ADDITIONAL_REGISTERS MACRO
-	/* No additional registers to save, so this macro does nothing. */
-	ENDM
+/* No additional registers to save, so this macro does nothing. */
+ENDM
 
 portasmRESTORE_ADDITIONAL_REGISTERS MACRO
-	/* No additional registers to restore, so this macro does nothing. */
-	ENDM
+/* No additional registers to restore, so this macro does nothing. */
+    ENDM
 
 #endif /* __FREERTOS_RISC_V_EXTENSIONS_H__ */
