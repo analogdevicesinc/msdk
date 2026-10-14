@@ -125,7 +125,7 @@ typedef enum {
     MXC_SYS_32K_CLOCK_INRO =
         MXC_V_MCR_CTRL_CLKSEL_INRO_DIV4, /**< Select the Internal Baud Rate Oscillator (INRO) */
     MXC_SYS_32K_CLOCK_RTC_IN =
-        MXC_V_MCR_CTRL_CLKSEL_RTC_IN_DIV8, /**< Select the External clock input (RTC_CLK_IN) */
+        MXC_V_MCR_CTRL_CLKSEL_RTC_IN, /**< Select the External clock input (RTC_CLK_IN) */
 } mxc_sys_32k_clock_t;
 
 /** @brief Compare clock enumeration. Used in MXC_SYS_ClockMeasure function. */

@@ -87,9 +87,21 @@
           </field>
           <field>
             <name>STOPBITS</name>
-            <description>Selects the number of stop bits that will be generated</description>
+            <description>Selects the number of stop bits. When 0: 1 stop bit. When 1: 1.5 stop bits for 5-bit characters (CHAR_SIZE=0); 2 stop bits for 6, 7, or 8-bit characters.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1</name>
+                <description>1 stop bit.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_5_OR_2</name>
+                <description>1.5 stop bits for 5-bit characters (CHAR_SIZE=0); 2 stop bits for 6, 7, or 8-bit characters.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>HFC_EN</name>
@@ -216,7 +228,7 @@
           </field>
           <field>
             <name>CTS_EV</name>
-            <description>Enable Interrupt For CTS signal change Error</description>
+            <description>Enable Interrupt For CTS signal change Event</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -262,48 +274,56 @@
             <description>Flag for RX Frame Error Interrupt.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>RX_PAR</name>
             <description>Flag for RX Parity Error interrupt</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>CTS_EV</name>
             <description>Flag for CTS signal change interrupt (hardware flow control disabled) </description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>RX_OV</name>
             <description>Flag for RX FIFO Overrun interrupt</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>RX_THD</name>
             <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>TX_OB</name>
             <description>Flag for interrupt when TX FIFO has only one byte is remaining.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>TX_THD</name>
             <description>Flag for interrupt when TX FIFO meets or passes the threshold level.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
             <name>RX_FULL</name>
             <description>Flag for full RX FIFO.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
         </fields>
       </register>

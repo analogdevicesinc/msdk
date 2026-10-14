@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,8 +156,14 @@ typedef struct {
 #define MXC_F_ICC_CTRL_EN_POS                          0 /**< CTRL_EN Position */
 #define MXC_F_ICC_CTRL_EN                              ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
+#define MXC_F_ICC_CTRL_BUSY_POS                        7 /**< CTRL_BUSY Position */
+#define MXC_F_ICC_CTRL_BUSY                            ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_BUSY_POS)) /**< CTRL_BUSY Mask */
+
 #define MXC_F_ICC_CTRL_RDY_POS                         16 /**< CTRL_RDY Position */
 #define MXC_F_ICC_CTRL_RDY                             ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
+
+#define MXC_F_ICC_CTRL_CRB_FLUSH_EN_POS                24 /**< CTRL_CRB_FLUSH_EN Position */
+#define MXC_F_ICC_CTRL_CRB_FLUSH_EN                    ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_CRB_FLUSH_EN_POS)) /**< CTRL_CRB_FLUSH_EN Mask */
 
 /**@} end of group ICC_CTRL_Register */
 
@@ -187,7 +193,7 @@ typedef struct {
 #define MXC_F_ICC_REGCTRL_EN_POS                       0 /**< REGCTRL_EN Position */
 #define MXC_F_ICC_REGCTRL_EN                           ((uint32_t)(0xFFUL << MXC_F_ICC_REGCTRL_EN_POS)) /**< REGCTRL_EN Mask */
 
-#define MXC_F_ICC_REGCTRL_EXC_POS                      8 /**< REGCTRL_EXC Position */
+#define MXC_F_ICC_REGCTRL_EXC_POS                      16 /**< REGCTRL_EXC Position */
 #define MXC_F_ICC_REGCTRL_EXC                          ((uint32_t)(0xFFUL << MXC_F_ICC_REGCTRL_EXC_POS)) /**< REGCTRL_EXC Mask */
 
 /**@} end of group ICC_REGCTRL_Register */

@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -265,6 +265,8 @@ typedef struct {
 #define MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL                ((uint32_t)(0x3UL << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS)) /**< FRQCNTCTRL_CMP_CLKSEL Mask */
 #define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC            ((uint32_t)0x0UL) /**< FRQCNTCTRL_CMP_CLKSEL_RTC Value */
 #define MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC            (MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS) /**< FRQCNTCTRL_CMP_CLKSEL_RTC Setting */
+#define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC_ALT        ((uint32_t)0x1UL) /**< FRQCNTCTRL_CMP_CLKSEL_RTC_ALT Value */
+#define MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC_ALT        (MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_RTC_ALT << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS) /**< FRQCNTCTRL_CMP_CLKSEL_RTC_ALT Setting */
 #define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO       ((uint32_t)0x2UL) /**< FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO Value */
 #define MXC_S_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO       (MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO << MXC_F_FCR_FRQCNTCTRL_CMP_CLKSEL_POS) /**< FRQCNTCTRL_CMP_CLKSEL_EXT_GPIO Setting */
 #define MXC_V_FCR_FRQCNTCTRL_CMP_CLKSEL_INRO           ((uint32_t)0x3UL) /**< FRQCNTCTRL_CMP_CLKSEL_INRO Value */

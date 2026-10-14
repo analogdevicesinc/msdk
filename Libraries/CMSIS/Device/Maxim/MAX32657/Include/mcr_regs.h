@@ -7,7 +7,7 @@
 
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,6 +125,9 @@ typedef struct {
 #define MXC_F_MCR_OUTEN_SQWOUT_EN_POS                  0 /**< OUTEN_SQWOUT_EN Position */
 #define MXC_F_MCR_OUTEN_SQWOUT_EN                      ((uint32_t)(0x1UL << MXC_F_MCR_OUTEN_SQWOUT_EN_POS)) /**< OUTEN_SQWOUT_EN Mask */
 
+#define MXC_F_MCR_OUTEN_PDOWNEN_POS                    1 /**< OUTEN_PDOWNEN Position */
+#define MXC_F_MCR_OUTEN_PDOWNEN                        ((uint32_t)(0x1UL << MXC_F_MCR_OUTEN_PDOWNEN_POS)) /**< OUTEN_PDOWNEN Mask */
+
 /**@} end of group MCR_OUTEN_Register */
 
 /**
@@ -139,8 +142,8 @@ typedef struct {
 #define MXC_S_MCR_CTRL_CLKSEL_ERTCO                    (MXC_V_MCR_CTRL_CLKSEL_ERTCO << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_ERTCO Setting */
 #define MXC_V_MCR_CTRL_CLKSEL_INRO_DIV4                ((uint32_t)0x1UL) /**< CTRL_CLKSEL_INRO_DIV4 Value */
 #define MXC_S_MCR_CTRL_CLKSEL_INRO_DIV4                (MXC_V_MCR_CTRL_CLKSEL_INRO_DIV4 << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_INRO_DIV4 Setting */
-#define MXC_V_MCR_CTRL_CLKSEL_RTC_IN_DIV8              ((uint32_t)0x2UL) /**< CTRL_CLKSEL_RTC_IN_DIV8 Value */
-#define MXC_S_MCR_CTRL_CLKSEL_RTC_IN_DIV8              (MXC_V_MCR_CTRL_CLKSEL_RTC_IN_DIV8 << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_RTC_IN_DIV8 Setting */
+#define MXC_V_MCR_CTRL_CLKSEL_RTC_IN                   ((uint32_t)0x2UL) /**< CTRL_CLKSEL_RTC_IN Value */
+#define MXC_S_MCR_CTRL_CLKSEL_RTC_IN                   (MXC_V_MCR_CTRL_CLKSEL_RTC_IN << MXC_F_MCR_CTRL_CLKSEL_POS) /**< CTRL_CLKSEL_RTC_IN Setting */
 
 #define MXC_F_MCR_CTRL_ERTCO32K_EN_POS                 3 /**< CTRL_ERTCO32K_EN Position */
 #define MXC_F_MCR_CTRL_ERTCO32K_EN                     ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO32K_EN_POS)) /**< CTRL_ERTCO32K_EN Mask */
