@@ -4,7 +4,7 @@ PERL ?= perl
 
 .SILENT:
 
-.PHONY: all no_test programs lib tests install uninstall clean test check covtest lcov apidoc apidoc_clean
+.PHONY: all no_test programs lib tests install uninstall clean test check lcov apidoc apidoc_clean
 
 all: programs tests
 	$(MAKE) post_build
@@ -36,8 +36,31 @@ generated_files: programs/generated_files
 generated_files: tests/generated_files
 generated_files: visualc_files
 
+# Set GEN_FILES to the empty string to disable dependencies on generated
+# source files. Then `make generated_files` will only build files that
+# are missing, it will not rebuilt files that are present but out of date.
+# This is useful, for example, if you have a source tree where
+# `make generated_files` has already run and file timestamps reflect the
+# time the files were copied or extracted, and you are now in an environment
+# that lacks some of the necessary tools to re-generate the files.
+# If $(GEN_FILES) is non-empty, the generated source files' dependencies
+# are treated ordinarily, based on file timestamps.
+GEN_FILES ?=
+
+# In dependencies where the target is a configuration-independent generated
+# file, use `TARGET: $(gen_file_dep) DEPENDENCY1 DEPENDENCY2 ...`
+# rather than directly `TARGET: DEPENDENCY1 DEPENDENCY2 ...`. This
+# enables the re-generation to be turned off when GEN_FILES is disabled.
+ifdef GEN_FILES
+gen_file_dep =
+else
+# Order-only dependency: generate the target if it's absent, but don't
+# re-generate it if it's present but older than its dependencies.
+gen_file_dep = |
+endif
+
 .PHONY: visualc_files
-VISUALC_FILES = visualc/VS2010/mbedTLS.sln visualc/VS2010/mbedTLS.vcxproj
+VISUALC_FILES = visualc/VS2013/mbedTLS.sln visualc/VS2013/mbedTLS.vcxproj
 # TODO: $(app).vcxproj for each $(app) in programs/
 visualc_files: $(VISUALC_FILES)
 
@@ -45,10 +68,10 @@ visualc_files: $(VISUALC_FILES)
 # present before it runs. It doesn't matter if the files aren't up-to-date,
 # they just need to be present.
 $(VISUALC_FILES): | library/generated_files
-$(VISUALC_FILES): scripts/generate_visualc_files.pl
-$(VISUALC_FILES): scripts/data_files/vs2010-app-template.vcxproj
-$(VISUALC_FILES): scripts/data_files/vs2010-main-template.vcxproj
-$(VISUALC_FILES): scripts/data_files/vs2010-sln-template.sln
+$(VISUALC_FILES): $(gen_file_dep) scripts/generate_visualc_files.pl
+$(VISUALC_FILES): $(gen_file_dep) scripts/data_files/vs2013-app-template.vcxproj
+$(VISUALC_FILES): $(gen_file_dep) scripts/data_files/vs2013-main-template.vcxproj
+$(VISUALC_FILES): $(gen_file_dep) scripts/data_files/vs2013-sln-template.sln
 # TODO: also the list of .c and .h source files, but not their content
 $(VISUALC_FILES):
 	echo "  Gen   $@ ..."
@@ -124,10 +147,10 @@ neat: clean_more_on_top
 	$(MAKE) -C programs neat
 	$(MAKE) -C tests neat
 ifndef WINDOWS
-	rm -f visualc/VS2010/*.vcxproj visualc/VS2010/mbedTLS.sln
+	rm -f visualc/VS2013/*.vcxproj visualc/VS2013/mbedTLS.sln
 else
-	if exist visualc\VS2010\*.vcxproj del /Q /F visualc\VS2010\*.vcxproj
-	if exist visualc\VS2010\mbedTLS.sln del /Q /F visualc\VS2010\mbedTLS.sln
+	if exist visualc\VS2013\*.vcxproj del /Q /F visualc\VS2013\*.vcxproj
+	if exist visualc\VS2013\mbedTLS.sln del /Q /F visualc\VS2013\mbedTLS.sln
 endif
 
 check: lib tests
@@ -136,23 +159,15 @@ check: lib tests
 test: check
 
 ifndef WINDOWS
-# note: for coverage testing, build with:
-# make CFLAGS='--coverage -g3 -O0'
-covtest:
-	$(MAKE) check
-	programs/test/selftest
-	tests/compat.sh
-	tests/ssl-opt.sh
-
+# For coverage testing:
+# 1. Build with:
+#         make CFLAGS='--coverage -g3 -O0' LDFLAGS='--coverage'
+# 2. Run the relevant tests for the part of the code you're interested in.
+#    For the reference coverage measurement, see
+#    tests/scripts/basic-build-test.sh
+# 3. Run scripts/lcov.sh to generate an HTML report.
 lcov:
-	rm -rf Coverage
-	lcov --capture --initial --directory library -o files.info
-	lcov --rc lcov_branch_coverage=1 --capture --directory library -o tests.info
-	lcov --rc lcov_branch_coverage=1 --add-tracefile files.info --add-tracefile tests.info -o all.info
-	lcov --rc lcov_branch_coverage=1 --remove all.info -o final.info '*.h'
-	gendesc tests/Descriptions.txt -o descriptions
-	genhtml --title "mbed TLS" --description-file descriptions --keep-descriptions --legend --branch-coverage -o Coverage final.info
-	rm -f files.info tests.info all.info final.info descriptions
+	scripts/lcov.sh
 
 apidoc:
 	mkdir -p apidoc

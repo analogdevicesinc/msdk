@@ -3,19 +3,7 @@
 # generate_tls13_compat_tests.py
 #
 # Copyright The Mbed TLS Contributors
-# SPDX-License-Identifier: Apache-2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
-# not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
 
 """
 Generate TLSv1.3 Compat test cases
@@ -67,8 +55,9 @@ NAMED_GROUP_IANA_VALUE = {
     'secp521r1': 0x19,
     'x25519': 0x1d,
     'x448': 0x1e,
+    # Only one finite field group to keep testing time within reasonable bounds.
+    'ffdhe2048': 0x100,
 }
-
 
 class TLSProgram:
     """
@@ -146,6 +135,7 @@ class OpenSSLBase(TLSProgram):
         'secp521r1': 'P-521',
         'x25519': 'X25519',
         'x448': 'X448',
+        'ffdhe2048': 'ffdhe2048',
     }
 
     def cmd(self):
@@ -173,7 +163,15 @@ class OpenSSLBase(TLSProgram):
         return ret
 
     def pre_checks(self):
-        return ["requires_openssl_tls1_3"]
+        ret = ["requires_openssl_tls1_3"]
+
+        # ffdh groups require at least openssl 3.0
+        ffdh_groups = ['ffdhe2048']
+
+        if any(x in ffdh_groups for x in self._named_groups):
+            ret = ["requires_openssl_tls1_3_with_ffdh"]
+
+        return ret
 
 
 class OpenSSLServ(OpenSSLBase):
@@ -245,6 +243,7 @@ class GnuTLSBase(TLSProgram):
         'secp521r1': ['GROUP-SECP521R1'],
         'x25519': ['GROUP-X25519'],
         'x448': ['GROUP-X448'],
+        'ffdhe2048': ['GROUP-FFDHE2048'],
     }
 
     def pre_checks(self):
@@ -351,13 +350,12 @@ class MbedTLSBase(TLSProgram):
 
         if self._named_groups:
             named_groups = ','.join(self._named_groups)
-            ret += ["curves={named_groups}".format(named_groups=named_groups)]
-        ret += ['force_version=tls13']
+            ret += ["groups={named_groups}".format(named_groups=named_groups)]
         return ret
 
     def pre_checks(self):
         ret = ['requires_config_enabled MBEDTLS_DEBUG_C',
-               'requires_config_enabled MBEDTLS_SSL_PROTO_TLS1_3']
+               'requires_config_enabled MBEDTLS_SSL_TLS1_3_KEY_EXCHANGE_MODE_EPHEMERAL_ENABLED']
 
         if self._compat_mode:
             ret += ['requires_config_enabled MBEDTLS_SSL_TLS1_3_COMPATIBILITY_MODE']
@@ -365,6 +363,16 @@ class MbedTLSBase(TLSProgram):
         if 'rsa_pss_rsae_sha256' in self._sig_algs + self._cert_sig_algs:
             ret.append(
                 'requires_config_enabled MBEDTLS_X509_RSASSA_PSS_SUPPORT')
+
+        ec_groups = ['secp256r1', 'secp384r1', 'secp521r1', 'x25519', 'x448']
+        ffdh_groups = ['ffdhe2048']
+
+        if any(x in ec_groups for x in self._named_groups):
+            ret.append('requires_config_enabled PSA_WANT_ALG_ECDH')
+
+        if any(x in ffdh_groups for x in self._named_groups):
+            ret.append('requires_config_enabled PSA_WANT_ALG_FFDH')
+
         return ret
 
 
@@ -398,7 +406,7 @@ class MbedTLSServ(MbedTLSBase):
                                 named_group=named_group,
                                 iana_value=NAMED_GROUP_IANA_VALUE[named_group])]
 
-        check_strings.append("Verifying peer X.509 certificate... ok")
+        check_strings.append("Certificate verification was skipped")
         return ['-s "{}"'.format(i) for i in check_strings]
 
     def pre_cmd(self):
@@ -516,19 +524,7 @@ SSL_OUTPUT_HEADER = '''#!/bin/sh
 # {filename}
 #
 # Copyright The Mbed TLS Contributors
-# SPDX-License-Identifier: Apache-2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
-# not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
 #
 # Purpose
 #
