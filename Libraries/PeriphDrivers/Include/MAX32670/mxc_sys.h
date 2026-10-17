@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,6 +135,13 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
 
+/** @brief Enumeration for Always-On Domain Clock (AON clock) divider settings */
+typedef enum {
+    MXC_SYS_AON_CLK_DIV_4 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV4, ///< Divide by 4
+    MXC_SYS_AON_CLK_DIV_8 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV8, ///< Divide by 8
+    MXC_SYS_AON_CLK_DIV_16 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV16, ///< Divide by 16
+    MXC_SYS_AON_CLK_DIV_32 = MXC_S_GCR_PCLKDIV_AON_CLKDIV_DIV32 ///< Divide by 32
+} mxc_sys_aon_clk_div_t;
 #define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
 #define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
 #define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
@@ -316,6 +323,14 @@ void MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);
 mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(void);
 
 /**
+ * @brief Calibrate the specified system clock.
+ * @param   clock Clock source to calibrate.  Note usually only the IPO supports calibration.
+ *          Check the microcontroller's UG for more details.
+ * @returns         E_NO_ERROR if everything is successful.
+ */
+int MXC_SYS_ClockCalibrate(mxc_sys_system_clock_t clock);
+
+/**
  * @brief Wait for a clock to enable with timeout
  * @param      ready The clock to wait for
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
@@ -327,6 +342,18 @@ int MXC_SYS_Clock_Timeout(uint32_t ready);
  * @param reset The peripheral to reset
  */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
+
+/**
+ * @brief Set the Always-On Domain (AON) clock divider.
+ * @param div The AON clock divider setting.
+ */
+void MXC_SYS_SetAonClockDiv(mxc_sys_aon_clk_div_t div);
+
+/**
+ * @brief Get the current Always-On Domain (AON) clock divider setting.
+ * @return The current AON clock divider.
+ */
+mxc_sys_aon_clk_div_t MXC_SYS_GetAonClockDiv(void);
 
 /**
  * @brief This function PERMANENTLY locks the Debug Access Port.
