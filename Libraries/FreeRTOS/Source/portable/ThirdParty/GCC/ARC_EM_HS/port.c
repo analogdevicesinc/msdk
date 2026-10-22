@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Kernel V10.5.1
+ * FreeRTOS Kernel V11.3.1
  * Copyright (C) 2020 Synopsys, Inc. or its affiliates.  All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
@@ -204,7 +204,7 @@ void vPortEndTask( void )
 /*
  * !!! Note !!!
  * This a trick!!!
- * It's a copy from task.c. We need to konw the definition of TCB for the purpose of hardware
+ * It's a copy from task.c. We need to know the definition of TCB for the purpose of hardware
  * stack check. Pls don't forget to update it when FreeRTOS is updated.
  */
     typedef struct tskTaskControlBlock       /* The old naming convention is used to prevent breaking kernel aware debuggers. */
@@ -251,16 +251,8 @@ void vPortEndTask( void )
             uint32_t ulRunTimeCounter; /*< Stores the amount of time the task has spent in the Running state. */
         #endif
 
-        #if ( configUSE_NEWLIB_REENTRANT == 1 )
-
-            /* Allocate a Newlib reent structure that is specific to this task.
-             * Note Newlib support has been included by popular demand, but is not
-             * used by the FreeRTOS maintainers themselves.  FreeRTOS is not
-             * responsible for resulting newlib operation.  User must be familiar with
-             * newlib and must provide system-wide implementations of the necessary
-             * stubs. Be warned that (at the time of writing) the current newlib design
-             * implements a system-wide malloc() that must be provided with locks. */
-            struct  _reent xNewLib_reent;
+        #if ( configUSE_C_RUNTIME_TLS_SUPPORT == 1 )
+            configTLS_BLOCK_TYPE xTLSBlock; /*< Memory block used as Thread Local Storage (TLS) Block for the task. */
         #endif
 
         #if ( configUSE_TASK_NOTIFICATIONS == 1 )

@@ -1,0 +1,233 @@
+# MISRA Compliance
+
+FreeRTOS-Kernel conforms to [MISRA C:2012](https://www.misra.org.uk/misra-c)
+guidelines, with the deviations listed below. Compliance is checked with
+Coverity static analysis version 2023.6.1. Since the FreeRTOS kernel is
+designed for small-embedded devices, it needs to have a very small memory
+footprint and has to be efficient. To achieve that and to increase the
+performance, it deviates from some MISRA rules. The specific deviations,
+suppressed inline, are listed below.
+
+Additionally, [MISRA configuration file](examples/coverity/coverity_misra.config)
+contains project wide deviations.
+
+### Suppressed with Coverity Comments
+To find the violation references in the source files run grep on the source code
+with ( Assuming rule 8.4 violation; with justification in point 1 ):
+```
+grep 'MISRA Ref 8.4.1' . -rI
+```
+
+#### Dir 4.7
+
+MISRA C:2012 Dir 4.7: If a function returns error information, then that error
+information shall be tested.
+
+_Ref 4.7.1_
+ - `taskENTER_CRITICAL_FROM_ISR` returns the interrupt mask and not any error
+    information. Therefore, there is no need test the return value.
+
+#### Rule 8.4
+
+MISRA C:2012 Rule 8.4: A compatible declaration shall be visible when an
+object or function with external linkage is defined.
+
+_Ref 8.4.1_
+ - pxCurrentTCB(s) is defined with external linkage but it is only referenced
+   from the assembly code in the port files. Therefore, adding a declaration in
+   header file is not useful as the assembly code will still need to declare it
+   separately.
+
+_Ref 8.4.2_
+ - xQueueRegistry is defined with external linkage because it is accessed by the
+   kernel unit tests. It is not meant to be directly accessed by the application
+   and therefore, not declared in a header file.
+
+#### Rule 8.6
+
+MISRA C:2012 Rule 8.6: An identifier with external linkage shall have exactly
+one external definition.
+
+_Ref 8.6.1_
+ - This rule prohibits an identifier with external linkage to have multiple
+   definitions or no definition. FreeRTOS hook functions are implemented in
+   the application and therefore, have no definition in the Kernel code.
+
+#### Rule 11.1
+MISRA C:2012 Rule 11.1: Conversions shall not be performed between a pointer to
+function and any other type.
+
+_Ref 11.1.1_
+ - The pointer to function is casted into void to avoid unused parameter
+   compiler warning when Stream Buffer's Tx and Rx Completed callback feature is
+   not used.
+
+#### Rule 11.3
+
+MISRA C:2012 Rule 11.3: A cast shall not be performed between a pointer to
+object type and a pointer to a different object type.
+
+_Ref 11.3.1_
+ - This rule prohibits casting a pointer to object into a pointer to a
+   different object because it may result in an incorrectly aligned pointer,
+   leading to undefined behavior. Even if the casting produces a correctly
+   aligned pointer, the behavior may be still undefined if the pointer is
+   used to access an object. FreeRTOS deliberately creates external aliases
+   for all the kernel object types (StaticEventGroup_t, StaticQueue_t,
+   StaticStreamBuffer_t, StaticTimer_t and StaticTask_t) for data hiding
+   purposes. The internal object types and the corresponding external
+   aliases are guaranteed to have the same size and alignment which is
+   checked using configASSERT.
+
+
+#### Rule 11.5
+
+MISRA C:2012 Rule 11.5: A conversion should not be performed from pointer to
+void into pointer to object.
+This rule prohibits conversion of a pointer to void into a pointer to
+object because it may result in an incorrectly aligned pointer leading
+to undefined behavior.
+
+_Ref 11.5.1_
+ - The memory blocks returned by pvPortMalloc() are guaranteed to meet the
+   architecture alignment requirements specified by portBYTE_ALIGNMENT.
+   The casting of the pointer to void returned by pvPortMalloc() is,
+   therefore, safe because it is guaranteed to be aligned.
+
+_Ref 11.5.2_
+ - The conversion from a pointer to void into a pointer to EventGroup_t is
+   safe because it is a pointer to EventGroup_t, which is returned to the
+   application at the time of event group creation for data hiding
+   purposes.
+
+_Ref 11.5.3_
+ - The conversion from a pointer to void in list macros for list item owner
+   is safe because the type of the pointer stored and retrieved is the
+   same.
+
+_Ref 11.5.4_
+ - The conversion from a pointer to void into a pointer to EventGroup_t is
+   safe because it is a pointer to EventGroup_t, which is passed as a
+   parameter to the xTimerPendFunctionCallFromISR API when the callback is
+   pended.
+
+_Ref 11.5.5_
+ - The conversion from a pointer to void into a pointer to uint8_t is safe
+   because data storage buffers are implemented as uint8_t arrays for the
+   ease of sizing, alignment and access.
+
+#### Rule 14.3
+
+MISRA C-2012 Rule 14.3: Controlling expressions shall not be invariant.
+
+_Ref 14.3_
+ - The `configMAX_TASK_NAME_LEN` , `taskRESERVED_TASK_NAME_LENGTH` and `SIZE_MAX`
+   are evaluated to constants at compile time and may vary based on the build
+   configuration.
+
+#### Rule 18.1
+
+MISRA C-2012 Rule 18.1: A pointer resulting from arithmetic on a pointer operand
+shall address an element of the same array as that pointer operand.
+
+_Ref 18.1_
+ - Array access remains within bounds since either the null terminator in
+   the IDLE task name will break the loop, or the loop will break normally
+   if the array size is smaller than the IDLE task name length.
+
+#### Rule 21.6
+
+MISRA C-2012 Rule 21.6: The Standard Library input/output functions shall not
+be used.
+
+_Ref 21.6.1_
+ - The Standard Library function snprintf is used in vTaskListTasks and
+   vTaskGetRunTimeStatistics APIs, both of which are utility functions only and
+   are not considered part of core kernel implementation.
+
+### Unsuppressed Deviations
+
+Certain deviating code is left unsuppressed for awareness. These violations
+will be reported when audited by a MISRA-checking static analysis tool.
+
+Some of these unsuppressed exceptions correspond to example code provided
+either for demonstration or verification of the FreeRTOS kernel. This code
+is not considered part of the kernel implementation and should not be used
+in an application.
+
+Other unsuppressed violations are left present in the kernel implementation
+as implementations, code, or other missing functionality being flagged for
+violations will be present with the porting layer provided by the
+application. The presence of these errors after providing a port indicates
+a valid MISRA issue.
+
+#### Rule 2.1
+
+MISRA C:2012 Dir 2.1: A project shall not contain unreachable code
+
+_Ref 2.1_
+ - Simplified example contains unreachable code for demonstration of
+   FreeRTOS scheduler. A production implementation should not contain
+   this.
+
+    Affected Files:
+    - examples/cmake_example/main.c
+
+#### Rule 2.2
+
+MISRA C:2012 Dir 2.2: There shall be no dead code.
+
+_Ref 2.2_
+ - `vPortEndScheduler` is erroneously determined to be dead code due to
+    the use of a simplified verification port.
+
+    Affected Files:
+    - tasks.c
+
+#### Dir 4.12
+
+MISRA C:2012 Dir 4.12: Dynamic allocation shall not be used
+
+_Ref 4.12_
+  - Heap memory solutions utilize pvPortMalloc/vPortFree to provide heap
+    memory for dynamic object allocation. These functions may rely upon
+    the malloc/free of the underlying port. Static allocation is recommended
+    for MISRA compliant applications.
+
+    Affected Files:
+    - portable/MemMang/heap_*.c
+
+
+#### Rule 8.6
+
+MISRA C:2012 Rule 8.6: An identifier with external linkage shall have exactly
+one external definition.
+
+_Ref 8.6.1_
+ - Port layer function declarations are provided without corresponding
+   implementations to provide for ease of porting to a device. These definitions
+   cannot be implemented until a port is selected.
+
+#### Rule 21.3
+
+MISRA C-2012 Rule 21.3: The memory allocation and deallocation functions of
+<stdlib.h> shall not be used.
+
+_Ref 21.3_
+  - See justification from Directive 4.12
+
+    Affected Files:
+    - portable/MemMang/heap_*.c
+
+#### Rule 21.6
+
+MISRA C-2012 Rule 21.6: The Standard Library input/output functions shall not
+be used.
+
+_Ref 21.6.1_
+  - The Standard Library function `printf` is used in examples to provide a
+    simple getting started demonstration. This example is not considered part
+    of the kernel implementation.
+
+    Affected Files:
+    - examples/cmake_example/main.c
