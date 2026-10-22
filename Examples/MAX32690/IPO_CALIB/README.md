@@ -1,6 +1,6 @@
 ## Description
 
-An example for the IPO Calibration feature to calibrate the IPO clock source by using external crytal source ERTCO.
+An example demonstrating how to use the IPO Calibration feature to calibrate the Internal Primary Oscillator (IPO) using the External Real-Time Clock Oscillator (ERTCO) as the reference.
 
 
 ## Software
