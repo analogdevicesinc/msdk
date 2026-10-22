@@ -1,36 +1,24 @@
 #!/usr/bin/env perl
 
-# Generate main file, individual apps and solution files for MS Visual Studio
-# 2010
+# Generate main file, individual apps and solution files for
+# MS Visual Studio 2013
 #
-# Must be run from mbedTLS root or scripts directory.
+# Must be run from Mbed TLS root or scripts directory.
 # Takes no argument.
 #
 # Copyright The Mbed TLS Contributors
-# SPDX-License-Identifier: Apache-2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
-# not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
 
 use warnings;
 use strict;
 use Digest::MD5 'md5_hex';
 
-my $vsx_dir = "visualc/VS2010";
+my $vsx_dir = "visualc/VS2013";
 my $vsx_ext = "vcxproj";
-my $vsx_app_tpl_file = "scripts/data_files/vs2010-app-template.$vsx_ext";
-my $vsx_main_tpl_file = "scripts/data_files/vs2010-main-template.$vsx_ext";
+my $vsx_app_tpl_file = "scripts/data_files/vs2013-app-template.$vsx_ext";
+my $vsx_main_tpl_file = "scripts/data_files/vs2013-main-template.$vsx_ext";
 my $vsx_main_file = "$vsx_dir/mbedTLS.$vsx_ext";
-my $vsx_sln_tpl_file = "scripts/data_files/vs2010-sln-template.sln";
+my $vsx_sln_tpl_file = "scripts/data_files/vs2013-sln-template.sln";
 my $vsx_sln_file = "$vsx_dir/mbedTLS.sln";
 
 my $programs_dir = 'programs';
@@ -58,7 +46,7 @@ my @include_directories = qw(
     include
     3rdparty/everest/include/
     3rdparty/everest/include/everest
-    3rdparty/everest/include/everest/vs2010
+    3rdparty/everest/include/everest/vs2013
     3rdparty/everest/include/everest/kremlib
     tests/include
 );
@@ -256,7 +244,7 @@ sub del_vsx_files {
 sub main {
     if( ! check_dirs() ) {
         chdir '..' or die;
-        check_dirs or die "Must but run from mbedTLS root or scripts dir\n";
+        check_dirs or die "Must be run from Mbed TLS root or scripts dir\n";
     }
 
     # Remove old files to ensure that, for example, project files from deleted
