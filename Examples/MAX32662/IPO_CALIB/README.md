@@ -17,4 +17,4 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Expected Output
 
-After the IPO Calibration function called, The LED0 - ERTCO Clock and P0.4 - IPO_APB Clock outputs same a frequency (2Hz).
+After the IPO Calibration function is called, both LED0 - ERTCO Clock and P0.4 - IPO_APB Clock output the same frequency of 2 Hz.
