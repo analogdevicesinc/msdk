@@ -1,7 +1,6 @@
 ## Description
 
-An example for the IPO Calibration feature to calibrate the IPO clock source by using external crytal source ERTCO.
-
+An example demonstrating how to use the IPO Calibration feature to calibrate the Internal Primary Oscillator (IPO) using the External Real-Time Clock Oscillator (ERTCO) as the reference.
 
 ## Software
 
@@ -14,6 +13,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 * This project comes pre-configured for the MAX32657EVKIT.  See [Board Support Packages](https://analogdevicesinc.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
 
 ## Required Connections
+
+A 32.768Hz crystal needs to be attached to the board for this example to work.
 
 ## Expected Output
 

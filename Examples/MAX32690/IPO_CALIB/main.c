@@ -19,7 +19,11 @@
 /**
  * @file    main.c
  * @brief   IPO Calibration example
- * @details PWM Timers - Outputs a PWM signal (2Hz) on LED0 - ERTCO Clock and LED1 - IPO_APB Clock
+ * @details An example demonstrating how to use the IPO Calibration feature 
+ *          to calibrate the Internal Primary Oscillator (IPO) 
+ *          using the External Real-Time Clock Oscillator (ERTCO) as the reference.
+ *          After the IPO Calibration function is called, both LED0 (ERTCO Clock) 
+ *          and P0.1 (IPO_APB Clock) output the same frequency of 2 Hz.
  */
 
 /***** Includes *****/
