@@ -128,7 +128,7 @@
  *       regardless of the setting of MBEDTLS_HAVE_TIME, unless
  *       MBEDTLS_TIMING_ALT is used. See timing.c for more information.
  */
-#define MBEDTLS_HAVE_TIME
+//#define MBEDTLS_HAVE_TIME
 
 /**
  * \def MBEDTLS_HAVE_TIME_DATE
