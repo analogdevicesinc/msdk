@@ -7,24 +7,13 @@ independently of the checks.
 """
 
 # Copyright The Mbed TLS Contributors
-# SPDX-License-Identifier: Apache-2.0
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may
-# not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-2.0-or-later
 
 import argparse
 import glob
 import os
 import re
+import subprocess
 import sys
 
 class Results:
@@ -111,6 +100,19 @@ state may override this method.
                 self.process_test_case(descriptions,
                                        file_name, line_number, description)
 
+    def walk_compat_sh(self, file_name):
+        """Iterate over the test cases compat.sh with a similar format."""
+        descriptions = self.new_per_file_state() # pylint: disable=assignment-from-none
+        compat_cmd = ['sh', file_name, '--list-test-case']
+        compat_output = subprocess.check_output(compat_cmd)
+        # Assume compat.sh is responsible for printing identical format of
+        # test case description between --list-test-case and its OUTCOME.CSV
+        description = compat_output.strip().split(b'\n')
+        # idx indicates the number of test case since there is no line number
+        # in `compat.sh` for each test case.
+        for idx, descrip in enumerate(description):
+            self.process_test_case(descriptions, file_name, idx, descrip)
+
     @staticmethod
     def collect_test_directories():
         """Get the relative path for the TLS and Crypto test directories."""
@@ -136,6 +138,9 @@ state may override this method.
             for ssl_opt_file_name in glob.glob(os.path.join(directory, 'opt-testcases',
                                                             '*.sh')):
                 self.walk_ssl_opt_sh(ssl_opt_file_name)
+            compat_sh = os.path.join(directory, 'compat.sh')
+            if os.path.exists(compat_sh):
+                self.walk_compat_sh(compat_sh)
 
 class TestDescriptions(TestDescriptionExplorer):
     """Collect the available test cases."""
