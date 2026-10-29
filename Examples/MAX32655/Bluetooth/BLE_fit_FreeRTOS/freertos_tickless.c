@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,8 @@
  * Convert CPU_CLOCK_HZ to units of ticks per us 
  */
 #define MIN_SYSTICK (configCPU_CLOCK_HZ / 1000000 /* ticks / us */ * 10 /* us */)
+
+#if configUSE_TICKLESS_IDLE
 
 /*
  * Sleep-check function
@@ -256,3 +258,4 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
        above. */
     __asm volatile("cpsie i");
 }
+#endif
