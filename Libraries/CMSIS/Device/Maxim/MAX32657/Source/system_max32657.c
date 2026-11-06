@@ -192,7 +192,7 @@ __weak void SystemInit(void)
     __enable_irq();
 
     // Internal cache controller only accessible in secure world.
-#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+#if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE == 1)
     // Enable the internal cache controller.
     MXC_ICC_Enable();
 
