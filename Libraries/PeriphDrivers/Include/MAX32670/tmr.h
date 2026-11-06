@@ -7,7 +7,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -140,15 +140,17 @@ typedef enum {
 /**
  * @brief       Clock settings 
  * @note        8M and 32M clocks can be used for Timers 0,1,2 and 3
- *              32K and 80K clocks can only be used for Timers 4 and 5
+ *              32K and 80K clocks can only be used for Timers 4 and 5 (LPTMR0, LPTMR1)
+ *              AOD clock can only be used for Timers 4 and 5 (LPTMR0, LPTMR1)
  */
 typedef enum {
-    MXC_TMR_APB_CLK = 0, ///< PCLK
+    MXC_TMR_APB_CLK = 0, ///< PCLK (for TMR0-TMR3 only)
     MXC_TMR_EXT_CLK = 1, ///< External Clock
     MXC_TMR_IBRO_CLK = 2, ///< 7.3728MHz Clock
     MXC_TMR_ERFO_CLK = 3, ///< 32MHz
     MXC_TMR_ERTCO_CLK = 4, ///< 32.768KHz Clock
     MXC_TMR_INRO_CLK = 5, ///< 80KHz Clock
+    MXC_TMR_AOD_CLK = 6, ///< Always-On Domain Clock (for LPTMR0 and LPTMR1 only)
 
     // Legacy names
     MXC_TMR_8M_CLK = MXC_TMR_IBRO_CLK, ///< 8MHz Clock
@@ -189,15 +191,6 @@ typedef void (*mxc_tmr_complete_t)(int error);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins);
-
-/**
- * @brief   Set the timer input clock frequency.
- * @param   tmr  Pointer to timer instance.
- * @param   clksrc_freq Timer input clock frequency in Hz.
- * @note    Call this after selecting MXC_TMR_EXT_CLK on RevB timers. This API has no effect
- *          on timer revisions without selectable clock sources.
- */
-void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq);
 
 /**
  * @brief   Shutdown timer module clock.
