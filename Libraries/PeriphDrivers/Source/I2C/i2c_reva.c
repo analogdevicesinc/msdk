@@ -496,6 +496,10 @@ int MXC_I2C_RevA_Stop(mxc_i2c_reva_regs_t *i2c)
 
     while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_STOP) {}
 
+    // MSTCTRL.STOP clears when the STOP condition starts, not when it is done.
+    // Wait for the bus to go idle so the STOP is on the bus before returning.
+    while (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {}
+
     return E_NO_ERROR;
 }
 
@@ -889,6 +893,8 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
     mxc_i2c_reva_regs_t *i2c = req->i2c; // Save off pointer for faster access
     unsigned int written = 0;
     unsigned int read = 0;
+    uint32_t status;
+    bool restart_sent;
 
     if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
         return E_NOT_SUPPORTED;
@@ -902,10 +908,18 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Check and return BUSY if the Bus is not ready
-    if (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {
+    // Check and return BUSY if another controller is using the bus. After a
+    // transaction that ended in a repeated START this controller is still
+    // driving the bus (STATUS.MST_BUSY set), so that does not count as busy.
+    status = i2c->status;
+    if ((status & (MXC_F_I2C_REVA_STATUS_BUSY | MXC_F_I2C_REVA_STATUS_MST_BUSY)) ==
+        MXC_F_I2C_REVA_STATUS_BUSY) {
         return E_BUSY;
     }
+
+    // If so, that transaction's repeated START is already on the bus and the
+    // controller is waiting for the next address.
+    restart_sent = (status & MXC_F_I2C_REVA_STATUS_MST_BUSY) != 0;
 
     // if(!read | write)
     //  Start
@@ -960,9 +974,14 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
             i2c->rxctrl1 = req->rx_len; // 0 for 256, otherwise number of bytes to read
         }
 
-        MXC_I2C_Start((mxc_i2c_regs_t *)i2c); // Start or Restart as needed
+        // A read with no write phase right after a repeated START only needs its
+        // address. Requesting another repeated START here puts an empty Sr-Sr on
+        // the bus, and the read below then runs twice.
+        if (!(restart_sent && (req->tx_len == 0))) {
+            MXC_I2C_Start((mxc_i2c_regs_t *)i2c); // Start or Restart as needed
 
-        while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
+            while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
+        }
 
         i2c->fifo = (req->addr << 1) | 0x1; // Load slave address with read bit.
     }
@@ -1004,10 +1023,7 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
     if (req->restart) {
         i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_RESTART;
     } else {
-        i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
-
-        while ((i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_STOP)) {}
-        // Wait for Transaction to finish
+        MXC_I2C_RevA_Stop(i2c);
     }
 
     while (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE)) {}
@@ -1026,6 +1042,8 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
 {
     int i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)(req->i2c));
     mxc_i2c_reva_regs_t *i2c = req->i2c;
+    uint32_t status;
+    bool restart_sent;
 
     if (i2cNum < 0) {
         return E_BAD_PARAM;
@@ -1040,8 +1058,15 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
             return E_NOT_SUPPORTED;
         }
 
-        while (i2c->status & MXC_F_I2C_REVA_STATUS_BUSY) {}
-        // Wait for the last Transaction to finish and the Bus is ready
+        // Wait for another controller to release the bus. After a transaction that
+        // ended in a repeated START this controller is still driving the bus
+        // (STATUS.MST_BUSY set), its repeated START is already on the bus, and the
+        // controller is waiting for the next address.
+        do {
+            status = i2c->status;
+        } while ((status & (MXC_F_I2C_REVA_STATUS_BUSY | MXC_F_I2C_REVA_STATUS_MST_BUSY)) ==
+                 MXC_F_I2C_REVA_STATUS_BUSY);
+        restart_sent = (status & MXC_F_I2C_REVA_STATUS_MST_BUSY) != 0;
 
         AsyncRequests[i2cNum] = (void *)req;
         AsyncWritten[i2cNum] = 0;
@@ -1056,14 +1081,16 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
         if (req->tx_len) {
             i2c->fifo = (req->addr << 1) & ~0x1; // Load the slave address with write bit set
         } else if (req->rx_len) {
-            i2c->fifo = (req->addr << 1) | 0x1; // Load the slave address with read bit set
-
-            /* Set the number of bytes to read */
+            /* Set the number of bytes to read before loading the address: after a
+             * repeated START the controller sends the address as soon as it is in
+             * the FIFO. */
             if (req->rx_len > MXC_I2C_REVA_MAX_FIFO_TRANSACTION) {
                 i2c->rxctrl1 = 0;
             } else {
                 i2c->rxctrl1 = req->rx_len; // 0 for 256, otherwise number of bytes to read
             }
+
+            i2c->fifo = (req->addr << 1) | 0x1; // Load the slave address with read bit set
 
             /* Enable RX Threshold interrupt for when the FIFO is full */
             i2c->inten0 |= (MXC_F_I2C_REVA_INTEN0_RX_THD | MXC_F_I2C_REVA_INTEN0_DONE);
@@ -1072,7 +1099,11 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
             return E_BAD_PARAM;
         }
 
-        MXC_I2C_Start((mxc_i2c_regs_t *)i2c);
+        // Right after a repeated START the address in the FIFO is all that is needed;
+        // requesting another repeated START would put an empty Sr-Sr on the bus.
+        if (!restart_sent) {
+            MXC_I2C_Start((mxc_i2c_regs_t *)i2c);
+        }
 
         /* Fill the FIFO as nessary */
         MXC_I2C_RevA_MasterAsyncHandler(i2cNum);
@@ -1087,9 +1118,15 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
 {
     int error;
     int8_t i2cNum;
+    bool restart_sent;
 
     mxc_i2c_reva_regs_t *i2c = req->i2c; // Save off pointer for faster access
     i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    // After a transaction that ended in a repeated START this controller is still
+    // driving the bus (STATUS.MST_BUSY set), its repeated START is already on the
+    // bus, and the controller is waiting for the next address.
+    restart_sent = (i2c->status & MXC_F_I2C_REVA_STATUS_MST_BUSY) != 0;
 
     if (req->addr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
         return E_NOT_SUPPORTED;
@@ -1162,9 +1199,14 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
             MXC_I2C_ReadRXFIFODMA((mxc_i2c_regs_t *)i2c, req->rx_buf, req->rx_len, NULL);
 #endif
 
-            MXC_I2C_Start((mxc_i2c_regs_t *)i2c); // Start or Restart as needed
+            // A read with no write phase right after a repeated START only needs its
+            // address. Requesting another repeated START here puts an empty Sr-Sr on
+            // the bus.
+            if (!(restart_sent && (req->tx_len == 0))) {
+                MXC_I2C_Start((mxc_i2c_regs_t *)i2c); // Start or Restart as needed
 
-            while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
+                while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART) {}
+            }
 
             i2c->fifo = ((req->addr) << 1) | 0x1; // Load the slave address with write bit set
             while (!((i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_ADDR_ACK) ||
@@ -1203,7 +1245,8 @@ void MXC_I2C_RevA_DMACallback(int ch, int error)
                 if (temp_req->restart) {
                     (temp_req->i2c)->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_RESTART;
                 } else {
-                    (temp_req->i2c)->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
+                    // Let the STOP finish before the callback (see MasterAsyncHandler)
+                    MXC_I2C_RevA_Stop(temp_req->i2c);
                 }
 
                 // Callback if not NULL
@@ -1220,7 +1263,8 @@ void MXC_I2C_RevA_DMACallback(int ch, int error)
                 if (temp_req->restart) {
                     (temp_req->i2c)->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_RESTART;
                 } else {
-                    (temp_req->i2c)->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
+                    // Let the STOP finish before the callback (see MasterAsyncHandler)
+                    MXC_I2C_RevA_Stop(temp_req->i2c);
                 }
 
                 // Callback if not NULL
@@ -1476,11 +1520,13 @@ void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
         i2c->intfl0 = i2c->intfl0;
         i2c->intfl1 = i2c->intfl1;
 
-        /* Send a restart or stop at the end of the transaction */
+        /* Send a restart or stop at the end of the transaction. Let the STOP finish
+         * before the callback, so the caller does not start a new transaction while
+         * it is still on the bus. */
         if (req->restart) {
             i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_RESTART;
         } else {
-            i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
+            MXC_I2C_RevA_Stop(i2c);
         }
 
         /* Call the callback */
