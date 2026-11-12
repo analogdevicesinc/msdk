@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.5.1
- * Copyright (C) 2021 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V11.3.1
+ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -87,7 +87,7 @@
 #if ( configAPPLICATION_ALLOCATED_HEAP == 1 )
 
 /* The application writer has already defined the array used for the RTOS
-* heap - probably so it can be placed in a special segment or address. */
+ * heap - probably so it can be placed in a special segment or address. */
     extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
 #else
     PRIVILEGED_DATA static uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
@@ -103,8 +103,8 @@ typedef struct A_BLOCK_LINK
 } BlockLink_t;
 
 
-static const uint16_t heapSTRUCT_SIZE = ( ( sizeof( BlockLink_t ) + ( portBYTE_ALIGNMENT - 1 ) ) & ~( ( size_t ) portBYTE_ALIGNMENT_MASK ) );
-#define heapMINIMUM_BLOCK_SIZE    ( ( size_t ) ( heapSTRUCT_SIZE * 2 ) )
+static const size_t xHeapStructSize = ( ( sizeof( BlockLink_t ) + ( size_t ) ( portBYTE_ALIGNMENT - 1 ) ) & ~( ( size_t ) portBYTE_ALIGNMENT_MASK ) );
+#define heapMINIMUM_BLOCK_SIZE    ( ( size_t ) ( xHeapStructSize * 2 ) )
 
 /* Create a couple of list links to mark the start and end of the list. */
 PRIVILEGED_DATA static BlockLink_t xStart, xEnd;
@@ -112,6 +112,9 @@ PRIVILEGED_DATA static BlockLink_t xStart, xEnd;
 /* Keeps track of the number of free bytes remaining, but says nothing about
  * fragmentation. */
 PRIVILEGED_DATA static size_t xFreeBytesRemaining = configADJUSTED_HEAP_SIZE;
+
+/* Indicates whether the heap has been initialised or not. */
+PRIVILEGED_DATA static BaseType_t xHeapHasBeenInitialised = pdFALSE;
 
 /*-----------------------------------------------------------*/
 
@@ -155,9 +158,48 @@ void * pvPortMalloc( size_t xWantedSize )
     BlockLink_t * pxBlock;
     BlockLink_t * pxPreviousBlock;
     BlockLink_t * pxNewBlockLink;
-    PRIVILEGED_DATA static BaseType_t xHeapHasBeenInitialised = pdFALSE;
     void * pvReturn = NULL;
     size_t xAdditionalRequiredSize;
+    size_t xAllocatedBlockSize = 0;
+
+    if( xWantedSize > 0 )
+    {
+        /* The wanted size must be increased so it can contain a BlockLink_t
+         * structure in addition to the requested amount of bytes. */
+        if( heapADD_WILL_OVERFLOW( xWantedSize, xHeapStructSize ) == 0 )
+        {
+            xWantedSize += xHeapStructSize;
+
+            /* Ensure that blocks are always aligned to the required number
+             * of bytes. */
+            if( ( xWantedSize & portBYTE_ALIGNMENT_MASK ) != 0x00 )
+            {
+                /* Byte alignment required. */
+                xAdditionalRequiredSize = portBYTE_ALIGNMENT - ( xWantedSize & portBYTE_ALIGNMENT_MASK );
+
+                if( heapADD_WILL_OVERFLOW( xWantedSize, xAdditionalRequiredSize ) == 0 )
+                {
+                    xWantedSize += xAdditionalRequiredSize;
+                }
+                else
+                {
+                    xWantedSize = 0;
+                }
+            }
+            else
+            {
+                mtCOVERAGE_TEST_MARKER();
+            }
+        }
+        else
+        {
+            xWantedSize = 0;
+        }
+    }
+    else
+    {
+        mtCOVERAGE_TEST_MARKER();
+    }
 
     vTaskSuspendAll();
     {
@@ -167,23 +209,6 @@ void * pvPortMalloc( size_t xWantedSize )
         {
             prvHeapInit();
             xHeapHasBeenInitialised = pdTRUE;
-        }
-
-        if( xWantedSize > 0 )
-        {
-            /* The wanted size must be increased so it can contain a BlockLink_t
-             * structure in addition to the requested amount of bytes. Some
-             * additional increment may also be needed for alignment. */
-            xAdditionalRequiredSize = heapSTRUCT_SIZE + portBYTE_ALIGNMENT - ( xWantedSize & portBYTE_ALIGNMENT_MASK );
-
-            if( heapADD_WILL_OVERFLOW( xWantedSize, xAdditionalRequiredSize ) == 0 )
-            {
-                xWantedSize += xAdditionalRequiredSize;
-            }
-            else
-            {
-                xWantedSize = 0;
-            }
         }
 
         /* Check the block size we are trying to allocate is not so large that the
@@ -210,7 +235,7 @@ void * pvPortMalloc( size_t xWantedSize )
                 {
                     /* Return the memory space - jumping over the BlockLink_t structure
                      * at its start. */
-                    pvReturn = ( void * ) ( ( ( uint8_t * ) pxPreviousBlock->pxNextFreeBlock ) + heapSTRUCT_SIZE );
+                    pvReturn = ( void * ) ( ( ( uint8_t * ) pxPreviousBlock->pxNextFreeBlock ) + xHeapStructSize );
 
                     /* This block is being returned for use so must be taken out of the
                      * list of free blocks. */
@@ -229,11 +254,15 @@ void * pvPortMalloc( size_t xWantedSize )
                         pxNewBlockLink->xBlockSize = pxBlock->xBlockSize - xWantedSize;
                         pxBlock->xBlockSize = xWantedSize;
 
-                        /* Insert the new block into the list of free blocks. */
+                        /* Insert the new block into the list of free blocks.
+                         * The list of free blocks is sorted by their size, we have to
+                         * iterate to find the right place to insert new block. */
                         prvInsertBlockIntoFreeList( ( pxNewBlockLink ) );
                     }
 
                     xFreeBytesRemaining -= pxBlock->xBlockSize;
+
+                    xAllocatedBlockSize = pxBlock->xBlockSize;
 
                     /* The block is being returned - it is allocated and owned
                      * by the application and has no "next" block. */
@@ -243,7 +272,10 @@ void * pvPortMalloc( size_t xWantedSize )
             }
         }
 
-        traceMALLOC( pvReturn, xWantedSize );
+        traceMALLOC( pvReturn, xAllocatedBlockSize );
+
+        /* Prevent compiler warnings when trace macros are not used. */
+        ( void ) xAllocatedBlockSize;
     }
     ( void ) xTaskResumeAll();
 
@@ -269,7 +301,7 @@ void vPortFree( void * pv )
     {
         /* The memory being freed will have an BlockLink_t structure immediately
          * before it. */
-        puc -= heapSTRUCT_SIZE;
+        puc -= xHeapStructSize;
 
         /* This unexpected casting is to keep some compilers from issuing
          * byte alignment warnings. */
@@ -287,7 +319,7 @@ void vPortFree( void * pv )
                 heapFREE_BLOCK( pxLink );
                 #if ( configHEAP_CLEAR_MEMORY_ON_FREE == 1 )
                 {
-                    ( void ) memset( puc + heapSTRUCT_SIZE, 0, pxLink->xBlockSize - heapSTRUCT_SIZE );
+                    ( void ) memset( puc + xHeapStructSize, 0, pxLink->xBlockSize - xHeapStructSize );
                 }
                 #endif
 
@@ -358,5 +390,18 @@ static void prvHeapInit( void ) /* PRIVILEGED_FUNCTION */
     pxFirstFreeBlock = ( BlockLink_t * ) pucAlignedHeap;
     pxFirstFreeBlock->xBlockSize = configADJUSTED_HEAP_SIZE;
     pxFirstFreeBlock->pxNextFreeBlock = &xEnd;
+}
+/*-----------------------------------------------------------*/
+
+/*
+ * Reset the state in this file. This state is normally initialized at start up.
+ * This function must be called by the application before restarting the
+ * scheduler.
+ */
+void vPortHeapResetState( void )
+{
+    xFreeBytesRemaining = configADJUSTED_HEAP_SIZE;
+
+    xHeapHasBeenInitialised = pdFALSE;
 }
 /*-----------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2020, Arm Limited. All rights reserved.
+ * Copyright (c) 2019-2024, Arm Limited. All rights reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -24,8 +24,8 @@
 
 /*
  * This file contains the implementation of APIs which are defined in
- * os_wrapper/mutex.h by TF-M(tag: TF-Mv1.1). The implementation is based
- * on FreeRTOS mutex type semaphore.
+ * \interface/include/os_wrapper/mutex.h by TF-M(tag: TF-Mv2.0.0).
+ * The implementation is based on FreeRTOS mutex type semaphore.
  */
 
 #include "os_wrapper/mutex.h"
@@ -34,65 +34,79 @@
 #include "semphr.h"
 #include "mpu_wrappers.h"
 
-#if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	/*
-	 * In the static allocation, the RAM is required to hold the semaphore's
-	 * state.
-	 */
-	StaticSemaphore_t xSecureMutexBuffer;
+#if ( configSUPPORT_STATIC_ALLOCATION == 1 )
+
+/*
+ * In the static allocation, the RAM is required to hold the semaphore's
+ * state.
+ */
+    StaticSemaphore_t xSecureMutexBuffer;
 #endif
 
 void * os_wrapper_mutex_create( void )
 {
-SemaphoreHandle_t xMutexHandle = NULL;
+    SemaphoreHandle_t xMutexHandle = NULL;
 
-#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	xMutexHandle = xSemaphoreCreateMutex();
-#elif( configSUPPORT_STATIC_ALLOCATION == 1 )
-	xMutexHandle = xSemaphoreCreateMutexStatic( &xSecureMutexBuffer );
-#endif
-	return ( void * ) xMutexHandle;
+    #if ( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+        xMutexHandle = xSemaphoreCreateMutex();
+    #elif ( configSUPPORT_STATIC_ALLOCATION == 1 )
+        xMutexHandle = xSemaphoreCreateMutexStatic( &xSecureMutexBuffer );
+    #endif
+    return ( void * ) xMutexHandle;
 }
 /*-----------------------------------------------------------*/
 
-uint32_t os_wrapper_mutex_acquire( void * handle, uint32_t timeout )
+uint32_t os_wrapper_mutex_acquire( void * handle,
+                                   uint32_t timeout )
 {
-BaseType_t xRet;
+    BaseType_t xRet;
 
-	if( ! handle )
-		return OS_WRAPPER_ERROR;
+    if( !handle )
+    {
+        return OS_WRAPPER_ERROR;
+    }
 
-	xRet = xSemaphoreTake( ( SemaphoreHandle_t ) handle,
-						   ( timeout == OS_WRAPPER_WAIT_FOREVER ) ?
+    xRet = xSemaphoreTake( ( SemaphoreHandle_t ) handle,
+                           ( timeout == OS_WRAPPER_WAIT_FOREVER ) ?
                            portMAX_DELAY : ( TickType_t ) timeout );
 
-	if( xRet != pdPASS )
-		return OS_WRAPPER_ERROR;
-	else
-		return OS_WRAPPER_SUCCESS;
+    if( xRet != pdPASS )
+    {
+        return OS_WRAPPER_ERROR;
+    }
+    else
+    {
+        return OS_WRAPPER_SUCCESS;
+    }
 }
 /*-----------------------------------------------------------*/
 
 uint32_t os_wrapper_mutex_release( void * handle )
 {
-BaseType_t xRet;
+    BaseType_t xRet;
 
-	if( !handle )
-		return OS_WRAPPER_ERROR;
+    if( !handle )
+    {
+        return OS_WRAPPER_ERROR;
+    }
 
-	xRet = xSemaphoreGive( ( SemaphoreHandle_t ) handle );
+    xRet = xSemaphoreGive( ( SemaphoreHandle_t ) handle );
 
-	if( xRet != pdPASS )
-		return OS_WRAPPER_ERROR;
-	else
-		return OS_WRAPPER_SUCCESS;
+    if( xRet != pdPASS )
+    {
+        return OS_WRAPPER_ERROR;
+    }
+    else
+    {
+        return OS_WRAPPER_SUCCESS;
+    }
 }
 /*-----------------------------------------------------------*/
 
 uint32_t os_wrapper_mutex_delete( void * handle )
 {
-	vSemaphoreDelete( ( SemaphoreHandle_t ) handle );
+    vSemaphoreDelete( ( SemaphoreHandle_t ) handle );
 
-	return OS_WRAPPER_SUCCESS;
+    return OS_WRAPPER_SUCCESS;
 }
 /*-----------------------------------------------------------*/

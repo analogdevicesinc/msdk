@@ -111,9 +111,11 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWrit
 static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                           const char *pcCommandString);
 
+#if configUSE_TICKLESS_IDLE
 /* Enable or disable tickless operation */
 static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
                               const char *pcCommandString);
+#endif
 
 /* Structure that defines the "ps" command line command. */
 static const CLI_Command_Definition_t xTaskStats = {
@@ -131,6 +133,7 @@ static const CLI_Command_Definition_t xUptime = {
     0 /* No parameters are expected. */
 };
 
+#if configUSE_TICKLESS_IDLE
 /* Structure that defines the "tickless" command line command. */
 static const CLI_Command_Definition_t xTickless = {
     "tickless", /* The command string to type. */
@@ -138,6 +141,7 @@ static const CLI_Command_Definition_t xTickless = {
     prvTickless, /* The function to run. */
     1 /* One parameter expected */
 };
+#endif
 
 /* Structure that defines the "echo_3_parameters" command line command.  This
 takes exactly three parameters that the command simply echos back one at a
@@ -167,7 +171,9 @@ void vRegisterCLICommands(void)
     /* Register all the command line commands defined immediately above. */
     FreeRTOS_CLIRegisterCommand(&xTaskStats);
     FreeRTOS_CLIRegisterCommand(&xUptime);
+#if configUSE_TICKLESS_IDLE
     FreeRTOS_CLIRegisterCommand(&xTickless);
+#endif
     FreeRTOS_CLIRegisterCommand(&xThreeParameterEcho);
     FreeRTOS_CLIRegisterCommand(&xParameterEcho);
 }
@@ -335,6 +341,7 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBuff
     return xReturn;
 }
 
+#if configUSE_TICKLESS_IDLE
 static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
                               const char *pcCommandString)
 {
@@ -361,3 +368,4 @@ static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
     }
     return pdFALSE;
 }
+#endif

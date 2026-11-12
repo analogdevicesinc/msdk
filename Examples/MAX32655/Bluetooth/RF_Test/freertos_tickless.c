@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,8 @@
 #define MAX_WUT_SNOOZE (5 * configRTC_TICK_RATE_HZ)
 #define MIN_SYSTICK 2
 #define MIN_WUT_TICKS 50
+
+#if configUSE_TICKLESS_IDLE
 
 static uint32_t wutSnooze = 0;
 static int wutSnoozeValid = 0;
@@ -170,3 +172,4 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     vTaskStepTick((actual_ticks / WUT_RATIO));
     portEXIT_CRITICAL();
 }
+#endif

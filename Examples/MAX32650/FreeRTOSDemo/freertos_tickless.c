@@ -9,7 +9,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,8 @@
 #define MAX_SNOOZE 0xFF
 #define MIN_SYSTICK 2
 #define MIN_RTC_TICKS 5
+
+#if configUSE_TICKLESS_IDLE
 
 static uint32_t residual = 0;
 
@@ -191,3 +193,4 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     vTaskStepTick(actual_ticks / RTC_RATIO);
     portEXIT_CRITICAL();
 }
+#endif

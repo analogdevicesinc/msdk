@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,6 +109,7 @@ void switchToHIRC(void)
     SystemCoreClockUpdate();
 }
 
+#if configUSE_TICKLESS_IDLE
 /*
  *  Enter deep sleep mode
  *
@@ -161,6 +162,7 @@ static void deepSleep(void)
     /* Restore the system clock */
     switchToHIRC();
 }
+#endif
 
 /*
  *  Snooze the wake up timer
@@ -173,6 +175,7 @@ void wutHitSnooze(void)
     wutSnoozeValid = 1;
 }
 
+#if configUSE_TICKLESS_IDLE
 /*
  * This function overrides vPortSuppressTicksAndSleep in portable/.../ARM_CM4F/port.c
  *
@@ -272,3 +275,4 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     vTaskStepTick((actual_ticks / WUT_RATIO));
     portEXIT_CRITICAL();
 }
+#endif

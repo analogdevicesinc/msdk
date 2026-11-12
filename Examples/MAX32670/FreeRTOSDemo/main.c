@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -425,7 +425,7 @@ int main(void)
 
     //  LP_EnableRTCAlarmWakeup();
     /* If running tickless idle, must reduce baud rate to avoid losing character */
-    if (MXC_UART_Init(ConsoleUART, 115200) < E_NO_ERROR) {
+    if (MXC_UART_Init(ConsoleUART, 115200, MXC_UART_APB_CLK) < E_NO_ERROR) {
         MXC_ASSERT_FAIL();
     }
 

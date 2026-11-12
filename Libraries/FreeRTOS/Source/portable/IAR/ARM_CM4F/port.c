@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.5.1
- * Copyright (C) 2021 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V11.3.1
+ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -45,10 +45,14 @@
     #error configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to 0.  See http: /*www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
 #endif
 
+/* Prototype of all Interrupt Service Routines (ISRs). */
+typedef void ( * portISR_t )( void );
+
 /* Constants required to manipulate the core.  Registers first... */
 #define portNVIC_SYSTICK_CTRL_REG             ( *( ( volatile uint32_t * ) 0xe000e010 ) )
 #define portNVIC_SYSTICK_LOAD_REG             ( *( ( volatile uint32_t * ) 0xe000e014 ) )
 #define portNVIC_SYSTICK_CURRENT_VALUE_REG    ( *( ( volatile uint32_t * ) 0xe000e018 ) )
+#define portNVIC_SHPR2_REG                    ( *( ( volatile uint32_t * ) 0xe000ed1c ) )
 #define portNVIC_SHPR3_REG                    ( *( ( volatile uint32_t * ) 0xe000ed20 ) )
 /* ...then bits in the registers. */
 #define portNVIC_SYSTICK_CLK_BIT              ( 1UL << 2UL )
@@ -65,8 +69,14 @@
 #define portCORTEX_M7_r0p1_ID                 ( 0x410FC271UL )
 #define portCORTEX_M7_r0p0_ID                 ( 0x410FC270UL )
 
-#define portNVIC_PENDSV_PRI                   ( ( ( uint32_t ) configKERNEL_INTERRUPT_PRIORITY ) << 16UL )
-#define portNVIC_SYSTICK_PRI                  ( ( ( uint32_t ) configKERNEL_INTERRUPT_PRIORITY ) << 24UL )
+#define portMIN_INTERRUPT_PRIORITY            ( 255UL )
+#define portNVIC_PENDSV_PRI                   ( ( ( uint32_t ) portMIN_INTERRUPT_PRIORITY ) << 16UL )
+#define portNVIC_SYSTICK_PRI                  ( ( ( uint32_t ) portMIN_INTERRUPT_PRIORITY ) << 24UL )
+
+/* Constants used to check the installation of the FreeRTOS interrupt handlers. */
+#define portSCB_VTOR_REG                      ( *( ( portISR_t ** ) 0xE000ED08 ) )
+#define portVECTOR_INDEX_SVC                  ( 11 )
+#define portVECTOR_INDEX_PENDSV               ( 14 )
 
 /* Constants required to check the validity of an interrupt priority. */
 #define portFIRST_USER_INTERRUPT_NUMBER       ( 16 )
@@ -140,6 +150,11 @@ extern void vPortEnableVFP( void );
  */
 static void prvTaskExitError( void );
 
+/*
+ * FreeRTOS handlers implemented in assembly.
+ */
+extern void vPortSVCHandler( void );
+extern void xPortPendSVHandler( void );
 /*-----------------------------------------------------------*/
 
 /* Each task maintains its own interrupt status in the critical nesting
@@ -239,19 +254,50 @@ static void prvTaskExitError( void )
  */
 BaseType_t xPortStartScheduler( void )
 {
-    /* configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to 0.
-     * See https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
-    configASSERT( configMAX_SYSCALL_INTERRUPT_PRIORITY );
-
     /* This port can be used on all revisions of the Cortex-M7 core other than
      * the r0p1 parts.  r0p1 parts should use the port from the
      * /source/portable/GCC/ARM_CM7/r0p1 directory. */
     configASSERT( portCPUID != portCORTEX_M7_r0p1_ID );
     configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
 
+    /* An application can install FreeRTOS interrupt handlers in one of the
+     * following ways:
+     * 1. Direct Routing - Install the functions vPortSVCHandler and
+     *    xPortPendSVHandler for SVCall and PendSV interrupts respectively.
+     * 2. Indirect Routing - Install separate handlers for SVCall and PendSV
+     *    interrupts and route program control from those handlers to
+     *    vPortSVCHandler and xPortPendSVHandler functions.
+     *
+     * Applications that use Indirect Routing must set
+     * configCHECK_HANDLER_INSTALLATION to 0 in their FreeRTOSConfig.h. Direct
+     * routing, which is validated here when configCHECK_HANDLER_INSTALLATION
+     * is 1, should be preferred when possible. */
+    #if ( configCHECK_HANDLER_INSTALLATION == 1 )
+    {
+        const portISR_t * const pxVectorTable = portSCB_VTOR_REG;
+
+        /* Validate that the application has correctly installed the FreeRTOS
+         * handlers for SVCall and PendSV interrupts. We do not check the
+         * installation of the SysTick handler because the application may
+         * choose to drive the RTOS tick using a timer other than the SysTick
+         * timer by overriding the weak function vPortSetupTimerInterrupt().
+         *
+         * Assertion failures here indicate incorrect installation of the
+         * FreeRTOS handlers. For help installing the FreeRTOS handlers, see
+         * https://www.freertos.org/Why-FreeRTOS/FAQs.
+         *
+         * Systems with a configurable address for the interrupt vector table
+         * can also encounter assertion failures or even system faults here if
+         * VTOR is not set correctly to point to the application's vector table. */
+        configASSERT( pxVectorTable[ portVECTOR_INDEX_SVC ] == vPortSVCHandler );
+        configASSERT( pxVectorTable[ portVECTOR_INDEX_PENDSV ] == xPortPendSVHandler );
+    }
+    #endif /* configCHECK_HANDLER_INSTALLATION */
+
     #if ( configASSERT_DEFINED == 1 )
     {
-        volatile uint32_t ulOriginalPriority;
+        volatile uint8_t ucOriginalPriority;
+        volatile uint32_t ulImplementedPrioBits = 0;
         volatile uint8_t * const pucFirstUserPriorityRegister = ( volatile uint8_t * const ) ( portNVIC_IP_REGISTERS_OFFSET_16 + portFIRST_USER_INTERRUPT_NUMBER );
         volatile uint8_t ucMaxPriorityValue;
 
@@ -261,7 +307,7 @@ BaseType_t xPortStartScheduler( void )
          * ensure interrupt entry is as fast and simple as possible.
          *
          * Save the interrupt priority value that is about to be clobbered. */
-        ulOriginalPriority = *pucFirstUserPriorityRegister;
+        ucOriginalPriority = *pucFirstUserPriorityRegister;
 
         /* Determine the number of priority bits available.  First write to all
          * possible bits. */
@@ -273,33 +319,53 @@ BaseType_t xPortStartScheduler( void )
         /* Use the same mask on the maximum system call priority. */
         ucMaxSysCallPriority = configMAX_SYSCALL_INTERRUPT_PRIORITY & ucMaxPriorityValue;
 
+        /* Check that the maximum system call priority is nonzero after
+         * accounting for the number of priority bits supported by the
+         * hardware. A priority of 0 is invalid because setting the BASEPRI
+         * register to 0 unmasks all interrupts, and interrupts with priority 0
+         * cannot be masked using BASEPRI.
+         * See https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html */
+        configASSERT( ucMaxSysCallPriority );
+
+        /* Check that the bits not implemented in hardware are zero in
+         * configMAX_SYSCALL_INTERRUPT_PRIORITY. */
+        configASSERT( ( configMAX_SYSCALL_INTERRUPT_PRIORITY & ( uint8_t ) ( ~( uint32_t ) ucMaxPriorityValue ) ) == 0U );
+
         /* Calculate the maximum acceptable priority group value for the number
          * of bits read back. */
-        ulMaxPRIGROUPValue = portMAX_PRIGROUP_BITS;
 
         while( ( ucMaxPriorityValue & portTOP_BIT_OF_BYTE ) == portTOP_BIT_OF_BYTE )
         {
-            ulMaxPRIGROUPValue--;
+            ulImplementedPrioBits++;
             ucMaxPriorityValue <<= ( uint8_t ) 0x01;
         }
 
-        #ifdef __NVIC_PRIO_BITS
+        if( ulImplementedPrioBits == 8 )
         {
-            /* Check the CMSIS configuration that defines the number of
-             * priority bits matches the number of priority bits actually queried
-             * from the hardware. */
-            configASSERT( ( portMAX_PRIGROUP_BITS - ulMaxPRIGROUPValue ) == __NVIC_PRIO_BITS );
+            /* When the hardware implements 8 priority bits, there is no way for
+             * the software to configure PRIGROUP to not have sub-priorities. As
+             * a result, the least significant bit is always used for sub-priority
+             * and there are 128 preemption priorities and 2 sub-priorities.
+             *
+             * This may cause some confusion in some cases - for example, if
+             * configMAX_SYSCALL_INTERRUPT_PRIORITY is set to 5, both 5 and 4
+             * priority interrupts will be masked in Critical Sections as those
+             * are at the same preemption priority. This may appear confusing as
+             * 4 is higher (numerically lower) priority than
+             * configMAX_SYSCALL_INTERRUPT_PRIORITY and therefore, should not
+             * have been masked. Instead, if we set configMAX_SYSCALL_INTERRUPT_PRIORITY
+             * to 4, this confusion does not happen and the behaviour remains the same.
+             *
+             * The following assert ensures that the sub-priority bit in the
+             * configMAX_SYSCALL_INTERRUPT_PRIORITY is clear to avoid the above mentioned
+             * confusion. */
+            configASSERT( ( configMAX_SYSCALL_INTERRUPT_PRIORITY & 0x1U ) == 0U );
+            ulMaxPRIGROUPValue = 0;
         }
-        #endif
-
-        #ifdef configPRIO_BITS
+        else
         {
-            /* Check the FreeRTOS configuration that defines the number of
-             * priority bits matches the number of priority bits actually queried
-             * from the hardware. */
-            configASSERT( ( portMAX_PRIGROUP_BITS - ulMaxPRIGROUPValue ) == configPRIO_BITS );
+            ulMaxPRIGROUPValue = portMAX_PRIGROUP_BITS - ulImplementedPrioBits;
         }
-        #endif
 
         /* Shift the priority group value back to its position within the AIRCR
          * register. */
@@ -308,13 +374,15 @@ BaseType_t xPortStartScheduler( void )
 
         /* Restore the clobbered interrupt priority register to its original
          * value. */
-        *pucFirstUserPriorityRegister = ulOriginalPriority;
+        *pucFirstUserPriorityRegister = ucOriginalPriority;
     }
     #endif /* configASSERT_DEFINED */
 
-    /* Make PendSV and SysTick the lowest priority interrupts. */
+    /* Make PendSV and SysTick the lowest priority interrupts, and make SVCall
+     * the highest priority. */
     portNVIC_SHPR3_REG |= portNVIC_PENDSV_PRI;
     portNVIC_SHPR3_REG |= portNVIC_SYSTICK_PRI;
+    portNVIC_SHPR2_REG = 0;
 
     /* Start the timer that generates the tick ISR.  Interrupts are disabled
      * here already. */
@@ -381,13 +449,20 @@ void xPortSysTickHandler( void )
      * save and then restore the interrupt mask value as its value is already
      * known. */
     portDISABLE_INTERRUPTS();
+    traceISR_ENTER();
     {
         /* Increment the RTOS tick. */
         if( xTaskIncrementTick() != pdFALSE )
         {
+            traceISR_EXIT_TO_SCHEDULER();
+
             /* A context switch is required.  Context switching is performed in
              * the PendSV interrupt.  Pend the PendSV interrupt. */
             portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT;
+        }
+        else
+        {
+            traceISR_EXIT();
         }
     }
     portENABLE_INTERRUPTS();
@@ -668,17 +743,17 @@ __weak void vPortSetupTimerInterrupt( void )
              * be set to a value equal to or numerically *higher* than
              * configMAX_SYSCALL_INTERRUPT_PRIORITY.
              *
-             * Interrupts that	use the FreeRTOS API must not be left at their
-             * default priority of	zero as that is the highest possible priority,
+             * Interrupts that  use the FreeRTOS API must not be left at their
+             * default priority of  zero as that is the highest possible priority,
              * which is guaranteed to be above configMAX_SYSCALL_INTERRUPT_PRIORITY,
-             * and	therefore also guaranteed to be invalid.
+             * and  therefore also guaranteed to be invalid.
              *
              * FreeRTOS maintains separate thread and ISR API functions to ensure
              * interrupt entry is as fast and simple as possible.
              *
              * The following links provide detailed information:
              * https://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html
-             * https://www.FreeRTOS.org/FAQHelp.html */
+             * https://www.freertos.org/Why-FreeRTOS/FAQs */
             configASSERT( ucCurrentPriority >= ucMaxSysCallPriority );
         }
 
