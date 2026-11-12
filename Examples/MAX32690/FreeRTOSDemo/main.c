@@ -390,7 +390,7 @@ int main(void)
     MXC_LP_EnableWUTAlarmWakeup();
 
     NVIC_ClearPendingIRQ(WUT0_IRQn);
-	NVIC_EnableIRQ(WUT0_IRQn);
+    NVIC_EnableIRQ(WUT0_IRQn);
 
     /* Configure and start the WUT */
     MXC_WUT_Config(MXC_WUT0, &wut_cfg);
