@@ -25,7 +25,7 @@ The host application is written in Python and uses the following packages:
 - ft4222 -- USB-to-QSPI communications
 - Pillow --  image data access
 
-The host application requires Python 3.7.x or 3.8.x. Python 2.x and 3.9 are not supported.
+The host application requires Python 3.11.x or later.
 
 _NOTE_: It is not necessary to install a compatible Python system-wide, or to rely on the system-provided Python. To manage Python versions, use `pyenv` (https://github.com/pyenv/pyenv).
 
