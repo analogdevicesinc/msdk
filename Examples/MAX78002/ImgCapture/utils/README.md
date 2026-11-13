@@ -4,7 +4,7 @@ This folder contains Python scripts designed for use with the "ImgCapture" firmw
 
 ## Requirements
 
-Python 3.9+
+Python 3.11+
 
 Then, install Python packages using the `requirements.txt` file in this folder.
 
