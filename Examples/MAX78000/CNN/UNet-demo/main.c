@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2022-2023 Maxim Integrated Products, Inc. (now owned by 
  * Analog Devices, Inc.),
- * Copyright (C) 2023-2024 Analog Devices, Inc.
+ * Copyright (C) 2023-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,6 +125,8 @@ static void spi_init(void)
     spi_pins.ss2 = FALSE;
     spi_pins.sdio2 = FALSE;
     spi_pins.sdio3 = FALSE;
+
+    spi_pins.vddioh = TRUE;
 
     retVal = MXC_SPI_Init(SPI_REGS, 0, 0, 0, 0, SPI_SPEED, spi_pins);
     if (retVal != E_NO_ERROR) {
