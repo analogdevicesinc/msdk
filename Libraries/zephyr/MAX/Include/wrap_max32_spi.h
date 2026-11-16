@@ -79,8 +79,7 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
     defined(CONFIG_SOC_MAX32662) || defined(CONFIG_SOC_MAX32675) ||   \
     defined(CONFIG_SOC_MAX32680) || defined(CONFIG_SOC_MAX32657) ||   \
     defined(CONFIG_SOC_MAX78002) || defined(CONFIG_SOC_MAX78000) ||   \
-    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) ||   \
-    defined(CONFIG_SOC_MAX32660)
+    defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || defined(CONFIG_SOC_MAX32660)
 
 #if defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || defined(CONFIG_SOC_MAX32660)
 #define ADI_MAX32_SPI_CTRL_EN MXC_F_SPI_CTRL0_SPI_EN
@@ -170,8 +169,8 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
                                     int numSlaves, unsigned ssPolarity, unsigned int hz)
 {
 #if defined(CONFIG_SOC_MAX32670) || defined(CONFIG_SOC_MAX32672) || \
-    defined(CONFIG_SOC_MAX32675) || defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651) || \
-    defined(CONFIG_SOC_MAX32660)
+    defined(CONFIG_SOC_MAX32675) || defined(CONFIG_SOC_MAX32650) || \
+    defined(CONFIG_SOC_MAX32651) || defined(CONFIG_SOC_MAX32660)
     return MXC_SPI_Init(spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
 #else
     mxc_spi_pins_t tmp; // not used
