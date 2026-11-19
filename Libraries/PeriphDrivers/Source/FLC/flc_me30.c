@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Copyright (C) 2024-2025 Analog Devices, Inc.
+ * Copyright (C) 2024-2026 Analog Devices, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,13 +36,13 @@ void MXC_FLC_ME30_Flash_Operation(void)
     /*
     This function should be called after modifying the contents of flash memory.
     It flushes the instruction caches and line fill buffer.
-    
+
     It should be called _afterwards_ because after flash is modified the cache
     may contain instructions that may no longer be valid.  _Before_ the
-    flash modifications the ICC may contain relevant cached instructions related to 
+    flash modifications the ICC may contain relevant cached instructions related to
     the incoming flash instructions (especially relevant in the case of external memory),
     and these instructions will be valid up until the point that the modifications are made.
-    
+
     The line fill buffer is a FLC-related buffer that also may no longer be valid.
     It's flushed by reading 2 pages of flash.
     */
@@ -66,10 +66,12 @@ void MXC_FLC_ME30_Flash_Operation(void)
 int MXC_FLC_ME30_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 {
     if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
-        *result = addr & (MXC_FLASH_MEM_SIZE - 1);
+        /* Clear bit 28 (security alias bit) to get the physical address, then the offset. */
+        *result = (addr & ~(1U << 28)) - MXC_PHY_FLASH_MEM_BASE;
 #if defined(CONFIG_TRUSTED_EXECUTION_SECURE) && (CONFIG_TRUSTED_EXECUTION_SECURE == 1)
     } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
-        *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
+        /* The info block follows the whole physical flash, not this build's region. */
+        *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_PHY_FLASH_MEM_SIZE;
 #endif
     } else {
         return E_BAD_PARAM;
