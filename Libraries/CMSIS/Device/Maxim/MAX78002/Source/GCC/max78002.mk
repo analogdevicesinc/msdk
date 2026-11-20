@@ -281,5 +281,15 @@ else
 include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc_riscv.mk
 endif
 
+ifeq ($(RISCV_LOAD),1)
+ifeq "$(RISCV_CORE)" ""
+# The arm-only build that generates $(ARM_MAP_FILE) compiles the same objects and libraries
+# as this build, in the same directories.  Without this, a parallel build (-j) runs both at once
+# and they can overwrite each other's files, causing sporadic "undefined reference" link errors.
+# Order-only so that the Arm build finishes first and this build then finds everything up to date.
+$(filter-out $(PROJ_OBJS),$(OBJS)) $(LIBS): | $(ARM_MAP_FILE)
+endif
+endif
+
 # Include rules for flashing
 include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk
