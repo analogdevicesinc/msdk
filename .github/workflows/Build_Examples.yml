@@ -269,7 +269,10 @@ jobs:
           # Note: This patch is necessary to get make to build on Ubuntu-22.04.
           patch glob/glob.c $GITHUB_WORKSPACE/.github/workflows/patch/glob_patch.patch
 
-          ./configure --prefix=$GITHUB_WORKSPACE/make-3.81
+          # Note: Make 3.81 uses K&R-style declarations which fail to build with
+          # newer GCC versions (C23 default in GCC 15, stricter errors in GCC 14).
+          # Build as GNU C89 and downgrade the new default errors to warnings.
+          ./configure --prefix=$GITHUB_WORKSPACE/make-3.81 CFLAGS="-std=gnu89 -fpermissive -g -O2"
           make
           make install
           

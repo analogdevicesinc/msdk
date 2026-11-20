@@ -28,7 +28,7 @@
 
 # Get CLANG_VERSION from environment if available
 if [[ $CLANG_VERSION == "" ]]; then
-  CLANG_VERSION=14
+  CLANG_VERSION=21
 fi
 
 CHANGES_NEEDED=0

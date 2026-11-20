@@ -75,7 +75,7 @@ The MSDK code-base, for the most-part, follows the [Linux Kernel coding style](h
 
 - Indentations are 4 spaces.
 
-Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) **version 14** and [cpplint](https://github.com/cpplint/cpplint), which automatically run checks against all PRs.  A PR cannot be merged until it passes these checks.
+Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) **version 21** and [cpplint](https://github.com/cpplint/cpplint), which automatically run checks against all PRs.  A PR cannot be merged until it passes these checks.
 
 ### Running the Linter & Formatter
 
@@ -123,11 +123,11 @@ clang-format rules are loaded from the **.clang-format** and cpplint rules are l
 
     To run a clang-format **_check_** on a file, use the `-n` "dry-run" flag.  
 
-    `clang-format-14 --style=file --Werror --verbose -n <filename>`
+    `clang-format-21 --style=file --Werror --verbose -n <filename>`
 
     For example:
 
-        $ clang-format-14 --style=file --Werror --verbose -n Examples/MAX78000/CRC/main.c
+        $ clang-format-21 --style=file --Werror --verbose -n Examples/MAX78000/CRC/main.c
 
         Formatting [1/1] Examples/MAX78000/CRC/main.c
         Examples/MAX78000/CRC/main.c:86:40: error: code should be clang-formatted [-Wclang-format-violations]
@@ -136,11 +136,11 @@ clang-format rules are loaded from the **.clang-format** and cpplint rules are l
 
     To _apply_ the formatter to automatically format a file, use the `-i` flag.
 
-    `clang-format-14 --style=file --Werror --verbose -i <filename>`
+    `clang-format-21 --style=file --Werror --verbose -i <filename>`
 
     For example:
 
-        $ clang-format-14 --style=file --verbose -i Examples/MAX78000/CRC/main.c
+        $ clang-format-21 --style=file --verbose -i Examples/MAX78000/CRC/main.c
         Formatting [1/1] Examples/MAX78000/CRC/main.c
 
     This will apply the formatter and overwrite the file.  Check the formatter's work using `git diff`.
@@ -163,11 +163,11 @@ clang-format rules are loaded from the **.clang-format** and cpplint rules are l
 
     To recursively run clang-format on all C files in an entire directory, use:
 
-    `clang-format-14 --style=file --verbose -n <filepath>/**/*.c`.
+    `clang-format-21 --style=file --verbose -n <filepath>/**/*.c`.
 
     For example:
 
-        $ clang-format-14 --style=file --verbose -i Examples/MAX78000/ARM-DSP/**/*.c
+        $ clang-format-21 --style=file --verbose -i Examples/MAX78000/ARM-DSP/**/*.c
 
         Formatting [1/24] Examples/MAX78000/ARM-DSP/arm_bayes_example/arm_bayes_example_f32.c
         Formatting [2/24] Examples/MAX78000/ARM-DSP/arm_class_marks_example/arm_class_marks_example_f32.c
