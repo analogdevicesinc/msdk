@@ -172,7 +172,7 @@ static inline int Wrap_MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int qua
     defined(CONFIG_SOC_MAX32675) || defined(CONFIG_SOC_MAX32650) || defined(CONFIG_SOC_MAX32651)
     return MXC_SPI_Init(spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
 #else
-    mxc_spi_pins_t tmp; // not used
+    mxc_spi_pins_t tmp = { 0 }; // not used
     return MXC_SPI_Init(spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz, tmp);
 #endif
 }
