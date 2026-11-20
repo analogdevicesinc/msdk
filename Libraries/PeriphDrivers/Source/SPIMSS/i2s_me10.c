@@ -47,7 +47,9 @@ int MXC_I2S_Init(const mxc_i2s_config_t *cfg, void (*dma_ctz_cb)(int, int))
 /* ************************************************************************* */
 int MXC_I2S_Shutdown(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2S);
+#endif // MSDK_NO_GPIO_CLK_INIT
     return MXC_I2S_RevA_Shutdown((mxc_spimss_reva_regs_t *)MXC_SPIMSS);
 }
 
