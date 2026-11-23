@@ -35,9 +35,11 @@ int MXC_I2S_Init(mxc_i2s_req_t *req)
 {
     MXC_I2S_Shutdown();
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2S);
     MXC_GPIO_Config(&gpio_cfg_i2s0);
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_I2S_RevA_Init((mxc_i2s_reva_regs_t *)MXC_I2S, req);
 }
@@ -46,7 +48,9 @@ int MXC_I2S_Shutdown(void)
 {
     MXC_I2S_RevA_Shutdown((mxc_i2s_reva_regs_t *)MXC_I2S);
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2S);
+#endif // MSDK_NO_GPIO_CLK_INIT
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2S);
 
     return E_NO_ERROR;
